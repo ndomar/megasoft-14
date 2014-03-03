@@ -32,4 +32,8 @@ Megasoft 2014 SE Project
 		<td>Heba Aamer</td>
 		<td>25-8983</td>
 	</tr>
+	<tr>
+		<td>Maisara Farahat</td>
+		<td>25-4757</td>
+	</tr>
 </table>
