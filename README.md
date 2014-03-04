@@ -38,7 +38,7 @@ Megasoft 2014 SE Project
 		25-8827
 	</td>
 	</tr>
-<<<<<<< HEAD
+
 <tr>
 	<td>
 		Mansour Said
@@ -47,7 +47,7 @@ Megasoft 2014 SE Project
 		25-10479
 	</td>
 	</tr>
-=======
+
 	<tr>
 	<td>
 		mohamed ayman
@@ -63,7 +63,6 @@ Megasoft 2014 SE Project
 	</td>
 	</tr>
 
->>>>>>> 461576af1ed7ca462552e08bb2bf2e58e059f630
 </table>
 
 <tr>
