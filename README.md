@@ -5,18 +5,16 @@ Megasoft 2014 SE Project
 
 <table>
 	<tr>
-		<th>Name</th>
-		<th>ID</th>
+		<td>Salma khaled</td>
 	</tr>
 	<tr>
-		<td>Omar ElAzazy</td> 
-		<td>25-1136</td>
+		<td>Omar ElAzazy</td>
 	</tr>
 	<tr>
 		<td>Mohamed Bassem</td>
-		<td>25-1312</td>
 	</tr>
 	<tr>
+
 		<td>Ahmed osama</td>
 		<td>22-0667</td>
 	</tr>
@@ -49,4 +47,13 @@ Megasoft 2014 SE Project
 	<tr> 
 
 </tr>
+
+		<td>Alaa Gohar</td>
+		</tr>
+
+	</tr>
+		<td>Amr EL Zanaty</td>
+		<td>25-8370</td>
+	<tr> 
+
 </table>
