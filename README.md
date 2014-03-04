@@ -56,5 +56,8 @@ Megasoft 2014 SE Project
 	<td>
 		25-7131
 	</td>
+	<td>
+		Mohamed Farghal
+		</td>
 </tr>
 
