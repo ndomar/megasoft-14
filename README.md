@@ -55,4 +55,9 @@ Megasoft 2014 SE Project
 			<td> Alaa Maher </td>
 			<td> 25-2698 </td>
 	</tr>
+
+	<tr>
+		<td><b>Mohamed Farghal</b></td>
+		<td>25-3591</td>
+	</tr>
 </table>
