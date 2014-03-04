@@ -4,7 +4,6 @@ megasoft-14:
 Megasoft 2014 SE Project
 <table>
 
-<<<<<<< HEAD
         <tr>
                 <td>Salma khaled</td>
         </tr>
@@ -50,7 +49,6 @@ Megasoft 2014 SE Project
         <tr>
             <td>Ahmed osama</td>
         </tr>
-
 
         <tr>
             <td>Sara Khodeir</td>
