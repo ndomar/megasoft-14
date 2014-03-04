@@ -2,7 +2,6 @@ megasoft-14
 ===========
 
 Megasoft 2014 SE Project
-
 <table>
 	<tr>
 		<td>Salma khaled</td>
@@ -41,19 +40,36 @@ Megasoft 2014 SE Project
 		<tr>
 		<td>Menna Tarek</td> 
 		<td>25-2314</td>
-	</tr>
-		<td>Amr EL Zanaty</td>
-		<td>25-8370</td>
-	<tr> 
-
+	
 </tr>
 
 		<td>Alaa Gohar</td>
 		</tr>
 
+
+
+
+		<tr>
+	<td>
+		maisara farahat
+	</td>
+	<td>
+		25-4757
+	</td>
 	</tr>
+	<tr>
+	<td>
+		mustafa fahmy
+	</td>
+	<td>
+		25-8827
+	</td>
+	</tr>
+         <tr>
 		<td>Amr EL Zanaty</td>
 		<td>25-8370</td>
-	<tr> 
+	</tr> 
+
 
 </table>
+
