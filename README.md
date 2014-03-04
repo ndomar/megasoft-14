@@ -1,9 +1,3 @@
-megasoft-14
-===========
-
-Megasoft 2014 SE Project
-
-<table>
 	<tr>
 		<th>Name</th>
 		<th>ID</th>
@@ -20,6 +14,7 @@ Megasoft 2014 SE Project
 		<td>Ahmed osama</td>
 		<td>22-0667</td>
 	</tr>
+	
 	<tr>
 		<td>
 			Mohamed Shaban
@@ -40,8 +35,17 @@ Megasoft 2014 SE Project
 		<td>Mohamed Ayman</td>
 		<td>25-2561</td>
 	</tr>
-<tr>
-		<td>Salma Amr</td>
-		<td>25-7815</td>
+		<tr>
+		<td>Menna Tarek</td> 
+		<td>25-2314</td>
+	</tr>
+
+	<tr>
+			<td>Eslam Maged	</td>
+			<td>25-5945	</td>
+	</tr>
+	<tr>
+			<td> Salma Amr </td>
+			<td> 25-7815 </td>
 	</tr>
 </table>
