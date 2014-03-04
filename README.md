@@ -20,6 +20,7 @@ Megasoft 2014 SE Project
 		<td>Ahmed osama</td>
 		<td>22-0667</td>
 	</tr>
+	
 	<tr>
 		<td>
 			Mohamed Shaban
@@ -43,5 +44,10 @@ Megasoft 2014 SE Project
 		<tr>
 		<td>Menna Tarek</td> 
 		<td>25-2314</td>
+	</tr>
+
+	<tr>
+			<td>Eslam Maged	</td>
+			<td>25-5945	</td>
 	</tr>
 </table>
