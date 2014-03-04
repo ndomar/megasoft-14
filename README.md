@@ -44,4 +44,9 @@ Megasoft 2014 SE Project
 		<td>Menna Tarek</td> 
 		<td>25-2314</td>
 	</tr>
+		<td>Amr EL Zanaty</td>
+		<td>25-8370</td>
+	<tr> 
+
+</tr>
 </table>
