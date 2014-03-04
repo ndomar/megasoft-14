@@ -2,8 +2,6 @@ megasoft-14:
 ===========
 
 Megasoft 2014 SE Project
-
-
 <table>
 
 
@@ -153,6 +151,10 @@ Megasoft 2014 SE Project
 
 	<tr>
 		<td> Amr El Zanaty</td>
+	</tr>
+
+	<tr>
+		<td> Mahmoud Gamal</td>
 	</tr>
 
 </table>
