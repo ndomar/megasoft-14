@@ -4,6 +4,7 @@ megasoft-14:
 Megasoft 2014 SE Project
 <table>
 
+<<<<<<< HEAD
         <tr>
                 <td>Salma khaled</td>
         </tr>
