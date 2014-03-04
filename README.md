@@ -68,9 +68,15 @@ Megasoft 2014 SE Project
 			<td> Kareem Wahby </td>
 			<td> 25-10651 </td>
 	</tr>
+ 
+	
 
 <tr>
 			<td>Menna Tarek Tani</td>
 			<td>25-2314 </td>
 	</tr>
+	<tr>
+			<td> Mahmoud Gamal </td>
+			<td> 25-1731 </td>
+</tr>
 </table>
