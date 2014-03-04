@@ -13,8 +13,11 @@ Megasoft 2014 SE Project
 		<td>Mohamed Bassem</td>
 	</tr>
 	<tr>
+		<td>Kareem Wahby</td>
+	</tr>
+	<tr>
 		<td>Alaa Gohar</td>
-		</tr>
+    </tr>
 	<tr>
 		<td>
 			Mohamed Shaban
@@ -22,7 +25,8 @@ Megasoft 2014 SE Project
 		<td>
 			25-7131
 		</td>
-		<tr>
+		</tr>
+<tr>
 	<td>
 		maisara farahat
 	</td>
@@ -34,11 +38,11 @@ Megasoft 2014 SE Project
 	<td>
 		mustafa fahmy
 	</td>
+	</tr>
 	<td>
 		25-8827
 	</td>
 	</tr>
-<<<<<<< HEAD
 <tr>
 	<td>
 		Mansour Said
@@ -47,7 +51,6 @@ Megasoft 2014 SE Project
 		25-10479
 	</td>
 	</tr>
-=======
 	<tr>
 	<td>
 		mohamed ayman
@@ -56,10 +59,6 @@ Megasoft 2014 SE Project
 		25-2561
 	</td>
 	</tr>
-
->>>>>>> 461576af1ed7ca462552e08bb2bf2e58e059f630
-</table>
-
 <tr>
 	<td>
 		Mohamed Shaban
@@ -71,4 +70,4 @@ Megasoft 2014 SE Project
 		Mohamed Farghal
 		</td>
 </tr>
-
+</table>
