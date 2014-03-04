@@ -1,4 +1,4 @@
-megasoft-14
+megasoft-14: Mohamed Shaban
 ===========
 
 Megasoft 2014 SE Project
@@ -15,6 +15,13 @@ Megasoft 2014 SE Project
 	<tr>
 		<td>Alaa Gohar</td>
 		</tr>
+	<tr>
+		<td>
+			Mohamed Shaban
+		</td>
+		<td>
+			25-7131
+		</td>
 		<tr>
 	<td>
 		maisara farahat
@@ -41,4 +48,16 @@ Megasoft 2014 SE Project
 	</tr>
 
 </table>
+
+<tr>
+	<td>
+		Mohamed Shaban
+	</td>
+	<td>
+		25-7131
+	</td>
+	<td>
+		Mohamed Farghal
+		</td>
+</tr>
 
