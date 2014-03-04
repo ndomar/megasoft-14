@@ -4,8 +4,6 @@ megasoft-14: Mohamed Shaban
 Megasoft 2014 SE Project
 <table>
 
-
-
 	<tr>
 		<td>Salma khaled</td>
 	</tr>
@@ -15,10 +13,7 @@ Megasoft 2014 SE Project
 	<tr>
 		<td>Mohamed Bassem</td>
 
-	
-
 		<td>Alaa Gohar</td>
-
 	</tr>
 
 	<tr>
@@ -95,10 +90,8 @@ Megasoft 2014 SE Project
 		<td>Nader Nessem</td>
 	</tr>
 	<tr>
-
 		<td>Mohamed Essam</td>
 	</tr>
-
 <tr>
 		<td>Ahmed osama</td>
 	</tr>
@@ -107,7 +100,6 @@ Megasoft 2014 SE Project
 <td>Sara Khodeir</td>
 <td>25-2729</td>
 <tr>
-
 <tr>
 		<td>Nader Nessem</td>
 	</tr>
