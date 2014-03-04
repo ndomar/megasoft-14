@@ -98,11 +98,7 @@ Megasoft 2014 SE Project
 
 
 
-	<tr>
-	<td>
-			Heba Aamer
-	</td>
-	</tr>
+	
 
     <tr>
 
@@ -128,9 +124,6 @@ Megasoft 2014 SE Project
 	</tr>
 
 
-	<tr>
-			<td>Ahmed osama</td>
-	</tr>
 
 
 	
@@ -147,19 +140,19 @@ Megasoft 2014 SE Project
 
 
 	<tr> 
-			<td>mohamed zayan</td>
+			<td>Mohamed Zayan</td>
 
 	 </tr>
 	
 
 	<tr>
-			<td>SALMA AMR</td>
+			<td>Salma Amr</td>
 	
 	</tr>
 
 
 	<tr>
-		<td> AMR EL ZANATY</td>
+		<td> Amr El Zanaty</td>
 	</tr>
 
 </table>
