@@ -49,8 +49,6 @@ Megasoft 2014 SE Project
 		<td>Mohamed Shaban</td>
 	</tr>
 	<tr>
-		<td>Nader Nessem</td>
-	</tr>
 		<td>Mohamed Farghal</td>
 	</tr>
 	<tr>
@@ -69,10 +67,10 @@ Megasoft 2014 SE Project
 		<td>Salma Amr</td>
 	</tr>
 	<tr>
-		<td> Amr El Zanaty</td>
+		<td>Amr El Zanaty</td>
 	</tr>
 	<tr>
-		<td> Mahmoud Gamal</td>
+		<td>Mahmoud Gamal</td>
 	</tr>
 	<tr>
 		<td>Hossam Youssef</td>
