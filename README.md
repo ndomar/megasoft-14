@@ -3,9 +3,6 @@ megasoft-14:
 
 Megasoft 2014 SE Project
 <table>
-
-
-
 	<tr>
 			<td>Salma khaled</td>
 	</tr>
@@ -64,10 +61,6 @@ Megasoft 2014 SE Project
 			<td>Kareem Wahby</td>
 	</tr>
 	
-
-
-
-	
 	<tr>
 
 		<td>
@@ -93,11 +86,6 @@ Megasoft 2014 SE Project
 			<td>Eslam Maged</td>
 	</tr>
 
-
-
-
-	
-
     <tr>
 
 	<td>
@@ -106,21 +94,20 @@ Megasoft 2014 SE Project
 	</tr>
 
 	<tr>
-		<td>
+		<td>Nader Nessem</td>
+</tr>
+
+	<td>
 			Mohamed Farghal
 		</td>
+
 	</tr>
-        
-        
-        
 
-	
-
-	
 	<tr>
 		<td>Mohamed Essam</td>
 	</tr>
 
+</table>
 
 
 
