@@ -1,0 +1,120 @@
+body{
+	background-color: rgb(162, 54, 7);
+}
+
+div{
+	visibility: hidden;
+	background-color: rgba(162, 54, 7, 0.0);
+	position: absolute;
+	z-index = -1;
+	font-family: Quicksand;
+	color: #FFFFFF;
+}
+
+.fadeinclass{
+	animation: fadein 3s;
+	-webkit-animation: fadein 3s;
+	-moz-animation: fadein 3s;
+	-o-animation: fadein 3s;
+	-ms-animation: fadein 3s;
+}
+
+@keyframes fadein{
+    from{ 
+		opacity: 0;
+	}
+    to{ 
+		opacity: 1; 
+	}
+}
+
+@-webkit-keyframes fadein{
+    from{ 
+		opacity: 0;
+	}
+    to{ 
+		opacity: 1; 
+	}
+}
+
+@-moz-keyframes fadein{
+    from{ 
+		opacity: 0;
+	}
+    to{ 
+		opacity: 1; 
+	}
+}
+
+@-o-keyframes fadein{
+    from{ 
+		opacity: 0;
+	}
+    to{ 
+		opacity: 1; 
+	}
+}
+
+@-ms-keyframes fadein{
+    from{ 
+		opacity: 0;
+	}
+    to{ 
+		opacity: 1; 
+	}
+}
+
+#aboutme{
+	left: 3%;
+	width: 450px;
+	top: 190px;
+}
+
+#experience{
+	left: 40%;
+	width: 600px;
+	top: 300px;
+}
+
+#role{
+	left: 50%;
+	width: 300px;
+	top: 100px;
+}
+
+#centerImage{
+	width:		300px;
+	height:		300px;
+
+	position:	absolute;
+	left:		50%;
+	top:		50%;
+	margin-top:	-150px;
+	margin-left:-150px;
+
+	z-index=0;
+}
+
+.tab{
+	visibility:hidden;
+	position: relative;
+	z-index=1;
+	left: -10000px;
+	top: -10000px;
+}
+
+.transition{
+	transition:	width 0.5s, height 0.5s, -webkit-transform 1.5s ease-in-out;
+	-webkit-transition:	width 0.5s, height 0.5s, -webkit-transform 1.5s ease-in-out;
+	-moz-transition:	width 0.5s, height 0.5s, -webkit-transform 1.5s ease-in-out;
+	-o-transition:	width 0.5s, height 0.5s, -webkit-transform 1.5s ease-in-out;
+	-ms-transition:	width 0.5s, height 0.5s, -webkit-transform 1.5s ease-in-out;
+}
+
+.notransition{ 
+	transition: none !important; 
+  	-webkit-transition: none !important; 
+  	-moz-transition: none !important; 
+  	-o-transition: none !important; 
+  	-ms-transition: none !important; 
+} 
