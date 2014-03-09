@@ -1,0 +1,25 @@
+body {
+background-image: url("background.jpg");
+background-size: cover;
+background-repeat: no-repeat;
+}
+h1.name{
+font-size: 40px;
+text-align: left;
+color: #FF0000;
+}
+img.profile{
+    display: block;
+    margin-left: 0;
+    width: 200px
+}
+
+main {
+display: block;
+color: #A9A9F5;
+}
+
+h1.color{
+	color: #0000FF
+}
+
