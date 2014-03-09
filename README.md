@@ -7,7 +7,7 @@ Megasoft 2014 SE Project
 		<td>Salma khaled</td>
 	</tr>
 	<tr>
-		<td>Omar ElAzazy</td>
+		<td><a href="http://www.oa12gb.com">Omar ElAzazy</a></td>
 	</tr>
 	<tr>
 		<td><a href="https://github.com/ndomar/megasoft-14/tree/master/CompanyProfiles/MohamedBassem">Mohamed Bassem</a></td>
