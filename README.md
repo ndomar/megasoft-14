@@ -10,7 +10,7 @@ Megasoft 2014 SE Project
 		<td>Omar ElAzazy</td>
 	</tr>
 	<tr>
-		<td>[Mohamed Bassem](https://github.com/ndomar/megasoft-14/tree/master/CompanyProfiles/MohamedBassem)</td>
+		<td><a href="https://github.com/ndomar/megasoft-14/tree/master/CompanyProfiles/MohamedBassem">Mohamed Bassem</a></td>
 	</tr>
 	<tr>
 		<td>Alaa Gohar</td>
