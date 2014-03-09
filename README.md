@@ -7,7 +7,7 @@ Megasoft 2014 SE Project
 		<td>Salma khaled</td>
 	</tr>
 	<tr>
-		<td><a href="www.oa12gb.com">Omar ElAzazy</a></td>
+		<td><a href="http://www.oa12gb.com">Omar ElAzazy</a></td>
 	</tr>
 	<tr>
 		<td>Mohamed Bassem</td>
