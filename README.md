@@ -38,7 +38,7 @@ Megasoft 2014 SE Project
 		<td>mustafa fahmy</td>
 	</tr>
 	<tr>
-		<td>Mansour Said</td>
+		<td><a href="https://github.com/ndomar/megasoft-14/tree/master/CompanyProfiles/Mansour%20Said%20Mansour">Mansour Said</a></td>
 	</tr>
 	<tr>
 		<td>mohamed ayman
