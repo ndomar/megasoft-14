@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+	<!--<link type="text/css" rel="styleSheet" href="styleSheet.css"/>-->
+ <head>
+	<title>This is Osama's profile</title>
+ </head>
+ <body>
+	
+	<div class ="titleDiv">
+		<h3>Ahmed Osama</h3>
+	</div>
+	<div id="imageDiv">
+		<a href="../Resources/PP.jpg">
+		  <img id="profile" src="../Resources/PP.jpg">
+		</a>  
+	</div>
+		
+	<div class= "interstsDiv">
+		<h1>Likes and Intersts:</h1>
+		<ul>
+			<li>listen to music</li>
+			<li>play the piano</li>
+			<li>programming</li>
+			<li>Running</li>
+		</ul>
+	</div>
+	<div id="panel">
+      <h4>Click on an image to be displayed here!</h4>
+	</div>
+	<div id ="imageStream">
+		
+			<img onClick ="disImage(0)" class="stream" id="stream0" src="../Resources/nebny.jpg">
+			<img onClick ="disImage(1)" class="stream" id="stream1" src="../Resources/PP.jpg">
+			<img onClick ="disImage(2)" class="stream" id="stream2" src="../Resources/IMG_0233.jpg">
+			<img onClick ="disImage(3)" class="stream" id="stream3" src="../Resources/IMG_0657.jpg">
+			<img onClick ="disImage(4)" class="stream" id="stream4" src="../Resources/Ahmed-Ossama1.jpg">
+			<img onClick ="disImage(5)" class="stream" id="stream5" src="../Resources/IMG_0861.jpg">
+	
+
+
+	</div>
+	
+	<style type="text/css">
+
+       body {
+	       background-color: #b7d1c4;
+         }
+       h3 {
+       	color: white;
+       	font-size: 30px;
+       	margin-left: 5px;
+       	position: relative;
+       }
+       .titleDiv {
+       	top: 0px;
+       	background-color: #3333FF;
+       	width: 1350px;
+       	height: 50px;
+       	border-radius: 5px;
+       	margin-top: 10px;
+       	position: relative;
+
+       }  
+       .interstsDiv{
+          background-color:#9999FF;
+          width: 500px;
+          height: 265px;
+          margin-left: 50px;
+          border-radius: 5px;
+          position: fixed;
+          top: 100px;
+       	  left: 300px;
+       }
+       #imageDiv{
+       	position: fixed;
+       	top:100px;
+       	left:-10px;
+       	margin-left: 50px;
+       
+       }
+       #profile{
+       	position: relative;
+       	width: 250px;
+       	height: 250px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: gray;
+        border-radius: 3px;
+       }
+       
+       li{
+        font-size: 30px;
+       }
+       #imageStream{
+       	position: fixed;
+       	width: 2000px;
+       	height: 200px;
+       	top: 450px;
+       	left:50px;
+
+       }
+       .stream{
+       	width:200px;
+       	height: 150px;
+       }
+       #panel{
+       	background-color: gray;
+       	width: 400px;
+       	height: 300px;
+       	position: fixed;
+       	top: 100px;
+       	right: 50px;
+       }
+
+
+       /* 
+       #innerDiv1{
+        background-color: #00CCFF;
+        height: 50px;
+        border-radius: 5px;
+        width: 250px;
+        margin-top: 0px;
+        position: fixed;
+        top: 250px;
+        margin-left: 33px;
+       }
+       */
+
+	</style>
+
+
+
+
+	<script type="text/javascript">
+      
+        function disImage(num){
+        	switch(num){
+        		case 0: document.getElementById("panel").innerHTML="<img src='../Resources/nebny.jpg' height=300px width=400px/>";
+            break;
+        		case 1: document.getElementById("panel").innerHTML="<img src='../Resources/PP.jpg' height=300px width=400px/>";
+        		      break;
+        		case 2: document.getElementById("panel").innerHTML="<img src='../Resources/IMG_0233.jpg' height=300px width=400px/>";break;
+        		case 3: document.getElementById("panel").innerHTML="<img src='../Resources/IMG_0657.jpg' height=300px width=400px/>";
+        		      break; 
+        		case 4: document.getElementById("panel").innerHTML="<img src='../Resources/Ahmed-Ossama1.jpg' height=300px width=400px/>";break;
+        		case 5: document.getElementById("panel").innerHTML="<img src='../Resources/IMG_0861.jpg' height=300px width=400px/>";break;
+
+
+
+        	}
+        	
+        	//panel.appendChild(img);
+        }
+        
+
+	</script>
+ </body>
+</html>
