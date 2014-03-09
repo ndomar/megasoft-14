@@ -1,0 +1,32 @@
+div{
+	font-size : 44px;
+	/*color : rgb(255,128,128);*/
+	color : white;
+	text-align : center;
+	font-family : Vivaldi;
+}
+
+p {
+	font-size : 32px;
+	font-family : freeStyle Script;
+	color : grey;
+	/*background-color :light blue;*/
+	margin-left : 40px;
+}
+
+body {
+	/*background-color : sienna;*/
+	background-image : url('90cdb54b-aac1-4738-b48d-3d4c65dcaeb8_8.jpg');  
+	/*height: "40";
+	width : "30";*/
+	background-size : 1375px 900px;
+}
+
+button {
+	height : 110%;
+	width : 25%;
+	font-size : 24px;
+	background-color : white;
+	border-radius : 75%;
+	border : solid;
+}
