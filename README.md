@@ -17,7 +17,6 @@ Megasoft 2014 SE Project
 	</tr>
 	<tr>
 		<td><a href="https://github.com/ndomar/megasoft-14/tree/osama/CompanyProfiles/Ahmed%20osama">Ahmed osama</a></td>
-		<td>shdjshk</td>
 	</tr>
 	<tr>	
 		<td>Heba Aamer</td>
