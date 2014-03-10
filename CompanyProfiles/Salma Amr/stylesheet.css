@@ -1,0 +1,84 @@
+
+
+.background
+{
+	background-image: url("up.jpg");
+	background-size: 1370px 1000px;
+	background-repeat: no-repeat;
+}
+
+
+h1.name
+{
+	color: rgba(255,255,255,0.9);
+	text-align: left;
+	margin: auto;
+	text-decoration:underline;
+
+}
+
+div.image
+{
+
+float:left;
+width:50px;
+vertical-align:text-bottom;
+
+}
+
+h2.aboutLabel
+{
+	color: rgba(255,255,255,0.9);
+	text-align: left;
+	margin: auto;
+	text-decoration:underline;
+
+
+}
+
+h3.myinfoLabel
+{
+	color: rgba(255,255,255,0.9);
+	text-align: left;
+	margin: auto;
+
+}
+
+
+h4.duty
+{
+	color: rgba(255,255,255,0.9);
+	text-align: left;
+	text-decoration:underline;
+	font-size:150%;
+}
+
+h5.role
+{
+	color: rgba(255,255,255,0.9);
+	text-align: left;
+	font-size:125%;
+}
+
+h6.skills
+{
+	color: rgba(255,255,255,0.9);
+	text-align: left;
+	text-decoration:underline;
+	font-size:150%;
+}
+
+h7.skillsLabel
+{
+	color: rgba(255,255,255,0.9);
+	text-align: left;
+	font-size:125%;
+}
+
+p.click 
+{ 
+	color: rgb(255,215,0);
+	text-decoration:underline;
+	font-size:100%;
+}
+
