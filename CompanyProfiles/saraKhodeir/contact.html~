@@ -1,0 +1,36 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="sak.css">
+<script type="text/javascript" src="sak.js" ></script>
+</head>
+<body>
+<img src="book.jpg"  alt="pp" height="700" width="1200" class=" pos_fixed1">
+<div id="menu">
+<ul>
+<li><a href="index.html"></a></li>
+<ul><li><a href="sak.html">Home</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="skills.html">Skills</a></li>
+<li><a href="contact.html">Contacts</a></li>
+</ul>
+</div>
+
+<img src="email.jpg" alt="pp" class=" pos_fixed3" width= 300px height= 300px>
+
+<text class= "text3">
+public class contact{<br><br>
+public contactMe(){<br>
+System.out.println("Here are some places you can contact me.");<br>
+}<br><br>
+public String contactHere(){<br>
+return "Click on the button to send me an email."; <br>
+}<br>
+public String facebook(){<br>
+return "Find me on facebook."; <br>
+}<br>
+
+}</text>
+<button onclick="email()" class="button"></button>
+<button onclick="fb()" class="button1"></button>
+</body>
+</html>
