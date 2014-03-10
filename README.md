@@ -16,8 +16,7 @@ Megasoft 2014 SE Project
 		<td>Alaa Gohar</td>
 	</tr>
 	<tr>
-		<td>Ahmed osama</td>
-		<td>https://github.com/ndomar/megasoft-14/tree/osama/Profile_task/HTML</td>
+		<td><a href="https://github.com/ndomar/megasoft-14/tree/osama/CompanyProfiles/Ahmed%20osama">Ahmed osama</a></td>
 	</tr>
 	<tr>	
 		<td>Heba Aamer</td>
