@@ -1,0 +1,164 @@
+body
+{
+background-image:url("bg1.jpg");
+
+
+}
+h1
+{
+color:orange;
+text-align:center;
+}
+.text
+{
+	font-style: italic; 
+	font-size:50px; 
+	font_family: "Comic Sans MS", The Sans, Verdana,Arial,sans-serif; 
+	font-weight: bold;
+	text-align: center;
+	color:#FFFFCC;
+	position:fixed;
+	top:30px;
+	left:400px;
+	
+}
+.text2
+{
+	font-style: italic; 
+	font-size:30px; 
+	font_family: "Comic Sans MS", The Sans, Verdana,Arial,sans-serif; 
+	font-weight: bold;
+	text-align: center;
+	color:#FFFFCC;
+	position:fixed;
+	top:145px;
+	left:550px;
+	
+}
+.text3
+{
+	 
+	font-size:25px; 
+	font_family: "Comic Sans MS", The Sans, Verdana,Arial,sans-serif; 
+	font-weight: bold;
+	text-align: left;
+	color:#C0C0C0;
+	position:fixed;
+	top:170px;
+	left:550px;
+	
+}
+.text4
+{
+	 
+	font-size:25px; 
+	font_family: "Comic Sans MS", The Sans, Verdana,Arial,sans-serif; 
+	font-weight: bold;
+	text-align: center;
+	color:#C0C0C0;
+	position:fixed;
+	top:218px;
+	left:680px;
+	
+}
+
+.pos_fixed
+{
+position:fixed;
+top:160px;
+left:120px;
+}
+
+.pos_fixed1
+{
+position:fixed;
+top:50px;
+left:50px;
+}
+.pos_fixed2
+{
+position:fixed;
+top:450px;
+right:550px;
+}
+
+.pos_fixed3
+{
+position:fixed;
+top:160px;
+left:150px;
+}
+#menu {
+    width: 1200px;
+    height: 70px;
+    font-size: 16px;
+    font-family: Tahoma, Geneva, sans-serif;
+    font-weight: bold;
+    text-align: left;
+    text-shadow: 3px 2px 3px #333333;
+    background-color: #000000;
+    border-radius: 8px;
+    position:fixed;
+	top:40px;
+	left:50px;
+}
+#menu ul {
+    height: auto;
+    padding: 8px 0px;
+    margin: 0px;
+}
+
+#menu li { 
+display: inline; 
+padding: 50px; 
+}
+
+#menu a {
+    text-decoration: none;
+    color: #C0C0C0;
+    padding: 8px 8px 8px 8px;
+}
+#menu a:hover {
+    color: 660066;
+    background-color: #;
+}
+
+.button{
+background-image: url("icon.jpg");
+background-repeat: no-repeat;
+position:fixed;
+top:570px;
+right:150px;
+width: 50px;
+height: 50px;
+background-color: transparent; 
+border: none;           
+    cursor: pointer;        
+     padding-left: 16px;     
+    
+background-size:100%;
+
+
+}
+
+.button1{
+background-image: url("fb.jpg");
+background-repeat: no-repeat;
+position:fixed;
+top:565px;
+right:90px;
+width: 50px;
+height: 50px;
+background-color: transparent; 
+border: none;           
+    cursor: pointer;        
+     padding-left: 16px;     
+    
+background-size:100%;
+
+
+}
+
+
+
+
