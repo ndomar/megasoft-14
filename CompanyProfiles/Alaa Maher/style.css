@@ -1,0 +1,69 @@
+
+body 
+{background-image:url("bg.jpg");}
+
+p 
+{color: blue;
+font-style: italic;
+font-size: large;
+font-family: "Bodoni MT", Didot, "Didot LT STD", "Hoefler Text", Garamond, "Times New Roman", serif;
+margin:20px; }
+
+
+h1
+{
+text-align:center;
+color: #330066;
+font-style: italic;
+font-family: Papyrus, fantasy;
+}
+
+.headerbox
+  {
+  width: 13em;
+  height:auto;
+  margin-left: auto;
+  margin-right: auto;
+  background-color:#e5ccff;
+  border:1px solid black;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  opacity:0.8;
+  }
+
+  .bodybox
+  {
+  text-align: center;
+  width: 23em;
+  height:25em;
+  margin-left: auto;
+  margin-right: auto;
+  background-color:#e5ccff;
+  border:1px solid black;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  opacity:0.9;
+  }
+
+.circular {
+	width: 200px;
+	height: 200px;
+	margin-left: auto;
+    margin-right: auto;
+	border-radius: 150px;
+	-webkit-border-radius: 150px;
+	-moz-border-radius: 150px;
+	background: url(me.jpg) no-repeat;
+	background-size:contain;
+	box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	-webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	-moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	}
+
+.quote
+  { text-align: center;
+  	color:#330019;
+  	font-style: italic;
+  	font-size: x-large;
+    font-family: "Brush Script MT", cursive;
+}
