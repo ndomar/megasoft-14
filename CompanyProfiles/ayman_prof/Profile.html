@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+    <html>
+	<Head>
+	
+		<script>
+			function Y()
+			{
+				var x;
+
+				var person=prompt("Please enter your name","esmk ya brens");
+
+				if (person!=null)
+  				{
+  					x="Nwrt el profile ya " + person + " bash :D";
+  					document.getElementById("x").innerHTML=x;
+  				}
+			}
+		</script>	
+	
+		<link type="text/css" rel="stylesheet" href="stylesheet.css"/>
+		<title>My Profile</title>
+	</Head>
+	<body>
+		<div id="top">
+			<img id="smallpic" src="p1.jpg" >
+			<p id="name">Mohamed Ayman</p>
+		</div>
+		<div id="middle">
+			<img id="pic" src="p2.jpg" /> 
+			<h2>About me</h2>
+			<p>Hello all, This is Mohamed Ayman a 6th semster Computer Science stuent in the GUC</p>
+			<p class="topic">The Languages I know :</p>
+			<ul>
+				<li>Java</li>
+				<li>C</li>
+				<li>C#</li>
+				<li>SQL</li>
+				<li>HTML/CSS</li>
+				<li>Little JS</li>
+			</ul>
+			<p id="x"></p>
+		</div>
+		<div id="left">
+			<a href="www.facebook.com/malotfy3">Facebook</a>
+			<a href=“mailto:moh.ayman.93@gmail.com”>Contact Me</a>
+			<button onclick="Y()">Try it</button>
+		</div>
+
+
+	</body>
+
+</html>
