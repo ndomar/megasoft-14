@@ -13,7 +13,7 @@ Megasoft 2014 SE Project
 		<td><a href="https://github.com/ndomar/megasoft-14/tree/master/CompanyProfiles/MohamedBassem">Mohamed Bassem</a></td>
 	</tr>
 	<tr>
-		<td>Alaa Gohar</td>
+		<td><a href="https://github.com/ndomar/megasoft-14/tree/master/CompanyProfiles/Alaa%20Maher">Alaa Gohar</a></td>
 	</tr>
 	<tr>
 		<td><a href="https://github.com/ndomar/megasoft-14/tree/osama/CompanyProfiles/Ahmed%20osama">Ahmed osama</a></td>
