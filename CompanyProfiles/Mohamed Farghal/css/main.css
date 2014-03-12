@@ -1,0 +1,61 @@
+.sidebar {
+  height: 100%;
+  background-color: black;
+}
+
+.body {
+	/*background-image: url('../images/bg.jpg');*/
+}
+
+.page {
+
+	height: 800px;
+	box-shadow: 1px 5px 5px 2px #888888;
+	margin-left: 20%;
+	max-width: 60%;
+	opacity: 0.9;
+	padding: 20px 50px 20px 50px;
+}
+
+.color1 {
+	background-color: rgb(12, 74, 84);
+	color: #e7e7e7;
+}
+
+.text {
+	font-size: 16px
+}
+
+.navbar-text img {
+  max-height:60px;
+  margin-top: -20 ;
+  width:auto;
+
+}
+
+.mtl {
+	margin-top: 90px;
+}
+
+.mts {
+	margin-top: 10px;
+}
+
+.mlm {
+	margin-left: 20px;
+}
+
+.mtm {
+	margin-top: 20px;
+}
+
+.avatar {
+	max-width: 150px;
+	height: 150px;
+}
+
+.navbar-custom {
+	background-color: #222222 !important;
+	border-color: #222222 !important;
+	box-shadow: 0.5px 0.5px 5px #000000;
+}*/

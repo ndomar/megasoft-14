@@ -1,0 +1,39 @@
+.rotate
+{
+-webkit-transition:  -webkit-transform 0.5s;
+transition:width 1s, height 1s, transform 1s;
+transition-timing-function: cubic-bezier(.74,.35,.43,.77);
+
+}
+
+.rotate:hover {
+	-webkit-transform:rotate(360deg);
+	transform:rotate(360deg);
+}
+
+
+.info {
+	color: rgb(145, 145, 145);
+}
+
+.info:hover {
+	transition-property: color;
+	transition-timing-function: ease-in;
+	transition-duration: 0.125s;
+	color: white;
+}
+
+.overlay {
+	transition-property: opacity;
+	transition-timing-function: ease-in;
+	transition-duration: 0.125s;
+	background-color: gray;
+	opacity: 0.5;
+}
+
+.overlay-none {
+	transition-property: opacity;
+	transition-timing-function: ease-in;
+	transition-duration: 0.125s;
+	opacity: 1;
+}
