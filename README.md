@@ -40,9 +40,6 @@ Megasoft 2014 SE Project
 		<td><a href="https://github.com/ndomar/megasoft-14/tree/master/CompanyProfiles/Mansour%20Said%20Mansour">Mansour Said</a></td>
 	</tr>
 	<tr>
-		<td>mohamed ayman
-	</td>
-	<tr>
 		<td><a href="https://github.com/ndomar/megasoft-14/tree/master/CompanyProfiles/EslaMaged">Eslam Maged</a></td>
 	</tr>
     <tr>
