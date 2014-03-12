@@ -1,0 +1,53 @@
+.sidebar {
+  
+  background-color: rgb(13, 29, 37);
+}
+
+.body {
+	background-color: rgb(213, 213, 213);
+
+}
+
+.avatar {
+	width: 190px;
+}
+
+.mtl {
+	margin-top: 40px;
+}
+
+.mtl {
+	margin-top: 40px;
+}
+
+.mtm {
+	margin-top: 20px;
+}
+
+.mls {
+	margin-left: 10px;
+}
+
+.mts {
+	margin-top: 10px;
+}
+
+
+
+.subtitle {
+	color: rgb(191, 45, 106);
+}
+
+.border-left {
+	border-left: 5px solid rgb(13, 29, 37);
+}
+
+blockquote {
+	color: rgb(13, 29, 37);
+	font-size: 15px !important;
+}
+
+ul {
+	color: rgb(13, 29, 37);
+	font-size: 15px !important;
+}
