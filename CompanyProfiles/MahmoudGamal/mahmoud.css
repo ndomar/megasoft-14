@@ -1,0 +1,56 @@
+div{
+
+	font-size: 20px;
+	color: white;
+	text-align: center;
+	font-family: HelveticaNeue-Light;
+}
+p{
+	font-size: 32px;
+	font-family: HelveticaNeue-Light;
+	color:black;
+	margin-right: 40px;
+}
+#menu {
+	    width: 550px;
+ 	    height: 35px;
+    	font-size: 16px;
+    	font-family: HelveticaNeue-Light;
+   	 font-weight: bold;
+   	 text-align: center;
+   	
+   	 background-color: black;
+     border-radius: 8px;
+     position: relative;
+     left: 375px;
+
+ }
+
+ #menu ul {
+ 	height: auto;
+ 	padding: 8px 0px;
+ 	margin: 0px;
+ }
+
+ #menu li {
+ 	display: inline;
+ 	padding: 20px;
+ }
+
+ #menu a {
+ 	text-decoration: none;
+ 	color: white;
+ 	padding: 8px 8px 8px 8px;
+ }
+
+ #menu a:hover {
+ 	color: white;
+ 	background-color: blue;
+ }
+body{
+	text-align: center;
+	background: url(background.jpg);
+	background-size: cover;
+	
+	color: white;
+}
