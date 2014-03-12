@@ -4,7 +4,7 @@ megasoft-14:
 Megasoft 2014 SE Project
 <table>
 	<tr>
-		<td>Salma khaled</td>
+		<td><a href="https://github.com/ndomar/megasoft-14/blob/master/CompanyProfiles/SalmaKhaled/page.html">Salma Khaled</a> </td>
 	</tr>
 	<tr>
 		<td>Omar ElAzazy</td>
