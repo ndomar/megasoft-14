@@ -19,7 +19,7 @@ Megasoft 2014 SE Project
 		<td><a href="https://github.com/ndomar/megasoft-14/tree/osama/CompanyProfiles/Ahmed%20osama">Ahmed osama</a></td>
 	</tr>
 	<tr>	
-		<td>Heba Aamer</td>
+		<td><a href="https://github.com/ndomar/megasoft-14/blob/master/CompanyProfiles/Heba%20Aamer/Profile.html">Heba Aamer</a></td>
 	</tr>
 	<tr>
 		<td>Maisara Farahat</td>
