@@ -1,28 +1,104 @@
+
+
 body
 {
 background:url(bg1.jpg);
-background-size:100% 100%;
-background-repeat:no-repeat;
+  background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  background-repeat:no-repeat;
 
     
 }
+
 p
 {
 font-family:"Comic Sans MS";
 font-size:20px;
 color:FF3366;
 }
-p.right
+p.second     
 {
-font-family:"Arial;
-font-size:26px;
-text-indent: 100px;
+font-family:"Comic Sans MS";
+font-size:37px;
 }
 
-button {
+button.first {
+    position:absolute;
+    left:1190px;
+    top:50px;
     width:100px;
 	height:50px;
     text-align:center;
-	margin-left: 100;
+	font-family:"Comic Sans MS";
+	font-size:16px;
+    color:#004C80;
+	background-color: #ADFFAD;
+    -moz-border-radius: .3em;
+    border-radius: .3em;
 }
 
+button.second {
+  position:absolute;
+    left:1190px;
+    top:150px;
+    width:100px;
+	height:50px;
+    text-align:center;
+	font-family:"Comic Sans MS";
+	font-size:16px;
+    color:#004C80;
+	background-color: #66FF33;
+    -moz-border-radius: .3em;
+    border-radius: .3em;
+}
+
+button.third {
+  position:absolute;
+    left:1190px;
+    top:250px;
+    width:100px;
+	height:50px;
+    text-align:center;
+	font-family:"Comic Sans MS";
+	font-size:16px;
+    color:#004C80;
+	background-color: #00CC66;
+    -moz-border-radius: .3em;
+    border-radius: .3em;
+}
+
+div.hello{
+position:absolute;
+animation:anim 5s;
+-webkit-animation:anim 5s;
+-ms-animation:anim 5s;
+left:460px;
+top:200px;
+}
+
+@-webkit-keyframes anim 
+{
+from {
+transform:rotate(180deg);
+-webkit-transform:rotate(180deg);
+-ms--transform:rotate(180deg);
+}
+to {
+transform:rotate(360deg);
+-ms-transform:rotate(360deg);}
+-moz--transform:rotate(360deg);
+}
+
+div.s { 
+position:absolute;
+     left: 20px;
+    width: 400px;  background-image: url(shadow.jpg);
+    padding: 9px;
+	
+    }
+
+div.fb { 
+position:absolute;
+     left: 180px;
+	 top:  450px;
+    }

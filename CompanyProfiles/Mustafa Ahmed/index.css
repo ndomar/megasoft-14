@@ -1,0 +1,30 @@
+body {
+	background-color:#EE4000;
+	color:white;
+}
+#info{
+	position:relative;
+	top:30px;
+	text-align:center;
+}
+#skills{
+	position:relative;
+	top:50px;
+	text-align:center;
+}
+h1{
+	font-family:Arial;
+	font-size:27px;
+}
+p {
+	font-family:Arial;
+	font-size:19px;
+}
+ul {
+	font-family:Arial;
+	font-size:19px;
+	list-style-type:none;
+}
+li{
+	padding-bottom:2px;
+}

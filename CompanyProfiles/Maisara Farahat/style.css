@@ -1,0 +1,27 @@
+div{
+	font-size : 44px;
+	color : white;
+	text-align : center;
+	font-family : vivaldi;
+}
+
+p {
+	font-size : 32px;
+	font-family : freestyle script;
+	color : cyan;
+	margin-left : 40px;
+}
+
+body {
+	
+	background-image : url('wolf.jpg');  
+	background-size : 1370px 900px;
+}
+
+button {
+	height : 110%;
+	width : 25%;
+	font-size : 24px;
+	background-color : blue;
+	border : solid;
+}
