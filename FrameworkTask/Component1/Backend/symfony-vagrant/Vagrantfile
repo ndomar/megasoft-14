@@ -1,61 +1,24 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-Vagrant.configure("2") do |config|
+Vagrant::Config.run do | config |
   # Use our base ubuntu box
-  # uncomment for virtual box
-  config.vm.hostname = 'php-symfony-skeleton.in.di'
-  config.vm.box = "ubuntu-precise64"
+  config.vm.box = "ubuntu-precise"
+  config.vm.box_url = "http://files.vagrantup.com/precise32.box"
 
-  # run "vagrant hostmanager" after "vagrant up", then the hostname will be added to your /etc/hosts
-  config.hostmanager.enabled = true
-  config.hostmanager.manage_host = true
-  config.hostmanager.ignore_private_ip = false
-  config.hostmanager.include_offline = true
-  config.hostmanager.aliases = %w(symfony-skeleton.di)
-  config.hostmanager.ip_resolver = proc do |vm, resolving_vm|
-    if hostname = (vm.ssh_info && vm.ssh_info[:host])
-      `host #{hostname}`.split("\n").last[/(\d+\.\d+\.\d+\.\d+)/, 1]
-    end
-  end
+  # Forward port 8080 on the host to port 80 on the VM
+  # config.vm.forward_port 80, 8088
+  # config.vm.network :hostonly, "10.11.12.13", :netmask => "255.255.0.0"
+  #config.vm.network :forwarded_port, guest: 80, host: 8080
 
-  config.vm.provision :shell do |shell|
-    shell.path = "conf/bootstrap.sh"
-  end
+  # Install the neccessary packages and update the VM
+  config.vm.provision :shell, :path => "conf/bootstrap.sh"
 
-  config.vm.provision :hostmanager
+   # Set the ownership of our public folder to www-data
+  config.vm.share_folder("public", "/vagrant/public", "./public", :owner => "www-data", :group => "www-data")
+  config.vm.customize ["modifyvm", :id, "--memory", "512"]
+end
 
-  #config.vm.network :private_network, ip: "10.11.12.13", netmask: "255.255.0.0"
-  config.vm.network :private_network, type: :dhcp
-
-  config.vm.provider "virtualbox" do |vb, override|
-    vb.vm.box_url = "http://files.vagrantup.com/precise64.box"
-    vb.customize ["modifyvm", :id, "--memory", "1024"]
-    override.vm.synced_folder "./public", "/var/www", nfs: true
-    override.nfs.map_uid = Process.uid
-    override.nfs.map_gid = Process.gid
-  end
-
-  config.vm.provider :aws do |aws, override|
-    aws.access_key_id = ""
-    aws.secret_access_key = ""
-    aws.keypair_name = ""
-
-    aws.ami = "ami-89b1a3fd"
-    aws.instance_type = "t1.micro"
-    aws.region = "eu-west-1"
-    aws.security_groups = ""
-
-    override.vm.synced_folder "./public", "/var/www", :owner => "www-data", :group => "www-data", :mount_options => ['dmode=775,fmode=774']
-
-    override.vm.box = "dummy"
-    override.ssh.username = "ubuntu"
-    override.ssh.private_key_path = ""
-  end
-
-  config.vm.provider "parallels" do |parallels, override|
-    parallels.customize ["set", :id, "--memsize", "1024"]
-    override.vm.synced_folder "./public", "/var/www", :owner => "www-data", :group => "www-data", :mount_options => ['dmode=775,fmode=774']
-  end
-
+Vagrant.configure("2") do |config|
+  config.vm.network "forwarded_port", guest: 80, host: 8080
 end
