@@ -8,7 +8,7 @@ public abstract class Request extends AsyncTask<String, String, String> {
 	public String errorMessage = null;
 	
 	
-	public boolean isHasError() {
+	public boolean hasError() {
 		return hasError;
 	}
 
