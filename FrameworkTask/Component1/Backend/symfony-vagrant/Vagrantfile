@@ -7,9 +7,9 @@ Vagrant::Config.run do | config |
   config.vm.box_url = "http://files.vagrantup.com/precise32.box"
 
   # Forward port 8080 on the host to port 80 on the VM
-  # config.vm.forward_port 80, 8088
-  # config.vm.network :hostonly, "10.11.12.13", :netmask => "255.255.0.0"
-  #config.vm.network :forwarded_port, guest: 80, host: 8080
+  config.vm.forward_port 80, 8088
+  config.vm.network :hostonly, "10.11.12.13", :netmask => "255.255.0.0"
+  config.vm.network :forwarded_port, guest: 80, host: 8080
 
   # Install the neccessary packages and update the VM
   config.vm.provision :shell, :path => "conf/bootstrap.sh"
