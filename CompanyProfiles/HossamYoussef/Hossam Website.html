@@ -1,0 +1,77 @@
+
+<html>
+<head runat="server">
+    <title></title>
+    <style type="text/css" id="newStyle5">
+        .newStyle5 {
+        background-image: url('/Users/7oss/megasoft-14/CompanyProfiles/Hossam Youssef/Resources/background.jpg');
+        background-position: center top;
+        height: 1197px;
+    }
+        .auto-style1 {
+            text-align: center;
+        }
+        .auto-style3 {
+            width: 132px;
+            height: 100px;
+        }
+        .auto-style4 {
+            width: 300px;
+            height: 220px;
+        }
+        .newStyle6 {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 27px;
+        }
+        .auto-style5 {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 27px;
+            text-align: center;
+        }
+        .auto-style6 {
+            text-align: left;
+            font-size: x-large;
+        }
+        .auto-style7 {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-size: x-large;
+        }
+    </style>
+</head>
+<body class="newStyle5">
+    <form id="form1" runat="server">
+        <div class="auto-style1">
+    <div>
+    
+        &nbsp;
+            </a>
+            <img id="profile" src="/Users/7oss/megasoft-14/CompanyProfiles/Hossam Youssef/Resources/1.jpg" class="auto-style3"/></div>
+    </form>
+    <p class="auto-style5">
+        Hossam Youssef&#39;s Profile</p>
+    <p class="auto-style6">
+        About me:</p>
+    <p class="auto-style7">
+        I&#39;m a 20 year old 6th semester MET student. I enjoy playing video games, guitar, and coding. I have my own youtube channel where I used to upload guitar covers of popular songs, but stopped uploading since joining college to focus on my studies. Now I&#39;m involved in extra-curricular activities to help me get out of my comfort zone, and to push me to excell in areas other than college.</p>
+ 
+   <script>
+        var Image_slide = new Array("/Users/7oss/megasoft-14/CompanyProfiles/Hossam Youssef/Resources/2.jpg", "/Users/7oss/megasoft-14/CompanyProfiles/Hossam Youssef/Resources/3.jpg", "/Users/7oss/megasoft-14/CompanyProfiles/Hossam Youssef/Resources/4.jpg");// image container
+        var Img_Length = Image_slide.length; // container length - 1
+        var Img_current = 0
+
+        function slide() {
+            if (Img_current >= Img_Length) {
+                Img_current = 0;
+            }
+            document.slideshow.src = Image_slide[Img_current];
+            Img_current++;
+        }
+        function auto() {
+            setInterval(slide, 1000);
+        }
+        window.onload = auto;
+            </script>
+
+            <img alt="" src="/Users/7oss/megasoft-14/CompanyProfiles/Hossam Youssef/Resources/2.jpg" " id="slideshow" class="auto-style4" />
+</body>
+</html>
