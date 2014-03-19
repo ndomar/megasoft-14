@@ -1,8 +1,8 @@
 <VirtualHost *:80>
 	ServerAdmin webmaster@localhost
 
-	DocumentRoot /var/www/symfony/web
-	<Directory "/var/www/symfony/web/">
+	DocumentRoot /var/www/
+	<Directory "/var/www/">
         Options Indexes MultiViews FollowSymLinks
         AllowOverride All
         Order deny,allow

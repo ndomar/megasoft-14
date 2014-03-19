@@ -20,6 +20,9 @@ then
         # Install Git
         apt-get -y install git
 
+        # Install vim
+        apt-get -y install vim
+
         # Install PHP 
         apt-get -y install php5 libapache2-mod-php5 php-apc php5-mysql php5-dev curl
 
@@ -98,10 +101,10 @@ then
 
          # And clean up apt-get packages
         apt-get -y clean
-
-        cd /var/www
-        curl -s https://getcomposer.org/installer | php
-        php composer.phar -n create-project symfony/framework-standard-edition /var/www/symfony 2.3.7
+        
+        # Set up the public folder by removing the existing one and replacing it by a Sym. pointing to Vagrant's public folder
+        rm -rf /var/www
+        ln -fs /vagrant/public/src /var/www
 
 fi
 
