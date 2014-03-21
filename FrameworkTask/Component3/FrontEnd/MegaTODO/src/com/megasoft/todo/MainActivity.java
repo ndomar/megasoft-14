@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.megatodo.R;
+import com.megasoft.todo.http.HTTPDeleteRequest;
 import com.megasoft.todo.http.HTTPGetRequest;
 import com.megasoft.todo.http.HTTPPostRequest;
 
@@ -69,7 +70,6 @@ public class MainActivity extends Activity {
                     JSONObject json = new JSONObject();
                     json.put("text", listName);
                     Log.e("megatodo", text.getText().toString());
-                    //we might enter the initial tasks for the list in this phase as well
 //                    json.put("sessionId", sessionId);
                     (new HTTPPostRequest(){
 
@@ -95,15 +95,17 @@ public class MainActivity extends Activity {
         });
         
     }
+    
+    
 
 
     private void addElement(String string, String id, LinearLayout parentLayout) {
-    	LinearLayout layout = new LinearLayout(this);
+    	final LinearLayout layout = new LinearLayout(this);
     	final String listId = id;
 		layout.setOrientation(LinearLayout.HORIZONTAL);
 		layout.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
 				LayoutParams.WRAP_CONTENT));
-		TextView text = new TextView(this);
+		final TextView text = new TextView(this);
 		text.setText(string);
 		text.setOnClickListener(new OnClickListener() {
 		
@@ -122,6 +124,39 @@ public class MainActivity extends Activity {
 		layout.addView(text);
 		layout.addView(button);
 		parentLayout.addView(layout);
+		
+		button.setOnClickListener(new OnClickListener() {
+           
+            public void onClick(View view) {
+                final String listName = text.getText().toString();
+                try {
+                    JSONObject json = new JSONObject();
+                    json.put("text", listName);
+                    Log.e("del", text.getText().toString());
+//                    
+                    (new HTTPDeleteRequest(){
+
+                        public void onPostExecute(String response) {
+                        	Log.e("megatodo", response);
+                        	JSONObject json;
+							try {
+								json = new JSONObject(response);
+                        	    layout.removeAllViews();
+							} catch (JSONException e) {
+								
+								e.printStackTrace();
+							}
+                        }
+
+                    }).execute(json.toString(), "/lists");
+
+                } catch (JSONException ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+        
+		});
     }
     
     private void viewList(String id) {
