@@ -1,0 +1,24 @@
+﻿a{text-decoration:none;
+  color:red;
+}
+p{
+    font-size:20px;
+    font-family:Arial;
+    color:black;
+}
+html{
+    background-image:url(img/index.jpg);
+}
+ul{
+    font-size:30px;
+    font-family:serif;
+    color:white;
+}
+ol{
+    font-size:15px;
+    color:red;
+}
+h1{
+    color:white;
+}
+
