@@ -19,6 +19,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.megatodo.R;
+import com.megasoft.todo.http.HTTPGetRequest;
+import com.megasoft.todo.http.HTTPPostRequest;
+
 public class ListActivity extends Activity {
 
     @Override
@@ -41,7 +45,7 @@ public class ListActivity extends Activity {
 			e.printStackTrace();
 		}
 
-        (new HttpGetRequest(){
+        (new HTTPGetRequest(){
         
         	protected void onPostExecute(final String res) {
         		JSONObject obj = null;
@@ -58,7 +62,7 @@ public class ListActivity extends Activity {
 	        		for (int i = 0; i < jsonArray.length(); i++) {
 	                    JSONObject obj2 = jsonArray.getJSONObject(i);
 	                    final EditText text =  new EditText(self);
-	                    text.setText(obj2.getString("text"));
+	                    text.setText(obj2.getString("name"));
 	                    text.setBackgroundColor(Color.TRANSPARENT);
 	                    text.setId(i);
 	                    text.addTextChangedListener(new TextWatcher() {
@@ -67,13 +71,13 @@ public class ListActivity extends Activity {
 	                        	JSONObject obj3 = null;
 								try {
 									obj3 = new JSONObject(res);
-									obj3.put("text",text.getText());
+									obj3.put("name",text.getText());
 								} catch (JSONException e) {
 									e.printStackTrace();
 								}
-								(new HttpPostRequest(){//should be put
-	                                
-                                }).execute(obj3.toString(), "/lists/" + listId +"/"+text.getId());
+//								(new HTTPPostRequest(){//should be put
+//	                                
+//                                }).execute(obj3.toString(), "/lists/" + listId +"/"+text.getId());
 	                        	
 	                        }
 
@@ -91,9 +95,9 @@ public class ListActivity extends Activity {
 	                                json.put("sessionId", sessionId);
 	                                ViewGroup layout = (ViewGroup) b.getParent();
 	                                layout.removeView(b);
-	                                (new HttpPostRequest(){//should be delete
-	                                
-	                                }).execute(json.toString(), "/lists/" + listId +"/"+text.getId());
+//	                                (new HTTPPostRequest(){//should be delete
+//	                                
+//	                                }).execute(json.toString(), "/lists/" + listId +"/"+text.getId());
 
 	                            } catch (JSONException ex) {
 	                                ex.printStackTrace();
@@ -107,18 +111,11 @@ public class ListActivity extends Activity {
 					e.printStackTrace();
 				}
         	}
-        }).execute(json.toString(), "/lists/"+listId);
+        }).execute("/lists/"+listId);
         
        
         
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.list, menu);
-        return true;
-    }
     
 }
