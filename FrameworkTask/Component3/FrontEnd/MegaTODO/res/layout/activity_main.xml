@@ -27,6 +27,21 @@
 		        android:textColor="#000000" />
 		</LinearLayout>
 
+		
+		<LinearLayout
+			android:orientation="vertical" 
+			android:layout_width="wrap_content" 
+            android:layout_height="fill_parent" 
+			>
+          
+		   	<LinearLayout 
+		   	    android:orientation="vertical"
+		   	    android:id="@+id/listsLayout" 
+				android:layout_width="wrap_content" 
+            	android:layout_height="fill_parent" >
+		   	  
+		   	    
+		   	</LinearLayout>
           <ListView
               android:id="@+id/sampleListView"
               android:layout_width="wrap_content"
@@ -40,7 +55,8 @@
               android:dividerHeight="3dp"
               android:paddingLeft="2dp" >
           </ListView>
-         
+        
+		</LinearLayout>
           
 
 </LinearLayout>

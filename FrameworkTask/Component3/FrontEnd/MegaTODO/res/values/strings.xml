@@ -4,5 +4,7 @@
     <string name="app_name">MegaTODO</string>
     <string name="action_settings">Settings</string>
     <string name="button1">Create!</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
