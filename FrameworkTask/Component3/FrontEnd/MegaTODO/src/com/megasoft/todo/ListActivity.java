@@ -19,6 +19,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.megatodo.R;
+import com.megasoft.todo.http.HTTPGetRequest;
+import com.megasoft.todo.http.HTTPPostRequest;
+
 public class ListActivity extends Activity {
 
     @Override
@@ -41,7 +45,7 @@ public class ListActivity extends Activity {
 			e.printStackTrace();
 		}
 
-        (new HttpGetRequest(){
+        (new HTTPGetRequest(){
         
         	protected void onPostExecute(final String res) {
         		JSONObject obj = null;
@@ -71,7 +75,7 @@ public class ListActivity extends Activity {
 								} catch (JSONException e) {
 									e.printStackTrace();
 								}
-								(new HttpPostRequest(){//should be put
+								(new HTTPPostRequest(){//should be put
 	                                
                                 }).execute(obj3.toString(), "/lists/" + listId +"/"+text.getId());
 	                        	
@@ -91,7 +95,7 @@ public class ListActivity extends Activity {
 	                                json.put("sessionId", sessionId);
 	                                ViewGroup layout = (ViewGroup) b.getParent();
 	                                layout.removeView(b);
-	                                (new HttpPostRequest(){//should be delete
+	                                (new HTTPPostRequest(){//should be delete
 	                                
 	                                }).execute(json.toString(), "/lists/" + listId +"/"+text.getId());
 
