@@ -6,5 +6,6 @@
     <string name="button1">Create!</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_list">ListActivity</string>
 
 </resources>
