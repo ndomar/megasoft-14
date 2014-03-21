@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -98,11 +99,20 @@ public class MainActivity extends Activity {
 
     private void addElement(String string, String id, LinearLayout parentLayout) {
     	LinearLayout layout = new LinearLayout(this);
+    	final String listId = id;
 		layout.setOrientation(LinearLayout.HORIZONTAL);
 		layout.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
 				LayoutParams.WRAP_CONTENT));
 		TextView text = new TextView(this);
 		text.setText(string);
+		text.setOnClickListener(new OnClickListener() {
+		
+			@Override
+			public void onClick(View v) {
+				viewList(listId);
+				
+			}
+		});
 		Button button = new Button(this);
 		button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
 				LayoutParams.WRAP_CONTENT));
@@ -112,6 +122,12 @@ public class MainActivity extends Activity {
 		layout.addView(text);
 		layout.addView(button);
 		parentLayout.addView(layout);
+    }
+    
+    private void viewList(String id) {
+    	Intent intent = new Intent(this, ListActivity.class);
+    	intent.putExtra("ID", id);
+    	startActivity(intent);
     }
     
     @Override
