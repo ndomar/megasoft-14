@@ -4,7 +4,6 @@
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/logout"
-        android:onClick="logout"/>
+        android:title="@string/action_settings"/>
 
 </menu>

@@ -22,14 +22,17 @@ public class HTTPDeleteRequest extends AsyncTask<String, String, String> {
 	}
 
 	@Override
-	protected String doInBackground(String... arg0) {
+	protected String doInBackground(String... args) {
 	    String res = "";
-        if (arg0.length > 0) {
-            res = arg0[0];
+        if (args.length > 0) {
+            res = args[0];
         }
 
         HttpClient httpClient = new DefaultHttpClient();
         HttpDelete httpDel = new HttpDelete(rootResource + res);
+        if (args.length > 1) {
+        	httpDel.setHeader("X-Session-ID", args[1]);
+        }
         ResponseHandler<String> handler = new BasicResponseHandler();
         try{
 
