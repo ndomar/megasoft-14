@@ -38,6 +38,9 @@ public class HTTPPostRequest extends AsyncTask<String, String, String> {
 
         HttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(rootResource + res);
+        if (args.length > 2) {
+        	httpPost.setHeader("X-Session-ID", args[1]);
+        }
         httpPost.addHeader("content-type", "application/json");
         ResponseHandler<String> handler = new BasicResponseHandler();
         try{

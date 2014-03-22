@@ -22,9 +22,8 @@
 		        android:id="@+id/button1"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:background="@drawable/button_style"
 		        android:text="@string/button1"
-		        android:textColor="#000000" />
+		         />
 		</LinearLayout>
 
 		
