@@ -2,8 +2,10 @@ package com.megasoft.todo;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ActionBar.LayoutParams;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 
 
@@ -20,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.megatodo.R;
+import com.megasoft.todo.http.HTTPDeleteRequest;
 import com.megasoft.todo.http.HTTPGetRequest;
 import com.megasoft.todo.http.HTTPPostRequest;
 
@@ -38,6 +42,7 @@ public class ListActivity extends Activity {
         Intent i = getIntent();
         final String listId = i.getStringExtra("ID");
         final Activity self = this;
+        final LinearLayout parentLayout = (LinearLayout) findViewById(R.id.mainLayout);
         JSONObject json = new JSONObject();
         try {
 			json.put("sessionId", sessionId);
@@ -60,11 +65,15 @@ public class ListActivity extends Activity {
 					jsonArray = (JSONArray) obj.get("tasks");
 				
 	        		for (int i = 0; i < jsonArray.length(); i++) {
+	        			final LinearLayout layout = new LinearLayout(self);
+	        			layout.setOrientation(LinearLayout.HORIZONTAL);
+	        			layout.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
+	        					LayoutParams.WRAP_CONTENT));
 	                    JSONObject obj2 = jsonArray.getJSONObject(i);
 	                    final EditText text =  new EditText(self);
 	                    text.setText(obj2.getString("name"));
 	                    text.setBackgroundColor(Color.TRANSPARENT);
-	                    text.setId(i);
+	                    text.setTag(obj2.getString("id"));
 	                    text.addTextChangedListener(new TextWatcher() {
 
 	                        public void afterTextChanged(Editable s) {
@@ -75,9 +84,13 @@ public class ListActivity extends Activity {
 								} catch (JSONException e) {
 									e.printStackTrace();
 								}
-//								(new HTTPPostRequest(){//should be put
-//	                                
-//                                }).execute(obj3.toString(), "/lists/" + listId +"/"+text.getId());
+								(new HTTPPostRequest(){//should be put
+	                                
+									protected void onPostExecute(String res) {
+                                		Log.d("megatodo", "text saved !");
+									}
+									
+                                }).execute(obj3.toString(), "/lists/" + listId +"/tasks/"+text.getTag());
 	                        	
 	                        }
 
@@ -93,11 +106,13 @@ public class ListActivity extends Activity {
 	                            try {
 	                                JSONObject json = new JSONObject();
 	                                json.put("sessionId", sessionId);
-	                                ViewGroup layout = (ViewGroup) b.getParent();
-	                                layout.removeView(b);
-//	                                (new HTTPPostRequest(){//should be delete
-//	                                
-//	                                }).execute(json.toString(), "/lists/" + listId +"/"+text.getId());
+	                                (new HTTPDeleteRequest(){//should be delete
+	                                
+	                                	protected void onPostExecute(String res) {
+	                                		layout.removeView(b);
+										}
+	                                	
+	                                }).execute("/lists/" + listId +"/tasks/"+text.getId());
 
 	                            } catch (JSONException ex) {
 	                                ex.printStackTrace();
@@ -105,6 +120,9 @@ public class ListActivity extends Activity {
 
 	                        }
 	                    });
+	                    layout.addView(text);
+	                    layout.addView(b);
+	                    parentLayout.addView(layout);
 	                    
 	                }
 				} catch (JSONException e) {
