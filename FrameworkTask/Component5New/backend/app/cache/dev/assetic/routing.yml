@@ -1,0 +1,5 @@
+_assetic:
+    resource: .
+    type: assetic
+_app:
+    resource: /Users/mohamed/workspace/web/megasoft-14/FrameworkTask/Component5New/backend/app/config/routing_dev.yml
