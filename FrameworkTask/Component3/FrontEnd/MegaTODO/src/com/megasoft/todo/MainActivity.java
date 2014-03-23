@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.megatodo.R;
+import com.megasoft.todo.http.HTTPDeleteRequest;
 import com.megasoft.todo.http.HTTPGetRequest;
 import com.megasoft.todo.http.HTTPPostRequest;
 
@@ -17,6 +18,7 @@ import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -26,18 +28,23 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
+	private String sessionId;
+	private SharedPreferences config;
+	
+	private void redirectToLogin() {
+		Intent intent = new Intent(this, LoginActivity.class);
+		startActivity(intent);
+	}
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences config = getSharedPreferences("AppConfig", 0);
-        //aw whatever l login activity 3ndna esmaha a
-        final Intent intent = new Intent(this, LoginActivity.class);
-
-//        if(!config.contains("sessionId")){
-//           startActivity(intent);
-//        }
-//        final String sessionId = config.getString("sessionId", null);
+        config = getSharedPreferences("AppConfig", 0);
+        
+        if(!config.contains("sessionId")){
+           redirectToLogin();
+        }
+        sessionId = config.getString("sessionId", null);
         
         setContentView(R.layout.activity_main);
         Button create = (Button) findViewById(R.id.button1);
@@ -58,7 +65,7 @@ public class MainActivity extends Activity {
 				}	
             }
 
-        }).execute("/lists");
+        }).execute("/lists", sessionId);
         
 
         create.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +76,6 @@ public class MainActivity extends Activity {
                     JSONObject json = new JSONObject();
                     json.put("text", listName);
                     Log.e("megatodo", text.getText().toString());
-                    //we might enter the initial tasks for the list in this phase as well
 //                    json.put("sessionId", sessionId);
                     (new HTTPPostRequest(){
 
@@ -85,7 +91,7 @@ public class MainActivity extends Activity {
 							}
                         }
 
-                    }).execute(json.toString(), "/lists");
+                    }).execute(json.toString(), "/lists", sessionId);
 
                 } catch (JSONException ex) {
                     ex.printStackTrace();
@@ -95,15 +101,17 @@ public class MainActivity extends Activity {
         });
         
     }
+    
+    
 
 
     private void addElement(String string, String id, LinearLayout parentLayout) {
-    	LinearLayout layout = new LinearLayout(this);
+    	final LinearLayout layout = new LinearLayout(this);
     	final String listId = id;
 		layout.setOrientation(LinearLayout.HORIZONTAL);
 		layout.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
 				LayoutParams.WRAP_CONTENT));
-		TextView text = new TextView(this);
+		final TextView text = new TextView(this);
 		text.setText(string);
 		text.setOnClickListener(new OnClickListener() {
 		
@@ -122,6 +130,39 @@ public class MainActivity extends Activity {
 		layout.addView(text);
 		layout.addView(button);
 		parentLayout.addView(layout);
+		
+		button.setOnClickListener(new OnClickListener() {
+           
+            public void onClick(View view) {
+                final String listName = text.getText().toString();
+                try {
+                    JSONObject json = new JSONObject();
+                    json.put("text", listName);
+                    Log.e("del", text.getText().toString());
+                   
+                    (new HTTPDeleteRequest(){
+
+                        public void onPostExecute(String response) {
+                        	Log.e("megatodo", response);
+                        	JSONObject json;
+							try {
+								json = new JSONObject(response);
+                        	    layout.removeAllViews();
+							} catch (JSONException e) {
+								
+								e.printStackTrace();
+							}
+                        }
+
+                    }).execute(json.toString(), "/lists", sessionId);
+
+                } catch (JSONException ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+        
+		});
     }
     
     private void viewList(String id) {
@@ -135,5 +176,10 @@ public class MainActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+    
+    public void logout(MenuItem m) {
+    	config.edit().remove("sessionId").commit();
+    	redirectToLogin();
     }
 }

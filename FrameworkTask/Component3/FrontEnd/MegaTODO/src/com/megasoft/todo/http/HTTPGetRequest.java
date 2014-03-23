@@ -34,6 +34,9 @@ public class HTTPGetRequest extends AsyncTask<String, String, String> {
 
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(rootResource + res);
+        if (args.length > 1) {
+        	httpGet.setHeader("X-Session-ID", args[1]);
+        }
         ResponseHandler<String> handler = new BasicResponseHandler();
         try{
 
