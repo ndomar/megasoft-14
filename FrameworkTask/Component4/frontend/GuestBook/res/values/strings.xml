@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Guest Book</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+	<string name="welcome_text">Welcome to Guest Book</string>
+	<string name="your_GB_text">your Guest Books :</string>
+	<string name="GB_Button">a GB name</string>
+	<string name="delete_button">dlt</string>
+	<string name="add_GB_button">add new GB</string>
+	<string name="log_out_button">log out</string>
+	<string name="search_button">search for GB</string>
+	<string name="GB_name_text">here is the Guest books name</string>
+	<string name="comments_text">Comments :</string>
+	<string name="comments_button">here is a comment</string>
+	<string name="add_comment_button">add a comment</string>
+	<string name="edit_GB">Edit the guest book</string>
+</resources>
