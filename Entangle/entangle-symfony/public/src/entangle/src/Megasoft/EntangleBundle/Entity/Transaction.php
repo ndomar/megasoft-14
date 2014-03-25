@@ -36,8 +36,8 @@ class Transaction
     private $offerId;
     
     /**
-     * @OneToOne(targetEntity="Offer" , inversedBy="cart")
-     * @JoinColumn(name="offerId", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="Offer" , inversedBy="cart")
+     * @ORM\JoinColumn(name="offerId", referencedColumnName="id")
      */
     private $offer;
     
