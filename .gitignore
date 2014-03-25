@@ -20,3 +20,4 @@ pickle-email-*.html
 config/initializers/secret_token.rb
 FrameworkTask/Component3/Backend/symfony-vagrant/.vagrant
 FrameworkTask/Component3/FrontEnd/MegaTODO/bin/classes/*.class
+/Entangle/entangle-symfony/public/src/entangle/nbproject/private/
