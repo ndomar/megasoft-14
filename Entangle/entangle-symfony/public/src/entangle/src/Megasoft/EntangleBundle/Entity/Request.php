@@ -83,7 +83,7 @@ class Request
     /**
      * @var Notification[]
      * 
-     * @ORM\OneToMany(targetEntity="Notification", mappedBy="request")
+     * @ORM\OneToMany(targetEntity="PriceChangeNotification", mappedBy="request")
      */
     private $notifications;
     
@@ -110,6 +110,14 @@ class Request
      * @ORM\JoinColumn(name="userId", referencedColumnName="id")
      */
     private $user;
+    
+     /**
+      * @var Tag[]
+      *
+      * @ORM\ManyToMany(targetEntity="Tag", inversedBy="requests")
+      * @ORM\JoinTable(name="request_tag")
+      */
+    private $tags;
 
     /**
      * Get id
