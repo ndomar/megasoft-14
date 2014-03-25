@@ -88,7 +88,7 @@ class User
     /**
      * @var Message[]
      * 
-     * @ORM\OneToMany(targetEntity="Message", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Message", mappedBy="sender")
      */
     private $messages;
     

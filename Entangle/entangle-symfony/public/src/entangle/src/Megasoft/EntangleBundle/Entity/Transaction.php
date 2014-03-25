@@ -36,7 +36,7 @@ class Transaction
     private $offerId;
     
     /**
-     * @ORM\OneToOne(targetEntity="Offer" , inversedBy="cart")
+     * @ORM\OneToOne(targetEntity="Offer")
      * @ORM\JoinColumn(name="offerId", referencedColumnName="id")
      */
     private $offer;
@@ -45,7 +45,7 @@ class Transaction
     /**
      * @var Notification[]
      * 
-     * @ORM\OneToMany(targetEntity="Notification", mappedBy="transaction")
+     * @ORM\OneToMany(targetEntity="TransactionNotification", mappedBy="transaction")
      */
     private $notifications;
     

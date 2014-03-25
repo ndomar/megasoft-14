@@ -31,7 +31,7 @@ class Message
     /**
      * @var Notification[]
      * 
-     * @ORM\OneToMany(targetEntity="Notification", mappedBy="message")
+     * @ORM\OneToMany(targetEntity="NewMessageNotification", mappedBy="message")
      */
     private $notifications;
     

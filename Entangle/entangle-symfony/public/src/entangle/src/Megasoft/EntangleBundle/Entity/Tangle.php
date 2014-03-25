@@ -41,6 +41,13 @@ class Tangle
      * @ORM\OneToMany(targetEntity="Request", mappedBy="tangle")
      */
     private $requests;
+    
+    /**
+     *
+     * @var Claim[]
+     * @ORM\OneToMany(targetEntity="Claim", mappedBy="tangle")
+     */
+    private $claims;
 
     /**
      * Get id
