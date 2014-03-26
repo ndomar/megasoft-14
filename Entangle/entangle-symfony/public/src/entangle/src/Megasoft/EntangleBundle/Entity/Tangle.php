@@ -219,4 +219,18 @@ class Tangle
     {
         return $this->userTangles;
     }
+    
+    /**
+     * Get Users
+     *
+     * @return User[]
+     */
+    public function getUsers()
+    {
+        $users = array();
+        foreach($this->userTangles as $userTangle){
+            $users[] = $userTangle->getUser();
+        }
+        return $users;
+    }
 }
