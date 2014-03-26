@@ -39,6 +39,7 @@ class User
      * @var UserEmail
      * 
      * @ORM\OneToOne(targetEntity="UserEmail")
+     * @ORM\JoinColumn(name="primaryEmailId", referencedColumnName="id")
      */
     private $primaryEmail;
     
@@ -46,9 +47,9 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="passowrd", type="string", length=255)
+     * @ORM\Column(name="password", type="string", length=255)
      */
-    private $passowrd;
+    private $password;
 
     /**
      * @var string
@@ -543,5 +544,28 @@ class User
     public function getEmails()
     {
         return $this->emails;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string 
+     */
+    public function getPassword()
+    {
+        return $this->password;
     }
 }

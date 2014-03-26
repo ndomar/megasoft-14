@@ -20,7 +20,7 @@ class TransactionNotification extends Notification
      * @var \Megasoft\EntangleBundle\Entity\Transaction
      * 
      * @ORM\ManyToOne(targetEntity="Transaction", inversedBy="notifications")
-     * @ORM\JoinColumn(name="tranactionId", referencedColumnName="id")
+     * @ORM\JoinColumn(name="transactionId", referencedColumnName="id")
      */
     private $transaction;
 
