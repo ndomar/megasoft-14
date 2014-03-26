@@ -1,0 +1,3 @@
+megasoft_entangle_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: MegasoftEntangleBundle:Default:index }
