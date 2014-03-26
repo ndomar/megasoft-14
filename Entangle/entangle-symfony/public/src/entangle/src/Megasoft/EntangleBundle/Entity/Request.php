@@ -266,4 +266,204 @@ class Request
     {
         return $this->requestedPrice;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->notifications = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->offers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set tangleId
+     *
+     * @param integer $tangleId
+     * @return Request
+     */
+    public function setTangleId($tangleId)
+    {
+        $this->tangleId = $tangleId;
+
+        return $this;
+    }
+
+    /**
+     * Get tangleId
+     *
+     * @return integer 
+     */
+    public function getTangleId()
+    {
+        return $this->tangleId;
+    }
+
+    /**
+     * Set userId
+     *
+     * @param integer $userId
+     * @return Request
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+
+    /**
+     * Get userId
+     *
+     * @return integer 
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * Set tangle
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Tangle $tangle
+     * @return Request
+     */
+    public function setTangle(\Megasoft\EntangleBundle\Entity\Tangle $tangle = null)
+    {
+        $this->tangle = $tangle;
+
+        return $this;
+    }
+
+    /**
+     * Get tangle
+     *
+     * @return \Megasoft\EntangleBundle\Entity\Tangle 
+     */
+    public function getTangle()
+    {
+        return $this->tangle;
+    }
+
+    /**
+     * Add notifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications
+     * @return Request
+     */
+    public function addNotification(\Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications)
+    {
+        $this->notifications[] = $notifications;
+
+        return $this;
+    }
+
+    /**
+     * Remove notifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications
+     */
+    public function removeNotification(\Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications)
+    {
+        $this->notifications->removeElement($notifications);
+    }
+
+    /**
+     * Get notifications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
+    }
+
+    /**
+     * Add offers
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Offer $offers
+     * @return Request
+     */
+    public function addOffer(\Megasoft\EntangleBundle\Entity\Offer $offers)
+    {
+        $this->offers[] = $offers;
+
+        return $this;
+    }
+
+    /**
+     * Remove offers
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Offer $offers
+     */
+    public function removeOffer(\Megasoft\EntangleBundle\Entity\Offer $offers)
+    {
+        $this->offers->removeElement($offers);
+    }
+
+    /**
+     * Get offers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOffers()
+    {
+        return $this->offers;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Megasoft\EntangleBundle\Entity\User $user
+     * @return Request
+     */
+    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Megasoft\EntangleBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Add tags
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Tag $tags
+     * @return Request
+     */
+    public function addTag(\Megasoft\EntangleBundle\Entity\Tag $tags)
+    {
+        $this->tags[] = $tags;
+
+        return $this;
+    }
+
+    /**
+     * Remove tags
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Tag $tags
+     */
+    public function removeTag(\Megasoft\EntangleBundle\Entity\Tag $tags)
+    {
+        $this->tags->removeElement($tags);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
 }

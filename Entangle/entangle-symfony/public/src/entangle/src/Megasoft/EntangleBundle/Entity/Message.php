@@ -101,4 +101,136 @@ class Message
     {
         return $this->date;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->notifications = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set senderId
+     *
+     * @param integer $senderId
+     * @return Message
+     */
+    public function setSenderId($senderId)
+    {
+        $this->senderId = $senderId;
+
+        return $this;
+    }
+
+    /**
+     * Get senderId
+     *
+     * @return integer 
+     */
+    public function getSenderId()
+    {
+        return $this->senderId;
+    }
+
+    /**
+     * Set offerId
+     *
+     * @param integer $offerId
+     * @return Message
+     */
+    public function setOfferId($offerId)
+    {
+        $this->offerId = $offerId;
+
+        return $this;
+    }
+
+    /**
+     * Get offerId
+     *
+     * @return integer 
+     */
+    public function getOfferId()
+    {
+        return $this->offerId;
+    }
+
+    /**
+     * Add notifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\NewMessageNotification $notifications
+     * @return Message
+     */
+    public function addNotification(\Megasoft\EntangleBundle\Entity\NewMessageNotification $notifications)
+    {
+        $this->notifications[] = $notifications;
+
+        return $this;
+    }
+
+    /**
+     * Remove notifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\NewMessageNotification $notifications
+     */
+    public function removeNotification(\Megasoft\EntangleBundle\Entity\NewMessageNotification $notifications)
+    {
+        $this->notifications->removeElement($notifications);
+    }
+
+    /**
+     * Get notifications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
+    }
+
+    /**
+     * Set sender
+     *
+     * @param \Megasoft\EntangleBundle\Entity\User $sender
+     * @return Message
+     */
+    public function setSender(\Megasoft\EntangleBundle\Entity\User $sender = null)
+    {
+        $this->sender = $sender;
+
+        return $this;
+    }
+
+    /**
+     * Get sender
+     *
+     * @return \Megasoft\EntangleBundle\Entity\User 
+     */
+    public function getSender()
+    {
+        return $this->sender;
+    }
+
+    /**
+     * Set offer
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Offer $offer
+     * @return Message
+     */
+    public function setOffer(\Megasoft\EntangleBundle\Entity\Offer $offer = null)
+    {
+        $this->offer = $offer;
+
+        return $this;
+    }
+
+    /**
+     * Get offer
+     *
+     * @return \Megasoft\EntangleBundle\Entity\Offer 
+     */
+    public function getOffer()
+    {
+        return $this->offer;
+    }
 }

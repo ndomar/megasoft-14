@@ -38,4 +38,96 @@ class PriceChangeNotification extends Notification
      * @ORM\JoinColumn(name="requestId", referencedColumnName="id")
      */
     private $request;
+
+    /**
+     * Set oldPrice
+     *
+     * @param integer $oldPrice
+     * @return PriceChangeNotification
+     */
+    public function setOldPrice($oldPrice)
+    {
+        $this->oldPrice = $oldPrice;
+
+        return $this;
+    }
+
+    /**
+     * Get oldPrice
+     *
+     * @return integer 
+     */
+    public function getOldPrice()
+    {
+        return $this->oldPrice;
+    }
+
+    /**
+     * Set newPrice
+     *
+     * @param integer $newPrice
+     * @return PriceChangeNotification
+     */
+    public function setNewPrice($newPrice)
+    {
+        $this->newPrice = $newPrice;
+
+        return $this;
+    }
+
+    /**
+     * Get newPrice
+     *
+     * @return integer 
+     */
+    public function getNewPrice()
+    {
+        return $this->newPrice;
+    }
+
+    /**
+     * Set requestId
+     *
+     * @param integer $requestId
+     * @return PriceChangeNotification
+     */
+    public function setRequestId($requestId)
+    {
+        $this->requestId = $requestId;
+
+        return $this;
+    }
+
+    /**
+     * Get requestId
+     *
+     * @return integer 
+     */
+    public function getRequestId()
+    {
+        return $this->requestId;
+    }
+
+    /**
+     * Set request
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Request $request
+     * @return PriceChangeNotification
+     */
+    public function setRequest(\Megasoft\EntangleBundle\Entity\Request $request = null)
+    {
+        $this->request = $request;
+
+        return $this;
+    }
+
+    /**
+     * Get request
+     *
+     * @return \Megasoft\EntangleBundle\Entity\Request 
+     */
+    public function getRequest()
+    {
+        return $this->request;
+    }
 }

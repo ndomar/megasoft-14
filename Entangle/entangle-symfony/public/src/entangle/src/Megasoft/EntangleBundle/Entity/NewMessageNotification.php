@@ -26,4 +26,50 @@ class NewMessageNotification extends Notification
      */
     private $message;
     
+
+    /**
+     * Set messageId
+     *
+     * @param integer $messageId
+     * @return NewMessageNotification
+     */
+    public function setMessageId($messageId)
+    {
+        $this->messageId = $messageId;
+
+        return $this;
+    }
+
+    /**
+     * Get messageId
+     *
+     * @return integer 
+     */
+    public function getMessageId()
+    {
+        return $this->messageId;
+    }
+
+    /**
+     * Set message
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Message $message
+     * @return NewMessageNotification
+     */
+    public function setMessage(\Megasoft\EntangleBundle\Entity\Message $message = null)
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    /**
+     * Get message
+     *
+     * @return \Megasoft\EntangleBundle\Entity\Message 
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
 }

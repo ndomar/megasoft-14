@@ -82,4 +82,90 @@ class Transaction
     {
         return $this->date;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->notifications = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set offerId
+     *
+     * @param integer $offerId
+     * @return Transaction
+     */
+    public function setOfferId($offerId)
+    {
+        $this->offerId = $offerId;
+
+        return $this;
+    }
+
+    /**
+     * Get offerId
+     *
+     * @return integer 
+     */
+    public function getOfferId()
+    {
+        return $this->offerId;
+    }
+
+    /**
+     * Set offer
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Offer $offer
+     * @return Transaction
+     */
+    public function setOffer(\Megasoft\EntangleBundle\Entity\Offer $offer = null)
+    {
+        $this->offer = $offer;
+
+        return $this;
+    }
+
+    /**
+     * Get offer
+     *
+     * @return \Megasoft\EntangleBundle\Entity\Offer 
+     */
+    public function getOffer()
+    {
+        return $this->offer;
+    }
+
+    /**
+     * Add notifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\TransactionNotification $notifications
+     * @return Transaction
+     */
+    public function addNotification(\Megasoft\EntangleBundle\Entity\TransactionNotification $notifications)
+    {
+        $this->notifications[] = $notifications;
+
+        return $this;
+    }
+
+    /**
+     * Remove notifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\TransactionNotification $notifications
+     */
+    public function removeNotification(\Megasoft\EntangleBundle\Entity\TransactionNotification $notifications)
+    {
+        $this->notifications->removeElement($notifications);
+    }
+
+    /**
+     * Get notifications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
+    }
 }

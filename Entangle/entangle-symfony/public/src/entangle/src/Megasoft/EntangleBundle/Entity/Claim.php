@@ -127,4 +127,96 @@ class Claim
     {
         return $this->status;
     }
+
+    /**
+     * Set usedId
+     *
+     * @param integer $usedId
+     * @return Claim
+     */
+    public function setUsedId($usedId)
+    {
+        $this->usedId = $usedId;
+
+        return $this;
+    }
+
+    /**
+     * Get usedId
+     *
+     * @return integer 
+     */
+    public function getUsedId()
+    {
+        return $this->usedId;
+    }
+
+    /**
+     * Set tangleId
+     *
+     * @param integer $tangleId
+     * @return Claim
+     */
+    public function setTangleId($tangleId)
+    {
+        $this->tangleId = $tangleId;
+
+        return $this;
+    }
+
+    /**
+     * Get tangleId
+     *
+     * @return integer 
+     */
+    public function getTangleId()
+    {
+        return $this->tangleId;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Megasoft\EntangleBundle\Entity\User $user
+     * @return Claim
+     */
+    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Megasoft\EntangleBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set tangle
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Tangle $tangle
+     * @return Claim
+     */
+    public function setTangle(\Megasoft\EntangleBundle\Entity\Tangle $tangle = null)
+    {
+        $this->tangle = $tangle;
+
+        return $this;
+    }
+
+    /**
+     * Get tangle
+     *
+     * @return \Megasoft\EntangleBundle\Entity\Tangle 
+     */
+    public function getTangle()
+    {
+        return $this->tangle;
+    }
 }

@@ -111,4 +111,112 @@ class Tangle
     {
         return $this->icon;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->requests = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->claims = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->userTangles = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add requests
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Request $requests
+     * @return Tangle
+     */
+    public function addRequest(\Megasoft\EntangleBundle\Entity\Request $requests)
+    {
+        $this->requests[] = $requests;
+
+        return $this;
+    }
+
+    /**
+     * Remove requests
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Request $requests
+     */
+    public function removeRequest(\Megasoft\EntangleBundle\Entity\Request $requests)
+    {
+        $this->requests->removeElement($requests);
+    }
+
+    /**
+     * Get requests
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRequests()
+    {
+        return $this->requests;
+    }
+
+    /**
+     * Add claims
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Claim $claims
+     * @return Tangle
+     */
+    public function addClaim(\Megasoft\EntangleBundle\Entity\Claim $claims)
+    {
+        $this->claims[] = $claims;
+
+        return $this;
+    }
+
+    /**
+     * Remove claims
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Claim $claims
+     */
+    public function removeClaim(\Megasoft\EntangleBundle\Entity\Claim $claims)
+    {
+        $this->claims->removeElement($claims);
+    }
+
+    /**
+     * Get claims
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getClaims()
+    {
+        return $this->claims;
+    }
+
+    /**
+     * Add userTangles
+     *
+     * @param \Megasoft\EntangleBundle\Entity\UserTangle $userTangles
+     * @return Tangle
+     */
+    public function addUserTangle(\Megasoft\EntangleBundle\Entity\UserTangle $userTangles)
+    {
+        $this->userTangles[] = $userTangles;
+
+        return $this;
+    }
+
+    /**
+     * Remove userTangles
+     *
+     * @param \Megasoft\EntangleBundle\Entity\UserTangle $userTangles
+     */
+    public function removeUserTangle(\Megasoft\EntangleBundle\Entity\UserTangle $userTangles)
+    {
+        $this->userTangles->removeElement($userTangles);
+    }
+
+    /**
+     * Get userTangles
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUserTangles()
+    {
+        return $this->userTangles;
+    }
 }

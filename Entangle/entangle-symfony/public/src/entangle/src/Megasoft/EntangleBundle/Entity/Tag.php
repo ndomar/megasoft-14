@@ -68,4 +68,44 @@ class Tag
     {
         return $this->name;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->requests = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add requests
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Request $requests
+     * @return Tag
+     */
+    public function addRequest(\Megasoft\EntangleBundle\Entity\Request $requests)
+    {
+        $this->requests[] = $requests;
+
+        return $this;
+    }
+
+    /**
+     * Remove requests
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Request $requests
+     */
+    public function removeRequest(\Megasoft\EntangleBundle\Entity\Request $requests)
+    {
+        $this->requests->removeElement($requests);
+    }
+
+    /**
+     * Get requests
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRequests()
+    {
+        return $this->requests;
+    }
 }

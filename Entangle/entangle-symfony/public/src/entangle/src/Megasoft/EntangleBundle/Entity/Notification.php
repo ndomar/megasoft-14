@@ -113,4 +113,50 @@ class Notification
         return $this->created;
     }
 
+
+    /**
+     * Set userId
+     *
+     * @param integer $userId
+     * @return Notification
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+
+    /**
+     * Get userId
+     *
+     * @return integer 
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Megasoft\EntangleBundle\Entity\User $user
+     * @return Notification
+     */
+    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Megasoft\EntangleBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 }
