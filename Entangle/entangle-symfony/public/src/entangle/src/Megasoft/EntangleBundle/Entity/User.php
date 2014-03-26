@@ -99,6 +99,13 @@ class User
      */
     private $requests;
     
+    /**
+     * @var UserTangle[]
+     * 
+     * @ORM\OneToMany(targetEntity="UserTangle", mappedBy="user")
+     */
+    private $userTangles;
+    
     
 
     /**
