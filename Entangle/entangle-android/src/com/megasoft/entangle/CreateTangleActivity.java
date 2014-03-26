@@ -47,6 +47,7 @@ public class CreateTangleActivity extends Activity {
 		return true;
 	}
 
+	//Checks whether the tangle name already exists or not
 	public void checkTangleName(View view) {
 		String tangleNameText = ((EditText) findViewById(R.id.tangleName))
 				.getText().toString();
@@ -65,16 +66,19 @@ public class CreateTangleActivity extends Activity {
 		getNameRequest.execute();
 	}
 
+	//when the user needs to choose an icon for his tangle it redirects him to the gallery
 	public void chooseIcon(View view) {
 		goToGallery();
 	}
 
+	//opens the gallery for the user to pick a picture
 	public void goToGallery() {
 		startActivityForResult(new Intent(Intent.ACTION_PICK,
 				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
 				REQUEST_CODE);
 	}
 
+	//waits for the resulted pick of the user from the gallery, set the icon in the activity to it and encode the image in base64
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE
@@ -89,6 +93,7 @@ public class CreateTangleActivity extends Activity {
 		}
 	}
 
+	//returns a bitmap of the image that the user chose from the gallery
 	public Bitmap getPhotoPath(Uri uri) {
 		String[] projection = { android.provider.MediaStore.Images.Media.DATA };
 		Cursor cursor = getContentResolver().query(uri, projection, null, null,
@@ -101,6 +106,7 @@ public class CreateTangleActivity extends Activity {
 		return bitmap;
 	}
 
+	//send the info needed to create a tangle to the server
 	public void Create(View view) {
 		PostRequest imagePostRequest = new PostRequest(
 				"http://entangle2.apiary-mock.com/tangle") {
@@ -126,6 +132,7 @@ public class CreateTangleActivity extends Activity {
 		imagePostRequest.execute();
 	}
 
+	//shows a message dialog to the user
 	public void showMessage(String message) {
 		AlertDialog ad = new AlertDialog.Builder(this).create();
 		ad.setCancelable(false);
@@ -140,11 +147,13 @@ public class CreateTangleActivity extends Activity {
 		ad.show();
 	}
 
+	//resets the color of a text to black
 	public void resetColor(int id) {
 		TextView textView = (TextView) findViewById(id);
 		textView.setTextColor(BLACK);
 	}
 
+	//change the color of a text to either green or red
 	public void insertAvailability(boolean available, int id) {
 
 		TextView textView = (TextView) findViewById(id);
@@ -155,6 +164,7 @@ public class CreateTangleActivity extends Activity {
 		}
 	}
 
+	//redirects the user to the home page after creating a tangle
 	public void goToHomePage() {
 		showMessage("CONGRATULATIONS, YOUR TANGLE IS CREATED");
 		startActivity(new Intent(this, HomePage.class));
