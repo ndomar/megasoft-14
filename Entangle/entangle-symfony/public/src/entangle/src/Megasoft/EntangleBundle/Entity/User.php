@@ -29,11 +29,19 @@ class User
     private $name;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="primaryEmail", type="string", length=255)
+     * @ORM\Column(name="primaryEmailId", type="integer")
+     */
+    private $primaryEmailId;
+    
+    /**
+     * @var UserEmail
+     * 
+     * @ORM\OneToOne(targetEntity="UserEmail")
      */
     private $primaryEmail;
+    
 
     /**
      * @var string

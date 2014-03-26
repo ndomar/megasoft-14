@@ -5,7 +5,7 @@ namespace Megasoft\EntangleBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * TransactionNotification
+ * @ORM\Entity
  */
 class TransactionNotification extends Notification
 {
