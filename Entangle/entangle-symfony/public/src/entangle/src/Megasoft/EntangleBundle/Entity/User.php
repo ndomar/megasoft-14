@@ -106,8 +106,14 @@ class User
      */
     private $userTangles;
     
+    /**
+     * @var UserEmail[]
+     * 
+     * @ORM\OneToMany(targetEntity="UserEmail", mappedBy="user")
+     */
+    private $emails;
     
-
+    
     /**
      * Get id
      *
