@@ -100,4 +100,27 @@ class UserEmail
     {
         return $this->email;
     }
+
+    /**
+     * Set user
+     *
+     * @param \Megasoft\EntangleBundle\Entity\User $user
+     * @return UserEmail
+     */
+    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Megasoft\EntangleBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 }

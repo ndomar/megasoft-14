@@ -488,4 +488,60 @@ class User
     
     
     
+
+    /**
+     * Set primaryEmailId
+     *
+     * @param integer $primaryEmailId
+     * @return User
+     */
+    public function setPrimaryEmailId($primaryEmailId)
+    {
+        $this->primaryEmailId = $primaryEmailId;
+
+        return $this;
+    }
+
+    /**
+     * Get primaryEmailId
+     *
+     * @return integer 
+     */
+    public function getPrimaryEmailId()
+    {
+        return $this->primaryEmailId;
+    }
+
+    /**
+     * Add emails
+     *
+     * @param \Megasoft\EntangleBundle\Entity\UserEmail $emails
+     * @return User
+     */
+    public function addEmail(\Megasoft\EntangleBundle\Entity\UserEmail $emails)
+    {
+        $this->emails[] = $emails;
+
+        return $this;
+    }
+
+    /**
+     * Remove emails
+     *
+     * @param \Megasoft\EntangleBundle\Entity\UserEmail $emails
+     */
+    public function removeEmail(\Megasoft\EntangleBundle\Entity\UserEmail $emails)
+    {
+        $this->emails->removeElement($emails);
+    }
+
+    /**
+     * Get emails
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEmails()
+    {
+        return $this->emails;
+    }
 }
