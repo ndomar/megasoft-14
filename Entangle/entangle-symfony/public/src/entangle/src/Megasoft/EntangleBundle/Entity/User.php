@@ -27,21 +27,6 @@ class User
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="primaryEmailId", type="integer")
-     */
-    private $primaryEmailId;
-    
-    /**
-     * @var UserEmail
-     * 
-     * @ORM\OneToOne(targetEntity="UserEmail")
-     * @ORM\JoinColumn(name="primaryEmailId", referencedColumnName="id")
-     */
-    private $primaryEmail;
     
 
     /**
@@ -154,52 +139,6 @@ class User
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set primaryEmail
-     *
-     * @param string $primaryEmail
-     * @return User
-     */
-    public function setPrimaryEmail($primaryEmail)
-    {
-        $this->primaryEmail = $primaryEmail;
-
-        return $this;
-    }
-
-    /**
-     * Get primaryEmail
-     *
-     * @return string 
-     */
-    public function getPrimaryEmail()
-    {
-        return $this->primaryEmail;
-    }
-
-    /**
-     * Set passowrd
-     *
-     * @param string $passowrd
-     * @return User
-     */
-    public function setPassowrd($passowrd)
-    {
-        $this->passowrd = $passowrd;
-
-        return $this;
-    }
-
-    /**
-     * Get passowrd
-     *
-     * @return string 
-     */
-    public function getPassowrd()
-    {
-        return $this->passowrd;
     }
 
     /**
@@ -484,35 +423,6 @@ class User
         return $tangles;
     }
     
-    
-    
-    
-    
-    
-
-    /**
-     * Set primaryEmailId
-     *
-     * @param integer $primaryEmailId
-     * @return User
-     */
-    public function setPrimaryEmailId($primaryEmailId)
-    {
-        $this->primaryEmailId = $primaryEmailId;
-
-        return $this;
-    }
-
-    /**
-     * Get primaryEmailId
-     *
-     * @return integer 
-     */
-    public function getPrimaryEmailId()
-    {
-        return $this->primaryEmailId;
-    }
-
     /**
      * Add emails
      *
