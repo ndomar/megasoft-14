@@ -9,5 +9,6 @@
 	<string name="iconButton">Choose an Icon</string>
 	<string name="tangleIcon">Tangle Icon</string>
 	<string name="createTangle">CREATE</string>
+	<string name="checkTangleName">Check</string>
     
 </resources>

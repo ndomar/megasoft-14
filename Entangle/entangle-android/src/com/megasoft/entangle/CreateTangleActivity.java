@@ -21,7 +21,6 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,33 +38,6 @@ public class CreateTangleActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_tangle);
-		final EditText tangleName = (EditText) findViewById(R.id.tangleName);
-		tangleName.setOnFocusChangeListener(new OnFocusChangeListener() {
-
-			@Override
-			public void onFocusChange(View view, boolean hasFocus) {
-				String tangleNameText = tangleName.getText().toString();
-				if (hasFocus && !tangleNameText.equals("")) {
-					GetRequest getNameRequest = new GetRequest(
-							"http://entangle2.apiary-mock.com/tangle/check/"
-									+ tangleNameText) {
-						protected void onPostExecute(String response) {
-							if (this.getStatusCode() == 302) {
-								insertAvailability(true, R.id.tangleName);
-							} else {
-								insertAvailability(false, R.id.tangleName);
-							}
-						}
-					};
-					getNameRequest.addHeader("X-SESSION-ID", "55555");
-					getNameRequest.execute();
-				}else{
-					if(hasFocus){
-						resetColor(R.id.tangleName);
-					}
-				}
-			}
-		});
 	}
 
 	@Override
@@ -73,6 +45,24 @@ public class CreateTangleActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.create_tangle, menu);
 		return true;
+	}
+
+	public void checkTangleName(View view) {
+		String tangleNameText = ((EditText) findViewById(R.id.tangleName))
+				.getText().toString();
+		GetRequest getNameRequest = new GetRequest(
+				"http://entangle2.apiary-mock.com/tangle/check/"
+						+ tangleNameText) {
+			protected void onPostExecute(String response) {
+				if (!(this.getStatusCode() == 200)) {
+					insertAvailability(false, R.id.tangleName);
+				} else {
+					insertAvailability(true, R.id.tangleName);
+				}
+			}
+		};
+		getNameRequest.addHeader("X-SESSION-ID", "fdgdf");
+		getNameRequest.execute();
 	}
 
 	public void chooseIcon(View view) {
@@ -116,28 +106,30 @@ public class CreateTangleActivity extends Activity {
 				"http://entangle2.apiary-mock.com/tangle") {
 			protected void onPostExecute(String response) {
 				if (!(this.getStatusCode() == 201)) {
-//					goToHome();
-				}else{
-					showErrorMessage();
+					showMessage("ERROR, TRY AGAIN");
+				} else {
+					goToHomePage();
 				}
 			}
 		};
 		JSONObject imageJSON = new JSONObject();
 		try {
-			imageJSON.put("tangleName", ((EditText)findViewById(R.id.tangleName)).getText().toString());
+			imageJSON.put("tangleName",
+					((EditText) findViewById(R.id.tangleName)).getText()
+							.toString());
 			imageJSON.put("Image", encodedImage);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		imagePostRequest.setBody(imageJSON);
-		imagePostRequest.addHeader("X-SESSION-ID", "55555");
+		imagePostRequest.addHeader("X-SESSION-ID", "fgdzr");
 		imagePostRequest.execute();
 	}
 
-	public void showErrorMessage() {
+	public void showMessage(String message) {
 		AlertDialog ad = new AlertDialog.Builder(this).create();
 		ad.setCancelable(false);
-		ad.setMessage(" Error, check your settings and try again");
+		ad.setMessage(message);
 		ad.setButton(BUTTON_POSITIVE, "OK",
 				new DialogInterface.OnClickListener() {
 					@Override
@@ -161,6 +153,10 @@ public class CreateTangleActivity extends Activity {
 		} else {
 			textView.setTextColor(RED);
 		}
+	}
 
+	public void goToHomePage() {
+		showMessage("CONGRATULATIONS, YOUR TANGLE IS CREATED");
+		startActivity(new Intent(this, HomePage.class));
 	}
 }
