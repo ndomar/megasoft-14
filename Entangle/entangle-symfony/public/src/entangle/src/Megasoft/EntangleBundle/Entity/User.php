@@ -78,6 +78,13 @@ class User
      */
     private $claims;
     
+    /**
+     *
+     * @var Session[]
+     * @ORM\OneToMany(targetEntity="Session", mappedBy="user", cascade={"persist"})
+     */
+    private $sessions;
+    
     
     /**
      * @var Message[]
@@ -477,5 +484,38 @@ class User
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Add sessions
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Session $sessions
+     * @return User
+     */
+    public function addSession(\Megasoft\EntangleBundle\Entity\Session $sessions)
+    {
+        $this->sessions[] = $sessions;
+        $sessions->setUser($this);
+        return $this;
+    }
+
+    /**
+     * Remove sessions
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Session $sessions
+     */
+    public function removeSession(\Megasoft\EntangleBundle\Entity\Session $sessions)
+    {
+        $this->sessions->removeElement($sessions);
+    }
+
+    /**
+     * Get sessions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSessions()
+    {
+        return $this->sessions;
     }
 }
