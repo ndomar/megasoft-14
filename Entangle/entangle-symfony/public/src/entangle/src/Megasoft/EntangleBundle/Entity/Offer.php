@@ -45,7 +45,7 @@ class Offer
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="expectedDeadline", type="date")
+     * @ORM\Column(name="expectedDeadline", type="date" , nullable=true)
      */
     private $expectedDeadline;
 

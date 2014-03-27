@@ -39,21 +39,21 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="photo", type="string", length=255)
+     * @ORM\Column(name="photo", type="string", length=255, nullable=true)
      */
     private $photo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="userBio", type="string", length=255)
+     * @ORM\Column(name="userBio", type="string", length=255, nullable=true)
      */
     private $userBio;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="birthDate", type="date")
+     * @ORM\Column(name="birthDate", type="date" , nullable=true)
      */
     private $birthDate;
 
