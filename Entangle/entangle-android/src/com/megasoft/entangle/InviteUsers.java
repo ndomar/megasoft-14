@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
@@ -14,7 +15,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 
 import com.megasoft.config.Config;
@@ -83,9 +83,10 @@ public class InviteUsers extends Activity {
 			e.printStackTrace();
 		}
 		
+		
 		PostRequest postRequest = new PostRequest(Config.API_BASE_URL+"/tangle/"+tangleId+"/check-membership"){
 			public void onPostExecute(String response){
-				showSuccessMessage();
+				goToConfirmation(response); 
 			}
 		};
 		
@@ -94,8 +95,11 @@ public class InviteUsers extends Activity {
 		postRequest.execute();
 	}
 	
-	public void showSuccessMessage(){
-		Toast.makeText(this, "Sent !", Toast.LENGTH_LONG).show();
+	public void goToConfirmation(String response){ 
+		Intent inviteUserConfirmation = new Intent(this,InviteUsersConfirmations.class);
+		inviteUserConfirmation.putExtra("com.megasoft.entangle.emails",response);
+		inviteUserConfirmation.putExtra("com.megasoft.entangle.tangleId", tangleId);
+		startActivity(inviteUserConfirmation);
 	}
 
 }
