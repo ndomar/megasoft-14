@@ -83,14 +83,14 @@ class Request
     /**
      * @var Notification[]
      * 
-     * @ORM\OneToMany(targetEntity="PriceChangeNotification", mappedBy="request")
+     * @ORM\OneToMany(targetEntity="PriceChangeNotification", mappedBy="request", cascade={"persist"})
      */
     private $notifications;
     
     /**
      * @var Offer[]
      * 
-     * @ORM\OneToMany(targetEntity="Offer", mappedBy="request")
+     * @ORM\OneToMany(targetEntity="Offer", mappedBy="request", cascade={"persist"})
      */
     private $offers;
     
@@ -114,7 +114,7 @@ class Request
      /**
       * @var Tag[]
       *
-      * @ORM\ManyToMany(targetEntity="Tag", inversedBy="requests")
+      * @ORM\ManyToMany(targetEntity="Tag", inversedBy="requests", cascade={"persist"})
       * @ORM\JoinTable(name="request_tag")
       */
     private $tags;
@@ -354,7 +354,7 @@ class Request
     public function addNotification(\Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications)
     {
         $this->notifications[] = $notifications;
-
+        $notifications->setRequest($this);
         return $this;
     }
 
@@ -387,7 +387,7 @@ class Request
     public function addOffer(\Megasoft\EntangleBundle\Entity\Offer $offers)
     {
         $this->offers[] = $offers;
-
+        $offers->setRequest($this);
         return $this;
     }
 
@@ -443,7 +443,7 @@ class Request
     public function addTag(\Megasoft\EntangleBundle\Entity\Tag $tags)
     {
         $this->tags[] = $tags;
-
+        $tags->addRequest($this);
         return $this;
     }
 

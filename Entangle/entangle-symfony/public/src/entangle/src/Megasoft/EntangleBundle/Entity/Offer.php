@@ -76,7 +76,7 @@ class Offer
     /**
      * @var Message[]
      * 
-     * @ORM\OneToMany(targetEntity="Message", mappedBy="offer")
+     * @ORM\OneToMany(targetEntity="Message", mappedBy="offer", cascade={"persist"})
      */
     private $messages;
 
@@ -268,7 +268,7 @@ class Offer
     public function addMessage(\Megasoft\EntangleBundle\Entity\Message $messages)
     {
         $this->messages[] = $messages;
-
+        $messages->setOffer($this);
         return $this;
     }
 

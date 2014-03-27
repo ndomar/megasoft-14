@@ -67,14 +67,14 @@ class User
     /**
      * @var Notification[]
      * 
-     * @ORM\OneToMany(targetEntity="Notification", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Notification", mappedBy="user", cascade={"persist"})
      */
     private $notifications;
     
     /**
      *
      * @var Claim[]
-     * @ORM\OneToMany(targetEntity="Claim", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Claim", mappedBy="user", cascade={"persist"})
      */
     private $claims;
     
@@ -82,28 +82,28 @@ class User
     /**
      * @var Message[]
      * 
-     * @ORM\OneToMany(targetEntity="Message", mappedBy="sender")
+     * @ORM\OneToMany(targetEntity="Message", mappedBy="sender", cascade={"persist"})
      */
     private $messages;
     
     /**
      * @var Request[]
      * 
-     * @ORM\OneToMany(targetEntity="Request", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Request", mappedBy="user", cascade={"persist"})
      */
     private $requests;
     
     /**
      * @var UserTangle[]
      * 
-     * @ORM\OneToMany(targetEntity="UserTangle", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="UserTangle", mappedBy="user", cascade={"persist"})
      */
     private $userTangles;
     
     /**
      * @var UserEmail[]
      * 
-     * @ORM\OneToMany(targetEntity="UserEmail", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="UserEmail", mappedBy="user", cascade={"persist"})
      */
     private $emails;
     
@@ -253,7 +253,7 @@ class User
     public function addNotification(\Megasoft\EntangleBundle\Entity\Notification $notifications)
     {
         $this->notifications[] = $notifications;
-
+        $notifications->setUser($this);
         return $this;
     }
 
@@ -286,7 +286,7 @@ class User
     public function addClaim(\Megasoft\EntangleBundle\Entity\Claim $claims)
     {
         $this->claims[] = $claims;
-
+        $claims->setUser($this);
         return $this;
     }
 
@@ -319,7 +319,7 @@ class User
     public function addMessage(\Megasoft\EntangleBundle\Entity\Message $messages)
     {
         $this->messages[] = $messages;
-
+        $messages->setUser($this);
         return $this;
     }
 
@@ -352,7 +352,7 @@ class User
     public function addRequest(\Megasoft\EntangleBundle\Entity\Request $requests)
     {
         $this->requests[] = $requests;
-
+        $requests->setUser($this);
         return $this;
     }
 
@@ -385,7 +385,7 @@ class User
     public function addUserTangle(\Megasoft\EntangleBundle\Entity\UserTangle $userTangles)
     {
         $this->userTangles[] = $userTangles;
-
+        $userTangles->setUser($this);
         return $this;
     }
 
@@ -432,7 +432,7 @@ class User
     public function addEmail(\Megasoft\EntangleBundle\Entity\UserEmail $emails)
     {
         $this->emails[] = $emails;
-
+        $emails->setUser($this);
         return $this;
     }
 
