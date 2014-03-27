@@ -84,8 +84,8 @@ class Tag
      */
     public function addRequest(\Megasoft\EntangleBundle\Entity\Request $requests)
     {
-        $this->requests[] = $requests;
-        
+        //$this->requests[] = $requests;
+        throw new Exception('Not implemented');
         return $this;
     }
 
