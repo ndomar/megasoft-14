@@ -4,5 +4,10 @@
     <string name="app_name">Entangle</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_invite_users">Invite Users</string>
+    <string name="add_email">+</string>
+    <string name="invite_continue">Continue</string>
+    <string name="user_email">User Email</string>
+    <string name="title_activity_invite_users_confirmation">Invite Users</string>
 
 </resources>

@@ -6,6 +6,7 @@ import com.megasoft.requests.PostRequest;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.content.Intent;
 import android.view.Menu;
 
 
@@ -16,7 +17,8 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-	} 
+		startActivity((new Intent(this,InviteUsers.class)).putExtra("com.megasoft.entangle.tangleId", 2));
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
