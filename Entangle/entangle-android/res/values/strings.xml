@@ -3,6 +3,12 @@
 
     <string name="app_name">Entangle</string>
     <string name="action_settings">Settings</string>
+    <string name="Requests">Create Request</string>
+    <string name="name">Request\'s name</string>
+    <string name="description">Request\'s description</string>
+    <string name="post">Post</string>
+    <string name="tag">Add tags</string>
+    <string name="title_activity_request">RequestActivity</string>
     <string name="hello_world">Hello world!</string>
-
+    <string name="title">Request\'s title</string>
 </resources>
