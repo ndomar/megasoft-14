@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import com.megasoft.entangle.ViewStream;
+import com.megasoft.entangle.TangleProfilePage;
 
 public class MainActivity extends Activity {
 
@@ -12,8 +12,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		Intent intent = new Intent(this, ViewStream.class);
-		startActivity(intent);
+
 	}
 
 	@Override

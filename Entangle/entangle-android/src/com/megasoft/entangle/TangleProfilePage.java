@@ -32,7 +32,7 @@ import android.widget.Toast;
  * This class/activity is the one responsible for viewing the requests stream of
  * a certain tangle
  */
-public class ViewStream extends Activity {
+public class TangleProfilePage extends Activity {
 
 	/**
 	 * The Intent used to redirect to other activities
@@ -133,7 +133,7 @@ public class ViewStream extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setAttributes(savedInstanceState);
-		setContentView(R.layout.activity_view_stream);
+		setContentView(R.layout.activity_tangle_profile_page);
 		sendStreamRequest();
 		setRedirections();
 		addListenerOnSpinnerItemSelection();
@@ -324,7 +324,7 @@ public class ViewStream extends Activity {
 			public void onClick(View v) {
 				int tmpId = ((Button) v).getId();
 				Intent intent2 = new Intent(getBaseContext(),
-						RequestInformation.class);
+						RequestPage.class);
 				intent2.putExtra("requestId", tmpId);
 				startActivity(intent2);
 			}
@@ -337,7 +337,7 @@ public class ViewStream extends Activity {
 	 */
 	private void setRedirections() {
 		Button stream = (Button) findViewById(R.id.stream);
-		setButtonRedirection(stream, "ViewStream");
+		setButtonRedirection(stream, "TangleProfilePage");
 
 		Button members = (Button) findViewById(R.id.members);
 		setButtonRedirection(members, "Members");
