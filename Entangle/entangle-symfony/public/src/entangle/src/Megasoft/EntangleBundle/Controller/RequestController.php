@@ -29,7 +29,7 @@ class RequestController extends Controller{
         
         $Request = new Request();
         $Request->setDescription($description);
-        $Request->setStatus('pending');
+        $Request->setStatus(1);
         $Request->setTangleId($tangleId);
         $Request->setDate($date);
         $Request->setDeadLine($deadLine);
