@@ -34,8 +34,8 @@ public class MainActivity extends Activity {
 					Toast.LENGTH_SHORT).show();
 			Intent profileIntent = new Intent();
 
-			profileIntent = new Intent(this, ProfileActivity.class);
-			startActivity(profileIntent);
+			// profileIntent = new Intent(this, ProfileActivity.class);
+			// startActivity(profileIntent);
 		} else {
 			Toast.makeText(getApplicationContext(), "Wrong Credentials",
 					Toast.LENGTH_SHORT).show();

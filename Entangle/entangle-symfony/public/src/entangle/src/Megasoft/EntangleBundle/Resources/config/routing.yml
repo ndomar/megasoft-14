@@ -5,3 +5,7 @@ megasoft_entangle_homepage:
 #megasoft_entangle_test:
 #    pattern:  /test
 #    defaults: { _controller: MegasoftEntangleBundle:Default:test }
+
+    pattern:  /login
+    defaults: { _controller: MegasoftEntangleBundle:User:create}
+    methods: [POST]
