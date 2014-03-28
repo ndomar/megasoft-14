@@ -32,6 +32,12 @@ class TangleController extends Controller
             return new Response("Tangle Not Found",404);
         }
         
+        $userTangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserTangle');
+        
+        if( $userTangleRepo->findOneBy(array('userId'=>$session->getUserId() , 'tangleId'=>$tangleId)) == null ){
+            return new Response("You are not a tangle member to invite other members",401);
+        }
+        
         $response = array();
         $response['notMembers'] = array();
         $response['entangleMembers'] = array();
@@ -39,7 +45,7 @@ class TangleController extends Controller
         $response['invalid'] = array();
         
         $userEmailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
-        $userTangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserTangle');
+        
         foreach($json['emails'] as $email){
             if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
                 $response['invalid'][] = $email;
