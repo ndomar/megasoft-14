@@ -34,48 +34,46 @@ class Claim
      * @ORM\Column(name="status", type="integer")
      */
     private $status;
-    
+
     /**
      *
      * @var integer
-     * 
+     *
      * @ORM\Column(name="usedId", type="integer")
      */
     private $usedId;
-    
+
     /**
      *
      * @var integer
-     * 
+     *
      * @ORM\Column(name="tangleId", type="integer")
      */
     private $tangleId;
-    
+
     /**
      *
      * @var User
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="claims")
      * @ORM\JoinColumn(name="userId", referencedColumnName="id")
      */
     private $user;
-    
+
     /**
      *
      * @var Tangle
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="Tangle", inversedBy="claims")
      * @ORM\JoinColumn(name="tangleId", referencedColumnName="id")
      */
     private $tangle;
-    
-    
-    
+
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -98,7 +96,7 @@ class Claim
     /**
      * Get message
      *
-     * @return string 
+     * @return string
      */
     public function getMessage()
     {
@@ -121,7 +119,7 @@ class Claim
     /**
      * Get status
      *
-     * @return integer 
+     * @return integer
      */
     public function getStatus()
     {
@@ -144,7 +142,7 @@ class Claim
     /**
      * Get usedId
      *
-     * @return integer 
+     * @return integer
      */
     public function getUsedId()
     {
@@ -167,7 +165,7 @@ class Claim
     /**
      * Get tangleId
      *
-     * @return integer 
+     * @return integer
      */
     public function getTangleId()
     {
@@ -190,7 +188,7 @@ class Claim
     /**
      * Get user
      *
-     * @return \Megasoft\EntangleBundle\Entity\User 
+     * @return \Megasoft\EntangleBundle\Entity\User
      */
     public function getUser()
     {
@@ -213,7 +211,7 @@ class Claim
     /**
      * Get tangle
      *
-     * @return \Megasoft\EntangleBundle\Entity\Tangle 
+     * @return \Megasoft\EntangleBundle\Entity\Tangle
      */
     public function getTangle()
     {

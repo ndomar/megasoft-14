@@ -5,3 +5,12 @@ megasoft_entangle_homepage:
 #megasoft_entangle_test:
 #    pattern:  /test
 #    defaults: { _controller: MegasoftEntangleBundle:Default:test }
+
+megasoft_entangle_claim_send:
+  pattern: /claim/{claimID}/contact/send
+  defaults: {_controller: MegasoftEntangleBundle:Claim:send}
+
+
+megasoft_entangle_claim_view:
+  pattern: /claim/{claimID}/contact
+  defaults: {_controller: MegasoftEntangleBundle:Claim:contact}

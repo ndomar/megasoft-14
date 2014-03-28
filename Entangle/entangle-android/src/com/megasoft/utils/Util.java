@@ -68,7 +68,8 @@ public class Util {
 		if (req.getStatusCode() == 200) {
 			UI.makeToast(context, text, Toast.LENGTH_LONG);
 		} else {
-			UI.buildDialog(context, "bad internet connextion", text);
+			UI.makeToast(context, "couldn't connect to server",
+					Toast.LENGTH_LONG);
 		}
 	}
 }

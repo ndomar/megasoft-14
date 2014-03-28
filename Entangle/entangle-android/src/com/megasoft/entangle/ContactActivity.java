@@ -14,14 +14,15 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.megasoft.requests.GetRequest;
 import com.megasoft.utils.UI;
 import com.megasoft.utils.Util;
 
 public class ContactActivity extends Activity implements OnClickListener {
-	public static String claimURL = "http://entangle2.apiary-mock.com/claim/4/contact";
-	public static String contactURL = "http://entangle2.apiary-mock.com/claim/4/contact/send";
+	public static String claimURL = "http://mohamed.local/entangle/app_dev.php/claim/3/contact";
+	public static String contactURL = "http://mohamed.local/entangle/app_dev.php/claim/3/contact/send";
 	private int reqID = -1;
 	private int offID = -1;
 	protected TextView tvReqName;
@@ -98,8 +99,8 @@ public class ContactActivity extends Activity implements OnClickListener {
 				offID = obj.getInt("offererID");
 			}
 			if (req.getStatusCode() != 200) {
-				UI.buildDialog(getApplicationContext(),
-						"no internet connection", "please make sure you have");
+				UI.makeToast(getApplicationContext(),
+						"couldn't connect to server", Toast.LENGTH_LONG);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
