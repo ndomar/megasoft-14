@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class createTangleController extends Controller
 {
+    //Creates a new tangle in the database
     public function createTangleAction(Request $request)
     {
         $json = $request->getContent();
@@ -28,6 +29,7 @@ class createTangleController extends Controller
         return $response;
     }
     
+    //Checks if the tangle name already exists or not
     public function checkAvailabilityAction($tangleName)
     {
         $doctrine = $this->getDoctrine();

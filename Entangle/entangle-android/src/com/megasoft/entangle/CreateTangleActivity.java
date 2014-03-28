@@ -42,6 +42,7 @@ public class CreateTangleActivity extends Activity {
 		setContentView(R.layout.activity_create_tangle);
 	}
 
+	//on activity creation it adds a text changed listener to the text field 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
