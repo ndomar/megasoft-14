@@ -13,13 +13,19 @@ public class PostRequest extends HttpRequest {
 		httpPost = new HttpPost(uri);
 		super.setMethod(httpPost);
 	}
-
+	
+	/**
+	 * post request constructor to set the body to  json object
+	 * @param uri
+	 * @param json
+	 */
 	public PostRequest(String uri, JSONObject json) {
 		httpPost = new HttpPost(uri);
 		super.setMethod(httpPost);
 		this.setBody(json);
 	}
-
+	
+	
 	public void setBody(JSONObject body) {
 		this.setHasBody(true);
 		StringEntity data = null;

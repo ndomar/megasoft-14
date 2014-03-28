@@ -6,39 +6,75 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.megasoft.requests.GetRequest;
-import com.megasoft.requests.PostRequest;
+import com.megasoft.utils.UI;
+import com.megasoft.utils.Util;
 
 public class ContactActivity extends Activity implements OnClickListener {
 	public static String claimURL = "http://entangle2.apiary-mock.com/claim/4/contact";
 	public static String contactURL = "http://entangle2.apiary-mock.com/claim/4/contact/send";
-	int reqID = -1;
-	int offID = -1;
+	private int reqID = -1;
+	private int offID = -1;
+	protected TextView tvReqName;
+	protected TextView tvReqDesc;
+	protected TextView tvoffName;
+	protected TextView tvClaimMessage;
+	protected TextView tvOffDesc;
+	protected Button bContReq;
+	protected Button bContOffer;
+
+	/**
+	 * 
+	 */
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Intent login = new Intent(getApplicationContext(), MainActivity.class);
+		// if (!Util.isUserLoggedIn(this))
+		// startActivity(login);
+		init();
+		retrieveServerData();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.contact, menu);
+		return true;
+	}
+
+	/**
+	 * init the view of this activity
+	 * 
+	 */
+	public void init() {
 		setContentView(R.layout.activity_contact);
-		TextView tvReqName = (TextView) findViewById(R.id.TVRequesterName);
-		TextView tvReqDesc = (TextView) findViewById(R.id.TVRequestDesc);
-		TextView tvoffName = (TextView) findViewById(R.id.TVOffererName);
-		TextView tvClaimMessage = (TextView) findViewById(R.id.TVClaimMessage);
-		TextView tvOffDesc = (TextView) findViewById(R.id.TVOfferDesc);
-		Button bContReq = (Button) findViewById(R.id.BContactRequester);
-		Button bContOffer = (Button) findViewById(R.id.BContactOfferer);
+		tvReqName = (TextView) findViewById(R.id.TVRequesterName);
+		tvReqDesc = (TextView) findViewById(R.id.TVRequestDesc);
+		tvoffName = (TextView) findViewById(R.id.TVOffererName);
+		tvClaimMessage = (TextView) findViewById(R.id.TVClaimMessage);
+		tvOffDesc = (TextView) findViewById(R.id.TVOfferDesc);
+		bContReq = (Button) findViewById(R.id.BContactRequester);
+		bContOffer = (Button) findViewById(R.id.BContactOfferer);
 		bContOffer.setOnClickListener(this);
 		bContReq.setOnClickListener(this);
+	}
+
+	/**
+	 * retrieve date from server to be shown
+	 * 
+	 */
+	public void retrieveServerData() {
 		JSONObject obj = new JSONObject();
 		GetRequest req = new GetRequest(claimURL);
 		req.addHeader("X-SESSION-ID", "helloWorld");
@@ -51,31 +87,27 @@ public class ContactActivity extends Activity implements OnClickListener {
 			e.printStackTrace();
 		}
 		try {
-			obj = new JSONObject(x);
+			if (x != null) {
+				obj = new JSONObject(x);
+				tvReqName.setText(obj.getString("requesterName"));
+				tvReqDesc.setText(obj.getString("requestDesc"));
+				tvoffName.setText(obj.getString("offererName"));
+				tvOffDesc.setText(obj.getString("offerDesc"));
+				tvClaimMessage.setText(obj.getString("claimMessage"));
+				reqID = obj.getInt("requesterID");
+				offID = obj.getInt("offererID");
+			}
+			if (req.getStatusCode() != 200) {
+				UI.buildDialog(getApplicationContext(), "no internet connection", "please make sure you have");
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		try {
-			tvReqName.setText(obj.getString("requesterName"));
-			tvReqDesc.setText(obj.getString("requestDesc"));
-			tvoffName.setText(obj.getString("offererName"));
-			tvOffDesc.setText(obj.getString("offerDesc"));
-			tvClaimMessage.setText(obj.getString("claimMessage"));
-			reqID = obj.getInt("requesterID");
-			offID = obj.getInt("offererID");
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.contact, menu);
-		return true;
-	}
-
+	/**
+	 * on click listener for Contact view
+	 */
 	@Override
 	public void onClick(View v) {
 		EditText etMessage = (EditText) findViewById(R.id.ETMessage);
@@ -89,38 +121,8 @@ public class ContactActivity extends Activity implements OnClickListener {
 			userID = offID;
 			break;
 		}
-		sendUserMessage(userID, message);
+		Util.sendUserMessage(getApplicationContext(), userID, message,
+				contactURL);
 	}
 
-	public void sendUserMessage(int userID, String message) {
-		JSONObject obj = new JSONObject();
-		try {
-			obj.put("userID", userID);
-			obj.put("message", message);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		PostRequest req = new PostRequest(contactURL, obj);
-		req.addHeader("X-SESSION-ID", "helloWorld");
-		JSONObject response = new JSONObject();
-		String text = "";
-		try {
-			response = new JSONObject(req.execute().get());
-			text = response.getString("message");
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		makeToast(text, Toast.LENGTH_LONG);
-		Log.d("info", "" + Toast.LENGTH_SHORT);
-	}
-
-	public void makeToast(String text, int length) {
-		Context context = getApplicationContext();
-		Toast toast = Toast.makeText(context, text, length);
-		toast.show();
-	}
 }
