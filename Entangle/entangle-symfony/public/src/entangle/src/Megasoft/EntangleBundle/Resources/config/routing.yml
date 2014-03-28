@@ -1,3 +1,13 @@
 megasoft_entangle_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: MegasoftEntangleBundle:Default:index }
+
+check_availability:
+    pattern: /tangle/check/{tangleName}
+    defaults: { _controller: MegasoftEntangleBundle:createTangle:checkAvailability }
+    methods: [GET]
+
+create_tangle:
+    pattern: tangle/
+    defaults: { _controller: MegasoftEntangleBundle:createTangle:createTangle }
+    methods: [POST]
