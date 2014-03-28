@@ -172,7 +172,7 @@ public class CreateTangleActivity extends Activity {
 			imageJSON.put("tangleName",
 					((EditText) findViewById(R.id.tangleName)).getText()
 							.toString());
-			imageJSON.put("Image", encodedImage);
+			imageJSON.put("tangleIcon", encodedImage);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

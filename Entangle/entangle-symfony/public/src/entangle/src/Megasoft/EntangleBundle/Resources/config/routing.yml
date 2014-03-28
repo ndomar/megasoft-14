@@ -13,7 +13,7 @@ check_availability:
     methods: [GET]
 
 create_tangle:
-    pattern: tangle/
+    pattern: /tangle
     defaults: { _controller: MegasoftEntangleBundle:createTangle:createTangle }
     methods: [POST]
 

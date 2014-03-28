@@ -2,8 +2,10 @@
 
 namespace Megasoft\EntangleBundle\Controller;
 
+use Megasoft\EntangleBundle\Entity\Tangle;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class createTangleController extends Controller
 {
@@ -12,8 +14,8 @@ class createTangleController extends Controller
         $json = $request->getContent();
         $json_array = json_decode($json,true);
         $tangleName = $json_array['tangleName'];
-        $tangleIcon = $json_array['Image'];
-                
+        $tangleIcon = $json_array['tangleIcon'];
+        
         $Tangle = new Tangle();
         $Tangle->setName($tangleName);
         $Tangle->setIcon($tangleIcon);
@@ -30,7 +32,7 @@ class createTangleController extends Controller
     {
         $doctrine = $this->getDoctrine();
         $repo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
-        $tangle = $repo->findOneBy(array('tangleName'=>$tangleName));
+        $tangle = $repo->findOneBy(array('name'=>$tangleName));
         
         if($tangle == null){
             return new Response('Not Found',404);
