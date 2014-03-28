@@ -27,7 +27,17 @@ class DefaultController extends Controller
     }
     
    
-    
+    function getTransaction($id) {
+    $transaction = $this->getDoctrine()
+        ->getRepository('MegasoftEntangleBundle:Transaction')
+        ->findOneBy($id);
+    if($transaction == null) {
+            throw $this->createNotFoundException('No transaction found'.$id);
+    }
+    $array = $transaction->toArray();
+    $json = json_encode($array);
+    return $json;
+}
     
 //    public function testAction(){
 //        $doctrineManger = $this->getDoctrine()->getManager();
