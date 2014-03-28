@@ -372,8 +372,8 @@ public class TangleProfilePage extends Activity {
 						intent = new Intent(getBaseContext(), Class
 								.forName("com.megasoft.entangle."
 										+ activityName));
-						intent.putExtra("tangleId",getTangleId());
-						intent.putExtra("tangleName",getTangleName() );
+						intent.putExtra("tangleId", getTangleId());
+						intent.putExtra("tangleName", getTangleName());
 						intent.putExtra("sessionId", getSessionId());
 						startActivity(intent);
 					}
@@ -605,7 +605,7 @@ public class TangleProfilePage extends Activity {
 						url += "tangle/" + getTangleId() + "/request";
 						sendFilteredRequest(url);
 					} else if (selection.equals("Tag")) {
-						url += "tag";
+						url += "tangle/" + getTangleId() + "/tag";
 						type = 0;
 						sendGetAllRequest(url);
 					} else if (selection.equals("Requester Name")) {
