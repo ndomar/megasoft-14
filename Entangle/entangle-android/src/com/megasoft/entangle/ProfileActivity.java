@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ProfileActivity extends Activity {
 	private TextView name;
@@ -19,18 +20,21 @@ public class ProfileActivity extends Activity {
 	private TextView birthdate;
 	private ImageView verifiedView;
 	final Activity self = this;
-    final LinearLayout layoutContainer = (LinearLayout) this.findViewById(R.id.layout_container);
+    LinearLayout layoutContainer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
-			try {
-				viewProfile();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
+				try {
+
+					viewProfile();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
 	}
 
 	@Override
@@ -47,30 +51,35 @@ public class ProfileActivity extends Activity {
 		birthdate = (TextView) findViewById(R.id.birthdateView);
 		verifiedView = (ImageView) findViewById(R.id.verifiedView);
 		Intent intent = getIntent();
+		layoutContainer = (LinearLayout) this.findViewById(R.id.layout_container);
 		int tangleId = intent.getIntExtra("tangle id", -1);
 		int userId = intent.getIntExtra("user id", -1);
-		GetRequest request = new GetRequest("http://entangle.io/user/" + userId + "/" + tangleId + "/profile") {
-			 protected void onPostExecute(String response) {  // On Post execute means after the execution of the request ( the callback )
+
+		GetRequest request = new GetRequest("http://entangle2.apiary-mock.com/tangle/" + tangleId + "/user/" + userId + "/profile") {
+			
+			protected void onPostExecute(String response) {  // On Post execute means after the execution of the request ( the callback )
                      try {
 						JSONObject jSon = new JSONObject(response);
 						//boolean loggedIn = jSon.getBoolean("loggedIn");
 						
-						JSONArray info = jSon.getJSONArray("information");
-						name.setText(info.getString(0));
-						descr.setText("Description: " + info.getString(1));
-						balance.setText("Credit: " + info.getString(2) + " points");
-						birthdate.setText("Birthdate: " + info.getString(4));
-						boolean verified = info.getBoolean(5);
+						JSONObject info =  jSon.getJSONObject("information");
+						name.setText(info.getString("name"));
+						descr.setText("Description: " + info.getString("Description"));
+						balance.setText("Credit: " + info.getString("balance") + " points");
+						birthdate.setText("Birthdate: " + info.getString("birthdate"));
+						boolean verified = info.getBoolean("verified");
 						if (verified) {
 							verifiedView.setVisibility(1);
+						} else {
+							verifiedView.setVisibility(0);
 						}
-						JSONArray array = jSon.getJSONArray("Transactions");
+						JSONArray array = jSon.getJSONArray("transactions");
 						for(int i = 0; i < array.length(); i++) { 
-							JSONArray object = array.getJSONArray(i);
+							JSONObject object = array.getJSONObject(i);
 							TextView transaction = new TextView(self);
-							String requester = object.getString(0);
-							String request = object.getString(1);
-							String amount = object.getString(2);
+							String requester = object.getString("requesterName");
+							String request = object.getString("requestDescription");
+							String amount = object.getString("amount");
 							transaction.setText("Requester: " + requester 
 									+ '\n' + "Request: " + request
 									+ '\n' + "Amount: " + amount);
