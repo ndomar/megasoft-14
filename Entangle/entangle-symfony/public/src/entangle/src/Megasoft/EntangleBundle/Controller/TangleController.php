@@ -2,7 +2,6 @@
 
 namespace Megasoft\EntangleBundle\Controller;
 
-use Megasoft\EntangleBundle\Entity\Tangle;
 use Megasoft\EntangleBundle\Entity\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,26 +11,7 @@ use Symfony\Component\HttpKernel\Tests\Controller;
 class TangleController extends Controller
 {
     
-    private function requestsToJsonArray($requests){
-        
-        $requestsJsonArray = array();
-        foreach($requests as $request){
-            $requestJson = array(
-                'id' => $request->getId(),
-                'username' => $request->getUser()->getName(),
-                'userId' => $request->getUserId(),
-                'description' => $request->getDescription(),
-                'offersCount' => \sizeof($request->getOffers())
-            );
-            $requestsJsonArray[] = $requestJson;
-        }
-        
-        $jsonArray = array('count' => sizeof($requests), 'requests' => $requestsJsonArray);
-        
-        return $jsonArray;
-    }
-    
-    public function allRequestsAction($tangleId, Request $request)
+    public function filterRequestsAction(Request $request, $tangleId)
     { 
         $sessionId = $request->headers->get('X-SESSION-ID');
         
@@ -55,24 +35,58 @@ class TangleController extends Controller
         }
         
         $criteria = array('tangleId' => $tangleId);
-        if(!\is_null($userId)){
-            $critera['userId'] = $userId;
+        
+        $userId = $request->query->get('userid', null);
+        if($userId != null){
+            $criteria['userId'] = $userId;
         }
-        if(!\is_null($tagId)){
-            $critera['tagId'] = $tagId;
-        }
-        if(!\is_null($fullText)){
+        
+        $fullText = $request->query->get('fulltext', null);
+        if($fullText != null){
             $criteria['description'] = $fullText;
         }
         
-        if(\is_null($tangle)){
-            return new Response('Not Found', 404);
+        $requestRepo = $doctrine->getRepository('EntangleBundle:Request');
+        $requests = $requestRepo->getBy($criteria);
+        
+        $tagId = $request->query->get('tagid', null);
+        $usernamePrefix = $request->query->get('usernameprefix', null);
+        $requestsJsonArray = array();
+        
+        foreach($requests as $tangleRequest){
+            
+            if($tagId != null){
+                $foundTag = false;
+                foreach($tangleRequest->getTags() as $tag){
+                    if($tag->getId() == $tagId){
+                        $foundTag = true;
+                        break;
+                    }
+                }
+                
+                if(!$foundTag){
+                    continue;
+                }
+            }
+            
+            if($usernamePrefix != null){
+                $user = $tangleRequest->getUser();
+                if(!startsWith($user->getName(), $usernamePrefix)){
+                    continue;
+                }
+            }
+            
+            $requestsJsonArray[] = array(
+                                        'id' => $request->getId(),
+                                        'username' => $request->getUser()->getName(),
+                                        'userId' => $request->getUserId(),
+                                        'description' => $request->getDescription(),
+                                        'offersCount' => \sizeof($request->getOffers())
+                                    );
         }
         
-        $requests = $tangle->getRequests();
-        
         $response = new JsonResponse();
-        $response->setData($this->requestsToJsonArray($requests));
+        $response->setData(array('count' => sizeof($requestsJsonArray), 'requests' => $requestsJsonArray));
         
         return $response;
     }
