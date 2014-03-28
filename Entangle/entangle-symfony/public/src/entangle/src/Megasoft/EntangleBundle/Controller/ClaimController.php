@@ -16,6 +16,12 @@ use Symfony\Component\HttpFoundation\Response;
 class ClaimController extends Controller
 {
     
+    /**
+ * this
+ *function
+ * gets the 
+ * offerer email
+ */
      public function getSenderMail($sessionId)
     {
         $doctrine = $this->getDoctrine();
@@ -34,6 +40,12 @@ class ClaimController extends Controller
             return $response;
         }
 }
+   /**
+ * this
+ *function
+ * gets the 
+ * sender email
+ */
 public function getRecieverMail($tangleId)
     {
         $doctrine = $this->getDoctrine();
@@ -53,6 +65,13 @@ public function getRecieverMail($tangleId)
         }
 }
 
+   /**
+ * this
+ *function
+ * creates a claim
+ * and instert it
+ * in the database
+ */
 public function createClaim(Request $request)
     {
     
