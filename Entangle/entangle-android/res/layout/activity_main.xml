@@ -8,9 +8,16 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <TextView
-        android:layout_width="wrap_content"
+
+    <Button
+        android:id="@+id/MyInfo"
+        android:layout_width="115dp"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="129dp"
+        android:text="My Info"
+        android:onClick="EditDescription"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="20dp" />
 
 </RelativeLayout>

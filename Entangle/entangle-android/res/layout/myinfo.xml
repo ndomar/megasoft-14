@@ -1,0 +1,93 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/myinfo"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/MyInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="12dp"
+        android:text="My Info"
+        android:textColor="#0099cc"
+        android:textSize="40sp" />
+
+    <TextView
+        android:id="@+id/Description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="My Description" />
+
+    <TextView
+        android:id="@+id/CurrentDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="10"
+        android:text="Add Description"
+        android:verticalScrollbarPosition="right" />
+
+    <Button
+        android:id="@+id/EditDescriptionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="EditMyDescription"
+        android:text="Edit"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/Age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Age" />
+
+    <TextView
+        android:id="@+id/AgeViewer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No Age" />
+
+    <Button
+        android:id="@+id/EditAgeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="EdityourAge"
+        android:text="Edit"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/Password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Password" />
+
+    <Button
+        android:id="@+id/EditPasswordButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="EditMyPassword"
+        android:text="Edit"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/Email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Email" />
+
+    <Button
+        android:id="@+id/AddEmailButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:onClick="AddEmail"
+        android:text="Add Email"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="15sp" />
+
+</LinearLayout>

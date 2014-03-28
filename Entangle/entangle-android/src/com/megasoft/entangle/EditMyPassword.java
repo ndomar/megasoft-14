@@ -5,15 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class MainActivity extends Activity {
+;
 
+public class EditMyPassword extends Activity {
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		getIntent();
+		setContentView(R.layout.change_password);
+
 	}
 
-	public void EditDescription(View view) {
+	public void SaveNewPassword(View view) {
 		Intent editDes = new Intent(this, MyInfo.class);
 		startActivity(editDes);
 	}

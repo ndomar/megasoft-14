@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <Spinner
+        android:id="@+id/days"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/Daynumber"
+        android:prompt="@string/days" />
+
+    <Spinner
+        android:id="@+id/months"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="false"
+        android:layout_toRightOf="@id/days"
+        android:entries="@array/MonthName"
+        android:prompt="@string/months" />
+
+    <Spinner
+        android:id="@+id/years"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="false"
+        android:layout_toRightOf="@id/months"
+        android:entries="@array/Years"
+        android:prompt="@string/years" />
+
+    <Button
+        android:id="@+id/SaveNewAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="129dp"
+        android:onClick="SaveNewAge"
+        android:text="Save"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="15sp" />
+
+</RelativeLayout>

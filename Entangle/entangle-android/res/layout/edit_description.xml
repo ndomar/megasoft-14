@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+
+
+    <TextView
+        android:id="@+id/EditDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="Add your Description" />
+    
+    <EditText
+        android:id="@+id/NewDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18.5dp"
+        android:editable="true"
+        android:maxLines="10"
+        android:verticalScrollbarPosition="right" />
+  
+  <Button
+        android:id="@+id/SaveNewDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="129dp"
+        android:onClick="SaveNewDescription"
+        android:text="Save"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="15sp" />
+    
+</LinearLayout>
