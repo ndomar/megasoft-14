@@ -4,5 +4,7 @@
     <string name="app_name">Entangle</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-
+    <string name="claim_button"> CLAIM via </string>
+	<string name="transaction"> The transaction is here </string>
+	
 </resources>
