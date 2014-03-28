@@ -5,8 +5,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Megasoft\EntangleBundle\Entity\Session;
 /**
  * Description of ProfileController
  *
@@ -16,14 +19,15 @@ class ProfileController {
     
     //gets all required info to view a user profile
     //returns a jSonResponse
-    public function profile($userId, $tangleId, $sessionId) {
+        public function profile(Request $request, $userId, $tangleId) {
+        $sessionId = $request->headers->get('X-SESSION-ID');
         $doctrine = $this->getDoctrine();
         $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionTable->findOneBy(array('id'=>$sessionId));
         $user = $userTable->findOneBy(array('id'=> $userId));
         $offers = $user->getOffers();
-        $info = $this->getUserInfo($user);
+        $info = $this->getUserInfo($user, $tangleId);
         $transactions = $this->getTransactions($offers, $tangleId);
         $loggedInUser = $session->getUserId(); //Id of the currently logged in user
         
@@ -63,18 +67,24 @@ class ProfileController {
     
     //gets the basic information of the required user
     //returns an array of these information
-    public function getUserInfo($user){
+    public function getUserInfo($user, $tangleId){
         if($user == null){
             return new Response('Bad Request',400);
         }
-            $name = $user->getName();
-            $description = $user->getUserBio();
-            $photo = $user->getPhoto();
-            $birthdate = $user->getBirthdate();
-            $verfied = $user->getVerified();
-            $info = array('name'=>$name, 'description'=>$description,
+        $doctrine = $this->getDoctrine();
+        $userId = $user->getId();
+        $userTangleTable = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $userTangle = $userTangleTable->findOneBy(array('userId'=>$userId,'tangleId'=>$tangleId));
+        
+        $name = $user->getName();
+        $description = $user->getUserBio();
+        $credit = $userTangle->getCredit();
+        $photo = $user->getPhoto();
+        $birthdate = $user->getBirthDate();
+        $verfied = $user->getVerified();
+        $info = array('name'=>$name, 'description'=>$description, 'credit'=>$credit,
                 'photo'=>$photo, 'birthdate'=>$birthdate, 'verified' => $verfied);
-            return $info;
+        return $info;
     }
     
         
