@@ -11,8 +11,7 @@ use Symfony\Component\HttpKernel\Tests\Controller;
 class TangleController extends Controller
 {
     
-    public function filterRequestsAction(Request $request, $tangleId)
-    { 
+    private function verifyUser($request, $tangleId){
         $sessionId = $request->headers->get('X-SESSION-ID');
         
         if($tangleId == null || $sessionId == null){
@@ -32,6 +31,17 @@ class TangleController extends Controller
         
         if($userTangle == null){
             return new Response('Unauthorized', 401);
+        }
+        
+        return null;
+    }
+    
+    public function filterRequestsAction(Request $request, $tangleId)
+    { 
+        $verification = $this->verifyUser($request, $tangleId);
+        
+        if($verification != null){
+            return $verification;
         }
         
         $criteria = array('tangleId' => $tangleId);
@@ -87,6 +97,39 @@ class TangleController extends Controller
         
         $response = new JsonResponse();
         $response->setData(array('count' => sizeof($requestsJsonArray), 'requests' => $requestsJsonArray));
+        
+        return $response;
+    }
+    
+    public function allTagsAction(Request $request, $tangleId){
+        $verification = $this->verifyUser($request, $tangleId);
+        
+        if($verification != null){
+            return $verification;
+        }
+        
+        $doctrine = $this->getDoctrine();
+        $tangleRepo = $doctrine->getRepository('EntangleBundle:Tangle');
+        $tangle = $tangleRepo->getOneBy(array('id' => $tangleId));
+        $tags = array();
+        
+        foreach($tangle->getRequests() as $tangleRequest){
+            $tags = $tags + $tangleRequest->getTags();
+        }
+        
+        $tags = array_unique($tags);
+        
+        $tagsJsonArray = array();
+        
+        foreach($tags as $tag){
+            $tagsJsonArray[] = array(
+                                    'id' => $tag->getId(),
+                                    'name' => $tag->getName()
+                                );
+        }
+        
+        $response = new JsonResponse();
+        $response->setData(array('count' => sizeof($tagsJsonArray), 'tags' => $tagsJsonArray));
         
         return $response;
     }
