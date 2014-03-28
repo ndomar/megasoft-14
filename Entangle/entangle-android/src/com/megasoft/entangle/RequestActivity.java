@@ -13,45 +13,65 @@ import android.widget.EditText;
 
 import com.megasoft.requests.PostRequest;
 
+
+
+
+/* intent is required to be redirected to this activity with sessionId and tangleId
+*/
+
+
 public class RequestActivity extends Activity{
 
-	 EditText body   = (EditText) findViewById(R.id.editText2);
-	 EditText title   = (EditText) findViewById(R.id.editText1);
-    Button Post    = (Button) findViewById(R.id.button1);
+	 EditText description   = (EditText) findViewById(R.id.editText2);
+	 EditText requestedPrice   = (EditText) findViewById(R.id.editText5);
+	 EditText date   = (EditText) findViewById(R.id.editText1);
+	 EditText deadLine   = (EditText) findViewById(R.id.editText4);
     EditText tags   = (EditText) findViewById(R.id.editText3);
+    Button Post    = (Button) findViewById(R.id.button1);
     final Activity self = this;
-
-	
+    
+    /*this method create json object and send it through 
+     PostREquest 
+     
+     */
+ 	
 	protected void onCreate(Bundle savedInstanceState) {
-		Intent intent = getIntent();
-		int tangleID = intent.getIntExtra("tangleID" , 0);
+		Intent previousIntent = getIntent();
+		int tangleID = previousIntent.getIntExtra("tangleID" , 0);
+		String sessionId = previousIntent.getStringExtra("sessionId");
+		
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_request);
 		
 		JSONObject json = new JSONObject();
         try {
-            json.put("description" , body );
+            json.put("description" , description );
+            json.put("requestedPrice" , requestedPrice );
+            json.put("date" , date );
+            json.put("deadLine" , deadLine );
             json.put("tags", tags);
-            json.put("title", title);
+            
            
             
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        //Creating a new Post Request
+        
        PostRequest request = new PostRequest("http://entangle2.io/tangle/" + tangleID + "/request"){
             protected void onPostExecute(String response) {  
                  if( this.getStatusCode() == 201 ){
-                     //viewSuccessMessage(response);
+                     //redirection
                   }else if( this.getStatusCode() == 400 ) {
                      // showErrorMessage();
                   }
              }
         };
         request.setBody(json); 
-      //  request.addHeader("X", "Hi"); 
+		request.addHeader("X-SESSION-ID", sessionId);
         request.execute();
+      
 	}
 
 	@Override

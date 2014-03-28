@@ -10,5 +10,8 @@
     <string name="tag">Add tags</string>
     <string name="title_activity_request">RequestActivity</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title">Request\'s title</string>
+    <string name="date">Date</string>
+    <string name="deadLine">Expected deadline</string>
+    <string name="price">Requested price</string>
+    
 </resources>
