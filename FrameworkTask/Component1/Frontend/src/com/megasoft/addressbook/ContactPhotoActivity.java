@@ -14,12 +14,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.megasoft.requests.PostImageRequest;
+import com.sun.xml.internal.fastinfoset.algorithm.IntEncodingAlgorithm;
 
 public class ContactPhotoActivity extends Activity {
 	
 	private final static int RESULT_LOAD_IMAGE = 1;
 	
 	String imagePath;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,6 @@ public class ContactPhotoActivity extends Activity {
 		 Intent i = new Intent(
                  Intent.ACTION_PICK,
                  android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-          
          startActivityForResult(i, RESULT_LOAD_IMAGE);
 	}
 	
