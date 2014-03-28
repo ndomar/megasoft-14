@@ -45,7 +45,7 @@ class Transaction
     /**
      * @var Notification[]
      * 
-     * @ORM\OneToMany(targetEntity="TransactionNotification", mappedBy="transaction")
+     * @ORM\OneToMany(targetEntity="TransactionNotification", mappedBy="transaction", cascade={"persist"})
      */
     private $notifications;
     
@@ -145,7 +145,7 @@ class Transaction
     public function addNotification(\Megasoft\EntangleBundle\Entity\TransactionNotification $notifications)
     {
         $this->notifications[] = $notifications;
-
+        $notifications->setTransaction($this);
         return $this;
     }
 

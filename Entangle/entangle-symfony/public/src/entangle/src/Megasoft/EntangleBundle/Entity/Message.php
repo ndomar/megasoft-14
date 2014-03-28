@@ -31,7 +31,7 @@ class Message
     /**
      * @var Notification[]
      * 
-     * @ORM\OneToMany(targetEntity="NewMessageNotification", mappedBy="message")
+     * @ORM\OneToMany(targetEntity="NewMessageNotification", mappedBy="message", cascade={"persist"})
      */
     private $notifications;
     
@@ -164,7 +164,7 @@ class Message
     public function addNotification(\Megasoft\EntangleBundle\Entity\NewMessageNotification $notifications)
     {
         $this->notifications[] = $notifications;
-
+        $notifications->setMessage($this);
         return $this;
     }
 

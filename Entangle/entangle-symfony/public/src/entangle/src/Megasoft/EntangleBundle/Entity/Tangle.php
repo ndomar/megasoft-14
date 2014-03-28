@@ -38,21 +38,21 @@ class Tangle
     /**
      *
      * @var Request[]
-     * @ORM\OneToMany(targetEntity="Request", mappedBy="tangle")
+     * @ORM\OneToMany(targetEntity="Request", mappedBy="tangle" , cascade={"persist"})
      */
     private $requests;
     
     /**
      *
      * @var Claim[]
-     * @ORM\OneToMany(targetEntity="Claim", mappedBy="tangle")
+     * @ORM\OneToMany(targetEntity="Claim", mappedBy="tangle" , cascade={"persist"})
      */
     private $claims;
     
     /**
      * @var UserTangle[]
      * 
-     * @ORM\OneToMany(targetEntity="UserTangle", mappedBy="tangle")
+     * @ORM\OneToMany(targetEntity="UserTangle", mappedBy="tangle", cascade={"persist"})
      */
     private $userTangles;
 
@@ -130,7 +130,7 @@ class Tangle
     public function addRequest(\Megasoft\EntangleBundle\Entity\Request $requests)
     {
         $this->requests[] = $requests;
-
+        $requests->setTangle($this);
         return $this;
     }
 
@@ -163,7 +163,7 @@ class Tangle
     public function addClaim(\Megasoft\EntangleBundle\Entity\Claim $claims)
     {
         $this->claims[] = $claims;
-
+        $claims->setTangle($this);
         return $this;
     }
 
@@ -196,7 +196,7 @@ class Tangle
     public function addUserTangle(\Megasoft\EntangleBundle\Entity\UserTangle $userTangles)
     {
         $this->userTangles[] = $userTangles;
-
+        $userTangles->setTangle($this);
         return $this;
     }
 

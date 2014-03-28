@@ -29,9 +29,9 @@ class Tag
     private $name;
     
     /**
-     * @var Request
+     * @var Request[]
      * 
-     * @ORM\ManyToMany(targetEntity="Request", mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity="Request", mappedBy="tags", cascade={"persist"})
      */
     private $requests;
 
@@ -84,8 +84,8 @@ class Tag
      */
     public function addRequest(\Megasoft\EntangleBundle\Entity\Request $requests)
     {
-        $this->requests[] = $requests;
-
+        //$this->requests[] = $requests;
+        throw new Exception('Not implemented');
         return $this;
     }
 
