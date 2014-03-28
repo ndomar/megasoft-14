@@ -49,16 +49,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:entries="@array/spinnerChoice"
-                android:prompt="@string/spinner" />
+                android:prompt="@string/spinner"
+                android:spinnerMode="dropdown" />
         </LinearLayout>
 
         <EditText
             android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:hint="@string/fullTextFilter"
             android:inputType="text"
             android:textSize="14sp" />
+
+        <Spinner
+            android:id="@+id/choiceSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:spinnerMode="dropdown"
+            android:visibility="invisible" />
     </LinearLayout>
 
     <ScrollView

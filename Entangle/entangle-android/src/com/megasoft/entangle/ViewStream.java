@@ -1,21 +1,27 @@
 package com.megasoft.entangle;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.megasoft.requests.GetRequest;
 
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Spinner;
@@ -54,6 +60,69 @@ public class ViewStream extends Activity {
 	private String sessionId;
 
 	/**
+	 * The EditText used for full text search
+	 */
+	private EditText text;
+
+	/**
+	 * The drop down list used to choose the type of filtering
+	 */
+	private Spinner spinner1;
+
+	/**
+	 * The drop down list used to choose the tag/user to filter the stream with
+	 */
+	private Spinner spinner2;
+
+	/**
+	 * The adapter used to set the data of the second drop down list
+	 */
+	private ArrayAdapter<String> dataAdapter;
+
+	/**
+	 * This hashMap is used to map user/tag to its id
+	 */
+	private HashMap<String, Integer> idHashMap;
+
+	/**
+	 * This int is used to differentiate whether it tag or user filtering
+	 */
+	private int type;
+
+	/**
+	 * This is used to set the behavior of the EditText used in full text search
+	 */
+	private TextWatcher watcher = new TextWatcher() {
+		@Override
+		public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+				int arg3) {
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+				int arg3) {
+		}
+
+		/**
+		 * This method is used to send a request to filter with full text search
+		 * given the text
+		 */
+		@Override
+		public void afterTextChanged(Editable arg0) {
+			String fullText = text.getText().toString();
+			if (fullText != null
+					&& spinner1.getSelectedItem() != null
+					&& spinner1.getSelectedItem().toString() != null
+					&& spinner1.getSelectedItem().toString()
+							.equals("Full Text Search")) {
+				sendFilteredRequest(rootResource + "tangle/" + getTangleId()
+						+ "/request?fulltext="
+						+ (fullText.trim().replace(' ', '+')));
+			}
+		}
+	};
+
+	/**
 	 * This method is called when the activity starts , it sets the attributes
 	 * and redirections of all the views in this activity
 	 * 
@@ -68,7 +137,7 @@ public class ViewStream extends Activity {
 		sendStreamRequest();
 		setRedirections();
 		addListenerOnSpinnerItemSelection();
-		// setEditableViews();
+		setEditableView();
 	}
 
 	/**
@@ -106,11 +175,14 @@ public class ViewStream extends Activity {
 		}
 	}
 
-	// private void setEditableViews() {
-	// EditText tag = (EditText)findViewById(R.id.tag);
-	// EditText user = (EditText)findViewById(R.id.user);
-	// EditText fullText = (EditText)findViewById(R.id.text);
-	// }
+	/**
+	 * This method is used to add a listener to the EditText used in filtering
+	 * with full text search
+	 */
+	private void setEditableView() {
+		text = (EditText) findViewById(R.id.text);
+		text.addTextChangedListener(watcher);
+	}
 
 	/**
 	 * This method is called to set a listener to the filtering options drop
@@ -118,9 +190,14 @@ public class ViewStream extends Activity {
 	 */
 	private void addListenerOnSpinnerItemSelection() {
 
-		Spinner spinner1 = (Spinner) findViewById(R.id.filterSpinner);
-		spinner1.setOnItemSelectedListener(new SpinnerListener());
-
+		spinner1 = (Spinner) findViewById(R.id.filterSpinner);
+		spinner2 = (Spinner) findViewById(R.id.choiceSpinner);
+		if (spinner1 != null) {
+			spinner1.setOnItemSelectedListener(new SpinnerListener1());
+		}
+		if (spinner2 != null) {
+			spinner2.setOnItemSelectedListener(new SpinnerListener2());
+		}
 	}
 
 	/**
@@ -129,7 +206,7 @@ public class ViewStream extends Activity {
 	 */
 	private void sendStreamRequest() {
 		GetRequest getStream = new GetRequest(rootResource + "tangle/"
-				+ tangleId + "/request") {
+				+ getTangleId() + "/request") {
 			protected void onPostExecute(String res) {
 				if (!this.hasError() && res != null) {
 					setTheLayout(res);
@@ -140,7 +217,7 @@ public class ViewStream extends Activity {
 				}
 			}
 		};
-		getStream.addHeader("X-SESSION-ID", sessionId);
+		getStream.addHeader("x-session-id", getSessionId());
 		getStream.execute();
 	}
 
@@ -154,7 +231,6 @@ public class ViewStream extends Activity {
 	private void setTheLayout(String res) {
 		try {
 			JSONObject response = new JSONObject(res);
-			System.out.println(res);
 			if (response != null) {
 				int count = response.getInt("count");
 				JSONArray requestArray = response.getJSONArray("requests");
@@ -341,31 +417,270 @@ public class ViewStream extends Activity {
 		return true;
 	}
 
-}
-
-/**
- * This class is used to customize the action done when an element in drop down
- * list of the filtering options is chosen
- */
-class SpinnerListener implements OnItemSelectedListener {
+	/**
+	 * This method is used to send a get request to get the stream filtered/not
+	 * filtered
+	 * 
+	 * @param url
+	 *            , is the Url to which the request is going to be sent
+	 */
+	public void sendFilteredRequest(String url) {
+		GetRequest getStream = new GetRequest(url) {
+			protected void onPostExecute(String res) {
+				if (!this.hasError() && res != null) {
+					LinearLayout layout = (LinearLayout) findViewById(R.id.l1);
+					layout.removeAllViews();
+					setTheLayout(res);
+				} else {
+					Toast.makeText(getBaseContext(),
+							"Sorry, There is a problem in loading the stream",
+							Toast.LENGTH_LONG).show();
+				}
+			}
+		};
+		getStream.addHeader("x-session-id", getSessionId());
+		getStream.execute();
+	}
 
 	/**
-	 * This method is used to override the behavior of the drop down list when
-	 * selecting an element
+	 * This method is used to send a request to get all users/tags
+	 * 
+	 * @param url
+	 *            , , is the Url to which the request is going to be sent
 	 */
-	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int pos,
-			long id) {
-		Toast.makeText(
-				parent.getContext(),
-				"OnItemSelectedListener : "
-						+ parent.getItemAtPosition(pos).toString(),
-				Toast.LENGTH_SHORT).show();
+	public void sendGetAllRequest(String url) {
+		GetRequest getStream = new GetRequest(url) {
+			protected void onPostExecute(String res) {
+				if (!this.hasError() && res != null) {
+					if (type == 0)
+						setSpinnerTag(res);
+					else
+						setSpinnerRequester(res);
+				} else {
+					Toast.makeText(getBaseContext(),
+							"Sorry, There is a problem in loading the stream",
+							Toast.LENGTH_LONG).show();
+				}
+			}
+		};
+		if (type == 0) {
+			getStream.addHeader("x-session-id", getSessionId());
+		} else {
+			getStream.addHeader("sessionid", getSessionId());
+		}
+		getStream.execute();
 	}
 
-	@Override
-	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
+	/**
+	 * This method is used to handle the response of getting all tags
+	 * 
+	 * @param res
+	 *            , is the response of the request
+	 */
+	private void setSpinnerTag(String res) {
+		try {
+			JSONObject response = new JSONObject(res);
+			if (response != null) {
+				int count = response.getInt("count");
+				JSONArray tagArray = response.getJSONArray("tags");
+				if (count > 0 && tagArray != null) {
+					idHashMap = new HashMap<String, Integer>();
+					ArrayList<String> list = new ArrayList<String>();
+					list.add("Please choose a tag");
+					for (int i = 0; i < count && i < tagArray.length(); i++) {
+						JSONObject tag = tagArray.getJSONObject(i);
+						if (tag != null) {
+							String tagName = tag.getString("name");
+							int tagId = tag.getInt("id");
+							idHashMap.put(tagName, tagId);
+							list.add(tagName);
+						}
+					}
+					setAdapterData(list);
+				} else {
+					Toast.makeText(getBaseContext(),
+							"Sorry, There are no tags in this tangle",
+							Toast.LENGTH_LONG).show();
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 
+	/**
+	 * This method is used to handle the response of getting all users
+	 * 
+	 * @param res
+	 *            , is the response of the request
+	 */
+	private void setSpinnerRequester(String res) {
+		try {
+			JSONObject response = new JSONObject(res);
+			if (response != null) {
+				int count = response.getInt("count");
+				JSONArray usersArray = response.getJSONArray("users");
+				if (count > 0 && usersArray != null) {
+					idHashMap = new HashMap<String, Integer>();
+					ArrayList<String> list = new ArrayList<String>();
+					list.add("Please choose a user");
+					for (int i = 0; i < count && i < usersArray.length(); i++) {
+						JSONObject user = usersArray.getJSONObject(i);
+						if (user != null) {
+							String userName = user.getString("userName");
+							int userId = user.getInt("userId");
+							idHashMap.put(userName, userId);
+							list.add(userName);
+						}
+					}
+					setAdapterData(list);
+				} else {
+					Toast.makeText(getBaseContext(),
+							"Sorry, There are no users in this tangle",
+							Toast.LENGTH_LONG).show();
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * This method is used to set the data of the second drop down list
+	 * (tags/users)
+	 * 
+	 * @param list
+	 *            , is the data to be put in the drop down list
+	 */
+	private void setAdapterData(ArrayList<String> list) {
+		dataAdapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, list);
+		dataAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner2.setAdapter(dataAdapter);
+		text.setLayoutParams(new LinearLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, 0));
+		spinner2.setVisibility(0);
+		spinner2.setLayoutParams(new LinearLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+	}
+
+	/**
+	 * This class is used to customize the action done when an element in drop
+	 * down list of the filtering options is chosen
+	 */
+	class SpinnerListener1 implements OnItemSelectedListener {
+
+		/**
+		 * This method is used to override the behavior of the drop down list
+		 * when selecting an element
+		 */
+		@Override
+		public void onItemSelected(AdapterView<?> parent, View view, int pos,
+				long id) {
+			Toast.makeText(
+					parent.getContext(),
+					"You choosed to filter with : "
+							+ parent.getItemAtPosition(pos).toString(),
+					Toast.LENGTH_SHORT).show();
+			if (parent.getSelectedItem() != null
+					&& parent.getSelectedItem().toString() != null) {
+				String selection = parent.getSelectedItem().toString();
+				if (selection.equals("Full Text Search")) {
+					caseFullText();
+					caseFullTextOrNone();
+				} else {
+					String url = rootResource;
+					disablingTextEditor();
+					if (selection.equals("None")) {
+						caseFullTextOrNone();
+						url += "tangle/" + getTangleId() + "/request";
+						sendFilteredRequest(url);
+					} else if (selection.equals("Tag")) {
+						url += "tag";
+						type = 0;
+						sendGetAllRequest(url);
+					} else if (selection.equals("Requester Name")) {
+						url += "tangle/" + getTangleId() + "/users";
+						type = 1;
+						sendGetAllRequest(url);
+					}
+				}
+			}
+		}
+
+		/**
+		 * This method is to make the second drop down list invisible and set
+		 * the EditText to be visible
+		 */
+		private void caseFullTextOrNone() {
+			spinner2.setLayoutParams(new LinearLayout.LayoutParams(
+					LayoutParams.MATCH_PARENT, 0));
+			text.setVisibility(0);
+			text.setLayoutParams(new LinearLayout.LayoutParams(
+					LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		}
+
+		/**
+		 * This method is used to make the EditText enabled
+		 */
+		private void caseFullText() {
+			text.setEnabled(true);
+			text.setHint("Write a Full Text to filter with");
+		}
+
+		/**
+		 * This method is used to set the EditText disabled
+		 */
+		private void disablingTextEditor() {
+			text.setText("");
+			text.setEnabled(false);
+			text.setHint("Choose Full Text Search to be able to write :)");
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> arg0) {
+			// TODO Auto-generated method stub
+		}
+
+	}
+
+	/**
+	 * This class is used to customize the action done when an element in the
+	 * second drop down list (tags/users) is chosen
+	 */
+	class SpinnerListener2 implements OnItemSelectedListener {
+
+		/**
+		 * This method is used to override the behavior of the second drop down
+		 * list when selecting an item from it
+		 */
+		@Override
+		public void onItemSelected(AdapterView<?> parent, View view, int pos,
+				long id) {
+			if (parent.getSelectedItem() != null
+					&& parent.getSelectedItem().toString() != null) {
+				String selection = parent.getSelectedItem().toString();
+				if (!selection.startsWith("Please choose a")) {
+					String url = rootResource;
+					if (idHashMap != null) {
+						int keyId = idHashMap.get(selection);
+						if (type == 0) {
+							url += "/tangle/" + getTangleId()
+									+ "/request?tagid=" + keyId;
+						} else if (type == 1) {
+							url += "/tangle/" + getTangleId()
+									+ "/request?userid=" + keyId;
+						}
+						sendFilteredRequest(url);
+					}
+				}
+			}
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> arg0) {
+			// TODO Auto-generated method stub
+		}
+	}
 }
