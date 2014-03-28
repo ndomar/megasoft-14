@@ -98,7 +98,8 @@ public class ContactActivity extends Activity implements OnClickListener {
 				offID = obj.getInt("offererID");
 			}
 			if (req.getStatusCode() != 200) {
-				UI.buildDialog(getApplicationContext(), "no internet connection", "please make sure you have");
+				UI.buildDialog(getApplicationContext(),
+						"no internet connection", "please make sure you have");
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
