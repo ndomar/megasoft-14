@@ -1,0 +1,8 @@
+# app/config/mailerConfig.yml
+swiftmailer:
+    transport:  smtp
+    encryption: ssl
+    auth_mode:  login
+    host:       smtp.gmail.com
+    username:   mahmoudgamaleid@gmail.com
+    password:   your_password
