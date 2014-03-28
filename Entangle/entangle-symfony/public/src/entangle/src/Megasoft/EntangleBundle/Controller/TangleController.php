@@ -136,7 +136,7 @@ class TangleController extends Controller
         
         foreach($json['emails'] as $email){
             
-            if(!$this->isValidEmail($email) || $this->isTangleMember($email, $tangleId) ){
+            if(!$this->isValidEmail($email) || ( !$this->isNewMember($email) && $this->isTangleMember($email, $tangleId) ) ){
                 continue;
             }
             
@@ -149,14 +149,16 @@ class TangleController extends Controller
                 if($this->isNewMember($email)){
                     $newInvitationCode->setUserId(null);
                 }else{
+                    
                     $userEmailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
-                    $userId =  $userEmailRepo->findOneByEmail($email)->getUserId();
-                    $newInvitationCode->setNewMember($userId);
+                    $user =  $userEmailRepo->findOneByEmail($email)->getUser();
+                    $newInvitationCode->setUser($user);
                 }
                 
                 $newInvitationCode->setInviterId($session->getUserId());
                 $newInvitationCode->setExpired(false);
-                $newInvitationCode->setCreated(new DateTime("NOW"));
+                $newInvitationCode->setCreated(new \DateTime("NOW"));
+                $newInvitationCode->setEmail($email);
                 
                 $this->getDoctrine()->getManager()->persist($newInvitationCode);
                 $this->getDoctrine()->getManager()->flush();
@@ -171,9 +173,10 @@ class TangleController extends Controller
             }else{
                 // TODO not this userstory
             }
+            
         }
         
-        
+        return new Response("Invitation Sent",200);
         
     }
     
