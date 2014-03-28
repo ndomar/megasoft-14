@@ -21,13 +21,29 @@ import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 
 public class InviteUsers extends Activity {
-	
+	/**
+	 * The tangle Id that we want to invite users to
+	 */
 	int tangleId;
+	
+	/**
+	 * The session Id of the currently logged in user
+	 */
 	String sessionId;
+	
+	/**
+	 * The preferences instance 
+	 */
 	SharedPreferences settings;
 	
+	/**
+	 * The Layout that contain the emails edit texts
+	 */
 	LinearLayout layout;
 	
+	/**
+	 * Arraylist of all edit texts in the layout
+	 */
 	ArrayList<EditText> editTexts;
 	
 	@Override
@@ -56,6 +72,10 @@ public class InviteUsers extends Activity {
 		return true;
 	}
 	
+	/**
+	 * The callback for adding a new email field
+	 * @param view
+	 */
 	public void addEmailField(View view){
 		
 		EditText newEditText = new EditText(this);
@@ -65,6 +85,12 @@ public class InviteUsers extends Activity {
 		layout.addView(newEditText, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 	}
 	
+	/**
+	 * The callback for the continue button. It gets all the emails and 
+	 * put them in a json and send them to an endpoint to validate and
+	 * classify them
+	 * @param view
+	 */
 	public void goToConfirmationActivity(View view){
 		JSONArray emails = new JSONArray();
 		for(EditText emailEditText : editTexts){
@@ -95,6 +121,11 @@ public class InviteUsers extends Activity {
 		postRequest.execute();
 	}
 	
+	/**
+	 * The callback of the request , opens the new activity and passes
+	 * the json response to it
+	 * @param response
+	 */
 	public void goToConfirmation(String response){ 
 		Intent inviteUserConfirmation = new Intent(this,InviteUsersConfirmations.class);
 		inviteUserConfirmation.putExtra("com.megasoft.entangle.emails",response);

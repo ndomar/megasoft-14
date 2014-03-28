@@ -11,6 +11,11 @@ use Megasoft\EntangleBundle\Entity\InvitationCode;
 
 class TangleController extends Controller
 {
+    /**
+     * Validates the existance of a certain tangle
+     * @param integer $tangleId
+     * @return boolean
+     */
     private function validateTangleId($tangleId){
         $tangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Tangle');
         if( $tangleRepo->findOneById($tangleId) == null ){
@@ -20,16 +25,32 @@ class TangleController extends Controller
         }
     }
     
+    /**
+     * Validates that the email is a valid email
+     * @param string $email
+     * @return boolean
+     */
     private function isValidEmail($email){
         return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
     }
     
+    /**
+     * checks if this email is an entangle member or not
+     * @param string $email
+     * @return boolean
+     */
     private function isNewMember($email){
         $userEmailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
         $mail =  $userEmailRepo->findOneByEmail($email);
         return ($mail == null);
     }
     
+    /**
+     * Checks if a certain email belongs to a user that is in the tangle
+     * @param integer $email
+     * @param integer $tangleId
+     * @return boolean
+     */
     private function isTangleMember($email,$tangleId){
         $userEmailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
         $userTangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserTangle');
@@ -39,6 +60,14 @@ class TangleController extends Controller
                 
     }
     
+    /**
+     * An endpoint that gets a list of emails and classify them to
+     * newMember , Entangle Member not in the tangle , already in the tangle
+     * and invalid emails
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param integer $tangleId
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     */
     public function checkMembershipAction(Request $request,$tangleId)
     {
         $sessionId = $request->headers->get('X-SESSION-ID');
@@ -98,6 +127,13 @@ class TangleController extends Controller
         return $jsonResponse;
     }
 
+    /**
+     * An endpoint to invite a list of emails to join a certain tangle
+     * it creates the invitation code and send it to the user
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param integer $tangleId
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function inviteAction(Request $request, $tangleId)
     {
         
@@ -180,6 +216,11 @@ class TangleController extends Controller
         
     }
     
+    /**
+     * Generates a random string of length $len
+     * @param integer $len
+     * @return string
+     */
     private function generateRandomString($len){
         $ret = '';
         $seed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";

@@ -79,6 +79,10 @@ public class InviteUsersConfirmations extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	/**
+	 * Parse the received response from the callee intent into the classification
+	 * received in the json
+	 */
 	private void parseResponse() {
 		try {
 			JSONObject json = new JSONObject(this.response);
@@ -142,6 +146,11 @@ public class InviteUsersConfirmations extends Activity {
 		
 	}
 	
+	/**
+	 * The callback for the invite point , gets all the valid and not in the
+	 * tangle emails and send them to the server to send an invitation to them
+	 * @param view
+	 */
 	public void invite(View view){
 		JSONArray finalEmails = new JSONArray();
 		
