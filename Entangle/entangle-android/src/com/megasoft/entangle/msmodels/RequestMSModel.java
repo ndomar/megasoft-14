@@ -116,6 +116,24 @@ public class RequestMSModel implements MSModel{
 		return userId;
 	}
 	
+	public Promise acceptOffer(int offerId) {
+		final Promise promise = new Promise();
+			PostRequest request = new PostRequest(MSModel.rootResource + resource + "/accept/" + offerId) {
+				
+				protected void onPostExecute(String res) {
+	
+					if (this.getStatusCode() >= 200 && this.getStatusCode() < 300){
+							promise.resolve("Created");
+					} else { 
+						promise.reject(this.getErrorMessage());
+					}
+				}
+			};
+			request.addHeader("X-SESSION-ID", sessionId);
+			request.execute();
+		return promise;
+	}
+	
 	protected void setId(int id) {
 		this.id = id;
 	}
