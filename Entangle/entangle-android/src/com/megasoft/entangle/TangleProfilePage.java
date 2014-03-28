@@ -305,6 +305,9 @@ public class TangleProfilePage extends Activity {
 			public void onClick(View v) {
 				int tmpId = ((Button) v).getId();
 				Intent intent2 = new Intent(getBaseContext(), Profile.class);
+				intent2.putExtra("tangleId", getTangleId());
+				intent2.putExtra("tangleName", getTangleName());
+				intent2.putExtra("sessionId", getSessionId());
 				intent2.putExtra("requesterId", tmpId);
 				startActivity(intent2);
 			}
@@ -323,8 +326,10 @@ public class TangleProfilePage extends Activity {
 			@Override
 			public void onClick(View v) {
 				int tmpId = ((Button) v).getId();
-				Intent intent2 = new Intent(getBaseContext(),
-						RequestPage.class);
+				Intent intent2 = new Intent(getBaseContext(), RequestPage.class);
+				intent2.putExtra("tangleId", getTangleId());
+				intent2.putExtra("tangleName", getTangleName());
+				intent2.putExtra("sessionId", getSessionId());
 				intent2.putExtra("requestId", tmpId);
 				startActivity(intent2);
 			}
@@ -367,6 +372,9 @@ public class TangleProfilePage extends Activity {
 						intent = new Intent(getBaseContext(), Class
 								.forName("com.megasoft.entangle."
 										+ activityName));
+						intent.putExtra("tangleId",getTangleId());
+						intent.putExtra("tangleName",getTangleName() );
+						intent.putExtra("sessionId", getSessionId());
 						startActivity(intent);
 					}
 				} catch (ClassNotFoundException e) {
