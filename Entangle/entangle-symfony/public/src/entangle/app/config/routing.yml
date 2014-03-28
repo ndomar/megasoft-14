@@ -1,0 +1,4 @@
+megasoft_entangle:
+    resource: "@MegasoftEntangleBundle/Resources/config/routing.yml"
+    prefix:   /
+
