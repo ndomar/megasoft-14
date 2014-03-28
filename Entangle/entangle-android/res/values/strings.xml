@@ -18,5 +18,16 @@
     <string name="title_activity_search">Filter Results</string>
     <string name="title_activity_requester_profile">RequesterProfile</string>
     <string name="title_activity_request_information">RequestInformation</string>
+    <string name="tagFilter">Write a tag to filter with</string>
+    <string name="requesterFilter">Write a requester name to filter with</string>
+    <string name="fullTextFilter">Write a Full Text to filter with</string>
+    <string name="spinner">Filtering options</string>
+
+    <string-array name="spinnerChoice">
+        <item>None</item>
+        <item>By Tag</item>
+        <item>By Requester Name</item>
+        <item>By Full Text Search</item>
+    </string-array>
 
 </resources>
