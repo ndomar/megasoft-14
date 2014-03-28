@@ -23,30 +23,34 @@ class DefaultController extends Controller
 {
      public function Search(Request $request)
 {
+ $doctrine = $this->getDoctrine();
+$repo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
 $json = $request->getContent();
 $json_array = json_decode($json,true);
 $offerId= $json_array['id'];
 $offer= $repo->findOneBy(array('id',$offerId));
+$price=$offer->getRequestedPrice();
+$date=$offer->getDate();
+$deadline=$offer->getExpectedDeadline();
+$description=$offer->getDescription();
 $response = new JsonResponse();
-$response->setData(array('sessionId'=>$sessionId));
+$response->setData(array('price'=>$price));
+$response->setData(array('date'=>$date));
+$response->setData(array('deadline'=>$deadline));
+$response->setData(array('description'=>$description));
 $response->setStatusCode(201);
 return $response;
 }
  public function Update(Request $request)
 {
+ $doctrine = $this->getDoctrine();
+$repo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
 $json = $request->getContent();
 $json_array = json_decode($json,true);
-$username = $json_array['username'];
-$password = md5($json_array['password']);
-$sessionId = $this->generate(20);
-$user = new User();
-$user->setPassword($password);
-$user->setUsername($username);
-$user->setSessionId($sessionId);
-$this->getDoctrine()->getManager()->persist($user);
-$this->getDoctrine()->getManager()->flush();
+$offerId = $json_array['id'];
+$offer= $repo->findOneBy(array('id',$offerId));
+$offer->setStatus(2);
 $response = new JsonResponse();
-$response->setData(array('sessionId'=>$sessionId));
 $response->setStatusCode(201);
 return $response;
 }
