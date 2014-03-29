@@ -8,7 +8,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class TangleController extends Controller
 {
-    
+    /**
+      * Validates that the request has correct format, session Id is active and of a user and that the user is in the tangle
+      * @param \Symfony\Component\HttpFoundation\Request $request
+      * @param integer $tangleId
+      * @return \Symfony\Component\HttpFoundation\Response, null if no error exists
+      */
     private function verifyUser($request, $tangleId){
         $sessionId = $request->headers->get('X-SESSION-ID');
         
@@ -20,7 +25,7 @@ class TangleController extends Controller
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
-        if($session == null){
+        if($session == null || $session->getExpired()){
             return new Response('Bad Request', 400);
         }
         
@@ -35,6 +40,12 @@ class TangleController extends Controller
         return null;
     }
     
+    /**
+      * An endpoint to filter requests of a specific tangle by requester, tag, prefix of requester's name or description
+      * @param \Symfony\Component\HttpFoundation\Request $request
+      * @param integer $tangleId
+      * @return \Symfony\Component\HttpFoundation\Response
+      */
     public function filterRequestsAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId)
     { 
         $verification = $this->verifyUser($request, $tangleId);
@@ -101,10 +112,16 @@ class TangleController extends Controller
         return $response;
     }
     
+    /**
+      * An endpoint to return the list of tags in a specific tangle
+      * @param \Symfony\Component\HttpFoundation\Request $request
+      * @param integer $tangleId
+      * @return \Symfony\Component\HttpFoundation\Response
+      */
     public function allTagsAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId){
         $verification = $this->verifyUser($request, $tangleId);
         
-        if($verification != null){
+        if($verification->getStatusCode() != null){
             return $verification;
         }
         
