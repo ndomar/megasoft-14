@@ -1,8 +1,14 @@
 megasoft_entangle_homepage:
-    pattern:  /tangle/{tangleId}/request?userid={userId}&tagid={tagId}&fulltext={fullText}&usernameprefix={usernamePrefix}
-    defaults: { _controller: MegasoftEntangleBundle:Tangle:filterRequests }
+    pattern:  /
+    defaults: { _controller: MegasoftEntangleBundle:Default:index }
     methods: [GET]
     
-    pattern: /tangle/{tangleId}/tag
+filter_requests_in_tangle:
+    pattern:  /tangle/{tangleId}/request
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:filterRequests }
+    methods: [GET]
+
+fetch_tags_in_tangle:
+    pattern:  /tangle/{tangleId}/tag
     defaults: { _controller: MegasoftEntangleBundle:Tangle:allTags}
     methods: [GET]

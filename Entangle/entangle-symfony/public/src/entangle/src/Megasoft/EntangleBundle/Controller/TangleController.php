@@ -2,11 +2,9 @@
 
 namespace Megasoft\EntangleBundle\Controller;
 
-use Megasoft\EntangleBundle\Entity\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Tests\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class TangleController extends Controller
 {
@@ -19,15 +17,16 @@ class TangleController extends Controller
         }
         
         $doctrine = $this->getDoctrine();
-        $sessionRepo = $doctrine->getRepository('EntangleBundle:Session');
-        $session = $sessionRepo->getOneBy(array('sessionId' => $sessionId));
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if($session == null){
             return new Response('Bad Request', 400);
         }
         
         $user = $session->getUser();
-        $userTangleRepo = $doctrine->getRepository('EntangleBundle:UserTangle');
-        $userTangle = $userTangleRepo->getOneBy(array('tangleId' => $tangleId, 'userId' => $user->getId()));
+        $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $user->getId()));
         
         if($userTangle == null){
             return new Response('Unauthorized', 401);
@@ -36,7 +35,7 @@ class TangleController extends Controller
         return null;
     }
     
-    public function filterRequestsAction(Request $request, $tangleId)
+    public function filterRequestsAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId)
     { 
         $verification = $this->verifyUser($request, $tangleId);
         
@@ -56,8 +55,9 @@ class TangleController extends Controller
             $criteria['description'] = $fullText;
         }
         
-        $requestRepo = $doctrine->getRepository('EntangleBundle:Request');
-        $requests = $requestRepo->getBy($criteria);
+        $doctrine = $this->getDoctrine();
+        $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+        $requests = $requestRepo->findBy($criteria);
         
         $tagId = $request->query->get('tagid', null);
         $usernamePrefix = $request->query->get('usernameprefix', null);
@@ -81,17 +81,17 @@ class TangleController extends Controller
             
             if($usernamePrefix != null){
                 $user = $tangleRequest->getUser();
-                if(!startsWith($user->getName(), $usernamePrefix)){
+                if(!(\substr($user->getName(), 0, strlen($usernamePrefix)) == $usernamePrefix)){
                     continue;
                 }
             }
             
             $requestsJsonArray[] = array(
-                                        'id' => $request->getId(),
-                                        'username' => $request->getUser()->getName(),
-                                        'userId' => $request->getUserId(),
-                                        'description' => $request->getDescription(),
-                                        'offersCount' => \sizeof($request->getOffers())
+                                        'id' => $tangleRequest->getId(),
+                                        'username' => $tangleRequest->getUser()->getName(),
+                                        'userId' => $tangleRequest->getUserId(),
+                                        'description' => $tangleRequest->getDescription(),
+                                        'offersCount' => \sizeof($tangleRequest->getOffers())
                                     );
         }
         
@@ -101,7 +101,7 @@ class TangleController extends Controller
         return $response;
     }
     
-    public function allTagsAction(Request $request, $tangleId){
+    public function allTagsAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId){
         $verification = $this->verifyUser($request, $tangleId);
         
         if($verification != null){
@@ -109,12 +109,12 @@ class TangleController extends Controller
         }
         
         $doctrine = $this->getDoctrine();
-        $tangleRepo = $doctrine->getRepository('EntangleBundle:Tangle');
-        $tangle = $tangleRepo->getOneBy(array('id' => $tangleId));
+        $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
+        $tangle = $tangleRepo->findOneBy(array('id' => $tangleId));
         $tags = array();
         
         foreach($tangle->getRequests() as $tangleRequest){
-            $tags = $tags + $tangleRequest->getTags();
+            $tags = array_merge($tags, $tangleRequest->getTags()->toArray());
         }
         
         $tags = array_unique($tags);
