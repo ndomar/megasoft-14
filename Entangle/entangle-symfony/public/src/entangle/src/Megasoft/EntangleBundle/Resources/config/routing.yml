@@ -1,6 +1,21 @@
 megasoft_entangle_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: MegasoftEntangleBundle:Default:index }
+    
+    getSenderMail:
+    pattern: /getSenderMail/{sessionId}
+    defaults: { _controller: MegasoftEntangleBundle:Claim:getSenderMail }
+    methods: [GET]
+    
+    getRecieverMail:
+    pattern: /getRecieverMail/{tangleId}
+    defaults: { _controller: MegasoftEntangleBundle:Claim:getRecieverMail }
+    methods: [GET]
+    
+    createClaim:
+    pattern: /claim/{tangleId}
+    defaults: { _controller: MegasoftEntangleBundle:Claim:createClaim }
+    methods: [POST]
 
 #megasoft_entangle_test:
 #    pattern:  /test
