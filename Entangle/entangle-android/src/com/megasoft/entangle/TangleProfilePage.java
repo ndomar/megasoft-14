@@ -144,29 +144,27 @@ public class TangleProfilePage extends Activity {
 	 * This method is called is called to set the attributes of the activity
 	 * 
 	 * @param savedInstanceState
-	 *            , is the passed bundle from the previous activity
+	 *            , is the saved bundle of the activity
 	 */
 	@SuppressLint("NewApi")
 	private void setAttributes(Bundle savedInstanceState) {
-		if (savedInstanceState != null) {
-			if (!savedInstanceState.containsKey("sessionId")) {
+		if (getIntent() != null) {
+			if (!getIntent().hasExtra("sessionId")) {
 				intent = new Intent(this, MainActivity.class);
 				// to be changed to login activity
 			}
-			if (!savedInstanceState.containsKey("tangleId")) {
+			if (!getIntent().hasExtra("tangleId")) {
 				intent = new Intent(this, MainActivity.class);
 				// to be changed to tangles' list activity
 			}
-			if (!savedInstanceState.containsKey("tangleName")) {
+			if (!getIntent().hasExtra("tangleName")) {
 				intent = new Intent(this, MainActivity.class);
 				// to be changed to tangles' list activity
 			}
-			tangleId = savedInstanceState.getInt("tangleId", 0);
+			tangleId = getIntent().getIntExtra("tangleId", 0);
 			// to be changed if the API is less than 12
-			tangleName = savedInstanceState.getString("tangleName",
-					"TangleName");
-			sessionId = savedInstanceState
-					.getString("sessionId", "NoSessionId");
+			tangleName = getIntent().getStringExtra("tangleName");
+			sessionId = getIntent().getStringExtra("sessionId");
 			TextView tangle = (TextView) findViewById(R.id.tangleName);
 			tangle.setText(tangleName);
 		} else {
