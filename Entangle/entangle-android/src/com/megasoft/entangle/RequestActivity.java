@@ -22,30 +22,31 @@ import com.megasoft.requests.PostRequest;
 
 public class RequestActivity extends Activity{
 
-	 EditText description   = (EditText) findViewById(R.id.editText2);
-	 EditText requestedPrice   = (EditText) findViewById(R.id.editText5);
-	 EditText date   = (EditText) findViewById(R.id.editText1);
-	 EditText deadLine   = (EditText) findViewById(R.id.editText4);
-    EditText tags   = (EditText) findViewById(R.id.editText3);
-    Button Post    = (Button) findViewById(R.id.button1);
-    final Activity self = this;
+	 
     
     /*this method create json object and send it through 
-     PostREquest 
+     PostRequest 
      
      */
  	
 	protected void onCreate(Bundle savedInstanceState) {
 		Intent previousIntent = getIntent();
-		int tangleID = previousIntent.getIntExtra("tangleID" , 0);
-		String sessionId = previousIntent.getStringExtra("sessionId");
+		final int tangleID = previousIntent.getIntExtra("tangleID" , 0);
+		final String sessionId = previousIntent.getStringExtra("sessionId");
 		
-		
+		EditText description   = (EditText) findViewById(R.id.editText2);
+		 EditText requestedPrice   = (EditText) findViewById(R.id.editText5);
+		 EditText date   = (EditText) findViewById(R.id.editText1);
+		 EditText deadLine   = (EditText) findViewById(R.id.editText4);
+	    EditText tags   = (EditText) findViewById(R.id.editText3);
+	    Button Post    = (Button) findViewById(R.id.button1);
+	  
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_request);
 		
-		JSONObject json = new JSONObject();
+		final JSONObject json = new JSONObject();
         try {
+        	
             json.put("description" , description );
             json.put("requestedPrice" , requestedPrice );
             json.put("date" , date );
@@ -58,19 +59,26 @@ public class RequestActivity extends Activity{
             e.printStackTrace();
         }
 
-        
-       PostRequest request = new PostRequest("http://entangle2.io/tangle/" + tangleID + "/request"){
-            protected void onPostExecute(String response) {  
-                 if( this.getStatusCode() == 201 ){
-                     //redirection
-                  }else if( this.getStatusCode() == 400 ) {
-                     // showErrorMessage();
-                  }
-             }
-        };
-        request.setBody(json); 
-		request.addHeader("X-SESSION-ID", sessionId);
-        request.execute();
+        Post.setOnClickListener(new View.OnClickListener() {
+			
+			
+			public void onClick(View arg0) {
+				
+				 PostRequest request = new PostRequest("http://entangle2.io/tangle/" + tangleID + "/request"){
+			            protected void onPostExecute(String response) {  
+			                 if( this.getStatusCode() == 201 ){
+			                     //redirection
+			                  }else if( this.getStatusCode() == 400 ) {
+			                     // showErrorMessage();
+			                  }
+			             }
+			        };
+			        request.setBody(json); 
+					request.addHeader("X-SESSION-ID", sessionId);
+			        request.execute();
+			      
+			}
+		});
       
 	}
 
