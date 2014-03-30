@@ -92,7 +92,7 @@ class TangleController extends Controller
             
             if($usernamePrefix != null){
                 $user = $tangleRequest->getUser();
-                if(!(\substr($user->getName(), 0, strlen($usernamePrefix)) == $usernamePrefix)){
+                if(!(substr($user->getName(), 0, strlen($usernamePrefix)) == $usernamePrefix)){
                     continue;
                 }
             }
@@ -102,7 +102,7 @@ class TangleController extends Controller
                                         'username' => $tangleRequest->getUser()->getName(),
                                         'userId' => $tangleRequest->getUserId(),
                                         'description' => $tangleRequest->getDescription(),
-                                        'offersCount' => \sizeof($tangleRequest->getOffers())
+                                        'offersCount' => sizeof($tangleRequest->getOffers())
                                     );
         }
         
