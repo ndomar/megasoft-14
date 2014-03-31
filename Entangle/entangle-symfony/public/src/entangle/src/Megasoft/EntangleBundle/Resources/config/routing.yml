@@ -4,5 +4,7 @@ megasoft_entangle_homepage:
 
 fetch_users_in_tangle:
     pattern:  /tangle/{tangleId}/user
-    defaults: { _controller: MegasoftEntangleBundle:Default:allusers }
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:allUsers }
     methods: [GET]
+    requirements:
+        id:  \d+
