@@ -7,4 +7,4 @@ fetch_users_in_tangle:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:allUsers }
     methods: [GET]
     requirements:
-        id:  \d+
+        tangleId:  \d+
