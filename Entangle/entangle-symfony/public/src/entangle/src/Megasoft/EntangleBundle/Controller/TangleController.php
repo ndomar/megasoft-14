@@ -121,7 +121,7 @@ class TangleController extends Controller
     public function allTagsAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId){
         $verification = $this->verifyUser($request, $tangleId);
         
-        if($verification->getStatusCode() != null){
+        if($verification != null){
             return $verification;
         }
         
