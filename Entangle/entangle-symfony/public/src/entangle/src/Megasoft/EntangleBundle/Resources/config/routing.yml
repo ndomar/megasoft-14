@@ -2,6 +2,7 @@ megasoft_entangle_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: MegasoftEntangleBundle:Default:index }
 
-#megasoft_entangle_test:
-#    pattern:  /test
-#    defaults: { _controller: MegasoftEntangleBundle:Default:test }
+fetch_users_in_tangle:
+    pattern:  /tangle/{tangleId}/user
+    defaults: { _controller: MegasoftEntangleBundle:Default:allusers }
+    methods: [GET]
