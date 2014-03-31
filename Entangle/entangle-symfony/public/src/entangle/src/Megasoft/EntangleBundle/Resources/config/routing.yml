@@ -7,8 +7,12 @@ filter_requests_in_tangle:
     pattern:  /tangle/{tangleId}/request
     defaults: { _controller: MegasoftEntangleBundle:Tangle:filterRequests }
     methods: [GET]
+    requirements:
+        tangleId:  \d+
 
 fetch_tags_in_tangle:
     pattern:  /tangle/{tangleId}/tag
     defaults: { _controller: MegasoftEntangleBundle:Tangle:allTags}
     methods: [GET]
+    requirements:
+        tangleId:  \d+
