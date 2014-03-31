@@ -21,6 +21,13 @@ public class UI {
 		toast.show();
 	}
 
+	/**
+	 * this is not working currently
+	 * 
+	 * @param context
+	 * @param title
+	 * @param message
+	 */
 	public static void buildDialog(Context context, String title, String message) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -31,6 +38,6 @@ public class UI {
 		builder.setMessage(message);
 		builder.setTitle(title);
 		AlertDialog dialog = builder.create();
-		dialog.show(); // there is a bug here 
+		dialog.show(); // there is a bug here
 	}
 }

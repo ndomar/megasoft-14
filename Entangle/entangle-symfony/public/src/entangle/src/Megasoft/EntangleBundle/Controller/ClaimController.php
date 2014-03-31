@@ -10,6 +10,8 @@ class ClaimController extends Controller
 {
 
     /**
+     * this action takes claim ID as a parameter and return json object with
+     * all the details about the claim
      * @param $claimID
      * @return JsonResponse|Response
      */
@@ -34,6 +36,7 @@ class ClaimController extends Controller
     }
 
     /**
+     * this function gets the user name of a user knowing his ID
      * @param $userid
      * @return mixed
      */
@@ -45,6 +48,8 @@ class ClaimController extends Controller
 
 
     /**
+     * this Action takes message and user ID and then forwards them to sendMessage
+     *  which will use messageing system
      * @return JsonResponse|Response
      */
     public function sendAction()
@@ -62,7 +67,7 @@ class ClaimController extends Controller
 
     /**
      * this method will be invoked when we finish messaging system
-     *
+     * 
      * @param $userid
      * @param $message
      */

@@ -15,6 +15,8 @@ import com.megasoft.requests.PostRequest;
 public class Util {
 
 	/**
+	 * this checks if there is user logged in. it searches the shared
+	 * preferences to get the sessionID
 	 * 
 	 * @param context
 	 *            get the application context
@@ -31,6 +33,8 @@ public class Util {
 	}
 
 	/**
+	 * this is a template for any message to be sent in the application
+	 * 
 	 * @param userID
 	 *            recipient ID
 	 * @param message
@@ -70,6 +74,9 @@ public class Util {
 		} else {
 			UI.makeToast(context, "couldn't connect to server",
 					Toast.LENGTH_LONG);
+			// there is a bug with buildDialog to be resolved later
+			// UI.buildDialog(context, "Internet error",
+			// "Internet not working");
 		}
 	}
 }

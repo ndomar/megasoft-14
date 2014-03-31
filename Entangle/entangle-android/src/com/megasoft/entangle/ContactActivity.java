@@ -34,15 +34,15 @@ public class ContactActivity extends Activity implements OnClickListener {
 	protected Button bContOffer;
 
 	/**
-	 * 
+	 * this activity will redirect to mainActivity if there is no user logged in
 	 */
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent login = new Intent(getApplicationContext(), MainActivity.class);
-		// if (!Util.isUserLoggedIn(this))
-		// startActivity(login);
+		if (!Util.isUserLoggedIn(this))
+			startActivity(login);
 		init();
 		retrieveServerData();
 	}
@@ -55,8 +55,8 @@ public class ContactActivity extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * init the view of this activity
-	 * 
+	 * init the view of this activity it's more easier to separate the init from
+	 * oncreate
 	 */
 	public void init() {
 		setContentView(R.layout.activity_contact);
@@ -72,7 +72,8 @@ public class ContactActivity extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * retrieve date from server to be shown
+	 * retrieve date from server to be shown this uses contactAction to retrieve
+	 * claim data from server
 	 * 
 	 */
 	public void retrieveServerData() {
@@ -108,7 +109,8 @@ public class ContactActivity extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * on click listener for Contact view
+	 * on click listener for Contact view this handles all the buttons in this
+	 * view.
 	 */
 	@Override
 	public void onClick(View v) {
