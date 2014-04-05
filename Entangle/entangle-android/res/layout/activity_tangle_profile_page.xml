@@ -6,7 +6,7 @@
     tools:context=".TangleProfilePage" >
 
     <LinearLayout
-        android:id="@+id/l2"
+        android:id="@+id/tangleNameLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -23,15 +23,14 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/l4"
+        android:id="@+id/searchLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/l2"
+        android:layout_below="@+id/tangleNameLayout"
         android:background="#ffffff"
         android:orientation="vertical" >
 
         <LinearLayout
-            android:id="@+id/l3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
@@ -71,24 +70,25 @@
     </LinearLayout>
 
     <ScrollView
-        android:id="@+id/scrollView1"
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/layout"
-        android:layout_below="@+id/l4"
+        android:layout_above="@+id/footerLayout"
+        android:layout_below="@+id/searchLayout"
         android:background="#28C9B9" >
 
         <LinearLayout
-            android:id="@+id/l1"
+            android:id="@+id/streamLayout"
             android:layout_width="match_parent"
             android:layout_height="92dp"
             android:layout_gravity="center_vertical"
+            android:background="#28C9B9"
             android:orientation="vertical" >
         </LinearLayout>
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/layout"
+        android:id="@+id/footerLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

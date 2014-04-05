@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import com.megasoft.requests.GetRequest;
 
 import android.os.Bundle;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.text.Editable;
@@ -62,20 +61,21 @@ public class TangleProfilePage extends Activity {
 	/**
 	 * The EditText used for full text search
 	 */
-	private EditText text;
+	private EditText fullTextSearch;
 
 	/**
 	 * The drop down list used to choose the type of filtering
 	 */
-	private Spinner spinner1;
+	private Spinner filteringOptionsSpinner;
 
 	/**
 	 * The drop down list used to choose the tag/user to filter the stream with
 	 */
-	private Spinner spinner2;
+	private Spinner filteringChoiceSpinner;
 
 	/**
-	 * The adapter used to set the data of the second drop down list
+	 * The adapter used to set the data of the second drop down list depending
+	 * whether it is a tag or user filtration
 	 */
 	private ArrayAdapter<String> dataAdapter;
 
@@ -85,12 +85,13 @@ public class TangleProfilePage extends Activity {
 	private HashMap<String, Integer> idHashMap;
 
 	/**
-	 * This int is used to differentiate whether it tag or user filtering
+	 * This integer is used to differentiate whether it is tag or user filtering
 	 */
 	private int type;
 
 	/**
-	 * This is used to set the behavior of the EditText used in full text search
+	 * This TextWatcher is used to set the behavior of the EditText used in full
+	 * text search upon changing the text in it
 	 */
 	private TextWatcher watcher = new TextWatcher() {
 		@Override
@@ -104,16 +105,17 @@ public class TangleProfilePage extends Activity {
 		}
 
 		/**
-		 * This method is used to send a request to filter with full text search
-		 * given the text
+		 * This method is overridden to set the behavior of the EditText after
+		 * changing the text in it and is used to send a request to filter with
+		 * full text search given the text
 		 */
 		@Override
 		public void afterTextChanged(Editable arg0) {
-			String fullText = text.getText().toString();
+			String fullText = fullTextSearch.getText().toString();
 			if (fullText != null
-					&& spinner1.getSelectedItem() != null
-					&& spinner1.getSelectedItem().toString() != null
-					&& spinner1.getSelectedItem().toString()
+					&& filteringOptionsSpinner.getSelectedItem() != null
+					&& filteringOptionsSpinner.getSelectedItem().toString() != null
+					&& filteringOptionsSpinner.getSelectedItem().toString()
 							.equals("Full Text Search")) {
 				sendFilteredRequest(rootResource + "tangle/" + getTangleId()
 						+ "/request?fulltext="
@@ -132,22 +134,21 @@ public class TangleProfilePage extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setAttributes(savedInstanceState);
 		setContentView(R.layout.activity_tangle_profile_page);
+		setAttributes();
 		sendStreamRequest();
+		// sendFilteredRequest(rootResource + "tangle/" + getTangleId()
+		// + "/request");
 		setRedirections();
 		addListenerOnSpinnerItemSelection();
 		setEditableView();
 	}
 
 	/**
-	 * This method is called is called to set the attributes of the activity
-	 * 
-	 * @param savedInstanceState
-	 *            , is the saved bundle of the activity
+	 * This method is called to set the attributes of the activity passed from
+	 * the other previous intent
 	 */
-	@SuppressLint("NewApi")
-	private void setAttributes(Bundle savedInstanceState) {
+	private void setAttributes() {
 		if (getIntent() != null) {
 			if (!getIntent().hasExtra("sessionId")) {
 				intent = new Intent(this, MainActivity.class);
@@ -162,7 +163,6 @@ public class TangleProfilePage extends Activity {
 				// to be changed to tangles' list activity
 			}
 			tangleId = getIntent().getIntExtra("tangleId", 0);
-			// to be changed if the API is less than 12
 			tangleName = getIntent().getStringExtra("tangleName");
 			sessionId = getIntent().getStringExtra("sessionId");
 			TextView tangle = (TextView) findViewById(R.id.tangleName);
@@ -174,33 +174,35 @@ public class TangleProfilePage extends Activity {
 	}
 
 	/**
-	 * This method is used to add a listener to the EditText used in filtering
+	 * This method is used to add a watcher to the EditText used in filtering
 	 * with full text search
 	 */
 	private void setEditableView() {
-		text = (EditText) findViewById(R.id.text);
-		text.addTextChangedListener(watcher);
+		fullTextSearch = (EditText) findViewById(R.id.text);
+		fullTextSearch.addTextChangedListener(watcher);
 	}
 
 	/**
-	 * This method is called to set a listener to the filtering options drop
-	 * down list
+	 * This method is called to add a listener to the filtering options drop
+	 * down lists
 	 */
 	private void addListenerOnSpinnerItemSelection() {
 
-		spinner1 = (Spinner) findViewById(R.id.filterSpinner);
-		spinner2 = (Spinner) findViewById(R.id.choiceSpinner);
-		if (spinner1 != null) {
-			spinner1.setOnItemSelectedListener(new SpinnerListener1());
+		filteringOptionsSpinner = (Spinner) findViewById(R.id.filterSpinner);
+		filteringChoiceSpinner = (Spinner) findViewById(R.id.choiceSpinner);
+		if (filteringOptionsSpinner != null) {
+			filteringOptionsSpinner
+					.setOnItemSelectedListener(new FilteringOptionsSpinnerListener());
 		}
-		if (spinner2 != null) {
-			spinner2.setOnItemSelectedListener(new SpinnerListener2());
+		if (filteringChoiceSpinner != null) {
+			filteringChoiceSpinner
+					.setOnItemSelectedListener(new FilteringChoiceSpinnerListener());
 		}
 	}
 
 	/**
 	 * This method is used to send a request to get the requests stream without
-	 * filtering
+	 * filtering only for the first time
 	 */
 	private void sendStreamRequest() {
 		GetRequest getStream = new GetRequest(rootResource + "tangle/"
@@ -215,7 +217,7 @@ public class TangleProfilePage extends Activity {
 				}
 			}
 		};
-		getStream.addHeader("x-session-id", getSessionId());
+		getStream.addHeader("X-SESSION-ID", getSessionId());
 		getStream.execute();
 	}
 
@@ -257,14 +259,13 @@ public class TangleProfilePage extends Activity {
 	 * @param request
 	 *            , is the request to be added in the layout
 	 */
-	@SuppressLint("NewApi")
 	private void addRequest(JSONObject request) {
 		try {
 			LayoutParams params = new LinearLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
 			LayoutParams params1 = new LinearLayout.LayoutParams(
 					LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-			LinearLayout layout = (LinearLayout) findViewById(R.id.l1);
+			LinearLayout layout = (LinearLayout) findViewById(R.id.streamLayout);
 			int userId = request.getInt("userId");
 			String requesterName = request.getString("username");
 			int requestId = request.getInt("id");
@@ -279,8 +280,8 @@ public class TangleProfilePage extends Activity {
 			layout.addView(requester);
 			Button req = new Button(this);
 			req.setId(requestId);
-			req.setText("Request : " + requestBody + "\n"
-					+ "Number of offers : " + requestOffersCount);
+			req.setText("Request : " + requestBody + "\nNumber of offers : "
+					+ requestOffersCount);
 			setRequestRedirection(req);
 			req.setLayoutParams(params1);
 			layout.addView(req);
@@ -291,7 +292,8 @@ public class TangleProfilePage extends Activity {
 	}
 
 	/**
-	 * This method is used to set the action of the requester button
+	 * This method is used to set the action of the requester button, in which
+	 * it will redirect to the requester profile
 	 * 
 	 * @param requester
 	 *            , is the requester button
@@ -302,18 +304,19 @@ public class TangleProfilePage extends Activity {
 			@Override
 			public void onClick(View v) {
 				int tmpId = ((Button) v).getId();
-				Intent intent2 = new Intent(getBaseContext(), Profile.class);
-				intent2.putExtra("tangleId", getTangleId());
-				intent2.putExtra("tangleName", getTangleName());
-				intent2.putExtra("sessionId", getSessionId());
-				intent2.putExtra("requesterId", tmpId);
-				startActivity(intent2);
+				intent = new Intent(getBaseContext(), Profile.class);
+				intent.putExtra("tangleId", getTangleId());
+				intent.putExtra("tangleName", getTangleName());
+				intent.putExtra("sessionId", getSessionId());
+				intent.putExtra("requesterId", tmpId);
+				startActivity(intent);
 			}
 		});
 	}
 
 	/**
-	 * This method is used to set the action of the request button
+	 * This method is used to set the action of the request button, in which it
+	 * will redirect to the request page
 	 * 
 	 * @param request
 	 *            , is the request button
@@ -324,19 +327,19 @@ public class TangleProfilePage extends Activity {
 			@Override
 			public void onClick(View v) {
 				int tmpId = ((Button) v).getId();
-				Intent intent2 = new Intent(getBaseContext(), RequestPage.class);
-				intent2.putExtra("tangleId", getTangleId());
-				intent2.putExtra("tangleName", getTangleName());
-				intent2.putExtra("sessionId", getSessionId());
-				intent2.putExtra("requestId", tmpId);
-				startActivity(intent2);
+				intent = new Intent(getBaseContext(), RequestPage.class);
+				intent.putExtra("tangleId", getTangleId());
+				intent.putExtra("tangleName", getTangleName());
+				intent.putExtra("sessionId", getSessionId());
+				intent.putExtra("requestId", tmpId);
+				startActivity(intent);
 			}
 		});
 	}
 
 	/**
-	 * This method is used to set the actions of the fixed buttons (stream,
-	 * members, profile, invite)
+	 * This method is used to set the actions of the fixed buttons in the footer
+	 * (stream, members, profile, invite) buttons
 	 */
 	private void setRedirections() {
 		Button stream = (Button) findViewById(R.id.stream);
@@ -353,7 +356,8 @@ public class TangleProfilePage extends Activity {
 	}
 
 	/**
-	 * This method is called to set the action of a specific button
+	 * This method is called to set the action of a specific button to redirect
+	 * upon clicking to a specific activity
 	 * 
 	 * @param button
 	 *            , is the button intended to set its action
@@ -425,7 +429,7 @@ public class TangleProfilePage extends Activity {
 
 	/**
 	 * This method is used to send a get request to get the stream filtered/not
-	 * filtered
+	 * filtered in case of not the first request
 	 * 
 	 * @param url
 	 *            , is the Url to which the request is going to be sent
@@ -434,7 +438,7 @@ public class TangleProfilePage extends Activity {
 		GetRequest getStream = new GetRequest(url) {
 			protected void onPostExecute(String res) {
 				if (!this.hasError() && res != null) {
-					LinearLayout layout = (LinearLayout) findViewById(R.id.l1);
+					LinearLayout layout = (LinearLayout) findViewById(R.id.streamLayout);
 					layout.removeAllViews();
 					setTheLayout(res);
 				} else {
@@ -444,7 +448,7 @@ public class TangleProfilePage extends Activity {
 				}
 			}
 		};
-		getStream.addHeader("x-session-id", getSessionId());
+		getStream.addHeader("X-SESSION-ID", getSessionId());
 		getStream.execute();
 	}
 
@@ -452,7 +456,7 @@ public class TangleProfilePage extends Activity {
 	 * This method is used to send a request to get all users/tags
 	 * 
 	 * @param url
-	 *            , , is the Url to which the request is going to be sent
+	 *            , is the Url to which the request is going to be sent
 	 */
 	public void sendGetAllRequest(String url) {
 		GetRequest getStream = new GetRequest(url) {
@@ -533,8 +537,8 @@ public class TangleProfilePage extends Activity {
 					for (int i = 0; i < count && i < usersArray.length(); i++) {
 						JSONObject user = usersArray.getJSONObject(i);
 						if (user != null) {
-							String userName = user.getString("userName");
-							int userId = user.getInt("userId");
+							String userName = user.getString("username");
+							int userId = user.getInt("id");
 							idHashMap.put(userName, userId);
 							list.add(userName);
 						}
@@ -552,8 +556,9 @@ public class TangleProfilePage extends Activity {
 	}
 
 	/**
-	 * This method is used to set the data of the second drop down list
-	 * (tags/users)
+	 * This method is used to set the data/properties of the second drop down
+	 * list (tags/users) , moreover it sets the EditText of the fill text search
+	 * to be invisible and sets the second drop down list to be visible
 	 * 
 	 * @param list
 	 *            , is the data to be put in the drop down list
@@ -563,11 +568,11 @@ public class TangleProfilePage extends Activity {
 				android.R.layout.simple_spinner_item, list);
 		dataAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner2.setAdapter(dataAdapter);
-		text.setLayoutParams(new LinearLayout.LayoutParams(
+		filteringChoiceSpinner.setAdapter(dataAdapter);
+		fullTextSearch.setLayoutParams(new LinearLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, 0));
-		spinner2.setVisibility(0);
-		spinner2.setLayoutParams(new LinearLayout.LayoutParams(
+		filteringChoiceSpinner.setVisibility(0);
+		filteringChoiceSpinner.setLayoutParams(new LinearLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 	}
 
@@ -575,7 +580,7 @@ public class TangleProfilePage extends Activity {
 	 * This class is used to customize the action done when an element in drop
 	 * down list of the filtering options is chosen
 	 */
-	class SpinnerListener1 implements OnItemSelectedListener {
+	class FilteringOptionsSpinnerListener implements OnItemSelectedListener {
 
 		/**
 		 * This method is used to override the behavior of the drop down list
@@ -607,7 +612,7 @@ public class TangleProfilePage extends Activity {
 						type = 0;
 						sendGetAllRequest(url);
 					} else if (selection.equals("Requester Name")) {
-						url += "tangle/" + getTangleId() + "/users";
+						url += "tangle/" + getTangleId() + "/user";
 						type = 1;
 						sendGetAllRequest(url);
 					}
@@ -620,10 +625,11 @@ public class TangleProfilePage extends Activity {
 		 * the EditText to be visible
 		 */
 		private void caseFullTextOrNone() {
-			spinner2.setLayoutParams(new LinearLayout.LayoutParams(
-					LayoutParams.MATCH_PARENT, 0));
-			text.setVisibility(0);
-			text.setLayoutParams(new LinearLayout.LayoutParams(
+			filteringChoiceSpinner
+					.setLayoutParams(new LinearLayout.LayoutParams(
+							LayoutParams.MATCH_PARENT, 0));
+			fullTextSearch.setVisibility(0);
+			fullTextSearch.setLayoutParams(new LinearLayout.LayoutParams(
 					LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		}
 
@@ -631,17 +637,18 @@ public class TangleProfilePage extends Activity {
 		 * This method is used to make the EditText enabled
 		 */
 		private void caseFullText() {
-			text.setEnabled(true);
-			text.setHint("Write a Full Text to filter with");
+			fullTextSearch.setEnabled(true);
+			fullTextSearch.setHint("Write a Full Text to filter with");
 		}
 
 		/**
 		 * This method is used to set the EditText disabled
 		 */
 		private void disablingTextEditor() {
-			text.setText("");
-			text.setEnabled(false);
-			text.setHint("Choose Full Text Search to be able to write :)");
+			fullTextSearch.setText("");
+			fullTextSearch.setEnabled(false);
+			fullTextSearch
+					.setHint("Choose Full Text Search to be able to write :)");
 		}
 
 		@Override
@@ -655,11 +662,12 @@ public class TangleProfilePage extends Activity {
 	 * This class is used to customize the action done when an element in the
 	 * second drop down list (tags/users) is chosen
 	 */
-	class SpinnerListener2 implements OnItemSelectedListener {
+	class FilteringChoiceSpinnerListener implements OnItemSelectedListener {
 
 		/**
 		 * This method is used to override the behavior of the second drop down
-		 * list when selecting an item from it
+		 * list when selecting an item from it, it sets the url of the request
+		 * according to the choice of the user
 		 */
 		@Override
 		public void onItemSelected(AdapterView<?> parent, View view, int pos,
@@ -672,10 +680,10 @@ public class TangleProfilePage extends Activity {
 					if (idHashMap != null) {
 						int keyId = idHashMap.get(selection);
 						if (type == 0) {
-							url += "/tangle/" + getTangleId()
+							url += "tangle/" + getTangleId()
 									+ "/request?tagid=" + keyId;
 						} else if (type == 1) {
-							url += "/tangle/" + getTangleId()
+							url += "tangle/" + getTangleId()
 									+ "/request?userid=" + keyId;
 						}
 						sendFilteredRequest(url);
