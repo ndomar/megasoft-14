@@ -194,7 +194,8 @@ public class ConfirmInviteUserActivity extends Activity {
 			public void onPostExecute(String response) {
 				Toast.makeText(getApplicationContext(), "Invited !",
 						Toast.LENGTH_LONG).show();
-				// TODO
+				setResult(InviteUserActivity.INVITATION_SUCCESS);
+				finish();
 			}
 		};
 

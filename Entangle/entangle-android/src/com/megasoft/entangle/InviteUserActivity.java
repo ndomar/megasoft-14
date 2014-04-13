@@ -45,6 +45,11 @@ public class InviteUserActivity extends Activity {
 	 * Arraylist of all edit texts in the layout
 	 */
 	ArrayList<EditText> editTexts;
+	
+	/**
+	 * An Integer to be returned as the success value for the invitation
+	 */
+	final static int INVITATION_SUCCESS = 100;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,16 @@ public class InviteUserActivity extends Activity {
 
 		this.addEmailField(null);
 
+	}
+	/**
+	 * This method is used to close the activity once the invitation is sent. It's triggered from the success of the
+	 * other activity.
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == INVITATION_SUCCESS) {
+           finish();
+        }
 	}
 
 	@Override
@@ -136,13 +151,13 @@ public class InviteUserActivity extends Activity {
 	 * @author MohamedBassem
 	 */
 	public void goToConfirmation(String response) {
-		Intent inviteUserConfirmation = new Intent(this,
+		Intent confirmInviteUser = new Intent(this,
 				ConfirmInviteUserActivity.class);
-		inviteUserConfirmation.putExtra("com.megasoft.entangle.emails",
+		confirmInviteUser.putExtra("com.megasoft.entangle.emails",
 				response);
-		inviteUserConfirmation.putExtra("com.megasoft.entangle.tangleId",
+		confirmInviteUser.putExtra("com.megasoft.entangle.tangleId",
 				tangleId);
-		startActivity(inviteUserConfirmation);
+		startActivityForResult(confirmInviteUser, 0);
 	}
 
 }
