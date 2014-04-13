@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/button2"
-       
+        android:background="@drawable/pic2"
+        android:textColor="@color/white"
         android:textSize="20sp" />
 
     <Button
@@ -39,7 +40,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/button2"
         android:layout_alignLeft="@+id/tags"
-       
+        android:background="@drawable/pic2"
+        android:textColor="@color/white"
         android:textSize="20sp" />
 
     <TextView
@@ -48,6 +50,8 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/deadline"
         android:layout_alignParentTop="true"
+        android:background="@drawable/pic2"
+        android:textColor="@color/white"
         android:textSize="20sp" />
 
     <TextView
@@ -57,7 +61,8 @@
         android:layout_alignLeft="@+id/date"
         android:layout_below="@+id/requester"
         android:layout_marginTop="14dp"
-     
+        android:background="@drawable/pic2"
+        android:textColor="@color/white"
         android:textSize="20sp" />
 
     <TextView
@@ -67,7 +72,8 @@
         android:layout_below="@+id/deadline"
         android:layout_marginTop="16dp"
         android:layout_toLeftOf="@+id/button1"
-       
+        android:background="@drawable/pic2"
+        android:textColor="@color/white"
         android:textSize="20sp" />
 
     <TextView
@@ -76,7 +82,8 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/date"
         android:layout_centerVertical="true"
-        
+        android:background="@drawable/pic2"
+        android:textColor="@color/white"
         android:textSize="20sp" />
 
     <TextView
@@ -86,7 +93,8 @@
         android:layout_above="@+id/status"
         android:layout_alignLeft="@+id/status"
         android:layout_marginBottom="14dp"
-        
+        android:background="@drawable/pic2"
+        android:textColor="@color/white"
         android:textSize="20sp" />
 
 </RelativeLayout>

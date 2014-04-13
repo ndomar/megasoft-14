@@ -1,5 +1,4 @@
 package com.megasoft.entangle;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,10 +13,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class request extends Activity {
+public class MainActivity extends Activity {
 	String requestId;
-	String [] requestDetailNames={"Description", "Requester", "Date", "Tags", "Price", "Deadline","Status"}; 
-	String [] apiOfferNames = {"id", "requestedPrice", "date", "description", "offererId", "status"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	setContentView(R.layout.request);
@@ -29,45 +26,38 @@ public class request extends Activity {
         this.setCreateOfferButton(); 
         this.setViewOffersButton();
         }	
-    public void fillRequestDetails(){
-    	requestId="test";
-         GetRequest request = new GetRequest("http://entangle2.apiary-mock.com/request/" +requestId) {	
-        	 protected void onPostExecute(String response) {
-					try {
-							//Log.e("test",response);
-		     				JSONObject json = new JSONObject(response);
-							for(int k =0; k<requestDetailNames.length; k++){
-								TextView textView = (TextView) findViewById(R.id.requester);
-								textView.setText(requestDetailNames[k] + " " + json.getString(requestDetailNames[k]));
-							}
-							JSONArray offers = new JSONArray(json.getString("offers"));
-		     				 String[] offerDetails = new String[offers.length()];
-		     				 String [] apiOfferNames = {"id", "requestedPrice", "date", "description", "offererId", "status"};
-		     				 for(int i = 0 ; i < offers.length(); i++) {
-		     				    String [] details = new String[6];
-		     				    for(int j=0; j<6;j++){
-		     				    	 details[j]= offers.getJSONObject(i).getString(apiOfferNames[j]);
-		     				    }
-		     				 
-		     				 }
-		     				} 
-		     				
-		     			 catch (JSONException e) {
-							
-							e.printStackTrace();
-						}
-	     				
-					
-					
-					
-     			 }
-        	};
+        public void fillRequestDetails(){
         	
-        	request.addHeader("X-SESSION-ID" , "asdasdasdsadasdasd");
-        	request.execute();
-             
-            
-    }
+             GetRequest request = new GetRequest("http://entangle2.apiary-mock.com/request/" + requestId) {
+     			 protected void onPostExecute(String response) {
+     				 
+					try {
+						JSONObject json = new JSONObject(response);
+	     				 TextView requester = (TextView) findViewById(R.id.requester); 
+	     				 requester.setText("Requester: " + json.getString("requester"));
+	     				 TextView description = (TextView) findViewById(R.id.description); 
+	     				 description.setText("Description: "+ json.getString("description"));
+	     				 TextView date = (TextView) findViewById(R.id.date); 
+	     				 date.setText("Date of Request: " + json.getString("date"));
+	     				 TextView tags = (TextView) findViewById(R.id.tags); 
+	     				 tags.setText("Tags: " + json.getString("tags"));
+	     				 TextView price = (TextView) findViewById(R.id.price); 
+	     				 price.setText("Expected Price: " + json.getString("price"));
+	     				 TextView deadline = (TextView) findViewById(R.id.deadline); 
+	     				 deadline.setText("Deadline: " + json.getString("deadline"));
+	     				 TextView status = (TextView) findViewById(R.id.status); 
+	     				 status.setText("Status :" + json.getString("status")); 
+					} catch (JSONException e) {
+						
+						e.printStackTrace();
+					}
+     				 
+     			 }
+
+				
+     			 };
+     			request.execute();
+        }
         
         public void setViewOffersButton(){
         	 final Intent intentViewOffers = new Intent(this,ViewOffers.class); 
