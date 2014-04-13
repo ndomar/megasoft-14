@@ -60,6 +60,23 @@ class Offer
      *
      * @var integer
      * 
+     * @ORM\Column(name="userId", type="integer")
+     */
+    private $userId;
+    
+    /**
+     *
+     * @var Request
+     * 
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="offers")
+     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+     */
+    private $user;
+    
+    /**
+     *
+     * @var integer
+     * 
      * @ORM\Column(name="requestId", type="integer")
      */
     private $requestId;
@@ -290,5 +307,51 @@ class Offer
     public function getMessages()
     {
         return $this->messages;
+    }
+
+    /**
+     * Set userId
+     *
+     * @param integer $userId
+     * @return Offer
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+
+    /**
+     * Get userId
+     *
+     * @return integer 
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Megasoft\EntangleBundle\Entity\User $user
+     * @return Offer
+     */
+    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Megasoft\EntangleBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

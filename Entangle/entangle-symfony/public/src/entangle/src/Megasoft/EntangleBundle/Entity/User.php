@@ -101,6 +101,13 @@ class User
     private $requests;
     
     /**
+     * @var Offer[]
+     * 
+     * @ORM\OneToMany(targetEntity="Offer", mappedBy="user", cascade={"persist"})
+     */
+    private $offers;
+    
+    /**
      * @var UserTangle[]
      * 
      * @ORM\OneToMany(targetEntity="UserTangle", mappedBy="user", cascade={"persist"})
@@ -113,6 +120,28 @@ class User
      * @ORM\OneToMany(targetEntity="UserEmail", mappedBy="user", cascade={"persist"})
      */
     private $emails;
+    
+    /**
+     * @var InvitationCode[]
+     * 
+     * @ORM\OneToMany(targetEntity="InvitationCode", mappedBy="inviter", cascade={"persist"})
+     */
+    private $invitations;
+    
+    /**
+     * @var InvitationCode[]
+     * 
+     * @ORM\OneToMany(targetEntity="InvitationCode", mappedBy="user", cascade={"persist"})
+     */
+    private $invitationCodes;
+    
+    /**
+     * @var VerificationCode
+     * 
+     * @ORM\OneToOne(targetEntity="VerificationCode", mappedBy="user", cascade={"persist"})
+     */
+    private $verificationCode;
+    
     
     
     /**
@@ -517,5 +546,127 @@ class User
     public function getSessions()
     {
         return $this->sessions;
+    }
+
+    /**
+     * Add offers
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Offer $offers
+     * @return User
+     */
+    public function addOffer(\Megasoft\EntangleBundle\Entity\Offer $offers)
+    {
+        $this->offers[] = $offers;
+        $offers->setUser($this);
+        return $this;
+    }
+
+    /**
+     * Remove offers
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Offer $offers
+     */
+    public function removeOffer(\Megasoft\EntangleBundle\Entity\Offer $offers)
+    {
+        $this->offers->removeElement($offers);
+    }
+
+    /**
+     * Get offers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOffers()
+    {
+        return $this->offers;
+    }
+
+    /**
+     * Add invitations
+     *
+     * @param \Megasoft\EntangleBundle\Entity\InvitationCode $invitations
+     * @return User
+     */
+    public function addInvitation(\Megasoft\EntangleBundle\Entity\InvitationCode $invitations)
+    {
+        $this->invitations[] = $invitations;
+        $invitations->setInviter($this);
+        return $this;
+    }
+
+    /**
+     * Remove invitations
+     *
+     * @param \Megasoft\EntangleBundle\Entity\InvitationCode $invitations
+     */
+    public function removeInvitation(\Megasoft\EntangleBundle\Entity\InvitationCode $invitations)
+    {
+        $this->invitations->removeElement($invitations);
+    }
+
+    /**
+     * Get invitations
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInvitations()
+    {
+        return $this->invitations;
+    }
+
+    /**
+     * Add invitationCodes
+     *
+     * @param \Megasoft\EntangleBundle\Entity\InvitationCode $invitationCodes
+     * @return User
+     */
+    public function addInvitationCode(\Megasoft\EntangleBundle\Entity\InvitationCode $invitationCodes)
+    {
+        $this->invitationCodes[] = $invitationCodes;
+        $invitationCodes->setUser($this);
+        return $this;
+    }
+
+    /**
+     * Remove invitationCodes
+     *
+     * @param \Megasoft\EntangleBundle\Entity\InvitationCode $invitationCodes
+     */
+    public function removeInvitationCode(\Megasoft\EntangleBundle\Entity\InvitationCode $invitationCodes)
+    {
+        $this->invitationCodes->removeElement($invitationCodes);
+    }
+
+    /**
+     * Get invitationCodes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInvitationCodes()
+    {
+        return $this->invitationCodes;
+    }
+
+    /**
+     * Set verificationCode
+     *
+     * @param \Megasoft\EntangleBundle\Entity\VerificationCode $verificationCode
+     * @return User
+     */
+    public function setVerificationCode(\Megasoft\EntangleBundle\Entity\VerificationCode $verificationCode = null)
+    {
+        $this->verificationCode = $verificationCode;
+        $verificationCode->setUser($this);
+        return $this;
+    }
+
+    /**
+     * Get verificationCode
+     *
+     * @return \Megasoft\EntangleBundle\Entity\VerificationCode 
+     */
+    public function getVerificationCode()
+    {
+        return $this->verificationCode;
     }
 }
