@@ -18,6 +18,7 @@ use Megasoft\EntangleBundle\Entity\UserEmail;
 use Megasoft\EntangleBundle\Entity\UserTangle;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\BrowserKit\Request;
 
 class DefaultController extends Controller
 {
@@ -26,6 +27,14 @@ class DefaultController extends Controller
         return $this->render('MegasoftEntangleBundle:Default:index.html.twig', array('name' => $name));
     }
     
+    public function registerAction(Request $request) {
+        if($request->getMethod() == 'POST') {
+            
+        }
+        return $this->render('MegasoftEntangleBundle:Default:register.html.twig');
+    }
+
+
 //    public function testAction(){
 //        $doctrineManger = $this->getDoctrine()->getManager();
 //        
