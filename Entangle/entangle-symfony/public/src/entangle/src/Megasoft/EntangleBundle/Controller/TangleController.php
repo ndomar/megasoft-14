@@ -69,8 +69,8 @@ class TangleController extends Controller
         
         $fullText = $request->query->get('fulltext', null);
         if($fullText != null){
-            $query = $query->andWhere('request.description = :fullText')
-                    ->setParameter('fullText', $fullText);
+            $query = $query->andWhere('request.description LIKE :fullTextFormat')
+                    ->setParameter('fullTextFormat', '%' . $fullText . '%');
         }
         
         $requests = $query->getQuery()->getResult();
