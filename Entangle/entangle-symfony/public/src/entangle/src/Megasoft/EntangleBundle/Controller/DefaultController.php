@@ -28,8 +28,17 @@ class DefaultController extends Controller
     }
     
     public function registerAction(Request $request) {
-        if($request->getMethod() == 'POST') {
+        if($request->getMethod() == 'POST') {  //reading the request object and getting data out of it
+            //$username = $request->get('username');
+            $firstname = $request->get('firstname');
+            $password = $request->get('password');
             
+            $user = new User;
+            $user->setName($firstname);
+            $user->setPassword($password);
+            $entityManager = $this->getDoctrine()->getEntityManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
         }
         return $this->render('MegasoftEntangleBundle:Default:register.html.twig');
     }
