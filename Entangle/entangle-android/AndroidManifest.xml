@@ -7,11 +7,11 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
-	
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-        
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -29,7 +29,19 @@
         <activity
               android:name="com.megasoft.entangle.ProfileActivity"
               android:label="User Profile" >
-          </activity>
+         </activity>
+       	 <activity
+            android:name="com.megasoft.entangle.InviteUserActivity"
+            android:label="@string/title_activity_invite_users" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.ConfirmInviteUserActivity"
+            android:label="@string/title_activity_invite_users_confirmations"
+            android:parentActivityName="com.megasoft.entangle.InviteUserActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.megasoft.entangle.InviteUsers" />
+        </activity>
     </application>
 
 </manifest>

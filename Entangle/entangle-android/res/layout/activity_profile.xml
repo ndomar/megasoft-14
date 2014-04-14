@@ -31,7 +31,8 @@
         android:layout_marginTop="55dp"
         android:layout_toRightOf="@id/nameView"
         android:contentDescription="@string/hello_world"
-        android:src="@drawable/verified" />
+        android:src="@drawable/verify" 
+        android:visibility="gone"/>
 </RelativeLayout>
 
 <TextView
