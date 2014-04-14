@@ -250,7 +250,7 @@ class Tangle
     public function addPendingInvitation(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitations)
     {
         $this->pendingInvitations[] = $pendingInvitations;
-
+        $pendingInvitations->setTangle($this);
         return $this;
     }
 

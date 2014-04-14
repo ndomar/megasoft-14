@@ -693,7 +693,7 @@ class User
     public function addPendingInvitationInvitee(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInvitees)
     {
         $this->pendingInvitationInvitees[] = $pendingInvitationInvitees;
-
+        $pendingInvitationInvitees-setUser($this);
         return $this;
     }
 
@@ -726,7 +726,7 @@ class User
     public function addPendingInvitationInviter(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInviters)
     {
         $this->pendingInvitationInviters[] = $pendingInvitationInviters;
-
+         $pendingInvitationInviters->setUser($this);
         return $this;
     }
 

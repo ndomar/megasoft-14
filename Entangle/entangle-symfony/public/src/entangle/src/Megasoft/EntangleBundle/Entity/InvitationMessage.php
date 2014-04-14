@@ -85,7 +85,7 @@ class InvitationMessage
     public function addPendingInvitation(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitations)
     {
         $this->pendingInvitations[] = $pendingInvitations;
-
+        $pendingInvitations->setMessage($this);
         return $this;
     }
 
