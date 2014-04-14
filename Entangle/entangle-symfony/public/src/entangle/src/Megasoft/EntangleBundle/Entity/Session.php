@@ -77,7 +77,7 @@ class Session
      */
     public function setUserId($usedId)
     {
-        $this->usedId = $usedId;
+        $this->userId = $usedId;
 
         return $this;
     }
@@ -89,7 +89,7 @@ class Session
      */
     public function getUserId()
     {
-        return $this->usedId;
+        return $this->userId;
     }
 
     /**

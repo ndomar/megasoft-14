@@ -5,3 +5,14 @@ megasoft_entangle_homepage:
 #megasoft_entangle_test:
 #    pattern:  /test
 #    defaults: { _controller: MegasoftEntangleBundle:Default:test }
+
+check_membership:
+    pattern: /tangle/{tangleId}/check-membership
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:checkMembership }
+    methods: [POST]
+
+invite:
+    pattern: /tangle/{tangleId}/invite
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
+    methods: [POST]
+

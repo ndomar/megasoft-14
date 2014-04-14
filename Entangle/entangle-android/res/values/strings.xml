@@ -6,9 +6,21 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_create_tangle">Create Tangle</string>
     <string name="tangleName">Specify a Tangle name</string>
-	<string name="iconButton">Choose an Icon</string>
-	<string name="tangleIcon">Tangle Icon</string>
-	<string name="createTangle">CREATE</string>
-	<string name="checkTangleName">Check</string>
+    <string name="iconButton">Choose an Icon</string>
+    <string name="tangleIcon">Tangle Icon</string>
+    <string name="createTangle">CREATE</string>
+    <string name="checkTangleName">Check</string>
+    <string name="title_activity_invite_users">Invite Users</string>
+    <string name="add_email">+</string>
+    <string name="invite_continue">Continue</string>
+    <string name="user_email">User Email</string>
+    <string name="title_activity_invite_users_confirmation">Invite Users</string>
+    <string name="title_activity_invite_users_confirmations">Invite Users</string>
+    <string name="not_members">Not Members</string>
+    <string name="entangle_members">Entangle Members</string>
+    <string name="already_in_the_tangle">Already in the Tangle</string>
+    <string name="wrong_emails">Not Valid Emails</string>
+    <string name="invite_write_the_invitation_message">Write the invitation message.</string>
+    <string name="invite">Invite</string>
 
 </resources>
