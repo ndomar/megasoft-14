@@ -142,6 +142,20 @@ class User
      */
     private $verificationCode;
     
+    /**
+     * @var PendingInvitation[]
+     * 
+     * @ORM\OneToMany(targetEntity="PendingInvitation", mappedBy="invitee", cascade={"persist"})
+     */
+    private $pendingInvitationInvitees;
+    
+    /**
+     * @var PendingInvitation[]
+     * 
+     * @ORM\OneToMany(targetEntity="PendingInvitation", mappedBy="inviter", cascade={"persist"})
+     */
+    private $pendingInvitationInviters;
+    
     
     
     /**
@@ -668,5 +682,71 @@ class User
     public function getVerificationCode()
     {
         return $this->verificationCode;
+    }
+
+    /**
+     * Add pendingInvitationInvitees
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInvitees
+     * @return User
+     */
+    public function addPendingInvitationInvitee(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInvitees)
+    {
+        $this->pendingInvitationInvitees[] = $pendingInvitationInvitees;
+
+        return $this;
+    }
+
+    /**
+     * Remove pendingInvitationInvitees
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInvitees
+     */
+    public function removePendingInvitationInvitee(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInvitees)
+    {
+        $this->pendingInvitationInvitees->removeElement($pendingInvitationInvitees);
+    }
+
+    /**
+     * Get pendingInvitationInvitees
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPendingInvitationInvitees()
+    {
+        return $this->pendingInvitationInvitees;
+    }
+
+    /**
+     * Add pendingInvitationInviters
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInviters
+     * @return User
+     */
+    public function addPendingInvitationInviter(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInviters)
+    {
+        $this->pendingInvitationInviters[] = $pendingInvitationInviters;
+
+        return $this;
+    }
+
+    /**
+     * Remove pendingInvitationInviters
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInviters
+     */
+    public function removePendingInvitationInviter(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInviters)
+    {
+        $this->pendingInvitationInviters->removeElement($pendingInvitationInviters);
+    }
+
+    /**
+     * Get pendingInvitationInviters
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPendingInvitationInviters()
+    {
+        return $this->pendingInvitationInviters;
     }
 }

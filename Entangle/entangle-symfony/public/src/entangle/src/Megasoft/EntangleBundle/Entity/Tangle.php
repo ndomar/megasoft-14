@@ -55,6 +55,13 @@ class Tangle
      * @ORM\OneToMany(targetEntity="UserTangle", mappedBy="tangle", cascade={"persist"})
      */
     private $userTangles;
+    
+    /**
+     * @var PendingInvitation[]
+     * 
+     * @ORM\OneToMany(targetEntity="PendingInvitation", mappedBy="tangle", cascade={"persist"})
+     */
+    private $pendingInvitations;
 
     /**
      * Get id
@@ -232,5 +239,38 @@ class Tangle
             $users[] = $userTangle->getUser();
         }
         return $users;
+    }
+
+    /**
+     * Add pendingInvitations
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitations
+     * @return Tangle
+     */
+    public function addPendingInvitation(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitations)
+    {
+        $this->pendingInvitations[] = $pendingInvitations;
+
+        return $this;
+    }
+
+    /**
+     * Remove pendingInvitations
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitations
+     */
+    public function removePendingInvitation(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitations)
+    {
+        $this->pendingInvitations->removeElement($pendingInvitations);
+    }
+
+    /**
+     * Get pendingInvitations
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPendingInvitations()
+    {
+        return $this->pendingInvitations;
     }
 }
