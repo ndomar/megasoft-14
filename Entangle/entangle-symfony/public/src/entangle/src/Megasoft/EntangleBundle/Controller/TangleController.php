@@ -54,21 +54,26 @@ class TangleController extends Controller
             return $verification;
         }
         
-        $criteria = array('tangleId' => $tangleId);
+        $doctrine = $this->getDoctrine();
+        $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+        
+        $query = $requestRepo->createQueryBuilder('request')
+                ->where('request.tangleId = :tangleId')
+                ->setParameter('tangleId', $tangleId);
         
         $userId = $request->query->get('userid', null);
         if($userId != null){
-            $criteria['userId'] = $userId;
+            $query = $query->andWhere('request.userId = :userId')
+                    ->setParameter('userId', $userId);
         }
         
         $fullText = $request->query->get('fulltext', null);
         if($fullText != null){
-            $criteria['description'] = $fullText;
+            $query = $query->andWhere('request.description = :fullText')
+                    ->setParameter('fullText', $fullText);
         }
         
-        $doctrine = $this->getDoctrine();
-        $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
-        $requests = $requestRepo->findBy($criteria);
+        $requests = $query->getQuery()->getResult();
         
         $tagId = $request->query->get('tagid', null);
         $usernamePrefix = $request->query->get('usernameprefix', null);
@@ -126,11 +131,16 @@ class TangleController extends Controller
         }
         
         $doctrine = $this->getDoctrine();
-        $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
-        $tangle = $tangleRepo->findOneBy(array('id' => $tangleId));
-        $tags = array();
+        $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
         
-        foreach($tangle->getRequests() as $tangleRequest){
+        $requests = $requestRepo->createQueryBuilder('request')
+                ->where('request.tangleId = :tangleId')
+                ->setParameter('tangleId', $tangleId)
+                ->getQuery()
+                ->getResult();
+        
+        $tags = array();
+        foreach($requests as $tangleRequest){
             $tags = array_merge($tags, $tangleRequest->getTags()->toArray());
         }
         
