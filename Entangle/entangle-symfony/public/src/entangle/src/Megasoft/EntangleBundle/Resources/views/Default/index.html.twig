@@ -1,1 +1,49 @@
-Hello {{ name }}!
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Entangle</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    {#{ { <link href="{{asset('bundles/megasoftentangle/css/bootstrap.css')}}" rel="stylesheet">
+      <link href="{{asset('bundles/megasoftentangle/css/bootstrap-responsive.css')}}" rel="stylesheet">
+      <link href="{{asset('bundles/megasoftentangle/css/parsley/parsley.css')}}" rel="stylesheet">
+#}
+  {#  {%block stylesheets %}
+    {%endblock%}
+#}
+
+    <link href="{{asset('bundles/megasoftentangle/css/bootstrap.css')}}" rel="stylesheet">
+    <link href="{{asset('bundles/megasoftentangle/css/bootstrap-responsive.css')}}" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+   
+
+    {#<div class="container">
+        <form class="form-signin">
+            <h2 class="form-signin-heading">Please sign in </h2>
+            <input type="text" class="input-block-level" placeholder="Email address">
+            <input type="password" class="input-block-level" placeholder="Password">
+            <button class="btn btn-large btn-primary" type="submit">Sign in</
+        </form>
+
+
+    </div>#}
+
+    <script src="{{asset('bundles/megasoftentangle/js/jquery.js')}}"></script>
+    <script src="{{asset('bundles/megasoftentangle/js/bootstrap.js')}}"></script>
+    <script src="{{asset('bundles/loginlogin/js/parsley/parsley.min.js')}}"></script>
+    <script src="{{asset('bundles/loginlogin/js/parsley/parsley-standalone.min.js')}}"></script>
+    <script src="{{asset('bundles/loginlogin/js/parsley/parsley.extend.min.js')}}"></script>
+   {# {%block javascripts %}
+    {%endblock%}}#}
+</body>
+</html>
+
+
