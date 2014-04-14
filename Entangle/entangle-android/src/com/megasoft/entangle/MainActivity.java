@@ -2,6 +2,7 @@ package com.megasoft.entangle;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.content.Intent;
 import android.view.Menu;
 
 public class MainActivity extends Activity {

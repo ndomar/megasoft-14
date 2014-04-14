@@ -5,12 +5,12 @@ namespace Megasoft\EntangleBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Sessio
+ * VerificationCode
  *
  * @ORM\Table()
  * @ORM\Entity
  */
-class Session
+class VerificationCode
 {
     /**
      * @var integer
@@ -22,18 +22,27 @@ class Session
     private $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="verificationCode", type="string", length=255)
+     */
+    private $verificationCode;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="userId", type="integer")
      */
     private $userId;
-
+    
     /**
-     * @var string
      *
-     * @ORM\Column(name="sessionId", type="string", length=255)
+     * @var User
+     * 
+     * @ORM\OneToOne(targetEntity="User", inversedBy="verificationCode")
+     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
      */
-    private $sessionId;
+    private $user;
 
     /**
      * @var \DateTime
@@ -49,16 +58,7 @@ class Session
      */
     private $expired;
 
-    
-    /**
-     *
-     * @var User
-     * 
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="sessions")
-     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
-     */
-    private $user;
-    
+
     /**
      * Get id
      *
@@ -70,14 +70,37 @@ class Session
     }
 
     /**
+     * Set verificationCode
+     *
+     * @param string $verificationCode
+     * @return VerificationCode
+     */
+    public function setVerificationCode($verificationCode)
+    {
+        $this->verificationCode = $verificationCode;
+
+        return $this;
+    }
+
+    /**
+     * Get verificationCode
+     *
+     * @return string 
+     */
+    public function getVerificationCode()
+    {
+        return $this->verificationCode;
+    }
+
+    /**
      * Set userId
      *
      * @param integer $userId
-     * @return Session
+     * @return VerificationCode
      */
-    public function setUserId($usedId)
+    public function setUserId($userId)
     {
-        $this->userId = $usedId;
+        $this->userId = $userId;
 
         return $this;
     }
@@ -93,33 +116,10 @@ class Session
     }
 
     /**
-     * Set sessionId
-     *
-     * @param string $sessionId
-     * @return Sessio
-     */
-    public function setSessionId($sessionId)
-    {
-        $this->sessionId = $sessionId;
-
-        return $this;
-    }
-
-    /**
-     * Get sessionId
-     *
-     * @return string 
-     */
-    public function getSessionId()
-    {
-        return $this->sessionId;
-    }
-
-    /**
      * Set created
      *
      * @param \DateTime $created
-     * @return Session
+     * @return VerificationCode
      */
     public function setCreated($created)
     {
@@ -142,7 +142,7 @@ class Session
      * Set expired
      *
      * @param boolean $expired
-     * @return Session
+     * @return VerificationCode
      */
     public function setExpired($expired)
     {
@@ -165,7 +165,7 @@ class Session
      * Set user
      *
      * @param \Megasoft\EntangleBundle\Entity\User $user
-     * @return Session
+     * @return VerificationCode
      */
     public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null)
     {
