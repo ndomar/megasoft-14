@@ -1,0 +1,7 @@
+parameters:
+#    megasoft_entangle.example.class: Megasoft\EntangleBundle\Example
+
+services:
+#    megasoft_entangle.example:
+#        class: %megasoft_entangle.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

@@ -30,3 +30,13 @@ button {
 	border-radius : 75%;
 	border : solid;
 }
+
+
+button.normal {
+	height : 70px;
+	width : 70px;
+	background-image : url('image.jpg');
+	background-position : center;
+	background-size : 110%;
+	border-radius : 90%;
+}
