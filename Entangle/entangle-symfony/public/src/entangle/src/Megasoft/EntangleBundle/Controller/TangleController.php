@@ -73,10 +73,17 @@ class TangleController extends Controller
                     ->setParameter('fullTextFormat', '%' . $fullText . '%');
         }
         
+        
+        $usernamePrefix = $request->query->get('usernameprefix', null);
+        if($usernamePrefix != null){
+            $query = $query->innerJoin('MegasoftEntangleBundle:User', 'user', 'WITH', 'request.userId = user.id')
+                    ->andWhere('user.name LIKE :usernamePrefixFormat')
+                    ->setParameter('usernamePrefixFormat', $usernamePrefix . '%');
+        }
+        
         $requests = $query->getQuery()->getResult();
         
         $tagId = $request->query->get('tagid', null);
-        $usernamePrefix = $request->query->get('usernameprefix', null);
         $requestsJsonArray = array();
         
         foreach($requests as $tangleRequest){
@@ -91,13 +98,6 @@ class TangleController extends Controller
                 }
                 
                 if(!$foundTag){
-                    continue;
-                }
-            }
-            
-            if($usernamePrefix != null){
-                $user = $tangleRequest->getUser();
-                if(!(substr($user->getName(), 0, strlen($usernamePrefix)) == $usernamePrefix)){
                     continue;
                 }
             }
