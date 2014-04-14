@@ -131,13 +131,9 @@ class TangleController extends Controller
         }
         
         $doctrine = $this->getDoctrine();
-        $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
-        
-        $requests = $requestRepo->createQueryBuilder('request')
-                ->where('request.tangleId = :tangleId')
-                ->setParameter('tangleId', $tangleId)
-                ->getQuery()
-                ->getResult();
+        $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+        $criteria = array('tangleId' => $tangleId);
+        $requests = $requestRepo->findBy($criteria);
         
         $tags = array();
         foreach($requests as $tangleRequest){
