@@ -66,7 +66,7 @@ class Offer
     
     /**
      *
-     * @var Request
+     * @var User
      * 
      * @ORM\ManyToOne(targetEntity="User", inversedBy="offers")
      * @ORM\JoinColumn(name="userId", referencedColumnName="id")

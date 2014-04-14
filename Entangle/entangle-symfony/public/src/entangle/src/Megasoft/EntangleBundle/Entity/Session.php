@@ -48,6 +48,20 @@ class Session
      * @ORM\Column(name="expired", type="boolean")
      */
     private $expired;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="deviceType", type="string")
+     */
+    private $deviceType;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="regId", type="string")
+     */
+    private $regId;
 
     
     /**
@@ -182,5 +196,51 @@ class Session
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set deviceType
+     *
+     * @param string $deviceType
+     * @return Session
+     */
+    public function setDeviceType($deviceType)
+    {
+        $this->deviceType = $deviceType;
+
+        return $this;
+    }
+
+    /**
+     * Get deviceType
+     *
+     * @return string 
+     */
+    public function getDeviceType()
+    {
+        return $this->deviceType;
+    }
+
+    /**
+     * Set regId
+     *
+     * @param string $regId
+     * @return Session
+     */
+    public function setRegId($regId)
+    {
+        $this->regId = $regId;
+
+        return $this;
+    }
+
+    /**
+     * Get regId
+     *
+     * @return string 
+     */
+    public function getRegId()
+    {
+        return $this->regId;
     }
 }
