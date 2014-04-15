@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent" >
+
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#CCCCCC"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/Description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/my_description" />
+
+    <EditText
+        android:id="@+id/CurrentDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:maxLines="10"
+        android:text=""
+        android:verticalScrollbarPosition="right" />
+
+    <Spinner
+        android:id="@+id/days"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/day_number"
+        android:prompt="@string/days" />
+
+    <Spinner
+        android:id="@+id/months"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/month_name"
+        android:prompt="@string/months" />
+
+    <Spinner
+        android:id="@+id/years"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/years"
+        android:prompt="@string/years" />
+
+    <TextView
+        android:id="@+id/CurrentPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm_password" />
+
+    <EditText
+        android:id="@+id/AddCurrentPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/NewPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/new_password" />
+
+    <EditText
+        android:id="@+id/AddNewPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/ConfirmNewPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm_password" />
+
+    <EditText
+        android:id="@+id/AddNewPasswordConfirmation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/AddEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="@string/add_your_email" />
+
+    <EditText
+        android:id="@+id/AddedMail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18.5dp"
+        android:inputType="textEmailAddress"
+        android:verticalScrollbarPosition="right" />
+    
+     <Button
+        android:id="@+id/SaveAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="129dp"
+        android:onClick="saveAll"
+        android:text="@string/save"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="15sp" />
+
+</LinearLayout>
+</ScrollView>
