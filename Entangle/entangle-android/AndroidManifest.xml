@@ -26,6 +26,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+          <activity
+        android:name="com.megasoft.entangle.claim"
+        android:parentActivityName="com.megasoft.entangle.MainActivity" >
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.megasoft.entangle.MainActivity" />
+    
+    </activity>
     </application>
 
 </manifest>
