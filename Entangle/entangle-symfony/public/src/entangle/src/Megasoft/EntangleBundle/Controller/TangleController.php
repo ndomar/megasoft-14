@@ -1,7 +1,6 @@
 <?php
 
 namespace Megasoft\EntangleBundle\Controller;
-
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -13,6 +12,7 @@ class TangleController extends Controller
       * @param \Symfony\Component\HttpFoundation\Request $request
       * @param integer $tangleId
       * @return \Symfony\Component\HttpFoundation\Response, null if no error exists
+      * @author OmarElAzazy
       */
     private function verifyUser($request, $tangleId){
         $sessionId = $request->headers->get('X-SESSION-ID');
@@ -45,6 +45,7 @@ class TangleController extends Controller
       * @param \Symfony\Component\HttpFoundation\Request $request
       * @param integer $tangleId
       * @return \Symfony\Component\HttpFoundation\Response
+      * @author OmarElAzazy
       */
     public function filterRequestsAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId)
     { 
@@ -122,6 +123,7 @@ class TangleController extends Controller
       * @param \Symfony\Component\HttpFoundation\Request $request
       * @param integer $tangleId
       * @return \Symfony\Component\HttpFoundation\Response
+      * @author OmarElAzazy
       */
     public function allTagsAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId){
         $verification = $this->verifyUser($request, $tangleId);
@@ -157,6 +159,7 @@ class TangleController extends Controller
         return $response;
     }
     
+
     /**
      * Validates the existance of a certain tangle
      * @param integer $tangleId
