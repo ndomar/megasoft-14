@@ -2,12 +2,15 @@
 
 namespace Megasoft\EntangleBundle\Controller;
 
+use DateTime;
+use Megasoft\EntangleBundle\Entity\InvitationCode;
+use Megasoft\EntangleBundle\Entity\InvitationMessage;
+use Megasoft\EntangleBundle\Entity\PendingInvitation;
+use Megasoft\EntangleBundle\Entity\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Megasoft\EntangleBundle\Entity\Session;
-use Megasoft\EntangleBundle\Entity\InvitationCode;
 
 class TangleController extends Controller {
 
@@ -67,9 +70,9 @@ class TangleController extends Controller {
      * An endpoint that gets a list of emails and classify them to
      * newMember , Entangle Member not in the tangle , already in the tangle
      * and invalid emails
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @param integer $tangleId
-     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @return Response|JsonResponse
      * @author MohamedBassem
      */
     public function checkMembershipAction(Request $request, $tangleId) {
@@ -133,9 +136,9 @@ class TangleController extends Controller {
     /**
      * An endpoint to invite a list of emails to join a certain tangle
      * it creates the invitation code and send it to the user
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @param integer $tangleId
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @author MohamedBassem
      */
     public function inviteAction(Request $request, $tangleId) {
@@ -172,7 +175,8 @@ class TangleController extends Controller {
         }
 
         $isOwner = $userTangle->getTangleOwner();
-
+        
+        
         foreach ($json['emails'] as $email) {
 
             if (!$this->isValidEmail($email) || (!$this->isNewMember($email) && $this->isTangleMember($email, $tangleId) )) {
@@ -196,7 +200,7 @@ class TangleController extends Controller {
 
                 $newInvitationCode->setInviterId($session->getUserId());
                 $newInvitationCode->setExpired(false);
-                $newInvitationCode->setCreated(new \DateTime("NOW"));
+                $newInvitationCode->setCreated(new DateTime("NOW"));
                 $newInvitationCode->setEmail($email);
 
                 $this->getDoctrine()->getManager()->persist($newInvitationCode);
@@ -208,7 +212,27 @@ class TangleController extends Controller {
 
                 // Mailer::sendEmail($email , $message ); // TO BE IMPLEMENTED
             } else {
-                // TODO not this userstory
+                $em = $this->getDoctrine()->getManager();
+                
+                $invitationMessage = new InvitationMessage();
+                $invitationMessage->setBody($json['message']);
+                
+                $pendingInvitation = new PendingInvitation();
+                if ($this->isNewMember($email)) {
+                    $pendingInvitation->setInvitee(null);
+                } else {
+
+                    $userEmailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
+                    $user = $userEmailRepo->findOneByEmail($email)->getUser();
+                    $pendingInvitation->setInvitee($user);
+                }
+                $pendingInvitation->setInviter($session->getUser());
+                $pendingInvitation->setMessage($invitationMessage);
+                $pendingInvitation->setTangle($userTangle->getTangle());
+                
+                $em->persist($invitationMessage);
+                $em->persist($pendingInvitation);
+                $em->flush();
             }
         }
 
