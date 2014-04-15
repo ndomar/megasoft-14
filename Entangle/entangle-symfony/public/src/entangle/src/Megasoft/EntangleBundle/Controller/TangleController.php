@@ -229,6 +229,7 @@ class TangleController extends Controller {
                 $pendingInvitation->setInviter($session->getUser());
                 $pendingInvitation->setMessage($invitationMessage);
                 $pendingInvitation->setTangle($userTangle->getTangle());
+                $pendingInvitation->setEmail($email);
                 
                 $em->persist($invitationMessage);
                 $em->persist($pendingInvitation);
