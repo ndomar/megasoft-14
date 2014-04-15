@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import com.megasoft.requests.PostRequest;
 
@@ -21,97 +22,39 @@ import com.megasoft.requests.PostRequest;
 
 
 public class RequestActivity extends Activity{
-
-	 
-    
-    /*this method create json object and send it through 
-     PostRequest 
-     
-     */
- 	
+	    Button Post;
+	    EditText description;
+	    EditText requestedPrice;
+	    EditText date;
+	    EditText deadLine;
+	    EditText tags;
+        CheckBox checkBox;
+        int requiredFields = 0;
+        boolean flag;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Intent previousIntent = getIntent();
+	/*	Intent previousIntent = getIntent();
 		final int tangleID = previousIntent.getIntExtra("tangleID" , 0);
-		final String sessionId = previousIntent.getStringExtra("sessionId");
+		final String sessionId = previousIntent.getStringExtra("sessionId"); */
 		setContentView(R.layout.activity_request);
-		final EditText description = (EditText) findViewById(R.id.description);
-		final EditText requestedPrice = (EditText) findViewById(R.id.price);
-		final EditText date = (EditText) findViewById(R.id.date);
-		final EditText deadLine = (EditText) findViewById(R.id.deadLine);
-	    final EditText tags = (EditText) findViewById(R.id.tags);
-	    final Button Post = (Button) findViewById(R.id.post);
+		description = (EditText) findViewById(R.id.description);
+		requestedPrice = (EditText) findViewById(R.id.price);
+		date = (EditText) findViewById(R.id.date);
+		deadLine = (EditText) findViewById(R.id.deadLine);
+	    tags = (EditText) findViewById(R.id.tags);
+	    Post = (Button) findViewById(R.id.post);
+	    checkBox = (CheckBox) findViewById(R.id.checkBox);
 		final JSONObject json = new JSONObject();
+		Post.setEnabled(false);
+		description.setOnFocusChangeListener(focusListener);
+		requestedPrice.setOnFocusChangeListener(focusListener);
+		date.setOnFocusChangeListener(focusListener);
+		deadLine.setOnFocusChangeListener(focusListener);
+		tags.setOnFocusChangeListener(focusListener);
 		
-		description.setOnFocusChangeListener(new OnFocusChangeListener() {
-			
-			public void onFocusChange(View v, boolean hasFocus) {
-			    if(!hasFocus){
-			    	if(isEmpty(description)) {
-					Post.setEnabled(false);
-				}else {
-					Post.setEnabled(true);
-					}
-				}
-			   }
-			});
-        
-		tags.setOnFocusChangeListener(new OnFocusChangeListener() {
-			
-			public void onFocusChange(View v, boolean hasFocus) {
-			    if(!hasFocus){
-			    	if(isEmpty(tags)) {
-					Post.setEnabled(false);
-				}else {
-					Post.setEnabled(true);
-					}
-				}
-			   }
-			});
-        
-		date.setOnFocusChangeListener(new OnFocusChangeListener() {
-        	 
-			
-			public void onFocusChange(View v, boolean hasFocus) {
-			    if(!hasFocus){
-			    	if(isEmpty(date)) {
-					Post.setEnabled(false);
-				}else {
-					Post.setEnabled(true);
-					}
-				}
-			   }
-			});
-      
-		deadLine.setOnFocusChangeListener(new OnFocusChangeListener() {
-        	 
-			
-			public void onFocusChange(View v, boolean hasFocus) {
-			    if(!hasFocus){
-			    	if(isEmpty(deadLine)) {
-					Post.setEnabled(false);
-				}else {
-					Post.setEnabled(true);
-					}
-				}
-			   }
-			});
-        requestedPrice.setOnFocusChangeListener(new OnFocusChangeListener() {
-        	 
-			
-			public void onFocusChange(View v, boolean hasFocus) {
-			    if(!hasFocus){
-			    	if(isEmpty(requestedPrice)) {
-					Post.setEnabled(false);
-				}else {
-					Post.setEnabled(true);
-					}
-				}
-			   }
-			});
 		
 
-        Post.setOnClickListener(new View.OnClickListener() {
+       /* Post.setOnClickListener(new View.OnClickListener() {
 			
 			
 			public void onClick(View arg0) {
@@ -142,19 +85,55 @@ public class RequestActivity extends Activity{
 			        request.execute();
 			      
 			}
-		}); 
+		}); */
       
 	}
+		
+	OnFocusChangeListener focusListener = new OnFocusChangeListener() {
+		
+		
+		public void onFocusChange(View view, boolean hasFocus) {
+			EditText editText = (EditText) view;
+		    if(!hasFocus){
+		    	if(isEmpty(editText)) {
+				Post.setEnabled(false);
+				requiredFields --;
+			} else{
+				requiredFields ++;
+			}
+		} else {
+		    if(!flag){
+				flag = true;
+				checkBox.setChecked(false);
+			}
+		}
+		}
+	};
 	private boolean isEmpty(EditText editText){
 		if( editText.getText().toString().length() == 0 ){
-		    editText.setError("Enter something I'm giving up on you");
+		    editText.setError("This Field is Required");
 		    return true;
 		}
 		editText.setError(null);
 		return false;
 	}
+	private void enablePostButton(){
+		if(description.getError() == null && requestedPrice.getError() == null
+				&& date.getError() == null && deadLine.getError() == null
+				&& tags.getError() == null && requiredFields >= 5 && checkBox.isChecked()) {
+			Post.setEnabled(true);
+		}
+	}
+	public void itemClicked(View v) {
+    	View focusedView = getCurrentFocus();
+    	focusedView.clearFocus();
+        CheckBox checkBox = (CheckBox)v;
+        if(checkBox.isChecked()){
+        	flag = false;
+        	enablePostButton();
+        }
+    }
 	
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

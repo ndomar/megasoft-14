@@ -6,7 +6,10 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".RequestsActivity" >
+    tools:context=".RequestsActivity"
+    android:focusable="true" 
+    android:focusableInTouchMode="true"
+     >
 
     <TextView
         android:id="@+id/textView1"
@@ -31,12 +34,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/tags"
+        android:layout_alignRight="@+id/textView4"
         android:layout_marginBottom="15dp"
         android:height="20dp"
         android:text="@string/post"
-        android:width="30dp" 
-        />
+        android:width="30dp" />
 
     <TextView
         android:id="@+id/textView2"
@@ -68,7 +70,7 @@
         android:ems="10"
         android:height="65dp"
         android:inputType="textMultiLine" >
-          <requestFocus />
+         
         </EditText>
     
 
@@ -132,5 +134,15 @@
 
        
     </EditText>
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/post"
+        android:layout_alignLeft="@+id/tags"
+        android:layout_toLeftOf="@+id/post"
+        android:onClick="itemClicked"
+        android:text="@string/check" />
 
 </RelativeLayout>

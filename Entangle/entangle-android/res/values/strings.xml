@@ -13,5 +13,6 @@
     <string name="date">Date</string>
     <string name="deadLine">Expected deadline</string>
     <string name="price">Requested price</string>
+    <string name="check">please check when you are done</string>
     
 </resources>
