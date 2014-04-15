@@ -42,6 +42,6 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/textView3"
         android:layout_centerVertical="true"
-        android:text="@string/claim_button"  />
-
+        android:text="@string/claim_button" 
+        android:onClick="startClaimForm"/>
 </RelativeLayout>
