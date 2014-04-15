@@ -33,9 +33,9 @@ public class RequestActivity extends Activity{
         boolean flag;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	/*	Intent previousIntent = getIntent();
+		Intent previousIntent = getIntent();
 		final int tangleID = previousIntent.getIntExtra("tangleID" , 0);
-		final String sessionId = previousIntent.getStringExtra("sessionId"); */
+		final String sessionId = previousIntent.getStringExtra("sessionId"); 
 		setContentView(R.layout.activity_request);
 		description = (EditText) findViewById(R.id.description);
 		requestedPrice = (EditText) findViewById(R.id.price);
@@ -54,7 +54,7 @@ public class RequestActivity extends Activity{
 		
 		
 
-       /* Post.setOnClickListener(new View.OnClickListener() {
+        Post.setOnClickListener(new View.OnClickListener() {
 			
 			
 			public void onClick(View arg0) {
@@ -85,7 +85,7 @@ public class RequestActivity extends Activity{
 			        request.execute();
 			      
 			}
-		}); */
+		}); 
       
 	}
 		
