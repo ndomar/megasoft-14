@@ -10,30 +10,18 @@
    	    android:layout_width="match_parent"
    	    android:layout_height="wrap_content"
    	    android:orientation="vertical">
-   	    
-   	    <ImageView
-   	        android:id="@+id/profileImage"
-     		android:layout_width="55dp"
-     		android:layout_height="55dp"
-     		android:layout_marginLeft="150dp"
-     		android:layout_marginTop="15dp"
-     		android:contentDescription="@string/hello_world"
-     		android:visibility="invisible"/>
-   	    
-   	    <Button 
-    		android:id= "@+id/EditProfile"
-    		android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:textSize="12sp"
-    		android:text="@string/edit_info"
-    		android:layout_marginLeft="200dp"
-    		android:layout_marginTop="35dp"
-			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:visibility="gone"/>
-   	    
+ 	    
    	    <RelativeLayout
    	        android:layout_width="match_parent"
      		android:layout_height="wrap_content">
+     		
+     		<ImageView
+     		    android:id="@+id/profileImage"
+     			android:layout_width="145dp"
+     			android:layout_height="145dp"
+     			android:layout_marginLeft="200dp"
+     			android:layout_marginTop="15dp"
+     			android:contentDescription="@string/hello_world"/>   	    
      		
      		<TextView
      		    android:id="@+id/nameView"
@@ -41,7 +29,7 @@
         		android:layout_height="wrap_content"
         		android:textSize="30sp"
         		android:layout_marginLeft="10dp"
-        		android:layout_marginTop="5dp"
+        		android:layout_marginTop="125dp"
 				android:textAppearance="?android:attr/textAppearanceLarge"/>
 		
 			<ImageView
@@ -49,22 +37,38 @@
         		android:layout_width="35dp"
         		android:layout_height="35dp"
         		android:layout_marginLeft="4dp"
-        		android:layout_marginTop="10dp"
+        		android:layout_marginTop="130dp"
         		android:layout_toRightOf="@id/nameView"
         		android:contentDescription="@string/hello_world"
         		android:src="@drawable/verify" 
         		android:visibility="invisible"/>
-   	    </RelativeLayout>
+   	   
+			</RelativeLayout>
    	    
-   	    <TextView
-   	        android:id="@+id/balanceView"
-        	android:layout_width="170dp"
-        	android:layout_height="wrap_content"
-        	android:textSize="18sp"
-        	android:layout_marginLeft="10dp"
-        	android:layout_marginTop="3dp"
-			android:textAppearance="?android:attr/textAppearanceSmall"/>
-    
+   	    <RelativeLayout 
+   	        android:layout_width="match_parent"
+     		android:layout_height="wrap_content">
+			
+			<Button
+			    android:id= "@+id/EditProfile"
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:textSize="12sp"
+    			android:text="@string/edit_info"
+    			android:layout_marginLeft="200dp"
+				android:textAppearance="?android:attr/textAppearanceSmall"
+				android:visibility="gone"/>
+			
+			<TextView
+   	        	android:id="@+id/balanceView"
+        		android:layout_width="170dp"
+        		android:layout_height="wrap_content"
+        		android:textSize="18sp"
+        		android:layout_marginLeft="10dp"
+				android:textAppearance="?android:attr/textAppearanceSmall"/>
+  
+   	   	</RelativeLayout>
+   	   	
 		<TextView
         	android:id="@+id/descriptionView"
         	android:layout_width="wrap_content"
@@ -84,14 +88,14 @@
 			android:textAppearance="?android:attr/textAppearanceMedium"/>
 		
 		<LinearLayout
-		    android:id="@+id/layout_container" 
+		    android:id="@+id/transactions_layout" 
         	android:layout_width="match_parent" 
         	android:layout_height="wrap_content"
         	android:layout_marginLeft="10dp"
         	android:layout_marginRight="10dp"
-        	android:layout_marginTop="30dp"
+        	android:layout_marginTop="10dp"
         	android:orientation="vertical"/>
-   	
+		
    	</LinearLayout>
    	
    	</ScrollView>
