@@ -2,6 +2,7 @@ package com.megasoft.entangle;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,16 @@ public class StreamRequestFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-
+				Intent intent = new Intent(getActivity().getBaseContext(),
+						Profile.class);
+				intent.putExtra("tangleId",
+						((TangleProfilePage) getActivity()).getTangleId());
+				intent.putExtra("tangleName",
+						((TangleProfilePage) getActivity()).getTangleName());
+				intent.putExtra("sessionId",
+						((TangleProfilePage) getActivity()).getSessionId());
+				intent.putExtra("requesterId", getRequesterId());
+				startActivity(intent);
 			}
 		});
 		request = (Button) getActivity().findViewById(R.id.requestButton);
@@ -35,10 +45,26 @@ public class StreamRequestFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
+				Intent intent = new Intent(getActivity().getBaseContext(),
+						RequestPage.class);
+				intent.putExtra("tangleId",
+						((TangleProfilePage) getActivity()).getTangleId());
+				intent.putExtra("tangleName",
+						((TangleProfilePage) getActivity()).getTangleName());
+				intent.putExtra("sessionId",
+						((TangleProfilePage) getActivity()).getSessionId());
+				intent.putExtra("requestId", getRequestId());
+				startActivity(intent);
 			}
 		});
+	}
+
+	private int getRequestId() {
+		return requestId;
+	}
+
+	private int getRequesterId() {
+		return requesterId;
 	}
 
 	public void setRequesterId(int id) {
@@ -54,7 +80,6 @@ public class StreamRequestFragment extends Fragment {
 	}
 
 	public void setRequestButtonText(String text) {
-
 		request.setText(text);
 	}
 
