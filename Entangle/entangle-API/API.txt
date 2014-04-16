@@ -397,6 +397,26 @@ contact offerer and requester after claim
                                  
         }
 
+## POST /request/{requestId}/icon
+Post icon for a specific request
++ parameters
+
+    + requestId (Int, required) ... request id
+    
++ Request (application/json)
+
+    +Header
+            
+            X-SESSION-ID : '549048320948219058409580'
+            
+    + Body
+                
+                {
+                    "requestIcon" : "fjdlgjfkjlgk'jwlkf'wjadgl'h'rjhgWGJAEKGJKLSJGDFKGHSK;GRIG;EJ"
+                }
+                
++ Response 201
+
 
 ## GET /user/whoami/{sessionId}
 
