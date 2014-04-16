@@ -236,8 +236,16 @@ class TangleController extends Controller {
                 $em->flush();
             }
         }
-
-        return new Response("Invitation Sent", 200);
+        
+        $jsonResponse = new JsonResponse();
+        $jsonResponse->setStatusCode(201);
+        
+        if($isOwner){
+            $jsonResponse->setData(array('pending'=>0));
+        }else{
+            $jsonResponse->setData(array('pending'=>1));
+        }
+        return $jsonResponse;
     }
 
     /**

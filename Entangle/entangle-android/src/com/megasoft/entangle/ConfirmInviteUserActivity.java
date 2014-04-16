@@ -192,8 +192,19 @@ public class ConfirmInviteUserActivity extends Activity {
 		PostRequest postRequest = new PostRequest(Config.API_BASE_URL
 				+ "/tangle/" + tangleId + "/invite") {
 			public void onPostExecute(String response) {
-				Toast.makeText(getApplicationContext(), "Invited !",
-						Toast.LENGTH_LONG).show();
+				try {
+					JSONObject jsonReponse = new JSONObject(response);
+					if(jsonReponse.getInt("pending") == 0){
+						Toast.makeText(getApplicationContext(), "Invited !",
+								Toast.LENGTH_LONG).show();
+					}else{
+						Toast.makeText(getApplicationContext(), "Waiting For Tangle Owner Approval !",
+								Toast.LENGTH_LONG).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
 				setResult(InviteUserActivity.INVITATION_SUCCESS);
 				finish();
 			}
