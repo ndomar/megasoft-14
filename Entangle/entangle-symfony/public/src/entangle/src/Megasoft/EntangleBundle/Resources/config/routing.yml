@@ -2,10 +2,6 @@ megasoft_entangle_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: MegasoftEntangleBundle:Default:index }
 
-#megasoft_entangle_test:
-#    pattern:  /test
-#    defaults: { _controller: MegasoftEntangleBundle:Default:test }
-
 check_membership:
     pattern: /tangle/{tangleId}/check-membership
     defaults: { _controller: MegasoftEntangleBundle:Tangle:checkMembership }
@@ -16,3 +12,9 @@ invite:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
     methods: [POST]
 
+post_request_icon:
+    pattern: /request/{requestId}/icon
+    defaults: { _controller: MegasoftEntangleBundle:Request:postIcon }
+    methods: [POST]
+    requirements:
+        requestId:  \d+
