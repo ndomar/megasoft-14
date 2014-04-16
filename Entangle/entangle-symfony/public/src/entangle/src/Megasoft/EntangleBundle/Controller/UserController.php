@@ -15,39 +15,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class User extends Controller {
 
-    /**
-     * This method edits the user's Description
-     * @param \Symfony\Component\HttpFoundation\Request $r
-     */
-    public function editDescription(Request $r) {
-
+    public function edit(Request $r) {
         $requestContent = $r->getContent();
         $jsonArray = json_decode($requestContent, true);
         Megasoft\EntangleBundle\Entity\User:: $user = $jsonArray['user'];
         $newDescription = $jsonArray['newDescription'];
-        $user->setUserBio($newDescription);
-    }
-
-    /**
-     * This method edits the user's Date of Birth
-     * @param \Symfony\Component\HttpFoundation\Request $r
-     */
-    public function editDateOfBirth(Request $r) {
-        $requestContent = $r->getContent();
-        $jsonArray = json_decode($requestContent, true);
-        $user = $jsonArray['user'];
-        $newDateOfBirth = $jsonArray['newDateOfBirth'];
-        $user->setBirthDate($newDateOfBirth);
-    }
-
-    /**
-     * This method Changes the user's password
-     * @param \Symfony\Component\HttpFoundation\Request $r
-     */
-    public function editPassword(Request $r) {
-        $requestContent = $r->getContent();
-        $jsonArray = json_decode($requestContent, true);
-        $user = $jsonArray['user'];
+        if (strcmp($user->getUserBio(), $newDescription) != 0) {
+            $user->setUserBio($newDescription);
+        }
         $newPassword = $jsonArray['newPassword'];
         $confirmNewPassword = $jsonArray['confirmNewPassword'];
         $givenCurrentPassword = $jsonArray['givenCurrentPassword'];
@@ -55,26 +30,16 @@ class User extends Controller {
         if ($givenCurrentPassword == $currentPassword && $newPassword == $confirmNewPassword) {
             $user->setPassword($newPassword);
         }
-    }
-
-    /**
-     * This Method adds a secondary mail
-     * @param \Symfony\Component\HttpFoundation\Request $r
-     */
-    public function addMail(Request $r) {
-        $requestContent = $r->getContent();
-        $jsonArray = json_decode($requestContent, true);
-        $user = $jsonArray['user'];
+        $newDateOfBirth = $jsonArray['newDateOfBirth'];
+        if (strcmp($newDateOfBirth, $user->getBirthDate()) != 0) {
+            $user->setBirthDate($newDateOfBirth);
+        }
         $newMail = new UserEmail();
-              $newMail->setEmail($jsonArray['newMail']);
-              $newMail->setUser($jsonArray['user']);
+        $newMail->setEmail($jsonArray['newMail']);
+        $newMail->setUser($user);
         $user->addEmail($newMail);
     }
 
-    /**
-     * This method deletes a secondary mail
-     * @param \Symfony\Component\HttpFoundation\Request $r
-     */
     public function deleteSecondaryEmail(Request $r) {
         $requestContent = $r->getContent();
         $jsonArray = json_decode($requestContent, true);
