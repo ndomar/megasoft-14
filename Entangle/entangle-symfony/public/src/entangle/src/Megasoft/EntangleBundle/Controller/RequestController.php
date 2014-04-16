@@ -3,13 +3,13 @@
 class RequestController extends Controller{
     
     /**
-      * Validates that the request has correct format, session Id is active and of a user, request id is of a request 
-      * and that the user is the requester of the request
+      * An endpoint to set the icon of a request
       * @param \Symfony\Component\HttpFoundation\Request $request
       * @param integer $requestId
-      * @return \Symfony\Component\HttpFoundation\Response, null if no error exists
+      * @return \Symfony\Component\HttpFoundation\Response
+      * @author OmarElAzazy
       */
-    private function verifyRequester($request, $requestId){
+    public function postIconAction(\Symfony\Component\HttpFoundation\Request $request, $requestId){
         $sessionId = $request->headers->get('X-SESSION-ID');
         
         if($requestId == null || $sessionId == null){
@@ -31,17 +31,6 @@ class RequestController extends Controller{
         if($request == null || $request->getUserId() != $requesterId){
             return new Response('Unauthorized', 401);
         }
-        
-        return null;
-    }
-    
-    public function postIconAction(\Symfony\Component\HttpFoundation\Request $request, $requestId){
-        $verification = $this->verifyRequester($request, $requestId);
-        
-        if($verification != null){
-            return $verification;
-        }
-        
         
     }
 }
