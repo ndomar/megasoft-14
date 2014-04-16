@@ -6,14 +6,16 @@ import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.megasoft.requests.GetRequest;
 
-import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,6 +28,8 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.megasoft.requests.GetRequest;
 
 /**
  * This class/activity is the one responsible for viewing the requests stream of
@@ -123,6 +127,8 @@ public class TangleProfilePage extends Activity {
 			}
 		}
 	};
+
+	private FragmentTransaction transaction;
 
 	/**
 	 * This method is called when the activity starts , it sets the attributes
@@ -228,6 +234,7 @@ public class TangleProfilePage extends Activity {
 	 * @param res
 	 *            , is the response string of the stream request
 	 */
+	@SuppressLint("NewApi")
 	private void setTheLayout(String res) {
 		try {
 			JSONObject response = new JSONObject(res);
@@ -235,6 +242,8 @@ public class TangleProfilePage extends Activity {
 				int count = response.getInt("count");
 				JSONArray requestArray = response.getJSONArray("requests");
 				if (count > 0 && requestArray != null) {
+					LinearLayout layout = (LinearLayout) findViewById(R.id.streamLayout);
+					layout.removeAllViews();
 					for (int i = 0; i < count && i < requestArray.length(); i++) {
 						JSONObject request = requestArray.getJSONObject(i);
 						if (request != null) {
@@ -259,34 +268,25 @@ public class TangleProfilePage extends Activity {
 	 * @param request
 	 *            , is the request to be added in the layout
 	 */
+	@SuppressLint("NewApi")
 	private void addRequest(JSONObject request) {
 		try {
-			LayoutParams params = new LinearLayout.LayoutParams(
-					LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-			LayoutParams params1 = new LinearLayout.LayoutParams(
-					LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-			LinearLayout layout = (LinearLayout) findViewById(R.id.streamLayout);
 			int userId = request.getInt("userId");
 			String requesterName = request.getString("username");
 			int requestId = request.getInt("id");
 			String requestBody = request.getString("description");
 			int requestOffersCount = request.getInt("offersCount");
-			Button requester = new Button(this);
-			requester.setId(userId);
-			requester.setText("Requester : " + requesterName);
-			setRequesterRedirection(requester);
-			requester.setGravity(Gravity.CENTER_HORIZONTAL);
-			requester.setLayoutParams(params);
-			layout.addView(requester);
-			Button req = new Button(this);
-			req.setId(requestId);
-			req.setText("Request : " + requestBody + "\nNumber of offers : "
-					+ requestOffersCount);
-			setRequestRedirection(req);
-			req.setLayoutParams(params1);
-			layout.addView(req);
+			String requesterButtonText = "Requester : " + requesterName;
+			String requestButtonText = "Request : " + requestBody
+					+ "\nNumber of offers : " + requestOffersCount;
+			transaction = getFragmentManager().beginTransaction();
+			StreamRequestFragment requestFragment = StreamRequestFragment
+					.createInstance(requestId, userId, requestButtonText,
+							requesterButtonText);
+			transaction.add(R.id.streamLayout, requestFragment);
+			// transaction.addToBackStack(null);
+			transaction.commit();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -298,6 +298,7 @@ public class TangleProfilePage extends Activity {
 	 * @param requester
 	 *            , is the requester button
 	 */
+	@SuppressWarnings("unused")
 	private void setRequesterRedirection(Button requester) {
 		requester.setTextSize(16);
 		requester.setOnClickListener(new View.OnClickListener() {
@@ -321,6 +322,7 @@ public class TangleProfilePage extends Activity {
 	 * @param request
 	 *            , is the request button
 	 */
+	@SuppressWarnings("unused")
 	private void setRequestRedirection(Button request) {
 		request.setTextSize(16);
 		request.setOnClickListener(new View.OnClickListener() {
