@@ -17,8 +17,8 @@ public class ViewMemberListActivity extends ListActivity {
 	 *           getMenuInflater().inflate(R.menu.view_member_list, menu);
 	 *           return true; }
 	 **/
-	public void onCreate(Bundle icicle) {
-		super.onCreate(icicle);
+	public void onCreate(Bundle bundle) {
+		super.onCreate(bundle);
 		String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
 				"Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
 				"Linux", "OS/2" };

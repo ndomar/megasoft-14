@@ -16,5 +16,9 @@
     <string name="wrong_emails">Not Valid Emails</string>
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
+    <string name="title_activity_member_list">MemberListActivity</string>
+    <string name="title_activity_memeber_list">MemeberListActivity</string>
+    <string name="title_activity_list_fragment">ListFragment</string>
+    <string name="title_activity_view_member_list">ViewMemberListActivity</string>
 
 </resources>
