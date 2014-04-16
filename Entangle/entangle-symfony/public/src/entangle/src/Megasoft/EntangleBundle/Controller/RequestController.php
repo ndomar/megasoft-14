@@ -10,7 +10,10 @@ class RequestController extends Controller{
       * @author OmarElAzazy
       */
     private function saveIcon($iconData, $requestId){
-        return 'http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/icons/test.jpg';
+        $iconFileName = 'request#' . "$requestId";
+        $outputFilePath = '/vagrant/public/src/entangle/web/bundles/megasoftentangle/images/icons/' . $iconFileName;
+        file_put_contents($outputFilePath, $iconData);
+        return 'http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/icons/' . $iconFileName;
     }
     
     /**
@@ -51,5 +54,12 @@ class RequestController extends Controller{
         
         $json_array = json_decond($json, true);
         $iconData = $json_array['requestIcon'];
+        
+        try{
+            return $this->saveIcon($iconData, $requestId);
+        }
+        catch (Exception $e){
+            return new Response('Internal Server Error', 500);
+        }
     }
 }
