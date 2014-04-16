@@ -97,10 +97,7 @@ public class RequestActivity extends Activity{
 		    if(!hasFocus){
 		    	if(isEmpty(editText)) {
 				Post.setEnabled(false);
-				requiredFields --;
-			} else{
-				requiredFields ++;
-			}
+			} 
 		} else {
 		    if(!flag){
 				flag = true;
@@ -110,18 +107,19 @@ public class RequestActivity extends Activity{
 		}
 	};
 	private boolean isEmpty(EditText editText){
-		if( editText.getText().toString().length() == 0 ){
+		if(editText.getText().toString().length() == 0){
 		    editText.setError("This Field is Required");
 		    return true;
 		}
 		editText.setError(null);
 		return false;
 	}
+	
 	private void enablePostButton(){
 		if(description.getError() == null && requestedPrice.getError() == null
 				&& date.getError() == null && deadLine.getError() == null
-				&& tags.getError() == null && requiredFields >= 5 && checkBox.isChecked()) {
-			Post.setEnabled(true);
+				&& tags.getError() == null && checkBox.isChecked()) {
+			 Post.setEnabled(true);
 		}
 	}
 	public void itemClicked(View v) {
@@ -129,10 +127,19 @@ public class RequestActivity extends Activity{
     	focusedView.clearFocus();
         CheckBox checkBox = (CheckBox)v;
         if(checkBox.isChecked()){
+        	if(!fieldsNotEmpty()){
+        		checkBox.setChecked(false);
+        	}
         	flag = false;
         	enablePostButton();
         }
     }
+	private boolean fieldsNotEmpty(){
+		if(!isEmpty(date) & !isEmpty(deadLine) & !isEmpty(description) & !isEmpty(requestedPrice)
+				& !isEmpty(tags))
+			return true;
+		return false;
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

@@ -7,7 +7,9 @@
     <string name="name">Request\'s name</string>
     <string name="description">Request\'s description</string>
     <string name="post">Post</string>
-    <string name="tag">Add tags</string>
+    <string name="tag">Please Add comma separated tags</string>
+    <string name= "tagHint">Only letters, digits, and , allowed</string>
+    <string name= "priceHint">enter a positive number</string>
     <string name="title_activity_request">RequestActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="date">Date</string>
