@@ -43,31 +43,41 @@ class RequestController extends Controller{
             return new Response('Bad Request', 400);
         }
         
+        $jsonString = $request->getContent();
+        
+        if($jsonString == null){
+            return new Response('Bad Request', 400);
+        }
+        
+        $json = json_decond($jsonString, true);
+        $iconData = $json['requestIcon'];
+        
+        if($iconData == null){
+            return new Response('Bad Request', 400);
+        }
+        
         $requesterId = $session->getUserId();
         
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
-        $request = $requestRepo->findOneBy(array('requestId' => $requestId));
+        $request = $requestRepo->findOneBy(array('id' => $requestId));
         if($request == null || $request->getUserId() != $requesterId){
             return new Response('Unauthorized', 401);
         }
         
-        $json = $request->getContent();
-        
-        if($json == null){
-            return new Response('Bad Request', 400);
-        }
-        
-        $json_array = json_decond($json, true);
-        $iconData = $json_array['requestIcon'];
-        
         try{
             $iconUrl = $this->saveIcon($iconData, $requestId);
-            $response = new JsonResponse();
-            $response->setData(array('iconUrl' => $iconUrl));
         }
         catch (Exception $e){
-            $response = new Response('Internal Server Error', 500);
+            return new Response('Internal Server Error', 500);
         }
+        
+        $request->setIcon($iconUrl);
+        
+        $this->getDoctrine()->getManager()->persist($request);
+        $this->getDoctrine()->getManager()->flush();
+        
+        $response = new JsonResponse();
+        $response->setData(array('iconUrl' => $iconUrl));
         return $response;
     }
 }
