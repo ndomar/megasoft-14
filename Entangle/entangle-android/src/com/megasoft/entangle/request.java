@@ -8,6 +8,7 @@ import com.megasoft.requests.GetRequest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,30 +19,31 @@ public class request extends Activity {
 	String requestId;
 	JSONArray offers; 
 	String[][] offerDetails;
+	int x =1; 
 	//String [] requestDetailNames={"Description", "Requester", "Date", "Tags", "Price", "Deadline","Status"}; 
 	String [] apiOfferNames = {"id", "requestedPrice", "date", "description", "offererId", "status"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	setContentView(R.layout.request);
-    	Intent intent = getIntent();
+    	//Intent intent = getIntent();
     	//requestId = intent.getExtras().getString("RequestId");
     	requestId="1";
     	super.onCreate(savedInstanceState);
         this.fillRequestDetails();
         this.setCreateOfferButton(); 
-        this.setViewOffersButton();
+       // this.setViewOffersButton();
         }	
+    
     public void fillRequestDetails(){
     	requestId="test";
          GetRequest request = new GetRequest("http://entangle2.apiary-mock.com/request/" +requestId) {	
         	 protected void onPostExecute(String response) {
 					try {
-						//Log.e("test",response);
+						Log.e("test",response);
 		     			JSONObject json = new JSONObject(response);
 		     			addRequestFields(json);
 						addOffers(json); 
-		     			} 
-		     				
+		     			}	
 		     			 catch (JSONException e) {
 							e.printStackTrace();
 						}
@@ -52,16 +54,18 @@ public class request extends Activity {
              
             
     }
-        
+      
         public void setViewOffersButton(){
         	 final Intent intentViewOffers = new Intent(this,ViewOffers.class); 
              Button viewOffers = (Button) findViewById(R.id.button2); 
              viewOffers.setOnClickListener(new OnClickListener(){
      			public void onClick(View arg0) {
-     				intentViewOffers.putExtra("Offers", offerDetails);
+     				Bundle bundle=new Bundle();
+     				bundle.putSerializable("offers", offerDetails);
+     				intentViewOffers.putExtras(bundle);
      				startActivity(intentViewOffers); 
      				}
-             });
+     			 });
         }
         
         /*Uncomment when linked*/
@@ -93,6 +97,7 @@ public class request extends Activity {
 			 TextView status = (TextView) findViewById(R.id.status); 
 			 status.setText("Status :" + json.getString("status")); 
 			}
+        
         public void addOffers(JSONObject json) throws JSONException{
 			offers = new JSONArray(json.getString("offers"));
         	offerDetails = new String[offers.length()][];
@@ -104,7 +109,7 @@ public class request extends Activity {
 			    offerDetails[i]= details ; 
 			 
 			 }
-			} 
+		} 
         
 
     @Override
