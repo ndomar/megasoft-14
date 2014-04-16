@@ -93,6 +93,14 @@ class PendingInvitation
     private $email;
     
     /**
+     *
+     * @var boolean
+     * 
+     * @ORM\Column(name="approved", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
+     */
+    private $approved = false;
+    
+    /**
      * Get id
      *
      * @return integer 
@@ -307,5 +315,28 @@ class PendingInvitation
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Set approved
+     *
+     * @param boolean $approved
+     * @return PendingInvitation
+     */
+    public function setApproved($approved)
+    {
+        $this->approved = $approved;
+
+        return $this;
+    }
+
+    /**
+     * Get approved
+     *
+     * @return boolean 
+     */
+    public function getApproved()
+    {
+        return $this->approved;
     }
 }
