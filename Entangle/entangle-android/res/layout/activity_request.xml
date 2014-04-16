@@ -30,6 +30,15 @@
         android:ems="10"
         android:hint="@string/tagHint"
         android:inputType="text" />
+    
+    <Button android:id="@+id/myDatePickerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Date"/>
+
+<TextView android:id="@+id/showMyDate"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/post"
@@ -131,10 +140,9 @@
         android:layout_alignBaseline="@+id/deadLine"
         android:layout_alignBottom="@+id/deadLine"
         android:layout_alignLeft="@+id/textView4"
-        android:layout_toLeftOf="@+id/deadLine"
+        android:layout_alignRight="@+id/textView1"
         android:ems="10"
         android:inputType="date" >
-
        
     </EditText>
 
