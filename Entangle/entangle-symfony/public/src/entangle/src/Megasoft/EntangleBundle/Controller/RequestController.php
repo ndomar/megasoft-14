@@ -27,7 +27,7 @@ class RequestController extends Controller{
       * An endpoint to set the icon of a request
       * @param Request $request
       * @param integer $requestId
-      * @return Response|JsonResponse 
+      * @return \Symfony\Component\HttpFoundation\Response | Symfony\Component\HttpFoundation\JsonResponse
       * @author OmarElAzazy 
      */
     public function postIconAction(Request $request, $requestId){
