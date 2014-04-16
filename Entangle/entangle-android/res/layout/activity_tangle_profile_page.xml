@@ -83,7 +83,8 @@
             android:layout_height="92dp"
             android:layout_gravity="center_vertical"
             android:background="#28C9B9"
-            android:orientation="vertical" >
+            android:orientation="vertical" 
+            android:paddingTop="15dp" >
         </LinearLayout>
     </ScrollView>
 
