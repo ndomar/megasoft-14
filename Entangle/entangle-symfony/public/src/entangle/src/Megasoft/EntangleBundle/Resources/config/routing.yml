@@ -15,4 +15,14 @@ invite:
     pattern: /tangle/{tangleId}/invite
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
     methods: [POST]
+    
+check_availability:
+    pattern: /tangle/check/{tangleName}
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:checkAvailability }
+    methods: [GET]
+
+create_tangle:
+    pattern: /tangle
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:createTangle }
+    methods: [POST]
 
