@@ -1,5 +1,12 @@
 <?php
 
+namespace Megasoft\EntangleBundle\Controller;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 class RequestController extends Controller{
     
     /**
@@ -10,20 +17,18 @@ class RequestController extends Controller{
       * @author OmarElAzazy
       */
     private function saveIcon($iconData, $requestId){
-        $iconFileName = 'request#' . "$requestId";
-        $outputFilePath = '/vagrant/public/src/entangle/web/bundles/megasoftentangle/images/icons/' . $iconFileName;
-        file_put_contents($outputFilePath, $iconData);
+       // $iconFileName = 'request#' . "$requestId" / '.png';
+       // $outputFilePath = '/vagrant/public/src/entangle/web/bundles/megasoftentangle/images/icons/' . $iconFileName;
+       // file_put_contents($outputFilePath, $iconData);
         return 'http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/icons/' . $iconFileName;
     }
     
     /**
       * An endpoint to set the icon of a request
-      * @param \Symfony\Component\HttpFoundation\Request $request
+      * @param Request $request
       * @param integer $requestId
-      * @return \Symfony\Component\HttpFoundation\Response
-      * @author OmarElAzazy
-      */
-    public function postIconAction(\Symfony\Component\HttpFoundation\Request $request, $requestId){
+      * @return Response */
+    public function postIconAction(Request $request, $requestId){
         $sessionId = $request->headers->get('X-SESSION-ID');
         
         if($requestId == null || $sessionId == null){
@@ -56,10 +61,13 @@ class RequestController extends Controller{
         $iconData = $json_array['requestIcon'];
         
         try{
-            return $this->saveIcon($iconData, $requestId);
+            $iconUrl = $this->saveIcon($iconData, $requestId);
+            $response = new JsonResponse();
+            $response->setData(array('iconUrl' => $iconUrl));
         }
         catch (Exception $e){
-            return new Response('Internal Server Error', 500);
+            $response = new Response('Internal Server Error', 500);
         }
+        return $response;
     }
 }
