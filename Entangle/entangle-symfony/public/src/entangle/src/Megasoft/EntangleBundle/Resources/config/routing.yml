@@ -17,7 +17,7 @@ invite:
     methods: [POST]
     
 check_availability:
-    pattern: /tangle/check/{tangleName}
+    pattern: /tangle/check
     defaults: { _controller: MegasoftEntangleBundle:Tangle:checkAvailability }
     methods: [GET]
 

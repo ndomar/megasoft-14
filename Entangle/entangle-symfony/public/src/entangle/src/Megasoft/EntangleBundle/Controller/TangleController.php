@@ -2,12 +2,13 @@
 
 namespace Megasoft\EntangleBundle\Controller;
 
+use DateTime;
+use Megasoft\EntangleBundle\Entity\InvitationCode;
+use Megasoft\EntangleBundle\Entity\Tangle;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Megasoft\EntangleBundle\Entity\Session;
-use Megasoft\EntangleBundle\Entity\InvitationCode;
 
 class TangleController extends Controller {
 
@@ -67,9 +68,9 @@ class TangleController extends Controller {
      * An endpoint that gets a list of emails and classify them to
      * newMember , Entangle Member not in the tangle , already in the tangle
      * and invalid emails
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @param integer $tangleId
-     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @return Response|JsonResponse
      * @author MohamedBassem
      */
     public function checkMembershipAction(Request $request, $tangleId) {
@@ -133,9 +134,9 @@ class TangleController extends Controller {
     /**
      * An endpoint to invite a list of emails to join a certain tangle
      * it creates the invitation code and send it to the user
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @param integer $tangleId
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @author MohamedBassem
      */
     public function inviteAction(Request $request, $tangleId) {
@@ -196,7 +197,7 @@ class TangleController extends Controller {
 
                 $newInvitationCode->setInviterId($session->getUserId());
                 $newInvitationCode->setExpired(false);
-                $newInvitationCode->setCreated(new \DateTime("NOW"));
+                $newInvitationCode->setCreated(new DateTime("NOW"));
                 $newInvitationCode->setEmail($email);
 
                 $this->getDoctrine()->getManager()->persist($newInvitationCode);
@@ -231,16 +232,18 @@ class TangleController extends Controller {
     }
 
     public function createTangleAction(Request $request) {
+
         $json = $request->getContent();
         $json_array = json_decode($json, true);
         $tangleName = $json_array['tangleName'];
         $tangleIcon = $json_array['tangleIcon'];
 
-        $Tangle = new Tangle();
-        $Tangle->setName($tangleName);
-        $Tangle->setIcon($tangleIcon);
+        $tangle = new Tangle();
+        $tangle->setName($tangleName);
+        $tangle->setIcon($tangleIcon);
+        $tangle->setDeleted(false);
 
-        $this->getDoctrine()->getManager()->persist($Tangle);
+        $this->getDoctrine()->getManager()->persist($tangle);
         $this->getDoctrine()->getManager()->flush();
 
         $response = new Response();
@@ -248,7 +251,9 @@ class TangleController extends Controller {
         return $response;
     }
 
-    public function checkAvailabilityAction($tangleName) {
+    public function checkAvailabilityAction(Request $request) {
+
+        $tangleName = $request->query->get('tangleName');
         $doctrine = $this->getDoctrine();
         $repo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
         $tangle = $repo->findOneBy(array('name' => $tangleName));
