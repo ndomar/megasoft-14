@@ -4,26 +4,65 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
+/**
+ * This class extends the fragment class and it corresponds to one entry in the
+ * requests stream. It consists of two buttons, one represents the request and
+ * the other represents the requester.
+ * 
+ * @author HebaAamer
+ * 
+ */
 @SuppressLint("NewApi")
 public class StreamRequestFragment extends Fragment {
-	// public static int counter = 0;
-	// private int num;
+	/**
+	 * The id of the requester
+	 */
 	private int requesterId;
-	private int requestId;
-	private String requestString;
-	private String requesterString;
-	Button request;
-	Button requester;
 
+	/**
+	 * The id of the request
+	 */
+	private int requestId;
+
+	/**
+	 * The text of the request button
+	 */
+	private String requestString;
+
+	/**
+	 * The text of the requester button
+	 */
+	private String requesterString;
+
+	/**
+	 * The request button
+	 */
+	private Button request;
+
+	/**
+	 * The requester button
+	 */
+	private Button requester;
+
+	/**
+	 * This method is used to create an instance of the StreamRequestFragment
+	 * and sets its fields
+	 * 
+	 * @param requestId
+	 *            , is the id of the request
+	 * @param requesterId
+	 *            , is the id of the requester
+	 * @param requestString
+	 *            , is the text of the request button
+	 * @param requesterString
+	 *            , is the text of the requester button
+	 * @return an instance of the StreamRequestFragment
+	 */
 	public static StreamRequestFragment createInstance(int requestId,
 			int requesterId, String requestString, String requesterString) {
 		StreamRequestFragment fragment = new StreamRequestFragment();
@@ -34,6 +73,10 @@ public class StreamRequestFragment extends Fragment {
 		return fragment;
 	}
 
+	/**
+	 * This method is used to setup and return the view of the fragment
+	 */
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstancState) {
 		View view = inflater.inflate(R.layout.stream_request_fragment,
@@ -50,43 +93,87 @@ public class StreamRequestFragment extends Fragment {
 	// Log.d("Method", "onSave");
 	// }
 
+	/**
+	 * This is a getter method that is used to return the id of the request
+	 * 
+	 * @return request id
+	 */
 	private int getRequestId() {
 		return requestId;
 	}
 
+	/**
+	 * This is a getter method that is used to return the id of the requester
+	 * 
+	 * @return requester id
+	 */
 	private int getRequesterId() {
 		return requesterId;
 	}
 
+	/**
+	 * This is a getter method that is used to return the text of the request
+	 * button
+	 * 
+	 * @return requestString
+	 */
 	private String getRequestString() {
 		return requestString;
 	}
 
+	/**
+	 * This is a getter method that is used to return the text of the requester
+	 * button
+	 * 
+	 * @return requesterString
+	 */
 	private String getRequesterString() {
 		return requesterString;
 	}
 
+	/**
+	 * This method is used to set the id of the requester
+	 * 
+	 * @param id
+	 */
 	private void setRequesterId(int id) {
 		requesterId = id;
 	}
 
+	/**
+	 * This method is used to set the id of the request
+	 * 
+	 * @param id
+	 */
 	private void setRequestId(int id) {
 		requestId = id;
 	}
 
+	/**
+	 * This method is used to set the text of the requester button
+	 * 
+	 * @param text
+	 */
 	private void setRequesterButtonText(String text) {
-		// requester = (Button)
-		// getActivity().findViewById(R.id.requesterButton);
-		// requester.setText(text);
 		requesterString = text;
 	}
 
+	/**
+	 * This method is used to set the text of the request button
+	 * 
+	 * @param text
+	 */
 	private void setRequestButtonText(String text) {
-		// request = (Button) getActivity().findViewById(R.id.requestButton);
-		// request.setText(text);
 		requestString = text;
 	}
-	
+
+	/**
+	 * This method is used to set the action of the requester button, in which
+	 * it will redirect to the requester profile
+	 * 
+	 * @param requester
+	 *            , is the requester button
+	 */
 	private void setRequesterRedirection() {
 		requester.setTextSize(16);
 		requester.setText(getRequesterString());
@@ -107,6 +194,13 @@ public class StreamRequestFragment extends Fragment {
 		});
 	}
 
+	/**
+	 * This method is used to set the action of the request button, in which it
+	 * will redirect to the request page
+	 * 
+	 * @param request
+	 *            , is the request button
+	 */
 	private void setRequestRedirection() {
 		request.setTextSize(16);
 		request.setText(getRequestString());
@@ -126,6 +220,5 @@ public class StreamRequestFragment extends Fragment {
 			}
 		});
 	}
-
 
 }
