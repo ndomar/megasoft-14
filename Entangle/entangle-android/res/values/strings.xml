@@ -16,5 +16,10 @@
     <string name="wrong_emails">Not Valid Emails</string>
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string-array name="sidebar_list">
+        <item >Item A</item>
+        <item >Item B</item>
+    </string-array>
 
 </resources>
