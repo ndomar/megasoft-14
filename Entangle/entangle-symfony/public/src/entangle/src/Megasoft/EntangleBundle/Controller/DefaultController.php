@@ -7,6 +7,8 @@ use Megasoft\EntangleBundle\Entity\PendingInvitation;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Exception\LogicException;
+use Megasoft\EntangleBundle\Entity\User;
+use Megasoft\EntangleBundle\Entity\UserEmail;
 
 class DefaultController extends Controller {
 
@@ -22,17 +24,19 @@ class DefaultController extends Controller {
             $confirmPassword = $request->get('confirmPassword'); //Remember to do the check matching passwords
             $email = $request->get('email');
             $userBio = $request->get('userBio');
-            $birthDate = $request->get('birthDate');
+           // $birthDate = $request->get('birthDate');
             $verified = false;
             $user = new User;
             $userEmail = new UserEmail();
-            $userEmail->setEmail($email);
+
             $user->addEmail($userEmail);
             $user->setName($name);
             $user->setPassword($password);
             $user->setUserBio($userBio);
-            $user->setBirthDate($birthDate);
+
+           // $user->setBirthDate($birthDate);
             $user->setVerified($verified);
+            $userEmail->setEmail($email);
 
 
             $entityManager = $this->getDoctrine()->getEntityManager();
@@ -40,6 +44,7 @@ class DefaultController extends Controller {
             $entityManager->persist($userEmail);
             $entityManager->flush();
 
+            return new Response("Created" , 201);
         }
         return $this->render('MegasoftEntangleBundle:Default:register.html.twig');
     }
