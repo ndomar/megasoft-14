@@ -136,7 +136,7 @@ class TangleController extends Controller
         
         $doctrine = $this->getDoctrine();
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
-        $criteria = array('tangleId' => $tangleId);
+        $criteria = array('tangleId' => $tangleId, 'deleted' => false);
         $requests = $requestRepo->findBy($criteria);
         
         $tags = array();
