@@ -11,7 +11,7 @@ class TangleController extends Controller
       * Validates that the request has correct format, session Id is active and of a user and that the user is in the tangle
       * @param \Symfony\Component\HttpFoundation\Request $request
       * @param integer $tangleId
-      * @return \Symfony\Component\HttpFoundation\Response, null if no error exists
+      * @return \Symfony\Component\HttpFoundation\Response | null
       * @author OmarElAzazy
       */
     private function verifyUser($request, $tangleId){
@@ -44,7 +44,7 @@ class TangleController extends Controller
       * An endpoint to filter requests of a specific tangle by requester, tag, prefix of requester's name or description
       * @param \Symfony\Component\HttpFoundation\Request $request
       * @param integer $tangleId
-      * @return \Symfony\Component\HttpFoundation\Response
+      * @return \Symfony\Component\HttpFoundation\Response | Symfony\Component\HttpFoundation\JsonResponse
       * @author OmarElAzazy
       */
     public function filterRequestsAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId)
@@ -124,7 +124,7 @@ class TangleController extends Controller
       * An endpoint to return the list of tags in a specific tangle
       * @param \Symfony\Component\HttpFoundation\Request $request
       * @param integer $tangleId
-      * @return \Symfony\Component\HttpFoundation\Response
+      * @return \Symfony\Component\HttpFoundation\Response | Symfony\Component\HttpFoundation\JsonResponse
       * @author OmarElAzazy
       */
     public function allTagsAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId){
