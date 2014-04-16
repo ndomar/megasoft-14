@@ -269,14 +269,18 @@ class TangleController extends Controller {
         foreach($pendingInvitations as $pendingInvitation){
             $pending = array();
             $pending['id'] = $pendingInvitation->getId();
-            $pending['invitee'] = $pendingInvitation->getInviteeId();
+            if($pendingInvitation->getInvitee() == null){
+                $pending['invitee'] = null;
+            }else{
+                $pending['invitee'] = $pendingInvitation->getInvitee()->getName();
+            }
             $pending['invited'] = $pendingInvitation->getInviter()->getName();
             $pending['email'] = $pendingInvitation->getEmail();
             $responseArray[] = $pending;
         }
         
         $jsonResponse = new JsonResponse();
-        $jsonResponse->setData($responseArray);
+        $jsonResponse->setData(array('pending-invitations'=>$responseArray));
         return $jsonResponse;
     }
     
