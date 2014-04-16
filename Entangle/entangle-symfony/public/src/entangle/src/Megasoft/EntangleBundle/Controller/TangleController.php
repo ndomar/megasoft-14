@@ -230,7 +230,36 @@ class TangleController extends Controller {
         return $ret;
     }
     
-    public function pendingInvitationsAction($tangleId){
+    public function validateIsOwner($sessionId,$tangleId){
+        if ($sessionId == null) {
+            return new Response("Bad Request", 400);
+        }
+
+        $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
+
+        $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
+
+        if ($session == null) {
+            return new Response("Unauthorized", 401);
+        }
+        
+        $userTangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserTangle');
+
+        if (($userTangle = $userTangleRepo->findOneBy(array('userId' => $session->getUserId(), 'tangleId' => $tangleId))) == null || !$userTangle->getTangleOwner() ) {
+            return new Response("Unauthorized", 401);
+        }
+        
+        return null;
+    }
+    
+    public function pendingInvitationsAction(Request $request,$tangleId){
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        
+        $validation = $this->validateIsOwner($sessionId,$tangleId);
+        if($validation != null){
+            return $validation;
+        }
+        
         $pendingInvitationTable = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:PendingInvitation');
         $pendingInvitations = $pendingInvitationTable->findBy(array('tangleId'=>$tangleId,'approved'=>false));
         $responseArray = array();
