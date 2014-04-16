@@ -27,7 +27,9 @@ class RequestController extends Controller{
       * An endpoint to set the icon of a request
       * @param Request $request
       * @param integer $requestId
-      * @return Response */
+      * @return Response|JsonResponse 
+      * @author OmarElAzazy 
+     */
     public function postIconAction(Request $request, $requestId){
         $sessionId = $request->headers->get('X-SESSION-ID');
         
