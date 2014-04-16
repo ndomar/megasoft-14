@@ -60,7 +60,9 @@ class TangleController extends Controller
         
         $query = $requestRepo->createQueryBuilder('request')
                 ->where('request.tangleId = :tangleId')
-                ->setParameter('tangleId', $tangleId);
+                ->setParameter('tangleId', $tangleId)
+                ->andWhere('request.deleted = :false')
+                ->setParameter('false', false);
         
         $userId = $request->query->get('userid', null);
         if($userId != null){
