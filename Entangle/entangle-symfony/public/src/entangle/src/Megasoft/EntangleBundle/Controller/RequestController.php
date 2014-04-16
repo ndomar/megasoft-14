@@ -17,9 +17,9 @@ class RequestController extends Controller{
       * @author OmarElAzazy
       */
     private function saveIcon($iconData, $requestId){
-       // $iconFileName = 'request#' . "$requestId" / '.png';
-       // $outputFilePath = '/vagrant/public/src/entangle/web/bundles/megasoftentangle/images/icons/' . $iconFileName;
-       // file_put_contents($outputFilePath, $iconData);
+        $iconFileName = 'request#' . "$requestId" . '.png';
+        $outputFilePath = '/vagrant/public/src/entangle/web/bundles/megasoftentangle/images/icons/' . $iconFileName;
+        file_put_contents($outputFilePath, $iconData);
         return 'http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/icons/' . $iconFileName;
     }
     
@@ -49,7 +49,7 @@ class RequestController extends Controller{
             return new Response('Bad Request', 400);
         }
         
-        $json = json_decond($jsonString, true);
+        $json = json_decode($jsonString, true);
         $iconData = $json['requestIcon'];
         
         if($iconData == null){
