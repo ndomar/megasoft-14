@@ -277,12 +277,29 @@ class TangleController extends Controller {
         return $jsonResponse;
     }
     
-    public function acceptPendingInvitation(){
+    public function acceptPendingInvitationAction(){
         
     }
     
-    public function rejectPendingInvitiation(){
+    public function rejectPendingInvitationAction(Request $request,$pendingInvitationId){
+        $sessionId = $request->headers->get('X-SESSION-ID');
         
+        $pendingInvitationTable = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:PendingInvitation');
+        $pendingInvitation = $pendingInvitationTable->findOneBy(array('id'=>$pendingInvitationId));
+        
+        if($pendingInvitation == null){
+            return new Response("Pending Invitation Not Found", 404);
+        }
+            
+        $validation = $this->validateIsOwner($sessionId,$pendingInvitation->getTangleId());
+        
+        if($validation != null){
+            return $validation;
+        }
+
+        $this->getDoctrine()->getManager()->remove($pendingInvitation);
+        $this->getDoctrine()->getManager()->flush();
+        return new Response("Deleted",200);
     }
 
 }
