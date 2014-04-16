@@ -23,7 +23,7 @@ class DefaultController extends Controller
 {
     public function indexAction($name)
     {
-        $name = $this->container->getParameter('API_KEY');
+
         return $this->render('MegasoftEntangleBundle:Default:index.html.twig', array('name' => $name));
     }
 }
