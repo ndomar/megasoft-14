@@ -24,7 +24,7 @@ class DefaultController extends Controller {
             $confirmPassword = $request->get('confirmPassword'); //Remember to do the check matching passwords
             $email = $request->get('email');
             $userBio = $request->get('userBio');
-           // $birthDate = $request->get('birthDate');
+            $birthDate = new \DateTime($request->get('birthDate'));
             $verified = false;
             $user = new User;
             $userEmail = new UserEmail();
@@ -34,7 +34,7 @@ class DefaultController extends Controller {
             $user->setPassword($password);
             $user->setUserBio($userBio);
 
-           // $user->setBirthDate($birthDate);
+            $user->setBirthDate($birthDate);
             $user->setVerified($verified);
             $userEmail->setEmail($email);
 
