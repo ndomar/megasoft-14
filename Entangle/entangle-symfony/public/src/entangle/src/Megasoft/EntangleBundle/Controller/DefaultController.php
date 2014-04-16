@@ -18,31 +18,43 @@ use Megasoft\EntangleBundle\Entity\UserEmail;
 use Megasoft\EntangleBundle\Entity\UserTangle;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\Form\Exception\LogicException;
 
-class DefaultController extends Controller
-{
-    public function indexAction($name)
-    {
+class DefaultController extends Controller {
+
+    public function indexAction($name) {
         return $this->render('MegasoftEntangleBundle:Default:index.html.twig', array('name' => $name));
     }
-    
-    public function registerAction(Request $request) {
-        if($request->getMethod() == 'POST') {  //reading the request object and getting data out of it
+
+    public function registerAction(\Symfony\Component\HttpFoundation\Request $request)  {
+        if ($request->getMethod() == 'POST') {  //reading the request object and getting data out of it
             //$username = $request->get('username');
-            $firstname = $request->get('firstname');
+            $name = $request->get('name');
             $password = $request->get('password');
-            
+            $confirmPassword = $request->get('confirmPassword'); //Remember to do the check matching passwords
+            $email = $request->get('email');
+            $userBio = $request->get('userBio');
+            $birthDate = $request->get('birthDate');
+            $verified = false;
             $user = new User;
-            $user->setName($firstname);
+            $userEmail = new UserEmail();
+            $userEmail->setEmail($email);
+            $user->addEmail($userEmail);
+            $user->setName($name);
             $user->setPassword($password);
+            $user->setUserBio($userBio);
+            $user->setBirthDate($birthDate);
+            $user->setVerified($verified);
+
+
             $entityManager = $this->getDoctrine()->getEntityManager();
             $entityManager->persist($user);
+            $entityManager->persist($userEmail);
             $entityManager->flush();
+
         }
         return $this->render('MegasoftEntangleBundle:Default:register.html.twig');
     }
-
 
 //    public function testAction(){
 //        $doctrineManger = $this->getDoctrine()->getManager();
@@ -151,6 +163,4 @@ class DefaultController extends Controller
 //        
 //        return new Response("Created" , 201);
 //    }
-   
-   
 }
