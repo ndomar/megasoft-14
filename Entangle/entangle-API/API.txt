@@ -294,7 +294,11 @@ Get profile
                 "message" : "Hello , Join my tangle"
             }
              
-+ Response 201
++ Response 201 (application/json)
+            
+            {
+                "pending" : 1
+            }
 
 ## POST /tangle/{tangleId}/check-membership
 
