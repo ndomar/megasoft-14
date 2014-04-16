@@ -26,6 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         
           <activity
         android:name="com.megasoft.entangle.claim"
@@ -35,6 +36,12 @@
             android:value="com.megasoft.entangle.MainActivity" />
     
     </activity>
+=======
+        <activity
+            android:name="com.megasoft.entangle.InviteUsers"
+            android:label="@string/title_activity_invite_users" >
+        </activity>
+>>>>>>> 17e4189a346e1cb051113733c77d331599138711
     </application>
 
 </manifest>

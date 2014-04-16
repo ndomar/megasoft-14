@@ -6,6 +6,7 @@ import com.megasoft.requests.GetRequest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
+<<<<<<< HEAD
 		setContentView(R.layout.request);	
 	}	
 	
@@ -55,6 +57,13 @@ public class MainActivity extends Activity {
 	
 	}
 	
+=======
+		setContentView(R.layout.activity_main);
+
+		startActivity((new Intent(this,InviteUserActivity.class)).putExtra("com.megasoft.entangle.tangleId", 2));
+	}
+
+>>>>>>> 17e4189a346e1cb051113733c77d331599138711
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
