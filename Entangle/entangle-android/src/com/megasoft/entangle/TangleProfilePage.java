@@ -292,54 +292,6 @@ public class TangleProfilePage extends Activity {
 	}
 
 	/**
-	 * This method is used to set the action of the requester button, in which
-	 * it will redirect to the requester profile
-	 * 
-	 * @param requester
-	 *            , is the requester button
-	 */
-	@SuppressWarnings("unused")
-	private void setRequesterRedirection(Button requester) {
-		requester.setTextSize(16);
-		requester.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				int tmpId = ((Button) v).getId();
-				intent = new Intent(getBaseContext(), Profile.class);
-				intent.putExtra("tangleId", getTangleId());
-				intent.putExtra("tangleName", getTangleName());
-				intent.putExtra("sessionId", getSessionId());
-				intent.putExtra("requesterId", tmpId);
-				startActivity(intent);
-			}
-		});
-	}
-
-	/**
-	 * This method is used to set the action of the request button, in which it
-	 * will redirect to the request page
-	 * 
-	 * @param request
-	 *            , is the request button
-	 */
-	@SuppressWarnings("unused")
-	private void setRequestRedirection(Button request) {
-		request.setTextSize(16);
-		request.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				int tmpId = ((Button) v).getId();
-				intent = new Intent(getBaseContext(), RequestPage.class);
-				intent.putExtra("tangleId", getTangleId());
-				intent.putExtra("tangleName", getTangleName());
-				intent.putExtra("sessionId", getSessionId());
-				intent.putExtra("requestId", tmpId);
-				startActivity(intent);
-			}
-		});
-	}
-
-	/**
 	 * This method is used to set the actions of the fixed buttons in the footer
 	 * (stream, members, profile, invite) buttons
 	 */
