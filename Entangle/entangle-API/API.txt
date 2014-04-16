@@ -294,7 +294,7 @@ Get profile
                 "message" : "Hello , Join my tangle"
             }
              
-+ Response 201 [application/json]
++ Response 201 (application/json)
             
             {
                 "pending" : 1
