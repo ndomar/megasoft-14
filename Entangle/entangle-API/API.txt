@@ -266,7 +266,8 @@ Get profile
                                  "Description" : "afafsgsbsger",
                                  "balance" :"1500",
                                  "birthdate":"1/1/1",
-                                 "verified":true
+                                 "verified":true,
+                                 "picture URL":"http://1.bp.blogspot.com/-p1nPSZa1NNw/UW81W_61ZgI/AAAAAAAAAjw/pd1N-Yhz-pY/s200/sad-face-smiley-facebook.jpg"
                              },
             "transactions" : [
                                  {
