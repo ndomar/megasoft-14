@@ -229,5 +229,31 @@ class TangleController extends Controller {
         }
         return $ret;
     }
+    
+    public function pendingInvitationsAction($tangleId){
+        $pendingInvitationTable = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:PendingInvitation');
+        $pendingInvitations = $pendingInvitationTable->findBy(array('tangleId'=>$tangleId,'approved'=>false));
+        $responseArray = array();
+        foreach($pendingInvitations as $pendingInvitation){
+            $pending = array();
+            $pending['id'] = $pendingInvitation->getId();
+            $pending['invitee'] = $pendingInvitation->getInviteeId();
+            $pending['invited'] = $pendingInvitation->getInviter()->getName();
+            $pending['email'] = $pendingInvitation->getEmail();
+            $responseArray[] = $pending;
+        }
+        
+        $jsonResponse = new JsonResponse();
+        $jsonResponse->setData($responseArray);
+        return $jsonResponse;
+    }
+    
+    public function acceptPendingInvitation(){
+        
+    }
+    
+    public function rejectPendingInvitiation(){
+        
+    }
 
 }
