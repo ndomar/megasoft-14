@@ -38,6 +38,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.megasoft.entangle.InviteUsers" />
         </activity>
+        <activity
+            android:name="com.megasoft.entangle.MemeberListActivity"
+            android:label="@string/title_activity_memeber_list" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.ListFragment"
+            android:label="@string/title_activity_list_fragment" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.ViewMemberListActivity"
+            android:label="@string/title_activity_view_member_list" >
+        </activity>
     </application>
 
 </manifest>
