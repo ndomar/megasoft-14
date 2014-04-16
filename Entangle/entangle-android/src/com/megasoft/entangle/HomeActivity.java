@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 public class HomeActivity extends FragmentActivity {
@@ -30,6 +32,14 @@ public class HomeActivity extends FragmentActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+	
+	
+	/*
+	 * This methods shows the profile fragment
+	 */
+	public void showProile(View v) {
+		Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
 	}
 
 }
