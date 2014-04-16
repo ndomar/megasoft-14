@@ -16,3 +16,13 @@ invite:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
     methods: [POST]
 
+
+login:
+    pattern:  /login
+    defaults: { _controller: MegasoftEntangleBundle:User:create}
+    methods: [POST]
+    
+    
+    pattern:  /whoami
+    defaults: { _controller: MegasoftEntangleBundle:User:whoAmI}
+    methods: [GET]
