@@ -415,8 +415,11 @@ Post icon for a specific request
                     "requestIcon" : "fjdlgjfkjlgk'jwlkf'wjadgl'h'rjhgWGJAEKGJKLSJGDFKGHSK;GRIG;EJ"
                 }
                 
-+ Response 201
++ Response 201(application/json)
 
+        {
+            "iconUrl" : "http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/icons/test.jpg"
+        }
 
 ## GET /user/whoami/{sessionId}
 
