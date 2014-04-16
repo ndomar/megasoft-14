@@ -39,9 +39,9 @@ public class StreamRequestFragment extends Fragment {
 		View view = inflater.inflate(R.layout.stream_request_fragment,
 				container, false);
 		request = (Button) view.findViewById(R.id.requestButton);
-		// setRequestRedirection();
+		setRequestRedirection();
 		requester = (Button) view.findViewById(R.id.requesterButton);
-		// setRequesterRedirection();
+		setRequesterRedirection();
 		return view;
 	}
 
@@ -86,5 +86,46 @@ public class StreamRequestFragment extends Fragment {
 		// request.setText(text);
 		requestString = text;
 	}
+	
+	private void setRequesterRedirection() {
+		requester.setTextSize(16);
+		requester.setText(getRequesterString());
+		requester.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity().getBaseContext(),
+						Profile.class);
+				intent.putExtra("tangleId",
+						((TangleProfilePage) getActivity()).getTangleId());
+				intent.putExtra("tangleName",
+						((TangleProfilePage) getActivity()).getTangleName());
+				intent.putExtra("sessionId",
+						((TangleProfilePage) getActivity()).getSessionId());
+				intent.putExtra("requesterId", getRequesterId());
+				startActivity(intent);
+			}
+		});
+	}
+
+	private void setRequestRedirection() {
+		request.setTextSize(16);
+		request.setText(getRequestString());
+		request.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity().getBaseContext(),
+						RequestPage.class);
+				intent.putExtra("tangleId",
+						((TangleProfilePage) getActivity()).getTangleId());
+				intent.putExtra("tangleName",
+						((TangleProfilePage) getActivity()).getTangleName());
+				intent.putExtra("sessionId",
+						((TangleProfilePage) getActivity()).getSessionId());
+				intent.putExtra("requestId", getRequestId());
+				startActivity(intent);
+			}
+		});
+	}
+
 
 }
