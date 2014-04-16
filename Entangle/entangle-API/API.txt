@@ -405,18 +405,18 @@ contact offerer and requester after claim
                                      }
                                      {
                                     "id" : "1", 
-                                    "requestedPrice" : "5",
-                                    "date" : "1/1/1"
+                                    "requestedPrice" : "3",
+                                    "date" : "2/1/1"
                                     "description": "Offer Description", 
-                                    "offererId" : "10",
+                                    "offererId" : "11",
                                     "status" : "Status"
                                      }
                                      {
                                     "id" : "1", 
-                                    "requestedPrice" : "5",
+                                    "requestedPrice" : "4",
                                     "date" : "1/1/1"
                                     "description": "Offer Description", 
-                                    "offererId" : "10",
+                                    "offererId" : "12",
                                     "status" : "Status"
                                      }
                                 ]
