@@ -16,7 +16,9 @@ import android.widget.TextView;
 
 public class request extends Activity {
 	String requestId;
-	String [] requestDetailNames={"Description", "Requester", "Date", "Tags", "Price", "Deadline","Status"}; 
+	JSONArray offers; 
+	String[][] offerDetails;
+	//String [] requestDetailNames={"Description", "Requester", "Date", "Tags", "Price", "Deadline","Status"}; 
 	String [] apiOfferNames = {"id", "requestedPrice", "date", "description", "offererId", "status"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,35 +36,17 @@ public class request extends Activity {
          GetRequest request = new GetRequest("http://entangle2.apiary-mock.com/request/" +requestId) {	
         	 protected void onPostExecute(String response) {
 					try {
-							//Log.e("test",response);
-		     				JSONObject json = new JSONObject(response);
-							for(int k =0; k<requestDetailNames.length; k++){
-								TextView textView = (TextView) findViewById(R.id.requester);
-								textView.setText(requestDetailNames[k] + " " + json.getString(requestDetailNames[k]));
-							}
-							JSONArray offers = new JSONArray(json.getString("offers"));
-		     				 String[] offerDetails = new String[offers.length()];
-		     				 String [] apiOfferNames = {"id", "requestedPrice", "date", "description", "offererId", "status"};
-		     				 for(int i = 0 ; i < offers.length(); i++) {
-		     				    String [] details = new String[6];
-		     				    for(int j=0; j<6;j++){
-		     				    	 details[j]= offers.getJSONObject(i).getString(apiOfferNames[j]);
-		     				    }
-		     				 
-		     				 }
-		     				} 
+						//Log.e("test",response);
+		     			JSONObject json = new JSONObject(response);
+		     			addRequestFields(json);
+						addOffers(json); 
+		     			} 
 		     				
 		     			 catch (JSONException e) {
-							
 							e.printStackTrace();
 						}
-	     				
-					
-					
-					
      			 }
-        	};
-        	
+        	};  	
         	request.addHeader("X-SESSION-ID" , "asdasdasdsadasdasd");
         	request.execute();
              
@@ -74,7 +58,7 @@ public class request extends Activity {
              Button viewOffers = (Button) findViewById(R.id.button2); 
              viewOffers.setOnClickListener(new OnClickListener(){
      			public void onClick(View arg0) {
-     				intentViewOffers.putExtra("RequestId", requestId);
+     				intentViewOffers.putExtra("Offers", offerDetails);
      				startActivity(intentViewOffers); 
      				}
              });
@@ -93,6 +77,34 @@ public class request extends Activity {
             });*/
         }
     
+        public void addRequestFields(JSONObject json) throws JSONException{
+        	TextView requester = (TextView) findViewById(R.id.requester); 
+			 requester.setText("Requester: " + json.getString("requester"));
+			 TextView description = (TextView) findViewById(R.id.description); 
+			 description.setText("Description: "+ json.getString("description"));
+			 TextView date = (TextView) findViewById(R.id.date); 
+			 date.setText("Date of Request: " + json.getString("date"));
+			 TextView tags = (TextView) findViewById(R.id.tags); 
+			 tags.setText("Tags: " + json.getString("tags"));
+			 TextView price = (TextView) findViewById(R.id.price); 
+			 price.setText("Expected Price: " + json.getString("price"));
+			 TextView deadline = (TextView) findViewById(R.id.deadline); 
+			 deadline.setText("Deadline: " + json.getString("deadline"));
+			 TextView status = (TextView) findViewById(R.id.status); 
+			 status.setText("Status :" + json.getString("status")); 
+			}
+        public void addOffers(JSONObject json) throws JSONException{
+			offers = new JSONArray(json.getString("offers"));
+        	offerDetails = new String[offers.length()][];
+			 for(int i = 0 ; i < offers.length(); i++) {
+			    String [] details = new String[6];
+			    for(int j=0; j<6;j++){
+			    	 details[j]= offers.getJSONObject(i).getString(apiOfferNames[j]);
+			    }
+			    offerDetails[i]= details ; 
+			 
+			 }
+			} 
         
 
     @Override
@@ -101,6 +113,4 @@ public class request extends Activity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    
-    
-}
+    }
