@@ -457,3 +457,62 @@ As a user, i can register
            
 + Response 201 
 
+## GET /tangle/{tangleId}/pending-invitations
+
++ Parameters
+    + tangleId ( integer , required ) ... tangle id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 200 (application/json)
+
+        {
+             "pending-invitations" : [
+                                        {
+                                            "id":1,
+                                            "invitee":"Elprince",
+                                            "invited":"3m el kol",
+                                            "email":"prince@prince.com"
+                                        },
+                                        {
+                                            "id":1,
+                                            "invitee":"Elprince",
+                                            "invited":"3m el kol",
+                                            "email":"prince@prince.com"
+                                        },
+                                        {
+                                            "id":1,
+                                            "invitee":"Elprince",
+                                            "invited":"3m el kol",
+                                            "email":"prince@prince.com"
+                                        }
+                                    ]
+        }
+
+## PUT /pending-invitation/{pendingInvitationId}/accept
+
++ Parameters
+    + pendingInvitationId ( integer , required ) ... Pending Invitation Id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 200
+
+## DELETE /pending-invitation/{pendingInvitationId}/reject
+
++ Parameters
+    + pendingInvitationId ( integer , required ) ... Pending Invitation Id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 200
+
