@@ -62,6 +62,15 @@ class Tangle
      * @ORM\OneToMany(targetEntity="PendingInvitation", mappedBy="tangle", cascade={"persist"})
      */
     private $pendingInvitations;
+    
+    /**
+     *
+     * @var boolean
+     * 
+     * @ORM\Column(name="deleted", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
+     */
+    private $deleted = false;
+    
 
     /**
      * Get id
@@ -272,5 +281,28 @@ class Tangle
     public function getPendingInvitations()
     {
         return $this->pendingInvitations;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Tangle
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
     }
 }
