@@ -1,17 +1,23 @@
 package com.megasoft.entangle;
+import java.util.Calendar;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import android.os.Bundle;
+
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
+
 import com.megasoft.requests.PostRequest;
 
 
@@ -31,6 +37,17 @@ public class RequestActivity extends Activity{
         CheckBox checkBox;
         int requiredFields = 0;
         boolean flag;
+		JSONObject json = new JSONObject();
+		
+		private int mYear;
+		private int mMonth;
+		private int mDay;
+
+		private TextView mDateDisplay;
+		private Button mPickDate;
+
+		static final int DATE_DIALOG_ID = 0;
+		
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent previousIntent = getIntent();
@@ -44,7 +61,6 @@ public class RequestActivity extends Activity{
 	    tags = (EditText) findViewById(R.id.tags);
 	    Post = (Button) findViewById(R.id.post);
 	    checkBox = (CheckBox) findViewById(R.id.checkBox);
-		final JSONObject json = new JSONObject();
 		Post.setEnabled(false);
 		description.setOnFocusChangeListener(focusListener);
 		requestedPrice.setOnFocusChangeListener(focusListener);
@@ -85,9 +101,10 @@ public class RequestActivity extends Activity{
 			        request.execute();
 			      
 			}
-		}); 
-      
+		});
+       
 	}
+	
 		
 	OnFocusChangeListener focusListener = new OnFocusChangeListener() {
 		
