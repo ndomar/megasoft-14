@@ -16,3 +16,9 @@ invite:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
     methods: [POST]
 
+
+_test:
+  pattern: /test
+  defaults: {_controller: MegasoftEntangleBundle:Notification:test }
+  methods: [GET]
+

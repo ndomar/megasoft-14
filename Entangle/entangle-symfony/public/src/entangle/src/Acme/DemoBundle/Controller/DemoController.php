@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Acme\DemoBundle\Form\ContactType;
-use Megasoft\EntangleBundle\Controller\NotificationController;
 
 // these import the "@Route" and "@Template" annotations
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -29,10 +28,6 @@ class DemoController extends Controller
      */
     public function helloAction($name)
     {
-
-        $regid = 'shaban';
-        $notification = array('data' => 'hello world');
-        $name = NotificationController::notificatoinnotificationCenter($regid, $notification);
         return array('name' => $name);
     }
 
