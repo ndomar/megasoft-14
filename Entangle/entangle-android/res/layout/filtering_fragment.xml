@@ -14,7 +14,9 @@
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="Tag :" />
+            android:text="Tag :"
+            android:textAlignment="center"
+            android:textSize="21sp" />
 
         <AutoCompleteTextView
             android:id="@+id/tagValue"
@@ -33,7 +35,9 @@
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="User :" />
+            android:text="User :"
+            android:textAlignment="center"
+            android:textSize="21sp" />
 
         <AutoCompleteTextView
             android:id="@+id/userValue"
