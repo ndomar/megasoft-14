@@ -130,6 +130,10 @@ public class TangleProfilePage extends Activity {
 
 	private FragmentTransaction transaction;
 
+	private HashMap<String, Integer> userToId = new HashMap<String, Integer>();
+
+	private HashMap<String, Integer> tagToId = new HashMap<String, Integer>();
+
 	/**
 	 * This method is called when the activity starts , it sets the attributes
 	 * and redirections of all the views in this activity
@@ -143,11 +147,7 @@ public class TangleProfilePage extends Activity {
 		setContentView(R.layout.activity_tangle_profile_page);
 		setAttributes();
 		sendStreamRequest();
-		// sendFilteredRequest(rootResource + "tangle/" + getTangleId()
-		// + "/request");
 		setRedirections();
-		addListenerOnSpinnerItemSelection();
-		setEditableView();
 	}
 
 	/**
@@ -176,33 +176,6 @@ public class TangleProfilePage extends Activity {
 		} else {
 			intent = new Intent(this, MainActivity.class);
 			// to be changed to login activity
-		}
-	}
-
-	/**
-	 * This method is used to add a watcher to the EditText used in filtering
-	 * with full text search
-	 */
-	private void setEditableView() {
-		fullTextSearch = (EditText) findViewById(R.id.text);
-		fullTextSearch.addTextChangedListener(watcher);
-	}
-
-	/**
-	 * This method is called to add a listener to the filtering options drop
-	 * down lists
-	 */
-	private void addListenerOnSpinnerItemSelection() {
-
-		filteringOptionsSpinner = (Spinner) findViewById(R.id.filterSpinner);
-		filteringChoiceSpinner = (Spinner) findViewById(R.id.choiceSpinner);
-		if (filteringOptionsSpinner != null) {
-			filteringOptionsSpinner
-					.setOnItemSelectedListener(new FilteringOptionsSpinnerListener());
-		}
-		if (filteringChoiceSpinner != null) {
-			filteringChoiceSpinner
-					.setOnItemSelectedListener(new FilteringChoiceSpinnerListener());
 		}
 	}
 
@@ -650,5 +623,13 @@ public class TangleProfilePage extends Activity {
 		public void onNothingSelected(AdapterView<?> arg0) {
 			// TODO Auto-generated method stub
 		}
+	}
+
+	public String[] getTagsSuggestions() {
+		return null;
+	}
+
+	public String[] getUsersSuggestions() {
+		return null;
 	}
 }
