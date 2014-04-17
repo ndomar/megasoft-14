@@ -51,6 +51,9 @@ A single unfreeze Request object with all its details
     
         {"frozenPoints" : "frozenPoints"}
 
-###  Reset frozen points [PUT]
-+ Response 200 
+### Restore Balance [PUT]
++ Request (application/json)
 
+        {"balanceToRestore":"balanceamount"}
+
++ Response 200
