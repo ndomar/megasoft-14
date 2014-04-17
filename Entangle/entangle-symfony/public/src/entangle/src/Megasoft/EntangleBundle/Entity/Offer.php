@@ -66,7 +66,7 @@ class Offer
     
     /**
      *
-     * @var Request
+     * @var User
      * 
      * @ORM\ManyToOne(targetEntity="User", inversedBy="offers")
      * @ORM\JoinColumn(name="userId", referencedColumnName="id")
@@ -96,7 +96,15 @@ class Offer
      * @ORM\OneToMany(targetEntity="Message", mappedBy="offer", cascade={"persist"})
      */
     private $messages;
-
+    
+    /**
+     *
+     * @var boolean
+     * 
+     * @ORM\Column(name="deleted", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
+     */
+    private $deleted = false;
+    
 
     /**
      * Get id
@@ -353,5 +361,28 @@ class Offer
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Offer
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
     }
 }
