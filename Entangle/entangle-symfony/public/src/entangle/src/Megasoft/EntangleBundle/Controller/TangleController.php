@@ -274,7 +274,7 @@ class TangleController extends Controller {
             }else{
                 $pending['invitee'] = $pendingInvitation->getInvitee()->getName();
             }
-            $pending['invited'] = $pendingInvitation->getInviter()->getName();
+            $pending['inviter'] = $pendingInvitation->getInviter()->getName();
             $pending['email'] = $pendingInvitation->getEmail();
             $responseArray[] = $pending;
         }
