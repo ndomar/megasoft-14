@@ -8,15 +8,5 @@
         android:id="@+id/notificationOne"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="start notification one" />
-
-    <Button
-        android:id="@+id/notificationTwo"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="60dp"
-        android:text="start notification two" />
-
+        android:text="Create Notification" />
 </LinearLayout>

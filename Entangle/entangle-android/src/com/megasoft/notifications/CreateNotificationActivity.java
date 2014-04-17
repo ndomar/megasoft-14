@@ -1,6 +1,10 @@
 package com.megasoft.notifications;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.megasoft.entangle.R;
+import com.megasoft.requests.GetRequest;
 
 import android.net.Uri;
 
@@ -13,6 +17,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 
 import android.app.TaskStackBuilder;
+import android.app.DownloadManager.Request;
 
 import android.content.Context;
 
@@ -20,21 +25,31 @@ import android.content.Intent;
 
 import android.support.v4.app.NotificationCompat;
 
+import android.util.Log;
 import android.view.View;
 
 import android.widget.Button;
+import android.widget.Toast;
 
 public class CreateNotificationActivity extends Activity {
 
 	private NotificationManager myNotificationManager;
+
+	private NotificationCompat.Builder mBuilder;
 
 	private int notificationIdOne = 111;
 
 	private int notificationIdTwo = 112;
 
 	private int numMessagesOne = 0;
-
-	private int numMessagesTwo = 0;
+	private JSONObject json;
+	private String requesterName = null;
+	private String tangleName = null;
+	private String requestId;
+	private String requestStatus = null;
+	private String requestDesc= null;
+	private Intent resultIntent;
+	private PendingIntent resultPendingIntent;
 
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -48,22 +63,32 @@ public class CreateNotificationActivity extends Activity {
 
 			public void onClick(View view) {
 
-				displayNotificationOne();
+				GetRequest request = new GetRequest(
+						"http://getchooseanotheroffer.apiary-mock.com/tangle/request/5") {
+					protected void onPostExecute(String response) {
+						try {
+
+							json = new JSONObject(response);
+
+							requesterName = json.getString("requester-name");
+
+							tangleName = json.getString("tangle-name");
+							
+							requestId = (String) json.getString("request-id");
+							
+							requestDesc = json.getString("request-desc");
+							
+							requestStatus = json.getString("request-status");
+						} catch (Exception e) {
+							System.out.println("error");
+						}
+						displayNotificationOne();
+					}
+				};
+				request.addHeader("X-SESSION-ID", "user1");
+				request.execute();
 
 			}
-
-		});
-
-		Button notTwoBtn = (Button) findViewById(R.id.notificationTwo);
-
-		notTwoBtn.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View view) {
-
-				displayNotificationTwo();
-
-			}
-
 		});
 
 	}
@@ -72,14 +97,14 @@ public class CreateNotificationActivity extends Activity {
 
 		// Invoking the default notification service
 
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-				this);
+		mBuilder = new NotificationCompat.Builder(this);
 
-		mBuilder.setContentTitle("New Message with explicit intent");
+		mBuilder.setContentTitle("New Entangle Notification");
+		
+		mBuilder.setContentText("New Notification From "
+				+ requesterName);
 
-		mBuilder.setContentText("New message from javacodegeeks received");
-
-		mBuilder.setTicker("Explicit: New Message Received!");
+		mBuilder.setTicker("New Entangle Notification");
 
 		mBuilder.setSmallIcon(R.drawable.ic_launcher);
 
@@ -89,9 +114,14 @@ public class CreateNotificationActivity extends Activity {
 
 		// Creates an explicit intent for an Activity in your app
 
-		Intent resultIntent = new Intent(this, NotificationOne.class);
+		resultIntent = new Intent(this, NotificationOne.class);
 
 		resultIntent.putExtra("notificationId", notificationIdOne);
+		resultIntent.putExtra("tangleName", tangleName);
+		resultIntent.putExtra("requesterName", requesterName);
+		resultIntent.putExtra("requestId", requestId);
+		resultIntent.putExtra("requestStatus", requestStatus);
+		resultIntent.putExtra("requestDesc", requestDesc);
 
 		// This ensures that navigating backward from the Activity leads out of
 		// the app to Home page
@@ -106,7 +136,7 @@ public class CreateNotificationActivity extends Activity {
 
 		stackBuilder.addNextIntent(resultIntent);
 
-		PendingIntent resultPendingIntent =
+		resultPendingIntent =
 
 		stackBuilder.getPendingIntent(
 
@@ -117,94 +147,13 @@ public class CreateNotificationActivity extends Activity {
 				);
 
 		// start the activity when the user clicks the notification text
-
+		
 		mBuilder.setContentIntent(resultPendingIntent);
 
 		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-		// pass the Notification object to the system
-
-		myNotificationManager.notify(notificationIdOne, mBuilder.build());
-
-	}
-
-	protected void displayNotificationTwo() {
-
-		// Invoking the default notification service
-
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-				this);
-
-		mBuilder.setContentTitle("New Message with implicit intent");
-
-		mBuilder.setContentText("New message from javacodegeeks received...");
-
-		mBuilder.setTicker("Implicit: New Message Received!");
-
-		mBuilder.setSmallIcon(R.drawable.ic_launcher);
-
-		NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-
-		String[] events = new String[3];
-
-		events[0] = new String("1) Message for implicit intent");
-
-		events[1] = new String("2) big view Notification");
-
-		events[2] = new String("3) from javacodegeeks!");
-
-		// Sets a title for the Inbox style big view
-
-		inboxStyle.setBigContentTitle("More Details:");
-
-		// Moves events into the big view
-
-		for (int i = 0; i < events.length; i++) {
-
-			inboxStyle.addLine(events[i]);
-
-		}
-
-		mBuilder.setStyle(inboxStyle);
-
-		// Increase notification number every time a new notification arrives
-
-		mBuilder.setNumber(++numMessagesTwo);
-
-		// When the user presses the notification, it is auto-removed
-
-		mBuilder.setAutoCancel(true);
-
-		// Creates an implicit intent
-
-		Intent resultIntent = new Intent(
-				"com.example.javacodegeeks.TEL_INTENT",
-
-				Uri.parse("tel:123456789"));
-
-		resultIntent.putExtra("from", "javacodegeeks");
-
-		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-
-		stackBuilder.addParentStack(NotificationTwo.class);
-
-		stackBuilder.addNextIntent(resultIntent);
-
-		PendingIntent resultPendingIntent =
-
-		stackBuilder.getPendingIntent(
-
-		0,
-
-		PendingIntent.FLAG_ONE_SHOT
-
-		);
-
-		mBuilder.setContentIntent(resultPendingIntent);
-
-		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-		myNotificationManager.notify(notificationIdTwo, mBuilder.build());
+		myNotificationManager.notify(notificationIdOne,
+				mBuilder.build());
 
 	}
 }
