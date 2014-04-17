@@ -34,20 +34,15 @@ import android.widget.Toast;
 public class CreateNotificationActivity extends Activity {
 
 	private NotificationManager myNotificationManager;
-
 	private NotificationCompat.Builder mBuilder;
-
 	private int notificationIdOne = 111;
-
-	private int notificationIdTwo = 112;
-
 	private int numMessagesOne = 0;
 	private JSONObject json;
 	private String requesterName = null;
 	private String tangleName = null;
 	private String requestId;
 	private String requestStatus = null;
-	private String requestDesc= null;
+	private String requestDesc = null;
 	private Intent resultIntent;
 	private PendingIntent resultPendingIntent;
 
@@ -69,26 +64,26 @@ public class CreateNotificationActivity extends Activity {
 						try {
 
 							json = new JSONObject(response);
-
 							requesterName = json.getString("requester-name");
-
 							tangleName = json.getString("tangle-name");
-							
 							requestId = (String) json.getString("request-id");
-							
 							requestDesc = json.getString("request-desc");
-							
 							requestStatus = json.getString("request-status");
+
 						} catch (Exception e) {
+
 							System.out.println("error");
+
 						}
 						displayNotificationOne();
 					}
 				};
+
 				request.addHeader("X-SESSION-ID", "user1");
 				request.execute();
 
 			}
+
 		});
 
 	}
@@ -100,9 +95,8 @@ public class CreateNotificationActivity extends Activity {
 		mBuilder = new NotificationCompat.Builder(this);
 
 		mBuilder.setContentTitle("New Entangle Notification");
-		
-		mBuilder.setContentText("New Notification From "
-				+ requesterName);
+
+		mBuilder.setContentText("New Notification From " + requesterName);
 
 		mBuilder.setTicker("New Entangle Notification");
 
@@ -112,10 +106,10 @@ public class CreateNotificationActivity extends Activity {
 
 		mBuilder.setNumber(++numMessagesOne);
 
-		// Creates an explicit intent for an Activity in your app
+		// Creates an explicit intent for the activity , then adds extra data so
+		// we can retrieve and use them in the notification activity
 
 		resultIntent = new Intent(this, NotificationOne.class);
-
 		resultIntent.putExtra("notificationId", notificationIdOne);
 		resultIntent.putExtra("tangleName", tangleName);
 		resultIntent.putExtra("requesterName", requesterName);
@@ -147,13 +141,12 @@ public class CreateNotificationActivity extends Activity {
 				);
 
 		// start the activity when the user clicks the notification text
-		
+
 		mBuilder.setContentIntent(resultPendingIntent);
 
 		myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-		myNotificationManager.notify(notificationIdOne,
-				mBuilder.build());
+		myNotificationManager.notify(notificationIdOne, mBuilder.build());
 
 	}
 }

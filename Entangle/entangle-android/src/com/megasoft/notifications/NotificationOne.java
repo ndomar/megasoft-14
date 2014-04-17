@@ -24,21 +24,27 @@ public class NotificationOne extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.notification_one);
+		
+		//Retrieving the information from the previous activity
+		
 		if (getIntent().getStringExtra("tangleName") != null)
 			tangleName = getIntent().getStringExtra("tangleName");
+
 		if (getIntent().getStringExtra("requesterName") != null)
 			requesterName = getIntent().getStringExtra("requesterName");
+
 		if (getIntent().getStringExtra("requestStatus") != null)
 			requestStatus = getIntent().getStringExtra("requestStatus");
+
 		if (getIntent().getStringExtra("requestId") != null)
 			requestId = getIntent().getStringExtra("requestId");
+
 		if (getIntent().getStringExtra("requestDesc") != null)
 			requestDesc = getIntent().getStringExtra("requestDesc");
-		
-		this.setTitle("New Entangle Notification "+requesterName);
 
 		int id = 0;
-
+		
+		//Checking if the extras that will be viewed are there , then using the notificationId
 		Bundle extras = getIntent().getExtras();
 
 		if (extras == null) {
@@ -52,14 +58,15 @@ public class NotificationOne extends Activity {
 			id = extras.getInt("notificationId");
 
 		}
-
+		
+		//Adding the information into the activity then viewing them
 		TextView t = (TextView) findViewById(R.id.text1);
 
 		s = "Requester \"" + requesterName
-				+ "\" Has Accepted Another Offere's Offer In Ihe Tangle \""
-				+ tangleName + "\" On The Request With ID : \"" + requestId
-				+ "\" , description \"" + (String) requestDesc + "\" , and status \""
-				+ requestStatus+"\"";
+				+ "\" Has Accepted Another Offerer's Offer In Ihe Tangle \""
+				+ tangleName + "\" , On The Request With ID : \"" + requestId
+				+ "\" , Description \"" + (String) requestDesc
+				+ "\" , And Status \"" + requestStatus + "\" .";
 
 		t.setText(s);
 		t.setTextSize(20);

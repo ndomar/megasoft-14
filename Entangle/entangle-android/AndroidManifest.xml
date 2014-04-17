@@ -32,11 +32,7 @@
         </activity>
         <activity
             android:name="com.megasoft.notifications.NotificationOne"
-            android:label="@string/title_activity_invite_users" >
-        </activity>
-        <activity
-            android:name="com.megasoft.notifications.NotificationTwo"
-            android:label="@string/title_activity_invite_users" >
+            android:label="@string/new_notification" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.ConfirmInviteUserActivity"
