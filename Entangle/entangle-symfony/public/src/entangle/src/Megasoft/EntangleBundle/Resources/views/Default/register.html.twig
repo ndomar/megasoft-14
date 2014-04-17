@@ -4,7 +4,7 @@
 
 <div class="container">
 
-    <form class="form-register" class="well" method="POST" action="{{ path('megasoft_entangle_register') }}" data-validate="parsley">
+    <form class="form-register" class="well" method="POST" enctype='multipart/form-data' action="{{ path('megasoft_entangle_register') }}" data-validate="parsley">
 
         <h2>Sign up</h2>
         <div>
@@ -33,7 +33,7 @@
         </div>
         <div>
             <label>Picture</label>
-            <input type="image" >
+            <input type="file" name="img">
 
         </div>
 
