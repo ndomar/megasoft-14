@@ -23,7 +23,7 @@ import android.widget.ImageView;
 public class PhotoUploaderFragment extends Fragment{
 	
 	private static final int REQUEST_CODE = 1;
-	private static final int RESULT_OK = 1;
+	private static final int RESULT_OK = -1;
 	private ImageView icon;
 	private Button button;
 	private String encodedImage;
@@ -89,15 +89,18 @@ public class PhotoUploaderFragment extends Fragment{
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		System.out.println(resultCode + " " + requestCode + " " + data.toString());
 		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE
 				&& data != null) {
 			Bitmap bitmap = getPhotoPath(data.getData());
 			ImageView imageView = getIcon();
+			System.out.println("TESTING !!!!!!");
 			imageView.setImageBitmap(bitmap);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
 			byte[] byteArray = baos.toByteArray();
 			encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+			System.out.println(encodedImage);
 		}
 	}
 	
