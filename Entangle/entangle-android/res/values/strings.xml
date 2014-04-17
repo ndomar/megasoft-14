@@ -20,5 +20,6 @@
     <string name="pending_invitation_approve">Approve</string>
     <string name="pending_invitation_reject">Reject</string>
     <string name="title_activity_manage_pending_invitation">ManagePendingInvitationActivity</string>
+    <string name="pending_invitation_no_pending">No Pending Invitations now !</string>
 
 </resources>

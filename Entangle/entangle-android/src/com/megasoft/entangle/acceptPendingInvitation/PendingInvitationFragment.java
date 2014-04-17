@@ -19,6 +19,7 @@ import com.megasoft.requests.PutRequest;
 public class PendingInvitationFragment extends Fragment {
 
 	private int pendingInvitationId;
+	
 	private String text;
 	
 	private View layout;
@@ -29,6 +30,8 @@ public class PendingInvitationFragment extends Fragment {
 	SharedPreferences settings;
 	
 	String sessionId;
+	
+	ManagePendingInvitationActivity parent;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstancState) {
@@ -51,7 +54,8 @@ public class PendingInvitationFragment extends Fragment {
 				PutRequest request = new PutRequest(Config.API_BASE_URL + "/pending-invitation/"+ pendingInvitationId +"/accept"){
 					public void onPostExecute(String response) {
 						Toast.makeText(getActivity().getApplicationContext(), "Approved !",
-								Toast.LENGTH_LONG).show();
+								Toast.LENGTH_SHORT).show();
+						removeFragment();
 					}
 				};
 				request.addHeader("X-SESSION-ID", sessionId);
@@ -67,7 +71,8 @@ public class PendingInvitationFragment extends Fragment {
 				DeleteRequest request = new DeleteRequest(Config.API_BASE_URL + "/pending-invitation/"+ pendingInvitationId +"/reject"){
 					public void onPostExecute(String response) {
 						Toast.makeText(getActivity().getApplicationContext(), "Rejected !",
-								Toast.LENGTH_LONG).show();
+								Toast.LENGTH_SHORT).show();
+						removeFragment();
 					}
 				};
 				request.addHeader("X-SESSION-ID", sessionId);
@@ -79,10 +84,15 @@ public class PendingInvitationFragment extends Fragment {
 		textView.setText(text);
 	}
 	
-	public static PendingInvitationFragment createInstance(int pendingInvitationId,String text) {
+	private void removeFragment() {
+		parent.removeFragment(this);
+	}
+	
+	public static PendingInvitationFragment createInstance(int pendingInvitationId,String text, ManagePendingInvitationActivity parent) {
 		PendingInvitationFragment fragment = new PendingInvitationFragment();
 		fragment.setPendingInvitationId(pendingInvitationId);
 		fragment.setText(text);
+		fragment.setParent(parent);
 		return fragment;
 	}
 	
@@ -92,6 +102,10 @@ public class PendingInvitationFragment extends Fragment {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+	
+	public void setParent(ManagePendingInvitationActivity parent){
+		this.parent = parent;
 	}
 
 }

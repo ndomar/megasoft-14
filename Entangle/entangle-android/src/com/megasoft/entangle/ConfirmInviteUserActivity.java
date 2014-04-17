@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v4.app.NavUtils;
 import android.transition.Visibility;
 import android.annotation.TargetApi;
 import android.content.SharedPreferences;
@@ -68,11 +67,10 @@ public class ConfirmInviteUserActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
+	} 
 
 	/**
 	 * Parse the received response from the callee intent into the
