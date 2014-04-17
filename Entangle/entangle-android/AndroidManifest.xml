@@ -37,6 +37,8 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.megasoft.entangle.InviteUsers" />
+            android:name="com.megasoft.entangle.ViewMessagesActivity"
+            android:label="@string/title_activity_view_messages" >
         </activity>
     </application>
 
