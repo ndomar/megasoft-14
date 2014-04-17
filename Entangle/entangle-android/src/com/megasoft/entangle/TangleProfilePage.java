@@ -385,17 +385,18 @@ public class TangleProfilePage extends Activity {
 	 * @param url
 	 *            , is the Url to which the request is going to be sent
 	 */
-	public void sendGetAllRequest(String url) {
+	public void sendGetAllRequest(String url, final int type) {
 		GetRequest getStream = new GetRequest(url) {
 			protected void onPostExecute(String res) {
 				if (!this.hasError() && res != null) {
 					if (type == 0)
-						setSpinnerTag(res);
+						setTagsSuggestions(res);
 					else
-						setSpinnerRequester(res);
+						setUsersSuggestions(res);
 				} else {
-					Toast.makeText(getBaseContext(),
-							"Sorry, There is a problem in loading the stream",
+					Toast.makeText(
+							getBaseContext(),
+							"Sorry, There is a problem in filtering the stream",
 							Toast.LENGTH_LONG).show();
 				}
 			}
@@ -414,26 +415,23 @@ public class TangleProfilePage extends Activity {
 	 * @param res
 	 *            , is the response of the request
 	 */
-	private void setSpinnerTag(String res) {
+	private void setTagsSuggestions(String res) {
 		try {
 			JSONObject response = new JSONObject(res);
 			if (response != null) {
 				int count = response.getInt("count");
 				JSONArray tagArray = response.getJSONArray("tags");
 				if (count > 0 && tagArray != null) {
-					idHashMap = new HashMap<String, Integer>();
-					ArrayList<String> list = new ArrayList<String>();
-					list.add("Please choose a tag");
+					tagToId = new HashMap<String, Integer>();
 					for (int i = 0; i < count && i < tagArray.length(); i++) {
 						JSONObject tag = tagArray.getJSONObject(i);
 						if (tag != null) {
 							String tagName = tag.getString("name");
 							int tagId = tag.getInt("id");
-							idHashMap.put(tagName, tagId);
-							list.add(tagName);
+							tagToId.put(tagName, tagId);
 						}
 					}
-					setAdapterData(list);
+
 				} else {
 					Toast.makeText(getBaseContext(),
 							"Sorry, There are no tags in this tangle",
@@ -451,26 +449,25 @@ public class TangleProfilePage extends Activity {
 	 * @param res
 	 *            , is the response of the request
 	 */
-	private void setSpinnerRequester(String res) {
+	@SuppressLint("NewApi")
+	private void setUsersSuggestions(String res) {
 		try {
 			JSONObject response = new JSONObject(res);
 			if (response != null) {
 				int count = response.getInt("count");
 				JSONArray usersArray = response.getJSONArray("users");
 				if (count > 0 && usersArray != null) {
-					idHashMap = new HashMap<String, Integer>();
-					ArrayList<String> list = new ArrayList<String>();
-					list.add("Please choose a user");
+					userToId = new HashMap<String, Integer>();
 					for (int i = 0; i < count && i < usersArray.length(); i++) {
 						JSONObject user = usersArray.getJSONObject(i);
 						if (user != null) {
 							String userName = user.getString("username");
 							int userId = user.getInt("id");
-							idHashMap.put(userName, userId);
-							list.add(userName);
+							userToId.put(userName, userId);
 						}
 					}
-					setAdapterData(list);
+					FilteringFragment filter = new FilteringFragment();
+					filter.show(getFragmentManager(), "filter_dialog");
 				} else {
 					Toast.makeText(getBaseContext(),
 							"Sorry, There are no users in this tangle",
@@ -537,11 +534,11 @@ public class TangleProfilePage extends Activity {
 					} else if (selection.equals("Tag")) {
 						url += "tangle/" + getTangleId() + "/tag";
 						type = 0;
-						sendGetAllRequest(url);
+						// sendGetAllRequest(url);
 					} else if (selection.equals("Requester Name")) {
 						url += "tangle/" + getTangleId() + "/user";
 						type = 1;
-						sendGetAllRequest(url);
+						// sendGetAllRequest(url);
 					}
 				}
 			}
@@ -586,7 +583,10 @@ public class TangleProfilePage extends Activity {
 	}
 
 	public void filterStream(View view) {
-
+		String url = rootResource + "tangle/" + getTangleId() + "/tag";
+		sendGetAllRequest(url, 0);
+		url = rootResource + "tangle/" + getTangleId() + "/user";
+		sendGetAllRequest(url, 1);
 	}
 
 	public String[] getTagsSuggestions() {
