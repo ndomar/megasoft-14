@@ -564,3 +564,32 @@ As a user, i can register
              
 + Response 200
 
+## GET /offer/{offerId}/message
+get all messages of a specific offer
+
++ Parameters
+    + offerId (Int , required ) ... offer id
+    
++ Request
+        
+    + Header
+    
+            X-SESSION-ID : id
+        
++ Response 200(application/json)
+    
+        {
+            [
+            {
+                "senderName" : "be5"
+                "body" "ra5ama"
+                "date" : "13/13/2013"
+            }
+            {
+                "senderName" : "meshana"
+                "body" "bamasy"
+                "date" : "1/2/345"
+            }
+            ]
+        }
+
