@@ -118,6 +118,15 @@ class Request
       * @ORM\JoinTable(name="request_tag")
       */
     private $tags;
+    
+    /**
+     *
+     * @var boolean
+     * 
+     * @ORM\Column(name="deleted", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
+     */
+    private $deleted = false;
+    
 
     /**
      * Get id
@@ -465,5 +474,28 @@ class Request
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Request
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
     }
 }
