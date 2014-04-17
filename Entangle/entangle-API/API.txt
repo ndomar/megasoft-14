@@ -1,0 +1,566 @@
+FORMAT: 1A
+HOST: http://www.google.com
+
+# Entangle
+asdsadasd
+
+## GET /tangle/{tangleId}/tag
+Get all tags related to specific tangle
+
++ Parameters
+    + tangleId  ( Int , required ) ... tangle id
+    
++ Request
+
+    + Header
+    
+            X-SESSION-ID : asdafdgfjflkdfs
+            
++ Response 200(application/json)
+
+        {
+            "count" : "3",
+            "tags" : [
+                {
+                    "id" : "1",
+                    "name" : "Scientific"
+                },
+                {
+                    "id" : "2",
+                    "name" : "Gaming"
+                },
+                {
+                    "id" : "3",
+                    "name" : "Coding"
+                }
+            ]
+        }
+
+## GET /tangle/{tangleId}/request?userid={userId}&tagid={tagId}&fulltext={fullText}&usernameprefix={usernamePrefix}
+Get requests in a specific tangle filtered by user, tag, full text or a prefix of the requester's name
+
++ Parameters
+    + tangleId  ( Int , required ) ... tangle id
+    + userId    ( Int , optional ) ... request's user filter token
+    + tagId     ( Int , optional ) ... request's tag filter token
+    + fullText  ( String , optional ) ... request's description filter token
+    + usernamePrefix ( String , optional ) ... request's user's name filter token
+    
++ Request
+
+    + Header
+            
+             X-SESSION-ID : asdasdasdsadasdasd
+
++ Response 200(application/json)
+
+        {
+            "count" : "3",
+            "requests" : [
+                {
+                    "userId" : "1",
+                    "username" : "Aly",
+                    "id" : "1",
+                    "description" : "I want to understand Math.",
+                    "offersCount" : "1"
+                },
+                {
+                    "userId" : "1",
+                    "username" : "Aly",
+                    "id" : "2",
+                    "description" : "I want to understand Physics.",
+                    "offersCount" : "0"
+                },
+                {
+                    "userId" : "2",
+                    "username" : "Mansour",
+                    "id" : "3",
+                    "description" : "I want to learn how to play LOL.",
+                    "offersCount" : "1"
+                }
+            ]
+        }
+
+## GET /tangle/{tangleId}/user
+Get list of users in tangle
+
+
++ Parameters
+    + tangleId ( Int , required ) ... tangle id
+
++ Request
+
+    + Header
+            
+             SessionId : asdasdasdsadasdasd
+    
++ Response 200(application/json)
+        
+        {
+            "count" : "2",
+            "users" : [
+                {
+                    "id" : "1",
+                    "username" : "Aly",
+                    "balance" : "500",
+                    "iconUrl" : "http://icons.com/5"
+                },
+                {
+                    "id" : "2",
+                    "username" : "Mansour",
+                    "balance" : "-500",
+                    "iconUrl" : "http://icons.com/6"
+                }
+            ]
+        }
+
+
+## POST /tangle/{tangleId}/request
+Post request
++ Parameters
+    
+    + tangleId ( Int , required ) ... tangle id
+ 
++ Request (application/json)
+    
+    + Header
+            
+             X-SESSION-ID : "farghal negm el nogom !"
+
+    + Body
+    
+                { 
+                    "description" : "description of a request",
+                    "date" : "28/May/2013",
+                    "deadLine" : "3/April/2014",
+                    "requestedPrice" : "7",
+                    "tags": ["guc", "farghal", "ay7aga"]
+                }
+
+    
+
++ Response 201
+
+## POST /tangle
+Create a tangle
+
++ Request (application/json)
+    
+        {
+            "tangleName" : "kokoTangle"
+            "tangleIcon" : "asdfcsdfsadfsdfaewrf"
+        }
+
+        +Header
+            
+            X-SESSION-ID : asdasdasdsadasdasd
+            
++ Response 201 
+
+## GET /tangle/check/{tangleName}
+check tangle name availability
+
++ Parameters
+    + tangleName ( String , required ) ... tangle name
+    
++ Request
+
+    + Header
+            
+             X-SESSION-ID : asdasdasdsadasdasd
+
++ Response 404
+
+
+## GET /tangle/{tangleId}/getRecieverMail
++ Parameters
+    + tangleId(Int, required)
+
++ Request
+
+    + Header
+            
+             X-SESSION-ID : "salma"
+             
++ Response 200(application/json)
+
+        {
+            "X-TANGLE_OWNER-MAIL" : "salmaumr@gmail.com"
+        }
+
+## GET /session/{sessionId}/getSenderMail
++ Parameters
+    + sessionId(String, required)
+
++ Request
+
+    + Header
+            
+             X-SESSION-ID : "salma"
+             
++ Response 200(application/json)
+
+        {
+            "X-OFFERER-MAIL" : "salmaumr@gmail.com"
+        }
+        
+## POST /claim/{tangleId}/createClaim
+
++ Parameters
+    + tangleId(Int, required)
+
++ Request
+
+    + Header
+            
+             X-SESSION-ID : "salma"
+ 
+             
++ Response 200(application/json)
+
+        {
+             "X-CLAIM-ID" : "1234567"
+        }
+
+        
+## GET /transaction/{transactionID}/
+get the details of a transaction
+
++ Parameters
+    + transactionID(Int , required)
+    
++ Request
+    
+    + Header
+    
+             sessionID : "testest"
+
++ Response 200 (application/json)
+
+        {
+            {
+                "requesterID"  : "1" ,
+                "requestID" : "2" ,
+                "amount" : "1000"
+            }
+        }
+             
+
+## GET /tangle/{tangleId}/user/{userId}/profile
+Get profile 
+
++ Parameters
+    + tangleId ( Int , required ) ... tangle id
+    + userId ( Int , required ) ... user id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 200 (application/json)
+
+        {
+            "information" : {
+                                 "name" : "Alaa Maher",
+                                 "Description" : "afafsgsbsger",
+                                 "balance" :"1500",
+                                 "birthdate":"1/1/1",
+                                 "verified":true
+                             },
+            "transactions" : [
+                                 {
+                                     "requesterName"  : "Mohamed Bassem" ,
+                                     "requestDescription" : "I want to learn how to study." ,
+                                     "amount" : "5"  
+                                 }
+                             ]
+        }
+
+## POST /tangle/{tangleId}/invite
+
++ Parameters
+    + tangleId ( Int , required ) ... tangle id
+
++ Request (application/json)
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+    
+    + Body 
+    
+            {
+                "emails" : [ "test@entangle.io" , "test1@entangle.io" , "test2@entangle.io" ],
+                "message" : "Hello , Join my tangle"
+            }
+             
++ Response 201 (application/json)
+            
+            {
+                "pending" : 1
+            }
+
+## POST /tangle/{tangleId}/check-membership
+
++ Parameters
+    + tangleId ( Int , required ) ... tangle id
+
++ Request (application/json)
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+    
+    + Body 
+    
+            {
+                "emails" : [ "test@entangle.io" , "test1@entangle.io" , "test2@entangle.io" , "test" ]
+            }
+             
++ Response 200
+
+            {
+                "notMembers" : [ "test@entangle.io" ],
+                "entangleMembers" : [ "test1@entangle.io" ],
+                "alreadyInTheTangle" : [ "test2@entangle.io" ],
+                "invalid" : [ "test" ]
+            }
+            
+
+## GET /claim/{claimID}/contact
+contact offerer and requester after claim
+
++ Parameters
+    + claimID ( Int , required ) ... claim id
+
++ Request
+    + Header
+
+            X-SESSION-ID: helloWorld
+
++ Response 200 (application/json)
+
+        {
+            "requesterID": 4,
+            "requesterName": "mohamed",
+            "requestDesc": "ma tgeb 100 gneh 3shan masr",
+            "offererID": 6,
+            "offererName": "shaban",
+            "offerDesc": "5od yad :D",
+            "claimMessage": " ana 5adt el darba bgad"
+            }
+            
+            
+## POST /claim/{claimID}/contact/send
+
++ Parameters
+    + claimID ( Int , required ) ... claim id
++ Request (application/json)
+
+    + Header
+    
+            X-SESSION-ID: helloWorld
+    + Body
+    
+            {
+    
+            }
+    
+        
++ Response 200 (application/json)
+
+        { "message": "message was sent successfully" }
+        
+
+
+
+## GET /request/{requestId}
+
++ Parameters
+    + requestId ( String , required ) ... request id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 200 (application/json)
+
+                { 
+                    "Requester" : "name",
+                    "Description":"request desc",  
+                    "Date" : "1/1/1",
+                    "Tags" :["tag1", "tag2","tag3"],
+                    "Price": "3",
+                    "Deadline":"1/2/1",
+                    "Status":"done"
+                    "Description" : "description of a request",
+                    "Offers" : [
+                                    {
+                                    "id" : "1", 
+                                    "requestedPrice" : "5",
+                                    "date" : "1/1/1"
+                                    "description": "Offer Description", 
+                                    "offererId" : "10",
+                                    "status" : "Status"
+                                     }
+                                     {
+                                    "id" : "1", 
+                                    "requestedPrice" : "3",
+                                    "date" : "2/1/1"
+                                    "description": "Offer Description", 
+                                    "offererId" : "11",
+                                    "status" : "Status"
+                                     }
+                                     {
+                                    "id" : "1", 
+                                    "requestedPrice" : "4",
+                                    "date" : "1/1/1"
+                                    "description": "Offer Description", 
+                                    "offererId" : "12",
+                                    "status" : "Status"
+                                     }
+                                ]
+                }
+
+## POST /request/{requestId}/icon
+Post icon for a specific request
++ parameters
+
+    + requestId (Int, required) ... request id
+    
++ Request (application/json)
+
+    +Header
+            
+            X-SESSION-ID : '549048320948219058409580'
+            
+    + Body
+                
+                {
+                    "requestIcon" : "fjdlgjfkjlgk'jwlkf'wjadgl'h'rjhgWGJAEKGJKLSJGDFKGHSK;GRIG;EJ"
+                }
+                
++ Response 201(application/json)
+
+        {
+            "iconUrl" : "http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/icons/test.jpg"
+        }
+
+## GET /user/whoami/{sessionId}
+
++ parameter 
+    + sessionId (String , required) ... session id
+    
++ Request
+    + Header 
+        
+             X-SESSION-ID : "asd123"
+
++ Response 200 (application/json)
+
+        {
+            "user" : "UserWithSessionId"
+        }
+        
+## POST /user/login/{username,password}
+
++ Parameters
+    + username ( String , required ) ... username
+    + password (String , required ) ... password
+    
++ Request (application/json)
+    + Header
+            
+             X-SESSION-ID : "asd123"
+    
+    + Body 
+    
+            {
+               "username" : [username]
+                "password" : [password]
+            }
+             
++ Response 201
+
+
+## POST /register
+As a user, i can register
+
++ Request (application/json)
+    
+    +Header
+     
+            X-SESSION-ID : asdasdasdsadasdasd
+            
+    + Body
+    
+            {
+                "userName" : "eslaMaged"
+                "userEmail" : "eslam@entangle.io"
+                "password" : "ThisIsADummyPassword"
+                "confirmPassword": "ThisIsADummyPassword"
+            }
+
+        
+           
++ Response 201 
+
+## GET /tangle/{tangleId}/pending-invitations
+
++ Parameters
+    + tangleId ( integer , required ) ... tangle id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 200 (application/json)
+
+        {
+             "pending-invitations" : [
+                                        {
+                                            "id":1,
+                                            "invitee":"Elprince",
+                                            "inviter":"3m el kol",
+                                            "email":"prince@prince.com"
+                                        },
+                                        {
+                                            "id":1,
+                                            "invitee":"Elprince",
+                                            "inviter":"3m el kol",
+                                            "email":"prince@prince.com"
+                                        },
+                                        {
+                                            "id":1,
+                                            "invitee":"Elprince",
+                                            "inviter":"3m el kol",
+                                            "email":"prince@prince.com"
+                                        }
+                                    ]
+        }
+
+## PUT /pending-invitation/{pendingInvitationId}/accept
+
++ Parameters
+    + pendingInvitationId ( integer , required ) ... Pending Invitation Id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 200
+
+## DELETE /pending-invitation/{pendingInvitationId}/reject
+
++ Parameters
+    + pendingInvitationId ( integer , required ) ... Pending Invitation Id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 200
+
