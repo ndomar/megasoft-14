@@ -1,6 +1,5 @@
 package com.megasoft.entangle;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.JSONArray;
@@ -9,23 +8,13 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,72 +50,6 @@ public class TangleProfilePage extends Activity {
 	 * The session id of the user
 	 */
 	private String sessionId;
-
-	/**
-	 * The EditText used for full text search
-	 */
-	private EditText fullTextSearch;
-
-	/**
-	 * The drop down list used to choose the type of filtering
-	 */
-	private Spinner filteringOptionsSpinner;
-
-	/**
-	 * The drop down list used to choose the tag/user to filter the stream with
-	 */
-	private Spinner filteringChoiceSpinner;
-
-	/**
-	 * The adapter used to set the data of the second drop down list depending
-	 * whether it is a tag or user filtration
-	 */
-	private ArrayAdapter<String> dataAdapter;
-
-	/**
-	 * This hashMap is used to map user/tag to its id
-	 */
-	private HashMap<String, Integer> idHashMap;
-
-	/**
-	 * This integer is used to differentiate whether it is tag or user filtering
-	 */
-	private int type;
-
-	/**
-	 * This TextWatcher is used to set the behavior of the EditText used in full
-	 * text search upon changing the text in it
-	 */
-	private TextWatcher watcher = new TextWatcher() {
-		@Override
-		public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-				int arg3) {
-		}
-
-		@Override
-		public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-				int arg3) {
-		}
-
-		/**
-		 * This method is overridden to set the behavior of the EditText after
-		 * changing the text in it and is used to send a request to filter with
-		 * full text search given the text
-		 */
-		@Override
-		public void afterTextChanged(Editable arg0) {
-			String fullText = fullTextSearch.getText().toString();
-			if (fullText != null
-					&& filteringOptionsSpinner.getSelectedItem() != null
-					&& filteringOptionsSpinner.getSelectedItem().toString() != null
-					&& filteringOptionsSpinner.getSelectedItem().toString()
-							.equals("Full Text Search")) {
-				sendFilteredRequest(rootResource + "tangle/" + getTangleId()
-						+ "/request?fulltext="
-						+ (fullText.trim().replace(' ', '+')));
-			}
-		}
-	};
 
 	private FragmentTransaction transaction;
 
@@ -477,109 +400,6 @@ public class TangleProfilePage extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * This method is used to set the data/properties of the second drop down
-	 * list (tags/users) , moreover it sets the EditText of the fill text search
-	 * to be invisible and sets the second drop down list to be visible
-	 * 
-	 * @param list
-	 *            , is the data to be put in the drop down list
-	 */
-	private void setAdapterData(ArrayList<String> list) {
-		dataAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, list);
-		dataAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		filteringChoiceSpinner.setAdapter(dataAdapter);
-		fullTextSearch.setLayoutParams(new LinearLayout.LayoutParams(
-				LayoutParams.MATCH_PARENT, 0));
-		filteringChoiceSpinner.setVisibility(0);
-		filteringChoiceSpinner.setLayoutParams(new LinearLayout.LayoutParams(
-				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-	}
-
-	/**
-	 * This class is used to customize the action done when an element in drop
-	 * down list of the filtering options is chosen
-	 */
-	class FilteringOptionsSpinnerListener implements OnItemSelectedListener {
-
-		/**
-		 * This method is used to override the behavior of the drop down list
-		 * when selecting an element
-		 */
-		@Override
-		public void onItemSelected(AdapterView<?> parent, View view, int pos,
-				long id) {
-			Toast.makeText(
-					parent.getContext(),
-					"You choosed to filter with : "
-							+ parent.getItemAtPosition(pos).toString(),
-					Toast.LENGTH_SHORT).show();
-			if (parent.getSelectedItem() != null
-					&& parent.getSelectedItem().toString() != null) {
-				String selection = parent.getSelectedItem().toString();
-				if (selection.equals("Full Text Search")) {
-					caseFullText();
-					caseFullTextOrNone();
-				} else {
-					String url = rootResource;
-					disablingTextEditor();
-					if (selection.equals("None")) {
-						caseFullTextOrNone();
-						url += "tangle/" + getTangleId() + "/request";
-						sendFilteredRequest(url);
-					} else if (selection.equals("Tag")) {
-						url += "tangle/" + getTangleId() + "/tag";
-						type = 0;
-						// sendGetAllRequest(url);
-					} else if (selection.equals("Requester Name")) {
-						url += "tangle/" + getTangleId() + "/user";
-						type = 1;
-						// sendGetAllRequest(url);
-					}
-				}
-			}
-		}
-
-		/**
-		 * This method is to make the second drop down list invisible and set
-		 * the EditText to be visible
-		 */
-		private void caseFullTextOrNone() {
-			filteringChoiceSpinner
-					.setLayoutParams(new LinearLayout.LayoutParams(
-							LayoutParams.MATCH_PARENT, 0));
-			fullTextSearch.setVisibility(0);
-			fullTextSearch.setLayoutParams(new LinearLayout.LayoutParams(
-					LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-		}
-
-		/**
-		 * This method is used to make the EditText enabled
-		 */
-		private void caseFullText() {
-			fullTextSearch.setEnabled(true);
-			fullTextSearch.setHint("Write a Full Text to filter with");
-		}
-
-		/**
-		 * This method is used to set the EditText disabled
-		 */
-		private void disablingTextEditor() {
-			fullTextSearch.setText("");
-			fullTextSearch.setEnabled(false);
-			fullTextSearch
-					.setHint("Choose Full Text Search to be able to write :)");
-		}
-
-		@Override
-		public void onNothingSelected(AdapterView<?> arg0) {
-			// TODO Auto-generated method stub
-		}
-
 	}
 
 	public void filterStream(View view) {
