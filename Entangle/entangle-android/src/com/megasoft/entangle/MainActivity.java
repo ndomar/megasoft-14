@@ -19,7 +19,7 @@ public class MainActivity extends Activity {
 		Fragment fragment = PhotoUploaderFragment.getInstance(getContentResolver());
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		fragmentTransaction.add(R.layout.upload_photo_fragement, fragment);
+		fragmentTransaction.add(R.id.iconLayout, fragment);
 		fragmentTransaction.commit();
 	}
 
