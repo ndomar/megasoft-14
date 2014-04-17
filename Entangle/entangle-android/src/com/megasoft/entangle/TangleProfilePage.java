@@ -585,44 +585,8 @@ public class TangleProfilePage extends Activity {
 
 	}
 
-	/**
-	 * This class is used to customize the action done when an element in the
-	 * second drop down list (tags/users) is chosen
-	 */
-	class FilteringChoiceSpinnerListener implements OnItemSelectedListener {
+	public void filterStream(View view) {
 
-		/**
-		 * This method is used to override the behavior of the second drop down
-		 * list when selecting an item from it, it sets the url of the request
-		 * according to the choice of the user
-		 */
-		@Override
-		public void onItemSelected(AdapterView<?> parent, View view, int pos,
-				long id) {
-			if (parent.getSelectedItem() != null
-					&& parent.getSelectedItem().toString() != null) {
-				String selection = parent.getSelectedItem().toString();
-				if (!selection.startsWith("Please choose a")) {
-					String url = rootResource;
-					if (idHashMap != null) {
-						int keyId = idHashMap.get(selection);
-						if (type == 0) {
-							url += "tangle/" + getTangleId()
-									+ "/request?tagid=" + keyId;
-						} else if (type == 1) {
-							url += "tangle/" + getTangleId()
-									+ "/request?userid=" + keyId;
-						}
-						sendFilteredRequest(url);
-					}
-				}
-			}
-		}
-
-		@Override
-		public void onNothingSelected(AdapterView<?> arg0) {
-			// TODO Auto-generated method stub
-		}
 	}
 
 	public String[] getTagsSuggestions() {
