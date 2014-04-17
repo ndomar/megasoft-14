@@ -31,8 +31,8 @@ public class RequestActivity extends Activity{
 	    Button Post;
 	    EditText description;
 	    EditText requestedPrice;
-	    EditText date;
-	    EditText deadLine;
+	   // EditText date;
+	   //EditText deadLine;
 	    EditText tags;
         CheckBox checkBox;
         int requiredFields = 0;
@@ -56,16 +56,16 @@ public class RequestActivity extends Activity{
 		setContentView(R.layout.activity_request);
 		description = (EditText) findViewById(R.id.description);
 		requestedPrice = (EditText) findViewById(R.id.price);
-		date = (EditText) findViewById(R.id.date);
-		deadLine = (EditText) findViewById(R.id.deadLine);
+		//date = (EditText) findViewById(R.id.date);
+		//deadLine = (EditText) findViewById(R.id.deadLine);
 	    tags = (EditText) findViewById(R.id.tags);
 	    Post = (Button) findViewById(R.id.post);
 	    checkBox = (CheckBox) findViewById(R.id.checkBox);
 		Post.setEnabled(false);
 		description.setOnFocusChangeListener(focusListener);
 		requestedPrice.setOnFocusChangeListener(focusListener);
-		date.setOnFocusChangeListener(focusListener);
-		deadLine.setOnFocusChangeListener(focusListener);
+		//date.setOnFocusChangeListener(focusListener);
+		//deadLine.setOnFocusChangeListener(focusListener);
 		tags.setOnFocusChangeListener(focusListener);
 		
 		
@@ -78,8 +78,8 @@ public class RequestActivity extends Activity{
 			        	
 			            json.put("description" , description.getText().toString());
 			            json.put("requestedPrice" , requestedPrice.getText().toString());
-			            json.put("date" , date.getText().toString());
-			            json.put("deadLine" , deadLine.getText().toString());
+			         //   json.put("date" , date.getText().toString());
+			         //   json.put("deadLine" , deadLine.getText().toString());
 			            json.put("tags", tags.getText().toString());
 			            
 			           } catch (JSONException e) {
@@ -101,7 +101,8 @@ public class RequestActivity extends Activity{
 			        request.execute();
 			      
 			}
-		});
+		}); 
+     
         mDateDisplay = (TextView) findViewById(R.id.showMyDate);        
         mPickDate = (Button) findViewById(R.id.myDatePickerButton);
 
@@ -110,9 +111,8 @@ public class RequestActivity extends Activity{
                 showDialog(DATE_DIALOG_ID);
             }
         });
+
         
-        
-      
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
@@ -127,7 +127,6 @@ public class RequestActivity extends Activity{
 	                .append(mDay).append("-")
 	                .append(mYear).append(" "));
 	}
-	
 	private DatePickerDialog.OnDateSetListener mDateSetListener =
 		    new DatePickerDialog.OnDateSetListener() {
 		        public void onDateSet(DatePicker view, int year, 
@@ -138,8 +137,14 @@ public class RequestActivity extends Activity{
 		            updateDisplay();
 		        }
 		    };
-		    protected Dialog onCreateDialog() {
-		    	return new DatePickerDialog(this, mDateSetListener, mYear, mMonth, mDay);
+		    protected Dialog onCreateDialog(int id) {
+		    	   switch (id) {
+		    	   case DATE_DIALOG_ID:
+		    	      return new DatePickerDialog(this,
+		    	                mDateSetListener,
+		    	                mYear, mMonth, mDay);
+		    	   }
+		    	   return null;
 		    	}
 		
 	OnFocusChangeListener focusListener = new OnFocusChangeListener() {
@@ -170,7 +175,6 @@ public class RequestActivity extends Activity{
 	
 	private void enablePostButton(){
 		if(description.getError() == null && requestedPrice.getError() == null
-				&& date.getError() == null && deadLine.getError() == null
 				&& tags.getError() == null && checkBox.isChecked()) {
 			 Post.setEnabled(true);
 		}
@@ -188,7 +192,7 @@ public class RequestActivity extends Activity{
         }
     }
 	private boolean fieldsNotEmpty(){
-		if(!isEmpty(date) & !isEmpty(deadLine) & !isEmpty(description) & !isEmpty(requestedPrice)
+		if(!isEmpty(description) & !isEmpty(requestedPrice)
 				& !isEmpty(tags))
 			return true;
 		return false;

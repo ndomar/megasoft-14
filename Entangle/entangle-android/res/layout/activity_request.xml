@@ -30,15 +30,12 @@
         android:ems="10"
         android:hint="@string/tagHint"
         android:inputType="text" />
-    
-    <Button android:id="@+id/myDatePickerButton"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/showMyDate"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Choose Date"/>
-
-<TextView android:id="@+id/showMyDate"
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content"/>
+        android:layout_above="@+id/textView4"
+        android:layout_alignLeft="@+id/textView4" />
 
     <Button
         android:id="@+id/post"
@@ -50,14 +47,6 @@
         android:height="20dp"
         android:text="@string/post"
         android:width="30dp" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/date"
-        android:layout_alignLeft="@+id/description"
-        android:text="@string/date" />
 
     <TextView
         android:id="@+id/textView3"
@@ -80,11 +69,7 @@
         android:layout_marginTop="24dp"
         android:ems="10"
         android:height="65dp"
-        android:inputType="textMultiLine" >
-         
-        </EditText>
-    
-
+        android:inputType="textMultiLine" />
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
@@ -93,26 +78,6 @@
         android:layout_below="@+id/description"
         android:layout_marginTop="14dp"
         android:text="@string/price" />
-
-    <EditText
-        android:id="@+id/deadLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textView4"
-        android:layout_toRightOf="@+id/price"
-        android:ems="10"
-        android:inputType="date" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tags"
-        android:layout_alignRight="@+id/deadLine"
-        android:layout_marginBottom="14dp"
-        android:ems="20"
-        android:height="30dp"
-        android:text="@string/tag" />
 
     <EditText
         android:id="@+id/price"
@@ -125,27 +90,6 @@
         android:hint="@string/priceHint"
         android:inputType="number" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/date"
-        android:layout_alignLeft="@+id/deadLine"
-        android:text="@string/deadLine" />
-
-    <EditText
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/deadLine"
-        android:layout_alignBottom="@+id/deadLine"
-        android:layout_alignLeft="@+id/textView4"
-        android:layout_alignRight="@+id/textView1"
-        android:ems="10"
-        android:inputType="date" >
-       
-    </EditText>
-
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
@@ -155,5 +99,22 @@
         android:layout_toLeftOf="@+id/post"
         android:onClick="itemClicked"
         android:text="@string/check" />
+
+    <Button
+        android:id="@+id/myDatePickerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/textView1"
+        android:layout_below="@+id/price"
+        android:text="@string/ChooseDate" />
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tags"
+        android:layout_alignLeft="@+id/myDatePickerButton"
+        android:ems="20"
+        android:height="30dp"
+        android:text="@string/tag" />
 
 </RelativeLayout>

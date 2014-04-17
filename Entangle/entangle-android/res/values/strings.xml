@@ -8,11 +8,12 @@
     <string name="description">Request\'s description</string>
     <string name="post">Post</string>
     <string name="tag">Please Add comma separated tags</string>
-    <string name= "tagHint">Only letters, digits, and , allowed</string>
-    <string name= "priceHint">enter a positive number</string>
+    <string name="tagHint">Only letters, digits, and , allowed</string>
+    <string name="priceHint">enter a positive number</string>
     <string name="title_activity_request">RequestActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="date">Date</string>
+    <string name="ChooseDate">Choose DeadLine</string>
     <string name="deadLine">Expected deadline</string>
     <string name="price">Requested price</string>
     <string name="check">please check when you are done</string>
@@ -28,6 +29,6 @@
     <string name="wrong_emails">Not Valid Emails</string>
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
-
+    <string name="title_activity_date_picker_fragment">DatePickerFragment</string>
 
 </resources>
