@@ -24,6 +24,10 @@ public class FilteringFragment extends DialogFragment {
 
 	private HashMap<String, Integer> tagToId = new HashMap<String, Integer>();
 
+	private AutoCompleteTextView tagText;
+	private AutoCompleteTextView userText;
+	private EditText fullText;
+
 	public static FilteringFragment createInstance(
 			HashMap<String, Integer> tagToId, HashMap<String, Integer> userToId) {
 		FilteringFragment fragment = new FilteringFragment();
@@ -40,25 +44,80 @@ public class FilteringFragment extends DialogFragment {
 				false);
 		setTagSuggestions(view);
 		setUserSuggestions(view);
+		setFullText(view);
+		setButtonsActions(view);
+		getDialog().setTitle("Filtering Options");
 		return view;
 	}
 
+	private void setFullText(View view) {
+		fullText = (EditText) view.findViewById(R.id.fullTextValue);
+	}
+
 	private void setTagSuggestions(View view) {
-		AutoCompleteTextView tag = (AutoCompleteTextView) view
-				.findViewById(R.id.tagValue);
-		tag.setAdapter(new ArrayAdapter<String>(getActivity(),
+		tagText = (AutoCompleteTextView) view.findViewById(R.id.tagValue);
+		tagText.setAdapter(new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_list_item_1,
 				((TangleProfilePage) getActivity()).getTagsSuggestions()));
 	}
 
 	private void setUserSuggestions(View view) {
-		AutoCompleteTextView user = (AutoCompleteTextView) view
-				.findViewById(R.id.userValue);
-		user.setAdapter(new ArrayAdapter<String>(getActivity(),
+		userText = (AutoCompleteTextView) view.findViewById(R.id.userValue);
+		userText.setAdapter(new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_list_item_1,
 				((TangleProfilePage) getActivity()).getUsersSuggestions()));
 	}
 
-	
+	private void setButtonsActions(View view) {
+		Button filter = (Button) view.findViewById(R.id.doFilteration);
+		filter.setOnClickListener(new View.OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				String url = "";
+				String tag = tagText.getText().toString();
+				String user = userText.getText().toString();
+				String text = fullText.getText().toString();
+				boolean putAnd = false;
+				boolean putQuestionMark = false;
+				if (userToId != null && userToId.containsKey(user)) {
+					putQuestionMark = true;
+					putAnd = true;
+					url += "userid" + userToId.get(user);
+				}
+				if (tag != "" && tagToId != null && tagToId.containsKey(tag)) {
+					putQuestionMark = true;
+					if (putAnd) {
+						url += "&";
+					}
+					putAnd = true;
+					url += "tagid" + tagToId.get(tag);
+				}
+				if (text != "") {
+					putQuestionMark = true;
+					if (putAnd) {
+						url += "&";
+					}
+					url += "&fulltext=" + text;
+				}
+				if (putQuestionMark) {
+					url = "?" + url;
+				}
+				url = rootResource + "tangle/"
+						+ ((TangleProfilePage) getActivity()).getTangleId()
+						+ "/request" + url;
+				((TangleProfilePage) getActivity()).sendFilteredRequest(url
+						.replace(" ", "+"));
+				getDialog().dismiss();
+			}
+		});
+		Button cancel = (Button) view.findViewById(R.id.cancelFilteration);
+		cancel.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				getDialog().dismiss();
+			}
+		});
+	}
 }
