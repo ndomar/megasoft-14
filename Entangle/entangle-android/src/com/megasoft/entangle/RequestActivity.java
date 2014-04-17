@@ -102,9 +102,45 @@ public class RequestActivity extends Activity{
 			      
 			}
 		});
-       
+        mDateDisplay = (TextView) findViewById(R.id.showMyDate);        
+        mPickDate = (Button) findViewById(R.id.myDatePickerButton);
+
+        mPickDate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showDialog(DATE_DIALOG_ID);
+            }
+        });
+        
+        
+      
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        updateDisplay();
+
+	}
+	private void updateDisplay() {
+	    this.mDateDisplay.setText(
+	        new StringBuilder()
+	                .append(mMonth + 1).append("-")
+	                .append(mDay).append("-")
+	                .append(mYear).append(" "));
 	}
 	
+	private DatePickerDialog.OnDateSetListener mDateSetListener =
+		    new DatePickerDialog.OnDateSetListener() {
+		        public void onDateSet(DatePicker view, int year, 
+		                              int monthOfYear, int dayOfMonth) {
+		            mYear = year;
+		            mMonth = monthOfYear;
+		            mDay = dayOfMonth;
+		            updateDisplay();
+		        }
+		    };
+		    protected Dialog onCreateDialog() {
+		    	return new DatePickerDialog(this, mDateSetListener, mYear, mMonth, mDay);
+		    	}
 		
 	OnFocusChangeListener focusListener = new OnFocusChangeListener() {
 		
