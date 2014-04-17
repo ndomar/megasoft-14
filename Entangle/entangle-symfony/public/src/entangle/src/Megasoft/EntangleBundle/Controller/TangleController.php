@@ -231,6 +231,11 @@ class TangleController extends Controller {
         return $ret;
     }
 
+    /**
+     * Parse the request and creates a new tangle
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function createTangleAction(Request $request) {
 
         $json = $request->getContent();
@@ -240,7 +245,7 @@ class TangleController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
-        
+
         if ($sessionId == null || $tangleIcon == null || $tangleName == null) {
             return new Response("Bad Request", 400);
         }
@@ -248,7 +253,6 @@ class TangleController extends Controller {
         if ($session == null) {
             return new Response("Unauthorized", 401);
         }
-        
 
         $tangle = new Tangle();
         $tangle->setName($tangleName);
@@ -263,6 +267,11 @@ class TangleController extends Controller {
         return $response;
     }
 
+    /**
+     * parse the request and checks if the tangle is available or not
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function checkAvailabilityAction(Request $request) {
 
         $tangleName = $request->query->get('tangleName');

@@ -36,6 +36,10 @@ public class CreateTangleActivity extends Activity {
 	String encodedImage;
 
 	@Override
+	/**
+	 * When the activity is created, it sets up listeners to the tangle name field
+	 * @param Bundle savedInstanceState
+	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_tangle);
@@ -68,6 +72,11 @@ public class CreateTangleActivity extends Activity {
 		return true;
 	}
 
+	/**
+	 * Checks if the tangle name already exists or not
+	 * 
+	 * @param view
+	 */
 	public void checkTangleName(View view) {
 		String tangleNameText = ((EditText) findViewById(R.id.tangleName))
 				.getText().toString();
@@ -90,16 +99,32 @@ public class CreateTangleActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Redirects to gallery when clicking choose icon button
+	 * 
+	 * @param view
+	 */
 	public void chooseIcon(View view) {
 		goToGallery();
 	}
 
+	/**
+	 * Goes to the gallery to pick an image from there
+	 */
 	public void goToGallery() {
 		startActivityForResult(new Intent(Intent.ACTION_PICK,
 				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
 				REQUEST_CODE);
 	}
 
+	/**
+	 * Waits for the image picked from the gallery and encodes it to a string
+	 * 
+	 * @param int requestCode
+	 * @param int resultCode
+	 * @param Intent
+	 *            data
+	 */
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE
@@ -114,6 +139,13 @@ public class CreateTangleActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Get the path of the photo the user picked from the gallery and returns
+	 * the image as a bitmap
+	 * 
+	 * @param uri
+	 * @return Bitmap
+	 */
 	public Bitmap getPhotoPath(Uri uri) {
 		String[] projection = { android.provider.MediaStore.Images.Media.DATA };
 		Cursor cursor = getContentResolver().query(uri, projection, null, null,
@@ -126,6 +158,11 @@ public class CreateTangleActivity extends Activity {
 		return bitmap;
 	}
 
+	/**
+	 * Creates the tangle when Create button is clicked
+	 * 
+	 * @param view
+	 */
 	public void Create(View view) {
 		EditText tangleName = (EditText) findViewById(R.id.tangleName);
 		ImageView tangleIcon = (ImageView) findViewById(R.id.icon);
@@ -141,14 +178,17 @@ public class CreateTangleActivity extends Activity {
 					if (tangleIcon.getDrawable() == null) {
 						showMessage("PLEASE CHOOSE A TANGLE ICON FIRST");
 					} else {
-						sendImageToServer();
+						sendTangleToServer();
 					}
 				}
 			}
 		}
 	}
 
-	public void sendImageToServer() {
+	/**
+	 * Sends the tangle info to the server
+	 */
+	public void sendTangleToServer() {
 		PostRequest imagePostRequest = new PostRequest(
 				"http://entangle2.apiary-mock.com/tangle") {
 			protected void onPostExecute(String response) {
@@ -173,6 +213,12 @@ public class CreateTangleActivity extends Activity {
 		imagePostRequest.execute();
 	}
 
+	/**
+	 * Shows a message dialogue to the user when called showing the message that
+	 * is called with
+	 * 
+	 * @param message
+	 */
 	public void showMessage(String message) {
 		AlertDialog ad = new AlertDialog.Builder(this).create();
 		ad.setCancelable(false);
@@ -187,11 +233,23 @@ public class CreateTangleActivity extends Activity {
 		ad.show();
 	}
 
+	/**
+	 * Resets a color of a text in a text field to black
+	 * 
+	 * @param id
+	 */
 	public void resetColor(int id) {
 		TextView textView = (TextView) findViewById(id);
 		textView.setTextColor(BLACK);
 	}
 
+	/**
+	 * Changes the color of a text inside a text field to green or red according
+	 * to its availability
+	 * 
+	 * @param available
+	 * @param id
+	 */
 	public void insertAvailability(boolean available, int id) {
 
 		TextView textView = (TextView) findViewById(id);
@@ -202,6 +260,10 @@ public class CreateTangleActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Shows a dialogue informing that the tangle is created and redirecting to
+	 * homepage when pressing OK
+	 */
 	public void goToHomePage() {
 		AlertDialog ad = new AlertDialog.Builder(this).create();
 		ad.setCancelable(false);
@@ -217,6 +279,9 @@ public class CreateTangleActivity extends Activity {
 		ad.show();
 	}
 
+	/**
+	 * Redirects the user to the home page
+	 */
 	public void goToHomeHelper() {
 		startActivity(new Intent(this, MainActivity.class));
 	}
