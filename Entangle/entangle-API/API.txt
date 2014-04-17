@@ -522,19 +522,19 @@ As a user, i can register
                                         {
                                             "id":1,
                                             "invitee":"Elprince",
-                                            "invited":"3m el kol",
+                                            "inviter":"3m el kol",
                                             "email":"prince@prince.com"
                                         },
                                         {
                                             "id":1,
                                             "invitee":"Elprince",
-                                            "invited":"3m el kol",
+                                            "inviter":"3m el kol",
                                             "email":"prince@prince.com"
                                         },
                                         {
                                             "id":1,
                                             "invitee":"Elprince",
-                                            "invited":"3m el kol",
+                                            "inviter":"3m el kol",
                                             "email":"prince@prince.com"
                                         }
                                     ]
