@@ -17,13 +17,57 @@ use Megasoft\EntangleBundle\Entity\Session;
  */
 class ProfileController {
     
+    public function validateUser($userId, $tangleId) {
+         $userTangleTable = $this->getDoctrine()->
+                getRepository('MegasoftEntangleBundle:UserTangle');
+          $userTangle = $userTangleTable->
+                findOneBy(array ('userId'=>$userId,'tangleId'=>$tangleId)); 
+          if ($userTangle == null) {
+              return false;
+          } else {
+              return true;
+          }
+    }
+    
+    public function validateTangle($tangleId) {
+        $tangleTable = $this->getDoctrine()->
+                getRepository('MegasoftEntangleBundle:Tangle');
+        $tangle = $tangleTable->findOneBy(array ('tangleId'=>$tangleId));
+        if ($tangle == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public function profile (Request $request, $userId, $tangleId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
+        
+        if ($sessionId == null) {
+            return new Response('Unauthorized',401);
+        }
+        
         $doctrine = $this->getDoctrine();
         $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionTable->findOneBy(array('sessionId'=>$sessionId));
+        $loggedInUser = $session->getUserId();
+        
+        if (!$this->validateTangle($tangleId)) {
+            return new Response('Tangle not found',404);
+        }
+        
+        if (!$this->validateUser($loggedInUser, $tangleId)) {
+            return new Response('You are not a member of this tangle', 401);
+        }
+        
+        if (!$this->validateUser($userId, $tangleId)) {
+            return new Response('The requested user is not'
+                    . ' a member of this tangle', 401);
+        }
+        
         $user = $userTable->findOneBy(array('id'=> $userId));
+        
         $offers = $user->getOffers();
         $info = $this->getUserInfo($user, $tangleId);
         $transactions = $this->getTransactions($offers, $tangleId);
