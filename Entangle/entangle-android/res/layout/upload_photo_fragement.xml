@@ -21,9 +21,9 @@
             android:contentDescription="@string/icon" />
 
         <Button
+            android:id="@+id/iconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="chooseIcon"
             android:text="@string/iconButton" />
     </LinearLayout>
 

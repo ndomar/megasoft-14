@@ -14,7 +14,9 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 @SuppressLint("NewApi") 
@@ -23,14 +25,13 @@ public class PhotoUploaderFragment extends Fragment{
 	private static final int REQUEST_CODE = 1;
 	private static final int RESULT_OK = 1;
 	private ImageView icon;
+	private Button button;
 	private String encodedImage;
 	private ContentResolver contentResolver;
 	
-	public static PhotoUploaderFragment getInstance(ContentResolver contentResolver,
-			ImageView icon){
+	public static PhotoUploaderFragment getInstance(ContentResolver contentResolver){
 		PhotoUploaderFragment fragment = new PhotoUploaderFragment();
 		fragment.setContentResolver(contentResolver);
-		fragment.setIcon(icon);
 		return fragment;
 	}
 	
@@ -42,6 +43,10 @@ public class PhotoUploaderFragment extends Fragment{
 		this.contentResolver = contentResolver;
 	}
 	
+	public void setButton(Button button){
+		this.button = button;
+	}
+	
 	public ImageView getIcon(){
 		return icon;
 	}
@@ -50,12 +55,28 @@ public class PhotoUploaderFragment extends Fragment{
 		return contentResolver;
 	}
 	
+	public Button getButton(){
+		return button;
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.upload_photo_fragement, container, false);
-    }
+        View view = inflater.inflate(R.layout.upload_photo_fragement, container, false);
+        
+        setIcon((ImageView) view.findViewById(R.id.icon));
+        
+        Button iconButton = (Button) view.findViewById(R.id.iconButton);
+        setButton(iconButton);
+       
+        iconButton.setOnClickListener(new OnClickListener(){
+        	public void onClick(View view){
+        		chooseIcon();
+        	}
+        });
+        
+        return view;
+	}
 	
 
 	public void chooseIcon(){
