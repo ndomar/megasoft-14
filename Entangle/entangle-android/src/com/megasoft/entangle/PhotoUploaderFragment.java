@@ -57,4 +57,38 @@ public class PhotoUploaderFragment extends Fragment{
         return inflater.inflate(R.layout.upload_photo_fragement, container, false);
     }
 	
+
+	public void chooseIcon(){
+		startActivityForResult(new Intent(Intent.ACTION_PICK,
+				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
+				REQUEST_CODE);
+		
+		
+	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE
+				&& data != null) {
+			Bitmap bitmap = getPhotoPath(data.getData());
+			ImageView imageView = getIcon();
+			imageView.setImageBitmap(bitmap);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+			byte[] byteArray = baos.toByteArray();
+			encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+		}
+	}
+	
+	public Bitmap getPhotoPath(Uri uri) {
+		String[] projection = { android.provider.MediaStore.Images.Media.DATA };
+		Cursor cursor = getContentResolver().query(uri, projection, null, null,
+				null);
+		int columnIndex = cursor.getColumnIndexOrThrow(projection[0]);
+		cursor.moveToFirst();
+		String filePath = cursor.getString(columnIndex);
+		cursor.close();
+		Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+		return bitmap;
+	}
 }
