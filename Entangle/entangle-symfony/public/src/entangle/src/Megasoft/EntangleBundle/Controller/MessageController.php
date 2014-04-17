@@ -6,7 +6,7 @@ class MessageController extends Controller
 {
     /**
      * 
-     * @param integer $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @param integer $offerId
      * @return \Megasoft\EntangleBundle\Controller\Response
      * @author NaderNessem
@@ -24,6 +24,7 @@ class MessageController extends Controller
             return new Response('Bad Request', 400);
         }
     }
+    
 }
 
 
