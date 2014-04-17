@@ -237,6 +237,18 @@ class TangleController extends Controller {
         $json_array = json_decode($json, true);
         $tangleName = $json_array['tangleName'];
         $tangleIcon = $json_array['tangleIcon'];
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        
+        if ($sessionId == null || $tangleIcon == null || $tangleName == null) {
+            return new Response("Bad Request", 400);
+        }
+
+        if ($session == null) {
+            return new Response("Unauthorized", 401);
+        }
+        
 
         $tangle = new Tangle();
         $tangle->setName($tangleName);
