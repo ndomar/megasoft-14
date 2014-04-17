@@ -1,23 +1,26 @@
 package com.megasoft.entangle;
 
-import org.apache.http.client.methods.HttpPost;
-
-import com.megasoft.requests.PostRequest;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.content.Intent;
 import android.view.Menu;
 
 
 public class MainActivity extends Activity {
 
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		startActivity((new Intent(this,InviteUserActivity.class)).putExtra("com.megasoft.entangle.tangleId", 2));
+		Fragment fragment = PhotoUploaderFragment.getInstance(getContentResolver());
+		FragmentManager fragmentManager = getFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		fragmentTransaction.add(R.layout.upload_photo_fragement, fragment);
+		fragmentTransaction.commit();
 	}
 
 	@Override
