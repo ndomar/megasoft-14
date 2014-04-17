@@ -1,6 +1,9 @@
 package com.megasoft.entangle;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,6 +59,8 @@ public class TangleProfilePage extends Activity {
 	private HashMap<String, Integer> userToId = new HashMap<String, Integer>();
 
 	private HashMap<String, Integer> tagToId = new HashMap<String, Integer>();
+
+	// private ArrayList<String> hjfh = new ArrayList<String>()
 
 	/**
 	 * This method is called when the activity starts , it sets the attributes
@@ -267,6 +272,14 @@ public class TangleProfilePage extends Activity {
 		return sessionId;
 	}
 
+	public HashMap<String, Integer> getTagToIdHashMap() {
+		return tagToId;
+	}
+
+	public HashMap<String, Integer> getUserToIdHashMap() {
+		return userToId;
+	}
+
 	/**
 	 * This method is used to set the options menu of the activity
 	 */
@@ -389,7 +402,9 @@ public class TangleProfilePage extends Activity {
 							userToId.put(userName, userId);
 						}
 					}
-					FilteringFragment filter = new FilteringFragment();
+					FilteringFragment filter = FilteringFragment
+							.createInstance(getTagToIdHashMap(),
+									getUserToIdHashMap());
 					filter.show(getFragmentManager(), "filter_dialog");
 				} else {
 					Toast.makeText(getBaseContext(),
@@ -409,11 +424,19 @@ public class TangleProfilePage extends Activity {
 		sendGetAllRequest(url, 1);
 	}
 
-	public String[] getTagsSuggestions() {
-		return null;
+	public ArrayList<String> getTagsSuggestions() {
+		HashMap<String, Integer> toId = getTagToIdHashMap();
+		if (toId != null) {
+			return new ArrayList<String>(toId.keySet());
+		}
+		return new ArrayList<String>();
 	}
 
-	public String[] getUsersSuggestions() {
-		return null;
+	public ArrayList<String> getUsersSuggestions() {
+		HashMap<String, Integer> toId = getUserToIdHashMap();
+		if (toId != null) {
+			return new ArrayList<String>(toId.keySet());
+		}
+		return new ArrayList<String>();
 	}
 }
