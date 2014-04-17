@@ -564,3 +564,56 @@ As a user, i can register
              
 + Response 200
 
+# Group ufreeze 
+Unfreeze points related resources of the **Entangle API**
+
+## unfreeze [/unfreze]
+### List all unfreze requests [GET]
++ Response 200 (application/json)
+
+        [{
+          "UnfreezeReqid": "UnfreezeReqid1","tangle id": "idTangle", "userid": "user1Id"
+        }, {
+          "UnfreezeReqid": "UnfreezeReqid2","tangle id": "idTangle2", "userid": "user2Id"
+        }]
+
+### Create an unfreeze request [POST]
++ Request (application/json)
+
+        { 
+        "tangle id": "idTangle" ,
+        "user id": "UserId"
+        }
+
++ Response 201 
+
+##  UnfreezeReq [/unfreeze/{unfreezeReqid}]
+A single unfreeze Request object with all its details
+
++ Parameters
+    + unfreezeReqid (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
+
+### Retrieve an Unfreeze Request [GET]
++ Response 200 (application/json)
+
+        { "UnfreezeReqid": "UnfreezeReqid1","tangle id": "idTangle", "userid": "user1Id" }
+
+### Remove a Request [DELETE]
++ Response 204
+
+## frozenPoints [/unfreeze/tangle/{tangleId}/user/{userid}/frozenpoints]
++ Parameters
+    + tangleId (required,int)
+    + userid (required,int)
+
+###  get Frozen points [GET]
++ Response 200 (application/json)
+    
+        {"frozenPoints" : "frozenPoints"}
+
+### Restore Balance [PUT]
++ Request (application/json)
+
+        {"balanceToRestore":"balanceamount"}
+
++ Response 200
