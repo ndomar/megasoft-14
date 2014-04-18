@@ -1,11 +1,14 @@
 package com.megasoft.entangle;
 import java.util.Calendar;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -37,14 +40,19 @@ public class RequestActivity extends Activity{
 		final int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
 		final int currentMonth = calendar.get(Calendar.MONTH);
 		final int currentYear = calendar.get(Calendar.YEAR);
-		final String date = currentDay +"/"+ currentMonth +"/"+ currentYear;
+		final String date = currentDay +"/"+ (currentMonth + 1) +"/"+ currentYear;
 		static final int DATE_DIALOG_ID = 0;
+		JSONArray jsonTagsArray;
+		String[] tagsArray;
+		String sessionId;
+		SharedPreferences settings;
 		
-	protected void onCreate(Bundle savedInstanceState) {
+		protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent previousIntent = getIntent();
 		final int tangleID = previousIntent.getIntExtra("tangleID" , 0);
-		final String sessionId = previousIntent.getStringExtra("sessionId"); 
+		settings = getSharedPreferences(Config.SETTING, 0);
+		sessionId = settings.getString(Config.SESSION_ID, "");
 		setContentView(R.layout.activity_request);
 		description = (EditText) findViewById(R.id.description);
 		requestedPrice = (EditText) findViewById(R.id.price);
@@ -60,22 +68,33 @@ public class RequestActivity extends Activity{
         deadLineYear = calendar.get(Calendar.YEAR);
         deadLineMonth = calendar.get(Calendar.MONTH);
         deadLineDay = calendar.get(Calendar.DAY_OF_MONTH);
+        jsonTagsArray = new JSONArray();
+        
         
         Post.setOnClickListener(new View.OnClickListener() {
         	
 			public void onClick(View arg0) {
+			    tagsArray = tags.getText().toString().split(",");
+				for(int i = 0; i < tagsArray.length; i++){
+		        	try {
+						jsonTagsArray.put(i, tagsArray[i]);
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+		        }
+				
 				  try {
 			            json.put("description" , description.getText().toString());
 			            json.put("requestedPrice" , requestedPrice.getText().toString());
 			            json.put("date" , date);
 			            json.put("deadLine" , dateDisplay.getText().toString());
-			            json.put("tags", tags.getText().toString());
+			            json.put("tags", jsonTagsArray);
 			           } catch (JSONException e) {
 			            e.printStackTrace();
 			           }
 				
 				
-				 PostRequest request = new PostRequest(Config.API_BASE_URL + tangleID + "/request"){
+				 PostRequest request = new PostRequest(Config.API_BASE_URL +"/tangle/"+ tangleID + "/request"){
 			            protected void onPostExecute(String response) {  
 			                 if( this.getStatusCode() == 201 ){
 			                     //redirection
