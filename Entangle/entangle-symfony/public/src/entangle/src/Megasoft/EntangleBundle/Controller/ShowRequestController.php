@@ -1,18 +1,21 @@
 <?php
 
 namespace Megasoft\EntangleBundle\Controller;
-
-use Megasoft\EntangleBundle\Entity\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class ShowRequestContoller extends Controller
+class ShowRequestController extends Controller
 {
-    public function getRequestAttibutes($requestId){
+    public function getRequestAttibutesAction($requestId){
         $doctrine = $this->getDoctrine();
         $repository = $doctrine->getRepository('MegasoftEntangleBundle:Request');
         $request = $repository->findOneBy(array('id'=>$requestId));
+        if(count($request)==0){
+            return new Response("No such request" , 404 );
+        }
+        else{
         $requester = $request->getUserId(); 
         $description = $request->getDescription();
         $status = $request->getStatus();
@@ -25,23 +28,13 @@ class ShowRequestContoller extends Controller
         $arr = array('requester'=>$requester, 'description'=>$description , 
             'status'=>$status,'date'=>$date, 'deadline'=>$deadline,
             'icon'=>$icon, 'price'=>$price, 'tangle'=>$tangle, 'tags'=>$tags);
-        return $arr; 
+        $response = new JsonResponse();
+        $response->setData(array($arr));
+        $response->setStatusCode(200);
+        return $response;
+        }
     }
     
-    public function getRequestDetails(Request $request)
-    {
-        $json = $request->getContent();
-        $json_array = json_decode($json,true);
-        if(count($json_array)==0){
-            return new Response("Request Deleted" , 404 );
-        }
-        $requestId = $json_array['id'];
-        $arr = $this->getRequestAttibutes($requestId);
-        $response = new JsonResponse();
-        $response->setData($arr);
-        $response->setStatusCode(201);
-        return $response;
-    }
     public function getOfferAttributes($offerId){
        $doctrine = $this->getDoctrine(); 
        $repository = $doctrine->getRepository('MegasoftEntangleBundle: Offer'); 
@@ -61,7 +54,7 @@ class ShowRequestContoller extends Controller
         $repository = $doctrine->getRepository('MegasoftEntangleBundle: Offer');
         $offers = $repository->findAll($requestID);
         $numOfOffers=count($offers);
-        $response = new JsonResponse(); 
+        $response = new JsonResponse();
         for($i=0; $i<$numOfOffers;$i++){
          $offer = $offers[i];
          $offerId = $offer->getId();
