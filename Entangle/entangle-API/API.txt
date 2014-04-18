@@ -466,7 +466,7 @@ As a user, i can register
 + Response 200 (application/json)
 
 	{
-		“seen” : 1
+		“seen” : 1 
 	}
 
 
