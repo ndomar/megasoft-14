@@ -1,4 +1,14 @@
 megasoft_entangle:
     resource: "@MegasoftEntangleBundle/Resources/config/routing.yml"
     prefix:   /
-
+    
+update:
+    path:      /update/{offerid}
+    defaults:  { _controller: MegasoftEntangleBundle:Tangle:update }
+    methods: [POST]
+    
+    
+search:
+    path:      /search/{offerid}
+    defaults:  { _controller: MegasoftEntangleBundle:Tangle:search }
+    methods: [GET]

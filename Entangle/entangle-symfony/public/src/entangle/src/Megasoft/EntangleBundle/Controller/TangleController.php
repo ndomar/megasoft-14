@@ -230,4 +230,35 @@ class TangleController extends Controller {
         return $ret;
     }
 
+    public function searchAction($offerid) {
+        $doctrine = $this->getDoctrine();
+        $repo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $offerId = $offerid;
+        $offer = $repo->find($offerId);
+        $price = $offer->getRequestedPrice();
+        $date = $offer->getDate();
+        $deadline = $offer->getExpectedDeadline();
+        $description = $offer->getDescription();
+        $response = new JsonResponse();
+        $response->setData(array('price' => $price, 'date' => $date, 'deadline' => $deadline, 'description' => $description));
+        $response->setStatusCode(201);
+        return $response;
+    }
+
+    public function updateAction($offerid, Request $request) {
+        $doctrine = $this->getDoctrine();
+        $repo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $json = $request->getContent();
+        $json_array = json_decode($json, true);
+        $status = $json_array['status'];
+        $offerId = $offerid;
+        $offer = $repo->find($offerId);
+        $offer->setStatus($status);
+        $this->getDoctrine()->getManager()->persist($offer);
+        $this->getDoctrine()->getManager()->flush();
+        $response = new JsonResponse();
+        $response->setStatusCode(201);
+        return $response;
+    }
+
 }
