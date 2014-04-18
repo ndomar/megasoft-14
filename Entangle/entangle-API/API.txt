@@ -563,3 +563,50 @@ As a user, i can register
              X-SESSION-ID : "asdasdasdsadasdasd"
              
 + Response 200
+## GET /tangleOwnerAndOffererMail/{tangleId}/claim
+Get the email of the offerer
+
++ Parameters
+    + tangleId  ( Int , required ) ... tangle id
+
++ Request
+
+    + Header
+    
+            X-SESSION-ID : salma
+            
++ Response 200(application/json)
+
+        {
+            "X-OFFERER-MAIL" : "salma@gmail.com",
+            "X-TANGLEOWNER-MAIL" : "saloum@gmail.com"
+           
+        }
+        
+## POST /claim/{tangleId}/sendClaim
+Post request
++ Parameters
+    
+    + tangleId ( Int , required ) ... tangle id
+ 
++ Request (application/json)
+    
+    + Header
+            
+             X-SESSION-ID : salma
+
+    + Body
+    
+                { 
+                    "X-SENDER-MAIL" : "SALMA@GMAIL.COM",
+                    "X-RECIEVER-MAIL" : "SALOUM@GMAIL.COM",
+                    "X-SUBJECT" : "PLEASE",
+                    "X-MSSGBODY" : "NONO"
+                }
+
++ Response 200(application/json)
+
+        {
+            "X-CLAIM-ID" : "1234"
+           
+        }
