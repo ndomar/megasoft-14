@@ -1,22 +1,28 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+use Megasoft\EntangleBundle\Entity\Transaction;
+use Megasoft\EntangleBundle\Entity\UserTangle;
+use Megasoft\EntangleBundle\Entity\Session;
+use Megasoft\EntangleBundle\Entity\Tangle;
+use Megasoft\EntangleBundle\Entity\Offer;
+use Megasoft\EntangleBundle\Entity\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Megasoft\EntangleBundle\Entity\Session;
+use Symfony\Component\HttpFoundation\Request;
+
 /**
- * Description of ProfileController
- *
+ * Gets the required information to view a certain user's profile
  * @author almgohar
  */
 class ProfileController {
     
+    /**
+     * Validates that a given user is a member of a given tangle
+     * @param integer $userId
+     * @param integer $tangleId
+     * @return boolean true if the user is a memeber of this tangle, false otherwise
+     */
     public function validateUser($userId, $tangleId) {
          $userTangleTable = $this->getDoctrine()->
                 getRepository('MegasoftEntangleBundle:UserTangle');
@@ -29,6 +35,11 @@ class ProfileController {
           }
     }
     
+    /**
+     * Validates the existence of a given tangle
+     * @param integer $tangleId
+     * @return boolean true if the tangle exists, false otherwise
+     */
     public function validateTangle($tangleId) {
         $tangleTable = $this->getDoctrine()->
                 getRepository('MegasoftEntangleBundle:Tangle');
@@ -40,7 +51,14 @@ class ProfileController {
         }
     }
 
-    public function profile (Request $request, $userId, $tangleId) {
+    /**
+     * Sends the required information in a JSon response
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param integer $userId
+     * @param integer $tangleId
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getProfileAction (Request $request, $userId, $tangleId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
         
         if ($sessionId == null) {
@@ -62,15 +80,13 @@ class ProfileController {
         }
         
         if (!$this->validateUser($userId, $tangleId)) {
-            return new Response('The requested user is not'
-                    . ' a member of this tangle', 401);
+            return new Response('The requested user is not a member of this tangle', 401);
         }
         
         $user = $userTable->findOneBy(array('id'=> $userId));
-        
         $offers = $user->getOffers();
-        $info = $this->getUserInfo($user, $tangleId);
-        $transactions = $this->getTransactions($offers, $tangleId);
+        $info = $this->getUserInfoAction($user, $tangleId);
+        $transactions = $this->getTransactionsAction($offers, $tangleId);
         $response = new JsonResponse();
         $response->setData(array('information'=> $info,
             'transactions'=>$transactions));
@@ -78,6 +94,12 @@ class ProfileController {
         return $response;       
     }
     
+    /**
+     * Gets the user's transactions in a given tangle
+     * @param array $offers
+     * @param integer $tangleId
+     * @return array of arrays
+     */
     public function getTransactions ($offers, $tangleId) {
         $transactions = array();
         for ($i = 0; i < count($offers); $i++) {
@@ -98,7 +120,13 @@ class ProfileController {
         return $transactions;    
     }
     
-    public function getUserInfo ($user, $tangleId) {
+    /**
+     * Gets the basic information of a given user in a give tangle
+     * @param user $user
+     * @param integer $tangleId
+     * @return \Symfony\Component\HttpFoundation\Response | array 
+     */
+    public function getUserInfo($user, $tangleId) {
         if ($user == null) {
             return new Response('Bad Request',400);
         }
@@ -118,10 +146,7 @@ class ProfileController {
             'credit'=>$credit, 'photo'=>$photo , 'birthdate'=>$birthdate , 
             'verified' => $verfied);
         return $info;
-    }
-    
-        
-       
+    }  
 }
         
  
