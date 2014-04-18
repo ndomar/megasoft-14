@@ -94,13 +94,11 @@ public class PhotoUploaderFragment extends Fragment{
 				&& data != null) {
 			Bitmap bitmap = getPhotoPath(data.getData());
 			ImageView imageView = getIcon();
-			System.out.println("TESTING !!!!!!");
 			imageView.setImageBitmap(bitmap);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
 			byte[] byteArray = baos.toByteArray();
 			encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-			System.out.println(encodedImage);
 		}
 	}
 	

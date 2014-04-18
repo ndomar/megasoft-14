@@ -17,6 +17,6 @@
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
     <string name="icon">icon</string>
-    <string name="iconButton">iconButton</string>
+    <string name="iconButton">Upload Icon</string>
 
 </resources>
