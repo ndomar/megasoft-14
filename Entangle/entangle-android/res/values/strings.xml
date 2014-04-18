@@ -16,5 +16,10 @@
     <string name="wrong_emails">Not Valid Emails</string>
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
-
+    <string name="Pri_ce">Price</string>
+    <string name="Da_te">Date</string>
+    <string name="Des_cription">Description</string>
+    <string name="Ex_pected">Expecteddeadline</string>
+    <string name="Do_ne">Mark as done</string>
+    <string name="gotooffer">Go to offer</string>
 </resources>
