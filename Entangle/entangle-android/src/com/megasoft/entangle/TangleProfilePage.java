@@ -2,9 +2,6 @@ package com.megasoft.entangle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,7 +52,7 @@ public class TangleProfilePage extends Activity {
 	/**
 	 * The session id of the user
 	 */
-	private String sessionId = "ghfdt";
+	private String sessionId;
 
 	/**
 	 * The FragmentTransaction that handles adding the fragments to the activity
@@ -83,7 +80,7 @@ public class TangleProfilePage extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tangle_profile_page);
-		// setAttributes();
+		setAttributes();
 		sendFilteredRequest(rootResource + "tangle/" + getTangleId()
 				+ "/request");
 		setRedirections();
@@ -116,27 +113,6 @@ public class TangleProfilePage extends Activity {
 			intent = new Intent(this, MainActivity.class);
 			// to be changed to login activity
 		}
-	}
-
-	/**
-	 * This method is used to send a request to get the requests stream without
-	 * filtering only for the first time
-	 */
-	private void sendStreamRequest() {
-		GetRequest getStream = new GetRequest(rootResource + "tangle/"
-				+ getTangleId() + "/request") {
-			protected void onPostExecute(String res) {
-				if (!this.hasError() && res != null) {
-					setTheLayout(res);
-				} else {
-					Toast.makeText(getBaseContext(),
-							"Sorry, There is a problem in loading the stream",
-							Toast.LENGTH_LONG).show();
-				}
-			}
-		};
-		getStream.addHeader("X-SESSION-ID", getSessionId());
-		getStream.execute();
 	}
 
 	/**
@@ -314,7 +290,6 @@ public class TangleProfilePage extends Activity {
 
 	/**
 	 * This method is used to send a get request to get the stream filtered/not
-	 * filtered in case of not the first request
 	 * 
 	 * @param url
 	 *            , is the URL to which the request is going to be sent
