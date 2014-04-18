@@ -6,8 +6,8 @@ megasoft_entangle_homepage:
 #    pattern:  /test
 #    defaults: { _controller: MegasoftEntangleBundle:Default:test }
 
-getRequestDetails:
-    pattern: /Request/{requestId}
-    defaults: { _controller: MegasoftEntangleBundle:ShowRequest:getRequestDetails }
+getRequestAttibutes:
+    pattern: /request/{requestId}
+    defaults: { _controller: MegasoftEntangleBundle:ShowRequest:getRequestAttibutes }
     methods: [GET]
 
