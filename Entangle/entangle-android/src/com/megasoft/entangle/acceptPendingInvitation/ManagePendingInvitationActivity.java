@@ -19,9 +19,16 @@ import com.megasoft.entangle.R.id;
 import com.megasoft.entangle.R.layout;
 import com.megasoft.entangle.R.menu;
 import com.megasoft.requests.GetRequest;
-
+/**
+ * The Activity that handles the pending tangle invitations.
+ * @author MohamedBassem
+ *
+ */
 public class ManagePendingInvitationActivity extends Activity {
 	
+	/**
+	 * The id of the current tangle
+	 */
 	private int tangleId;
 
 	/**
@@ -29,8 +36,14 @@ public class ManagePendingInvitationActivity extends Activity {
 	 */
 	SharedPreferences settings;
 	
+	/**
+	 * The session id of the currently logged in user
+	 */
 	String sessionId;
 	
+	/**
+	 * The number of pending invitations
+	 */
 	int pendingInvitationCount;
 	
 	@Override
@@ -48,7 +61,11 @@ public class ManagePendingInvitationActivity extends Activity {
 		super.onStart();
 		fetchData();
 	}
-
+	
+	/**
+	 * The method responsible for sending the GET request to the endpoint to fetch the invitations
+	 * @author MohamedBassem
+	 */
 	private void fetchData() {
 		GetRequest request = new GetRequest(Config.API_BASE_URL + "/tangle/"+tangleId+"/pending-invitations"){
 			public void onPostExecute(String response) {
@@ -60,6 +77,11 @@ public class ManagePendingInvitationActivity extends Activity {
 		
 	}
 	
+	/**
+	 * The method responsible for adding the pending invitation fetched from the api to the layout
+	 * @param response , The string containing the JSON response from the API
+	 * @author MohamedBassem
+	 */
 	public void showData(String response){
 		((LinearLayout)findViewById(R.id.pending_invitation_layout)).removeAllViews();
 		JSONObject json = null;
@@ -93,12 +115,21 @@ public class ManagePendingInvitationActivity extends Activity {
 		
 	}
 	
+	/**
+	 * Triggered by the fragment to remove itself from the layout when approved or rejected
+	 * @param fragment , the fragment to be removed
+	 * @author MohamedBassem
+	 */
 	public void removeFragment(PendingInvitationFragment fragment){
 		getFragmentManager().beginTransaction().remove(fragment).commit();
 		pendingInvitationCount--;
 		checkEmptyPendingInvitations();
 	}
 	
+	/**
+	 * Used to check whether there is any pending invitations , if not , an appropriate message appears
+	 * @author MohamedBassem
+	 */
 	private void checkEmptyPendingInvitations() {
 		if(pendingInvitationCount == 0){
 			findViewById(R.id.pending_invitation_no_pending).setVisibility(View.VISIBLE);

@@ -130,7 +130,14 @@ class TangleController extends Controller {
         return $jsonResponse;
     }
     
-    
+    /**
+     * This function is used to send the invitation mail to $email with the message $message and
+     * creates the invitation code and send it to the user
+     * @param string $email
+     * @param integer $inviterId
+     * @param string $message
+     * @author MohamedBassem
+     */
     public function inviteUser($email,$inviterId,$message){
         $randomString = $this->generateRandomString(30);
         $newInvitationCode = new InvitationCode();
@@ -233,6 +240,14 @@ class TangleController extends Controller {
         return $ret;
     }
     
+    /**
+     * Validates whether the user with the session id $sessionId is the owner of the tangle with
+     * tangle id $tangleId , If yes the function returns null, returns the appropriate exception otherwise 
+     * @param integer $sessionId
+     * @param integer $tangleId
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @author MohamedBassem
+     */
     public function validateIsOwner($sessionId,$tangleId){
         if ($sessionId == null) {
             return new Response("Bad Request", 400);
@@ -255,6 +270,13 @@ class TangleController extends Controller {
         return null;
     }
     
+    /**
+     * The endpoint responsable for fetching the pending invitations for the tangle with id $tangleId
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param integer $tangleId
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @author MohamedBassem
+     */
     public function pendingInvitationsAction(Request $request,$tangleId){
         $sessionId = $request->headers->get('X-SESSION-ID');
         
@@ -284,6 +306,14 @@ class TangleController extends Controller {
         return $jsonResponse;
     }
     
+    /**
+     * An endpoint to accept the pending invitation with id $pendingInvitationId and sends the
+     * invitation email to the user
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param integer $pendingInvitationId
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author MohamedBassem
+     */
     public function acceptPendingInvitationAction(Request $request,$pendingInvitationId){
         $sessionId = $request->headers->get('X-SESSION-ID');
         
@@ -314,6 +344,13 @@ class TangleController extends Controller {
         return new Response("Approved",200);
     }
     
+    /**
+     * An endpoint to reject the pending invitation with id $pendingInvitationId
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param integer $pendingInvitationId
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author MohamedBassem
+     */
     public function rejectPendingInvitationAction(Request $request,$pendingInvitationId){
         $sessionId = $request->headers->get('X-SESSION-ID');
         
