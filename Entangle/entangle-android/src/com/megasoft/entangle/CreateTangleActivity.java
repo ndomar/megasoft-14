@@ -163,11 +163,11 @@ public class CreateTangleActivity extends Activity {
 	 * 
 	 * @param view
 	 */
-	public void Create(View view) {
+	public void create(View view) {
 		EditText tangleName = (EditText) findViewById(R.id.tangleName);
 		ImageView tangleIcon = (ImageView) findViewById(R.id.icon);
 		if ((tangleName.getText().toString()).equals("")) {
-			showMessage("PLEASE ENTER A TANLGE NAME");
+			showMessage("PLEASE ENTER A TANGLE NAME");
 		} else {
 			if (tangleName.getCurrentTextColor() == BLACK) {
 				showMessage("PLEASE CHECK IF THE TANGLE NAME IS AVAILABLE FIRST");
