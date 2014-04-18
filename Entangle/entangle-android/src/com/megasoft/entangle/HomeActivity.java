@@ -42,8 +42,6 @@ public class HomeActivity extends FragmentActivity {
 			
 		
 		});
-		
-		
 	}
 	
 	private void switchFragment(int tangleId, int position) {
@@ -53,7 +51,7 @@ public class HomeActivity extends FragmentActivity {
 		Bundle args = new Bundle();
 		args.putString("key", ""+tangleId);
 		fragment.setArguments(args);
-		fragmentTransaction.add(R.id.content_frame, fragment);
+		fragmentTransaction.replace(R.id.content_frame, fragment);
 		fragmentTransaction.commit();
 		
 		// Highlight the selected item, update the title, and close the drawer
