@@ -171,57 +171,6 @@ check tangle name availability
 
 + Response 404
 
-
-## GET /tangle/{tangleId}/getRecieverMail
-+ Parameters
-    + tangleId(Int, required)
-
-+ Request
-
-    + Header
-            
-             X-SESSION-ID : "salma"
-             
-+ Response 200(application/json)
-
-        {
-            "X-TANGLE_OWNER-MAIL" : "salmaumr@gmail.com"
-        }
-
-## GET /session/{sessionId}/getSenderMail
-+ Parameters
-    + sessionId(String, required)
-
-+ Request
-
-    + Header
-            
-             X-SESSION-ID : "salma"
-             
-+ Response 200(application/json)
-
-        {
-            "X-OFFERER-MAIL" : "salmaumr@gmail.com"
-        }
-        
-## POST /claim/{tangleId}/createClaim
-
-+ Parameters
-    + tangleId(Int, required)
-
-+ Request
-
-    + Header
-            
-             X-SESSION-ID : "salma"
- 
-             
-+ Response 200(application/json)
-
-        {
-             "X-CLAIM-ID" : "1234567"
-        }
-
         
 ## GET /transaction/{transactionID}/
 get the details of a transaction
