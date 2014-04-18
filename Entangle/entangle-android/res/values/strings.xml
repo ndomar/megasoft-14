@@ -2,19 +2,16 @@
 <resources>
     <string name="app_name">Entangle</string>
     <string name="action_settings">Settings</string>
-<<<<<<< HEAD
     <string name="request_is_here">The Request is here</string>
-	<string name="offerer_is_here">Offerer : </string>
-	<string name="requester_is_here">Requester : </string>
-	<string name="claim_button">Claim </string>
-	<string name="toMail">To:</string>
-	<string name="fromMail">From:</string>
-	<string name="subject">Subject:</string>
-	<string name="mssg">Body:</string>
-	<string name="name">Claim Form</string>
-	<string name="send">Send Claim </string>
-	
-=======
+    <string name="offerer_is_here">Offerer : </string>
+    <string name="requester_is_here">Requester : </string>
+    <string name="claim_button">Claim </string>
+    <string name="toMail">To:</string>
+    <string name="fromMail">From:</string>
+    <string name="subject">Subject:</string>
+    <string name="mssg">Body:</string>
+    <string name="name">Claim Form</string>
+    <string name="send">Send Claim </string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_invite_users">Invite Users</string>
     <string name="add_email">+</string>
@@ -28,6 +25,4 @@
     <string name="wrong_emails">Not Valid Emails</string>
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
-
->>>>>>> 17e4189a346e1cb051113733c77d331599138711
 </resources>
