@@ -88,11 +88,6 @@ public class StreamRequestFragment extends Fragment {
 		return view;
 	}
 
-	// @Override
-	// public void onSaveInstanceState(Bundle outState) {
-	// Log.d("Method", "onSave");
-	// }
-
 	/**
 	 * This is a getter method that is used to return the id of the request
 	 * 
@@ -135,6 +130,7 @@ public class StreamRequestFragment extends Fragment {
 	 * This method is used to set the id of the requester
 	 * 
 	 * @param id
+	 *            , id of the requester
 	 */
 	private void setRequesterId(int id) {
 		requesterId = id;
@@ -144,6 +140,7 @@ public class StreamRequestFragment extends Fragment {
 	 * This method is used to set the id of the request
 	 * 
 	 * @param id
+	 *            , id of the request
 	 */
 	private void setRequestId(int id) {
 		requestId = id;
@@ -153,6 +150,7 @@ public class StreamRequestFragment extends Fragment {
 	 * This method is used to set the text of the requester button
 	 * 
 	 * @param text
+	 *            , text to be written in the requester button
 	 */
 	private void setRequesterButtonText(String text) {
 		requesterString = text;
@@ -162,6 +160,7 @@ public class StreamRequestFragment extends Fragment {
 	 * This method is used to set the text of the request button
 	 * 
 	 * @param text
+	 *            , text to be written in the request button
 	 */
 	private void setRequestButtonText(String text) {
 		requestString = text;
