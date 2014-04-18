@@ -122,6 +122,7 @@ public class InviteUserActivity extends Activity {
 		
 		if(!isNetworkAvailable()){
 			showErrorToast();
+			return;
 		}
 		
 		JSONArray emails = new JSONArray();

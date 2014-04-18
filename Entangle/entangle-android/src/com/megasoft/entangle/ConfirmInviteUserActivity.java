@@ -167,6 +167,7 @@ public class ConfirmInviteUserActivity extends Activity {
 		
 		if(!isNetworkAvailable()){
 			showErrorToast();
+			return;
 		}
 		
 		
