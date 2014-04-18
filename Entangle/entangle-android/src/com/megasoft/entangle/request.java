@@ -3,6 +3,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 import com.megasoft.requests.GetRequest;
 
 import android.app.Activity;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class request extends Activity {
@@ -20,29 +22,35 @@ public class request extends Activity {
 	JSONArray offers; 
 	String[][] offerDetails;
 	int x =1; 
-	//String [] requestDetailNames={"Description", "Requester", "Date", "Tags", "Price", "Deadline","Status"}; 
-	String [] apiOfferNames = {"id", "requestedPrice", "date", "description", "offererId", "status"};
-    @Override
+	String [] requestDetailNames={"Description", "Requester", "Date", "Tags", "Price", "Deadline","Status"}; 
+	String [] apiOfferNames = {"requestedPrice", "date", "description", "offererId", "status"};
+	String [] offerFieldNames = {"Requested Price: ", "Date: ", "Description: ", "Offered By: ", "Status: "};
+
+	final Activity self = this;
+	LinearLayout layoutContainer;
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
-    	setContentView(R.layout.request);
+		
     	//Intent intent = getIntent();
     	//requestId = intent.getExtras().getString("RequestId");
     	requestId="1";
     	super.onCreate(savedInstanceState);
+    	setContentView(R.layout.request);
         this.fillRequestDetails();
-        this.setCreateOfferButton(); 
-       // this.setViewOffersButton();
+       // this.setCreateOfferButton(); 
+       
         }	
     
     public void fillRequestDetails(){
     	requestId="test";
-         GetRequest request = new GetRequest("http://entangle2.apiary-mock.com/request/" +requestId) {	
+    	layoutContainer = (LinearLayout) this.findViewById(R.id.layout); 
+    	GetRequest request = new GetRequest("http://sak93.apiary-mock.com/request/" +requestId) {	
         	 protected void onPostExecute(String response) {
 					try {
 						Log.e("test",response);
 		     			JSONObject json = new JSONObject(response);
 		     			addRequestFields(json);
-						addOffers(json); 
+		     			addOffers(json);
 		     			}	
 		     			 catch (JSONException e) {
 							e.printStackTrace();
@@ -55,18 +63,7 @@ public class request extends Activity {
             
     }
       
-        public void setViewOffersButton(){
-        	 final Intent intentViewOffers = new Intent(this,ViewOffers.class); 
-             Button viewOffers = (Button) findViewById(R.id.button2); 
-             viewOffers.setOnClickListener(new OnClickListener(){
-     			public void onClick(View arg0) {
-     				Bundle bundle=new Bundle();
-     				bundle.putSerializable("offers", offerDetails);
-     				intentViewOffers.putExtras(bundle);
-     				startActivity(intentViewOffers); 
-     				}
-     			 });
-        }
+    
         
         /*Uncomment when linked*/
         public void setCreateOfferButton(){
@@ -82,34 +79,45 @@ public class request extends Activity {
         }
     
         public void addRequestFields(JSONObject json) throws JSONException{
-        	TextView requester = (TextView) findViewById(R.id.requester); 
-			 requester.setText("Requester: " + json.getString("requester"));
-			 TextView description = (TextView) findViewById(R.id.description); 
-			 description.setText("Description: "+ json.getString("description"));
-			 TextView date = (TextView) findViewById(R.id.date); 
-			 date.setText("Date of Request: " + json.getString("date"));
-			 TextView tags = (TextView) findViewById(R.id.tags); 
-			 tags.setText("Tags: " + json.getString("tags"));
-			 TextView price = (TextView) findViewById(R.id.price); 
-			 price.setText("Expected Price: " + json.getString("price"));
-			 TextView deadline = (TextView) findViewById(R.id.deadline); 
-			 deadline.setText("Deadline: " + json.getString("deadline"));
-			 TextView status = (TextView) findViewById(R.id.status); 
-			 status.setText("Status :" + json.getString("status")); 
-			}
-        
+        	
+        	for(int i =0; i<requestDetailNames.length;i++){
+        		TextView detail = new TextView(self);
+        		String fieldDetails = "";
+        		if(i==3){
+        			JSONArray tagArray= (JSONArray)json.get("Tags");
+        			fieldDetails = getTags(tagArray);
+        		}
+        		else{
+        		fieldDetails += requestDetailNames[i] + ": " + json.get(requestDetailNames[i]);
+        		}
+        		detail.setText(fieldDetails);
+        		layoutContainer.addView(detail);
+        		}
+        }
+			
         public void addOffers(JSONObject json) throws JSONException{
-			offers = new JSONArray(json.getString("offers"));
-        	offerDetails = new String[offers.length()][];
-			 for(int i = 0 ; i < offers.length(); i++) {
-			    String [] details = new String[6];
-			    for(int j=0; j<6;j++){
-			    	 details[j]= offers.getJSONObject(i).getString(apiOfferNames[j]);
-			    }
-			    offerDetails[i]= details ; 
-			 
-			 }
-		} 
+        	JSONArray offers = (JSONArray) json.get("Offers");
+			for(int i =0; i<offers.length();i++){
+				JSONObject offer = offers.getJSONObject(i);
+        		TextView details = new TextView(self);
+        		String add = "\nOffer " + (i+1) + ": ";
+        		for(int j =0; j<apiOfferNames.length;j++){
+        		
+        		String field = (String) offer.get(apiOfferNames[j]);
+        		add += "\n" + offerFieldNames[j]+ field;
+        		}
+        		details.setText(add);
+        			layoutContainer.addView(details);
+			}
+        }
+        public String getTags(JSONArray tagArray) throws JSONException{
+        	String tags="Tags: "; 
+        	for(int i=0; i<tagArray.length();i++){
+    			if(i<(tagArray.length()-1)) tags+= tagArray.get(i) + ", ";
+    			else tags+= tagArray.get(i);
+    			}
+        	return tags; 
+        }
         
 
     @Override
