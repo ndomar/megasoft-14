@@ -1,9 +1,7 @@
 package com.megasoft.entangle;
 import java.util.Calendar;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -17,35 +15,26 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
-
-
-
-
-/* intent is required to be redirected to this activity with sessionId and tangleId
-*/
-
 
 public class RequestActivity extends Activity{
 	    Button Post;
 	    EditText description;
 	    EditText requestedPrice;
-	   // EditText date;
-	   //EditText deadLine;
 	    EditText tags;
         CheckBox checkBox;
         int requiredFields = 0;
         boolean flag;
 		JSONObject json = new JSONObject();
-		
-		private int mYear;
-		private int mMonth;
-		private int mDay;
-
-		private TextView mDateDisplay;
-		private Button mPickDate;
-
+		int deadLineYear;
+		int deadLineMonth;
+		int deadLineDay;
+		TextView dateDisplay;
+		Button pickDate;
+		final Calendar calendar = Calendar.getInstance();
+		final String date = calendar.get(Calendar.DAY_OF_MONTH)+"/"+(calendar.get(Calendar.MONTH)+1)
+				+"/"+calendar.get(Calendar.YEAR);
 		static final int DATE_DIALOG_ID = 0;
 		
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,38 +45,34 @@ public class RequestActivity extends Activity{
 		setContentView(R.layout.activity_request);
 		description = (EditText) findViewById(R.id.description);
 		requestedPrice = (EditText) findViewById(R.id.price);
-		//date = (EditText) findViewById(R.id.date);
-		//deadLine = (EditText) findViewById(R.id.deadLine);
 	    tags = (EditText) findViewById(R.id.tags);
 	    Post = (Button) findViewById(R.id.post);
 	    checkBox = (CheckBox) findViewById(R.id.checkBox);
 		Post.setEnabled(false);
 		description.setOnFocusChangeListener(focusListener);
 		requestedPrice.setOnFocusChangeListener(focusListener);
-		//date.setOnFocusChangeListener(focusListener);
-		//deadLine.setOnFocusChangeListener(focusListener);
 		tags.setOnFocusChangeListener(focusListener);
-		
-		
-
+		dateDisplay = (TextView) findViewById(R.id.showMyDate);        
+	    pickDate = (Button) findViewById(R.id.myDatePickerButton);
+        deadLineYear = calendar.get(Calendar.YEAR);
+        deadLineMonth = calendar.get(Calendar.MONTH);
+        deadLineDay = calendar.get(Calendar.DAY_OF_MONTH);
+        
         Post.setOnClickListener(new View.OnClickListener() {
-			
-			
+        	
 			public void onClick(View arg0) {
 				  try {
-			        	
 			            json.put("description" , description.getText().toString());
 			            json.put("requestedPrice" , requestedPrice.getText().toString());
-			         //   json.put("date" , date.getText().toString());
-			         //   json.put("deadLine" , deadLine.getText().toString());
+			            json.put("date" , date);
+			            json.put("deadLine" , dateDisplay.getText().toString());
 			            json.put("tags", tags.getText().toString());
-			            
 			           } catch (JSONException e) {
 			            e.printStackTrace();
 			           }
 				
 				
-				 PostRequest request = new PostRequest("http://entangle2.io/tangle/" + tangleID + "/request"){
+				 PostRequest request = new PostRequest(Config.API_BASE_URL + tangleID + "/request"){
 			            protected void onPostExecute(String response) {  
 			                 if( this.getStatusCode() == 201 ){
 			                     //redirection
@@ -96,44 +81,36 @@ public class RequestActivity extends Activity{
 			                  }
 			             }
 			        };
-			       request.setBody(json); 
-					request.addHeader("X-SESSION-ID", sessionId);
+			        request.setBody(json); 
+					request.addHeader(Config.API_SESSION_ID, sessionId);
 			        request.execute();
 			      
 			}
 		}); 
      
-        mDateDisplay = (TextView) findViewById(R.id.showMyDate);        
-        mPickDate = (Button) findViewById(R.id.myDatePickerButton);
+       
 
-        mPickDate.setOnClickListener(new View.OnClickListener() {
+        pickDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 showDialog(DATE_DIALOG_ID);
             }
         });
-
-        
-        final Calendar c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
         updateDisplay();
 
 	}
 	private void updateDisplay() {
-	    this.mDateDisplay.setText(
+	    this.dateDisplay.setText(
 	        new StringBuilder()
-	                .append(mMonth + 1).append("-")
-	                .append(mDay).append("-")
-	                .append(mYear).append(" "));
+	                .append(deadLineDay).append("/")
+	                .append(deadLineMonth + 1).append("/")
+	                .append(deadLineYear).append(" "));
 	}
 	private DatePickerDialog.OnDateSetListener mDateSetListener =
 		    new DatePickerDialog.OnDateSetListener() {
-		        public void onDateSet(DatePicker view, int year, 
-		                              int monthOfYear, int dayOfMonth) {
-		            mYear = year;
-		            mMonth = monthOfYear;
-		            mDay = dayOfMonth;
+		        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+		            deadLineYear = year;
+		            deadLineMonth = monthOfYear;
+		            deadLineDay = dayOfMonth;
 		            updateDisplay();
 		        }
 		    };
@@ -142,14 +119,12 @@ public class RequestActivity extends Activity{
 		    	   case DATE_DIALOG_ID:
 		    	      return new DatePickerDialog(this,
 		    	                mDateSetListener,
-		    	                mYear, mMonth, mDay);
+		    	                deadLineYear, deadLineMonth, deadLineDay);
 		    	   }
 		    	   return null;
 		    	}
 		
 	OnFocusChangeListener focusListener = new OnFocusChangeListener() {
-		
-		
 		public void onFocusChange(View view, boolean hasFocus) {
 			EditText editText = (EditText) view;
 		    if(!hasFocus){
