@@ -20,3 +20,4 @@ invite:
 re_open_request:
     pattern: /request/{requestId}/reopen
     defaults: { _controller: MegasoftEntangleBundle:Request:reOpenRequest }
+    methods: [POST]

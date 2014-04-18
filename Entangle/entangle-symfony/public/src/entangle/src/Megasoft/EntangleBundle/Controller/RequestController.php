@@ -5,7 +5,6 @@ namespace Megasoft\EntangleBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Megasoft\EntangleBundle\Entity\Request;
 
 class RequestController extends Controller {
 
@@ -24,14 +23,16 @@ class RequestController extends Controller {
         if ($tangleRequest == null) {
             return new Response("Bad Request", 400);
         } else {
-            if ($tangleRequest->getStatus() == Request::OPEN) {
+            if ($tangleRequest->getStatus() == \Megasoft\EntangleBundle\Entity\Request::OPEN) {
                 return new Response("Request is already open", 400);
             }
         }
-        
-        $tangleRequest->setStatus(Request::OPEN);
-        $this->getDoctrine()->getManager()->persist($tangleRequest);
-        $this->getDoctrine()->getManager()->flush();
+        if($tangleRequest->getStatus() == \Megasoft\EntangleBundle\Entity\Request::CLOSED) {
+            $tangleRequest->setStatus(\Megasoft\EntangleBundle\Entity\Request::OPEN);
+            $this->getDoctrine()->getManager()->persist($tangleRequest);
+            $this->getDoctrine()->getManager()->flush();
+            return new Response('Reopened', 200);
+        }
     }
 
 }
