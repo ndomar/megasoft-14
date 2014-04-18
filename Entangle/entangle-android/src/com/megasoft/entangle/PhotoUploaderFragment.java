@@ -18,6 +18,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.megasoft.requests.PostRequest;
 
 @SuppressLint("NewApi") 
 public class PhotoUploaderFragment extends Fragment{
@@ -72,6 +75,7 @@ public class PhotoUploaderFragment extends Fragment{
         iconButton.setOnClickListener(new OnClickListener(){
         	public void onClick(View view){
         		chooseIcon();
+        		sendPhotoData();
         	}
         });
         
@@ -112,5 +116,21 @@ public class PhotoUploaderFragment extends Fragment{
 		cursor.close();
 		Bitmap bitmap = BitmapFactory.decodeFile(filePath);
 		return bitmap;
+	}
+	
+	public void sendPhotoData(){
+		PostRequest iconDataRequest = new PostRequest(url) {
+			protected void onPostExecute(String res) {
+				String message = "Sorry, there are problems uploading icon now. Please, try again later";
+				if (!this.hasError() && res != null) {
+					message = "Uploaded!";
+				}
+				Toast.makeText(getBaseContext(),
+						message,
+						Toast.LENGTH_LONG).show();
+			}
+		};
+		iconDataRequest.addHeader("X-SESSION-ID", getSessionId());
+		iconDataRequest.execute();
 	}
 }
