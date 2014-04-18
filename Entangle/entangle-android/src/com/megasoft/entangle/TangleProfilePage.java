@@ -26,6 +26,9 @@ import com.megasoft.requests.GetRequest;
 /**
  * This class/activity is the one responsible for viewing the requests stream of
  * a certain tangle
+ * 
+ * @author HebaAamer
+ * 
  */
 public class TangleProfilePage extends Activity {
 
@@ -52,15 +55,22 @@ public class TangleProfilePage extends Activity {
 	/**
 	 * The session id of the user
 	 */
-	private String sessionId;
+	private String sessionId = "ghfdt";
 
+	/**
+	 * The FragmentTransaction that handles adding the fragments to the activity
+	 */
 	private FragmentTransaction transaction;
 
+	/**
+	 * The HashMap that contains the mapping of the user to its id
+	 */
 	private HashMap<String, Integer> userToId = new HashMap<String, Integer>();
 
+	/**
+	 * The HashMap that contains the mapping of the tag to its id
+	 */
 	private HashMap<String, Integer> tagToId = new HashMap<String, Integer>();
-
-	// private ArrayList<String> hjfh = new ArrayList<String>()
 
 	/**
 	 * This method is called when the activity starts , it sets the attributes
@@ -73,14 +83,15 @@ public class TangleProfilePage extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tangle_profile_page);
-		setAttributes();
-		sendStreamRequest();
+		// setAttributes();
+		sendFilteredRequest(rootResource + "tangle/" + getTangleId()
+				+ "/request");
 		setRedirections();
 	}
 
 	/**
 	 * This method is called to set the attributes of the activity passed from
-	 * the other previous intent
+	 * the previous activity
 	 */
 	private void setAttributes() {
 		if (getIntent() != null) {
@@ -164,7 +175,8 @@ public class TangleProfilePage extends Activity {
 	}
 
 	/**
-	 * This method is used to add specific request to the layout of the stream
+	 * This method is used to add specific request which is
+	 * StreamRequestFragment to the layout of the stream
 	 * 
 	 * @param request
 	 *            , is the request to be added in the layout
@@ -185,7 +197,6 @@ public class TangleProfilePage extends Activity {
 					.createInstance(requestId, userId, requestButtonText,
 							requesterButtonText);
 			transaction.add(R.id.streamLayout, requestFragment);
-			// transaction.addToBackStack(null);
 			transaction.commit();
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -211,8 +222,8 @@ public class TangleProfilePage extends Activity {
 	}
 
 	/**
-	 * This method is called to set the action of a specific button to redirect
-	 * upon clicking to a specific activity
+	 * This method is a generic one that is called to set the action of a
+	 * specific button to redirect upon clicking to a specific activity
 	 * 
 	 * @param button
 	 *            , is the button intended to set its action
@@ -272,10 +283,21 @@ public class TangleProfilePage extends Activity {
 		return sessionId;
 	}
 
+	/**
+	 * This is a getter method used to get the hashMap that maps a tag to its id
+	 * 
+	 * @return tagToId hashMap
+	 */
 	public HashMap<String, Integer> getTagToIdHashMap() {
 		return tagToId;
 	}
 
+	/**
+	 * This is a getter method used to get the hashMap that maps a user to its
+	 * id
+	 * 
+	 * @return userToId hashMap
+	 */
 	public HashMap<String, Integer> getUserToIdHashMap() {
 		return userToId;
 	}
@@ -295,7 +317,7 @@ public class TangleProfilePage extends Activity {
 	 * filtered in case of not the first request
 	 * 
 	 * @param url
-	 *            , is the Url to which the request is going to be sent
+	 *            , is the URL to which the request is going to be sent
 	 */
 	public void sendFilteredRequest(String url) {
 		GetRequest getStream = new GetRequest(url) {
@@ -319,7 +341,12 @@ public class TangleProfilePage extends Activity {
 	 * This method is used to send a request to get all users/tags
 	 * 
 	 * @param url
-	 *            , is the Url to which the request is going to be sent
+	 *            , is the URL to which the request is going to be sent
+	 * 
+	 * @param type
+	 *            , is an integer that indicates whether it is a getAllUsers
+	 *            request or it a getAllTags request, where (0) means tags and
+	 *            (1) means users
 	 */
 	public void sendGetAllRequest(String url, final int type) {
 		GetRequest getStream = new GetRequest(url) {
@@ -346,7 +373,8 @@ public class TangleProfilePage extends Activity {
 	}
 
 	/**
-	 * This method is used to handle the response of getting all tags
+	 * This method is used to handle the response of getting all tags, and sets
+	 * the tagToId hashMap
 	 * 
 	 * @param res
 	 *            , is the response of the request
@@ -380,7 +408,8 @@ public class TangleProfilePage extends Activity {
 	}
 
 	/**
-	 * This method is used to handle the response of getting all users
+	 * This method is used to handle the response of getting all users, and sets
+	 * the userToId hashMap, then it runs a FilteringFragment
 	 * 
 	 * @param res
 	 *            , is the response of the request
@@ -417,6 +446,13 @@ public class TangleProfilePage extends Activity {
 		}
 	}
 
+	/**
+	 * This method is used when the filtering button is clicked, so it gets all
+	 * users and all tags
+	 * 
+	 * @param view
+	 *            , in this case it is the filtering button
+	 */
 	public void filterStream(View view) {
 		String url = rootResource + "tangle/" + getTangleId() + "/tag";
 		sendGetAllRequest(url, 0);
@@ -424,6 +460,13 @@ public class TangleProfilePage extends Activity {
 		sendGetAllRequest(url, 1);
 	}
 
+	/**
+	 * This method is used to return an ArrayList of all the tags came from the
+	 * getAllTags request, this method is called from the filtering fragment to
+	 * initialize its suggestions
+	 * 
+	 * @return ArrayList of tags
+	 */
 	public ArrayList<String> getTagsSuggestions() {
 		HashMap<String, Integer> toId = getTagToIdHashMap();
 		if (toId != null) {
@@ -432,6 +475,13 @@ public class TangleProfilePage extends Activity {
 		return new ArrayList<String>();
 	}
 
+	/**
+	 * This method is used to return an ArrayList of all the users came from the
+	 * getAllUsers request, this method is called from the filtering fragment to
+	 * initialize its suggestions
+	 * 
+	 * @return ArrayList of users
+	 */
 	public ArrayList<String> getUsersSuggestions() {
 		HashMap<String, Integer> toId = getUserToIdHashMap();
 		if (toId != null) {
