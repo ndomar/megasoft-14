@@ -27,7 +27,7 @@ import com.megasoft.requests.GetRequest;
  * @author HebaAamer
  * 
  */
-public class TangleProfilePage extends Activity {
+public class TangleActivity extends Activity {
 
 	/**
 	 * The Intent used to redirect to other activities
@@ -79,7 +79,7 @@ public class TangleProfilePage extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tangle_profile_page);
+		setContentView(R.layout.activity_tangle);
 		setAttributes();
 		sendFilteredRequest(rootResource + "tangle/" + getTangleId()
 				+ "/request");
@@ -185,16 +185,16 @@ public class TangleProfilePage extends Activity {
 	 */
 	private void setRedirections() {
 		Button stream = (Button) findViewById(R.id.stream);
-		setButtonRedirection(stream, "TangleProfilePage");
+		setButtonRedirection(stream, "TangleActivity");
 
 		Button members = (Button) findViewById(R.id.members);
 		setButtonRedirection(members, "Members");
 
 		Button profile = (Button) findViewById(R.id.profile);
-		setButtonRedirection(profile, "Profile");
+		setButtonRedirection(profile, "ProfileActivity");
 
 		Button invite = (Button) findViewById(R.id.invite);
-		setButtonRedirection(invite, "Invite");
+		setButtonRedirection(invite, "InviteUserActivity");
 	}
 
 	/**

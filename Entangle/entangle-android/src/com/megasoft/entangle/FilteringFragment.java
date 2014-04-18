@@ -105,7 +105,7 @@ public class FilteringFragment extends DialogFragment {
 		tagText = (AutoCompleteTextView) view.findViewById(R.id.tagValue);
 		tagText.setAdapter(new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_list_item_1,
-				((TangleProfilePage) getActivity()).getTagsSuggestions()));
+				((TangleActivity) getActivity()).getTagsSuggestions()));
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class FilteringFragment extends DialogFragment {
 		userText = (AutoCompleteTextView) view.findViewById(R.id.userValue);
 		userText.setAdapter(new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_list_item_1,
-				((TangleProfilePage) getActivity()).getUsersSuggestions()));
+				((TangleActivity) getActivity()).getUsersSuggestions()));
 	}
 
 	/**
@@ -166,9 +166,9 @@ public class FilteringFragment extends DialogFragment {
 					url = "?" + url;
 				}
 				url = rootResource + "tangle/"
-						+ ((TangleProfilePage) getActivity()).getTangleId()
+						+ ((TangleActivity) getActivity()).getTangleId()
 						+ "/request" + url;
-				((TangleProfilePage) getActivity()).sendFilteredRequest(url
+				((TangleActivity) getActivity()).sendFilteredRequest(url
 						.replace(" ", "+"));
 				getDialog().dismiss();
 			}

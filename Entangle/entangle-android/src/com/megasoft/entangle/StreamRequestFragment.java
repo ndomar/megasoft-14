@@ -180,14 +180,14 @@ public class StreamRequestFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity().getBaseContext(),
-						Profile.class);
+						ProfileActivity.class);
 				intent.putExtra("tangleId",
-						((TangleProfilePage) getActivity()).getTangleId());
+						((TangleActivity) getActivity()).getTangleId());
 				intent.putExtra("tangleName",
-						((TangleProfilePage) getActivity()).getTangleName());
+						((TangleActivity) getActivity()).getTangleName());
 				intent.putExtra("sessionId",
-						((TangleProfilePage) getActivity()).getSessionId());
-				intent.putExtra("requesterId", getRequesterId());
+						((TangleActivity) getActivity()).getSessionId());
+				intent.putExtra("userId", getRequesterId());
 				startActivity(intent);
 			}
 		});
@@ -207,13 +207,13 @@ public class StreamRequestFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity().getBaseContext(),
-						RequestPage.class);
+						RequestActivity.class);
 				intent.putExtra("tangleId",
-						((TangleProfilePage) getActivity()).getTangleId());
+						((TangleActivity) getActivity()).getTangleId());
 				intent.putExtra("tangleName",
-						((TangleProfilePage) getActivity()).getTangleName());
+						((TangleActivity) getActivity()).getTangleName());
 				intent.putExtra("sessionId",
-						((TangleProfilePage) getActivity()).getSessionId());
+						((TangleActivity) getActivity()).getSessionId());
 				intent.putExtra("requestId", getRequestId());
 				startActivity(intent);
 			}

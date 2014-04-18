@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.megasoft.entangle.TangleProfilePage"
+            android:name="com.megasoft.entangle.TangleActivity"
             android:label="@string/title_activity_view_stream" >
         </activity>
         <activity
@@ -35,15 +35,11 @@
             android:label="@string/title_activity_members" >
         </activity>
         <activity
-            android:name="com.megasoft.entangle.Profile"
+            android:name="com.megasoft.entangle.ProfileActivity"
             android:label="@string/title_activity_profile" >
         </activity>
         <activity
-            android:name="com.megasoft.entangle.Invite"
-            android:label="@string/title_activity_invite" >
-        </activity>
-        <activity
-            android:name="com.megasoft.entangle.RequestPage"
+            android:name="com.megasoft.entangle.RequestActivity"
             android:label="@string/title_activity_request_information" >
         </activity>
         <activity
