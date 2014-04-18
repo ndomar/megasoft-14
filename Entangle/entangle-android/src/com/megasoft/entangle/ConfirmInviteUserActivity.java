@@ -7,6 +7,8 @@ import org.json.JSONObject;
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 import android.transition.Visibility;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 
@@ -161,6 +164,12 @@ public class ConfirmInviteUserActivity extends Activity {
 	 * @author MohamedBassem
 	 */
 	public void invite(View view) {
+		
+		if(!isNetworkAvailable()){
+			showErrorToast();
+		}
+		
+		
 		JSONArray finalEmails = new JSONArray();
 
 		for (int i = 0; i < notMembers.length(); i++) {
@@ -192,26 +201,48 @@ public class ConfirmInviteUserActivity extends Activity {
 		PostRequest postRequest = new PostRequest(Config.API_BASE_URL
 				+ "/tangle/" + tangleId + "/invite") {
 			public void onPostExecute(String response) {
-				try {
-					JSONObject jsonReponse = new JSONObject(response);
-					if(jsonReponse.getInt("pending") == 0){
-						Toast.makeText(getApplicationContext(), "Invited !",
-								Toast.LENGTH_LONG).show();
-					}else{
-						Toast.makeText(getApplicationContext(), "Waiting For Tangle Owner Approval !",
-								Toast.LENGTH_LONG).show();
+				if(this.getStatusCode() == 201){
+					try {
+						JSONObject jsonReponse = new JSONObject(response);
+						if(jsonReponse.getInt("pending") == 0){
+							Toast.makeText(getApplicationContext(), "Invited !",
+									Toast.LENGTH_LONG).show();
+						}else{
+							Toast.makeText(getApplicationContext(), "Waiting For Tangle Owner Approval !",
+									Toast.LENGTH_LONG).show();
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
 					}
-				} catch (JSONException e) {
-					e.printStackTrace();
+					setResult(InviteUserActivity.INVITATION_SUCCESS);
+					finish();
+				}else{
+					showErrorToast();
 				}
 				
-				setResult(InviteUserActivity.INVITATION_SUCCESS);
-				finish();
 			}
 		};
 
 		postRequest.addHeader(Config.API_SESSION_ID, sessionId);
 		postRequest.setBody(json);
 		postRequest.execute();
+	}
+	
+	/**
+	 * Checks the Internet connectivity.
+	 * @return true if there is an Internet connection , false otherwise
+	 */
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
+	
+	/**
+	 * Shows a something went wrong toast
+	 */
+	private void showErrorToast(){
+		Toast.makeText(getApplicationContext(), "Sorry , Something went wrong.", Toast.LENGTH_SHORT).show();
 	}
 }

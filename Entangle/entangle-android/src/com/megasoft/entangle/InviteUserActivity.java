@@ -7,8 +7,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
@@ -16,6 +19,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.Toast;
 
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
@@ -102,6 +106,8 @@ public class InviteUserActivity extends Activity {
 		editTexts.add(newEditText);
 		layout.addView(newEditText, new LinearLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		newEditText.requestFocus();
+		newEditText.setCursorVisible(true);
 	}
 
 	/**
@@ -113,6 +119,11 @@ public class InviteUserActivity extends Activity {
 	 * @author MohamedBassem
 	 */
 	public void goToConfirmationActivity(View view) {
+		
+		if(!isNetworkAvailable()){
+			showErrorToast();
+		}
+		
 		JSONArray emails = new JSONArray();
 		for (EditText emailEditText : editTexts) {
 			String val = emailEditText.getText().toString();
@@ -133,7 +144,11 @@ public class InviteUserActivity extends Activity {
 		PostRequest postRequest = new PostRequest(Config.API_BASE_URL
 				+ "/tangle/" + tangleId + "/check-membership") {
 			public void onPostExecute(String response) {
-				goToConfirmation(response);
+				if(this.getStatusCode() == 200){
+					goToConfirmation(response);
+				}else{
+					showErrorToast();
+				}
 			}
 		};
 
@@ -158,6 +173,24 @@ public class InviteUserActivity extends Activity {
 		confirmInviteUser.putExtra("com.megasoft.entangle.tangleId",
 				tangleId);
 		startActivityForResult(confirmInviteUser, 0);
+	}
+	
+	/**
+	 * Checks the Internet connectivity.
+	 * @return true if there is an Internet connection , false otherwise
+	 */
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
+	
+	/**
+	 * Shows a something went wrong toast
+	 */
+	private void showErrorToast(){
+		Toast.makeText(getApplicationContext(), "Sorry , Something went wrong.", Toast.LENGTH_SHORT).show();
 	}
 
 }
