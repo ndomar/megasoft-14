@@ -16,5 +16,9 @@
     <string name="wrong_emails">Not Valid Emails</string>
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
-
+    <string name="unfreeze">Send Unfreeze Request</string>
+	<string name="member_name">Tangle member name</string>
+	<string name="pending_requests">Pending Requsts</string>
+	<string name="unfreeze_request">Unfreeze Request</string>
+	<string name="unfreeze_txt">Unfreeze</string>
 </resources>
