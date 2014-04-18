@@ -6,18 +6,19 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.megasoft.config.Config;
 import com.megasoft.entangle.R;
-import com.megasoft.entangle.R.id;
-import com.megasoft.entangle.R.layout;
-import com.megasoft.entangle.R.menu;
 import com.megasoft.requests.GetRequest;
 /**
  * The Activity that handles the pending tangle invitations.
@@ -67,6 +68,10 @@ public class ManagePendingInvitationActivity extends Activity {
 	 * @author MohamedBassem
 	 */
 	private void fetchData() {
+		if(!isNetworkAvailable()){
+			showErrorToast();
+			return;
+		}
 		GetRequest request = new GetRequest(Config.API_BASE_URL + "/tangle/"+tangleId+"/pending-invitations"){
 			public void onPostExecute(String response) {
 				showData(response);
@@ -137,6 +142,10 @@ public class ManagePendingInvitationActivity extends Activity {
 			findViewById(R.id.pending_invitation_no_pending).setVisibility(View.GONE);
 		}
 	}
+	
+	public void refresh(View view){
+		fetchData();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -156,6 +165,24 @@ public class ManagePendingInvitationActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	/**
+	 * Checks the Internet connectivity.
+	 * @return true if there is an Internet connection , false otherwise
+	 */
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
+
+	/**
+	 * Shows a something went wrong toast
+	 */
+	private void showErrorToast(){
+		Toast.makeText(getApplicationContext(), "Sorry , Something went wrong.", Toast.LENGTH_SHORT).show();
 	}
 
 }

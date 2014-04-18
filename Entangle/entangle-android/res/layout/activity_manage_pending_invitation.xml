@@ -16,7 +16,6 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
             android:padding="10dp"
-            android:animateLayoutChanges="true"
 	        android:orientation="vertical">
         
         
@@ -28,7 +27,11 @@
 	            android:layout_height="wrap_content"
 	            android:text="@string/pending_invitation_no_pending"
 	            android:visibility="gone"/>
-    
+    	<Button 
+    	    android:layout_width="match_parent"
+    	    android:layout_height="wrap_content"
+    	    android:text="@string/refresh"
+    	    android:onClick="refresh"/>
     </LinearLayout>
     
     
