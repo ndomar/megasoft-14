@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 
@@ -33,8 +34,10 @@ public class RequestActivity extends Activity{
 		TextView dateDisplay;
 		Button pickDate;
 		final Calendar calendar = Calendar.getInstance();
-		final String date = calendar.get(Calendar.DAY_OF_MONTH)+"/"+(calendar.get(Calendar.MONTH)+1)
-				+"/"+calendar.get(Calendar.YEAR);
+		final int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+		final int currentMonth = calendar.get(Calendar.MONTH);
+		final int currentYear = calendar.get(Calendar.YEAR);
+		final String date = currentDay +"/"+ currentMonth +"/"+ currentYear;
 		static final int DATE_DIALOG_ID = 0;
 		
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +102,7 @@ public class RequestActivity extends Activity{
 
 	}
 	private void updateDisplay() {
+		dateDisplay.setError(null);
 	    this.dateDisplay.setText(
 	        new StringBuilder()
 	                .append(deadLineDay).append("/")
@@ -111,6 +115,13 @@ public class RequestActivity extends Activity{
 		            deadLineYear = year;
 		            deadLineMonth = monthOfYear;
 		            deadLineDay = dayOfMonth;
+		            boolean valid = isValidDeadLine();
+		    		if(!valid){
+		    			Toast.makeText(getApplicationContext(),
+		    					"The DeadLine can NOT be over already!!", Toast.LENGTH_SHORT).show();
+		    			checkBox.setChecked(false);
+		    			return;
+		    		}
 		            updateDisplay();
 		        }
 		    };
@@ -171,6 +182,13 @@ public class RequestActivity extends Activity{
 				& !isEmpty(tags))
 			return true;
 		return false;
+	}
+	private boolean isValidDeadLine(){
+		if(currentYear > deadLineYear || (currentYear == deadLineYear && currentMonth > deadLineMonth)
+				|| (currentYear == deadLineYear && currentMonth == deadLineMonth
+				&& currentDay > deadLineDay))
+			return false;
+		return true;
 	}
 	
 	@Override
