@@ -86,7 +86,7 @@ class TangleController extends Controller {
 
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
 
-        if ($session == null) {
+        if ($session == null || $session->getExpired()) {
             return new Response("Unauthorized", 401);
         }
 
@@ -153,7 +153,7 @@ class TangleController extends Controller {
 
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
 
-        if ($session == null) {
+        if ($session == null || $session->getExpired()) {
             return new Response("Unauthorized", 401);
         }
 
