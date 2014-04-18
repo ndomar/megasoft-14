@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/border"
     android:layout_width="110dip"
     android:layout_height="200dip"
     android:orientation="vertical"
