@@ -18,14 +18,8 @@ class DefaultController extends Controller {
         return $this->render('MegasoftEntangleBundle:Default:index.html.twig', array('name' => $name));
     }
 
-    public function getImageURL($originalName) {
-        $outputFilePath = 'http://127.0.0.1:8000/public/src/entangle/web/bundles/megasoftentangle/images/profilePictures/' . $originalName;
-        file_put_contents($originalName, $outputFilePath);
 
-
-        return 'http://127.0.0.1:8000/entangle/web/bundles/megasoftentangle/images/profilePictures/' . $originalName ;
-    }
-
+// Please don't forget to do a register controller instead of the default controller #ESLAMMAGED
     public function registerAction(\Symfony\Component\HttpFoundation\Request $request)  {
         if ($request->getMethod() == 'POST') {  //reading the request object and getting data out of it
             //$username = $request->get('username');
@@ -61,13 +55,11 @@ class DefaultController extends Controller {
                     'png');
 
                     if(in_array(strtolower($fileType), $validFileTypes)) {
-                        try{
-                            $uploadedURL = $this->getImageUrl($originalName);
-                            $user->setPhoto($uploadedURL);
-                        }
-                        catch(Exception $e) {
-                            return new Response('Internal Server Error', 500);
-                        }
+
+                        $filepath = '/home/neuron/Documents/megasoft-14/Entangle/entangle-symfony/public/src/entangle/web/images/profilePictures/' . substr(md5(time()),0,10) . '.' .$fileType;
+                        move_uploaded_file($image,$filepath);
+                        $user->setPhoto($filepath);
+
                     }
                     else {
                         $status = 'failed';
