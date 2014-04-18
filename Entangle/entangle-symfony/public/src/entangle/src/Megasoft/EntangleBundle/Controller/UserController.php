@@ -2,25 +2,34 @@
 
 namespace Megasoft\EntangleBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller {
-
+    /**
+     * Validates the username and password from request and returns sessionID
+     * @param  Integer $len length for the generated sessionID
+     * @return String $generatedSessionID the session id that will be used
+     * @author maisaraFarahat
+     */
     private function generateSessionId($len) {
-        $ret = '';
+        $generatedSessionID = '';
         $seed = "abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         for ($i = 0; $i < $len; $i++) {
-            $ret .= $seed[rand(0, strlen($seed) - 1)];
+            $generatedSessionID .= $seed[rand(0, strlen($seed) - 1)];
         }
-        return $ret;
+        return $generatedSessionID;
     }
 
-    public function createAction(Request $request) {
+    /**
+     * Validates the username and password from request and returns sessionID
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response $response
+     * @author maisaraFarahat
+     */
+    public function loginAction(Request $request) {
         $response = new JsonResponse();
         if (!$request) {
             return new Response('Bad Request', 400);
@@ -60,19 +69,27 @@ class UserController extends Controller {
         return $response;
     }
 
+    /**
+     * checks for the sessionID and gets the user 
+     * @param String $sessionId
+     * @return \Symfony\Component\HttpFoundation\Response $response response containing user with sessionID
+     * @author maisaraFarahat
+     */
     public function whoAmIAction($sessionId) {
-        if (!$sessionId)
+        if (!$sessionId) {
             return new Response(400, 'sessionID was null');
-        $doctrine = $this->getDoctrine();
-        $repo = $doctrine->getRepository('MegasoftEntangleBundle:User');
-        $user = $repo->findOneBy(array('sessionId' => $sessionId));
-        if ($user == null) {
-            return new Response('Bad Request', 400);
         } else {
-            $response = new JsonResponse();
-            $response->setData(array('user' => $user));
-            $response->setStatusCode(200);
-            return $response;
+            $doctrine = $this->getDoctrine();
+            $repo = $doctrine->getRepository('MegasoftEntangleBundle:User');
+            $user = $repo->findOneBy(array('sessionId' => $sessionId));
+            if ($user == null) {
+                return new Response('Bad Request', 400);
+            } else {
+                $response = new JsonResponse();
+                $response->setData(array('user' => $user));
+                $response->setStatusCode(200);
+                return $response;
+            }
         }
     }
 
