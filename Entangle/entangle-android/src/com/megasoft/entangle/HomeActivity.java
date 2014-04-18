@@ -1,7 +1,9 @@
 package com.megasoft.entangle;
 
+import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ActionBar.Tab;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
@@ -20,28 +22,15 @@ public class HomeActivity extends FragmentActivity {
 	private DrawerLayout drawer;
 	private ListView drawerList;
 	private LinearLayout drawerLayout;
+	private ActionBar actionBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 
-		listTitles		= getResources().getStringArray(R.array.sidebar_list);
-		drawer			= (DrawerLayout) findViewById(R.id.drawer_layout);
-		drawerList 		= (ListView) findViewById(R.id.tangleList);
-		drawerLayout 	= (LinearLayout) findViewById(R.id.left_drawer);
-		drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.sidebar_list_item, R.id.textView1, listTitles));
-		drawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View view, int position,
-					long id) {
-				int tangleId = 1;
-				switchFragment(tangleId, position);
-			}
-			
-		
-		});
+		initNavigationDrawer();
+	
 	}
 	
 	private void switchFragment(int tangleId, int position) {
@@ -51,13 +40,29 @@ public class HomeActivity extends FragmentActivity {
 		Bundle args = new Bundle();
 		args.putString("key", ""+tangleId);
 		fragment.setArguments(args);
-		fragmentTransaction.replace(R.id.content_frame, fragment);
 		fragmentTransaction.commit();
 		
 		// Highlight the selected item, update the title, and close the drawer
 	    drawerList.setItemChecked(position, true);
 	    setTitle(listTitles[position]);
 	    drawer.closeDrawer(drawerLayout);
+	}
+	
+	private void initNavigationDrawer() {
+		//Navigation Drawer
+		listTitles		= getResources().getStringArray(R.array.sidebar_list);
+		drawer			= (DrawerLayout) findViewById(R.id.drawer_layout);
+		drawerList 		= (ListView) findViewById(R.id.tangleList);
+		drawerLayout 	= (LinearLayout) findViewById(R.id.left_drawer);
+		drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.sidebar_list_item, R.id.textView1, listTitles));
+		drawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View view, int position,
+					long id) {
+				int tangleId = 1;
+				switchFragment(tangleId, position);		
+			}
+		});
 	}
 
 	@Override
