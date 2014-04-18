@@ -453,3 +453,21 @@ As a user, i can register
            
 + Response 201 
 
+
+## GET /notification/{notificationId}/seen
+
++ Parameters
+	+ notificationId (String , required ) 
++ Request
+    + Header 
+        
+             sessionID : “testest”
+
++ Response 200 (application/json)
+
+	{
+		“seen” : 1
+	}
+
+
+
