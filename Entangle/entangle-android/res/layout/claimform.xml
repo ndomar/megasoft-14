@@ -109,7 +109,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="48dp"
         android:layout_marginRight="14dp"
-        android:text="@string/send"
-        android:onClick="sendClaimForm" />
+        android:inputType="none"
+        android:onClick="sendClaimForm"
+        android:text="@string/send" />
 
 </RelativeLayout>
