@@ -16,3 +16,7 @@ invite:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
     methods: [POST]
 
+
+re_open_request:
+    pattern: /request/{requestId}/reopen
+    defaults: { _controller: MegasoftEntangleBundle:Request:reOpenRequest }
