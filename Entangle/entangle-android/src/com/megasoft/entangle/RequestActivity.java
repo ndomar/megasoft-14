@@ -1,6 +1,5 @@
 package com.megasoft.entangle;
 import java.util.Calendar;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -103,8 +102,8 @@ public class RequestActivity extends Activity{
 			                  }
 			             }
 			        };
-			        request.setBody(json); 
 					request.addHeader(Config.API_SESSION_ID, sessionId);
+			        request.setBody(json); 
 			        request.execute();
 			      
 			}
