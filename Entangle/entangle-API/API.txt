@@ -576,3 +576,32 @@ Post request
             "X-CLAIM-ID" : "1234"
            
         }
+
+## GET /offer/{offerID}/
+get the details of an offer
+
++ Parameters
+    + offerID(Int , required)
+    
++ Request
+    
+    + Header
+    
+             sessionID : "testest"
+
++ Response 200 (application/json)
+
+        "requestInformation" :  {
+                                 "requesterName" : "Alaa Maher",
+                                 "requestDescription" : "I want to understand this app."
+                                },
+        "offerInformation" :    {
+                                     "offererName"  : "Mohamed Bassem" ,
+                                     "offerDescription" : "fgsherhsgs",
+                                     "offerDeadline" : "3/3/2015",
+                                     "offerSatus" : 0,
+                                     "offerPrice" : 300,
+                                     "offerDate" : "3/3/2014"
+                                }
+                             
+             
