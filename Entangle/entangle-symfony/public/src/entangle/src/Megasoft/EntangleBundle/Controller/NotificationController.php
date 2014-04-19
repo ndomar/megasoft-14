@@ -3,6 +3,7 @@
 namespace Megasoft\EntangleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class NotificationController extends Controller
@@ -56,11 +57,12 @@ class NotificationController extends Controller
         $notification = array('data' => 'hello world');
         $name = $this->notificationCenter($userID, $notification);
 //        $name = ($name) ? "true" : "false";
-        $arr = array('name' => $name,);
+        $arr = array('regid' => $name,);
         return $this->render('MegasoftEntangleBundle:Default:test.html.twig', $arr);
     }
 
     /**
+     * this searches for session ID and adds a new regId to this session
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -80,6 +82,10 @@ class NotificationController extends Controller
         }
         $session->setRegId($regid);
         $em->flush();
-        return $this->render('MegasoftEntangleBundle:Default:test.html.twig', $arr);
+        $response = new JsonResponse();
+        $response->setData(array('status' => 'done without exceptions'));
+        return $response;
     }
+
+
 }
