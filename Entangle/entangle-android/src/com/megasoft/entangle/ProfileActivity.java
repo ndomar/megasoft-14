@@ -6,15 +6,19 @@ import org.json.JSONObject;
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.ImageRequest;
+
+import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +33,10 @@ public class ProfileActivity extends Activity {
 	 */
 	private Button edit;
 	
+	/**
+	 * The button that allows the user to leave the current tangle
+	 */
+	private Button leave;
 	/**
 	 * The TextView that holds the user's name
 	 */
@@ -84,6 +92,7 @@ public class ProfileActivity extends Activity {
 	 */
 	private int userId;
 	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -109,10 +118,11 @@ public class ProfileActivity extends Activity {
 	 */
 	public void viewProfile() {
 		edit = (Button) findViewById(R.id.EditProfile);
+		leave = (Button) findViewById(R.id.LeaveTangle);
 		name = (TextView) findViewById(R.id.nameView);
 		balance = (TextView) findViewById(R.id.balanceView);
+		birthDate = (TextView) findViewById(R.id.birthdateView);
 		description = (TextView) findViewById(R.id.descriptionView);
-		birthDate = (TextView) findViewById(R.id.birthDateView);
 		verifiedView = (ImageView) findViewById(R.id.verifiedView);
 		profilePictureView = (ImageView)findViewById(R.id.profileImage);
 		transactionsLayout = (LinearLayout) this.findViewById(R.id.transactions_layout);
@@ -147,12 +157,21 @@ public class ProfileActivity extends Activity {
 							} 
 					if(loggedInId == userId) {
 						edit.setVisibility(View.VISIBLE);
+						leave.setVisibility(View.VISIBLE);
+						
 						edit.setOnClickListener(new View.OnClickListener() {
 							@Override
 				            public void onClick(View v) {
 				            	goToEditProfile();
 				            	}
 				            });
+						leave.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								 leaveTangle();
+
+							}
+						});
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -180,13 +199,23 @@ public class ProfileActivity extends Activity {
 			try {
 				object = transactions.getJSONObject(i);
 				TextView transaction = new TextView(this);
+				final int offerId = object.getInt("offerId");
 				String requester = object.getString("requesterName");
 				String request = object.getString("requestDescription");
 				String amount = object.getString("amount");
 				transaction.setText("Requester: " + requester 
 						+ '\n' + "Request: " + request
 						+ '\n' + "Amount: " + amount);
+				
+				transaction.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						goToOffer(offerId);
+						}
+				});
+				
 				transactionsLayout.addView(transaction);
+			
 				} catch (JSONException e) {
 					e.printStackTrace();
 					}
@@ -209,5 +238,21 @@ public class ProfileActivity extends Activity {
 		Intent editProfile = new Intent(this, EditProfileActivity.class);
 		editProfile.putExtra("user id", loggedInId);
 		startActivity(editProfile);
+	}
+	
+	/**
+	 * Let the user leave the current tangle
+	 */
+	public void leaveTangle() {
+		
+	}
+	
+	/**
+	 * Redirects to OfferActivity
+	 */
+	public void goToOffer(int offerId) {
+		Intent offer = new Intent(this,OfferActivity.class);
+		offer.putExtra("offer id", offerId);
+		startActivity(offer);
 	}
 	}
