@@ -1,45 +1,48 @@
-<script src="{{ asset('bundles/megasoftentangle/js/parsley/parsly.min.js') }}"></script>
-<script src="{{ asset('bundles/megasoftentangle/js/parsley/parsley-standalone.min') }}"></script>
-<script src="{{ asset('bundles/megasoftentangle/js/parsley/parsly.extend.js') }}"></script>
+{% extends "::base.html.twig" %}
 
-<div class="container">
+{% block title %}MegasoftEntangleBundle:Site:index{% endblock %}
 
-    <form class="form-register" class="well" method="POST" enctype='multipart/form-data' action="{{ path('megasoft_entangle_register') }}" data-validate="parsley">
+{% block body %}
 
-        <h2>Sign up</h2>
-        <div>
-            <label>Username</label>
-            <input type="text" name="name" class="input-xlarge" >
-        </div>
-        <div>
-            <label>Email</label>
-            <input type="email" name="email" class="input-xlarge">
-        </div>
-        <div>
-            <label>Password</label>
-            <input type="password" name="password" class="input-xlarge" data-trigger="change" >
-        </div>
-        <div >
-            <label>Confirm Password</label>
-            <input type="password" name="confirmPassword" class="input-xlarge" data-trigger="change" >
-        </div>
-        <div >
-            <label>Biography</label>
-            <input type="text" name="userBio">
-        </div>
-        <div>
-            <label>Date Of Birth</label>
-            <input type="text" name="birthDate">
-        </div>
-        <div>
-            <label>Picture</label>
-            <input type="file" name="img">
+    <div class="container">
 
-        </div>
+        <form class="form-register" class="well" method="POST" enctype='multipart/form-data' action="{{ path('megasoft_entangle_register') }}" data-validate="parsley">
 
-        <div>
-            <button class="btn btn-primary" type="submit" >Register</button>
-        </div>
+            <h2>Sign up</h2>
+            <div>
+                <label>Username</label>
+                <input type="text" name="name" class="input-xlarge" required >
+            </div>
+            <div>
+                <label>Email</label>
+                <input type="email" name="email" class="input-xlarge">
+            </div>
+            <div>
+                <label>Password</label>
+                <input type="password" name="password" class="input-xlarge" data-trigger="change" >
+            </div>
+            <div >
+                <label>Confirm Password</label>
+                <input type="password" name="confirmPassword" class="input-xlarge" data-trigger="change" >
+            </div>
+            <div >
+                <label>Biography</label>
+                <input type="text" name="userBio">
+            </div>
+            <div>
+                <label>Date Of Birth</label>
+                <input type="text" name="birthDate">
+            </div>
+            <div>
+                <label>Picture</label>
+                <input type="file" name="img">
 
-    </form>
-</div>
+            </div>
+
+            <div>
+                <button class="btn btn-primary" type="submit" >Register</button>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}
