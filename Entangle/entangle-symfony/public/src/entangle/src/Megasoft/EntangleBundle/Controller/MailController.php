@@ -18,10 +18,10 @@ class MailController extends Controller {
     public function SendEmailAction($userID, $subject, $body) {
 
         $doctrine = $this->getDoctrine();
-       $repo = $doctrine->getRepository('MegasoftEntangleBundle:User');
+        $repo = $doctrine->getRepository('MegasoftEntangleBundle:User');
 
-       $user = $repo->findOneBy(array('id' => $userID));
-       $useremail = $user->getEmail();
+        $user = $repo->findOneBy(array('id' => $userID));
+        $useremail = $user->getEmail();
 
 
         $message = \Swift_Message::newInstance()
