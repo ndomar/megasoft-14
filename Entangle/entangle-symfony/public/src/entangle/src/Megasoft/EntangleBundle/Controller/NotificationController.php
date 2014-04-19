@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @author Mohamed Shaban
+ *
+ */
+
+
 namespace Megasoft\EntangleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -66,6 +72,7 @@ class NotificationController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
      */
     function registerAction(Request $request)
     {
