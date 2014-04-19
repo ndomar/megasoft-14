@@ -3,7 +3,7 @@
 namespace Megasoft\EntangleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use Symfony\Component\HttpFoundation\Request;
 
 class NotificationController extends Controller
 {
@@ -37,7 +37,6 @@ class NotificationController extends Controller
             "notification" => $notification,
         );
 
-
         $request = curl_init($serverUrl);
         curl_setopt($request, CURLOPT_HTTPHEADER, $header);
         curl_setopt($request, CURLOPT_POSTFIELDS, json_encode($body));
@@ -47,12 +46,40 @@ class NotificationController extends Controller
         return $result;
     }
 
+    /**
+     * this is a test action just to test notification center function
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     function testAction()
     {
         $userID = 1;
         $notification = array('data' => 'hello world');
         $name = $this->notificationCenter($userID, $notification);
+//        $name = ($name) ? "true" : "false";
         $arr = array('name' => $name,);
+        return $this->render('MegasoftEntangleBundle:Default:test.html.twig', $arr);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    function registerAction(Request $request)
+    {
+        $sessionid = $request->headers->get('sessionid');
+        $content = $request->getContent();
+        $arr = json_decode($content, true);
+        $regid = $arr['regid'];
+        $em = $this->getDoctrine()->getManager();
+
+        $session = $em->getRepository('MegasoftEntangleBundle:Session')->findOneBy(array('sessionId' => $sessionid));
+
+        if (!$session) {
+            throw $this->createNotFoundException('no session found for session id = ' . $sessionid);
+        }
+        $session->setRegId($regid);
+        $em->flush();
         return $this->render('MegasoftEntangleBundle:Default:test.html.twig', $arr);
     }
 }
