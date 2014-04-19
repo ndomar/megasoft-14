@@ -53,17 +53,14 @@ class VerificationController extends Controller {
      * @return type
      */
     public function verifyUserAction($verificationCode) {
-        $user = $this->getDoctrine()
+        $search = $this->getDoctrine()
                 ->getRepository('MegasoftEntangleBundle:VerificationCode')
                 ->find($verificationCode);
-        if (!$user) {
-            throw $this->createNotFoundException(
-                    'This User Does Not exist'
-            );
+        if (!$search) {
+            return new Response("User not found" , 404 );
         }
-        $user->setVerfied(true);
-
-        return $this->render('MegasoftEntangleBundle:Default:index.html.twig', array('name' => $user->$verificationCode));
+        $user = $search->getUser();
+        $user->setVerified(true);
     }
 
 }
