@@ -16,3 +16,7 @@ invite:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
     methods: [POST]
 
+
+view:
+    pattern: /offer/{offerId}
+    defaults: { _controller: MegasoftEntangleBundle:Offer:view }
