@@ -4,13 +4,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.megasoft.config.Config;
-import com.megasoft.requests.PostRequest;
-
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
-import android.app.Activity;
+import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,12 +21,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v4.app.NavUtils;
-import android.transition.Visibility;
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Build;
+
+import com.megasoft.config.Config;
+import com.megasoft.requests.PostRequest;
 
 public class ConfirmInviteUserActivity extends Activity {
 
@@ -84,6 +84,7 @@ public class ConfirmInviteUserActivity extends Activity {
 	 * @author MohamedBassem
 	 */
 	private void parseResponse() {
+		
 		try {
 			JSONObject json = new JSONObject(this.response);
 
@@ -163,13 +164,13 @@ public class ConfirmInviteUserActivity extends Activity {
 	 *            The invite button clicked
 	 * @author MohamedBassem
 	 */
-	public void invite(View view) {
+	public void invite(final View view) {
 		
 		if(!isNetworkAvailable()){
 			showErrorToast();
 			return;
 		}
-		
+		view.setEnabled(false);
 		
 		JSONArray finalEmails = new JSONArray();
 
@@ -219,6 +220,7 @@ public class ConfirmInviteUserActivity extends Activity {
 					finish();
 				}else{
 					showErrorToast();
+					view.setEnabled(true);
 				}
 				
 			}
