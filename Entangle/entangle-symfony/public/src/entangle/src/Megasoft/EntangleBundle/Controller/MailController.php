@@ -3,38 +3,37 @@
 namespace Megasoft\EntangleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class MailController extends Controller {
 
-    public function registerBundles() {
-        $bundles = array(
-            // ...
+    /**
+     * this function sends an email notification to user with userID
+     * @param  Int      $userid    user ID
+     * @param  String   $subject   The subject of the email notification
+     * @return string   $body      The body of the email notification
+     * @author amrelzanaty
 
-            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
-        );
-    }
+     */
+    public function SendEmailAction($userID, $subject, $body) {
 
-    public function SendMailNotifications($usermail) {
+        $doctrine = $this->getDoctrine();
+       $repo = $doctrine->getRepository('MegasoftEntangleBundle:User');
+
+       $user = $repo->findOneBy(array('id' => $userID));
+       $useremail = $user->getEmail();
+
+
         $message = \Swift_Message::newInstance()
-                ->setSubject('Hello Email')
-                ->setFrom('Entanglezanaty@gmail.com')
-                ->setTo('amrelzanati@gmail.com')
-                ->setBody(
-                $this->renderView(
-                        'HelloBundle:Hello:email.txt.twig', array('name' => $user)
-                )
-                )
+                ->setSubject($subject)
+                ->setFrom('Notifications-noreply@entangle.io')
+                ->setTo($useremail)
+                ->setBody($body)
+
         ;
         $this->get('mailer')->send($message);
 
-        return $this->render();
-    }
-
-    function testAction() {
-        $email = "mohamed19936@gmail.com";
-        $message = "hello shaban";
-        $subject = "test test test";
-        sendMails($email, $subject, $message);
+        return new Response("OK", 200);
     }
 
 }
