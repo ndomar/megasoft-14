@@ -230,6 +230,12 @@ class TangleController extends Controller {
         return $ret;
     }
 
+    /**
+     * this retrieves details of a certain offer from the database
+     * @param  Int $offerid  offer ID
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @author mohamedzayan
+     */
     public function searchAction($offerid) {
         $doctrine = $this->getDoctrine();
         $repo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
@@ -245,6 +251,13 @@ class TangleController extends Controller {
         return $response;
     }
 
+    /**
+     * this marks an offer as done if it accepted and not already marked
+     * @param  Int $offerid  offer ID
+     * @param  \Symfony\Component\HttpFoundation\Request
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @author mohamedzayan
+     */
     public function updateAction($offerid, Request $request) {
         $doctrine = $this->getDoctrine();
         $repo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
@@ -253,12 +266,21 @@ class TangleController extends Controller {
         $status = $json_array['status'];
         $offerId = $offerid;
         $offer = $repo->find($offerId);
-        $offer->setStatus($status);
-        $this->getDoctrine()->getManager()->persist($offer);
-        $this->getDoctrine()->getManager()->flush();
-        $response = new JsonResponse();
-        $response->setStatusCode(201);
-        return $response;
+        $backendstatus = $offer->getStatus();
+        if ($backendstatus == 2) {
+            return new JsonResponse("Offer already marked as done", 401);
+        } else if ($backendstatus == 0) {
+            return new JsonResponse("Offer is not accepted", 401);
+        } else if ($status != 2) {
+            return new JsonResponse("Not Allowed", 401);
+        } else {
+            $offer->setStatus($status);
+            $this->getDoctrine()->getManager()->persist($offer);
+            $this->getDoctrine()->getManager()->flush();
+            $response = new JsonResponse();
+            $response->setStatusCode(201);
+            return $response;
+        }
     }
 
 }
