@@ -14,6 +14,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -118,12 +119,13 @@ public class InviteUserActivity extends Activity {
 	 *            The go to confirmation button
 	 * @author MohamedBassem
 	 */
-	public void goToConfirmationActivity(View view) {
+	public void goToConfirmationActivity(final View view) {
 		
 		if(!isNetworkAvailable()){
 			showErrorToast();
 			return;
 		}
+		view.setEnabled(false);
 		
 		JSONArray emails = new JSONArray();
 		for (EditText emailEditText : editTexts) {
@@ -145,10 +147,12 @@ public class InviteUserActivity extends Activity {
 		PostRequest postRequest = new PostRequest(Config.API_BASE_URL
 				+ "/tangle/" + tangleId + "/check-membership") {
 			public void onPostExecute(String response) {
-				if(this.getStatusCode() == 200){
+				if(this.getStatusCode() == 200){ 
 					goToConfirmation(response);
+					view.setEnabled(true);
 				}else{
 					showErrorToast();
+					view.setEnabled(true);
 				}
 			}
 		};
