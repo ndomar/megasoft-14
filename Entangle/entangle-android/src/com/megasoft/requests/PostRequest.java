@@ -8,13 +8,19 @@ import org.json.JSONObject;
 
 public class PostRequest extends HttpRequest {
 	HttpPost httpPost;
-	
-	public PostRequest(String uri){
+
+	public PostRequest(String uri) {
 		httpPost = new HttpPost(uri);
 		super.setMethod(httpPost);
 	}
-	
-	public void setBody(JSONObject body){
+
+	public PostRequest(String uri, JSONObject json) {
+		httpPost = new HttpPost(uri);
+		super.setMethod(httpPost);
+		this.setBody(json);
+	}
+
+	public void setBody(JSONObject body) {
 		this.setHasBody(true);
 		StringEntity data = null;
 		try {
@@ -24,6 +30,5 @@ public class PostRequest extends HttpRequest {
 		}
 		this.httpPost.setEntity(data);
 	}
-	
 
 }
