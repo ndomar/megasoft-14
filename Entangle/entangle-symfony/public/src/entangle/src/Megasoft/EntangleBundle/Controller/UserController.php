@@ -111,7 +111,7 @@ class ProfileController {
                     && ($offer->getTransaction() != null)) {
                 $requesterName =$offer->getRequest()->getUser()->getName();
                 $requestDescription = $offer->getRequest()->getDescription();
-                $amount = $offer->getTransaction()->getRequestedPrice();
+                $amount = $offer->getTransaction()->getFinalPrice();
                 $transactions[] = array('requesterName'=> $requesterName,
                     'requestDescription'=>$requestDescription,
                     'amount'=>$amount);
