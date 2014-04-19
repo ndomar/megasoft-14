@@ -67,15 +67,21 @@ public class PhotoUploaderFragment extends Fragment{
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.upload_photo_fragement, container, false);
         
-        setIcon((ImageView) view.findViewById(R.id.icon));
+        ImageView icon = (ImageView) view.findViewById(R.id.icon);
+        setIcon(icon);
         
         Button iconButton = (Button) view.findViewById(R.id.iconButton);
         setButton(iconButton);
        
-        iconButton.setOnClickListener(new OnClickListener(){
+        icon.setOnClickListener(new OnClickListener(){
         	public void onClick(View view){
         		chooseIcon();
-        		sendPhotoData();
+        	}
+        });
+        
+        iconButton.setOnClickListener(new OnClickListener(){
+        	public void onClick(View view){
+        		//sendPhotoData();
         	}
         });
         
@@ -93,7 +99,6 @@ public class PhotoUploaderFragment extends Fragment{
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		System.out.println(resultCode + " " + requestCode + " " + data.toString());
 		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE
 				&& data != null) {
 			Bitmap bitmap = getPhotoPath(data.getData());
@@ -118,7 +123,7 @@ public class PhotoUploaderFragment extends Fragment{
 		return bitmap;
 	}
 	
-	public void sendPhotoData(){
+	/*public void sendPhotoData(){
 		PostRequest iconDataRequest = new PostRequest(url) {
 			protected void onPostExecute(String res) {
 				String message = "Sorry, there are problems uploading icon now. Please, try again later";
@@ -132,5 +137,5 @@ public class PhotoUploaderFragment extends Fragment{
 		};
 		iconDataRequest.addHeader("X-SESSION-ID", getSessionId());
 		iconDataRequest.execute();
-	}
+	}*/
 }
