@@ -1,0 +1,3 @@
+acme_blog_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: AcmeBlogBundle:Default:index }
