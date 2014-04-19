@@ -5,3 +5,23 @@ megasoft_entangle_homepage:
 #megasoft_entangle_test:
 #    pattern:  /test
 #    defaults: { _controller: MegasoftEntangleBundle:Default:test }
+
+check_membership:
+    pattern: /tangle/{tangleId}/check-membership
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:checkMembership }
+    methods: [POST]
+
+invite:
+    pattern: /tangle/{tangleId}/invite
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
+    methods: [POST]
+
+set_seen:
+    pattern: /notification/{notificationId}/set-seen
+    defaults: { _controller :MegasoftEntangleBundle:Notification:setSeen }
+    methods : [PUT]
+    
+get_seen:
+    pattern: /notification/{notificationId}/get-seen
+    defaults: { _controller :MegasoftEntangleBundle:Notification:getSeen }
+    methods : [GET]
