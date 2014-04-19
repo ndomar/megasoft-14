@@ -38,6 +38,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.megasoft.entangle.InviteUsers" />
         </activity>
+        <activity
+            android:name="com.megasoft.entangle.OfferActivity"
+            android:label="@string/title_activity_offer" >
+        </activity>
     </application>
 
 </manifest>

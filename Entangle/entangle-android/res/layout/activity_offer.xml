@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+   	android:layout_width="match_parent"
+   	android:layout_height="match_parent"
+   	android:fillViewport="true">
+   	
+   <LinearLayout
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical">
+   	    
+       <TextView 
+           android:id="@+id/request_description"
+           android:layout_width="300dp"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="30dp"
+           android:layout_marginLeft="20dp"
+           android:textSize="14sp"/>
+       
+       <TextView 
+           android:id="@+id/requester_name"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="5dp"
+           android:layout_marginLeft="40dp"
+           android:layout_marginBottom="20dp"
+           android:textSize="12sp"/>	
+      
+       <View style="@style/Divider"/>
+      
+       <TextView 
+           android:id="@+id/offer_description"
+           android:layout_width="300dp"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="20dp"
+           android:layout_marginLeft="20dp"
+           android:textSize="18sp"/>
+      
+       <LinearLayout 
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal">
+           
+           <TextView 
+               android:id="@+id/offerer_name"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="5dp"
+               android:layout_marginLeft="40dp"
+               android:layout_marginBottom="20dp"
+               android:textSize="14sp"/>
+           
+           <TextView
+               android:id="@+id/offer_date"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="5dp"
+               android:layout_marginLeft="70dp"
+               android:textSize="14sp"/>
+           
+       </LinearLayout>
+       
+       <TextView
+           android:id="@+id/offer_status"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginLeft="25dp"
+           android:textSize="16sp"/>       
+       <TextView 
+           android:id="@+id/offer_price"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="5dp"
+           android:layout_marginLeft="25dp"
+           android:textSize="16sp"/>
+       
+       <TextView
+           android:id="@+id/offer_deadline"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="5dp"
+           android:layout_marginLeft="25dp"
+           android:textSize="16sp"/>
+           
+       
+ </LinearLayout>  	
+   	
+
+</ScrollView>
