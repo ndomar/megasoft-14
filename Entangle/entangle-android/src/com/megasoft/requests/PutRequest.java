@@ -8,13 +8,13 @@ import org.json.JSONObject;
 
 public class PutRequest extends HttpRequest {
 	HttpPut httpPut;
-	
-	public PutRequest(String uri){
+
+	public PutRequest(String uri) {
 		httpPut = new HttpPut(uri);
 		super.setMethod(httpPut);
 	}
-	
-	public void setBody(JSONObject body){
+
+	public void setBody(JSONObject body) {
 		this.setHasBody(true);
 		StringEntity data = null;
 		try {

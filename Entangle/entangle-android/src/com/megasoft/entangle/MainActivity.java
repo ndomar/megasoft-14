@@ -16,9 +16,6 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		goToOffer();
-		// startActivity((new
-		// Intent(this,InviteUserActivity.class)).putExtra("com.megasoft.entangle.tangleId",
-		// 2));
 	}
 
 	@Override
@@ -28,6 +25,11 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+	/**
+	 * this navigates to offer activity
+	 * @return None
+	 * @author mohamedzayan
+	 */
 	public void goToOffer() {
 		Intent intent = new Intent(this, Offer.class);
 		startActivity(intent);

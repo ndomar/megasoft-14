@@ -31,94 +31,113 @@ public class Offer extends Activity {
 		return true;
 	}
 
+	/**
+	 * this searches for details of an offer and previews it
+	 * @param  Int OfferId offer ID
+	 * @return None
+	 * @author mohamedzayan
+	 */
 	public void searchOffer(int OfferId) {
-
-		// Creating a new Post Request
 
 		GetRequest request = new GetRequest(
 				"http://test1450.apiary-mock.com/request/" + 1 + "/offer/"
 						+ OfferId) {
-			protected void onPostExecute(String response) { // On Post execute
-															// means after the
-															// execution of the
-															// request ( the
-															// callback )
+			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 200) {
-					Log.e("test", response);
 					JSONObject x;
-					System.out.println(response);
 					try {
 						x = new JSONObject(response);
-						EditText textview1 = (EditText) findViewById(R.id.priceTextField);
-						textview1.setText(x.getString("price"));
-						EditText textview2 = (EditText) findViewById(R.id.dateTextField);
-						textview2.setText(x.getString("date"));
-						EditText textview3 = (EditText) findViewById(R.id.descriptionTextField);
-						textview3.setText(x.getString("description"));
-						EditText textview4 = (EditText) findViewById(R.id.expectedDeadLineTextField);
-						textview4.setText(x.getString("expecteddeadline"));
+						EditText priceText = (EditText) findViewById(R.id.priceTextField);
+						priceText.setText(x.getString("price"));
+						priceText.setEnabled(false);
+						EditText dateText = (EditText) findViewById(R.id.dateTextField);
+						dateText.setText(x.getString("date"));
+						dateText.setEnabled(false);
+						EditText descriptionText = (EditText) findViewById(R.id.descriptionTextField);
+						descriptionText.setText(x.getString("description"));
+						descriptionText.setEnabled(false);
+						EditText deadLineText = (EditText) findViewById(R.id.expectedDeadLineTextField);
+						deadLineText.setText(x.getString("expecteddeadline"));
+						deadLineText.setEnabled(false);
 
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
-					viewSuccessMessage(response);
-				} else if (this.getStatusCode() == 400) {
-					showErrorMessage(response);
 				}
-			}
-
-			private void showErrorMessage(String response) {
-				// TODO Auto-generated method stub
-
-			}
-
-			private void viewSuccessMessage(String response) {
-				// TODO Auto-generated method stub
-
 			}
 		};
 		request.addHeader("X-SESSION-ID", "first");
-		// Adding the json to the body of the request
-		request.execute(); // Executing the request
+		request.execute();
 
 	}
 
-	public void mark1(View view) {
-		markAsDone(1);
+	/**
+	 * this checks if an offer is already marked as done or not accepted.if
+	 * neither it navigates to the actual marking method
+	 * @param  View view The checkbox clicked
+	 * @return None
+	 * @author mohamedzayan
+	 */
+	public void markCheck(View view) {
+		GetRequest initRequest = new GetRequest(
+				"http://test1450.apiary-mock.com/request/" + 1 + "/offers/" + 1) {
+			protected void onPostExecute(String response) {
+				if (this.getStatusCode() == 200) {
+					JSONObject x;
+					try {
+						x = new JSONObject(response);
+						if (x.getString("status").equals("0")
+								|| x.getString("status").equals("2")) {
+							Toast error = Toast.makeText(
+									getApplicationContext(), "Error",
+									Toast.LENGTH_LONG);
+							error.show();
+						} else {
+							markAsDone(1);
+						}
+
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+		initRequest.addHeader("X-SESSION-ID", "second");
+		initRequest.execute();
+
 	}
 
+	/**
+	 * this marks an accepted offer as done
+	 * @param  Int OfferId offer ID
+	 * @return None
+	 * @author mohamedzayan
+	 */
 	public void markAsDone(int Offerid) {
+
 		JSONObject json = new JSONObject();
 		try {
-			json.put("status", "3");
+			json.put("status", "2");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		PostRequest request = new PostRequest(
 				"http://test1450.apiary-mock.com/request/" + Offerid) {
-			protected void onPostExecute(String response) { // On Post execute
-															// means after the
-															// execution of the
-															// request ( the
-															// callback )
-				Log.e("test", response);
+			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 201) {
-					Toast toast = Toast.makeText(getApplicationContext(),
+					Toast success = Toast.makeText(getApplicationContext(),
 							"Marked as done", Toast.LENGTH_LONG);
-					toast.show();
-				} else {
-					Toast toast1 = Toast.makeText(getApplicationContext(),
-							"Error", Toast.LENGTH_LONG);
-					toast1.show();
+					success.show();
 				}
 			}
 
 		};
 		request.addHeader("X-SESSION-ID", "asdasdasdsadasdasd");
-		request.setBody(json); // Adding the json to the body of the request
-		request.execute(); // Executing the request
+		request.setBody(json);
+		request.execute();
 
 	}
 }
