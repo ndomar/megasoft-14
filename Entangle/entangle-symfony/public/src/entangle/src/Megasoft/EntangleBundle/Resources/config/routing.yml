@@ -8,9 +8,7 @@ megasoft_entangle_homepage:
 Verification:
     pattern:  /verify/{verificationCode}
     defaults: { _controller: MegasoftEntangleBundle:Verification:verifyUser}
-emailing:      #this is for testing purposes only 
-    pattern:  /email/{userEmail}/{userName}/{verificationHash}
-    defaults: { _controller: MegasoftEntangleBundle:Verification:emailUser}  
+  
     
 check_membership:
     pattern: /tangle/{tangleId}/check-membership
