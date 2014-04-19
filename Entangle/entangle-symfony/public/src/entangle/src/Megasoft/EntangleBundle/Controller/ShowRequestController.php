@@ -3,7 +3,6 @@
 namespace Megasoft\EntangleBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ShowRequestController extends Controller
@@ -25,9 +24,10 @@ class ShowRequestController extends Controller
         $price = $request->getRequestedPrice(); 
         $tangle = $request->getTangleId(); 
         $tags = $request->getTags();
+        $offers = $this->getOffers($requestId);
         $arr = array('requester'=>$requester, 'description'=>$description , 
             'status'=>$status,'date'=>$date, 'deadline'=>$deadline,
-            'icon'=>$icon, 'price'=>$price, 'tangle'=>$tangle, 'tags'=>$tags);
+            'icon'=>$icon, 'price'=>$price, 'tangle'=>$tangle, 'tags'=>$tags, 'offers'=>$offers);
         $response = new JsonResponse();
         $response->setData(array($arr));
         $response->setStatusCode(200);
@@ -35,36 +35,35 @@ class ShowRequestController extends Controller
         }
     }
     
-    public function getOfferAttributes($offerId){
-       $doctrine = $this->getDoctrine(); 
-       $repository = $doctrine->getRepository('MegasoftEntangleBundle: Offer'); 
-       $offer = $repository->find($offerId);
-       $date = $offer->getDate(); 
-       $deadline = $offer->getExpectedDeadline(); 
-       $description = $offer->getDescription();
-       $status = $offer->getStatus();
-       $price = $offer->getRequestedPrice(); 
-       $arr = array('description'=>$description , 'status'=>$status,
-           'date'=>$date, 'deadline'=>$deadline,'price'=>$price);
-        return $arr; 
-       
-    }
-    public function getOffers($requestID){
+    public function getOffers($requestId){
         $doctrine = $this->getDoctrine(); 
-        $repository = $doctrine->getRepository('MegasoftEntangleBundle: Offer');
-        $offers = $repository->findAll($requestID);
+        $repository = $doctrine->getRepository('MegasoftEntangleBundle:Offer'); 
+        $offers = $repository->findAll(array('id'=>$requestId));
+      //  $offerDetails = array("date","deadline", "description", "status", "price");
+        $arr2 = array();
         $numOfOffers=count($offers);
+        if($numOfOffers === 0){
+            array_push($arr2,"No offers yet");
+            return $arr2; 
+        }
         $response = new JsonResponse();
         for($i=0; $i<$numOfOffers;$i++){
-         $offer = $offers[i];
-         $offerId = $offer->getId();
-         $arr = $this->getOfferAttributes($offerId);
-         $jsonOffer= new JsonResponse();
-         $jsonOffer->setData($arr);
-         $response->setData($jsonOffer);
-         }
-      
-        return $response; 
+            $offerId = $offers[$i]->getId();
+            $offer = $repository->find($offerId);
+            $date = $offer->getDate();
+            $deadline = $offer->getExpectedDeadline(); 
+            $description = $offer->getDescription();
+            $status = $offer->getStatus(); 
+            $price = $offer->getRequestedPrice(); 
+          
+            $arr = array('description'=>$description , 'status'=>$status,
+            'date'=>$date, 'deadline'=>$deadline,'price'=>$price);
+            array_push($arr2, $arr);
         
+        }
+        $response->setData($arr2); 
+       
+        return $arr2; 
     }
+    
 }
