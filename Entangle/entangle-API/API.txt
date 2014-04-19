@@ -575,3 +575,38 @@ Post request
             "X-CLAIM-ID" : "1234"
            
         }
+
+## GET /notification/{notificationId}/seen
+
++ Parameters
+	+ notificationId (String , required ) 
++ Request
+    + Header 
+        
+             sessionID : “testest”
+
++ Response 200 (application/json)
+
+	{
+		“seen” : 1
+	}
+
+## GET /notification/{notificationId}
+
++ Parameters
+	+ notificationId (String , required )
+
++ Request
+	
+     + Header
+
+		sessionID : “testest”
+
++ Response 200 (application/json)
+
+	{
+		“description” : “this is notification description”
+		“offerer”  :  “Mohamed”
+		“Amount”  : “1000”
+		“request”  : “This is request”
+	}
