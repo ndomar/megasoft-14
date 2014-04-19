@@ -60,6 +60,23 @@ class Offer
      *
      * @var integer
      * 
+     * @ORM\Column(name="userId", type="integer")
+     */
+    private $userId;
+    
+    /**
+     *
+     * @var User
+     * 
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="offers")
+     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+     */
+    private $user;
+    
+    /**
+     *
+     * @var integer
+     * 
      * @ORM\Column(name="requestId", type="integer")
      */
     private $requestId;
@@ -79,7 +96,20 @@ class Offer
      * @ORM\OneToMany(targetEntity="Message", mappedBy="offer", cascade={"persist"})
      */
     private $messages;
-
+    
+    /**
+     *
+     * @var boolean
+     * 
+     * @ORM\Column(name="deleted", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
+     */
+    private $deleted = false;
+    
+     /**
+      * @ORM\OneToOne(targetEntity="Transaction", mappedBy="offer")
+      */
+    private $transaction;
+    
 
     /**
      * Get id
@@ -290,5 +320,97 @@ class Offer
     public function getMessages()
     {
         return $this->messages;
+    }
+
+    /**
+     * Set userId
+     *
+     * @param integer $userId
+     * @return Offer
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+
+    /**
+     * Get userId
+     *
+     * @return integer 
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Megasoft\EntangleBundle\Entity\User $user
+     * @return Offer
+     */
+    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Megasoft\EntangleBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Offer
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Set transaction
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Transaction $transaction
+     * @return Offer
+     */
+    public function setTransaction(\Megasoft\EntangleBundle\Entity\Transaction $transaction = null)
+    {
+        $this->transaction = $transaction;
+
+        return $this;
+    }
+
+    /**
+     * Get transaction
+     *
+     * @return \Megasoft\EntangleBundle\Entity\Transaction 
+     */
+    public function getTransaction()
+    {
+        return $this->transaction;
     }
 }

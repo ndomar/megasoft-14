@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class ShowRequestController extends Controller {
+class RequestController extends Controller {
 
     /**
      * this returns a response depending on the size of the array it recieved from getRequestDetails 
@@ -14,7 +14,7 @@ class ShowRequestController extends Controller {
      * @return Response 
      * @author sak93
      */
-    public function getRequestAttibutesAction($requestId) {
+    public function viewRequestAction($requestId) {
         $requestDetails = $this->getRequestDetails($requestId);
         if (count($requestDetails) == 0) {
             return new Response("No such request.", 404);

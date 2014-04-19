@@ -6,7 +6,17 @@ megasoft_entangle_homepage:
 #    pattern:  /test
 #    defaults: { _controller: MegasoftEntangleBundle:Default:test }
 
-getRequestAttibutes:
+check_membership:
+    pattern: /tangle/{tangleId}/check-membership
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:checkMembership }
+    methods: [POST]
+
+invite:
+    pattern: /tangle/{tangleId}/invite
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
+    methods: [POST]
+
+viewRequest:
     pattern: /request/{requestId}
-    defaults: { _controller: MegasoftEntangleBundle:ShowRequest:getRequestAttibutes }
+    defaults: { _controller: MegasoftEntangleBundle:Request:viewRequest }
     methods: [GET]
