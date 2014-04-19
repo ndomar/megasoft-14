@@ -393,36 +393,35 @@ contact offerer and requester after claim
                     "Tags" :["tag1", "tag2","tag3"],
                     "Price": "3",
                     "Deadline":"1/2/1",
-                    "Status":"done"
+                    "Status":"done",
                     "Description" : "description of a request",
                     "Offers" : [
                                     {
                                     "id" : "1", 
                                     "requestedPrice" : "5",
-                                    "date" : "1/1/1"
+                                    "date" : "1/1/1",
+                                    "description": "Offer Description", 
+                                    "offererId" : "10",
+                                    "status" : "Status"
+                                     },
+                                     {
+                                    "id" : "1", 
+                                    "requestedPrice" : "5",
+                                    "date" : "1/1/1",
+                                    "description": "Offer Description", 
+                                    "offererId" : "10",
+                                    "status" : "Status"
+                                     },
+                                     {
+                                    "id" : "1", 
+                                    "requestedPrice" : "5",
+                                    "date" : "1/1/1",
                                     "description": "Offer Description", 
                                     "offererId" : "10",
                                     "status" : "Status"
                                      }
-                                     {
-                                    "id" : "1", 
-                                    "requestedPrice" : "3",
-                                    "date" : "2/1/1"
-                                    "description": "Offer Description", 
-                                    "offererId" : "11",
-                                    "status" : "Status"
-                                     }
-                                     {
-                                    "id" : "1", 
-                                    "requestedPrice" : "4",
-                                    "date" : "1/1/1"
-                                    "description": "Offer Description", 
-                                    "offererId" : "12",
-                                    "status" : "Status"
-                                     }
                                 ]
                 }
-
 ## POST /request/{requestId}/icon
 Post icon for a specific request
 + parameters
