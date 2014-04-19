@@ -580,3 +580,78 @@ Delete user from tangle
                  
 + Response 204
 
+## POST /request/{id}
+
++ Parameters
+    + id ( Int , required ) ... offerid  
+
+
++ Request (application/json)
+     
+    + Header
+     
+                        X-SESSION-ID : asdasdasdsadasdasd
+    + Body 
+    
+            {
+               "status" : "2"
+            }
+
++ Response 201 (application/json)
+
+            {
+
+            "message" : "success"
+
+            }
+
+            
+
+## GET /request/{requestid}/offer/{offerid}
+
++ Parameters
+    + requestid ( Int , required ) ... requestid  
+    + offerid ( Int , required ) ... offerid 
+
+
++ Request 
+     
+    + Header
+     
+                        X-SESSION-ID : first
+
++ Response 200 (application/json)
+
+            {
+            
+            "price" : "20",
+            "date" : "01/04/2014",
+            "expecteddeadline" : "02/04/2014",
+            "description" : "Done"
+
+            }
+            
+            
+            
+
+    
+## GET /request/{requestid}/offers/{offerid}
+
++ Parameters
+    + requestid ( Int , required ) ... requestid  
+    + offerid ( Int , required ) ... offerid 
+
+
++ Request 
+     
+    + Header
+     
+                        X-SESSION-ID : second
+
++ Response 200 (application/json)
+
+            {
+            
+            "status" : "1"
+
+            }
