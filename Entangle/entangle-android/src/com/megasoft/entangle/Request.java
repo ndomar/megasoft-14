@@ -73,18 +73,6 @@ public class Request extends Activity {
 
 	}
 
-	/* Uncomment when linked */
-	public void setCreateOfferButton() {
-		// final Intent intentAddOffer = new Intent(this,CreateOffers.class);
-		/*
-		 * Button addOffer = (Button) findViewById(R.id.button1);
-		 * addOffer.setOnClickListener(new OnClickListener(){ String requestId=
-		 * ""; public void onClick(View arg0) {
-		 * intentAddOffer.putExtra("RequestId", requestId);
-		 * startActivity(intentAddOffer); } });
-		 */
-	}
-
 	/**
 	 * this retrieves request detail fields from JSONOBject and adds them to
 	 * text fields
