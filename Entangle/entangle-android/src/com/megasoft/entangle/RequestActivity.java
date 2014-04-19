@@ -40,7 +40,7 @@ public class RequestActivity extends Activity {
 		// Intent intent = getIntent();
 		// requestId = intent.getExtras().getString("RequestId");
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.request);
+		setContentView(R.layout.activity_request);
 		this.fillRequestDetails();
 	}
 
