@@ -105,6 +105,11 @@ class Offer
      */
     private $deleted = false;
     
+     /**
+      * @ORM\OneToOne(targetEntity="Transaction", mappedBy="offer")
+      */
+    private $transaction;
+    
 
     /**
      * Get id
@@ -384,5 +389,28 @@ class Offer
     public function getDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * Set transaction
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Transaction $transaction
+     * @return Offer
+     */
+    public function setTransaction(\Megasoft\EntangleBundle\Entity\Transaction $transaction = null)
+    {
+        $this->transaction = $transaction;
+
+        return $this;
+    }
+
+    /**
+     * Get transaction
+     *
+     * @return \Megasoft\EntangleBundle\Entity\Transaction 
+     */
+    public function getTransaction()
+    {
+        return $this->transaction;
     }
 }
