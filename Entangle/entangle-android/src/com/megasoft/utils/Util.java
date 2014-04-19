@@ -14,6 +14,8 @@ import com.megasoft.requests.PostRequest;
 
 public class Util {
 
+	static final String TAG = "GCMDemo";
+
 	/**
 	 * this checks if there is user logged in. it searches the shared
 	 * preferences to get the sessionID
@@ -51,8 +53,10 @@ public class Util {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		PostRequest req = new PostRequest(postURl, obj);
+		PostRequest req = new PostRequest(postURl);
+		req.setBody(obj);
 		req.addHeader("X-SESSION-ID", "helloWorld");
+
 		JSONObject response = new JSONObject();
 		String text = "";
 		String x;

@@ -1,6 +1,7 @@
 package com.megasoft.entangle;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +12,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -26,17 +26,15 @@ public class MainActivity extends Activity {
 	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 	public static final String PROPERTY_REG_ID = "registration_id";
 	String SENDER_ID = "87338614452";
-	static final String TAG = "GCMDemo";
+	static final String TAG = "GCM";
 	GoogleCloudMessaging gcm;
 	String regid;
-	public static final String uri = "http://shaban.apiary-mock.com/gcm/register";
-	TextView disp;
+	public static final String uri = "http://mohamed.local/entangle/app_dev.php/register";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		disp = (TextView) findViewById(R.id.TVdisplay);
 		register();
 	}
 
@@ -50,7 +48,6 @@ public class MainActivity extends Activity {
 	 */
 	public void register() {
 		if (checkPlayServices()) {
-			gcm = GoogleCloudMessaging.getInstance(this);
 			regid = getRegistrationId(getApplicationContext());
 			if (regid.equals("")) {
 				registerInBackground();
@@ -58,20 +55,6 @@ public class MainActivity extends Activity {
 		} else {
 			Log.i(TAG, "no play services api found");
 		}
-	}
-
-	/**
-	 * checks for play services on resume
-	 * 
-	 * @param None
-	 * @return None
-	 * @author shaban
-	 */
-	@Override
-	protected void onResume() {
-		super.onResume();
-		checkPlayServices();
-		register();
 	}
 
 	/**
@@ -139,15 +122,14 @@ public class MainActivity extends Activity {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				sendRegisterationId(regid);
-				storeRegisteratinId(regid);
 				return regid;
 			}
 
 			@Override
 			protected void onPostExecute(String regid) {
-				UI.makeToast(getApplicationContext(),
-						"sucessfully registerd to GCM", Toast.LENGTH_LONG);
+				sendRegisterationId(regid);
+				storeRegisteratinId(regid);
+
 			}
 		}.execute(null, null, null);
 	}
@@ -167,8 +149,27 @@ public class MainActivity extends Activity {
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
-		PostRequest req = new PostRequest(uri, json);
-		req.addHeader("X-SESSION-ID", getSessionId());
+		PostRequest req = new PostRequest(uri) {
+
+			@Override
+			protected void onPostExecute(String result) {
+				// TODO Auto-generated method stub
+				try {
+					String res = this.get();
+					UI.makeToast(getApplicationContext(), "" + res,
+							Toast.LENGTH_LONG);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		};
+		req.setBody(json);
+		req.addHeader("sessionid", getSessionId());
 		req.execute();
 	}
 
