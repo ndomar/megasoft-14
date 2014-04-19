@@ -1,7 +1,6 @@
 package com.megasoft.entangle;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +40,14 @@ public class MainActivity extends Activity {
 		register();
 	}
 
+	/**
+	 * this method checks if a user is has GCM registration id. if no it asks
+	 * for one from registerInBackground
+	 * 
+	 * @param None
+	 * @return None
+	 * @author shaban
+	 */
 	public void register() {
 		if (checkPlayServices()) {
 			gcm = GoogleCloudMessaging.getInstance(this);
@@ -53,16 +60,26 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	/**
+	 * checks for play services on resume
+	 * 
+	 * @param None
+	 * @return None
+	 * @author shaban
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
 		checkPlayServices();
+		register();
 	}
 
 	/**
 	 * Check the device to make sure it has the Google Play Services APK. If it
 	 * doesn't, display a dialog that allows users to download the APK from the
 	 * Google Play Store or enable it in the device's system settings.
+	 * 
+	 * @author Google
 	 */
 	private boolean checkPlayServices() {
 		int resultCode = GooglePlayServicesUtil
@@ -81,19 +98,34 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+	/**
+	 * checks shared prefs if the user already has a registration ID
+	 * 
+	 * @param context
+	 * @return registration ID String
+	 * @author shaban
+	 */
 	private String getRegistrationId(Context context) {
 		SharedPreferences prefs = getSharedPreferences(
 				MainActivity.class.getSimpleName(), MODE_PRIVATE);
-		String regiterationId = prefs.getString(PROPERTY_REG_ID, "");
-		if (regiterationId.equals("")) {
+		String registrationId = prefs.getString(PROPERTY_REG_ID, "");
+		if (registrationId.equals("")) {
 			Log.i(TAG, "reg id not found");
 		} else {
 			Log.i(TAG, "reg id found");
 		}
-		Log.i(TAG, regiterationId);
-		return regiterationId;
+		Log.i(TAG, registrationId);
+		return registrationId;
 	}
 
+	/**
+	 * this function register a user then sends registration id with session Id
+	 * to server registration uri
+	 * 
+	 * @param None
+	 * @return None
+	 * @author shaban
+	 */
 	private void registerInBackground() {
 		new AsyncTask<Void, Void, String>() {
 
@@ -120,6 +152,13 @@ public class MainActivity extends Activity {
 		}.execute(null, null, null);
 	}
 
+	/**
+	 * this sends a post request to server registration uri
+	 * 
+	 * @return None
+	 * @param regid
+	 * @author shaban
+	 */
 	protected void sendRegisterationId(String regid) {
 
 		JSONObject json = new JSONObject();
@@ -133,12 +172,26 @@ public class MainActivity extends Activity {
 		req.execute();
 	}
 
+	/**
+	 * gets session Id from shared prefs
+	 * 
+	 * @param None
+	 * @return session IDString
+	 * @author shaban
+	 */
 	protected String getSessionId() {
 		SharedPreferences prefs = getSharedPreferences("sessionIDPrefs",
 				MODE_PRIVATE);
 		return prefs.getString(Config.SESSION_ID, "");
 	}
 
+	/**
+	 * stores registration Id in shared prefs
+	 * 
+	 * @param regid
+	 * @return None
+	 * @author shaban
+	 */
 	protected void storeRegisteratinId(String regid) {
 		SharedPreferences prefs = getSharedPreferences(
 				MainActivity.class.getSimpleName(), MODE_PRIVATE);
