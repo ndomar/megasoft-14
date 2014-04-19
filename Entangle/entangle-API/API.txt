@@ -605,10 +605,10 @@ get the details of an offer
                              
              
 
-## GET /notification/{notificationId}/seen
+## GET /notification/{notificationId}/get-seen
  
  + Parameters
- 	+ notificationId (String , required ) 
+    + notificationId (String , required ) 
  + Request
      + Header 
          
@@ -616,26 +616,37 @@ get the details of an offer
  
  + Response 200 (application/json)
  
- 	{
- 		“seen” : 1
- 	}
+        {
+            “seen” : 1
+        }
+
  
- ## GET /notification/{notificationId}
+## GET /notification/{notificationId}
  
  + Parameters
- 	+ notificationId (String , required )
+    + notificationId (String , required )
  
  + Request
- 	
-      + Header
- 
- 		sessionID : “testest”
+     + Header
+     
+            sessionID : “testest”
  
  + Response 200 (application/json)
  
- 	{
- 		“description” : “this is notification description”
- 		“offerer”  :  “Mohamed”
- 		“Amount”  : “1000”
- 		“request”  : “This is request”
- 	}
+        {
+            “description” : “this is notification description”
+            “offerer”  :  “Mohamed”
+            “Amount”  : “1000”
+            “request”  : “This is request”
+        }
+
+## PUT /notification/{notificationId}/set-seen
+ 
+ + Parameters
+    + notificationId (String , required ) 
+ + Request
+     + Header 
+         
+              sessionID : “testest”
+ 
+ + Response 201
