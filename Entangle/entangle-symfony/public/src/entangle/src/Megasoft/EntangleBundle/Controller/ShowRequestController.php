@@ -34,36 +34,30 @@ class ShowRequestController extends Controller
         return $response;
         }
     }
-    
+
     public function getOffers($requestId){
         $doctrine = $this->getDoctrine(); 
         $repository = $doctrine->getRepository('MegasoftEntangleBundle:Offer'); 
-        $offers = $repository->findAll(array('id'=>$requestId));
-      //  $offerDetails = array("date","deadline", "description", "status", "price");
-        $arr2 = array();
-        $numOfOffers=count($offers);
+        $allOffers = $repository->findAll(array('id'=>$requestId));
+        $returnedOfferArray = array();
+        $numOfOffers=count($allOffers);
         if($numOfOffers === 0){
-            array_push($arr2,"No offers yet");
-            return $arr2; 
+            array_push($returnedOfferArray,"No offers yet");
+            return $returnedOfferArray; 
         }
-        $response = new JsonResponse();
         for($i=0; $i<$numOfOffers;$i++){
-            $offerId = $offers[$i]->getId();
+            $offerId = $allOffers[$i]->getId();
             $offer = $repository->find($offerId);
+            $description = $offer->getDescription();
+            $status = $offer->getStatus();
             $date = $offer->getDate();
             $deadline = $offer->getExpectedDeadline(); 
-            $description = $offer->getDescription();
-            $status = $offer->getStatus(); 
             $price = $offer->getRequestedPrice(); 
-          
-            $arr = array('description'=>$description , 'status'=>$status,
+            $details = array('description'=>$description , 'status'=>$status,
             'date'=>$date, 'deadline'=>$deadline,'price'=>$price);
-            array_push($arr2, $arr);
-        
+            array_push($returnedOfferArray, $details); 
         }
-        $response->setData($arr2); 
-       
-        return $arr2; 
+        return $returnedOfferArray; 
     }
     
 }
