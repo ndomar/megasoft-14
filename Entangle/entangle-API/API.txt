@@ -392,36 +392,35 @@ contact offerer and requester after claim
                     "Tags" :["tag1", "tag2","tag3"],
                     "Price": "3",
                     "Deadline":"1/2/1",
-                    "Status":"done"
+                    "Status":"done",
                     "Description" : "description of a request",
                     "Offers" : [
                                     {
                                     "id" : "1", 
                                     "requestedPrice" : "5",
-                                    "date" : "1/1/1"
+                                    "date" : "1/1/1",
+                                    "description": "Offer Description", 
+                                    "offererId" : "10",
+                                    "status" : "Status"
+                                     },
+                                     {
+                                    "id" : "1", 
+                                    "requestedPrice" : "5",
+                                    "date" : "1/1/1",
+                                    "description": "Offer Description", 
+                                    "offererId" : "10",
+                                    "status" : "Status"
+                                     },
+                                     {
+                                    "id" : "1", 
+                                    "requestedPrice" : "5",
+                                    "date" : "1/1/1",
                                     "description": "Offer Description", 
                                     "offererId" : "10",
                                     "status" : "Status"
                                      }
-                                     {
-                                    "id" : "1", 
-                                    "requestedPrice" : "3",
-                                    "date" : "2/1/1"
-                                    "description": "Offer Description", 
-                                    "offererId" : "11",
-                                    "status" : "Status"
-                                     }
-                                     {
-                                    "id" : "1", 
-                                    "requestedPrice" : "4",
-                                    "date" : "1/1/1"
-                                    "description": "Offer Description", 
-                                    "offererId" : "12",
-                                    "status" : "Status"
-                                     }
                                 ]
                 }
-
 ## POST /request/{requestId}/icon
 Post icon for a specific request
 + parameters
@@ -563,50 +562,18 @@ As a user, i can register
              X-SESSION-ID : "asdasdasdsadasdasd"
              
 + Response 200
-## GET /tangleOwnerAndOffererMail/{tangleId}/claim
-Get the email of the offerer
 
+##DELETE /tangle/{tangleId}/user/{userId}
+Delete user from tangle        
+        
 + Parameters
-    + tangleId  ( Int , required ) ... tangle id
-
+    + tangleId ( Int , required ) ... tangle id
+    + userId ( Int , required ) ... user id
+    
 + Request
 
     + Header
-    
-            X-SESSION-ID : salma
             
-+ Response 200(application/json)
-
-        {
-            "X-OFFERER-MAIL" : "salma@gmail.com",
-            "X-TANGLEOWNER-MAIL" : "saloum@gmail.com"
-           
-        }
-        
-## POST /claim/{tangleId}/sendClaim
-Post request
-+ Parameters
-    
-    + tangleId ( Int , required ) ... tangle id
- 
-+ Request (application/json)
-    
-    + Header
-            
-             X-SESSION-ID : salma
-
-    + Body
-    
-                { 
-                    "X-SENDER-MAIL" : "SALMA@GMAIL.COM",
-                    "X-RECIEVER-MAIL" : "SALOUM@GMAIL.COM",
-                    "X-SUBJECT" : "PLEASE",
-                    "X-MSSGBODY" : "NONO"
-                }
-
-+ Response 200(application/json)
-
-        {
-            "X-CLAIM-ID" : "1234"
-           
-        }
+             X-SESSION-ID : asdasdasdsadasdasd
+                 
++ Response 204
