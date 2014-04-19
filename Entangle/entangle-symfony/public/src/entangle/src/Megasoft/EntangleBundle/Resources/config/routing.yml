@@ -16,3 +16,8 @@ invite:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
     methods: [POST]
 
+Mail_Notification:
+    pattern: /mail
+    defaults: {_controller: MegasoftEntangleBundle:Mail:SendEmail }
+    methods:  [GET] 
+   
