@@ -1,6 +1,5 @@
 package com.megasoft.entangle;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
