@@ -111,8 +111,8 @@ public class Request extends Activity {
 				fieldDetails += requestDetailNames[i] + ": "
 						+ json.get(requestDetailNames[i]);
 			}
-			detail.setTextSize(20);
 			detail.setTypeface(null, Typeface.BOLD_ITALIC);
+			detail.setTextSize(20);
 			detail.setText(fieldDetails);
 			detail.setTextColor(Color.WHITE);
 			layout.addView(detail);
