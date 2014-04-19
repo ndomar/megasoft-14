@@ -24,7 +24,7 @@ class PendingInvitation
     /**
      * @var integer
      *
-     * @ORM\Column(name="inviteeId", type="integer")
+     * @ORM\Column(name="inviteeId", type="integer",nullable=true)
      */
     private $inviteeId;
 
@@ -84,6 +84,21 @@ class PendingInvitation
      * @ORM\JoinColumn(name="messageId", referencedColumnName="id")
      */
     private $message;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string")
+     */
+    private $email;
+    
+    /**
+     *
+     * @var boolean
+     * 
+     * @ORM\Column(name="approved", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
+     */
+    private $approved = false;
     
     /**
      * Get id
@@ -277,5 +292,51 @@ class PendingInvitation
     public function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return PendingInvitation
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set approved
+     *
+     * @param boolean $approved
+     * @return PendingInvitation
+     */
+    public function setApproved($approved)
+    {
+        $this->approved = $approved;
+
+        return $this;
+    }
+
+    /**
+     * Get approved
+     *
+     * @return boolean 
+     */
+    public function getApproved()
+    {
+        return $this->approved;
     }
 }
