@@ -55,6 +55,22 @@ class Tangle
      * @ORM\OneToMany(targetEntity="UserTangle", mappedBy="tangle", cascade={"persist"})
      */
     private $userTangles;
+    
+    /**
+     * @var PendingInvitation[]
+     * 
+     * @ORM\OneToMany(targetEntity="PendingInvitation", mappedBy="tangle", cascade={"persist"})
+     */
+    private $pendingInvitations;
+    
+    /**
+     *
+     * @var boolean
+     * 
+     * @ORM\Column(name="deleted", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
+     */
+    private $deleted = false;
+    
 
     /**
      * Get id
@@ -232,5 +248,61 @@ class Tangle
             $users[] = $userTangle->getUser();
         }
         return $users;
+    }
+
+    /**
+     * Add pendingInvitations
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitations
+     * @return Tangle
+     */
+    public function addPendingInvitation(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitations)
+    {
+        $this->pendingInvitations[] = $pendingInvitations;
+        $pendingInvitations->setTangle($this);
+        return $this;
+    }
+
+    /**
+     * Remove pendingInvitations
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitations
+     */
+    public function removePendingInvitation(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitations)
+    {
+        $this->pendingInvitations->removeElement($pendingInvitations);
+    }
+
+    /**
+     * Get pendingInvitations
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPendingInvitations()
+    {
+        return $this->pendingInvitations;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Tangle
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
     }
 }
