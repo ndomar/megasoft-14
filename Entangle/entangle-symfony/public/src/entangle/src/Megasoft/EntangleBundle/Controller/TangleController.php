@@ -230,4 +230,7 @@ class TangleController extends Controller {
         return $ret;
     }
 
+    public function leaveTangleAction(Request $request, $tangleId, $userId) {
+        
+    }
 }
