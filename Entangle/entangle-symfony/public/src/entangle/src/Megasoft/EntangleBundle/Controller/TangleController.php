@@ -254,6 +254,15 @@ class TangleController extends Controller {
             return new Response("Unauthorized", 401);
         }
 
+        $imageData = base64_decode($tangleIcon);
+        $icon = imagecreatefromstring($imageData);
+        $iconName = $this->generateRandomString(50) . '.png';
+        $path = '/home/mansour/repos/megasoft-14/Entangle/entangle-symfony/public/src/entangle/src/Megasoft/EntangleBundle/Images/tangleIcons/' . $iconName;
+        if($icon != null){
+         imagepng($icon, $path, 9);
+         imagedestroy($icon);
+        }
+
         $tangle = new Tangle();
         $tangle->setName($tangleName);
         $tangle->setIcon($tangleIcon);
@@ -282,7 +291,7 @@ class TangleController extends Controller {
         if ($tangle == null) {
             return new Response('Not Found', 404);
         } else {
-            return new Response('Found', 302);
+            return new Response('Found', 200);
         }
     }
 

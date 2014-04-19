@@ -133,7 +133,7 @@ public class CreateTangleActivity extends Activity {
 			ImageView imageView = (ImageView) findViewById(R.id.icon);
 			imageView.setImageBitmap(bitmap);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
 			byte[] byteArray = baos.toByteArray();
 			encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
 		}
@@ -190,7 +190,7 @@ public class CreateTangleActivity extends Activity {
 	 */
 	public void sendTangleToServer() {
 		PostRequest imagePostRequest = new PostRequest(
-				"http://entangle2.apiary-mock.com/tangle") {
+				"http://requestb.in/pdwqhbpd") {
 			protected void onPostExecute(String response) {
 				if (!(this.getStatusCode() == 201)) {
 					showMessage("ERROR, TRY AGAIN LATER");
