@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".ReplyToClaim" >
+
+    <EditText
+        android:id="@+id/Subject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/receiver"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/Subject"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/receiver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txtreply"
+        android:layout_below="@+id/Subject"
+        android:layout_marginTop="22dp"
+        android:ems="10"
+        android:hint="@string/to" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/btnreply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="75dp"
+        android:text="@string/reply" />
+
+    <EditText
+        android:id="@+id/txtreply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/receiver"
+        android:layout_marginTop="24dp"
+        android:ems="20"
+        android:hint="@string/enter" />
+
+</RelativeLayout>
