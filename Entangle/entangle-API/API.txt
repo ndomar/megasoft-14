@@ -564,3 +564,19 @@ As a user, i can register
              
 + Response 200
 
+
+##DELETE /tangle/{tangleId}/user/{userId}
+Delete user from tangle        
+        
++ Parameters
+    + tangleId ( Int , required ) ... tangle id
+    + userId ( Int , required ) ... user id
+    
++ Request
+
+    + Header
+            
+             X-SESSION-ID : asdasdasdsadasdasd
+                 
++ Response 204
+
