@@ -17,7 +17,7 @@ class ShowRequestController extends Controller {
     public function getRequestAttibutesAction($requestId) {
         $requestDetails = $this->getRequestDetails($requestId);
         if (count($requestDetails) == 0) {
-            return new Response("No such request", 404);
+            return new Response("No such request.", 404);
         } else {
             $response = new JsonResponse();
             $response->setData(array($requestDetails));
@@ -65,11 +65,10 @@ class ShowRequestController extends Controller {
         $allOffers = $repository->findAll(array('id' => $requestId));
         $offerArray = array();
         $numOfOffers = count($allOffers);
-        if ($numOfOffers === 0) {
-            array_push($offerArray, "No offers yet");
-        } else {
-            for ($i = 0; $i < $numOfOffers; $i++) {
-                $offer = $repository->find($allOffers[$i]->getId());
+        for ($i = 0; $i < $numOfOffers; $i++) {
+            $offer = $repository->find($allOffers[$i]->getId());
+            $request = $offer->getRequestId();
+            if ($request == $requestId) {
                 $description = $offer->getDescription();
                 $status = $offer->getStatus();
                 $date = $offer->getDate();
