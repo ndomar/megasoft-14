@@ -385,15 +385,8 @@ class TangleController extends Controller
         return $ret;
     }
 
-    /**
-     * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param type $tangleId
-     * @param type $userId
-     * @return type
-     * @author HebaAamer
-     */
-    public function leaveTangleAction(Request $request, $tangleId) {
+    
+    private function leaveTangleVerification($request, $tangleId) {
         $verification = $this->verifyUser($request, $tangleId);
         
         if($verification != null){
@@ -412,6 +405,76 @@ class TangleController extends Controller
         if (($userTangle = $userTangleRepo->findOneBy(array('userId' => $userId, 'tangleId' => $tangleId, 'tangleOwner' => true))) != null) {
             return new Response("Forbidden", 403);
         }
+        
+        return null;
+    }
+    
+    
+    private function removeRequests($tangleId, $userId) {
+        
+    }
+    
+    private function removeOffers($tangleId, $userId) {
+        
+    }
+    
+    //remaining the deletion of userTangle or the updating of the left / leavingDate
+    
+    //it covers deleting the userTangle from the userTangles of the tangle
+    //it covers updating the deletedBalance of the tangle
+    /**
+     * 
+     * @param type $tangleId
+     * @param type $userId
+     * @author HebaAamer
+     */
+    private function removeUser($tangleId, $userId) {
+        $doctrine = $this->getDoctrine();
+        $userTangleRepo = $doctrine->getRepository("MegasoftEntangleBundle:UserTangle");
+        
+        $userTangle = $userTangleRepo->findOneBy(array('userId' => $userId, 'tangleId' => $tangleId));
+        if($userTangle != null){
+            $tangleRepo = $doctrine->getRepository("MegasoftEntangleBundle:Tangle");
+            
+            $tangle = $tangleRepo->find($tangleId);
+            if($tangle != null) {
+                $tangle->removeUserTangle($userTangle);
+            
+                $deletedBalance = $tangle->getDeletedBalance();
+                $deletedBalance = $deletedBalance + $userTangle->getCredit();
+            
+                $tangle->setDeletedBalance($deletedBalance);
+            }
+        }
+    }
+
+
+    /**
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param type $tangleId
+     * @param type $userId
+     * @return type
+     * @author HebaAamer
+     */
+    public function leaveTangleAction(Request $request, $tangleId) {
+        $verified = $this->leaveTangleVerification($request, $tangleId);
+        if($verified != null){
+            return $verified;
+        }
+        
+        $sessionId = $request->headers->get("X-SESSION_ID");
+        
+        $doctrine = $this->getDoctrine();
+        
+        $sessionRepo = $doctrine->getRepository("MegasoftEntangleBundle:Session");
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        $userId = $session->getUserId();
+        
+        $this->removeOffers($tangleId, $userId);
+        $this->removeRequests($tangleId, $userId);
+        $this->removeUser($tangleId, $userId);
+        
     }
 
 }
