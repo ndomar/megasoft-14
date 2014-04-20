@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -40,7 +41,7 @@ public class Offer extends Activity {
 	public void searchOffer(int OfferId) {
 
 		GetRequest request = new GetRequest(
-				"http://test1450.apiary-mock.com/request/" + 1 + "/offer/"
+				"http://entangle2.apiary-mock.com/request/" + 1 + "/offer/"
 						+ OfferId) {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 200) {
@@ -82,7 +83,7 @@ public class Offer extends Activity {
 	 */
 	public void markCheck(View view) {
 		GetRequest initRequest = new GetRequest(
-				"http://test1450.apiary-mock.com/request/" + 1 + "/offers/" + 1) {
+				"http://entangle2.apiary-mock.com/request/" + 1 + "/offers/" + 1) {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 200) {
 					JSONObject x;
@@ -125,12 +126,14 @@ public class Offer extends Activity {
 			e.printStackTrace();
 		}
 		PostRequest request = new PostRequest(
-				"http://test1450.apiary-mock.com/request/" + Offerid) {
+				"http://entangle2.apiary-mock.com/request/" + Offerid) {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 201) {
 					Toast success = Toast.makeText(getApplicationContext(),
 							"Marked as done", Toast.LENGTH_LONG);
 					success.show();
+					CheckBox checkbox1=(CheckBox)findViewById(R.id.checkBox1);
+					checkbox1.setEnabled(false);
 				}
 			}
 
