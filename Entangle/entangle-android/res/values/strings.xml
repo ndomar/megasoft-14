@@ -17,5 +17,7 @@
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
     <string name="title_activity_offer">Offer</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_request">RequestActivity</string>
 
 </resources>
