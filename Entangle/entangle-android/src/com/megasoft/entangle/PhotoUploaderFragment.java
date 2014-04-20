@@ -95,17 +95,13 @@ public class PhotoUploaderFragment extends Fragment{
         final ImageView icon = (ImageView) view.findViewById(R.id.icon);
         setIcon(icon);
         
-        try 
-        {
+        try{
             InputStream ims = getActivity().getAssets().open("addimage.jpg");
             Drawable d = Drawable.createFromStream(ims, null);
             icon.setImageDrawable(d);
         }
-        catch(IOException ex) 
-        {
-        	Toast.makeText(getActivity().getBaseContext(),
-					"Error loading page",
-					Toast.LENGTH_LONG).show();
+        catch(IOException ex){
+        	toasterShow("Error loading page")
         }
         
         final Button iconButton = (Button) view.findViewById(R.id.iconButton);
@@ -134,9 +130,7 @@ public class PhotoUploaderFragment extends Fragment{
 	        		iconButton.setEnabled(true);
         		}
         		else{
-        			Toast.makeText(getActivity().getBaseContext(),
-    						"Please Choose an Icon",
-    						Toast.LENGTH_LONG).show();
+        			toasterShow("Please Choose an Icon");
         		}
         	}
         });
@@ -159,9 +153,7 @@ public class PhotoUploaderFragment extends Fragment{
 			try{
 				bitmap = getPhotoBitmap(data.getData());
 			} catch(Exception e){
-				Toast.makeText(getActivity().getBaseContext(),
-						"Error Fetching Icon",
-						Toast.LENGTH_LONG).show();
+				toasterShow("Error Fetching Icon");
 				return ;
 			}
 			ImageView imageView = getIcon();
@@ -192,9 +184,7 @@ public class PhotoUploaderFragment extends Fragment{
 					message = "Uploaded!";
 				}
 				ad.dismiss();
-				Toast.makeText(getActivity().getBaseContext(),
-						message,
-						Toast.LENGTH_LONG).show();
+				toasterShow(message);
 			}
 		};
 		JSONObject jsonBody = new JSONObject();
@@ -206,5 +196,11 @@ public class PhotoUploaderFragment extends Fragment{
 		iconDataRequest.setBody(jsonBody);
 		iconDataRequest.addHeader("X-SESSION-ID", "session1");
 		iconDataRequest.execute();
+	}
+	
+	public void toasterShow(String message){
+		Toast.makeText(getActivity().getBaseContext(),
+				message,
+				Toast.LENGTH_LONG).show();
 	}
 }
