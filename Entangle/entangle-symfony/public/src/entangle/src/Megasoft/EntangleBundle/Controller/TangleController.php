@@ -385,7 +385,13 @@ class TangleController extends Controller
         return $ret;
     }
 
-    
+    /**
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param integer $tangleId
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @author HebaAamer
+     */
     private function leaveTangleVerification($request, $tangleId) {
         $verification = $this->verifyUser($request, $tangleId);
         
@@ -402,18 +408,36 @@ class TangleController extends Controller
         $userId = $session->getUserId();
         
         $userTangleRepo = $doctrine->getRepository("MegasoftEntangleBundle:UserTangle");
-        if (($userTangle = $userTangleRepo->findOneBy(array('userId' => $userId, 'tangleId' => $tangleId, 'tangleOwner' => true))) != null) {
+        if (($userTangle = $userTangleRepo
+                ->findOneBy(array('userId' => $userId, 
+                    'tangleId' => $tangleId, 'tangleOwner' => true))) != null) {
             return new Response("Forbidden", 403);
         }
         
         return null;
     }
     
-    
+    /**
+     * A function that is reponsible for deleting the requests 
+     * of a user that left the tangle
+     * 
+     * @param integer $tangleId
+     * @param integer $userId
+     * @author HebaAamer
+     */
     private function removeRequests($tangleId, $userId) {
         
     }
     
+    
+    /**
+     * A function that is responsible for deleting the offers 
+     * of a user that left the tangle
+     * 
+     * @param integer $tangleId
+     * @param integer $userId
+     * @author HebaAamer
+     */
     private function removeOffers($tangleId, $userId) {
         
     }
@@ -423,9 +447,11 @@ class TangleController extends Controller
     //it covers deleting the userTangle from the userTangles of the tangle
     //it covers updating the deletedBalance of the tangle
     /**
+     * A function that is responsible for removing a user from 
+     * a tangle and updating the deletedBalance of the tangle
      * 
-     * @param type $tangleId
-     * @param type $userId
+     * @param integer $tangleId
+     * @param integer $userId
      * @author HebaAamer
      */
     private function removeUser($tangleId, $userId) {
@@ -450,11 +476,12 @@ class TangleController extends Controller
 
 
     /**
+     * An endpoint to be used when a user leaves a tangle
      * 
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param type $tangleId
-     * @param type $userId
-     * @return type
+     * @param integer $tangleId
+     * @param integer $userId
+     * @return \Symfony\Component\HttpFoundation\Response
      * @author HebaAamer
      */
     public function leaveTangleAction(Request $request, $tangleId) {
