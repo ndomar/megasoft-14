@@ -10,9 +10,18 @@ use Megasoft\EntangleBundle\Entity\UserTangle;
 use Megasoft\EntangleBundle\Entity\Request;
 use Megasoft\EntangleBundle\Entity\Offer;
 
-
+/**
+ * Gets the required information to view a certain offer
+ * @author Almgohar
+ */
 class OfferController extends Controller
 {
+    /**
+     * 
+     * @param \Megasoft\EntangleBundle\Entity\Request $request
+     * @param integer $sessionId
+     * @return boolean true if the user can view this request and false otherwise
+     */
     public function validateUser($request,$sessionId) {
         $sessionTable = $this->getDoctrine()->
                 getRepository('MegasoftEntangleBundle:Session');
@@ -32,73 +41,89 @@ class OfferController extends Controller
         }   
     }
 
-    public function viewAction(Request $req, $offerId) {
+    /**
+     * Sends the required information in a JSon response
+     * @param \Symfony\Component\HttpFoundation\Request $req
+     * @param integer $offerId
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getOfferAction(Request $req, $offerId) {
       if (offerId == null) {
           return new Response('Offer not found', 404);
-      }   
-      $sessionId = $req->headers->get('X-SESSION-ID');
+      }
+      $sessionId = $req->headers->get('X-SESSION-ID'); 
       
       if ($sessionId == null) {
           return new Response('Unauthorized',401);
-      }     
-    $doctrine = $this->getDoctrine();
-    $offerTable = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
-    $offer = $offerTable->findOneBy(array('id'=>$offerId));
-    $request = $offer->getRequest();
-    $tangleId = $request->getTangleId();
-    
-    if(!$this->validateUser($request, $sessionId)) {
-        return new Response('Unauthorized',401);     
+      }
+      
+      $doctrine = $this->getDoctrine();
+      $offerTable = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+      $offer = $offerTable->findOneBy(array('id'=>$offerId));
+      $request = $offer->getRequest();
+      $tangleId = $request->getTangleId();
+      
+      if(!$this->validateUser($request, $sessionId)) {
+          return new Response('Unauthorized',401); 
+      }
+      
+      $requestInformation = $this->getRequestInformation($request);
+      $offerInformation = $this->getOfferInformation($offer);
+      $response = new JsonResponse(null, 200);
+      $response->setData(array('tangleId'=> $tangleId,
+          'requestInformation'=>$requestInformation, 
+          'offerInformation'=>$offerInformation));
+      return $response;
     }
-    $requestInformation = $this->getRequestInformation($request);
-    $offerInformation = $this->getOfferInformation($offer);
-    $response = new JsonResponse(null, 200);
-    $response->setData(array('tangleId'=> $tangleId,
-        'requestInformation'=>$requestInformation, 
-        'offerInformation'=>$offerInformation));
-    return $response;    
-}
 
-public function getRequestInformation($request) {
-    $user = $request->getUser();
-    
-    $userId = $user->getId();
-    $userName = $user->getName();
-    $requestDescription = $request->getDescription();
-    $requestId = $request->getId();
-    $requestStatus = $request->getStatus();
-   
-    $requestInformation [] = array('requesterName' => $userName, 
-        'requestDescription'=> $requestDescription, 'requesterID'=> $userId,
-        'requestID'=>$requestId,'requestStatus'=>$requestStatus);
-    
-    return $requestInformation;
-}
+    /**
+     * Gets the request information
+     * @param \Megasoft\EntangleBundle\Entity\Request $request $request
+     * @return array $requestInformation
+     */
+    public function getRequestInformation($request) {
+        $user = $request->getUser();
+        
+        $userId = $user->getId();
+        $userName = $user->getName();
+        
+        $requestId = $request->getId();
+        $requestStatus = $request->getStatus();
+        $requestDescription = $request->getDescription();
+        
+        $requestInformation [] = array('requesterName' => $userName, 
+            'requestDescription'=> $requestDescription, 'requesterID'=> $userId,
+            'requestID'=>$requestId,'requestStatus'=>$requestStatus);
+        
+        return $requestInformation;  
+    }
 
-public function getOfferInformation($offer) {
-    $user = $offer->getUser();
+    /**
+     * 
+     * @param \Megasoft\EntangleBundle\Entity\Offer $offer
+     * @return array $offerInformation
+     */
+    public function getOfferInformation($offer) {
+        $user = $offer->getUser();
+        
+        $userId = $user->getId();
+        $userName = $user->getName();
+        $offerDate = $offer->getDate();
+        $offerStatus = $offer->getStatus();
+        $offerPrice = $offer->getRequestedPrice();
+        $offerDescription = $offer->getDescription();
+        $offerDeadline = $offer->getExpectedDeadline();
     
-    $userId = $user->getId();
-    $userName = $user->getName();
-    $offerDate = $offer->getDate();
-    $offerStatus = $offer->getStatus();
-    $offerPrice = $offer->getRequestedPrice();
-    $offerDescription = $offer->getDescription();
-    $offerDeadline = $offer->getExpectedDeadline();
+        $offerInformation [] = array('offererName'=> $userName,
+            'offerDescription'=> $offerDescription,
+            'offerDeadline'=> $offerDeadline,
+            'offerStatus'=> $offerStatus,
+            'offerPrice'=> $offerPrice,
+            'offerDate'=> $offerDate,
+            'offererID'=> $userId);
     
-    $offerInformation [] = array('offererName'=> $userName,
-        'offerDescription'=> $offerDescription,
-        'offerDeadline'=> $offerDeadline,
-        'offerStatus'=> $offerStatus,
-        'offerPrice'=> $offerPrice,
-        'offerDate'=> $offerDate,
-        'offererID'=> $userId);
-    
-    return $offerInformation;
-            
-   
-    
-}
+        return $offerInformation;
+    }
    
 
 }
