@@ -593,6 +593,7 @@ get the details of an offer
 + Response 200 (application/json)
 
         {
+           "tangleId" : 1,
            "requestInformation" :  {
                                  "requesterName" : "Alaa Maher",
                                  "requestDescription" : "I want to understand this app.",
