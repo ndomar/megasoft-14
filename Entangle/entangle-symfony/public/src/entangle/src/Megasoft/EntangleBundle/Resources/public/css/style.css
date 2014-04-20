@@ -9,12 +9,13 @@ a {
 }
 
 .single-page-nav {
-    background: #000;
+    background: #242424;
     padding: 1.25em 0;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+    z-index:10000;
 }
 
 .single-page-nav ul {
@@ -56,4 +57,13 @@ a {
 
 #entangle {
     padding-top: 5em;
+}
+
+.entangle{
+	font-size: 100px;
+}
+
+.footer{
+	background:#242424;
+	min-height:300px;
 }
