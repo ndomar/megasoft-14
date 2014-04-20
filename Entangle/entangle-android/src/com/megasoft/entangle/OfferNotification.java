@@ -55,6 +55,40 @@ public class OfferNotification extends Activity {
 		notification = offerer + " has offered " + amount + " on your " + request + link;
 		TextView txt = (TextView) findViewById(R.id.textView1);
 		txt.setText(notification);
+		createNotification();
 	}
+	
+	/**
+	 * This is used to create the notification
+	 */
+	
+	public void createNotification() {
 		
+		NotificationCompat.Builder mBuilder = 
+				new NotificationCompat.Builder(this)
+				//.setSmallIcon(RESULT_OK)
+				.setContentTitle("Entangle:You got a new offer!")
+				.setContentText(notification);
+		
+
+		Intent resultIntent = new Intent(this , Notification.class);
+		
+		TaskStackBuilder sb = TaskStackBuilder.create(this);
+		sb.addParentStack(OfferNotification.class);
+		sb.addNextIntent(resultIntent);
+		
+		PendingIntent pIntent =
+		        sb.getPendingIntent(
+		            0,
+		            PendingIntent.FLAG_UPDATE_CURRENT
+		        );
+		mBuilder.setContentIntent(pIntent);
+		
+		NotificationManager notificationMgr = 
+				(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		
+		int ID = Integer.parseInt(notificationID);
+		notificationMgr.notify(ID , mBuilder.build());
+	}
+
 }
