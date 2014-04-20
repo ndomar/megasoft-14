@@ -147,7 +147,9 @@ public class RequestActivity extends Activity {
 		deadLineMonth = calendar.get(Calendar.MONTH);
 		deadLineDay = calendar.get(Calendar.DAY_OF_MONTH);
 		jsonTagsArray = new JSONArray();
-
+		final String currentDateTime = date + " " + calendar.get(Calendar.HOUR)
+				+ ":" + calendar.get(Calendar.MINUTE) + ":"
+				+ calendar.get(Calendar.SECOND);
 		Post.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View arg0) {
@@ -164,7 +166,7 @@ public class RequestActivity extends Activity {
 					json.put("description", description.getText().toString());
 					json.put("requestedPrice", requestedPrice.getText()
 							.toString());
-					json.put("date", date);
+					json.put("date", currentDateTime);
 					json.put("deadLine", dateDisplay.getText().toString());
 					json.put("tags", jsonTagsArray);
 				} catch (JSONException e) {

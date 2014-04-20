@@ -29,8 +29,9 @@
         <activity
 
             android:name="com.megasoft.entangle.RequestActivity"
-          	android:label="Request" >
+          	android:label="Request" />
 
+            <activity
             android:name="com.megasoft.entangle.InviteUserActivity"
             android:label="@string/title_activity_invite_users" >
         </activity>
