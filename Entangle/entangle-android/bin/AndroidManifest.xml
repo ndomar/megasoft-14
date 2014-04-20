@@ -39,10 +39,13 @@
                 android:value="com.megasoft.entangle.InviteUsers" />
         </activity>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         <activity 
             android:name="com.megasoft.entangle.EditProfileActivity"
             android:label="@string/title_activity_edit_profile" >
         </activity>
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     </application>
