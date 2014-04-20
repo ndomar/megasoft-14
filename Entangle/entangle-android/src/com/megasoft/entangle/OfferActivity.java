@@ -10,17 +10,60 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
+/**
+ * View an offer given the offer Id 
+ * @author Almgohar
+ */
 public class OfferActivity extends Activity {
 
+	/**
+	 * The TextView that holds the request's description
+	 */
 	TextView requestDescription; 
+	
+	/**
+	 * The TextView that holds the offer's description
+	 */
 	TextView offerDescription;
+	
+	/**
+	 * The TextView that holds the offer's expected deadline
+	 */
 	TextView offerDeadline;
+	
+	/**
+	 * The TextView that holds the requester's name
+	 */
 	TextView requesterName;
+	
+	/**
+	 * The TextView that holds the offerer's name
+	 */
 	TextView offererName;
+	
+	/**
+	 * The TextView that holds the offer's status
+	 */
 	TextView offerStatus;
+	
+	/**
+	 * The TextView that holds the offer's price
+	 */
 	TextView offerPrice;
+	
+	/**
+	 * The TextView that holds the date on which the offer was created
+	 */
 	TextView offerDate;
+	
+	/**
+	 * The tangle Id
+	 */
 	int tangleId;
+	
+	/**
+	 * The offer Id
+	 */
 	int offerId;
 	
 	@Override
@@ -38,6 +81,12 @@ public class OfferActivity extends Activity {
 		return true;
 	}
 	
+	/**
+	 * Initializes all views to link to the XML views
+	 * Sends a GET request and get the JSon response
+	 * Calls the ViewRequestInformation method
+	 * Calls the ViewOfferInformation method
+	 */
 	public void viewOffer() {
 		requestDescription = (TextView) findViewById(R.id.request_description);
 		offerDescription = (TextView) findViewById(R.id.offer_description);
@@ -66,10 +115,13 @@ public class OfferActivity extends Activity {
 			}
 		};
 		request.execute();
+	}
 		
-		}
-		
-	
+	/**
+	 *  Retrieves the required request information from the JSonObject
+	 *  Views the request information
+	 * @param JSonObject requestInformation
+	 */
 	public void viewRequestInfo(JSONObject requestInformation) {
 			try {
 				requesterName.setText(requestInformation.getString("requesterName"));
@@ -95,10 +147,13 @@ public class OfferActivity extends Activity {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
+	}
 			
-		}
-			
-	
+	/**
+	 * Retrieves the required offer information from the JSonObject
+	 * Views the offer information
+	 * @param JSonObject offerInformation
+	 */
 	public void viewOfferInfo(JSONObject offerInformation) {
 		
 		try {
@@ -130,6 +185,10 @@ public class OfferActivity extends Activity {
 		}		
 	}
 	
+	/**
+	 * Redirects to a user's profile given his id
+	 * @param int userId
+	 */
 	public void goToProfile(int userId) {
 		Intent profile = new Intent(this,ProfileActivity.class);
 		profile.putExtra("user id", userId);
@@ -137,11 +196,13 @@ public class OfferActivity extends Activity {
 		startActivity(profile);		
 	}
 	
+	/**
+	 * Redirects to a request given its id
+	 * @param int requestId
+	 */
 	public void goToRequest(int requestId) {
 		Intent request = new Intent(this,RequestActivity.class);
 		request.putExtra("request id", requestId);
 		startActivity(request);
 	}
-	
-
 }
