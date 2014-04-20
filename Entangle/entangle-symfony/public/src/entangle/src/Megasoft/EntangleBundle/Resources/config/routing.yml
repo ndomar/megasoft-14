@@ -37,4 +37,3 @@ delete_secondary_email:
     defaults: { _controller: MegasoftEntangleBundle:User:deleteSecondaryEmail}
     methods: [DELETE]
     
-
