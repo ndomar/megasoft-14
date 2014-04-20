@@ -1,4 +1,4 @@
-FORMAT: 1A
+﻿FORMAT: 1A
 HOST: http://www.google.com
 
 # Entangle
@@ -170,59 +170,7 @@ check tangle name availability
              X-SESSION-ID : asdasdasdsadasdasd
 
 + Response 404
-
-
-## GET /tangle/{tangleId}/getRecieverMail
-+ Parameters
-    + tangleId(Int, required)
-
-+ Request
-
-    + Header
-            
-             X-SESSION-ID : "salma"
-             
-+ Response 200(application/json)
-
-        {
-            "X-TANGLE_OWNER-MAIL" : "salmaumr@gmail.com"
-        }
-
-## GET /session/{sessionId}/getSenderMail
-+ Parameters
-    + sessionId(String, required)
-
-+ Request
-
-    + Header
-            
-             X-SESSION-ID : "salma"
-             
-+ Response 200(application/json)
-
-        {
-            "X-OFFERER-MAIL" : "salmaumr@gmail.com"
-        }
-        
-## POST /claim/{tangleId}/createClaim
-
-+ Parameters
-    + tangleId(Int, required)
-
-+ Request
-
-    + Header
-            
-             X-SESSION-ID : "salma"
- 
-             
-+ Response 200(application/json)
-
-        {
-             "X-CLAIM-ID" : "1234567"
-        }
-
-        
+     
 ## GET /transaction/{transactionID}/
 get the details of a transaction
 
@@ -271,6 +219,7 @@ Get profile
                              },
             "transactions" : [
                                  {
+                                     "offerId" : 3,
                                      "requesterName"  : "Mohamed Bassem" ,
                                      "requestDescription" : "I want to learn how to study." ,
                                      "amount" : "5"  
@@ -580,6 +529,129 @@ Delete user from tangle
                  
 + Response 204
 
+
+## GET /tangleOwnerAndOffererMail/{tangleId}/claim
+Get the email of the offerer
+
++ Parameters
+    + tangleId  ( Int , required ) ... tangle id
+
++ Request
+
+    + Header
+    
+            X-SESSION-ID : salma
+            
++ Response 200(application/json)
+
+        {
+            "X-OFFERER-MAIL" : "salma@gmail.com",
+            "X-TANGLEOWNER-MAIL" : "saloum@gmail.com"
+           
+        }
+        
+## POST /claim/{tangleId}/sendClaim
+Post request
++ Parameters
+    
+    + tangleId ( Int , required ) ... tangle id
+ 
++ Request (application/json)
+    
+    + Header
+            
+             X-SESSION-ID : salma
+
+    + Body
+    
+                { 
+                    "X-SENDER-MAIL" : "SALMA@GMAIL.COM",
+                    "X-RECIEVER-MAIL" : "SALOUM@GMAIL.COM",
+                    "X-SUBJECT" : "PLEASE",
+                    "X-MSSGBODY" : "NONO"
+                }
+
++ Response 200(application/json)
+
+        {
+            "X-CLAIM-ID" : "1234"
+           
+        }
+
+## GET /offer/{offerID}/
+get the details of an offer
+
++ Parameters
+    + offerID(Int , required)
+    
++ Request
+    
+    + Header
+    
+             sessionID : "testest"
+
++ Response 200 (application/json)
+
+        "requestInformation" :  {
+                                 "requesterName" : "Alaa Maher",
+                                 "requestDescription" : "I want to understand this app."
+                                },
+        "offerInformation" :    {
+                                     "offererName"  : "Mohamed Bassem" ,
+                                     "offerDescription" : "fgsherhsgs",
+                                     "offerDeadline" : "3/3/2015",
+                                     "offerSatus" : 0,
+                                     "offerPrice" : 300,
+                                     "offerDate" : "3/3/2014"
+                                }
+                             
+             
+
+## GET /notification/{notificationId}/get-seen
+ 
+ + Parameters
+    + notificationId (String , required ) 
+ + Request
+     + Header 
+         
+              sessionID : “testest”
+ 
+ + Response 200 (application/json)
+ 
+        {
+            “seen” : 1
+        }
+
+ 
+## GET /notification/{notificationId}
+ 
+ + Parameters
+    + notificationId (String , required )
+ 
+ + Request
+     + Header
+     
+            sessionID : “testest”
+ 
+ + Response 200 (application/json)
+ 
+        {
+            “description” : “this is notification description”
+            “offerer”  :  “Mohamed”
+            “Amount”  : “1000”
+            “request”  : “This is request”
+        }
+
+## PUT /notification/{notificationId}/set-seen
+ 
+ + Parameters
+    + notificationId (String , required ) 
+ + Request
+     + Header 
+         
+              sessionID : “testest”
+ 
+ + Response 201
 ## POST /request/{id}
 
 + Parameters
@@ -655,3 +727,4 @@ Delete user from tangle
             "status" : "1"
 
             }
+            
