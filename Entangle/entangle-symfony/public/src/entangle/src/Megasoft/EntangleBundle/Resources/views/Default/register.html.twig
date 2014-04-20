@@ -4,45 +4,90 @@
 
 {% block body %}
 
+
+    <div class="container">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+
+            <div class="navbar-header">
+
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" >
+
+                    <span class="sr-only">Toggle Navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand " href="index.html"><b>Entangle</b></a>
+            </div>
+
+            <div class="navbar-collapse collapse">
+
+                <ul class="nav navbar-nav">
+                    <li><a href="homepage">Home</a></li>
+                    <li class="active"><a href="register">Register</a></li>
+                    <li><a href="about">About</a></li>
+
+                </ul>
+            </div>
+        </nav>
+
+    </div>
+
     <div class="container">
 
-        <form class="form-register" class="well" method="POST" enctype='multipart/form-data' action="{{ path('megasoft_entangle_register') }}" data-validate="parsley">
+        <form class="form-signin" role="form" method="POST" enctype='multipart/form-data' action="{{ path('megasoft_entangle_register') }}" data-validate="parsley">
 
-            <h2>Sign up</h2>
-            <div>
-                <label>Username</label>
-                <input type="text" name="name" class="input-xlarge" required >
-            </div>
-            <div>
-                <label>Email</label>
-                <input type="email" name="email" class="input-xlarge">
-            </div>
-            <div>
-                <label>Password</label>
-                <input type="password" name="password" class="input-xlarge" data-trigger="change" >
-            </div>
-            <div >
-                <label>Confirm Password</label>
-                <input type="password" name="confirmPassword" class="input-xlarge" data-trigger="change" >
-            </div>
-            <div >
-                <label>Biography</label>
-                <input type="text" name="userBio">
-            </div>
-            <div>
-                <label>Date Of Birth</label>
-                <input type="text" name="birthDate">
-            </div>
-            <div>
-                <label>Picture</label>
-                <input type="file" name="img">
+            <h2 class="form-signin-heading">Register</h2>
 
-            </div>
+            <input type="text" name="name" class="form-control" placeholder="Username" required autofocus >
+            <input type="email" name="email" class="form-control" placeholder="Email Address" required autofocus>
 
-            <div>
-                <button class="btn btn-primary" type="submit" >Register</button>
-            </div>
+            <input type="password" name="password" class="form-control" placeholder="Password" required autofocus >
+
+            <input type="password" name="confirmPassword" class="form-control" placeholder="Confirm Password" required autofocus >
+
+            <textarea name="userBio" class="form-control" placeholder="Biography" required autofocus ></textarea>
+
+
+            <input type="text" placeholder="Date Of Birth" name="birthDate" class="input-xlarge" required>
+            <label for="img">Picture :
+                <input type="file" name="img" class="input-xlarge"></label>
+
+            <label class="checkbox">
+                <input type="checkbox" value="remember-me"> I Agree to Entangle Terms of Service
+            </label>
+
+            <button class="btn btn-success btn-large" type="submit" >Register</button>
+
+
 
         </form>
+
+    </div>
+
+    <div class="ftr">
+
+        <div class="container">
+            <div class="row">
+                <footer>
+                    <div class="pull-left ft_space">
+                        <address>
+                            <h3>Entangle Inc.</h3>
+                            MegaSoft-14 <br>
+                            German University in Cairo <br>
+                            Cairo <br>
+                            Egypt<br>
+                            <a href="mailto: Entangle@entangle.io">Entangle@entangle.io</a><br>
+                            <abbr title="Phone">P:</abbr>123-456-789
+                        </address>
+                    </div>
+                    <div class="pull-right ft_space">
+                        <img class="img-responsive" src={{ asset('images/logo.jpg') }} />
+                        <p>&copy; Entangle Inc. 2014</p>
+
+                    </div>
+                </footer>
+            </div>
+        </div>
     </div>
 {% endblock %}
