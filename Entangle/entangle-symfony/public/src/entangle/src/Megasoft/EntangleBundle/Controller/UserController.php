@@ -13,6 +13,7 @@ class UserController extends Controller {
      * Validates the username and password from request and returns sessionID
      * @param  Integer $len length for the generated sessionID
      * @return String $generatedSessionID the session id that will be used
+     * 
      * @author maisaraFarahat
      */
     private function generateSessionId($len) {
@@ -28,6 +29,7 @@ class UserController extends Controller {
      * Validates the username and password from request and returns sessionID
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response $response
+     * 
      * @author maisaraFarahat
      */
     public function loginAction(Request $request) {
@@ -72,23 +74,40 @@ class UserController extends Controller {
 
     /**
      * checks for the sessionID and gets the user 
-     * @param String $sessionId
-     * @return \Symfony\Component\HttpFoundation\Response $response response containing user with sessionID
+     * @param \Symfony\Component\HttpFoundation\Request $request request containing the sessionId
+     * @return \Symfony\Component\HttpFoundation\Response $response response containing: 
+     * user with sessionID , date of birth , emails , userID and description
+     * 
      * @author maisaraFarahat
      */
-    public function whoAmIAction($sessionId) {
+    public function whoAmIAction(Request $request) {
+        $json = $request->getContent();
+        if (!json)
+            return new Response(400, 'request was null');
+        $json_array = json_decode($json, true);
+        $sessionId = $json_array['session_id'];
         if (!$sessionId) {
             return new Response(400, 'sessionID was null');
         } else {
             $doctrine = $this->getDoctrine();
             $repo = $doctrine->getRepository('MegasoftEntangleBundle:User');
-            $user = $repo->findOneBy(array('sessionId' => $sessionId));
+            $retrievedSession = $repo->findOneBy(array('sessionId' => $sessionId));
+            $user = $retrievedSession->getUser();
             if ($user == null) {
                 return new Response('Bad Request', 400);
             } else {
+
                 $response = new JsonResponse();
-                
-                $response->setData(array('user' => $user));
+                $emails = $user->getEmails();
+                $description = $user->getUserBio();
+                $username = $user->getName();
+                $dob = $user->getBirthDate();
+                $userId = $user->getId();
+
+                $response->setData(array('user' => $user, 'user_id' => $userId,
+                    'date_of_birth' => $dob, 'description' => $description,
+                    'username' => $username, 'emails' => $emails));
+
                 $response->setStatusCode(200);
                 return $response;
             }

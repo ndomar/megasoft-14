@@ -37,6 +37,14 @@ class Tangle
     
     /**
      *
+     * @var integer
+     * 
+     * @ORM\Column(name="deletedBalance", type="integer")
+     */
+    private $deletedBalance = 0;
+    
+    /**
+     *
      * @var Request[]
      * @ORM\OneToMany(targetEntity="Request", mappedBy="tangle" , cascade={"persist"})
      */
@@ -62,6 +70,15 @@ class Tangle
      * @ORM\OneToMany(targetEntity="PendingInvitation", mappedBy="tangle", cascade={"persist"})
      */
     private $pendingInvitations;
+    
+    /**
+     *
+     * @var boolean
+     * 
+     * @ORM\Column(name="deleted", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
+     */
+    private $deleted = false;
+    
 
     /**
      * Get id
@@ -272,5 +289,51 @@ class Tangle
     public function getPendingInvitations()
     {
         return $this->pendingInvitations;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Tangle
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Set deletedBalance
+     *
+     * @param integer $deletedBalance
+     * @return Tangle
+     */
+    public function setDeletedBalance($deletedBalance)
+    {
+        $this->deletedBalance = $deletedBalance;
+
+        return $this;
+    }
+
+    /**
+     * Get deletedBalance
+     *
+     * @return integer 
+     */
+    public function getDeletedBalance()
+    {
+        return $this->deletedBalance;
     }
 }

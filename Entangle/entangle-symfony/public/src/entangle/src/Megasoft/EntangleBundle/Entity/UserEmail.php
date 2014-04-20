@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity
  */
-class UserEmail
-{
+class UserEmail {
+
     /**
      * @var integer
      *
@@ -34,7 +34,7 @@ class UserEmail
      * @ORM\Column(name="email", type="string", length=255)
      */
     private $email;
-    
+
     /**
      *
      * @var User
@@ -44,14 +44,20 @@ class UserEmail
      */
     private $user;
 
+    /**
+     *
+     * @var boolean
+     * 
+     * @ORM\Column(name="deleted", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
+     */
+    private $deleted = false;
 
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -61,8 +67,7 @@ class UserEmail
      * @param integer $userId
      * @return UserEmails
      */
-    public function setUserId($userId)
-    {
+    public function setUserId($userId) {
         $this->userId = $userId;
 
         return $this;
@@ -73,8 +78,7 @@ class UserEmail
      *
      * @return integer 
      */
-    public function getUserId()
-    {
+    public function getUserId() {
         return $this->userId;
     }
 
@@ -84,8 +88,7 @@ class UserEmail
      * @param string $email
      * @return UserEmails
      */
-    public function setEmail($email)
-    {
+    public function setEmail($email) {
         $this->email = $email;
 
         return $this;
@@ -96,8 +99,7 @@ class UserEmail
      *
      * @return string 
      */
-    public function getEmail()
-    {
+    public function getEmail() {
         return $this->email;
     }
 
@@ -107,8 +109,7 @@ class UserEmail
      * @param \Megasoft\EntangleBundle\Entity\User $user
      * @return UserEmail
      */
-    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null)
-    {
+    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null) {
         $this->user = $user;
 
         return $this;
@@ -119,8 +120,29 @@ class UserEmail
      *
      * @return \Megasoft\EntangleBundle\Entity\User 
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->user;
     }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return UserEmail
+     */
+    public function setDeleted($deleted) {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted() {
+        return $this->deleted;
+    }
+
 }

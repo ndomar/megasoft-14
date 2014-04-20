@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity
  */
-class User
-{
+class User {
+
     /**
      * @var integer
      *
@@ -27,7 +27,6 @@ class User
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
-    
 
     /**
      * @var string
@@ -63,108 +62,104 @@ class User
      * @ORM\Column(name="verified", type="boolean")
      */
     private $verified;
-    
+
     /**
      * @var Notification[]
      * 
      * @ORM\OneToMany(targetEntity="Notification", mappedBy="user", cascade={"persist"})
      */
     private $notifications;
-    
+
     /**
      *
      * @var Claim[]
      * @ORM\OneToMany(targetEntity="Claim", mappedBy="user", cascade={"persist"})
      */
     private $claims;
-    
+
     /**
      *
      * @var Session[]
      * @ORM\OneToMany(targetEntity="Session", mappedBy="user", cascade={"persist"})
      */
     private $sessions;
-    
-    
+
     /**
      * @var Message[]
      * 
      * @ORM\OneToMany(targetEntity="Message", mappedBy="sender", cascade={"persist"})
      */
     private $messages;
-    
+
     /**
      * @var Request[]
      * 
      * @ORM\OneToMany(targetEntity="Request", mappedBy="user", cascade={"persist"})
      */
     private $requests;
-    
+
     /**
      * @var Offer[]
      * 
      * @ORM\OneToMany(targetEntity="Offer", mappedBy="user", cascade={"persist"})
      */
     private $offers;
-    
+
     /**
      * @var UserTangle[]
      * 
      * @ORM\OneToMany(targetEntity="UserTangle", mappedBy="user", cascade={"persist"})
      */
     private $userTangles;
-    
+
     /**
      * @var UserEmail[]
      * 
      * @ORM\OneToMany(targetEntity="UserEmail", mappedBy="user", cascade={"persist"})
      */
     private $emails;
-    
+
     /**
      * @var InvitationCode[]
      * 
      * @ORM\OneToMany(targetEntity="InvitationCode", mappedBy="inviter", cascade={"persist"})
      */
     private $invitations;
-    
+
     /**
      * @var InvitationCode[]
      * 
      * @ORM\OneToMany(targetEntity="InvitationCode", mappedBy="user", cascade={"persist"})
      */
     private $invitationCodes;
-    
+
     /**
      * @var VerificationCode
      * 
      * @ORM\OneToOne(targetEntity="VerificationCode", mappedBy="user", cascade={"persist"})
      */
     private $verificationCode;
-    
+
     /**
      * @var PendingInvitation[]
      * 
      * @ORM\OneToMany(targetEntity="PendingInvitation", mappedBy="invitee", cascade={"persist"})
      */
     private $pendingInvitationInvitees;
-    
+
     /**
      * @var PendingInvitation[]
      * 
      * @ORM\OneToMany(targetEntity="PendingInvitation", mappedBy="inviter", cascade={"persist"})
      */
     private $pendingInvitationInviters;
-    
-    
-    
+
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -174,8 +169,7 @@ class User
      * @param string $name
      * @return User
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
@@ -186,8 +180,7 @@ class User
      *
      * @return string 
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
@@ -197,8 +190,7 @@ class User
      * @param string $photo
      * @return User
      */
-    public function setPhoto($photo)
-    {
+    public function setPhoto($photo) {
         $this->photo = $photo;
 
         return $this;
@@ -209,8 +201,7 @@ class User
      *
      * @return string 
      */
-    public function getPhoto()
-    {
+    public function getPhoto() {
         return $this->photo;
     }
 
@@ -220,8 +211,7 @@ class User
      * @param string $userBio
      * @return User
      */
-    public function setUserBio($userBio)
-    {
+    public function setUserBio($userBio) {
         $this->userBio = $userBio;
 
         return $this;
@@ -232,8 +222,7 @@ class User
      *
      * @return string 
      */
-    public function getUserBio()
-    {
+    public function getUserBio() {
         return $this->userBio;
     }
 
@@ -243,8 +232,7 @@ class User
      * @param \DateTime $birthDate
      * @return User
      */
-    public function setBirthDate($birthDate)
-    {
+    public function setBirthDate($birthDate) {
         $this->birthDate = $birthDate;
 
         return $this;
@@ -255,8 +243,7 @@ class User
      *
      * @return \DateTime 
      */
-    public function getBirthDate()
-    {
+    public function getBirthDate() {
         return $this->birthDate;
     }
 
@@ -266,8 +253,7 @@ class User
      * @param boolean $verified
      * @return User
      */
-    public function setVerified($verified)
-    {
+    public function setVerified($verified) {
         $this->verified = $verified;
 
         return $this;
@@ -278,15 +264,14 @@ class User
      *
      * @return boolean 
      */
-    public function getVerified()
-    {
+    public function getVerified() {
         return $this->verified;
     }
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->notifications = new \Doctrine\Common\Collections\ArrayCollection();
         $this->claims = new \Doctrine\Common\Collections\ArrayCollection();
         $this->messages = new \Doctrine\Common\Collections\ArrayCollection();
@@ -300,8 +285,7 @@ class User
      * @param \Megasoft\EntangleBundle\Entity\Notification $notifications
      * @return User
      */
-    public function addNotification(\Megasoft\EntangleBundle\Entity\Notification $notifications)
-    {
+    public function addNotification(\Megasoft\EntangleBundle\Entity\Notification $notifications) {
         $this->notifications[] = $notifications;
         $notifications->setUser($this);
         return $this;
@@ -312,8 +296,7 @@ class User
      *
      * @param \Megasoft\EntangleBundle\Entity\Notification $notifications
      */
-    public function removeNotification(\Megasoft\EntangleBundle\Entity\Notification $notifications)
-    {
+    public function removeNotification(\Megasoft\EntangleBundle\Entity\Notification $notifications) {
         $this->notifications->removeElement($notifications);
     }
 
@@ -322,8 +305,7 @@ class User
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getNotifications()
-    {
+    public function getNotifications() {
         return $this->notifications;
     }
 
@@ -333,8 +315,7 @@ class User
      * @param \Megasoft\EntangleBundle\Entity\Claim $claims
      * @return User
      */
-    public function addClaim(\Megasoft\EntangleBundle\Entity\Claim $claims)
-    {
+    public function addClaim(\Megasoft\EntangleBundle\Entity\Claim $claims) {
         $this->claims[] = $claims;
         $claims->setUser($this);
         return $this;
@@ -345,8 +326,7 @@ class User
      *
      * @param \Megasoft\EntangleBundle\Entity\Claim $claims
      */
-    public function removeClaim(\Megasoft\EntangleBundle\Entity\Claim $claims)
-    {
+    public function removeClaim(\Megasoft\EntangleBundle\Entity\Claim $claims) {
         $this->claims->removeElement($claims);
     }
 
@@ -355,8 +335,7 @@ class User
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getClaims()
-    {
+    public function getClaims() {
         return $this->claims;
     }
 
@@ -366,8 +345,7 @@ class User
      * @param \Megasoft\EntangleBundle\Entity\Message $messages
      * @return User
      */
-    public function addMessage(\Megasoft\EntangleBundle\Entity\Message $messages)
-    {
+    public function addMessage(\Megasoft\EntangleBundle\Entity\Message $messages) {
         $this->messages[] = $messages;
         $messages->setUser($this);
         return $this;
@@ -378,8 +356,7 @@ class User
      *
      * @param \Megasoft\EntangleBundle\Entity\Message $messages
      */
-    public function removeMessage(\Megasoft\EntangleBundle\Entity\Message $messages)
-    {
+    public function removeMessage(\Megasoft\EntangleBundle\Entity\Message $messages) {
         $this->messages->removeElement($messages);
     }
 
@@ -388,8 +365,7 @@ class User
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getMessages()
-    {
+    public function getMessages() {
         return $this->messages;
     }
 
@@ -399,8 +375,7 @@ class User
      * @param \Megasoft\EntangleBundle\Entity\Request $requests
      * @return User
      */
-    public function addRequest(\Megasoft\EntangleBundle\Entity\Request $requests)
-    {
+    public function addRequest(\Megasoft\EntangleBundle\Entity\Request $requests) {
         $this->requests[] = $requests;
         $requests->setUser($this);
         return $this;
@@ -411,8 +386,7 @@ class User
      *
      * @param \Megasoft\EntangleBundle\Entity\Request $requests
      */
-    public function removeRequest(\Megasoft\EntangleBundle\Entity\Request $requests)
-    {
+    public function removeRequest(\Megasoft\EntangleBundle\Entity\Request $requests) {
         $this->requests->removeElement($requests);
     }
 
@@ -421,8 +395,7 @@ class User
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getRequests()
-    {
+    public function getRequests() {
         return $this->requests;
     }
 
@@ -432,8 +405,7 @@ class User
      * @param \Megasoft\EntangleBundle\Entity\UserTangle $userTangles
      * @return User
      */
-    public function addUserTangle(\Megasoft\EntangleBundle\Entity\UserTangle $userTangles)
-    {
+    public function addUserTangle(\Megasoft\EntangleBundle\Entity\UserTangle $userTangles) {
         $this->userTangles[] = $userTangles;
         $userTangles->setUser($this);
         return $this;
@@ -444,8 +416,7 @@ class User
      *
      * @param \Megasoft\EntangleBundle\Entity\UserTangle $userTangles
      */
-    public function removeUserTangle(\Megasoft\EntangleBundle\Entity\UserTangle $userTangles)
-    {
+    public function removeUserTangle(\Megasoft\EntangleBundle\Entity\UserTangle $userTangles) {
         $this->userTangles->removeElement($userTangles);
     }
 
@@ -454,33 +425,30 @@ class User
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getUserTangles()
-    {
+    public function getUserTangles() {
         return $this->userTangles;
     }
-    
+
     /**
      * Get Tangles
      *
      * @return Tangle[]
      */
-    public function getTangles()
-    {
+    public function getTangles() {
         $tangles = array();
-        foreach($this->userTangles as $userTangle){
+        foreach ($this->userTangles as $userTangle) {
             $tangles[] = $userTangle->getTangle();
         }
         return $tangles;
     }
-    
+
     /**
      * Add emails
      *
      * @param \Megasoft\EntangleBundle\Entity\UserEmail $emails
      * @return User
      */
-    public function addEmail(\Megasoft\EntangleBundle\Entity\UserEmail $emails)
-    {
+    public function addEmail(\Megasoft\EntangleBundle\Entity\UserEmail $emails) {
         $this->emails[] = $emails;
         $emails->setUser($this);
         return $this;
@@ -491,8 +459,7 @@ class User
      *
      * @param \Megasoft\EntangleBundle\Entity\UserEmail $emails
      */
-    public function removeEmail(\Megasoft\EntangleBundle\Entity\UserEmail $emails)
-    {
+    public function removeEmail(\Megasoft\EntangleBundle\Entity\UserEmail $emails) {
         $this->emails->removeElement($emails);
     }
 
@@ -501,8 +468,7 @@ class User
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getEmails()
-    {
+    public function getEmails() {
         return $this->emails;
     }
 
@@ -512,8 +478,7 @@ class User
      * @param string $password
      * @return User
      */
-    public function setPassword($password)
-    {
+    public function setPassword($password) {
         $this->password = $password;
 
         return $this;
@@ -524,8 +489,7 @@ class User
      *
      * @return string 
      */
-    public function getPassword()
-    {
+    public function getPassword() {
         return $this->password;
     }
 
@@ -535,8 +499,7 @@ class User
      * @param \Megasoft\EntangleBundle\Entity\Session $sessions
      * @return User
      */
-    public function addSession(\Megasoft\EntangleBundle\Entity\Session $sessions)
-    {
+    public function addSession(\Megasoft\EntangleBundle\Entity\Session $sessions) {
         $this->sessions[] = $sessions;
         $sessions->setUser($this);
         return $this;
@@ -547,8 +510,7 @@ class User
      *
      * @param \Megasoft\EntangleBundle\Entity\Session $sessions
      */
-    public function removeSession(\Megasoft\EntangleBundle\Entity\Session $sessions)
-    {
+    public function removeSession(\Megasoft\EntangleBundle\Entity\Session $sessions) {
         $this->sessions->removeElement($sessions);
     }
 
@@ -557,8 +519,7 @@ class User
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getSessions()
-    {
+    public function getSessions() {
         return $this->sessions;
     }
 
@@ -568,8 +529,7 @@ class User
      * @param \Megasoft\EntangleBundle\Entity\Offer $offers
      * @return User
      */
-    public function addOffer(\Megasoft\EntangleBundle\Entity\Offer $offers)
-    {
+    public function addOffer(\Megasoft\EntangleBundle\Entity\Offer $offers) {
         $this->offers[] = $offers;
         $offers->setUser($this);
         return $this;
@@ -580,8 +540,7 @@ class User
      *
      * @param \Megasoft\EntangleBundle\Entity\Offer $offers
      */
-    public function removeOffer(\Megasoft\EntangleBundle\Entity\Offer $offers)
-    {
+    public function removeOffer(\Megasoft\EntangleBundle\Entity\Offer $offers) {
         $this->offers->removeElement($offers);
     }
 
@@ -590,8 +549,7 @@ class User
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getOffers()
-    {
+    public function getOffers() {
         return $this->offers;
     }
 
@@ -601,8 +559,7 @@ class User
      * @param \Megasoft\EntangleBundle\Entity\InvitationCode $invitations
      * @return User
      */
-    public function addInvitation(\Megasoft\EntangleBundle\Entity\InvitationCode $invitations)
-    {
+    public function addInvitation(\Megasoft\EntangleBundle\Entity\InvitationCode $invitations) {
         $this->invitations[] = $invitations;
         $invitations->setInviter($this);
         return $this;
@@ -613,8 +570,7 @@ class User
      *
      * @param \Megasoft\EntangleBundle\Entity\InvitationCode $invitations
      */
-    public function removeInvitation(\Megasoft\EntangleBundle\Entity\InvitationCode $invitations)
-    {
+    public function removeInvitation(\Megasoft\EntangleBundle\Entity\InvitationCode $invitations) {
         $this->invitations->removeElement($invitations);
     }
 
@@ -623,8 +579,7 @@ class User
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getInvitations()
-    {
+    public function getInvitations() {
         return $this->invitations;
     }
 
@@ -634,8 +589,7 @@ class User
      * @param \Megasoft\EntangleBundle\Entity\InvitationCode $invitationCodes
      * @return User
      */
-    public function addInvitationCode(\Megasoft\EntangleBundle\Entity\InvitationCode $invitationCodes)
-    {
+    public function addInvitationCode(\Megasoft\EntangleBundle\Entity\InvitationCode $invitationCodes) {
         $this->invitationCodes[] = $invitationCodes;
         $invitationCodes->setUser($this);
         return $this;
@@ -646,8 +600,7 @@ class User
      *
      * @param \Megasoft\EntangleBundle\Entity\InvitationCode $invitationCodes
      */
-    public function removeInvitationCode(\Megasoft\EntangleBundle\Entity\InvitationCode $invitationCodes)
-    {
+    public function removeInvitationCode(\Megasoft\EntangleBundle\Entity\InvitationCode $invitationCodes) {
         $this->invitationCodes->removeElement($invitationCodes);
     }
 
@@ -656,8 +609,7 @@ class User
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getInvitationCodes()
-    {
+    public function getInvitationCodes() {
         return $this->invitationCodes;
     }
 
@@ -667,8 +619,7 @@ class User
      * @param \Megasoft\EntangleBundle\Entity\VerificationCode $verificationCode
      * @return User
      */
-    public function setVerificationCode(\Megasoft\EntangleBundle\Entity\VerificationCode $verificationCode = null)
-    {
+    public function setVerificationCode(\Megasoft\EntangleBundle\Entity\VerificationCode $verificationCode = null) {
         $this->verificationCode = $verificationCode;
         $verificationCode->setUser($this);
         return $this;
@@ -679,8 +630,7 @@ class User
      *
      * @return \Megasoft\EntangleBundle\Entity\VerificationCode 
      */
-    public function getVerificationCode()
-    {
+    public function getVerificationCode() {
         return $this->verificationCode;
     }
 
@@ -690,10 +640,9 @@ class User
      * @param \Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInvitees
      * @return User
      */
-    public function addPendingInvitationInvitee(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInvitees)
-    {
+    public function addPendingInvitationInvitee(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInvitees) {
         $this->pendingInvitationInvitees[] = $pendingInvitationInvitees;
-        $pendingInvitationInvitees-setUser($this);
+        $pendingInvitationInvitees - setUser($this);
         return $this;
     }
 
@@ -702,8 +651,7 @@ class User
      *
      * @param \Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInvitees
      */
-    public function removePendingInvitationInvitee(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInvitees)
-    {
+    public function removePendingInvitationInvitee(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInvitees) {
         $this->pendingInvitationInvitees->removeElement($pendingInvitationInvitees);
     }
 
@@ -712,8 +660,7 @@ class User
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getPendingInvitationInvitees()
-    {
+    public function getPendingInvitationInvitees() {
         return $this->pendingInvitationInvitees;
     }
 
@@ -723,10 +670,9 @@ class User
      * @param \Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInviters
      * @return User
      */
-    public function addPendingInvitationInviter(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInviters)
-    {
+    public function addPendingInvitationInviter(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInviters) {
         $this->pendingInvitationInviters[] = $pendingInvitationInviters;
-         $pendingInvitationInviters->setUser($this);
+        $pendingInvitationInviters->setUser($this);
         return $this;
     }
 
@@ -735,8 +681,7 @@ class User
      *
      * @param \Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInviters
      */
-    public function removePendingInvitationInviter(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInviters)
-    {
+    public function removePendingInvitationInviter(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInviters) {
         $this->pendingInvitationInviters->removeElement($pendingInvitationInviters);
     }
 
@@ -745,8 +690,8 @@ class User
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getPendingInvitationInviters()
-    {
+    public function getPendingInvitationInviters() {
         return $this->pendingInvitationInviters;
     }
+
 }
