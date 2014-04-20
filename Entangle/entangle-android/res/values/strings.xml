@@ -17,7 +17,7 @@
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
     <string name="title_activity_change_offer_price">ChangeOfferPriceActivity</string>
-    <string name="newOfferPrice">New price</string>
+    <string name="newOfferPrice">Enter the new price</string>
     <string name="changePrice">CHANGE</string>
 
 </resources>

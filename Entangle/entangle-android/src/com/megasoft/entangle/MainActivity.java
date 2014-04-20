@@ -1,9 +1,5 @@
 package com.megasoft.entangle;
 
-import org.apache.http.client.methods.HttpPost;
-
-import com.megasoft.requests.PostRequest;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -17,7 +13,11 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		startActivity((new Intent(this,InviteUserActivity.class)).putExtra("com.megasoft.entangle.tangleId", 2));
+		Intent intent = new Intent(this, ChangeOfferPriceActivity.class);
+		intent.putExtra("requestId", 5);
+		intent.putExtra("offerId", 5);
+		intent.putExtra("X-SESSION-ID", 5);
+		startActivity(intent);
 	}
 
 	@Override

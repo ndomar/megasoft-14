@@ -19,7 +19,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="@string/newOfferPrice" />
+            android:hint="@string/newOfferPrice"
+            android:digits="0123456789"
+            android:inputType="number" />
     </LinearLayout>
 
     <LinearLayout
@@ -28,11 +30,10 @@
         android:orientation="horizontal" >
 
         <Button
-            
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:onClick="changePrice"
             android:layout_weight="1"
+            android:onClick="changePrice"
             android:text="@string/changePrice" />
     </LinearLayout>
 

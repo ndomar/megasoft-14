@@ -1,16 +1,35 @@
 package com.megasoft.entangle;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.megasoft.requests.PostRequest;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 public class ChangeOfferPriceActivity extends Activity {
+
+	int requestId;
+	int offerId;
+	int sessionId;
+	public static final int BUTTON_POSITIVE = 0xffffffff;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_change_offer_price);
+
+		this.requestId = getIntent().getIntExtra("requestId", -1);
+		this.offerId = getIntent().getIntExtra("offerId", -1);
+		this.sessionId = getIntent().getIntExtra("X-SESSION-ID", -1);
 
 	}
 
@@ -31,4 +50,83 @@ public class ChangeOfferPriceActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	public void changePrice(View view) {
+		EditText newPrice = (EditText) findViewById(R.id.newOfferPrice);
+		if ((newPrice.getText().toString()).equals("")) {
+			showMessage("PLEASE ENTER A NEW PRICE");
+		} else {
+			if (sessionId == -1) {
+				showMessage("SESSION EXPIRED, PLEASE RELOGIN");
+			} else {
+				if (requestId == -1 || offerId == -1) {
+					showMessage("INVALID OFFER, TRY AGAIN LATER");
+				} else {
+					sendPriceToServer();
+				}
+			}
+		}
+	}
+
+	public void sendPriceToServer() {
+		PostRequest imagePostRequest = new PostRequest(
+				"http://entangle2.apiary-mock.com/request/" + requestId
+						+ "/offers/" + offerId + "/changeprice") {
+			protected void onPostExecute(String response) {
+				if (!(this.getStatusCode() == 200)) {
+					showMessage("ERROR, TRY AGAIN LATER");
+				} else {
+					goToHomePage();
+				}
+			}
+		};
+		JSONObject priceJSON = new JSONObject();
+		try {
+			priceJSON.put("newPrice",
+					((EditText) findViewById(R.id.newOfferPrice)).getText()
+							.toString());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		imagePostRequest.setBody(priceJSON);
+		imagePostRequest.addHeader("X-SESSION-ID", "asdfc");
+		imagePostRequest.execute();
+	}
+
+	public void showMessage(String message) {
+		AlertDialog ad = new AlertDialog.Builder(this).create();
+		ad.setCancelable(false);
+		ad.setMessage(message);
+		ad.setButton(BUTTON_POSITIVE, "OK",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+		ad.show();
+	}
+
+	public void goToHomePage() {
+		AlertDialog ad = new AlertDialog.Builder(this).create();
+		ad.setCancelable(false);
+		ad.setMessage("PRICE IS CHANGED SUCCESSFULLY");
+		ad.setButton(BUTTON_POSITIVE, "OK",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						goToHomeHelper();
+					}
+				});
+		ad.show();
+	}
+
+	/**
+	 * Redirects the user to the home page
+	 * 
+	 * @author Mansour
+	 */
+	public void goToHomeHelper() {
+		startActivity(new Intent(this, MainActivity.class));
+	}
 }
