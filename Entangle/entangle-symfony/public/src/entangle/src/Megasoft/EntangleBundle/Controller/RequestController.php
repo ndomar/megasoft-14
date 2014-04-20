@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Megasoft\EntangleBundle\Entity\Session;
 use Megasoft\EntangleBundle\Entity\Request;
 use Megasoft\EntangleBundle\Entity\Tag;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * RequestController takes the json Object
@@ -32,28 +33,39 @@ class RequestController extends Controller {
         $json_array = json_decode($json, true);
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $tangleTable = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
         $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
         $userId = $session->getUserId();
         $description = $json_array['description'];
         $tags = $json_array['tags'];
         $date = $json_array['date'];
+        $dateFormated = new \DateTime($date);
         $deadLine = $json_array['deadLine'];
+        $deadLineFormated = new \DateTime($deadLine);
         $requestedPrice = $json_array['requestedPrice'];
-
+       
+        $theTangleId = (int)$tangleId;
+        
+        $tangle = $tangleTable->findOneBy(array('id' => $theTangleId));
+       /*  $rad = new JsonResponse();
+       $rad->setData(array('data' => $json, 'sessionId' =>$sessionId,
+           'tangleid' => $theTangleId , 'userId' => $userId));
+       return $rad;*/
         $newRequest = new Request();
+        
+        $newRequest->setTangle($tangle);
         $newRequest->setDescription($description);
         $newRequest->setStatus(1);
-        $newRequest->setTangleId($tangleId);
-        $newRequest->setDate($date);
-        $newRequest->setDeadLine($deadLine);
-        // $newRequest->setUserId($userId);
+        
+        $newRequest->setDate($dateFormated);
+        $newRequest->setDeadLine($deadLineFormated);
+        $newRequest->setUserId($userId);
         $newRequest->setRequestedPrice($requestedPrice);
-
         $this->addTags($newRequest, $tags);
-
         $doctrine->getManager()->persist($newRequest);
         $doctrine->getManager()->flush();
-
+       
+        
 
         $response->setData(array('sessionId' => $sessionId));
         $response->setStatusCode(201);
@@ -83,6 +95,7 @@ class RequestController extends Controller {
             $doctrine->getManager()->persist($tag);
             $doctrine->getManager()->flush();
         }
+        
     }
 
 }
