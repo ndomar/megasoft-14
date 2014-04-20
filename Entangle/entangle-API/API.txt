@@ -728,3 +728,29 @@ get the details of an offer
 
             }
             
+
+## POST /tangle/{tangleId}/request/{requestId}/offer
+Post offer
++ Parameters
+    
+    + tangleId ( Int , required ) ... tangle id
+    + requestId ( Int , required ) ... request id
+ 
++ Request (application/json)
+    
+    + Header
+            
+             X-SESSION-ID : "abc123"
+
+    + Body
+    
+                { 
+                    "description" : "description of an offer",
+                    "date" : "28/May/2013",
+                    "expectedDeadLine" : "19/April/2014",
+                    "requestedPrice" : "7"
+                }
+
+    
+
++ Response 201
