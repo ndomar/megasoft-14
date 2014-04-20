@@ -1,9 +1,6 @@
 package com.megasoft.entangle;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,7 +9,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ContentResolver;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -26,13 +22,14 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.megasoft.requests.PostRequest;
 
 @SuppressLint("NewApi") 
 public class PhotoUploaderFragment extends Fragment{
 	
-	private static final int REQUEST_CODE = 1;
+	private static final int REQUEST_CODE = 2;
 	private static final int RESULT_OK = -1;
 	private ImageView icon;
 	private Button button;
@@ -78,10 +75,10 @@ public class PhotoUploaderFragment extends Fragment{
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.upload_photo_fragement, container, false);
         
-        ImageView icon = (ImageView) view.findViewById(R.id.icon);
+        final ImageView icon = (ImageView) view.findViewById(R.id.icon);
         setIcon(icon);
         
-        Button iconButton = (Button) view.findViewById(R.id.iconButton);
+        final Button iconButton = (Button) view.findViewById(R.id.iconButton);
         setButton(iconButton);
        
         icon.setOnClickListener(new OnClickListener(){
@@ -92,7 +89,14 @@ public class PhotoUploaderFragment extends Fragment{
         
         iconButton.setOnClickListener(new OnClickListener(){
         	public void onClick(View view){
-        		sendPhotoData("http://entangletemp.apiary-mock.com/request/1/icon");
+        		iconButton.setClickable(false);
+        		
+        		AlertDialog ad = new AlertDialog.Builder(getActivity()).create();
+        		ad.setCancelable(false);
+        		ad.setMessage("Uploading ...");
+        		ad.show();
+        		
+        		sendPhotoData("http://entangletemp.apiary-mock.com/request/1/icon", ad);         
         	}
         });
         
@@ -104,15 +108,13 @@ public class PhotoUploaderFragment extends Fragment{
 		startActivityForResult(new Intent(Intent.ACTION_PICK,
 				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
 				REQUEST_CODE);
-		
-		
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE
 				&& data != null) {
-			Bitmap bitmap = getPhotoPath(data.getData());
+			Bitmap bitmap = getPhotoBitmap(data.getData());
 			ImageView imageView = getIcon();
 			imageView.setImageBitmap(bitmap);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -122,7 +124,7 @@ public class PhotoUploaderFragment extends Fragment{
 		}
 	}
 	
-	public Bitmap getPhotoPath(Uri uri) {
+	public Bitmap getPhotoBitmap(Uri uri) {
 		String[] projection = { android.provider.MediaStore.Images.Media.DATA };
 		Cursor cursor = getContentResolver().query(uri, projection, null, null,
 				null);
@@ -133,16 +135,17 @@ public class PhotoUploaderFragment extends Fragment{
 		Bitmap bitmap = BitmapFactory.decodeFile(filePath);
 		return bitmap;
 	}
-	public void sendPhotoData(String url){
+	public void sendPhotoData(String url, final AlertDialog ad){
 		PostRequest iconDataRequest = new PostRequest(url) {
 			protected void onPostExecute(String res) {
 				String message = "Sorry, there are problems uploading the icon. Please, try again later";
 				if (!this.hasError() && res != null) {
 					message = "Uploaded!";
 				}
-				//Toast.makeText(getActivity().getBaseContext(),
-				//		message,
-				//		Toast.LENGTH_LONG).show();
+				ad.dismiss();
+				Toast.makeText(getActivity().getBaseContext(),
+						message,
+						Toast.LENGTH_LONG).show();
 			}
 		};
 		JSONObject jsonBody = new JSONObject();
