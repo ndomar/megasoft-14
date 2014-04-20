@@ -592,18 +592,23 @@ get the details of an offer
 
 + Response 200 (application/json)
 
-        "requestInformation" :  {
+        {
+           "requestInformation" :  {
                                  "requesterName" : "Alaa Maher",
-                                 "requestDescription" : "I want to understand this app."
+                                 "requestDescription" : "I want to understand this app.",
+                                 "requesterID" : "1",
+                                 "requestID" : "2"
                                 },
-        "offerInformation" :    {
+            "offerInformation" :    {
                                      "offererName"  : "Mohamed Bassem" ,
                                      "offerDescription" : "fgsherhsgs",
                                      "offerDeadline" : "3/3/2015",
                                      "offerSatus" : 0,
                                      "offerPrice" : 300,
-                                     "offerDate" : "3/3/2014"
+                                     "offerDate" : "3/3/2014",
+                                     "offererID" : "2"
                                 }
+        }
                              
              
 
