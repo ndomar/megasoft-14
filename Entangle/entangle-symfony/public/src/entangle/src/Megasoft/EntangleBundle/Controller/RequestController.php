@@ -3,13 +3,9 @@
 namespace Megasoft\EntangleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-//use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Megasoft\EntangleBundle\Entity\Session;
 use Megasoft\EntangleBundle\Entity\Request;
 use Megasoft\EntangleBundle\Entity\Tag;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * RequestController takes the json Object
@@ -32,10 +28,18 @@ class RequestController extends Controller {
         $response = new JsonResponse();
         $json_array = json_decode($json, true);
         $sessionId = $request->headers->get('X-SESSION-ID');
+        if ($sessionId == null) {
+            $response->setStatusCode(400);
+            return $response;
+        }
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $tangleTable = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
         $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
         $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
+        if ($session == null) {
+            $response->setStatusCode(401);
+            return $response;
+        }
         $userId = $session->getUserId();
         $description = $json_array['description'];
         $tags = $json_array['tags'];
@@ -47,11 +51,11 @@ class RequestController extends Controller {
 
         $theTangleId = (int) $tangleId;
         $tangle = $tangleTable->findOneBy(array('id' => $theTangleId));
+        if ($tangle == null) {
+            $response->setStatusCode(401);
+            return $response;
+        }
         $user = $userTable->findOneBy(array('id' => $userId));
-        /*  $rad = new JsonResponse();
-          $rad->setData(array('data' => $json, 'sessionId' =>$sessionId,
-          'tangleid' => $theTangleId , 'userId' => $userId));
-          return $rad; */
         $newRequest = new Request();
 
         $newRequest->setTangle($tangle);
@@ -65,8 +69,6 @@ class RequestController extends Controller {
         $this->addTags($newRequest, $tags);
         $doctrine->getManager()->persist($newRequest);
         $doctrine->getManager()->flush();
-
-
 
         $response->setData(array('sessionId' => $sessionId));
         $response->setStatusCode(201);
@@ -82,7 +84,6 @@ class RequestController extends Controller {
      * @author Salma Khaled
      */
     public function addTags($newRequest, $tags) {
-        // $tagElements = explode("," , $tags);
         $doctrine = $this->getDoctrine();
         $repo = $doctrine->getRepository('MegasoftEntangleBundle:Tag');
         $arrlength = count($tags);
