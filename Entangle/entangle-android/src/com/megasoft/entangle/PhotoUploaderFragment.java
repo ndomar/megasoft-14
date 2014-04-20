@@ -37,7 +37,6 @@ public class PhotoUploaderFragment extends Fragment{
 	private ImageView icon;
 	private Button button;
 	private String encodedImage;
-	private ContentResolver contentResolver;
 	private boolean pickedImage = false;
 	
 	public void setPickedImage(boolean pickedImage){
@@ -54,17 +53,11 @@ public class PhotoUploaderFragment extends Fragment{
 	}
 	
 	public static PhotoUploaderFragment getInstance(ContentResolver contentResolver){
-		PhotoUploaderFragment fragment = new PhotoUploaderFragment();
-		fragment.setContentResolver(contentResolver);
-		return fragment;
+		return new PhotoUploaderFragment();
 	}
 	
 	public void setIcon(ImageView icon){
 		this.icon = icon;
-	}
-	
-	public void setContentResolver(ContentResolver contentResolver){
-		this.contentResolver = contentResolver;
 	}
 	
 	public void setButton(Button button){
@@ -73,10 +66,6 @@ public class PhotoUploaderFragment extends Fragment{
 	
 	public ImageView getIcon(){
 		return icon;
-	}
-	
-	public ContentResolver getContentResolver(){
-		return contentResolver;
 	}
 	
 	public Button getButton(){
@@ -101,7 +90,7 @@ public class PhotoUploaderFragment extends Fragment{
             icon.setImageDrawable(d);
         }
         catch(IOException ex){
-        	toasterShow("Error loading page")
+        	toasterShow("Error loading page");
         }
         
         final Button iconButton = (Button) view.findViewById(R.id.iconButton);
@@ -167,7 +156,7 @@ public class PhotoUploaderFragment extends Fragment{
 	
 	public Bitmap getPhotoBitmap(Uri uri) {
 		String[] projection = { android.provider.MediaStore.Images.Media.DATA };
-		Cursor cursor = getContentResolver().query(uri, projection, null, null,
+		Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null,
 				null);
 		int columnIndex = cursor.getColumnIndexOrThrow(projection[0]);
 		cursor.moveToFirst();
@@ -202,5 +191,9 @@ public class PhotoUploaderFragment extends Fragment{
 		Toast.makeText(getActivity().getBaseContext(),
 				message,
 				Toast.LENGTH_LONG).show();
+	}
+	
+	public String getSessionId(){
+		return ((UploadRequestIconActivity) getActivity()).getSessionId();
 	}
 }
