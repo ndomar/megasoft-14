@@ -34,6 +34,7 @@ class RequestController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $tangleTable = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
+        $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
         $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
         $userId = $session->getUserId();
         $description = $json_array['description'];
@@ -43,29 +44,29 @@ class RequestController extends Controller {
         $deadLine = $json_array['deadLine'];
         $deadLineFormated = new \DateTime($deadLine);
         $requestedPrice = $json_array['requestedPrice'];
-       
-        $theTangleId = (int)$tangleId;
-        
+
+        $theTangleId = (int) $tangleId;
         $tangle = $tangleTable->findOneBy(array('id' => $theTangleId));
-       /*  $rad = new JsonResponse();
-       $rad->setData(array('data' => $json, 'sessionId' =>$sessionId,
-           'tangleid' => $theTangleId , 'userId' => $userId));
-       return $rad;*/
+        $user = $userTable->findOneBy(array('id' => $userId));
+        /*  $rad = new JsonResponse();
+          $rad->setData(array('data' => $json, 'sessionId' =>$sessionId,
+          'tangleid' => $theTangleId , 'userId' => $userId));
+          return $rad; */
         $newRequest = new Request();
-        
+
         $newRequest->setTangle($tangle);
         $newRequest->setDescription($description);
         $newRequest->setStatus(1);
-        
+
         $newRequest->setDate($dateFormated);
         $newRequest->setDeadLine($deadLineFormated);
-        $newRequest->setUserId($userId);
+        $newRequest->setUser($user);
         $newRequest->setRequestedPrice($requestedPrice);
         $this->addTags($newRequest, $tags);
         $doctrine->getManager()->persist($newRequest);
         $doctrine->getManager()->flush();
-       
-        
+
+
 
         $response->setData(array('sessionId' => $sessionId));
         $response->setStatusCode(201);
@@ -95,7 +96,6 @@ class RequestController extends Controller {
             $doctrine->getManager()->persist($tag);
             $doctrine->getManager()->flush();
         }
-        
     }
 
 }
