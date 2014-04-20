@@ -1,6 +1,8 @@
 package com.megasoft.entangle;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +15,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
@@ -78,6 +81,19 @@ public class PhotoUploaderFragment extends Fragment{
         final ImageView icon = (ImageView) view.findViewById(R.id.icon);
         setIcon(icon);
         
+        try 
+        {
+            InputStream ims = getActivity().getAssets().open("addimage.jpg");
+            Drawable d = Drawable.createFromStream(ims, null);
+            icon.setImageDrawable(d);
+        }
+        catch(IOException ex) 
+        {
+        	Toast.makeText(getActivity().getBaseContext(),
+					"Error loading page",
+					Toast.LENGTH_LONG).show();
+        }
+        
         final Button iconButton = (Button) view.findViewById(R.id.iconButton);
         setButton(iconButton);
        
@@ -90,6 +106,7 @@ public class PhotoUploaderFragment extends Fragment{
         iconButton.setOnClickListener(new OnClickListener(){
         	public void onClick(View view){
         		iconButton.setClickable(false);
+        		iconButton.setEnabled(false);
         		
         		AlertDialog ad = new AlertDialog.Builder(getActivity()).create();
         		ad.setCancelable(false);
