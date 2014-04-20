@@ -231,14 +231,18 @@ public class RequestActivity extends Activity {
 	/**
 	 * this method shows the dialog that u can choose the deadLine from
 	 * 
+	 * @param int id the id of the dialog
 	 * @return Dialog datePickerDialog that is marked at deadLine date which is
 	 *         set initially as today's date
 	 * @author Salma Khaled
 	 */
-	protected Dialog onCreateDialog() {
-		DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-				mDateSetListener, deadLineYear, deadLineMonth, deadLineDay);
-		return datePickerDialog;
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case DATE_DIALOG_ID:
+			return new DatePickerDialog(this, mDateSetListener, deadLineYear,
+					deadLineMonth, deadLineDay);
+		}
+		return null;
 
 	}
 
