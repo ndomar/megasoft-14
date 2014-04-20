@@ -7,7 +7,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -52,7 +54,7 @@ public class GCMRegistrationActivity extends Activity {
 	/**
 	 * URI for registration
 	 */
-	public static final String uri = "http://mohamed.local/entangle/app_dev.php/register";
+	public static final String uri = "http://shaban.apiary-mock.com/gcm/register";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -151,8 +153,8 @@ public class GCMRegistrationActivity extends Activity {
 			@Override
 			protected void onPostExecute(String regid) {
 				sendRegisterationId(regid);
+				Log.i(TAG, regid);
 				storeRegisteratinId(regid);
-
 			}
 		}.execute(null, null, null);
 	}
