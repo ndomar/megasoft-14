@@ -390,6 +390,7 @@ class TangleController extends Controller
      * Parse the request and creates a new tangle
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
+     * @author Mansour
      */
     public function createTangleAction(Request $request) {
 
@@ -435,6 +436,7 @@ class TangleController extends Controller
      * parse the request and checks if the tangle is available or not
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
+     * @author Mansour
      */
     public function checkAvailabilityAction(Request $request) {
 

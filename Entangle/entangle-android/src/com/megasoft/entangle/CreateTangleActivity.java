@@ -39,6 +39,7 @@ public class CreateTangleActivity extends Activity {
 	/**
 	 * When the activity is created, it sets up listeners to the tangle name field
 	 * @param Bundle savedInstanceState
+	 * @author Mansour
 	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -76,6 +77,7 @@ public class CreateTangleActivity extends Activity {
 	 * Checks if the tangle name already exists or not
 	 * 
 	 * @param view
+	 * @author Mansour
 	 */
 	public void checkTangleName(View view) {
 		String tangleNameText = ((EditText) findViewById(R.id.tangleName))
@@ -103,6 +105,7 @@ public class CreateTangleActivity extends Activity {
 	 * Redirects to gallery when clicking choose icon button
 	 * 
 	 * @param view
+	 * @author Mansour
 	 */
 	public void chooseIcon(View view) {
 		goToGallery();
@@ -122,8 +125,8 @@ public class CreateTangleActivity extends Activity {
 	 * 
 	 * @param int requestCode
 	 * @param int resultCode
-	 * @param Intent
-	 *            data
+	 * @param Intent data
+	 * @author Mansour
 	 */
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -145,6 +148,7 @@ public class CreateTangleActivity extends Activity {
 	 * 
 	 * @param uri
 	 * @return Bitmap
+	 * @author Mansour
 	 */
 	public Bitmap getPhotoPath(Uri uri) {
 		String[] projection = { android.provider.MediaStore.Images.Media.DATA };
@@ -162,6 +166,7 @@ public class CreateTangleActivity extends Activity {
 	 * Creates the tangle when Create button is clicked
 	 * 
 	 * @param view
+	 * @author Mansour
 	 */
 	public void create(View view) {
 		EditText tangleName = (EditText) findViewById(R.id.tangleName);
@@ -187,6 +192,7 @@ public class CreateTangleActivity extends Activity {
 
 	/**
 	 * Sends the tangle info to the server
+	 * @author Mansour
 	 */
 	public void sendTangleToServer() {
 		PostRequest imagePostRequest = new PostRequest(
@@ -218,6 +224,7 @@ public class CreateTangleActivity extends Activity {
 	 * is called with
 	 * 
 	 * @param message
+	 * @author Mansour
 	 */
 	public void showMessage(String message) {
 		AlertDialog ad = new AlertDialog.Builder(this).create();
@@ -237,6 +244,7 @@ public class CreateTangleActivity extends Activity {
 	 * Resets a color of a text in a text field to black
 	 * 
 	 * @param id
+	 * @author Mansour
 	 */
 	public void resetColor(int id) {
 		TextView textView = (TextView) findViewById(id);
@@ -249,6 +257,7 @@ public class CreateTangleActivity extends Activity {
 	 * 
 	 * @param available
 	 * @param id
+	 * @author Mansour
 	 */
 	public void insertAvailability(boolean available, int id) {
 
@@ -263,6 +272,7 @@ public class CreateTangleActivity extends Activity {
 	/**
 	 * Shows a dialogue informing that the tangle is created and redirecting to
 	 * homepage when pressing OK
+	 * @author Mansour
 	 */
 	public void goToHomePage() {
 		AlertDialog ad = new AlertDialog.Builder(this).create();
@@ -281,6 +291,7 @@ public class CreateTangleActivity extends Activity {
 
 	/**
 	 * Redirects the user to the home page
+	 * @author Mansour
 	 */
 	public void goToHomeHelper() {
 		startActivity(new Intent(this, MainActivity.class));
