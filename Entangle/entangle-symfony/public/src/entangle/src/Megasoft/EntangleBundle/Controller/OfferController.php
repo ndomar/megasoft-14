@@ -45,6 +45,7 @@ class OfferController extends Controller
     $offerTable = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
     $offer = $offerTable->findOneBy(array('id'=>$offerId));
     $request = $offer->getRequest();
+    $tangleId = $request->getTangleId();
     
     if(!$this->validateUser($request, $sessionId)) {
         return new Response('Unauthorized',401);     
@@ -52,7 +53,8 @@ class OfferController extends Controller
     $requestInformation = $this->getRequestInformation($request);
     $offerInformation = $this->getOfferInformation($offer);
     $response = new JsonResponse(null, 200);
-    $response->setData(array('requestInformation'=>$requestInformation, 
+    $response->setData(array('tangleId'=> $tangleId,
+        'requestInformation'=>$requestInformation, 
         'offerInformation'=>$offerInformation));
     return $response;    
 }
@@ -63,9 +65,12 @@ public function getRequestInformation($request) {
     $userId = $user->getId();
     $userName = $user->getName();
     $requestDescription = $request->getDescription();
+    $requestId = $request->getId();
+    $requestStatus = $request->getStatus();
    
     $requestInformation [] = array('requesterName' => $userName, 
-        'requestDescription'=> $requestDescription, 'requesterID'=> $userId);
+        'requestDescription'=> $requestDescription, 'requesterID'=> $userId,
+        'requestID'=>$requestId,'requestStatus'=>$requestStatus);
     
     return $requestInformation;
 }
