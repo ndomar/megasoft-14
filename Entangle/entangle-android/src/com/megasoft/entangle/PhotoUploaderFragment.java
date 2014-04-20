@@ -38,6 +38,20 @@ public class PhotoUploaderFragment extends Fragment{
 	private Button button;
 	private String encodedImage;
 	private ContentResolver contentResolver;
+	private boolean pickedImage = false;
+	
+	public void setPickedImage(boolean pickedImage){
+		this.pickedImage = pickedImage;
+	}
+	
+	public boolean getPickedImage(){
+		return pickedImage;
+	}
+	
+	public void setEncodedImage(String encodedImage){
+		this.encodedImage = encodedImage;
+		setPickedImage(true);
+	}
 	
 	public static PhotoUploaderFragment getInstance(ContentResolver contentResolver){
 		PhotoUploaderFragment fragment = new PhotoUploaderFragment();
@@ -105,15 +119,23 @@ public class PhotoUploaderFragment extends Fragment{
         
         iconButton.setOnClickListener(new OnClickListener(){
         	public void onClick(View view){
-        		iconButton.setClickable(false);
-        		iconButton.setEnabled(false);
-        		
-        		AlertDialog ad = new AlertDialog.Builder(getActivity()).create();
-        		ad.setCancelable(false);
-        		ad.setMessage("Uploading ...");
-        		ad.show();
-        		
-        		sendPhotoData("http://entangletemp.apiary-mock.com/request/1/icon", ad);         
+        		if(getPickedImage()){
+	        		iconButton.setClickable(false);
+	        		iconButton.setEnabled(false);
+	        		
+	        		AlertDialog ad = new AlertDialog.Builder(getActivity()).create();
+	        		ad.setCancelable(false);
+	        		ad.setMessage("Uploading ...");
+	        		ad.show();
+	        		
+	        		sendPhotoData("http://entangletemp.apiary-mock.com/request/1/icon", ad);         
+        	
+        		}
+        		else{
+        			Toast.makeText(getActivity().getBaseContext(),
+    						"Please choose an icon",
+    						Toast.LENGTH_LONG).show();
+        		}
         	}
         });
         
@@ -137,7 +159,7 @@ public class PhotoUploaderFragment extends Fragment{
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
 			byte[] byteArray = baos.toByteArray();
-			encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+			setEncodedImage(Base64.encodeToString(byteArray, Base64.DEFAULT));
 		}
 	}
 	
