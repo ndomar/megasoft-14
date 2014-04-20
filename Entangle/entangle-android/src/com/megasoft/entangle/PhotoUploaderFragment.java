@@ -129,7 +129,9 @@ public class PhotoUploaderFragment extends Fragment{
 	        		ad.show();
 	        		
 	        		sendPhotoData("http://entangletemp.apiary-mock.com/request/1/icon", ad);         
-        	
+	        		
+	        		iconButton.setClickable(true);
+	        		iconButton.setEnabled(true);
         		}
         		else{
         			Toast.makeText(getActivity().getBaseContext(),
