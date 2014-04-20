@@ -17,7 +17,7 @@ invite:
     methods: [POST]
 
 leave_tangle:
-    pattern: /tangle/{tangleId}/user/{userId}
+    pattern: /tangle/{tangleId}/user
     defaults: {_controller: MegasoftEntangleBundle:Tangle:leaveTangle }
     methods: [DELETE]
 
