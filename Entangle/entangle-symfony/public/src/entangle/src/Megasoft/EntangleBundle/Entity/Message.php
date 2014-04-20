@@ -22,6 +22,14 @@ class Message
     private $id;
 
     /**
+     *
+     * @var string
+     * 
+     * @ORM\Column(name="body", type="string")
+     */
+    private $body;
+    
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime")
@@ -68,7 +76,16 @@ class Message
      * @ORM\JoinColumn(name="offerId", referencedColumnName="id")
      */
     private $offer;
-
+    
+    /**
+     *
+     * @var boolean
+     * 
+     * @ORM\Column(name="deleted", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
+     */
+    private $deleted = false;
+    
+    
     /**
      * Get id
      *
@@ -232,5 +249,51 @@ class Message
     public function getOffer()
     {
         return $this->offer;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Message
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Set body
+     *
+     * @param string $body
+     * @return Message
+     */
+    public function setBody($body)
+    {
+        $this->body = $body;
+
+        return $this;
+    }
+
+    /**
+     * Get body
+     *
+     * @return string 
+     */
+    public function getBody()
+    {
+        return $this->body;
     }
 }
