@@ -28,12 +28,12 @@ invite:
     methods: [POST]
 
 edit:
-    pattern: /user/{sessionId}/edit
+    pattern: /user/edit
     defaults: { _controller: MegasoftEntangleBundle:User:edit }
     methods: [PUT]
     
 delete_secondary_email:
-    pattern: /user/{sessionId}/delete-secondary-email
+    pattern: /user/delete-secondary-email
     defaults: { _controller: MegasoftEntangleBundle:User:deleteSecondaryEmail}
     methods: [DELETE]
     
