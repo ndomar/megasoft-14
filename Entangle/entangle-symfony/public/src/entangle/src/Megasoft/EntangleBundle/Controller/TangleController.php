@@ -229,5 +229,21 @@ class TangleController extends Controller {
         }
         return $ret;
     }
+    public function addUserAction($sessionId , $tangleId){
+        $tangle = $this->getDoctrine()
+                ->getRepository('MegasoftEntangleBundle:Tangle')
+                ->findBy($tangleId);
+        if(!$tangle){
+            return new Response("Tangle not found",404);
+        }
+        $user = $this->getDoctrine()
+                ->getRepository('MegasoftEntangleBundle:User')
+                ->findBy($sessionId);
+        if(!$user){
+            return new Response("User not found",404);
+        }
+        $tangle->addUserTangle($user);
+        return new Respone("User added",201);
+    }
 
 }
