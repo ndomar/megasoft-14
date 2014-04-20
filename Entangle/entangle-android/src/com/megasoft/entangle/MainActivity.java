@@ -10,21 +10,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-//import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-//import android.text.SpannableString;
-//import android.text.Spanned;
-//import android.text.method.LinkMovementMethod;
-//import android.text.style.ClickableSpan;
-//import android.text.style.StyleSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-//import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint({ "NewApi", "WorldReadableFiles" })
@@ -94,12 +87,7 @@ public class MainActivity extends Activity {
 					Toast.makeText(getApplicationContext(),
 							"Wrong Credentials", Toast.LENGTH_SHORT).show();
 
-				} else
-					Toast.makeText(getApplicationContext(),
-							"mada5alsh el request aslan", Toast.LENGTH_SHORT)
-							.show();
-				// i know that currently it doesn't make the request lessa
-				// mestany a3raf leeh isA
+				}
 			}
 		};
 		request.setBody(json);
