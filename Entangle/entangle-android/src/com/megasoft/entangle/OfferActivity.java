@@ -1,9 +1,13 @@
 package com.megasoft.entangle;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
+import com.megasoft.requests.GetRequest;
 import android.widget.TextView;
+import org.json.JSONException;
+import android.content.Intent;
+import android.app.Activity;
+import org.json.JSONObject;
+import android.os.Bundle;
+import android.view.Menu;
 
 public class OfferActivity extends Activity {
 
@@ -15,11 +19,15 @@ public class OfferActivity extends Activity {
 	TextView offerStatus;
 	TextView offerPrice;
 	TextView offerDate;
+	int offerId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_offer);
+		Intent intent = new Intent();
+		offerId = intent.getIntExtra("offerID", 3);
+		viewOffer();
 	}
 
 	@Override
@@ -37,15 +45,35 @@ public class OfferActivity extends Activity {
 		offerStatus = (TextView) findViewById(R.id.offer_status);
 		offerPrice = (TextView) findViewById(R.id.offer_price);
 		offerDate = (TextView) findViewById(R.id.offer_date);
-		
-		
+		viewRequestInfo();
 	}
 	
 	public void viewRequestInfo() {
 		
-	}
+			String link = "http://entangle2.apiary-mock.com/offer/" + offerId +"/";
+			
+			GetRequest request = new GetRequest(link) {
+				protected void onPostExecute(String response) {
+					if (this.getStatusCode() == 200) {
+						try {
+							JSONObject jSon = new JSONObject(response);
+							JSONObject requestInformation = jSon.getJSONObject("requestInformation");
+							JSONObject offerInformation = jSon.getJSONObject("offerInformation");
+							requesterName.setText(requestInformation.getString("requesterName"));
+							requestDescription.setText(requestInformation.getString("requestDescription"));
+							
+							viewOfferInfo(offerInformation);	
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			};
+			request.execute();
+		}
+			
 	
-	public void viewOfferInfo() {
+	public void viewOfferInfo(JSONObject offerInformation) {
 		
 	}
 
