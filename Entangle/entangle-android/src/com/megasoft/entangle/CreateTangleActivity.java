@@ -190,7 +190,7 @@ public class CreateTangleActivity extends Activity {
 	 */
 	public void sendTangleToServer() {
 		PostRequest imagePostRequest = new PostRequest(
-				"http://requestb.in/pdwqhbpd") {
+				"http://entangle2.apiary-mock.com/tangle") {
 			protected void onPostExecute(String response) {
 				if (!(this.getStatusCode() == 201)) {
 					showMessage("ERROR, TRY AGAIN LATER");

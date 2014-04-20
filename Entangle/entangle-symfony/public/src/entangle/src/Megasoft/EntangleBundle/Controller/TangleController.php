@@ -265,7 +265,7 @@ class TangleController extends Controller {
 
         $tangle = new Tangle();
         $tangle->setName($tangleName);
-        $tangle->setIcon($tangleIcon);
+        $tangle->setIcon($iconName);
         $tangle->setDeleted(false);
 
         $this->getDoctrine()->getManager()->persist($tangle);
