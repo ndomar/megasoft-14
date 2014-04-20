@@ -42,6 +42,14 @@
             android:name="com.megasoft.entangle.OfferActivity"
             android:label="@string/title_activity_offer" >
         </activity>
+        <activity
+            android:name="com.megasoft.entangle.ProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.RequestActivity"
+            android:label="@string/title_activity_request" >
+        </activity>
     </application>
 
 </manifest>

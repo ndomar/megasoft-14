@@ -8,6 +8,7 @@ import android.app.Activity;
 import org.json.JSONObject;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 
 public class OfferActivity extends Activity {
 
@@ -19,6 +20,7 @@ public class OfferActivity extends Activity {
 	TextView offerStatus;
 	TextView offerPrice;
 	TextView offerDate;
+	int tangleId;
 	int offerId;
 	
 	@Override
@@ -52,6 +54,7 @@ public class OfferActivity extends Activity {
 				if (this.getStatusCode() == 200) {
 					try {
 						JSONObject jSon = new JSONObject(response);
+						tangleId = jSon.getInt("tangleId");
 						JSONObject requestInformation = jSon.getJSONObject("requestInformation");
 						JSONObject offerInformation = jSon.getJSONObject("offerInformation");
 						viewRequestInfo(requestInformation);
@@ -71,9 +74,25 @@ public class OfferActivity extends Activity {
 			try {
 				requesterName.setText(requestInformation.getString("requesterName"));
 				requestDescription.setText(requestInformation.getString("requestDescription"));
-
+				
+				final int userId = requestInformation.getInt("requesterID");
+				final int requestId = requestInformation.getInt("requestID");
+				
+				requesterName.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						goToProfile(userId);
+					}
+				});
+				
+				requestDescription.setOnClickListener(new View.OnClickListener() {	
+					@Override
+					public void onClick(View v) {
+						goToRequest(requestId);	
+					}
+				});
+				
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -83,25 +102,46 @@ public class OfferActivity extends Activity {
 	public void viewOfferInfo(JSONObject offerInformation) {
 		
 		try {
-			offererName.setText(offerInformation.getString("offererName"));
 			offerDescription.setText(offerInformation.getString("offerDescription"));
 			offerDeadline.setText(offerInformation.getString("offerDeadline"));
+			offererName.setText(offerInformation.getString("offererName"));
 			offerDate.setText(offerInformation.getString("offerDate"));
 			offerPrice.setTag(offerInformation.getInt("offerPrice"));
+			
+			final int userId = offerInformation.getInt("offererID");
 			int status = offerInformation.getInt("offerStatus");
+
 			if(status == 0) 
 				offerStatus.setText("New");
 			 else if(status == 1)
 				 offerStatus.setText("In Progress");
 			 else 
 				 offerStatus.setText("Done");
-					
+			
+			offererName.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					goToProfile(userId);
+				}
+			});
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		
+		}		
 	}
+	
+	public void goToProfile(int userId) {
+		Intent profile = new Intent(this,ProfileActivity.class);
+		profile.putExtra("user id", userId);
+		profile.putExtra("tangle id", this.tangleId);
+		startActivity(profile);		
+	}
+	
+	public void goToRequest(int requestId) {
+		Intent request = new Intent(this,RequestActivity.class);
+		request.putExtra("request id", requestId);
+		startActivity(request);
+	}
+	
 
 }
