@@ -1,11 +1,22 @@
 megasoft_entangle_homepage:
-    pattern:  /hello/{name}
+    pattern:  /hello/{hello}
     defaults: { _controller: MegasoftEntangleBundle:Default:index }
+    methods: [GET]
+    
+filter_requests_in_tangle:
+    pattern:  /tangle/{tangleId}/request
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:filterRequests }
+    methods: [GET]
+    requirements:
+        tangleId:  \d+
 
-#megasoft_entangle_test:
-#    pattern:  /test
-#    defaults: { _controller: MegasoftEntangleBundle:Default:test }
-
+fetch_tags_in_tangle:
+    pattern:  /tangle/{tangleId}/tag
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:allTags}
+    methods: [GET]
+    requirements:
+        tangleId:  \d+
+        
 check_membership:
     pattern: /tangle/{tangleId}/check-membership
     defaults: { _controller: MegasoftEntangleBundle:Tangle:checkMembership }
@@ -25,4 +36,3 @@ create_tangle:
     pattern: /tangle
     defaults: { _controller: MegasoftEntangleBundle:Tangle:createTangle }
     methods: [POST]
-
