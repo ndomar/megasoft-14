@@ -39,11 +39,13 @@ public class Claim extends Activity {
 		if (offererMail.equals("") || tangleOwenerMail.equals("")) {
 			Toast.makeText(this, "Please enter valid emails", Toast.LENGTH_SHORT).show();
 		}
-		else if (mssgBody.equals("") || subject.equals("")) {
-			
-			Toast.makeText(this, "Either the subject or msssg body missing", Toast.LENGTH_LONG).show();
+		else if (mssgBody.equals("")) {
+			Toast.makeText(this, "Msssg body missing", Toast.LENGTH_LONG).show();
 		}
 		else {
+			if (subject.equals("")) {
+				Toast.makeText(this, "Subject is missing", Toast.LENGTH_LONG).show();
+			}
 			JSONObject object = new JSONObject();
 		try {
 			object.put("X-SENDER-MAIL", offererMail);
