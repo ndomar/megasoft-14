@@ -23,34 +23,107 @@ import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 
 public class RequestActivity extends Activity {
+	/**
+	 * the Post Button that will send the server the postrequest to Post the
+	 * Request to the stream
+	 */
 	Button Post;
+	/**
+	 * EditText that will contain the Request's description
+	 */
 	EditText description;
+	/**
+	 * EditText that will contain the Request's requested price
+	 */
 	EditText requestedPrice;
+	/**
+	 * EditText that will contain the tags
+	 */
 	EditText tags;
+	/**
+	 * CheckBox that the user should check after filling the fields
+	 */
 	CheckBox checkBox;
-	int requiredFields = 0;
+	/**
+	 * flag that will indicate if the checkbox was checked but the user went
+	 * back to change or fill another field
+	 */
 	boolean flag;
+	/**
+	 * the json object to be sent in the postrequest
+	 */
 	JSONObject json = new JSONObject();
+	/**
+	 * the choosen deadLine year , in case user didn't choose a value it will be
+	 * set to current year
+	 */
 	int deadLineYear;
+	/**
+	 * the choosen deadLine month , in case user didn't choose a value it will
+	 * be set to current month
+	 */
 	int deadLineMonth;
+	/**
+	 * the choosen deadLine day , in case user didn't choose a value it will be
+	 * set to current day
+	 */
 	int deadLineDay;
+	/**
+	 * Textview to display the deadLine date , in case user didn't choose a
+	 * value it will display today's date
+	 */
 	TextView dateDisplay;
+	/**
+	 * Button clicked to pick deadLine date
+	 */
 	Button pickDate;
+	/**
+	 * calender to choose deadLine date from
+	 */
 	final Calendar calendar = Calendar.getInstance();
+	/**
+	 * current day
+	 */
 	final int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+	/**
+	 * current month
+	 */
 	final int currentMonth = calendar.get(Calendar.MONTH);
+	/**
+	 * current year
+	 */
 	final int currentYear = calendar.get(Calendar.YEAR);
+	/**
+	 * String of the current date
+	 */
 	final String date = currentDay + "/" + (currentMonth + 1) + "/"
 			+ currentYear;
+	/**
+	 * the date dialog Id
+	 */
 	static final int DATE_DIALOG_ID = 0;
+	/**
+	 * json array to store the tags
+	 */
 	JSONArray jsonTagsArray;
+	/**
+	 * array to store the tags each as a string
+	 */
 	String[] tagsArray;
+	/**
+	 * sessionId of the currently logged in user
+	 */
 	String sessionId;
+	/**
+	 * preference instance
+	 */
 	SharedPreferences settings;
 
 	/**
 	 * on creation of the activity it takes data from the fields and send it as
 	 * json object on clicking the Post Button
+	 * 
+	 * @author Salma Khaled
 	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -160,6 +233,7 @@ public class RequestActivity extends Activity {
 	 * 
 	 * @return Dialog datePickerDialog that is marked at deadLine date which is
 	 *         set initially as today's date
+	 * @author Salma Khaled
 	 */
 	protected Dialog onCreateDialog() {
 		DatePickerDialog datePickerDialog = new DatePickerDialog(this,
@@ -190,6 +264,7 @@ public class RequestActivity extends Activity {
 	 * @param editText
 	 * @return boolean true if that editText is empty and false otherwise and it
 	 *         will set an error then
+	 * @author Salma Khaled
 	 */
 	private boolean isEmpty(EditText editText) {
 		if (editText.getText().toString().length() == 0) {
@@ -203,6 +278,8 @@ public class RequestActivity extends Activity {
 	/**
 	 * this method checks if there is no error messages set, and if the checkbox
 	 * is checked and only then it enables the Post button
+	 * 
+	 * @author Salma Khaled
 	 */
 	private void enablePostButton() {
 		if (description.getError() == null && requestedPrice.getError() == null
@@ -217,7 +294,9 @@ public class RequestActivity extends Activity {
 	 * enablePostButton() to check if we can enable the post button and then
 	 * take the action of enabling it or setting error messages
 	 * 
-	 * @param view which will be the checkbox
+	 * @param view
+	 *            which will be the checkbox
+	 * @author Salma Khaled
 	 */
 	public void itemClicked(View view) {
 		View focusedView = getCurrentFocus();
@@ -236,6 +315,7 @@ public class RequestActivity extends Activity {
 	 * check if all the fields required are not empty
 	 * 
 	 * @return boolean true if they are all not empty false otherwise
+	 * @author Salma Khaled
 	 */
 	private boolean fieldsNotEmpty() {
 		if (!isEmpty(description) & !isEmpty(requestedPrice) & !isEmpty(tags))
@@ -247,6 +327,7 @@ public class RequestActivity extends Activity {
 	 * check if the deadLine is valid and not in the past
 	 * 
 	 * @return true if it is valid , false otherwise
+	 * @author Salma Khaled
 	 */
 	private boolean isValidDeadLine() {
 		if (currentYear > deadLineYear

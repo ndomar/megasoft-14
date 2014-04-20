@@ -23,6 +23,7 @@ class RequestController extends Controller {
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param type $tangleId
      * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @author Salma Khaled
      */
     public function createAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId) {
         $doctrine = $this->getDoctrine();
@@ -65,6 +66,7 @@ class RequestController extends Controller {
      * it also add the tag to the created Request realated to it
      * @param type $newRequest
      * @param type $tags
+     * @author Salma Khaled
      */
     public function addTags($newRequest, $tags) {
         // $tagElements = explode("," , $tags);
