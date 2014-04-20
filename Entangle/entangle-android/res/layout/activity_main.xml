@@ -63,21 +63,8 @@
         android:inputType="textPassword"
         android:textSize="15dp" />
 
-    <TextView
-        android:id="@+id/register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/Login"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="250dp"
-        android:onClick="register"
-        android:text="Not registered yet?"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="25dp" />
-
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -85,6 +72,17 @@
         android:layout_marginBottom="45dp"
         android:onClick="login"
         android:text="Login"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="25dp" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/Register"
+        android:layout_marginBottom="45dp"
+        android:text="Register"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="25dp" />
 
