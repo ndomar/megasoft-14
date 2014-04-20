@@ -395,38 +395,36 @@ Post icon for a specific request
             "iconUrl" : "http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/icons/test.jpg"
         }
 
-## GET /user/whoami/{sessionId}
+## GET /user/whoAmI
 
-+ parameter 
-    + sessionId (String , required) ... session id
-    
 + Request
-    + Header 
-        
-             X-SESSION-ID : "asd123"
 
+    + Body
+            
+            {
+                "session_id" : "abcdefghijklmnopqrstuvwxyz1234"
+            }
+           
 + Response 200 (application/json)
 
         {
-            "user" : "UserWithSessionId"
+                "emails" : ["maisara.farahat@gmail.com" , "maisara.farahat@student.guc.edu.eg"],
+                "description" : "maisara taleb 4alban 3ayez ye3mel alaban",
+                "username" : "maisara",
+                "dob" : "29/04/1993",
+                "userId" : 4757
         }
         
-## POST /user/login/{username,password}
+## POST /user/login
 
-+ Parameters
-    + username ( String , required ) ... username
-    + password (String , required ) ... password
-    
+
 + Request (application/json)
-    + Header
-            
-             X-SESSION-ID : "asd123"
     
     + Body 
     
             {
-               "username" : [username]
-                "password" : [password]
+               "username" : "maisara",
+                "password" : "95bcadd58e0aa59e8f6e09c86ed310c7"
             }
              
 + Response 201
@@ -727,4 +725,7 @@ get the details of an offer
             "status" : "1"
 
             }
+
+
+
             
