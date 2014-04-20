@@ -727,6 +727,7 @@ get the details of an offer
             "status" : "1"
 
             }
+
 ##POST /accept/offer/{offerId}
 accept an offer
 
@@ -743,4 +744,6 @@ accept an offer
              "offerId" : "1"
             }
 
-+ Response 201           
++ Response 201
+
+
