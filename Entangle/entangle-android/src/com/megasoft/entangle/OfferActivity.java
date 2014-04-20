@@ -45,35 +45,62 @@ public class OfferActivity extends Activity {
 		offerStatus = (TextView) findViewById(R.id.offer_status);
 		offerPrice = (TextView) findViewById(R.id.offer_price);
 		offerDate = (TextView) findViewById(R.id.offer_date);
-		viewRequestInfo();
-	}
-	
-	public void viewRequestInfo() {
+		String link = "http://entangle2.apiary-mock.com/offer/" + offerId +"/";
 		
-			String link = "http://entangle2.apiary-mock.com/offer/" + offerId +"/";
-			
-			GetRequest request = new GetRequest(link) {
-				protected void onPostExecute(String response) {
-					if (this.getStatusCode() == 200) {
-						try {
-							JSONObject jSon = new JSONObject(response);
-							JSONObject requestInformation = jSon.getJSONObject("requestInformation");
-							JSONObject offerInformation = jSon.getJSONObject("offerInformation");
-							requesterName.setText(requestInformation.getString("requesterName"));
-							requestDescription.setText(requestInformation.getString("requestDescription"));
-							
-							viewOfferInfo(offerInformation);	
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
+		GetRequest request = new GetRequest(link) {
+			protected void onPostExecute(String response) {
+				if (this.getStatusCode() == 200) {
+					try {
+						JSONObject jSon = new JSONObject(response);
+						JSONObject requestInformation = jSon.getJSONObject("requestInformation");
+						JSONObject offerInformation = jSon.getJSONObject("offerInformation");
+						viewRequestInfo(requestInformation);
+						viewOfferInfo(offerInformation);	
+					} catch (JSONException e) {
+						e.printStackTrace();
 					}
 				}
-			};
-			request.execute();
+			}
+		};
+		request.execute();
+		
+		}
+		
+	
+	public void viewRequestInfo(JSONObject requestInformation) {
+			try {
+				requesterName.setText(requestInformation.getString("requesterName"));
+				requestDescription.setText(requestInformation.getString("requestDescription"));
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 			
 	
 	public void viewOfferInfo(JSONObject offerInformation) {
+		
+		try {
+			offererName.setText(offerInformation.getString("offererName"));
+			offerDescription.setText(offerInformation.getString("offerDescription"));
+			offerDeadline.setText(offerInformation.getString("offerDeadline"));
+			offerDate.setText(offerInformation.getString("offerDate"));
+			offerPrice.setTag(offerInformation.getInt("offerPrice"));
+			int status = offerInformation.getInt("offerStatus");
+			if(status == 0) 
+				offerStatus.setText("New");
+			 else if(status == 1)
+				 offerStatus.setText("In Progress");
+			 else 
+				 offerStatus.setText("Done");
+					
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
 
