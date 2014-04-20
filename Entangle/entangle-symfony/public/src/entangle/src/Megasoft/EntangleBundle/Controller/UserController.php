@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller {
+
     /**
      * Validates the username and password from request and returns sessionID
      * @param  Integer $len length for the generated sessionID
@@ -86,6 +87,7 @@ class UserController extends Controller {
                 return new Response('Bad Request', 400);
             } else {
                 $response = new JsonResponse();
+                
                 $response->setData(array('user' => $user));
                 $response->setStatusCode(200);
                 return $response;

@@ -4,33 +4,35 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.megasoft.config.Config;
+import com.megasoft.requests.PostRequest;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
+//import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.text.style.StyleSpan;
+//import android.text.SpannableString;
+//import android.text.Spanned;
+//import android.text.method.LinkMovementMethod;
+//import android.text.style.ClickableSpan;
+//import android.text.style.StyleSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+//import android.widget.TextView;
 import android.widget.Toast;
-
-import com.megasoft.requests.PostRequest;
 
 @SuppressLint({ "NewApi", "WorldReadableFiles" })
 public class MainActivity extends Activity {
 	private EditText username;
 	private EditText password;
 	private Button login;
+	private Button register;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +40,22 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		username = (EditText) findViewById(R.id.usernameBox);
 		password = (EditText) findViewById(R.id.passwordBox);
-		login = (Button) findViewById(R.id.button1);
+		login = (Button) findViewById(R.id.loginButton);
+		register = (Button) findViewById(R.id.registerButton);
 
+		register.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+
+				// this google thing , needs to be changed to the url that islam
+				// will provide me with
+				Uri uri = Uri.parse("http://www.google.com");
+				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+				startActivity(intent);
+
+			}
+
+		});
 	}
 
 	/*
@@ -69,58 +85,26 @@ public class MainActivity extends Activity {
 				if (this.getStatusCode() == 201) {
 					Toast.makeText(getApplicationContext(), "Redirecting...",
 							Toast.LENGTH_SHORT).show();
-					// adding the session id to the shared preferences
+					// adding the session id to the shared preferences is done
+					// in the goToHome(String) method
 
 					goToHome(response);
+
 				} else if (this.getStatusCode() == 400) {
 					Toast.makeText(getApplicationContext(),
 							"Wrong Credentials", Toast.LENGTH_SHORT).show();
 
-				}
+				} else
+					Toast.makeText(getApplicationContext(),
+							"mada5alsh el request aslan", Toast.LENGTH_SHORT)
+							.show();
+				// i know that currently it doesn't make the request lessa
+				// mestany a3raf leeh isA
 			}
 		};
 		request.setBody(json);
 		request.execute();
 
-		Toast.makeText(getApplicationContext(), "Wrong Credentials",
-				Toast.LENGTH_SHORT).show();
-
-	}
-
-	/*
-	 * this method will be called when clicking " not registered yet " and calls
-	 * goToRegister()
-	 * 
-	 * @author maisaraFarahat
-	 */
-	private void register() {
-		SpannableString ss = new SpannableString("Not registered yet?");
-		ss.setSpan(new StyleSpan(Typeface.ITALIC), 22, 27,
-				Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-		ClickableSpan clickableSpan = new ClickableSpan() {
-			@Override
-			public void onClick(View textView) {
-				startActivity(new Intent(MainActivity.this,
-						RegisterActivity.class));
-			}
-		};
-		ss.setSpan(clickableSpan, 22, 27, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-		TextView textView = (TextView) findViewById(R.id.register);
-		textView.setText(ss);
-		textView.setMovementMethod(LinkMovementMethod.getInstance());
-
-		goToRegister();
-	}
-
-	/*
-	 * this method will redirect to the RegisterActivity (used by me only)
-	 * 
-	 * @author maisaraFarahat
-	 */
-	private void goToRegister() {
-		Intent RegisterActivity = new Intent(this, RegisterActivity.class);
-		startActivity(RegisterActivity);
 	}
 
 	/*
