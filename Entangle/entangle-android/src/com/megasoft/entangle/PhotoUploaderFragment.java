@@ -1,10 +1,18 @@
 package com.megasoft.entangle;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -18,7 +26,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.megasoft.requests.PostRequest;
 
@@ -62,6 +69,10 @@ public class PhotoUploaderFragment extends Fragment{
 		return button;
 	}
 	
+	public String getEncodedImage(){
+		return encodedImage;
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -81,7 +92,7 @@ public class PhotoUploaderFragment extends Fragment{
         
         iconButton.setOnClickListener(new OnClickListener(){
         	public void onClick(View view){
-        		//sendPhotoData();
+        		sendPhotoData("http://entangletemp.apiary-mock.com/request/1/icon");
         	}
         });
         
@@ -122,20 +133,27 @@ public class PhotoUploaderFragment extends Fragment{
 		Bitmap bitmap = BitmapFactory.decodeFile(filePath);
 		return bitmap;
 	}
-	
-	/*public void sendPhotoData(){
+	public void sendPhotoData(String url){
 		PostRequest iconDataRequest = new PostRequest(url) {
 			protected void onPostExecute(String res) {
-				String message = "Sorry, there are problems uploading icon now. Please, try again later";
+				String message = "Sorry, there are problems uploading the icon. Please, try again later";
 				if (!this.hasError() && res != null) {
 					message = "Uploaded!";
 				}
-				Toast.makeText(getBaseContext(),
-						message,
-						Toast.LENGTH_LONG).show();
+				//Toast.makeText(getActivity().getBaseContext(),
+				//		message,
+				//		Toast.LENGTH_LONG).show();
 			}
 		};
-		iconDataRequest.addHeader("X-SESSION-ID", getSessionId());
+		JSONObject jsonBody = new JSONObject();
+		try {
+			System.out.println(getEncodedImage());
+			jsonBody.put("requestIcon", "hello");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		iconDataRequest.setBody(jsonBody);
+		iconDataRequest.addHeader("X-SESSION-ID", "session1");
 		iconDataRequest.execute();
-	}*/
+	}
 }
