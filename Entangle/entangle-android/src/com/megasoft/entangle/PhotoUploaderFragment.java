@@ -135,7 +135,7 @@ public class PhotoUploaderFragment extends Fragment{
         		}
         		else{
         			Toast.makeText(getActivity().getBaseContext(),
-    						"Please choose an icon",
+    						"Please Choose an Icon",
     						Toast.LENGTH_LONG).show();
         		}
         	}
@@ -155,7 +155,15 @@ public class PhotoUploaderFragment extends Fragment{
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE
 				&& data != null) {
-			Bitmap bitmap = getPhotoBitmap(data.getData());
+			Bitmap bitmap;
+			try{
+				bitmap = getPhotoBitmap(data.getData());
+			} catch(Exception e){
+				Toast.makeText(getActivity().getBaseContext(),
+						"Error Fetching Icon",
+						Toast.LENGTH_LONG).show();
+				return ;
+			}
 			ImageView imageView = getIcon();
 			imageView.setImageBitmap(bitmap);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -191,8 +199,7 @@ public class PhotoUploaderFragment extends Fragment{
 		};
 		JSONObject jsonBody = new JSONObject();
 		try {
-			System.out.println(getEncodedImage());
-			jsonBody.put("requestIcon", "hello");
+			jsonBody.put("requestIcon", getEncodedImage());
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
