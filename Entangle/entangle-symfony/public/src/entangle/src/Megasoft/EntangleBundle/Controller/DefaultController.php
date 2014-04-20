@@ -138,6 +138,7 @@ class DefaultController extends Controller
      * Dummy endpoints that echos whatever it receives
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
+     * @author MohamedBassem
      */
     public function dummyAction(\Symfony\Component\HttpFoundation\Request $request){
         $content = $request->getContent();
