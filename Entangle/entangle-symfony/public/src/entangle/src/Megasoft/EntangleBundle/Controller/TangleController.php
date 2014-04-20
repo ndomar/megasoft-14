@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Megasoft\EntangleBundle\Entity\Session;
 use Megasoft\EntangleBundle\Entity\InvitationCode;
 
 class TangleController extends Controller
@@ -386,6 +385,8 @@ class TangleController extends Controller
     }
 
     /**
+     * A function that is responsible of verifing the request from 
+     * a user leaving a tangle
      * 
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param integer $tangleId
@@ -426,7 +427,25 @@ class TangleController extends Controller
      * @author HebaAamer
      */
     private function removeRequests($tangleId, $userId) {
+        $requestRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Request");
         
+        //to add in the criteria the status that it is open
+        $requests = $requestRepo->findBy(array('tangleId' => $tangleId, 'userId' => $userId, 'deleted' => false));
+        
+        if($requests != null) {
+            foreach ($requests as $request) {
+                
+                //to be changed when the request status values are known
+                //if($request->getStatus() == OPEN) {
+                    
+                    //call the function of closing a request
+                
+                //} else if ($request->getStatus() == CLOSED) {
+                    //$request->setDeleted(true);
+                //}               
+                
+            }
+        }
     }
     
     
@@ -439,7 +458,7 @@ class TangleController extends Controller
      * @author HebaAamer
      */
     private function removeOffers($tangleId, $userId) {
-        
+        $doctrine = $this->getDoctrine();
     }
     
     //remaining the deletion of userTangle or the updating of the left / leavingDate
@@ -465,11 +484,13 @@ class TangleController extends Controller
             $tangle = $tangleRepo->find($tangleId);
             if($tangle != null) {
                 $tangle->removeUserTangle($userTangle);
-            
+                //to be changed if there are two types of credits of a user    
                 $deletedBalance = $tangle->getDeletedBalance();
-                $deletedBalance = $deletedBalance + $userTangle->getCredit();
+                $updatedDeletedBalance = $deletedBalance + $userTangle->getCredit();
             
-                $tangle->setDeletedBalance($deletedBalance);
+                $tangle->setDeletedBalance($updatedDeletedBalance);
+                
+                $doctrine->getManager()->flush();
             }
         }
     }
@@ -502,6 +523,7 @@ class TangleController extends Controller
         $this->removeRequests($tangleId, $userId);
         $this->removeUser($tangleId, $userId);
         
+        return new Response("Leaving Successfully", 201);
     }
 
 }
