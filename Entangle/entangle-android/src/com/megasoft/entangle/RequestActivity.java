@@ -48,6 +48,10 @@ public class RequestActivity extends Activity {
 	String sessionId;
 	SharedPreferences settings;
 
+	/**
+	 * on creation of the activity it takes data from the fields and send it as
+	 * json object on clicking the Post Button
+	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent previousIntent = getIntent();
@@ -120,6 +124,12 @@ public class RequestActivity extends Activity {
 
 	}
 
+	/**
+	 * this method update the display of the chosen deadLine
+	 * 
+	 * @author Salma Khaled
+	 */
+
 	private void updateDisplay() {
 		dateDisplay.setError(null);
 		this.dateDisplay.setText(new StringBuilder().append(deadLineDay)
@@ -145,13 +155,17 @@ public class RequestActivity extends Activity {
 		}
 	};
 
-	protected Dialog onCreateDialog(int id) {
-		switch (id) {
-		case DATE_DIALOG_ID:
-			return new DatePickerDialog(this, mDateSetListener, deadLineYear,
-					deadLineMonth, deadLineDay);
-		}
-		return null;
+	/**
+	 * this method shows the dialog that u can choose the deadLine from
+	 * 
+	 * @return Dialog datePickerDialog that is marked at deadLine date which is
+	 *         set initially as today's date
+	 */
+	protected Dialog onCreateDialog() {
+		DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+				mDateSetListener, deadLineYear, deadLineMonth, deadLineDay);
+		return datePickerDialog;
+
 	}
 
 	OnFocusChangeListener focusListener = new OnFocusChangeListener() {
@@ -170,6 +184,13 @@ public class RequestActivity extends Activity {
 		}
 	};
 
+	/**
+	 * check if an editText is Empty
+	 * 
+	 * @param editText
+	 * @return boolean true if that editText is empty and false otherwise and it
+	 *         will set an error then
+	 */
 	private boolean isEmpty(EditText editText) {
 		if (editText.getText().toString().length() == 0) {
 			editText.setError("This Field is Required");
@@ -179,6 +200,10 @@ public class RequestActivity extends Activity {
 		return false;
 	}
 
+	/**
+	 * this method checks if there is no error messages set, and if the checkbox
+	 * is checked and only then it enables the Post button
+	 */
 	private void enablePostButton() {
 		if (description.getError() == null && requestedPrice.getError() == null
 				&& tags.getError() == null && checkBox.isChecked()) {
@@ -186,10 +211,18 @@ public class RequestActivity extends Activity {
 		}
 	}
 
-	public void itemClicked(View v) {
+	/**
+	 * this method takes a view which will be the checkbox then clear focus from
+	 * other views if the fields are empty it uncheck the checkedbox it calls
+	 * enablePostButton() to check if we can enable the post button and then
+	 * take the action of enabling it or setting error messages
+	 * 
+	 * @param view which will be the checkbox
+	 */
+	public void itemClicked(View view) {
 		View focusedView = getCurrentFocus();
 		focusedView.clearFocus();
-		CheckBox checkBox = (CheckBox) v;
+		CheckBox checkBox = (CheckBox) view;
 		if (checkBox.isChecked()) {
 			if (!fieldsNotEmpty()) {
 				checkBox.setChecked(false);
@@ -199,12 +232,22 @@ public class RequestActivity extends Activity {
 		}
 	}
 
+	/**
+	 * check if all the fields required are not empty
+	 * 
+	 * @return boolean true if they are all not empty false otherwise
+	 */
 	private boolean fieldsNotEmpty() {
 		if (!isEmpty(description) & !isEmpty(requestedPrice) & !isEmpty(tags))
 			return true;
 		return false;
 	}
 
+	/**
+	 * check if the deadLine is valid and not in the past
+	 * 
+	 * @return true if it is valid , false otherwise
+	 */
 	private boolean isValidDeadLine() {
 		if (currentYear > deadLineYear
 				|| (currentYear == deadLineYear && currentMonth > deadLineMonth)
