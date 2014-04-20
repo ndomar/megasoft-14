@@ -31,3 +31,8 @@ acceptOffer:
     pattern: /accept/{offerId}
     defaults: {_controller: MegasoftEntangleBundle:Offer:acceptOffer }
     methods: [POST]
+
+dummy:
+    pattern: /dummy
+    defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
+
