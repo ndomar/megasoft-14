@@ -55,12 +55,13 @@ class VerificationController extends Controller {
     public function verifyUserAction($verificationCode) {
         $search = $this->getDoctrine()
                 ->getRepository('MegasoftEntangleBundle:VerificationCode')
-                ->find($verificationCode);
+                ->findBy($verificationCode);
         if (!$search) {
             return new Response("User not found" , 404 );
         }
         $user = $search->getUser();
         $user->setVerified(true);
+        return new Response("User verified",201);
     }
 
 }
