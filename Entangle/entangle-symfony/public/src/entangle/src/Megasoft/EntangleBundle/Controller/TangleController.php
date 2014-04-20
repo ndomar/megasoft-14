@@ -434,7 +434,7 @@ class TangleController extends Controller
         
         if($requests != null) {
             foreach ($requests as $request) {
-                
+               
                 //to be changed when the request status values are known
                 //if($request->getStatus() == OPEN) {
                     
@@ -459,6 +459,29 @@ class TangleController extends Controller
      */
     private function removeOffers($tangleId, $userId) {
         $doctrine = $this->getDoctrine();
+        $offerRepo = $doctrine->getRepository("MegasoftEntangleBundle:Offer");
+        
+        $offers = $offerRepo->findBy(array('userId' => $userId, 'deleted' => false));
+        
+        if($offers != null) {
+            $requestRepo = $doctrine->getRepository("MegasoftEntangleBundle:Request");
+            
+            foreach ($offers as $offer) {
+                $requestId = $offer->getRequestId();
+                $request = $requestRepo->findOneBy(array('requestId' => $requestId, 'tangleId' => $tangleId));
+                if($request != null) {
+                    $status = $offer->getStatus();
+                    //if($status == ACCEPTED | $status == PENDING) {
+                        //call the function of withdrawing an offer
+                    //}else if($status == REJECTED) {
+                        //do nothing till now 
+                    //}
+                }
+                
+            }
+            
+            
+        }
     }
     
     //remaining the deletion of userTangle or the updating of the left / leavingDate
