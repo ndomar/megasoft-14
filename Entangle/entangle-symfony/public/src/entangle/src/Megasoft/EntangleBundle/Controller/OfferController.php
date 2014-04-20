@@ -59,17 +59,21 @@ class OfferController extends Controller
 
 public function getRequestInformation($request) {
     $user = $request->getUser();
+    
+    $userId = $user->getId();
     $userName = $user->getName();
     $requestDescription = $request->getDescription();
    
     $requestInformation [] = array('requesterName' => $userName, 
-        'requestDescription'=> $requestDescription);
+        'requestDescription'=> $requestDescription, 'requesterID'=> $userId);
     
     return $requestInformation;
 }
 
 public function getOfferInformation($offer) {
     $user = $offer->getUser();
+    
+    $userId = $user->getId();
     $userName = $user->getName();
     $offerDate = $offer->getDate();
     $offerStatus = $offer->getStatus();
@@ -82,7 +86,8 @@ public function getOfferInformation($offer) {
         'offerDeadline'=> $offerDeadline,
         'offerStatus'=> $offerStatus,
         'offerPrice'=> $offerPrice,
-        'offerDate'=> $offerDate);
+        'offerDate'=> $offerDate,
+        'offererID'=> $userId);
     
     return $offerInformation;
             
