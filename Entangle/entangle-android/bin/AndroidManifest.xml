@@ -38,10 +38,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.megasoft.entangle.InviteUsers" />
         </activity>
+<<<<<<< Updated upstream
         <activity 
             android:name="com.megasoft.entangle.EditProfileActivity"
             android:label="@string/title_activity_edit_profile" >
         </activity>
+=======
+>>>>>>> Stashed changes
     </application>
 
 </manifest>
