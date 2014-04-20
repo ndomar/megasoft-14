@@ -596,17 +596,18 @@ get the details of an offer
            "requestInformation" :  {
                                  "requesterName" : "Alaa Maher",
                                  "requestDescription" : "I want to understand this app.",
-                                 "requesterID" : "1",
-                                 "requestID" : "2"
+                                 "requesterID" : 1,
+                                 "requestID" : 2,
+                                 "requestStatus" : 0
                                 },
             "offerInformation" :    {
                                      "offererName"  : "Mohamed Bassem" ,
                                      "offerDescription" : "fgsherhsgs",
                                      "offerDeadline" : "3/3/2015",
-                                     "offerSatus" : 0,
+                                     "offerStatus" : 0,
                                      "offerPrice" : 300,
                                      "offerDate" : "3/3/2014",
-                                     "offererID" : "2"
+                                     "offererID" : 2
                                 }
         }
                              
