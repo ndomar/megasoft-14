@@ -734,6 +734,22 @@ get the details of an offer
             "status" : "1"
 
             }
+
+## PUT /user/edit
++ Request (application/json) 
+
+    + Body
+    
+            {
+                "description" : "el description bta3 menna isA :D",
+                "date_of_birth" : "29-05-1992",
+                "email" : "mennatarek92@gmail.com",
+                "current_password" : "12345678",
+                "new_password" : "123456789",
+                "confirm_password" : "123456789"
+            }
+            
+    + Response 200
             
 
 ## POST /tangle/{tangleId}/request/{requestId}/offer
