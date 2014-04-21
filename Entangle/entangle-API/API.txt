@@ -592,18 +592,25 @@ get the details of an offer
 
 + Response 200 (application/json)
 
-        "requestInformation" :  {
+        {
+           "tangleId" : 1,
+           "requestInformation" :  {
                                  "requesterName" : "Alaa Maher",
-                                 "requestDescription" : "I want to understand this app."
+                                 "requestDescription" : "I want to understand this app.",
+                                 "requesterID" : 1,
+                                 "requestID" : 2,
+                                 "requestStatus" : 0
                                 },
-        "offerInformation" :    {
+            "offerInformation" :    {
                                      "offererName"  : "Mohamed Bassem" ,
                                      "offerDescription" : "fgsherhsgs",
                                      "offerDeadline" : "3/3/2015",
-                                     "offerSatus" : 0,
+                                     "offerStatus" : 0,
                                      "offerPrice" : 300,
-                                     "offerDate" : "3/3/2014"
+                                     "offerDate" : "3/3/2014",
+                                     "offererID" : 2
                                 }
+        }
                              
              
 
@@ -728,21 +735,61 @@ get the details of an offer
 
             }
 
-##POST /accept/offer/{offerId}
+
+##POST /accept/offer
 accept an offer
++ Request (application/json)
 
-+ Parameters
-    + offerId ( int , required ) ... offer id
+    + Header
 
-+ Request(application/json)
-    + Header       
-             X-SESSION-ID : "asdasdasdsadasdasd"
+            X-SESSION-ID : "asdasdasdsadasdasd"
+
+    + Body
+
+            { "offerId": "1"} 
+
++ Response 201 
+
+## PUT /user/edit
++ Request (application/json) 
+
     + Body
     
             {
-             "offerId" : "1"
+                "description" : "el description bta3 menna isA :D",
+                "date_of_birth" : "29-05-1992",
+                "email" : "mennatarek92@gmail.com",
+                "current_password" : "12345678",
+                "new_password" : "123456789",
+                "confirm_password" : "123456789"
             }
+            
+    + Response 200
+            
+
+## POST /tangle/{tangleId}/request/{requestId}/offer
+Post offer
++ Parameters
+    
+    + tangleId ( Int , required ) ... tangle id
+    + requestId ( Int , required ) ... request id
+ 
++ Request (application/json)
+    
+    + Header
+            
+             X-SESSION-ID : "abc123"
+
+    + Body
+    
+                { 
+                    "description" : "description of an offer",
+                    "date" : "28/May/2013",
+                    "expectedDeadLine" : "19/April/2014",
+                    "requestedPrice" : "7"
+                }
+
+    
 
 + Response 201
-
-
+>>>>>>> f9c3a1b9a4721d943db0cde1ef2da41ace4e87e7
