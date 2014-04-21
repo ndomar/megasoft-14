@@ -22,6 +22,7 @@ class ProfileController {
      * @param integer $userId
      * @param integer $tangleId
      * @return boolean true if the user is a memeber of this tangle, false otherwise
+     * @author Almgohar
      */
     public function validateUser($userId, $tangleId) {
          $userTangleTable = $this->getDoctrine()->
@@ -39,6 +40,7 @@ class ProfileController {
      * Validates the existence of a given tangle
      * @param integer $tangleId
      * @return boolean true if the tangle exists, false otherwise
+     * @author Almgohar
      */
     public function validateTangle($tangleId) {
         $tangleTable = $this->getDoctrine()->
@@ -57,6 +59,7 @@ class ProfileController {
      * @param integer $userId
      * @param integer $tangleId
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @author Almgohar
      */
     public function getProfileAction (Request $request, $userId, $tangleId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
@@ -98,7 +101,8 @@ class ProfileController {
      * Gets the user's transactions in a given tangle
      * @param array $offers
      * @param integer $tangleId
-     * @return array of arrays
+     * @return array of arrays $transactions
+     * @author Almgohar
      */
     public function getTransactions ($offers, $tangleId) {
         $transactions = array();
@@ -125,7 +129,8 @@ class ProfileController {
      * Gets the basic information of a given user in a give tangle
      * @param user $user
      * @param integer $tangleId
-     * @return \Symfony\Component\HttpFoundation\Response | array 
+     * @return \Symfony\Component\HttpFoundation\Response | array #info
+     * @author Almgohar
      */
     public function getUserInfo($user, $tangleId) {
         if ($user == null) {

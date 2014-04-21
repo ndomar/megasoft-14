@@ -6,19 +6,15 @@ import org.json.JSONObject;
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.ImageRequest;
-
-import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -115,6 +111,7 @@ public class ProfileActivity extends Activity {
 	/**
 	 * Initialize all views to link them to the XML views
 	 * calls the ViewInformation() method
+	 * @author Almgohar
 	 */
 	public void viewProfile() {
 		edit = (Button) findViewById(R.id.EditProfile);
@@ -133,6 +130,7 @@ public class ProfileActivity extends Activity {
 	/**
 	 * Creates a JSon request asking for the required information
 	 * Retrieves the required information from the JSon response
+	 * @author Almgohar
 	 */
 	public void viewInformation() {
 		String link = "http://entangle2.apiary-mock.com/tangle/" 
@@ -188,6 +186,7 @@ public class ProfileActivity extends Activity {
 	/**
 	 * Gets the user's transactions from a JSONArray and views them
 	 * @param JSONArray transactions
+	 * @author Almgohar
 	 */
 	public void viewTransactions(JSONArray transactions) {
 		TextView title = new TextView(this);
@@ -225,6 +224,7 @@ public class ProfileActivity extends Activity {
 	/**
 	 * Views the user's profile picture
 	 * @param String imageURL
+	 * @author Almgohar
 	 */
 	public void viewProfilePicture(String imageURL) {
             ImageRequest image = new ImageRequest(profilePictureView);
@@ -233,6 +233,7 @@ public class ProfileActivity extends Activity {
 	
 	/**
 	 * Redirects to the EditProfileActivity 
+	 * @author Almgohar
 	 */
 	public void goToEditProfile() {
 		Intent editProfile = new Intent(this, EditProfileActivity.class);
@@ -242,6 +243,7 @@ public class ProfileActivity extends Activity {
 	
 	/**
 	 * Let the user leave the current tangle
+	 * @author Almgohar
 	 */
 	public void leaveTangle() {
 		
@@ -249,6 +251,7 @@ public class ProfileActivity extends Activity {
 	
 	/**
 	 * Redirects to OfferActivity
+	 * @author Almgohar
 	 */
 	public void goToOffer(int offerId) {
 		Intent offer = new Intent(this,OfferActivity.class);
