@@ -25,38 +25,90 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class CreateOfferActivity extends Activity {
-
+	/**
+	 * preference instance
+	 */
 	SharedPreferences settings;
+	/**
+	 * sessionId of the currently logged in user
+	 */
 	String sessionId;
+	/**
+	 * EditText that will contain the offer's description
+	 */
 	EditText description;
+	/**
+	 * EditText that will contain the offer's requested price
+	 */
 	EditText requestedPrice;
+	/**
+	 * the Post Button that will send the server the postrequest to Post the
+	 * offer
+	 */
 	Button Post;
+	/**
+	 * the json object to be sent in the postrequest
+	 */
 	JSONObject json = new JSONObject();
-
+	/**
+	 * the chosen deadLine year , in case user didn't choose a value it will be
+	 * set to current year
+	 */
 	int deadLineYear;
-
+	/**
+	 * the chosen deadLine month , in case user didn't choose a value it will
+	 * be set to current month
+	 */
 	int deadLineMonth;
-
+	/**
+	 * the chosen deadLine day , in case user didn't choose a value it will be
+	 * set to current day
+	 */
 	int deadLineDay;
-
+	/**
+	 * Textview to display the deadLine date , in case user didn't choose a
+	 * value it will display today's date
+	 */
 	TextView dateDisplay;
-
+	/**
+	 * Button clicked to pick deadLine date
+	 */
 	Button pickDate;
+	/**
+	 * CheckBox that the user should check after filling the fields
+	 */
 	CheckBox checkBox;
-
+	/**
+	 * the date dialog Id
+	 */
 	static final int DATE_DIALOG_ID = 0;
-
+	/**
+	 * calendar to choose deadLine date from
+	 */
 	final Calendar calendar = Calendar.getInstance();
-
+	/**
+	 * current day
+	 */
 	final int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
-
+	/**
+	 * current month
+	 */
 	final int currentMonth = calendar.get(Calendar.MONTH);
-
+	/**
+	 * current year
+	 */
 	final int currentYear = calendar.get(Calendar.YEAR);
-
+	/**
+	 * String of the current date
+	 */
 	final String date = currentDay + "/" + (currentMonth + 1) + "/"
 			+ currentYear;
-
+	/**
+	 * on creation of the activity it takes data from the fields and send it as
+	 * json object on clicking the Post Button
+	 * 
+	 * @author Salma Khaled
+	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent previousIntent = getIntent();
@@ -120,6 +172,11 @@ public class CreateOfferActivity extends Activity {
 		});
 		updateDisplay();
 	}
+	/**
+	 * this method update the display of the chosen deadLine
+	 * 
+	 * @author Salma Khaled
+	 */
 
 	private void updateDisplay() {
 		dateDisplay.setError(null);
@@ -145,7 +202,14 @@ public class CreateOfferActivity extends Activity {
 			updateDisplay();
 		}
 	};
-
+	/**
+	 * this method creates the dialog that u can choose the deadLine from
+	 * 
+	 * @param int id the id of the dialog
+	 * @return Dialog datePickerDialog that is marked at deadLine date which is
+	 *         set initially as today's date
+	 * @author Salma Khaled
+	 */
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case DATE_DIALOG_ID:
@@ -155,7 +219,12 @@ public class CreateOfferActivity extends Activity {
 		return null;
 
 	}
-
+	/**
+	 * check if the deadLine is valid and not in the past
+	 * 
+	 * @return true if it is valid , false otherwise
+	 * @author Salma Khaled
+	 */
 	private boolean isValidDeadLine() {
 		if (currentYear > deadLineYear
 				|| (currentYear == deadLineYear && currentMonth > deadLineMonth)
@@ -177,7 +246,14 @@ public class CreateOfferActivity extends Activity {
 			}
 		}
 	};
-
+	
+	/**
+	 * this method is called on clicking on the checkbox 
+	 * it checks whether the fields are empty or not and then accordingly 
+	 * either error messages will be set or Post button will be enabled
+	 * @param View view which will be the checkbox
+	 * @author Salma Khaled
+	 */
 	public void itemClicked(View view) {
 		View focusedView = getCurrentFocus();
 		focusedView.clearFocus();
@@ -189,7 +265,14 @@ public class CreateOfferActivity extends Activity {
 			Post.setEnabled(true);
 		}
 	}
-
+	/**
+	 * check if an editText is Empty
+	 * 
+	 * @param editText
+	 * @return boolean true if that editText is empty and false otherwise and it
+	 *         will set an error then
+	 * @author Salma Khaled
+	 */
 	private boolean isEmpty(EditText editText) {
 		if (editText.getText().toString().length() == 0) {
 			editText.setError("This Field is Required");
