@@ -28,7 +28,7 @@ invite:
     methods: [POST]
 
 getMails:
-    patern: /tangleOwnerAndOffererMail/{requestID}/claim
+    patern: /tangleOwnerAndClaimerMail/{requestID}/claim
     defaults: { _controller: MegasoftEntangleBundle:Claim:get }
     methods: [GET]
     
