@@ -2,7 +2,10 @@ package com.megasoft.entangle;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -67,8 +70,10 @@ public class Claim extends Activity {
 
 	/**
 	 * This method creates the claim form after making sure of entering the body
-	 * and the subject of the claim, it creates a claim id 
-	 * @param View view the claim button clicked
+	 * and the subject of the claim, it creates a claim id
+	 * 
+	 * @param View
+	 *            view the claim button clicked
 	 * @return None
 	 * @author Salma Amr
 	 */
@@ -101,9 +106,8 @@ public class Claim extends Activity {
 				e.printStackTrace();
 			}
 			int tangleID = (int) getIntent().getIntExtra("tangleID", 0);
-			PostRequest postSubject = new PostRequest(
-					"http://entangle2.apiary.io/claim/" + tangleID
-							+ "/sendClaim") {
+			PostRequest postSubject = new PostRequest(Config.API_BASE_URL
+					+ "/claim/" + tangleID + "/sendClaim") {
 
 				protected void onPostExecute(String response) {
 					try {

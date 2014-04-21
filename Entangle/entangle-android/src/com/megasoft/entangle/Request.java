@@ -2,7 +2,10 @@ package com.megasoft.entangle;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,7 +42,9 @@ public class Request extends Activity {
 	 * This method gets the email of both the offerer and the tangle owner after
 	 * fetching them from the back end through the delivered json response and
 	 * sends these mails to the claim form session
-	 * @param View view hold the claim button
+	 * 
+	 * @param View
+	 *            view hold the claim button
 	 * @return None
 	 * @author Salma Amr
 	 */
@@ -48,9 +53,8 @@ public class Request extends Activity {
 		String sessionID = (String) getIntent().getCharSequenceExtra(
 				"sessionID");
 		int tangleID = (int) getIntent().getIntExtra("tangleID", 0);
-		GetRequest requestTangleOwnerMail = new GetRequest(
-				"http://entangle2.apiary.io/tangleOwnerAndOffererMail/"
-						+ tangleID + "/claim") {
+		GetRequest requestTangleOwnerMail = new GetRequest(Config.API_BASE_URL
+				+ "/tangleOwnerAndOffererMail/" + tangleID + "/claim") {
 
 			protected void onPostExecute(String response) {
 				try {
