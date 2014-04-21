@@ -80,11 +80,11 @@ public class CreateOfferActivity extends Activity {
 		final String currentDateTime = date + " " + calendar.get(Calendar.HOUR)
 				+ ":" + calendar.get(Calendar.MINUTE) + ":"
 				+ calendar.get(Calendar.SECOND);
-		
+
 		Post.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View arg0) {
-				
+
 				try {
 					json.put("description", description.getText().toString());
 					json.put("requestedPrice", requestedPrice.getText()
@@ -96,7 +96,8 @@ public class CreateOfferActivity extends Activity {
 				}
 
 				PostRequest request = new PostRequest(Config.API_BASE_URL
-						+ "/tangle/" + tangleID + "/request" + requestID + "/offer") {
+						+ "/tangle/" + tangleID + "/request" + requestID
+						+ "/offer") {
 					protected void onPostExecute(String response) {
 						if (this.getStatusCode() == 201) {
 							// redirection
@@ -118,7 +119,7 @@ public class CreateOfferActivity extends Activity {
 		});
 		updateDisplay();
 	}
-	
+
 	private void updateDisplay() {
 		dateDisplay.setError(null);
 		this.dateDisplay.setText(new StringBuilder().append(deadLineDay)
@@ -153,6 +154,7 @@ public class CreateOfferActivity extends Activity {
 		return null;
 
 	}
+
 	private boolean isValidDeadLine() {
 		if (currentYear > deadLineYear
 				|| (currentYear == deadLineYear && currentMonth > deadLineMonth)
