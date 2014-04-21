@@ -8,6 +8,9 @@
 
 namespace Megasoft\EntangleBundle\Controller;
 
+use Megasoft\EntangleBundle\Entity\NewMessageNotification;
+use Megasoft\EntangleBundle\Entity\PriceChangeNotification;
+use Megasoft\EntangleBundle\Entity\TransactionNotification;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,6 +47,7 @@ class NotificationController extends Controller
             "notification" => $notification,
         );
 
+
         $request = curl_init($serverUrl);
         curl_setopt($request, CURLOPT_HTTPHEADER, $header);
         curl_setopt($request, CURLOPT_POSTFIELDS, json_encode($body));
@@ -54,15 +58,135 @@ class NotificationController extends Controller
     }
 
     /**
+     * this function is used to send notification for new message
+     * @param $messageId
+     * @return mixed
+     */
+    function newMessageNotification($messageId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $notification = new NewMessageNotification();
+        $message = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Message')->find($messageId);
+        $to = $message->getOffer()->getRequest()->getUserId();
+        $from = $message->getSenderId();
+
+        $date = date('Y-m-d H:i:s');
+        $notification->setMessageId($messageId);
+        $notification->setCreated($date);
+        $notification->setSeen(false);
+        $notification->setUserId($to);
+        $em->persist($notification);
+        $em->flush();
+
+        $fromName = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User')->find($from)->getName();
+        $toName = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User')->find($to)->getName();
+
+        $data = array('from' => $fromName, 'to' => $toName, 'message' => $message->getBody());
+        return notificationCenter($to, $data);
+
+    }
+
+
+    function transactionNotification($transactionid)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $notification = new  TransactionNotification();
+        $transaction = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:TransactionNotification')->find($transactionid);
+        $to = $transaction->getUser();
+
+        $from = $transaction->getOffer()->getUser()->getName();
+
+        $date = date('Y-m-d H:i:s');
+        $notification->setCreated($date);
+        $notification->setSeen(false);
+        $notification->setUserId($to->getId());
+        $notification->setTransactionId($transactionid);
+        $em->persist($notification);
+        $em->flush();
+
+        $amount = $transaction->getFinalPrice();
+        $requestDesc = $transaction->getOffer()->getRequest()->getDescription();
+
+        $data = array('from' => $from, 'amount' => $amount, 'requestDesc' => $requestDesc);
+
+        return notficationCenter($to->getId(), $data);
+    }
+
+
+    function markOfferNotification($senderid, $receiverid, $offerid, $message, $date)
+    {
+
+    }
+
+
+    function offerChangeNotification($offerid)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $offer = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Offer')->find($offerid);
+        $request = $offer->getRequest();
+        $notification = new PriceChangeNotification();
+
+        $newPrice = $offer->getRequestedPrice();
+        $toName = $request->getUser()->getName();
+        $fromName = $offer->getUser()->getName();
+        $to = $request->getUserId();
+        $date = date('m/d/Y h:i:s a', time());
+        $date = \DateTime::createFromFormat('m/d/Y h:i:s a', $date);
+
+//        if ($to)
+//            return $to;
+        $user = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User')->find($to);
+
+        $notification->setUserId($to);
+        $notification->setUser($user);
+        $notification->setCreated($date);
+        $notification->setSeen(false);
+        $notification->setNewPrice($newPrice);
+        $notification->setOldPrice($newPrice);
+        $notification->setRequestId($request->getId());
+        $em->persist($notification);
+        $em->flush();
+
+        $data = array('to' => $toName, 'from' => $fromName, 'newPrice' => $newPrice,);
+
+        return notificationCenter($to, $data);
+    }
+
+    function chooseOfferNotification($offerid)
+    {
+
+    }
+
+    function newOfferNotfication($offerid)
+    {
+
+    }
+
+    function  markOfferAsDoneNotification($offerid)
+    {
+
+    }
+
+    function offerDeletedNotification($offerid)
+    {
+
+    }
+
+    function requestDeletedNotification($requestid)
+    {
+
+    }
+
+    /**
      * this is a test action just to test notification center function
      * @return \Symfony\Component\HttpFoundation\Response
      */
     function testAction()
     {
-        $userID = 1;
-        $notification = array('data' => 'hello world');
-        $name = $this->notificationCenter($userID, $notification);
-//        $name = ($name) ? "true" : "false";
+
+
+        $name = $this->offerChangeNotification(0);
         $arr = array('regid' => $name,);
         return $this->render('MegasoftEntangleBundle:Default:test.html.twig', $arr);
     }
@@ -93,6 +217,4 @@ class NotificationController extends Controller
         $response->setData(array('status' => 'done without exceptions'));
         return $response;
     }
-
-
 }
