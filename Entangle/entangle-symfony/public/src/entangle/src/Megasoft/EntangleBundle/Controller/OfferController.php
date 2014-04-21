@@ -31,10 +31,23 @@ class OfferController extends Controller {
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if($session==null){
-            return $response = new Response("Incorrect Session Id.", 409);
+            return $response = new Response("Error: Incorrect Session Id.", 409);
         }
+        if($session->getExpired()==1){
+            return $response = new Response("Error: Session Expired.", 409);
+        }
+        $userOfSession = $session->getUserId();
         $json_array = json_decode($json, true);
         $offerId = $json_array['offerId'];
+        $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $offer = $offerRepo->findOneBy(array('id' => $offerId));
+        $requestId = $offer->getRequestId();
+        $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+        $request = $requestRepo->findOneBy(array('id' => $requestId));
+        $requesterId = $request->getUserId();
+        if($requesterId != $userOfSession){
+            return $response = new Response("Error: You are unauthorized to accept this offer.", 409);
+        }
         $verificationMessage = $this->verify($offerId);
         if ($verificationMessage == "Offer Accepted.") {
             $response = new Response($verificationMessage, 201);
