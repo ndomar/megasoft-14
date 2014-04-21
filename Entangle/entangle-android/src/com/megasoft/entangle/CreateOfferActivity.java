@@ -2,9 +2,11 @@ package com.megasoft.entangle;
 
 import java.util.Calendar;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.megasoft.config.Config;
+import com.megasoft.requests.PostRequest;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -55,6 +57,7 @@ public class CreateOfferActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		Intent previousIntent = getIntent();
 		final int tangleID = previousIntent.getIntExtra("tangleID", 0);
+		final int requestID = previousIntent.getIntExtra("requestID", 0);
 		settings = getSharedPreferences(Config.SETTING, 0);
 		sessionId = settings.getString(Config.SESSION_ID, "");
 		setContentView(R.layout.activity_create_offer);
@@ -73,7 +76,37 @@ public class CreateOfferActivity extends Activity {
 		final String currentDateTime = date + " " + calendar.get(Calendar.HOUR)
 				+ ":" + calendar.get(Calendar.MINUTE) + ":"
 				+ calendar.get(Calendar.SECOND);
+		
+		Post.setOnClickListener(new View.OnClickListener() {
 
+			public void onClick(View arg0) {
+				
+				try {
+					json.put("description", description.getText().toString());
+					json.put("requestedPrice", requestedPrice.getText()
+							.toString());
+					json.put("date", currentDateTime);
+					json.put("deadLine", dateDisplay.getText().toString());
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+				PostRequest request = new PostRequest(Config.API_BASE_URL
+						+ "/tangle/" + tangleID + "/request" + requestID + "/offer") {
+					protected void onPostExecute(String response) {
+						if (this.getStatusCode() == 201) {
+							// redirection
+						} else if (this.getStatusCode() == 400) {
+							// showErrorMessage();
+						}
+					}
+				};
+				request.addHeader(Config.API_SESSION_ID, sessionId);
+				request.setBody(json);
+				request.execute();
+
+			}
+		});
 	}
 
 	OnFocusChangeListener focusListener = new OnFocusChangeListener() {
