@@ -53,31 +53,37 @@ class OfferController extends Controller {
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
         $request = $requestRepo->findOneBy(array('id' => $requestId));
         $requesterId = $request->getUserId();
-        if ($request->getStatus() === 0) {
-            if ($offer->getStatus() === 0) {
-                $tangleId = $request->getTangleId();
-                $price = $offer->getRequestedPrice();
-                $userTangle = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
-                $requester = $userTangle->findOneBy(array('tangleId' => $tangleId, 'userId' => $requesterId));
-                $requesterBalance = $requester->getCredit();
-                if ($requesterBalance >= $price) {
-                    $request->setStatus(1);
-                    $requester->setCredit($requesterBalance - $price);
-                    $offer->setStatus(1);
-                    $doctrine->getManager()->persist($request);
-                    $doctrine->getManager()->persist($requester);
-                    $doctrine->getManager()->persist($offer);
-                    $doctrine->getManager()->flush();
-                    return "Offer Accepted.";
-                } else {
-                    return "Error: Not enough balance.";
-                }
-            } else {
-                return "Error: Offer Closed.";
-            }
-        } else {
+        if ($request->getDeleted() == 1) {
+            return "Error: Request deleted.";
+        }
+        if ($request->getStatus() === 1) {
             return "Error: Request Closed.";
         }
+        if (count($offer) <= 0) {
+            return "Error: No such offer";
+        }
+        if ($offer->getDeleted() == 1) {
+            return "Error: Offer deleted.";
+        }
+        if ($offer->getStatus() === 1) {
+            return "Error: Offer Closed.";
+        }
+        $tangleId = $request->getTangleId();
+        $price = $offer->getRequestedPrice();
+        $userTangle = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $requester = $userTangle->findOneBy(array('tangleId' => $tangleId, 'userId' => $requesterId));
+        $requesterBalance = $requester->getCredit();
+        if ($requesterBalance < $price) {
+            return "Error: Not enough balance.";
+        }
+        $request->setStatus(1);
+        $requester->setCredit($requesterBalance - $price);
+        $offer->setStatus(1);
+        $doctrine->getManager()->persist($request);
+        $doctrine->getManager()->persist($requester);
+        $doctrine->getManager()->persist($offer);
+        $doctrine->getManager()->flush();
+        return "Offer Accepted.";
     }
 
 }
