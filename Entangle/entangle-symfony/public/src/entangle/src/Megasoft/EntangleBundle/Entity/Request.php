@@ -81,13 +81,6 @@ class Request
     private $tangle;
     
     /**
-     * @var Notification[]
-     * 
-     * @ORM\OneToMany(targetEntity="PriceChangeNotification", mappedBy="request", cascade={"persist"})
-     */
-    private $notifications;
-    
-    /**
      * @var Offer[]
      * 
      * @ORM\OneToMany(targetEntity="Offer", mappedBy="request", cascade={"persist"})
@@ -352,39 +345,6 @@ class Request
     public function getTangle()
     {
         return $this->tangle;
-    }
-
-    /**
-     * Add notifications
-     *
-     * @param \Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications
-     * @return Request
-     */
-    public function addNotification(\Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications)
-    {
-        $this->notifications[] = $notifications;
-        $notifications->setRequest($this);
-        return $this;
-    }
-
-    /**
-     * Remove notifications
-     *
-     * @param \Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications
-     */
-    public function removeNotification(\Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications)
-    {
-        $this->notifications->removeElement($notifications);
-    }
-
-    /**
-     * Get notifications
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getNotifications()
-    {
-        return $this->notifications;
     }
 
     /**

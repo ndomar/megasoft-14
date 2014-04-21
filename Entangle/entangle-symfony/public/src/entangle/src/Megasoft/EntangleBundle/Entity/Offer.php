@@ -110,6 +110,14 @@ class Offer
       */
     private $transaction;
     
+    
+     /**
+     * @var PriceChangeNotification[]
+     * 
+     * @ORM\OneToMany(targetEntity="PriceChangeNotification", mappedBy="offer", cascade={"persist"})
+     */
+    private $notifications;
+    
 
     /**
      * Get id
@@ -412,5 +420,38 @@ class Offer
     public function getTransaction()
     {
         return $this->transaction;
+    }
+    
+    /**
+     * Add notifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications
+     * @return Offer
+     */
+    public function addNotification(\Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications)
+    {
+        $this->notifications[] = $notifications;
+        $notifications->setOffer($this);
+        return $this;
+    }
+
+    /**
+     * Remove notifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications
+     */
+    public function removeNotification(\Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications)
+    {
+        $this->notifications->removeElement($notifications);
+    }
+
+    /**
+     * Get notifications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
     }
 }
