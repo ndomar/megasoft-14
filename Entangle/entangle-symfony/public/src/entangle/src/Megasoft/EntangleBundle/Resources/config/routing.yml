@@ -33,4 +33,3 @@ leave_tangle:
     defaults: {_controller: MegasoftEntangleBundle:Tangle:leaveTangle }
     methods: [DELETE]
 
-

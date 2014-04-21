@@ -473,7 +473,7 @@ class TangleController extends Controller
                     $status = $offer->getStatus();
                     //if($status == ACCEPTED | $status == PENDING) {
                         //call the function of withdrawing an offer
-                    //}else if($status == REJECTED) {
+                    //}else if($status == REJECTED | $status == FAILED) {
                         //do nothing till now 
                     //}
                 }
@@ -502,22 +502,39 @@ class TangleController extends Controller
         
         $userTangle = $userTangleRepo->findOneBy(array('userId' => $userId, 'tangleId' => $tangleId));
         if($userTangle != null){
-            $tangleRepo = $doctrine->getRepository("MegasoftEntangleBundle:Tangle");
             
+            $tangleRepo = $doctrine->getRepository("MegasoftEntangleBundle:Tangle");
+            $userRepo = $doctrine->getRepository("MegasoftEntangleBundle:User");
+            $user = $userRepo->find($userId);
             $tangle = $tangleRepo->find($tangleId);
-            if($tangle != null) {
+           
+            if($tangle != null & $user != null) {
+                //to be removed after deleted/ left
                 $tangle->removeUserTangle($userTangle);
                 //to be changed if there are two types of credits of a user    
                 $deletedBalance = $tangle->getDeletedBalance();
-                $updatedDeletedBalance = $deletedBalance + $userTangle->getCredit();
-            
+                $updatedDeletedBalance = $deletedBalance + ($userTangle->getCredit());
                 $tangle->setDeletedBalance($updatedDeletedBalance);
+                
+                //to be removed after deleted/ left
+                $user->removeUserTangle($userTangle);
                 
                 $doctrine->getManager()->flush();
             }
         }
     }
 
+    /**
+     * This function is responsible for removing all the messages of 
+     * the a user in a specific tangle
+     * 
+     * @param integer $tangleId
+     * @param integer $userId
+     * @author HebaAamer
+     */
+    public function removeMessages($tangleId, $userId) {
+        
+    }
 
     /**
      * An endpoint to be used when a user leaves a tangle
@@ -529,6 +546,7 @@ class TangleController extends Controller
      * @author HebaAamer
      */
     public function leaveTangleAction(Request $request, $tangleId) {
+        
         $verified = $this->leaveTangleVerification($request, $tangleId);
         if($verified != null){
             return $verified;
@@ -544,9 +562,12 @@ class TangleController extends Controller
         
         $this->removeOffers($tangleId, $userId);
         $this->removeRequests($tangleId, $userId);
+        $this->removeMessages($tangleId, $userId);
         $this->removeUser($tangleId, $userId);
         
-        return new Response("Leaving Successfully", 201);
+        return new Response("You have left successfully", 201);
     }
 
+    
+    
 }
