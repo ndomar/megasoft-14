@@ -19,6 +19,12 @@ class RegisterController extends Controller {
     }
 
 
+    /**
+     * generates a random string
+     * @param string $len
+     * @return String $ret
+     * @author: Eslam
+     * **/
     private function generate($len){
         $ret = '';
         $seed = "abcdefghijklmnopqrstuvwxyz123456789";
@@ -27,7 +33,25 @@ class RegisterController extends Controller {
         }
         return $ret;
     }
+    /**
+     * checks if this username is unique
+     * @param string $username
+     * @return boolean true if the username is unique , false otherwise
+     * @author: Eslam
+     * **/
+    private function validateUniqueUsername($username) {
 
+        //TO BE COMPLETED
+
+    }
+
+
+    /**
+     * Creates a new user once all required fields are filled
+     * @param Request $request
+     * @return void (Creates a new user if successful, otherwise it returns an error)
+     * @author: Eslam
+     * **/
     public function registerAction(\Symfony\Component\HttpFoundation\Request $request)  {
         if ($request->getMethod() == 'POST') {  //reading the request object and getting data out of it
             //$username = $request->get('username');
