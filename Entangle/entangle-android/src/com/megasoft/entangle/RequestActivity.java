@@ -54,17 +54,17 @@ public class RequestActivity extends Activity {
 	 */
 	JSONObject json = new JSONObject();
 	/**
-	 * the choosen deadLine year , in case user didn't choose a value it will be
+	 * the chosen deadLine year , in case user didn't choose a value it will be
 	 * set to current year
 	 */
 	int deadLineYear;
 	/**
-	 * the choosen deadLine month , in case user didn't choose a value it will
+	 * the chosen deadLine month , in case user didn't choose a value it will
 	 * be set to current month
 	 */
 	int deadLineMonth;
 	/**
-	 * the choosen deadLine day , in case user didn't choose a value it will be
+	 * the chosen deadLine day , in case user didn't choose a value it will be
 	 * set to current day
 	 */
 	int deadLineDay;
@@ -78,7 +78,7 @@ public class RequestActivity extends Activity {
 	 */
 	Button pickDate;
 	/**
-	 * calender to choose deadLine date from
+	 * calendar to choose deadLine date from
 	 */
 	final Calendar calendar = Calendar.getInstance();
 	/**
@@ -296,7 +296,7 @@ public class RequestActivity extends Activity {
 
 	/**
 	 * this method takes a view which will be the checkbox then clear focus from
-	 * other views if the fields are empty it uncheck the checkedbox it calls
+	 * other views if the fields are empty it unchecks the checkedbox it calls
 	 * enablePostButton() to check if we can enable the post button and then
 	 * take the action of enabling it or setting error messages
 	 * 

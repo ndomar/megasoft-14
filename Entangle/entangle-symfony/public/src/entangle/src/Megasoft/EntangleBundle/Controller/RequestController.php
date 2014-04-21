@@ -18,7 +18,7 @@ class RequestController extends Controller {
      * take the json Object from the request then decode it and seprate 
      * the data and enter it in the Request Table
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param type $tangleId
+     * @param String $tangleId
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @author Salma Khaled
      */
@@ -79,8 +79,8 @@ class RequestController extends Controller {
      * this function is responsible for filling the Tag Table it creates 
      * a new Tag if the tag didn't exist before
      * it also add the tag to the created Request realated to it
-     * @param type $newRequest
-     * @param type $tags
+     * @param Request $newRequest
+     * @param json_array $tags
      * @author Salma Khaled
      */
     public function addTags($newRequest, $tags) {
