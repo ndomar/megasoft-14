@@ -30,3 +30,8 @@ invite:
 dummy:
     pattern: /dummy
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
+    
+create_Offer:
+    pattern: /tangle/{tangleId}/request/{requestId}/offer
+    defaults: { _controller: MegasoftEntangleBundle:CreateOffer:createOffer }
+    methods: [POST]
