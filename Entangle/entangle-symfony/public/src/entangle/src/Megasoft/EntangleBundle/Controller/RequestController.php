@@ -14,17 +14,32 @@ class RequestController extends Controller {
      * @return Response 
      * @author sak93
      */
-    public function viewRequestAction($requestId) {
+    
+      public function viewRequestAction(Request $request) {
+        $json = $request->getContent();
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        if($sessionId==null){
+            return $response = new Response("No Session Id.", 409);
+        }
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        if($session==null){
+            return $response = new Response("Incorrect Session Id.", 409);
+        $json_array = json_decode($json, true);
+        $requestId = $json_array['requestId'];   
         $requestDetails = $this->getRequestDetails($requestId);
         if (count($requestDetails) == 0) {
             return new Response("No such request.", 404);
         } else {
+            
+         
             $response = new JsonResponse();
             $response->setData(array($requestDetails));
             $response->setStatusCode(200);
             return $response;
         }
     }
+      }
 
     /**
      * this method makes an array of all the request details
