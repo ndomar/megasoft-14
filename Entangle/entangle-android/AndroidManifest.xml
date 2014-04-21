@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="18" />
+        android:minSdkVersion="11"
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -18,8 +18,8 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.megasoft.entangle.MainActivity"
-            android:label="@string/app_name" >
+            android:name="com.megasoft.entangle.HomeActivity"
+            android:label="@string/title_activity_home" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,12 +27,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.megasoft.entangle.HomeActivity"
+            android:name="com.megasoft.entangle.RegisterActivity"
+            android:label="@string/app_name" >
+		</activity>
+		<activity         
+		    android:name="com.megasoft.entangle.MainActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.megasoft.entangle.RegisterActivity"
-            android:label="@string/app_name" >
+            android:name="com.megasoft.entangle.TangleActivity"
+            android:label="@string/title_activity_view_stream" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.Members"
+            android:label="@string/title_activity_members" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.ProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.RequestActivity"
+            android:label="@string/title_activity_request_information" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.InviteUserActivity"
@@ -46,6 +62,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.megasoft.entangle.InviteUsers" />
         </activity>
+       
     </application>
 
 </manifest>
