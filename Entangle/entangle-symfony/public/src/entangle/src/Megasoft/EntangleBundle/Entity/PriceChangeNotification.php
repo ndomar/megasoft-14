@@ -26,7 +26,7 @@ class PriceChangeNotification extends Notification
     /**
      * @var integer
      *
-     * @ORM\Column(name="offerId", type="integer")
+     * @ORM\Column(name="priceChangeOfferId", type="integer")
      */
     private $offerId;
     
