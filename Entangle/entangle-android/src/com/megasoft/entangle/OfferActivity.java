@@ -6,7 +6,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
+
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -22,50 +24,34 @@ public class OfferActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		acceptOffer();
+		setContentView(R.layout.activity_offer);
+		validate();
 	}
-
-	public void acceptOffer() {
-		layout = (LinearLayout) this.findViewById(R.id.offer_layout);
+	 /**
+	    * this checks if offer can be accepted and calls addAcceptButton() if it can 
+	    * @param  none
+	    * @return None
+	    * @author sak93
+	    */
+	public void validate() {
 		GetRequest request = new GetRequest(
-				"http://sak93.apiary-mock.com/offer/" + offerId) {
+				"http://entangle2.apiary-mock.com/offer/" + offerId) {
+			
 			protected void onPostExecute(String response) {
 				try {
-					JSONObject json = new JSONObject(response);
-					Log.e("test", response);
-					JSONObject offerDetails = (JSONObject) json
+					
+					JSONObject jsonResponse = new JSONObject(response);
+					JSONObject offerDetails = (JSONObject) jsonResponse
 							.get("offerInformation");
-					JSONObject requestDetails = (JSONObject) json
+					JSONObject requestDetails = (JSONObject) jsonResponse
 							.get("requestInformation");
-					int requestId = Integer.parseInt(((String) requestDetails
-							.get("requestID")));
-					int requesterId = Integer.parseInt(((String) requestDetails
-							.get("requesterID")));
-					int requestStatus = Integer
-							.parseInt(((String) requestDetails
-									.get("requestStatus")));
+					int requestStatus =  (Integer) requestDetails.get("requestStatus");
 					if (requestStatus != 0) {
 						return;
 					} else {
-
-						int offerStatus = Integer
-								.parseInt(((String) offerDetails
-										.get("offerStatus")));
-						int offererId = Integer.parseInt(((String) offerDetails
-								.get("offererID")));
+						int offerStatus = (Integer) offerDetails.get("offerStatus");
 						if (offerStatus == 0) {
-							returnedResponse = new JSONObject();
-							returnedResponse.put("offerId", ""+ offerId);
-							Button button = new Button(self);
-							button.setText("Accept offer");
-							layout.addView(button);
-							PostRequest r = new PostRequest(
-									"http://sak93.apiary-mock.com//accept/offer/"
-											+ offerId);
-							r.setBody(returnedResponse);
-							r.addHeader("X-SESSION-ID", "asdasdasdsadasdasd");
-							r.execute();
+							addAcceptButton();
 						}
 					}
 				} catch (JSONException e) {
@@ -73,23 +59,36 @@ public class OfferActivity extends Activity {
 				}
 			}
 
-			// private LinearLayout findViewById(Object layout) {
-			// // TODO Auto-generated method stub
-			// return null;
-			// }
 		};
 		request.addHeader("x-session-id", "asdasdasdsadasdasd");
 		request.execute();
-
-		// }
 	}
-	// public void sendToBackend(){
-	// PostRequest response = new
-	// PostRequest("http://sak93.apiary-mock.com/offer/" + offerId){
-	// public void onPostExecute(){
-	//
-	// }
-	// };
-	// }
+	/**
+	    * this adds a button which if clicked sends a POST method to update the offer as accepted 
+	    * @param  none
+	    * @return None
+	    * @author sak93
+	    */
+	public void addAcceptButton() throws JSONException{
+		final Button button = (Button) findViewById(R.id.button1);
+		button.setText("Accept");
+		button.setVisibility(1);
+		returnedResponse = new JSONObject();
+		returnedResponse.put("offerId", "" + offerId);
+		button.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				PostRequest r = new PostRequest(
+						"http://entangle2.apiary-mock.com/accept/offer");
+				r.setBody(returnedResponse);
+				r.addHeader("x-session-id",
+						"asdasdasdsadasdasd");
+				r.execute();
+				button.setVisibility(View.GONE);
+
+			}
+		});
+
+	}
+	
 
 }
