@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- The main content view -->
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    
+    
+    <!-- The navigation drawer -->
+    <LinearLayout android:id="@+id/left_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:divider="#FFFFFF"
+        android:dividerHeight="1dp"
+        android:orientation ="vertical"
+        android:background="#333333">
+    
+        <LinearLayout 
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:onClick="showProfile">
+            
+        <com.megasoft.entangle.views.RoundedImageView
+            android:layout_width="100dp" 
+            android:layout_height="100dp" 
+            android:src="@drawable/avatar"
+			android:layout_gravity="center"
+			android:layout_marginTop="15dp"
+           />
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mohamed Farghal"
+            android:layout_gravity="center"
+            android:textColor="#FFFFFF"/>
+        
+        </LinearLayout>
+        
+        <View
+    	android:layout_width="fill_parent"
+    	android:layout_height="1dp"
+    	android:layout_marginTop="10dp"
+    	android:background="#FFFFFF" />
+        
+        <ListView android:id="@+id/tangleList"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:divider="#FFFFFF"
+        android:dividerHeight="1dp"
+        />
+           
+   	</LinearLayout>
+    
+</android.support.v4.widget.DrawerLayout>
