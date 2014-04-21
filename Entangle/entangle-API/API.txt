@@ -726,6 +726,20 @@ get the details of an offer
 
             }
 
+## POST /user/login
 
 
-            
++ Request (application/json)
+    
+    + Body 
+    
+            {
+               "username" : "maisara",
+                "password" : "95bcadd58e0aa59e8f6e09c86ed310c7"
+            }
+             
++ Response 201 (application/json)
+
+        {
+             "session_id" : "abcdefghijklmnopqrstuvwxyz1234"                                 
+        }
