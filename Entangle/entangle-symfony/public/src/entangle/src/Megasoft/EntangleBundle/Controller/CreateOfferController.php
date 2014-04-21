@@ -14,6 +14,14 @@ use Megasoft\EntangleBundle\Entity\Offer;
  */
 class CreateOfferController extends Controller {
 
+    /**
+     * this method insert the data given from the sent json object to the offer table
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param String $tangleId
+     * @param String $requestId
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @author Salma Khaled
+     */
     public function createOfferAction(Request $request, $tangleId, $requestId) {
         $doctrine = $this->getDoctrine();
         $json = $request->getContent();
