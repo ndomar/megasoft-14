@@ -871,8 +871,6 @@ Tangle Owner can resolve issues
 		}
 
 + Reponse 201 
-=======
->>>>>>> ef92489e934853a36abc24313f9ebc8c689c8e14
 
 
 ## POST /user/login/{username,password}/{claimID}
@@ -896,3 +894,7 @@ Tangle Owner can resolve issues
 		}
 
 + Reponse 201 
+
+
+
+
