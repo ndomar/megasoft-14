@@ -1,5 +1,6 @@
-﻿FORMAT: 1A
+FORMAT: 1A
 HOST: http://www.google.com
+
 
 # Entangle
 asdsadasd
@@ -81,9 +82,9 @@ Get requests in a specific tangle filtered by user, tag, full text or a prefix o
             ]
         }
 
-## GET /tangle/{tangleId}/user
-Get list of users in tangle
 
+## USER RELATED TO TANGLE ENDPOINTS [/tangle/{tangleId}/user]
+### Get list of users in tangle [GET]
 
 + Parameters
     + tangleId ( Int , required ) ... tangle id
@@ -114,6 +115,19 @@ Get list of users in tangle
             ]
         }
 
+
+### Delete user from tangle [DELETE]
+        
++ Parameters
+    + tangleId ( Int , required ) ... tangle id
+    
++ Request
+
+    + Header
+            
+             X-SESSION-ID : asdasdasdsadasdasd
+                 
++ Response 204
 
 ## POST /tangle/{tangleId}/request
 Post request
@@ -371,8 +385,11 @@ contact offerer and requester after claim
                                      }
                                 ]
                 }
+
+
 ## POST /request/{requestId}/icon
 Post icon for a specific request
+
 + parameters
 
     + requestId (Int, required) ... request id
@@ -512,22 +529,6 @@ As a user, i can register
              X-SESSION-ID : "asdasdasdsadasdasd"
              
 + Response 200
-
-
-##DELETE /tangle/{tangleId}/user/{userId}
-Delete user from tangle        
-        
-+ Parameters
-    + tangleId ( Int , required ) ... tangle id
-    + userId ( Int , required ) ... user id
-    
-+ Request
-
-    + Header
-            
-             X-SESSION-ID : asdasdasdsadasdasd
-                 
-+ Response 204
 
 
 ## GET /tangleOwnerAndOffererMail/{tangleId}/claim
