@@ -28,7 +28,7 @@ class DefaultController extends Controller {
         }
         return $ret;
     }
-    
+
     public function registerAction(\Symfony\Component\HttpFoundation\Request $request)  {
         if ($request->getMethod() == 'POST') {  //reading the request object and getting data out of it
             //$username = $request->get('username');
@@ -75,7 +75,7 @@ class DefaultController extends Controller {
 
                     if(in_array(strtolower($fileType), $validFileTypes)) {
 
-                        $filepath = '/home/neuron/Documents/megasoft-14/Entangle/entangle-symfony/public/src/entangle/web/images/profilePictures/' . substr(md5(time()),0,10) . '.' .$fileType;
+                        $filepath = '/home/neuron/Documents/megasoft-14/Entangle/entangle-symfony/public/src/entangle/web/images/profilePictures/' . substr(md5(time()),0,10) . $this->generate(5) . '.' .$fileType;
                         move_uploaded_file($image,$filepath);
                         $user->setPhoto($filepath);
 
