@@ -1,0 +1,103 @@
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:animateLayoutChanges="true"
+        android:padding="10dp"
+        android:orientation="vertical" >
+        
+        <TextView
+            android:id="@+id/invite_not_members_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/not_members" />
+        
+        <LinearLayout
+            android:id="@+id/invite_not_members"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:animateLayoutChanges="true"
+	        android:padding="10dp"
+	        android:orientation="vertical" >
+        
+            
+    	</LinearLayout>
+    	
+        <TextView
+            android:id="@+id/invite_entangle_members_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/entangle_members" />
+    	
+        <LinearLayout
+            android:id="@+id/invite_entangle_members"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:animateLayoutChanges="true"
+	        android:padding="10dp"
+	        android:orientation="vertical" >
+        
+        
+	    
+    	</LinearLayout>
+    	
+    	<TextView
+    	    android:id="@+id/invite_already_in_tangle_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/already_in_the_tangle" />
+    	
+        <LinearLayout
+            android:id="@+id/invite_already_in_tangle"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:animateLayoutChanges="true"
+	        android:padding="10dp"
+	        android:orientation="vertical" >
+        
+        
+	    
+    	</LinearLayout>
+    	
+        <TextView
+            android:id="@+id/invite_invalid_emails_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/wrong_emails" />
+        
+        <LinearLayout
+            android:id="@+id/invite_invalid_emails"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:animateLayoutChanges="true"
+	        android:padding="10dp"
+	        android:orientation="vertical" >
+        
+        
+    	</LinearLayout>
+    	
+        <EditText 
+            android:id="@+id/invite_invitation_message"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:inputType="text"
+            android:hint="@string/invite_write_the_invitation_message"/>
+	    
+        <Button 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/invite"
+            android:layout_gravity="center"
+            android:onClick="invite"/>
+    </LinearLayout>
+</ScrollView>

@@ -214,8 +214,7 @@ Get profile
                                  "Description" : "afafsgsbsger",
                                  "balance" :"1500",
                                  "birthdate":"1/1/1",
-                                 "verified":true,
-                                 "picture URL":"http://1.bp.blogspot.com/-p1nPSZa1NNw/UW81W_61ZgI/AAAAAAAAAjw/pd1N-Yhz-pY/s200/sad-face-smiley-facebook.jpg"
+                                 "verified":true
                              },
             "transactions" : [
                                  {
@@ -513,7 +512,6 @@ As a user, i can register
              
 + Response 200
 
-
 ##DELETE /tangle/{tangleId}/user/{userId}
 Delete user from tangle        
         
@@ -528,7 +526,6 @@ Delete user from tangle
              X-SESSION-ID : asdasdasdsadasdasd
                  
 + Response 204
-
 
 ## GET /tangleOwnerAndOffererMail/{requestId}/claim
 Get the email of the offerer
@@ -575,7 +572,6 @@ Post request
 
         {
             "X-CLAIM-ID" : "1234"
-           
         }
 
 ## GET /offer/{offerID}/
@@ -777,3 +773,4 @@ Post offer
     
 
 + Response 201
+        }
