@@ -525,23 +525,10 @@ class TangleController extends Controller
     }
 
     /**
-     * This function is responsible for removing all the messages of 
-     * the a user in a specific tangle
-     * 
-     * @param integer $tangleId
-     * @param integer $userId
-     * @author HebaAamer
-     */
-    public function removeMessages($tangleId, $userId) {
-        
-    }
-
-    /**
      * An endpoint to be used when a user leaves a tangle
      * 
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param integer $tangleId
-     * @param integer $userId
      * @return \Symfony\Component\HttpFoundation\Response
      * @author HebaAamer
      */
@@ -562,7 +549,6 @@ class TangleController extends Controller
         
         $this->removeOffers($tangleId, $userId);
         $this->removeRequests($tangleId, $userId);
-        $this->removeMessages($tangleId, $userId);
         $this->removeUser($tangleId, $userId);
         
         return new Response("You have left successfully", 201);
