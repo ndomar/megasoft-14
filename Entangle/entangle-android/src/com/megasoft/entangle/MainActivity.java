@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
 
 			public void onClick(View v) {
 
-				// this google thing , needs to be changed to the url that islam
+				// this google url , needs to be changed to the url that islam
 				// will provide me with
 				Uri uri = Uri.parse("http://www.google.com");
 				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -87,7 +87,12 @@ public class MainActivity extends Activity {
 					Toast.makeText(getApplicationContext(),
 							"Wrong Credentials", Toast.LENGTH_SHORT).show();
 
+				} else {
+					Toast.makeText(getApplicationContext(), "Didn't merge the API yet",
+							Toast.LENGTH_SHORT).show();
+					
 				}
+
 			}
 		};
 		request.setBody(json);

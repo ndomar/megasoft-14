@@ -394,26 +394,6 @@ contact offerer and requester after claim
         }
 
 
-## GET /user/whoAmI
-
-+ Request
-
-    + Body
-            
-            {
-                "session_id" : "abcdefghijklmnopqrstuvwxyz1234"
-            }
-           
-+ Response 200 (application/json)
-
-        {
-                "emails" : ["maisara.farahat@gmail.com" , "maisara.farahat@student.guc.edu.eg"],
-                "description" : "maisara taleb 4alban 3ayez ye3mel alaban",
-                "username" : "maisara",
-                "dob" : "29/04/1993",
-                "userId" : 4757
-        }
-        
 ## POST /user/login
 
 
@@ -426,7 +406,11 @@ contact offerer and requester after claim
                 "password" : "95bcadd58e0aa59e8f6e09c86ed310c7"
             }
              
-+ Response 201
++ Response 201 (application/json)
+
+        {
+             "session_id" : "abcdefghijklmnopqrstuvwxyz1234"                                 
+        }
 
 ## POST /register
 As a user, i can register
