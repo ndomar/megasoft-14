@@ -30,7 +30,11 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/toLabel"
         android:layout_alignParentRight="true"
+        android:clickable="false"
+        android:cursorVisible="false"
         android:ems="10"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:inputType="textEmailAddress" />
 
     <EditText
@@ -39,11 +43,12 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/subjectLabel"
         android:layout_alignLeft="@+id/fromText"
+        android:clickable="false"
+        android:cursorVisible="false"
         android:ems="10"
-        android:inputType="textEmailAddress" >
-
-        <requestFocus />
-    </EditText>
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:inputType="textEmailAddress" />
 
     <TextView
         android:id="@+id/mssgLabel"
@@ -69,7 +74,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/subjectLabel"
         android:layout_alignParentRight="true"
-        android:ems="10" />
+        android:ems="10"
+        android:inputType="textMultiLine" />
 
     <EditText
         android:id="@+id/mssgText"

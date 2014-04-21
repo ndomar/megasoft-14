@@ -8,39 +8,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Request" >
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="27dp"
-        android:text="@string/requester_is_here" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/textView2"
-        android:layout_marginTop="30dp"
-        android:text="@string/offerer_is_here" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="46dp"
-        android:text="@string/request_is_here" />
-
     <Button
         android:id="@+id/claimbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView3"
         android:layout_centerVertical="true"
         android:inputType="none"
         android:onClick="startClaimForm"
