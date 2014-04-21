@@ -790,6 +790,21 @@ get the details of an offer
 
             }
 
+
+##POST /accept/offer
+accept an offer
++ Request (application/json)
+
+    + Header
+
+            X-SESSION-ID : "asdasdasdsadasdasd"
+
+    + Body
+
+            { "offerId": "1"} 
+
++ Response 201 
+
 ## PUT /user/edit
 + Request (application/json) 
 
@@ -832,3 +847,4 @@ Post offer
     
 
 + Response 201
+
