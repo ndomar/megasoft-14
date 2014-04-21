@@ -116,7 +116,7 @@ class Offer
      * 
      * @ORM\OneToMany(targetEntity="PriceChangeNotification", mappedBy="offer", cascade={"persist"})
      */
-    private $notifications;
+    private $priceChangeNotifications;
     
 
     /**
@@ -421,37 +421,37 @@ class Offer
     {
         return $this->transaction;
     }
-    
+
     /**
-     * Add notifications
+     * Add priceChangeNotifications
      *
-     * @param \Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications
+     * @param \Megasoft\EntangleBundle\Entity\PriceChangeNotification $priceChangeNotifications
      * @return Offer
      */
-    public function addNotification(\Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications)
+    public function addPriceChangeNotification(\Megasoft\EntangleBundle\Entity\PriceChangeNotification $priceChangeNotifications)
     {
-        $this->notifications[] = $notifications;
-        $notifications->setOffer($this);
+        $this->priceChangeNotifications[] = $priceChangeNotifications;
+        $priceChangeNotifications->setOffer($offer);
         return $this;
     }
 
     /**
-     * Remove notifications
+     * Remove priceChangeNotifications
      *
-     * @param \Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications
+     * @param \Megasoft\EntangleBundle\Entity\PriceChangeNotification $priceChangeNotifications
      */
-    public function removeNotification(\Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications)
+    public function removePriceChangeNotification(\Megasoft\EntangleBundle\Entity\PriceChangeNotification $priceChangeNotifications)
     {
-        $this->notifications->removeElement($notifications);
+        $this->priceChangeNotifications->removeElement($priceChangeNotifications);
     }
 
     /**
-     * Get notifications
+     * Get priceChangeNotifications
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getNotifications()
+    public function getPriceChangeNotifications()
     {
-        return $this->notifications;
+        return $this->priceChangeNotifications;
     }
 }
