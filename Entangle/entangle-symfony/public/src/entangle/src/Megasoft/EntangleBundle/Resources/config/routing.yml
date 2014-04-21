@@ -27,6 +27,17 @@ invite:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
     methods: [POST]
 
+getMails:
+    patern: /tangleOwnerAndOffererMail/{tangleID}/claim
+    defaults: { _controller: MegasoftEntangleBundle:Claim:get }
+    methods: [GET]
+    
+createClaim:
+    patern: /claim/{tangleID}/sendClaim
+    defaults: { _controller: MegasoftEntangleBundle:Claim:create }
+    methods: [POST]
+        
 dummy:
     pattern: /dummy
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
+
