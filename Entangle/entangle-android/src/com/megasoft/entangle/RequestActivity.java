@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 
 public class RequestActivity extends Activity {
@@ -51,9 +52,9 @@ public class RequestActivity extends Activity {
 	 * @author sak93
 	 */
 	public void fillRequestDetails() {
-		layout = (LinearLayout) this.findViewById(R.id.layout);
+		layout = (LinearLayout) this.findViewById(R.id.request_activity);
 		GetRequest request = new GetRequest(
-				"http://entangle2.apiary-mock.com/request/" + requestId) {
+				Config.API_BASE_URL + "/request/" + requestId) {
 			protected void onPostExecute(String response) {
 				try {
 					JSONObject json = new JSONObject(response);

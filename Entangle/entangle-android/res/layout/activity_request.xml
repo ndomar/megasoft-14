@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:background="#6699FF">
 <LinearLayout 
-   android:id="@+id/layout" 
+   android:id="@+id/request_activity" 
    android:layout_width="match_parent" 
    android:layout_height="wrap_content"
    android:layout_marginLeft="10dp"
