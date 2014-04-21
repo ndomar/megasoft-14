@@ -86,6 +86,7 @@ public class OfferActivity extends Activity {
 	 * Sends a GET request and get the JSon response
 	 * Calls the ViewRequestInformation method
 	 * Calls the ViewOfferInformation method
+	 * @author Almgohar
 	 */
 	public void viewOffer() {
 		requestDescription = (TextView) findViewById(R.id.request_description);
@@ -121,6 +122,7 @@ public class OfferActivity extends Activity {
 	 *  Retrieves the required request information from the JSonObject
 	 *  Views the request information
 	 * @param JSonObject requestInformation
+	 * @author Almgohar
 	 */
 	public void viewRequestInfo(JSONObject requestInformation) {
 			try {
@@ -153,6 +155,7 @@ public class OfferActivity extends Activity {
 	 * Retrieves the required offer information from the JSonObject
 	 * Views the offer information
 	 * @param JSonObject offerInformation
+	 * @author Almgohar
 	 */
 	public void viewOfferInfo(JSONObject offerInformation) {
 		
@@ -188,6 +191,7 @@ public class OfferActivity extends Activity {
 	/**
 	 * Redirects to a user's profile given his id
 	 * @param int userId
+	 * @author Almgohar
 	 */
 	public void goToProfile(int userId) {
 		Intent profile = new Intent(this,ProfileActivity.class);
@@ -199,6 +203,7 @@ public class OfferActivity extends Activity {
 	/**
 	 * Redirects to a request given its id
 	 * @param int requestId
+	 * @author Almgohar
 	 */
 	public void goToRequest(int requestId) {
 		Intent request = new Intent(this,RequestActivity.class);

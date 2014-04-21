@@ -21,6 +21,7 @@ class OfferController extends Controller
      * @param \Megasoft\EntangleBundle\Entity\Request $request
      * @param integer $sessionId
      * @return boolean true if the user can view this request and false otherwise
+     * @author Almgohar
      */
     public function validateUser($request,$sessionId) {
         $sessionTable = $this->getDoctrine()->
@@ -46,6 +47,7 @@ class OfferController extends Controller
      * @param \Symfony\Component\HttpFoundation\Request $req
      * @param integer $offerId
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @author Almgohar
      */
     public function getOfferAction(Request $req, $offerId) {
       if (offerId == null) {
@@ -80,6 +82,7 @@ class OfferController extends Controller
      * Gets the request information
      * @param \Megasoft\EntangleBundle\Entity\Request $request $request
      * @return array $requestInformation
+     * @author Almgohar
      */
     public function getRequestInformation($request) {
         $user = $request->getUser();
@@ -102,6 +105,7 @@ class OfferController extends Controller
      * 
      * @param \Megasoft\EntangleBundle\Entity\Offer $offer
      * @return array $offerInformation
+     * @author Almgohar
      */
     public function getOfferInformation($offer) {
         $user = $offer->getUser();
