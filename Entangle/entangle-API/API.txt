@@ -545,7 +545,7 @@ Get the email of the offerer
 + Response 200(application/json)
 
         {
-            "X-OFFERER-MAIL" : "salma@gmail.com",
+            "X-CLAIMER-MAIL" : "salma@gmail.com",
             "X-TANGLEOWNER-MAIL" : "saloum@gmail.com"
            
         }
