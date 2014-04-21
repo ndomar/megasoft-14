@@ -50,4 +50,14 @@
         android:ems="20"
         android:hint="@string/enter" />
 
+    <TextView
+        android:id="@+id/statusmsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
+        android:text=" "
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
 </RelativeLayout>
