@@ -37,6 +37,14 @@ class Tangle
     
     /**
      *
+     * @var integer
+     * 
+     * @ORM\Column(name="deletedBalance", type="integer")
+     */
+    private $deletedBalance = 0;
+    
+    /**
+     *
      * @var Request[]
      * @ORM\OneToMany(targetEntity="Request", mappedBy="tangle" , cascade={"persist"})
      */
@@ -304,5 +312,28 @@ class Tangle
     public function getDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * Set deletedBalance
+     *
+     * @param integer $deletedBalance
+     * @return Tangle
+     */
+    public function setDeletedBalance($deletedBalance)
+    {
+        $this->deletedBalance = $deletedBalance;
+
+        return $this;
+    }
+
+    /**
+     * Get deletedBalance
+     *
+     * @return integer 
+     */
+    public function getDeletedBalance()
+    {
+        return $this->deletedBalance;
     }
 }
