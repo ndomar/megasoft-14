@@ -530,7 +530,7 @@ Delete user from tangle
 + Response 204
 
 
-## GET /tangleOwnerAndOffererMail/{requestId}/claim
+## GET /tangleOwnerAndClaimerMail/{requestId}/claim
 Get the email of the offerer
 
 + Parameters
