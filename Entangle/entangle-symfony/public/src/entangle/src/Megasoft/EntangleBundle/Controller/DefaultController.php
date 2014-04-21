@@ -20,6 +20,15 @@ class DefaultController extends Controller {
 
 
 // Please don't forget to do a register controller instead of the default controller #ESLAMMAGED
+    private function generate($len){
+        $ret = '';
+        $seed = "abcdefghijklmnopqrstuvwxyz123456789";
+        for($i=0;$i<$len;$i++){
+            $ret .= $seed[rand(0,strlen($seed)-1)];
+        }
+        return $ret;
+    }
+    
     public function registerAction(\Symfony\Component\HttpFoundation\Request $request)  {
         if ($request->getMethod() == 'POST') {  //reading the request object and getting data out of it
             //$username = $request->get('username');
@@ -34,11 +43,21 @@ class DefaultController extends Controller {
             $userEmail = new UserEmail();
 
             $user->addEmail($userEmail);
+            if($name != null && $name != "") {
             $user->setName($name);
-            $user->setPassword($password);
-            $user->setUserBio($userBio);
+            }
+            if($password == $confirmPassword ) {
+                $user->setPassword($password);
+            }
 
+            if($userBio!=null && $userBio!="") {
+            $user->setUserBio($userBio);
+            }
+
+            if($birthDate != null && $birthDate!= ""){
             $user->setBirthDate($birthDate);
+            }
+
             $user->setVerified($verified);
             $userEmail->setEmail($email);
 
