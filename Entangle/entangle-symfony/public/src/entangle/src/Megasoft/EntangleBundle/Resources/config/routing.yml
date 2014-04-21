@@ -30,3 +30,7 @@ invite:
 dummy:
     pattern: /dummy
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
+
+change_offer_price:
+    pattern: /request/{requestid}/offers/{offerid}/changeprice
+    defaults: { _controller: MegasoftEntangleBundle:Offer:changeOfferPrice }
