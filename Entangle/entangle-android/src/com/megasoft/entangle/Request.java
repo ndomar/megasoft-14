@@ -60,7 +60,7 @@ public class Request extends Activity {
 				try {
 					JSONObject object = new JSONObject(response);
 					tangleOwnerMail += object.getString("X-TANGLEOWNER-MAIL");
-					requesterMail += object.getString("X-REQUESTER-MAIL");
+					requesterMail += object.getString("X-CLAIMER-MAIL");
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
