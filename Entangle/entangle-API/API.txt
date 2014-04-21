@@ -145,7 +145,7 @@ Post request
     
                 { 
                     "description" : "description of a request",
-                    "date" : "28/May/2013",
+                    "date" : "28/May/2013 12:07:20",
                     "deadLine" : "3/April/2014",
                     "requestedPrice" : "7",
                     "tags": ["guc", "farghal", "ay7aga"]
@@ -824,7 +824,7 @@ Post offer
     
                 { 
                     "description" : "description of an offer",
-                    "date" : "28/May/2013",
+                    "date" : "28/May/2013 12:07:20",
                     "expectedDeadLine" : "19/April/2014",
                     "requestedPrice" : "7"
                 }
