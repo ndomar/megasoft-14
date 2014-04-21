@@ -9,52 +9,43 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class Claim extends Controller {
 
     /**
-     * This function validates the info of the coming request
-     * @param http request $request
-     * @param int $tangleId
-     * @return \Symfony\Component\HttpFoundation\Response|boolean
+     * This function gets the emails of both the offerer and the tangle owner from 
+     * the data base after making sure of the validation of all the information
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param int $requestId
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @author Salma Amr
      */
-    public function validateRequest($request, $tangleId) {
-        $flag = true;
-        $sessionId = $request->headers->get('X-SESSION-ID');
-        if ($tangleId == null || $sessionId == null) {
-            $flag = false;
+    public function getMails($request, $requestId) {
+        
+        if ($requestId == null) {
             return new Response('Bad Request', 400);
         }
-        $doctrine = $this->getDoctrine();
+          $sessionId = $request->headers->get('X-SESSION-ID');
+          $doctrine = $this->getDoctrine();
+          $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+          $offererRequest = $requestRepo->findOneBy(array('id' => $requestId));
+          
+          if ($offererRequest == null) {
+            return new Response('Bad Request', 400);
+        }
+          $tangleId = $offererRequest->getTangleId();
+          
+          if ($tangleId == null || $sessionId == null) {
+            return new Response('Bad Request', 400);
+        }
+        
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($session == null || $session->getExpired()) {
-            $flag = false;
             return new Response('Bad Request', 400);
         }
         $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
         $tangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId));
         if ($tangle == null) {
-            $flag = false;
             return new Response('Bad Request', 400);
         }
-        return $flag;
-    }
-
-    /**
-     * This function gets the emails of both the offerer and the tangle owner from 
-     * the data base by matching with the tangleid and the session id
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int $tangleId
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     * @author Salma Amr
-     */
-    public function getMails($request, $tangleId) {
-        $flag = validateRequest($request, $tangleId);
-        if ($flag == true) {
-            $sessionId = $request->headers->get('X-SESSION-ID');
-            $doctrine = $this->getDoctrine();
-            $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
-            $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
             $userId = $session->getUserId();
-            $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
             $userRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserEmail');
             $offererMail = $userRepo->findOneBy(array('userId' => $userId))->getEmail();
             $tangleOwnerId = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'tangleOwner' => 'true'));
@@ -64,37 +55,58 @@ class Claim extends Controller {
                     (array('X-TANGLEOWNER-MAIL' => $tangleOwnerMail, 'X-OFFERER-MAIL' => $offererMail));
             $response->setStatusCode(200);
             return $response;
-        }
+        
     }
 
     /**
      * This function fetches the data attributes of the claim and pass it to the sendClaim function
+     * aftr making sure  of the validation of all the info
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int $tangleId
+     * @param int $requestId
      * @return \Symfony\Component\HttpFoundation\Response
      * @author Salma Amr
      */
-    public function createClaim($request, $tangleId) {
-
-        $flag = validateRequest($request, $tangleId);
-        if ($flag == true) {
-            $sessionId = $request->headers->get('X-SESSION-ID');
+    public function createClaim($request, $requestId) {
+        
+       if ($requestId == null) {
+            return new Response('Bad Request', 400);
+        }
+          $sessionId = $request->headers->get('X-SESSION-ID');
+          $doctrine = $this->getDoctrine();
+          $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+          $offererRequest = $requestRepo->findOneBy(array('id' => $requestId));
+          
+          if ($offererRequest == null) {
+            return new Response('Bad Request', 400);
+        }
+          $tangleId = $offererRequest->getTangleId();
+          
+          if ($tangleId == null || $sessionId == null) {
+            return new Response('Bad Request', 400);
+        }
+        
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        
+        if ($session == null || $session->getExpired()) {
+            return new Response('Bad Request', 400);
+        }
+        
+        $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $tangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId));
+        if ($tangle == null) {
+            return new Response('Bad Request', 400);
+        }
             $subject = $request->body->get('X-SUBJECT');
             $mssgBody = $request->body->get('X-MSSGBODY');
-            $doctrine = $this->getDoctrine();
-            $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
-            $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
             $userId = $session->getUserId();
             $user = $session->getUser();
-            $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
-            $tangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId));
             if ($mssgBody == null) {
                 return new Response('Empty MssgBody', 400);
             }
             sendClaim($user, $userId, $tangle, $tangleId, $mssgBody);
         }
-    }
-
+ 
     /**
      * This function creates the claim by setting the attributes to the newly created claim
      * @param user $user
