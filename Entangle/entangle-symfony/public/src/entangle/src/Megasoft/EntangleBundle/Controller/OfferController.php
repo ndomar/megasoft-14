@@ -13,11 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
  * and open the template in the editor.
  */
 
-/**
- * Description of OfferController
- *
- * @author sak
- */
 class OfferController extends Controller {
 
     /**
