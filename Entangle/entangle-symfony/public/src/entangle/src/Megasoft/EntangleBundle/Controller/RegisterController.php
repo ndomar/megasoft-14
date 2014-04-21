@@ -12,6 +12,12 @@ use Symfony\Component\Form\Exception\LogicException;
 use Megasoft\EntangleBundle\Entity\User;
 use Megasoft\EntangleBundle\Entity\UserEmail;
 
+/**
+ * Class RegisterController
+ * @package Megasoft\EntangleBundle\Controller
+ * Responsible for the user creation process
+ * @author: Eslam
+ */
 class RegisterController extends Controller {
 
     public function indexAction($name) {
