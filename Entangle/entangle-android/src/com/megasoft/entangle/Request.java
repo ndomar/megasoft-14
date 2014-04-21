@@ -54,7 +54,7 @@ public class Request extends Activity {
 				"sessionID");
 		int requestID = (int) getIntent().getIntExtra("requestID", 0);
 		GetRequest requestTangleOwnerMail = new GetRequest(Config.API_BASE_URL
-				+ "/tangleOwnerAndOffererMail/" + requestID + "/claim") {
+				+ "/tangleOwnerAndClaimerMail/" + requestID + "/claim") {
 
 			protected void onPostExecute(String response) {
 				try {
