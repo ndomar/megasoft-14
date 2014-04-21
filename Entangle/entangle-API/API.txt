@@ -551,7 +551,7 @@ A single unfreeze Request object with all its details
 ### Remove a Request [DELETE]
 + Response 204
 
-## frozenPoints [/unfreeze/{unfreezeRequestId}]
+## frozenPoints [/unfreeze/{unfreezeRequestId}/frozenpoints]
 + Parameters
     + unfreezeRequestId (required,int)
 
