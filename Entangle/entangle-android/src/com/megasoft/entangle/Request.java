@@ -52,9 +52,9 @@ public class Request extends Activity {
 		final Intent intent = new Intent(this, Claim.class);
 		String sessionID = (String) getIntent().getCharSequenceExtra(
 				"sessionID");
-		int tangleID = (int) getIntent().getIntExtra("tangleID", 0);
+		int requestID = (int) getIntent().getIntExtra("requestID", 0);
 		GetRequest requestTangleOwnerMail = new GetRequest(Config.API_BASE_URL
-				+ "/tangleOwnerAndOffererMail/" + tangleID + "/claim") {
+				+ "/tangleOwnerAndOffererMail/" + requestID + "/claim") {
 
 			protected void onPostExecute(String response) {
 				try {
@@ -71,7 +71,7 @@ public class Request extends Activity {
 		requestTangleOwnerMail.execute();
 		intent.putExtra("receiver", tangleOwnerMail);
 		intent.putExtra("sender", offererMail);
-		intent.putExtra("tangleID", tangleID);
+		intent.putExtra("requestID", requestID);
 		intent.putExtra("sessionID", sessionID);
 		Toast.makeText(this, "Loading Claim Form", Toast.LENGTH_SHORT).show();
 		startActivity(intent);

@@ -105,9 +105,9 @@ public class Claim extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			int tangleID = (int) getIntent().getIntExtra("tangleID", 0);
+			int requestID = (int) getIntent().getIntExtra("requestID", 0);
 			PostRequest postSubject = new PostRequest(Config.API_BASE_URL
-					+ "/claim/" + tangleID + "/sendClaim") {
+					+ "/claim/" + requestID + "/sendClaim") {
 
 				protected void onPostExecute(String response) {
 					try {
