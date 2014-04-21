@@ -585,11 +585,11 @@ A single unfreeze Request object with all its details
 + Response 200
 
 
-## GET /tangleOwnerAndOffererMail/{tangleId}/claim
+## GET /tangleOwnerAndClaimerMail/{requestId}/claim
 Get the email of the offerer
 
 + Parameters
-    + tangleId  ( Int , required ) ... tangle id
+    + requestId  ( Int , required ) ... request id
 
 + Request
 
@@ -600,16 +600,16 @@ Get the email of the offerer
 + Response 200(application/json)
 
         {
-            "X-OFFERER-MAIL" : "salma@gmail.com",
+            "X-CLAIMER-MAIL" : "salma@gmail.com",
             "X-TANGLEOWNER-MAIL" : "saloum@gmail.com"
            
         }
         
-## POST /claim/{tangleId}/sendClaim
+## POST /claim/{requestId}/sendClaim
 Post request
 + Parameters
     
-    + tangleId ( Int , required ) ... tangle id
+    + requestId ( Int , required ) ... request id
  
 + Request (application/json)
     
