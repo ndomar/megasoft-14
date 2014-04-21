@@ -848,7 +848,7 @@ Post offer
 
 + Response 201
 
-<<<<<<< HEAD
+
 ## POST /user/login/{username,password}/{claimID}
 Tangle Owner can resolve issues 
 
