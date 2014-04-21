@@ -49,6 +49,9 @@ class OfferController extends Controller {
         $doctrine = $this->getDoctrine();
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $offer = $offerRepo->findOneBy(array('id' => $offerId));
+        if (count($offer) <= 0) {
+            return "Error: No such offer.";
+        }
         $requestId = $offer->getRequestId();
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
         $request = $requestRepo->findOneBy(array('id' => $requestId));
@@ -58,9 +61,6 @@ class OfferController extends Controller {
         }
         if ($request->getStatus() === 1) {
             return "Error: Request Closed.";
-        }
-        if (count($offer) <= 0) {
-            return "Error: No such offer";
         }
         if ($offer->getDeleted() == 1) {
             return "Error: Offer deleted.";
