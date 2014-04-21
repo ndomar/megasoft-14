@@ -164,7 +164,7 @@ public class OfferActivity extends Activity {
 			offerDeadline.setText(offerInformation.getString("offerDeadline"));
 			offererName.setText(offerInformation.getString("offererName"));
 			offerDate.setText(offerInformation.getString("offerDate"));
-			offerPrice.setTag(offerInformation.getInt("offerPrice"));
+			offerPrice.setText(Integer.toString(offerInformation.getInt("offerPrice")));
 			
 			final int userId = offerInformation.getInt("offererID");
 			int status = offerInformation.getInt("offerStatus");
