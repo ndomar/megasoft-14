@@ -48,7 +48,7 @@ class CreateOfferController extends Controller {
             $response->setStatusCode(401);
             return $response;
         }
-        if ($tangleRequest->getDeleted()) {
+        if ($tangleRequest->getDeleted() || $tangleRequest->getStatus() == 2 || $tangleRequest->getStatus() == 3) {
             $response->setStatusCode(400);
             return $response;
         }
