@@ -101,7 +101,7 @@ public class CreateOfferActivity extends Activity {
 					protected void onPostExecute(String response) {
 						if (this.getStatusCode() == 201) {
 							// redirection
-							//send notification
+							// send notification
 						} else if (this.getStatusCode() == 400) {
 							// showErrorMessage();
 						}
