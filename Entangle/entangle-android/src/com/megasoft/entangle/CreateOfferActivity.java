@@ -10,6 +10,8 @@ import com.megasoft.requests.PostRequest;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
@@ -17,8 +19,10 @@ import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CreateOfferActivity extends Activity {
 
@@ -107,6 +111,55 @@ public class CreateOfferActivity extends Activity {
 
 			}
 		});
+		pickDate.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				showDialog(DATE_DIALOG_ID);
+			}
+		});
+		updateDisplay();
+	}
+	
+	private void updateDisplay() {
+		dateDisplay.setError(null);
+		this.dateDisplay.setText(new StringBuilder().append(deadLineDay)
+				.append("/").append(deadLineMonth + 1).append("/")
+				.append(deadLineYear).append(" "));
+	}
+
+	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+		public void onDateSet(DatePicker view, int year, int monthOfYear,
+				int dayOfMonth) {
+			deadLineYear = year;
+			deadLineMonth = monthOfYear;
+			deadLineDay = dayOfMonth;
+			boolean valid = isValidDeadLine();
+			if (!valid) {
+				Toast.makeText(getApplicationContext(),
+						"The DeadLine can NOT be over already!!",
+						Toast.LENGTH_SHORT).show();
+				checkBox.setChecked(false);
+				return;
+			}
+			updateDisplay();
+		}
+	};
+
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case DATE_DIALOG_ID:
+			return new DatePickerDialog(this, mDateSetListener, deadLineYear,
+					deadLineMonth, deadLineDay);
+		}
+		return null;
+
+	}
+	private boolean isValidDeadLine() {
+		if (currentYear > deadLineYear
+				|| (currentYear == deadLineYear && currentMonth > deadLineMonth)
+				|| (currentYear == deadLineYear
+						&& currentMonth == deadLineMonth && currentDay > deadLineDay))
+			return false;
+		return true;
 	}
 
 	OnFocusChangeListener focusListener = new OnFocusChangeListener() {
