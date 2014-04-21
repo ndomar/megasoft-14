@@ -44,5 +44,5 @@ dummy:
 
 megasoft_entangle_register:
     pattern:  /register
-    defaults: { _controller: MegasoftEntangleBundle:Default:register }
+    defaults: { _controller: MegasoftEntangleBundle:Register:register }
     methods: [POST]
