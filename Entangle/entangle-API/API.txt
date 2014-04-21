@@ -530,11 +530,11 @@ Delete user from tangle
 + Response 204
 
 
-## GET /tangleOwnerAndOffererMail/{tangleId}/claim
+## GET /tangleOwnerAndOffererMail/{requestId}/claim
 Get the email of the offerer
 
 + Parameters
-    + tangleId  ( Int , required ) ... tangle id
+    + requestId  ( Int , required ) ... request id
 
 + Request
 
@@ -550,11 +550,11 @@ Get the email of the offerer
            
         }
         
-## POST /claim/{tangleId}/sendClaim
+## POST /claim/{requestId}/sendClaim
 Post request
 + Parameters
     
-    + tangleId ( Int , required ) ... tangle id
+    + requestId ( Int , required ) ... request id
  
 + Request (application/json)
     
