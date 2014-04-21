@@ -14,6 +14,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.view.Menu;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class ViewMemberListActivity extends ListActivity {
@@ -23,26 +24,42 @@ public class ViewMemberListActivity extends ListActivity {
 	private int tangleId;
 	private JSONObject[] members;
 	private String[] values;
+	ListView listView;
 
+	
 	public void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
 		setContentView(R.layout.activity_view_member_list);
 		setAttributes();
 		sendMemberListRequest(tangleId);
 
-		System.out.println("WASALNA HENA");
-		if (values[0] == null)
-			System.out.println("NULL ---");
+		listView = getListView();
 
-		final ArrayList<String> list = new ArrayList<String>();
-		for (int i = 0; i < values.length; ++i) {
-			list.add(values[i]);
+		System.out.println("WASALNA HENA");
+		if(values==null){
+			System.out.println("Null ----");
 		}
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				R.layout.activity_view_member_list, list);
 		System.out.println("weselna hena 2222222");
-		setListAdapter(adapter);
+
+		/*final ArrayList<String> list = new ArrayList<String>();
+		for (int i = 0; i < values.length; ++i) {
+			list.add(values[i]);
+		}*/
+		
+		/*
+		 * ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+		 * R.layout.activity_view_member_list, list);
+		 * System.out.println("weselna hena 2222222"); setListAdapter(adapter);
+		 */
+		ArrayList <String>test = new ArrayList<String>();
+		test.add("element1");
+		test.add("element2");
+		test.add("element3");
+		
+		listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,android.R.id.text1,
+				test));
+		//listView.setOnItemClickListener(this);
 	}
 
 	public void sendMemberListRequest(int tangleID) {
@@ -66,11 +83,11 @@ public class ViewMemberListActivity extends ListActivity {
 			}
 		};
 		System.out.println("GETTING SESSION ID " + sessionId);
-		System.out.println(getSessionId());
+		//System.out.println(getSessionId());
 		getMemberListRequest.addHeader("X-SESSION-ID", getSessionId());
-		System.out.println("FDSJGFKDGJDSLGFJSKLGJKLJGLKFDJLGKJDFs");
+		//System.out.println("FDSJGFKDGJDSLGFJSKLGJKLJGLKFDJLGKJDFs");
 		getMemberListRequest.execute();
-		System.out.println("JKFJDSLJFKLSAJFWAIFJEWAWJ");
+		//System.out.println("JKFJDSLJFKLSAJFWAIFJEWAWJ");
 	}
 
 	private void setAttributes() {
@@ -87,10 +104,9 @@ public class ViewMemberListActivity extends ListActivity {
 
 	private void getMembers(String res) {
 		try {
-			System.out.println(res);
+			System.out.println("Inside getmembers");
 			JSONObject json = new JSONObject(res);
-			if (json == null)
-				System.out.println("NULL -1");
+			System.out.println("JSON Done!");
 			int count = json.getInt("count");
 			System.out.println("COUNT: " + count);
 			members = new JSONObject[count];
