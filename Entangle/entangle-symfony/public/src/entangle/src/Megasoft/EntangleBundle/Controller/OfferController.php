@@ -28,6 +28,15 @@ class OfferController extends Controller {
      */
     public function acceptOfferAction(Request $request) {
         $json = $request->getContent();
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        if($sessionId==null){
+            return $response = new Response("No Session Id.", 409);
+        }
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        if(count($session)<0){
+            return $response = new Response("Incorrect Session Id.", 409);
+        }
         $json_array = json_decode($json, true);
         $offerId = $json_array['offerId'];
         $verificationMessage = $this->verify($offerId);
