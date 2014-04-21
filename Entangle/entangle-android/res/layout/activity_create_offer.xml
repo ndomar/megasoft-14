@@ -6,7 +6,9 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".CreateOfferActivity" >
+    tools:context=".CreateOfferActivity"
+    android:focusable="true" 
+    android:focusableInTouchMode="true" >
 
     <TextView
         android:id="@+id/textView2"
@@ -69,19 +71,26 @@
         android:id="@+id/showMyDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/Post"
         android:layout_alignLeft="@+id/deadline"
         android:layout_alignRight="@+id/Post"
-        android:layout_below="@+id/deadline"
-         />
+        android:layout_below="@+id/deadline" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/showMyDate"
+        android:layout_below="@+id/showMyDate"
+        android:text="@string/offer_check"
+        android:onClick="itemClicked" />
 
     <Button
         android:id="@+id/Post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/deadline"
-        android:layout_marginBottom="56dp"
+        android:layout_below="@+id/checkBox"
+        android:layout_marginLeft="34dp"
+        android:layout_toRightOf="@+id/textView3"
         android:text="@string/post_offer" />
 
 </RelativeLayout>

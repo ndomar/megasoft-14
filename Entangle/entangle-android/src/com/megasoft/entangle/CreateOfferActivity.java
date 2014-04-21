@@ -11,7 +11,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -34,6 +37,7 @@ public class CreateOfferActivity extends Activity {
 	TextView dateDisplay;
 	
 	Button pickDate;
+	CheckBox checkBox;
 	
 	static final int DATE_DIALOG_ID = 0;
 	
@@ -55,8 +59,11 @@ public class CreateOfferActivity extends Activity {
 		settings = getSharedPreferences(Config.SETTING, 0);
 		sessionId = settings.getString(Config.SESSION_ID, "");
 		setContentView(R.layout.activity_create_offer);
+		checkBox = (CheckBox) findViewById(R.id.checkBox);
 		description = (EditText) findViewById(R.id.description);
 		requestedPrice = (EditText) findViewById(R.id.requestedPrice);
+		description.setOnFocusChangeListener(focusListener);
+		requestedPrice.setOnFocusChangeListener(focusListener);
 		Post = (Button) findViewById(R.id.Post);
 		Post.setEnabled(false);
 		dateDisplay = (TextView) findViewById(R.id.showMyDate);
@@ -68,6 +75,42 @@ public class CreateOfferActivity extends Activity {
 				+ ":" + calendar.get(Calendar.MINUTE) + ":"
 				+ calendar.get(Calendar.SECOND);
 		
+	}
+	
+	OnFocusChangeListener focusListener = new OnFocusChangeListener() {
+		public void onFocusChange(View view, boolean hasFocus) {
+			EditText editText = (EditText) view;
+			if (!hasFocus) {
+				if (isEmpty(editText)) {
+					Post.setEnabled(false);
+				}
+			} else {
+					checkBox.setChecked(false);
+				}
+			}
+		};
+	
+	
+	       public void itemClicked(View view)  {
+	    	   View focusedView = getCurrentFocus();
+	   		focusedView.clearFocus();
+	    	   CheckBox checkBox = (CheckBox) view;
+			if(isEmpty(description) | isEmpty(requestedPrice)){
+				checkBox.setChecked(false);
+			} else {
+				checkBox.setChecked(true);
+				Post.setEnabled(true);
+			}
+		}
+	
+
+	private boolean isEmpty(EditText editText) {
+		if (editText.getText().toString().length() == 0) {
+			editText.setError("This Field is Required");
+			return true;
+		}
+		editText.setError(null);
+		return false;
 	}
 
 	@Override
