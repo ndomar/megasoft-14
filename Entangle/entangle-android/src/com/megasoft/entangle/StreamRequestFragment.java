@@ -1,9 +1,13 @@
 package com.megasoft.entangle;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +55,8 @@ public class StreamRequestFragment extends Fragment {
 	 * The requester button
 	 */
 	private Button requester;
+
+	private FragmentActivity activity;
 
 	/**
 	 * This method is used to create an instance of the StreamRequestFragment
@@ -197,6 +203,17 @@ public class StreamRequestFragment extends Fragment {
 						parent.getSessionId());
 				intent.putExtra("userId", getRequesterId());
 				startActivity(intent);
+				
+//				android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
+////				FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//				android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//				Fragment fragment = new ProfileFragment();
+//				Bundle args = new Bundle();
+//				args.putString("key", "" + parent.getTangleId());
+//				args.putInt("userId", getRequesterId());
+//				fragment.setArguments(args);
+//				fragmentTransaction.replace(R.id.content_frame, fragment);
+//				fragmentTransaction.commit();
 			}
 		});
 	}
@@ -227,6 +244,12 @@ public class StreamRequestFragment extends Fragment {
 				startActivity(intent);
 			}
 		});
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		this.activity = (FragmentActivity) activity;
+		super.onAttach(activity);
 	}
 
 }

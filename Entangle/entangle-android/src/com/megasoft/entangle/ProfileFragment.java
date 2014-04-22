@@ -94,6 +94,8 @@ public class ProfileFragment extends Fragment {
 	
 	private View view;
 	private FragmentActivity activity;
+
+	private String sessionId;
 	
 	
 	@Override
@@ -104,7 +106,8 @@ public class ProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.activity_profile, container, false);
         this.tangleId = Integer.parseInt(getArguments().getString("key"));
         this.userId = getArguments().getInt("userId");
-		
+        SharedPreferences settings = activity.getSharedPreferences(Config.SETTING, 0);
+		this.sessionId = settings.getString(Config.SESSION_ID, "");
         viewProfile();
        
        
@@ -185,11 +188,14 @@ public class ProfileFragment extends Fragment {
 						e.printStackTrace();
 						}
 				} else {
+					Log.e("test", this.getStatusCode() + "");
+					Log.e("test", this.getErrorMessage());
 					Toast toast = Toast.makeText(activity.getApplicationContext(),"Some error happened.",Toast.LENGTH_SHORT);
 					toast.show(); 
 					}
 				}
 			};
+			request.addHeader(Config.API_SESSION_ID, sessionId);
 			request.execute();
 	}
 	

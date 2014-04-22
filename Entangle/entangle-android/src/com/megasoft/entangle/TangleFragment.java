@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -103,9 +104,10 @@ public class TangleFragment extends Fragment {
 			}
 		});
          
-         String tangleId = getArguments().getString("key");
-         
-         sendFilteredRequest(rootResource + "tangle/" + tangleId
+         this.tangleId = Integer.parseInt(getArguments().getString("key"));
+         SharedPreferences settings = activity.getSharedPreferences(Config.SETTING, 0);
+ 		 this.sessionId = settings.getString(Config.SESSION_ID, "");
+         sendFilteredRequest(rootResource + "/tangle/" + tangleId
  				+ "/request");
         setAttributes();
  		setRedirections();
@@ -319,6 +321,8 @@ public class TangleFragment extends Fragment {
 					layout.removeAllViews();
 					setTheLayout(res);
 				} else {
+					Log.e("test", this.getStatusCode() + "");
+					Log.e("test", this.getErrorMessage());
 					Toast.makeText(activity.getBaseContext(),
 							"Sorry, There is a problem in loading the stream",
 							Toast.LENGTH_LONG).show();

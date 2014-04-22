@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,13 +36,16 @@ public class ConfirmInviteUserActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_invite_users_confirmations);
 		setupActionBar();
-
+		
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
+		
 		this.tangleId = getIntent().getIntExtra(
 				"com.megasoft.entangle.tangleId", -1);
+		
 		this.response = getIntent().getStringExtra(
 				"com.megasoft.entangle.emails");
+		
 		parseResponse();
 	}
 
@@ -81,8 +85,9 @@ public class ConfirmInviteUserActivity extends Activity {
 	 */
 	private void parseResponse() {
 		try {
+			
 			JSONObject json = new JSONObject(this.response);
-
+			if(true)return;
 			this.notMembers = json.getJSONArray("notMembers");
 			this.entangleMembers = json.getJSONArray("entangleMembers");
 			JSONArray alreadyInTheTangle = json
