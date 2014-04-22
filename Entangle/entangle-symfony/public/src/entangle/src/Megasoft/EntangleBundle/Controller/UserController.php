@@ -221,7 +221,7 @@ class UserController extends Controller {
      */
     public function getTransactions ($offers, $tangleId) {
         $transactions = array();
-        for ($i = 0; i < count($offers); $i++) {
+        for ($i = 0; $i < count($offers); $i++) {
             $offer = $offers[i];
             if ($offer == null) {
                 continue;
