@@ -34,7 +34,7 @@ class PriceChangeNotification extends Notification
      *
      * @var Offer
      * 
-     * @ORM\ManyToOne(targetEntity="Offer", inversedBy="notifications")
+     * @ORM\ManyToOne(targetEntity="Offer", inversedBy="priceChangeNotifications")
      * @ORM\JoinColumn(name="offerId", referencedColumnName="id")
      */
     private $offer;
