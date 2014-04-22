@@ -87,7 +87,7 @@ public class OfferActivity extends Activity {
 				PostRequest r = new PostRequest(Config.API_BASE_URL
 						+ "/accept/offer");
 				r.setBody(returnedResponse);
-				r.addHeader("x-session-id", "asdasdasdsadasdasd");
+				r.addHeader("x-session-id", Config.SESSION_ID);
 				r.execute();
 				button.setVisibility(View.GONE);
 
