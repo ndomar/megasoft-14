@@ -59,6 +59,11 @@
             android:label="@string/title_activity_create_tangle" >
         </activity>
         <activity
+
+            android:name="com.megasoft.entangle.RequestActivity"
+          	android:label="Request" />
+
+            <activity
             android:name="com.megasoft.entangle.InviteUserActivity"
             android:label="@string/title_activity_invite_users" >
         </activity>
@@ -69,6 +74,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.megasoft.entangle.InviteUsers" />
+
         </activity>
        
     </application>
