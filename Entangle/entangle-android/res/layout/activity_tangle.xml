@@ -43,15 +43,15 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/footerLayout"
         android:layout_below="@+id/searchLayout"
-        android:background="#28C9B9" >
+		 >
 
         <LinearLayout
             android:id="@+id/streamLayout"
             android:layout_width="match_parent"
             android:layout_height="92dp"
             android:layout_gravity="center_vertical"
-            android:background="#28C9B9"
             android:orientation="vertical"
+            android:divider="#AAAAAA"
             android:paddingTop="15dp" >
         </LinearLayout>
     </ScrollView>
