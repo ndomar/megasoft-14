@@ -7,15 +7,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.Toast;
 
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
@@ -57,7 +62,7 @@ public class InviteUserActivity extends Activity {
 		setContentView(R.layout.activity_invite_users);
 
 		this.tangleId = getIntent().getIntExtra(
-				"com.megasoft.entangle.tangleId", -1);
+				"tangleId", -1);
 
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
@@ -102,6 +107,8 @@ public class InviteUserActivity extends Activity {
 		editTexts.add(newEditText);
 		layout.addView(newEditText, new LinearLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		newEditText.requestFocus();
+		newEditText.setCursorVisible(true);
 	}
 
 	/**
@@ -112,7 +119,14 @@ public class InviteUserActivity extends Activity {
 	 *            The go to confirmation button
 	 * @author MohamedBassem
 	 */
-	public void goToConfirmationActivity(View view) {
+	public void goToConfirmationActivity(final View view) {
+		
+		if(!isNetworkAvailable()){
+			showErrorToast();
+			return;
+		}
+		view.setEnabled(false);
+		
 		JSONArray emails = new JSONArray();
 		for (EditText emailEditText : editTexts) {
 			String val = emailEditText.getText().toString();
@@ -129,11 +143,19 @@ public class InviteUserActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
+		Log.e("test", tangleId + "");
 		PostRequest postRequest = new PostRequest(Config.API_BASE_URL
 				+ "/tangle/" + tangleId + "/check-membership") {
 			public void onPostExecute(String response) {
-				goToConfirmation(response);
+				if(this.getStatusCode() == 200){ 
+					goToConfirmation(response);
+					view.setEnabled(true);
+				}else{
+					Log.e("test", this.getStatusCode()+"");
+					Log.e("test", this.getErrorMessage());
+					showErrorToast();
+					view.setEnabled(true);
+				}
 			}
 		};
 
@@ -158,6 +180,24 @@ public class InviteUserActivity extends Activity {
 		confirmInviteUser.putExtra("com.megasoft.entangle.tangleId",
 				tangleId);
 		startActivityForResult(confirmInviteUser, 0);
+	}
+	
+	/**
+	 * Checks the Internet connectivity.
+	 * @return true if there is an Internet connection , false otherwise
+	 */
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
+	
+	/**
+	 * Shows a something went wrong toast
+	 */
+	private void showErrorToast(){
+		Toast.makeText(getApplicationContext(), "Sorry , Something went wrong.", Toast.LENGTH_SHORT).show();
 	}
 
 }

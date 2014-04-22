@@ -40,7 +40,7 @@ public class TangleTitleFragment extends Fragment {
 		ids = new HashMap<Integer, Integer>();
         fetchTangles();
         return view;
-    }
+    } 
 	
 	
 	
@@ -48,6 +48,7 @@ public class TangleTitleFragment extends Fragment {
 		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
 				+ "/tangle") {
 			public void onPostExecute(String response) {
+				
 				showData(response);
 			}
 		};

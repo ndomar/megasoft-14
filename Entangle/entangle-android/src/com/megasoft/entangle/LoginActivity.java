@@ -65,8 +65,8 @@ public class LoginActivity extends Activity {
 
 		JSONObject json = new JSONObject();
 		try {
-			json.put("username", username);
-			json.put("password", password);
+			json.put("username", username.getText().toString());
+			json.put("password", password.getText().toString());
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -76,6 +76,8 @@ public class LoginActivity extends Activity {
 				if (this.getStatusCode() == 201) {
 					goToHome(response);
 				} else if (this.getStatusCode() == 400) {
+					Log.e("test", this.getStatusCode() + "");
+					Log.e("test", this.getErrorMessage());
 					Toast.makeText(getApplicationContext(),
 							"Wrong Credentials", Toast.LENGTH_SHORT).show();
 				} else {
@@ -107,8 +109,8 @@ public class LoginActivity extends Activity {
 			SharedPreferences sessionIDPrefs = this.getSharedPreferences(
 					Config.SETTING, 0);
 			SharedPreferences.Editor prefsEditor = sessionIDPrefs.edit();
-			prefsEditor.putString(Config.SESSION_ID, response);
-			prefsEditor.putInt(Config.USER_ID, userId);
+			prefsEditor.putString(Config.SESSION_ID, sessionId);
+			prefsEditor.putInt(Config.USER_ID, userId); 
 			prefsEditor.commit();
 
 			Intent homeActivity = new Intent(this, HomeActivity.class);
