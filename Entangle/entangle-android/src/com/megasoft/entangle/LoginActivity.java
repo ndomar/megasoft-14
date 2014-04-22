@@ -69,7 +69,7 @@ public class LoginActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		PostRequest request = new PostRequest("http://entangletemp.apiary-mock.com/login") {
+		PostRequest request = new PostRequest(Config.API_BASE_URL+ "/login") {
 			protected void onPostExecute(String response) {
 
 				if (this.getStatusCode() == 201) {

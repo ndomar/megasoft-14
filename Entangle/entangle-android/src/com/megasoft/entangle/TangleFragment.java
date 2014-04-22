@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 
 public class TangleFragment extends Fragment {
@@ -37,7 +38,7 @@ public class TangleFragment extends Fragment {
 	/**
 	 * The domain to which the requests are sent
 	 */
-	private String rootResource = "http://entangle2.apiary.io/";
+	private String rootResource = Config.API_BASE_URL;
 
 	/**
 	 * The tangle id to which this stream belongs

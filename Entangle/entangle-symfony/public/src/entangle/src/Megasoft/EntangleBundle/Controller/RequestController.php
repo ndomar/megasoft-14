@@ -4,7 +4,7 @@ namespace Megasoft\EntangleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-<<<<<<< HEAD
+use Symfony\Component\HttpFoundation\Response;
 use Megasoft\EntangleBundle\Entity\Request;
 use Megasoft\EntangleBundle\Entity\Tag;
 
@@ -100,12 +100,6 @@ class RequestController extends Controller {
         }
     }
 
-}
-=======
-use Symfony\Component\HttpFoundation\Response;
-
-class RequestController extends Controller {
-
     /**
      * this returns a response depending on the size of the array it recieved from getRequestDetails 
      * @param  Int $requestId  Request id
@@ -181,4 +175,3 @@ class RequestController extends Controller {
     }
 
 }
->>>>>>> 025d62bea60f33da87bace6372d8526223184850

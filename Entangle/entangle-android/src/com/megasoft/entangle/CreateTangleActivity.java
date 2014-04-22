@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.PostRequest;
 
@@ -86,7 +87,7 @@ public class CreateTangleActivity extends Activity {
 			showMessage("TANGLE NAME SHOULD BE ONE WORD");
 		} else {
 			GetRequest getNameRequest = new GetRequest(
-					"http://entangle2.apiary-mock.com/tangle/check/"
+					Config.API_BASE_URL + "/tangle/check/"
 							+ tangleNameText) {
 				protected void onPostExecute(String response) {
 					if (!(this.getStatusCode() == 404)) {
@@ -196,7 +197,7 @@ public class CreateTangleActivity extends Activity {
 	 */
 	public void sendTangleToServer() {
 		PostRequest imagePostRequest = new PostRequest(
-				"http://entangle2.apiary-mock.com/tangle") {
+				Config.API_BASE_URL + "/tangle") {
 			protected void onPostExecute(String response) {
 				if (!(this.getStatusCode() == 201)) {
 					showMessage("ERROR, TRY AGAIN LATER");

@@ -2,6 +2,8 @@ package com.megasoft.entangle;
 
 import java.util.HashMap;
 
+import com.megasoft.config.Config;
+
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -29,7 +31,7 @@ public class FilteringFragment extends DialogFragment {
 	/**
 	 * The domain to which the requests are sent
 	 */
-	private String rootResource = "http://entangle2.apiary.io/";
+	private String rootResource = Config.API_BASE_URL;
 
 	/**
 	 * The HashMap that contains the mapping of the user to its id
