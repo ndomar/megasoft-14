@@ -30,3 +30,33 @@ invite:
 dummy:
     pattern: /dummy
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
+
+create_unfreeze_request:
+    pattern: /unfreze
+    defaults: { _controller: MegasoftEntangleBundle:Unfreeze:createRequest }
+    methods: [POST]
+
+retrieve_unfreeze_requests:
+    pattern: /unfreze
+    defaults: { _controller: MegasoftEntangleBundle:Unfreeze:getUnfreezeReq }
+    methods: [GET]
+
+delete_unfreeze_requests:
+    pattern: /unfreeze/{unfreezeReqid}
+    defaults: { _controller: MegasoftEntangleBundle:Unfreeze:removeRequest }
+    methods: [DELETE]
+
+get_unfreeze_request:
+    pattern: /unfreeze/{unfreezeReqid}
+    defaults: { _controller: MegasoftEntangleBundle:Unfreeze:getRequest }
+    methods: [GET]
+
+get_frozen_points:
+    pattern: /unfreeze/{unfreezeReqid}/frozenpoints
+    defaults: { _controller: MegasoftEntangleBundle:Unfreeze:getFP }
+    methods: [GET]
+
+restore_balance:
+    pattern: /unfreeze/{unfreezeReqid}/frozenpoints
+    defaults: { _controller: MegasoftEntangleBundle:Unfreeze:restoreFP }
+    methods: [PUT]
