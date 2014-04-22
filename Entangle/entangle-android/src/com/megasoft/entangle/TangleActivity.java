@@ -85,7 +85,7 @@ public class TangleActivity extends Activity {
 				+ "/request");
 		setRedirections();
 	}
-
+	
 	/**
 	 * This method is called to set the attributes of the activity passed from
 	 * the previous activity
@@ -93,15 +93,15 @@ public class TangleActivity extends Activity {
 	private void setAttributes() {
 		if (getIntent() != null) {
 			if (!getIntent().hasExtra("sessionId")) {
-				intent = new Intent(this, MainActivity.class);
+				intent = new Intent(this, LoginActivity.class);
 				// to be changed to login activity
 			}
 			if (!getIntent().hasExtra("tangleId")) {
-				intent = new Intent(this, MainActivity.class);
+				intent = new Intent(this, LoginActivity.class);
 				// to be changed to tangles' list activity
 			}
 			if (!getIntent().hasExtra("tangleName")) {
-				intent = new Intent(this, MainActivity.class);
+				intent = new Intent(this, LoginActivity.class);
 				// to be changed to tangles' list activity
 			}
 			tangleId = getIntent().getIntExtra("tangleId", 0);
@@ -110,7 +110,7 @@ public class TangleActivity extends Activity {
 			TextView tangle = (TextView) findViewById(R.id.tangleName);
 			tangle.setText(tangleName);
 		} else {
-			intent = new Intent(this, MainActivity.class);
+			intent = new Intent(this, LoginActivity.class);
 			// to be changed to login activity
 		}
 	}
@@ -122,7 +122,6 @@ public class TangleActivity extends Activity {
 	 * @param res
 	 *            , is the response string of the stream request
 	 */
-	@SuppressLint("NewApi")
 	private void setTheLayout(String res) {
 		try {
 			JSONObject response = new JSONObject(res);

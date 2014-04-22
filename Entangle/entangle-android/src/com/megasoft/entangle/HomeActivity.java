@@ -3,6 +3,7 @@ package com.megasoft.entangle;
 import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
@@ -22,16 +23,36 @@ public class HomeActivity extends FragmentActivity {
 	private ListView drawerList;
 	private LinearLayout drawerLayout;
 	private ActionBar actionBar;
+	private boolean destroyOnPause = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-
+		
+		if(!validSessionIdExists()){
+			setDestroyOnPause(true);
+			Intent intent = new Intent(this, LoginActivity.class);
+			startActivity(intent);
+			finish();
+		}
+		
 		initNavigationDrawer();
 	
 	}
 	
+	private boolean validSessionIdExists() {
+		return getIntent().hasExtra("sessionId");
+	}
+	
+	private void setDestroyOnPause(boolean b) {
+		destroyOnPause = b;
+	}
+
+	private boolean getDestroyOnPause() {
+		return destroyOnPause;
+	}
+
 	private void switchFragment(int tangleId, int position) {
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
