@@ -29,6 +29,7 @@ public class TangleTitleFragment extends Fragment {
 	private SharedPreferences settings;
 	private String sessionId;
 	private HashMap<Integer, Integer> ids;
+	private HomeActivity activity;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,13 +79,19 @@ public class TangleTitleFragment extends Fragment {
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View view, int position,
 						long id) {
-//					int tangleId = 1;
-//					switchFragment(tangleId, position);		
+					
+					activity.switchFragment(ids.get(position), position);		
 				}
 			}); 
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		this.activity = (HomeActivity) activity;
+		super.onAttach(activity);
 	}
 
 	
