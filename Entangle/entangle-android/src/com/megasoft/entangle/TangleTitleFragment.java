@@ -46,7 +46,7 @@ public class TangleTitleFragment extends Fragment {
 	
 	
 	private void fetchTangles() {
-		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
+		GetRequest getRequest = new GetRequest("http://entangletemp.apiary-mock.com"
 				+ "/tangle") {
 			public void onPostExecute(String response) {
 				showData(response);
