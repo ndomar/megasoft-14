@@ -20,7 +20,7 @@
         <activity
             android:name="com.megasoft.entangle.MainActivity"
             android:label="@string/app_name" >
-            <intent-filter> 
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -29,6 +29,22 @@
         <activity
             android:name="com.megasoft.entangle.CreateTangleActivity"
             android:label="@string/title_activity_create_tangle" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.TangleActivity"
+            android:label="@string/title_activity_view_stream" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.Members"
+            android:label="@string/title_activity_members" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.ProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.RequestActivity"
+            android:label="@string/title_activity_request_information" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.InviteUserActivity"
