@@ -229,5 +229,19 @@ class TangleController extends Controller {
         }
         return $ret;
     }
-
+    public function notifyAction($offerid) {
+        $doctrine = $this->getDoctrine();
+        $repo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $offer=$repo->find($offerid);
+        $notifier=$offer->getUser();
+        $notifierId=$notifier->getId();
+        $request=$offer->getRequest();
+        $requestId=$request->getId();
+        $notified=$request->getUser();
+        $notifiedId=$notified->getId();
+        $response = new JsonResponse();
+        $response->setData(array('notifier' => $notifierId, 'request' => $requestId, 'notified' => $notifiedId));
+        $response->setStatusCode(201);
+        return $response;
+    }
 }

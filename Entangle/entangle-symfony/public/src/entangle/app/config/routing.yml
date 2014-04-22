@@ -2,3 +2,7 @@ megasoft_entangle:
     resource: "@MegasoftEntangleBundle/Resources/config/routing.yml"
     prefix:   /
 
+notify:
+    path:      /notify/{offerid}
+    defaults:  { _controller: MegasoftEntangleBundle:Tangle:notify }
+    methods: [POST]
