@@ -33,7 +33,7 @@ login:
     defaults: { _controller: MegasoftEntangleBundle:User:login}
     methods: [POST]
     
-    
+whoami: 
     pattern:  /whoami
     defaults: { _controller: MegasoftEntangleBundle:User:whoAmI}
     methods: [GET]

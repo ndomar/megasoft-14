@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,6 +79,8 @@ public class LoginActivity extends Activity {
 					Toast.makeText(getApplicationContext(),
 							"Wrong Credentials", Toast.LENGTH_SHORT).show();
 				} else {
+					Log.e("test", this.getStatusCode() + "");
+					Log.e("test", this.getErrorMessage());
 					Toast.makeText(getApplicationContext(), "Didn't merge the API yet",
 							Toast.LENGTH_SHORT).show();
 

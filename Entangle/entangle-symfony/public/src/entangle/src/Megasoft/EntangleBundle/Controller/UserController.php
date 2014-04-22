@@ -40,6 +40,7 @@ class UserController extends Controller {
      * @author maisaraFarahat
      */
     public function loginAction(Request $request) {
+
         $response = new JsonResponse();
         if (!$request) {
             return new Response('Bad Request', 400);
@@ -65,8 +66,10 @@ class UserController extends Controller {
         $sessionId = $this->generateSessionId(30);
 
         $repo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
-        $user = $repo->findOneBy(array('username' => $username, 'password' => $password));
-
+        $user = $repo->findOneBy(array('name' => $username, 'password' => $password));
+        if($user == null){
+            return new Response("Bad Credentials",400);
+        }
         $user->setSessionId($sessionId);
 
         $this->getDoctrine()->getManager()->persist($user);
