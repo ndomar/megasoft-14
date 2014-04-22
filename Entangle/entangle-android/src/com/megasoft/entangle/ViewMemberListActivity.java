@@ -91,15 +91,20 @@ public class ViewMemberListActivity extends ListActivity implements
 		try {
 			System.out.println("Inside getmembers");
 			JSONObject json = new JSONObject(res);
-			System.out.println("JSON Done!");
+
 			int count = json.getInt("count");
 			System.out.println("COUNT: " + count);
 			members = new JSONObject[count];
 			names = new String[count];
+			userBalance = new int[count];
+			iconUrl = new String[count];
+			userId = new int[count];
 			JSONArray jsonArray = json.getJSONArray("users");
+			System.out.println("JSON Done!");
 			for (int i = 0; i < jsonArray.length(); i++) {
 				members[i] = jsonArray.getJSONObject(i);
 			}
+			System.out.println("LOOP DONE!");
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -122,6 +127,10 @@ public class ViewMemberListActivity extends ListActivity implements
 		System.out.println();
 		Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
 				Toast.LENGTH_SHORT).show();
+		int currentUserId = userId[(int) id];
+		Intent intent = new Intent(this, Test.class);
+		intent.putExtra("userId", currentUserId);
+		startActivity(intent);
 
 	}
 
@@ -130,10 +139,17 @@ public class ViewMemberListActivity extends ListActivity implements
 			System.out.println("NULL 1");
 		for (int i = 0; i < members.length; i++) {
 			try {
-				iconUrl[i]= members[i].getString("iconUrl");
-				userId[i]= members[i].getInt("id");
 				names[i] = members[i].getString("username");
+
+				iconUrl[i] = members[i].getString("iconUrl");
+				userId[i] = members[i].getInt("id");
+
 				userBalance[i] = members[i].getInt("balance");
+				System.out.println(iconUrl[i]);
+				System.out.println(userId[i]);
+				System.out.println(names[i]);
+				System.out.println(userBalance[i]);
+
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
