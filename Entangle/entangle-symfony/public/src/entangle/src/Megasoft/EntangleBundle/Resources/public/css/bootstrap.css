@@ -6211,4 +6211,12 @@ body {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+.resize {
+    width: 200px;
+    height: auto;
+}
+
+
+
+/*This is a temp thing*/
 
