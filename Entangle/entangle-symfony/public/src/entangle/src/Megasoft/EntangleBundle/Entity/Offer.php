@@ -118,6 +118,20 @@ class Offer
      */
     private $priceChangeNotifications;
     
+    /**
+     * @var OfferChosenNotification[]
+     * 
+     * @ORM\OneToMany(targetEntity="OfferChosenNotification", mappedBy="offer", cascade={"persist"})
+     */
+    private $offerChosenNotifications;
+    
+    /**
+     * @var OfferDeletedNotification[]
+     * 
+     * @ORM\OneToMany(targetEntity="OfferDeletedNotification", mappedBy="offer", cascade={"persist"})
+     */
+    private $offerDeletedNotifications;
+    
 
     /**
      * Get id

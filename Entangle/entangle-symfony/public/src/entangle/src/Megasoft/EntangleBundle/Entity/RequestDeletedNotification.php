@@ -18,6 +18,15 @@ class RequestDeletedNotification extends Notification
      * @ORM\Column(name="deletedRequestId", type="integer")
      */
     private $requestId;
+    
+    /**
+     *
+     * @var Request
+     * 
+     * @ORM\ManyToOne(targetEntity="Request", inversedBy="requestDeletedNotifications")
+     * @ORM\JoinColumn(name="requestId", referencedColumnName="id")
+     */
+    private $request;
 
 
     /**

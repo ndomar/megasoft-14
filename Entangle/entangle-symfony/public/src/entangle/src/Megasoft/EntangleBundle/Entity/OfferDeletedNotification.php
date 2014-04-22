@@ -18,6 +18,15 @@ class OfferDeletedNotification extends Notification
      * @ORM\Column(name="deletedOfferId", type="integer")
      */
     private $offerId;
+    
+    /**
+     *
+     * @var Offer
+     * 
+     * @ORM\ManyToOne(targetEntity="Offer", inversedBy="offerDeletedNotifications")
+     * @ORM\JoinColumn(name="offerId", referencedColumnName="id")
+     */
+    private $offer;
 
 
     /**

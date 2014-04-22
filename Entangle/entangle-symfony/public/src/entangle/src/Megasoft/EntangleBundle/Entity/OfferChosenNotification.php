@@ -18,6 +18,15 @@ class OfferChosenNotification extends Notification
      * @ORM\Column(name="ChosenOfferId", type="integer")
      */
     private $offerId;
+    
+    /**
+     *
+     * @var Offer
+     * 
+     * @ORM\ManyToOne(targetEntity="Offer", inversedBy="offerChosenNotifications")
+     * @ORM\JoinColumn(name="offerId", referencedColumnName="id")
+     */
+    private $offer;
 
     /**
      * Set offerId

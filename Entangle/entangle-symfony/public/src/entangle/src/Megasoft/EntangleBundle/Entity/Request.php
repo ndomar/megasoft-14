@@ -120,6 +120,13 @@ class Request
      */
     private $deleted = false;
     
+    /**
+     * @var RequestDeletedNotification[]
+     * 
+     * @ORM\OneToMany(targetEntity="RequestDeletedNotification", mappedBy="request", cascade={"persist"})
+     */
+    private $requestDeletedNotifications;
+    
 
     /**
      * Get id
