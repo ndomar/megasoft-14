@@ -160,7 +160,7 @@ class UserController extends Controller {
     public function validateTangle($tangleId) {
         $tangleTable = $this->getDoctrine()->
                 getRepository('MegasoftEntangleBundle:Tangle');
-        $tangle = $tangleTable->findOneBy(array ('tangleId'=>$tangleId));
+        $tangle = $tangleTable->findOneBy(array ('id'=>$tangleId));
         if ($tangle == null) {
             return false;
         } else {
