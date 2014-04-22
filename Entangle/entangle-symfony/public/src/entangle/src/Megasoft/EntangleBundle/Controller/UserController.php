@@ -51,7 +51,7 @@ class UserController extends Controller {
         }
         $json_array = json_decode($json, true);
         $username = $json_array['username'];
-        $password = md5($json_array['password']);
+        $password = $json_array['password'];
 
         if (!$username) {
             return new Response('Missing Username', 400);
