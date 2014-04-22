@@ -30,8 +30,7 @@ invite:
 _register:
   pattern: /register
   defaults: {_controller: MegasoftEntangleBundle:Notification:register }
-  requirements:
-          _method:  POST|GET
+  methods: [POST]
 
 
 _test:

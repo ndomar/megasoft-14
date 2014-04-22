@@ -119,7 +119,7 @@ class NotificationController extends Controller
     }
 
 
-    function offerChangeNotification($offerid)
+    function offerChangeNotification($offerid, $oldPrice, $newPrice)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -127,30 +127,25 @@ class NotificationController extends Controller
         $request = $offer->getRequest();
         $notification = new PriceChangeNotification();
 
-        $newPrice = $offer->getRequestedPrice();
         $toName = $request->getUser()->getName();
         $fromName = $offer->getUser()->getName();
         $to = $request->getUserId();
         $date = date('m/d/Y h:i:s a', time());
         $date = \DateTime::createFromFormat('m/d/Y h:i:s a', $date);
-
-//        if ($to)
-//            return $to;
         $user = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User')->find($to);
 
-        $notification->setUserId($to);
         $notification->setUser($user);
         $notification->setCreated($date);
         $notification->setSeen(false);
         $notification->setNewPrice($newPrice);
-        $notification->setOldPrice($newPrice);
+        $notification->setOldPrice($oldPrice);
         $notification->setRequestId($request->getId());
         $em->persist($notification);
         $em->flush();
 
         $data = array('to' => $toName, 'from' => $fromName, 'newPrice' => $newPrice,);
 
-        return notificationCenter($to, $data);
+        return $this->notificationCenter($to, $data);
     }
 
     function chooseOfferNotification($offerid)
@@ -184,9 +179,7 @@ class NotificationController extends Controller
      */
     function testAction()
     {
-
-
-        $name = $this->offerChangeNotification(0);
+        $name = $this->notificationCenter(1, "hello world");
         $arr = array('regid' => $name,);
         return $this->render('MegasoftEntangleBundle:Default:test.html.twig', $arr);
     }
@@ -200,7 +193,7 @@ class NotificationController extends Controller
      */
     function registerAction(Request $request)
     {
-        $sessionid = $request->headers->get('sessionid');
+        $sessionid = $request->headers->get('X-SESSION-ID');
         $content = $request->getContent();
         $arr = json_decode($content, true);
         $regid = $arr['regid'];
@@ -214,7 +207,7 @@ class NotificationController extends Controller
         $session->setRegId($regid);
         $em->flush();
         $response = new JsonResponse();
-        $response->setData(array('status' => 'done without exceptions'));
+        $response->setData(array('status' => 'registered to GCM'));
         return $response;
     }
 }
