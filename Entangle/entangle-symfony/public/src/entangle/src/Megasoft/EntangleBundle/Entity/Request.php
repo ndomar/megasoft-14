@@ -127,6 +127,13 @@ class Request
      */
     private $requestDeletedNotifications;
     
+    /**
+     * @var UnfreezeRequest[]
+     * 
+     * @ORM\OneToMany(targetEntity="UnfreezeRequest", mappedBy="request", cascade={"persist"})
+     */
+    private $unfreezeRequests;
+    
 
     /**
      * Get id
@@ -497,5 +504,38 @@ class Request
     public function getRequestDeletedNotifications()
     {
         return $this->requestDeletedNotifications;
+    }
+
+    /**
+     * Add unfreezeRequests
+     *
+     * @param \Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests
+     * @return Request
+     */
+    public function addUnfreezeRequest(\Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests)
+    {
+        $this->unfreezeRequests[] = $unfreezeRequests;
+        $unfreezeRequests->setRequest($this);
+        return $this;
+    }
+
+    /**
+     * Remove unfreezeRequests
+     *
+     * @param \Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests
+     */
+    public function removeUnfreezeRequest(\Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests)
+    {
+        $this->unfreezeRequests->removeElement($unfreezeRequests);
+    }
+
+    /**
+     * Get unfreezeRequests
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUnfreezeRequests()
+    {
+        return $this->unfreezeRequests;
     }
 }

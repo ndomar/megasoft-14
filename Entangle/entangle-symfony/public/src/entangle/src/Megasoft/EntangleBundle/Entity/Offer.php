@@ -478,7 +478,7 @@ class Offer
     public function addOfferChosenNotification(\Megasoft\EntangleBundle\Entity\OfferChosenNotification $offerChosenNotifications)
     {
         $this->offerChosenNotifications[] = $offerChosenNotifications;
-
+        $offerChosenNotifications->setOffer($this);
         return $this;
     }
 
@@ -511,7 +511,7 @@ class Offer
     public function addOfferDeletedNotification(\Megasoft\EntangleBundle\Entity\OfferDeletedNotification $offerDeletedNotifications)
     {
         $this->offerDeletedNotifications[] = $offerDeletedNotifications;
-
+        $offerDeletedNotifications->setOffer($this);
         return $this;
     }
 
