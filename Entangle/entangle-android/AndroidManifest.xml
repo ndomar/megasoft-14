@@ -18,26 +18,17 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.megasoft.entangle.HomeActivity"
-            android:label="@string/title_activity_home" >
+            android:name="com.megasoft.entangle.MainActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
- >
         </activity>
         <activity
-            android:name="com.megasoft.entangle.RegisterActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="com.megasoft.entangle.MainActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="com.megasoft.entangle.LoginActivity"
-            android:label="@string/app_name" >
+            android:name="com.megasoft.entangle.CreateTangleActivity"
+            android:label="@string/title_activity_create_tangle" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.TangleActivity"
@@ -56,16 +47,8 @@
             android:label="@string/title_activity_request_information" >
         </activity>
         <activity
-            android:name="com.megasoft.entangle.CreateTangleActivity"
-            android:label="@string/title_activity_create_tangle" >
-        </activity>
-        <activity
             android:name="com.megasoft.entangle.InviteUserActivity"
             android:label="@string/title_activity_invite_users" >
-        </activity>
-        <activity
-            android:name="com.megasoft.entangle.CreateOfferActivity"
-            android:label="@string/title_activity_create_offer" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.ConfirmInviteUserActivity"
@@ -74,30 +57,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.megasoft.entangle.InviteUsers" />
-        </activity>
-        <activity
-            android:name="com.megasoft.entangle.EditProfileActivity"
-            android:label="@string/title_activity_edit_profile"
-            android:parentActivityName="com.megasoft.entangle.ProfileActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.megasoft.entangle.ProfileActivity" />
-        </activity>
-        <activity
-            android:name="com.megasoft.entangle.OfferActivity"
-            android:label="@string/title_activity_offer" >
-        </activity>
-        <activity
-            android:name="com.megasoft.entangle.RequestActivity"
-            android:label="@string/preview_request" >
-        </activity>
-        <activity
-            android:name="com.megasoft.entangle.ViewRequestActivity"
-            android:label="@string/title_activity_view_request" >
-        </activity>
-        <activity
-            android:name="com.megasoft.entangle.CreateRequestActivity"
-            android:label="@string/title_activity_create_request" >
         </activity>
     </application>
 

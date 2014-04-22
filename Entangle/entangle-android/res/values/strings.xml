@@ -12,6 +12,8 @@
     <string name="priceHint">enter a positive number</string>
     <string name="title_activity_request">RequestActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="tangleNameHint">Specify a Tangle name</string>
+	
     <string name="title_activity_view_stream">ViewStream</string>
     <string name="viewStream">Stream</string>
     <string name="viewMembers">Members</string>
@@ -29,6 +31,7 @@
     <string name="requesterFilter">Write a requester name to filter with</string>
     <string name="fullTextFilter">Choose Full Text Search to be able to write :)</string>
     <string name="spinner">Filtering options</string>
+
     <string name="title_activity_create_tangle">Create Tangle</string>
     <string name="iconButton">Choose an Icon</string>
     <string name="tangleIcon">Tangle Icon</string>
