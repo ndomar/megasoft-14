@@ -31,9 +31,9 @@
         android:orientation="vertical" >
 
         <Button
+            android:id="@+id/filterButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="filterStream"
             android:text="Filter Stream" />
     </LinearLayout>
 

@@ -54,6 +54,11 @@ create:
     defaults: { _controller: MegasoftEntangleBundle:Request:create }
     methods: [POST]
     
+tangles:
+    pattern: /tangle
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:get }
+    methods: [GET]
+    
 create_Offer:
     pattern: /tangle/{tangleId}/request/{requestId}/offer
     defaults: { _controller: MegasoftEntangleBundle:CreateOffer:createOffer }

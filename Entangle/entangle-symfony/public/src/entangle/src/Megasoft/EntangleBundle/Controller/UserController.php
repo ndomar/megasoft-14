@@ -1,12 +1,18 @@
 <?php
 
-<<<<<<< HEAD
 namespace Megasoft\EntangleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Megasoft\EntangleBundle\Entity\Transaction;
+use Megasoft\EntangleBundle\Entity\UserTangle;
+use Megasoft\EntangleBundle\Entity\Session;
+use Megasoft\EntangleBundle\Entity\Tangle;
+use Megasoft\EntangleBundle\Entity\Offer;
+use Megasoft\EntangleBundle\Entity\User;
+
 
 class UserController extends Controller {
 
@@ -63,8 +69,6 @@ class UserController extends Controller {
 
         $user->setSessionId($sessionId);
 
-
-
         $this->getDoctrine()->getManager()->persist($user);
         $this->getDoctrine()->getManager()->flush();
 
@@ -115,25 +119,6 @@ class UserController extends Controller {
         }
     }
 
-}
-=======
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Megasoft\EntangleBundle\Entity\Transaction;
-use Megasoft\EntangleBundle\Entity\UserTangle;
-use Megasoft\EntangleBundle\Entity\Session;
-use Megasoft\EntangleBundle\Entity\Tangle;
-use Megasoft\EntangleBundle\Entity\Offer;
-use Megasoft\EntangleBundle\Entity\User;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-
-/**
- * Gets the required information to view a certain user's profile
- * @author almgohar
- */
-class ProfileController {
-    
     /**
      * Validates that a given user is a member of a given tangle
      * @param integer $userId
@@ -271,6 +256,3 @@ class ProfileController {
         return $info;
     }  
 }
-        
- 
->>>>>>> 68fef5b6bff2c369853bc81bf01dc7bc4c7ede13

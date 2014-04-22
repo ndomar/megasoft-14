@@ -1,9 +1,9 @@
 package com.megasoft.entangle;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +19,9 @@ import android.widget.Button;
  */
 @SuppressLint("NewApi")
 public class StreamRequestFragment extends Fragment {
+	
+	private TangleFragment parent;
+	
 	/**
 	 * The id of the requester
 	 */
@@ -64,8 +67,9 @@ public class StreamRequestFragment extends Fragment {
 	 * @return an instance of the StreamRequestFragment
 	 */
 	public static StreamRequestFragment createInstance(int requestId,
-			int requesterId, String requestString, String requesterString) {
+			int requesterId, String requestString, String requesterString, TangleFragment parent) {
 		StreamRequestFragment fragment = new StreamRequestFragment();
+		fragment.setParent(parent);
 		fragment.setRequestId(requestId);
 		fragment.setRequesterId(requesterId);
 		fragment.setRequestButtonText(requestString);
@@ -155,6 +159,10 @@ public class StreamRequestFragment extends Fragment {
 	private void setRequesterButtonText(String text) {
 		requesterString = text;
 	}
+	
+	public void setParent(TangleFragment parent) {
+		this.parent = parent;
+	}
 
 	/**
 	 * This method is used to set the text of the request button
@@ -182,17 +190,18 @@ public class StreamRequestFragment extends Fragment {
 				Intent intent = new Intent(getActivity().getBaseContext(),
 						ProfileActivity.class);
 				intent.putExtra("tangleId",
-						((TangleActivity) getActivity()).getTangleId());
+						parent.getTangleId());
 				intent.putExtra("tangleName",
-						((TangleActivity) getActivity()).getTangleName());
+						parent.getTangleName());
 				intent.putExtra("sessionId",
-						((TangleActivity) getActivity()).getSessionId());
+						parent.getSessionId());
 				intent.putExtra("userId", getRequesterId());
 				startActivity(intent);
 			}
 		});
 	}
 
+	
 	/**
 	 * This method is used to set the action of the request button, in which it
 	 * will redirect to the request page
@@ -209,11 +218,11 @@ public class StreamRequestFragment extends Fragment {
 				Intent intent = new Intent(getActivity().getBaseContext(),
 						ViewRequestActivity.class);
 				intent.putExtra("tangleId",
-						((TangleActivity) getActivity()).getTangleId());
+						parent.getTangleId());
 				intent.putExtra("tangleName",
-						((TangleActivity) getActivity()).getTangleName());
+						parent.getTangleName());
 				intent.putExtra("sessionId",
-						((TangleActivity) getActivity()).getSessionId());
+						parent.getSessionId());
 				intent.putExtra("requestId", getRequestId());
 				startActivity(intent);
 			}

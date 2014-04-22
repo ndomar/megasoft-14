@@ -3,9 +3,6 @@ package com.megasoft.entangle;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.megasoft.config.Config;
-import com.megasoft.requests.PostRequest;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -20,7 +17,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-@SuppressLint({ "NewApi", "WorldReadableFiles" })
+import com.megasoft.config.Config;
+import com.megasoft.requests.PostRequest;
+
 public class LoginActivity extends Activity {
 	private EditText username;
 	private EditText password;
@@ -40,9 +39,7 @@ public class LoginActivity extends Activity {
 
 			public void onClick(View v) {
 
-				// this google url , needs to be changed to the url that islam
-				// will provide me with
-				Uri uri = Uri.parse("http://www.google.com");
+				Uri uri = Uri.parse("http://entangle.io/register");
 				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 				startActivity(intent);
 
@@ -72,21 +69,14 @@ public class LoginActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		PostRequest request = new PostRequest("http://entangle/user/login") {
+		PostRequest request = new PostRequest("http://entangletemp.apiary-mock.com/login") {
 			protected void onPostExecute(String response) {
 
 				if (this.getStatusCode() == 201) {
-					Toast.makeText(getApplicationContext(), "Redirecting...",
-							Toast.LENGTH_SHORT).show();
-					// adding the session id to the shared preferences is done
-					// in the goToHome(String) method
-
 					goToHome(response);
-
 				} else if (this.getStatusCode() == 400) {
 					Toast.makeText(getApplicationContext(),
 							"Wrong Credentials", Toast.LENGTH_SHORT).show();
-
 				} else {
 					Toast.makeText(getApplicationContext(), "Didn't merge the API yet",
 							Toast.LENGTH_SHORT).show();
@@ -105,18 +95,21 @@ public class LoginActivity extends Activity {
 	 * 
 	 * @author maisaraFarahat
 	 */
-	@SuppressWarnings("deprecation")
 	private void goToHome(String response) {
+		
+		try {
+			JSONObject x = new JSONObject(response);
+			SharedPreferences sessionIDPrefs = this.getSharedPreferences(
+					Config.SETTING, 0);
+			SharedPreferences.Editor prefsEditor = sessionIDPrefs.edit();
+			prefsEditor.putString(Config.SESSION_ID, response);
+			prefsEditor.commit();
 
-		SharedPreferences sessionIDPrefs = this.getSharedPreferences(
-				"sessionIDPrefs", MODE_WORLD_READABLE);
-		SharedPreferences.Editor prefsEditor = sessionIDPrefs.edit();
-		prefsEditor.putString(Config.SESSION_ID, response);
-		prefsEditor.commit();
-
-		Intent homeActivity = new Intent(this, HomeActivity.class);
-		homeActivity.putExtra("sessionId", response);
-		startActivity(homeActivity);
+			Intent homeActivity = new Intent(this, HomeActivity.class);
+			startActivity(homeActivity);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

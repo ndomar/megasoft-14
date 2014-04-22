@@ -53,7 +53,8 @@
     	android:layout_marginTop="10dp"
     	android:background="#FFFFFF" />
         
-        <ListView android:id="@+id/tangleList"
+        <LinearLayout android:id="@+id/tangleList"
+        android:orientation="vertical"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
@@ -61,6 +62,8 @@
         android:divider="#FFFFFF"
         android:dividerHeight="1dp"
         />
+        
+           
            
    	</LinearLayout>
     

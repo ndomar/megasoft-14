@@ -3,7 +3,6 @@ package com.megasoft.entangle;
 import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
@@ -20,7 +19,7 @@ public class HomeActivity extends FragmentActivity {
 
 	private String[] listTitles;
 	private DrawerLayout drawer;
-	private ListView drawerList;
+	private LinearLayout drawerList;
 	private LinearLayout drawerLayout;
 	private ActionBar actionBar;
 	private boolean destroyOnPause = false;
@@ -30,12 +29,12 @@ public class HomeActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		
-		if(!validSessionIdExists()){
-			setDestroyOnPause(true);
-			Intent intent = new Intent(this, LoginActivity.class);
-			startActivity(intent);
-			finish();
-		}
+//		if(!validSessionIdExists()){
+//			setDestroyOnPause(true);
+//			Intent intent = new Intent(this, LoginActivity.class);
+//			startActivity(intent);
+//			finish();
+//		}
 		
 		initNavigationDrawer();
 	
@@ -53,18 +52,18 @@ public class HomeActivity extends FragmentActivity {
 		return destroyOnPause;
 	}
 
-	private void switchFragment(int tangleId, int position) {
+	public void switchFragment(int tangleId, int position) {
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		SampleFragment fragment = new SampleFragment();
 		Bundle args = new Bundle();
-		args.putString("key", ""+tangleId);
+		args.putString("key", "" + tangleId);
 		fragment.setArguments(args);
 		fragmentTransaction.replace(R.id.content_frame, fragment);
 		fragmentTransaction.commit();
 		
 		// Highlight the selected item, update the title, and close the drawer
-	    drawerList.setItemChecked(position, true);
+	    //drawerList.s(position, true);
 	    setTitle(listTitles[position]);
 	    drawer.closeDrawer(drawerLayout);
 	}
@@ -73,17 +72,24 @@ public class HomeActivity extends FragmentActivity {
 		//Navigation Drawer
 		listTitles		= getResources().getStringArray(R.array.sidebar_list);
 		drawer			= (DrawerLayout) findViewById(R.id.drawer_layout);
-		drawerList 		= (ListView) findViewById(R.id.tangleList);
+		drawerList 		= (LinearLayout) findViewById(R.id.tangleList);
 		drawerLayout 	= (LinearLayout) findViewById(R.id.left_drawer);
-		drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.sidebar_list_item, R.id.textView1, listTitles));
-		drawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View view, int position,
-					long id) {
-				int tangleId = 1;
-				switchFragment(tangleId, position);		
-			}
-		});
+		FragmentManager fragmentManager = getFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		TangleTitleFragment tangleTitlesFragment = new TangleTitleFragment();
+		fragmentTransaction.replace(R.id.tangleList, tangleTitlesFragment);
+		fragmentTransaction.commit();
+		
+		
+//		drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.sidebar_list_item, R.id.textView1, listTitles));
+//		drawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
+//			@Override
+//			public void onItemClick(AdapterView<?> arg0, View view, int position,
+//					long id) {
+//				int tangleId = 1;
+//				switchFragment(tangleId, position);	
+//			}
+//		});
 	}
 
 	@Override

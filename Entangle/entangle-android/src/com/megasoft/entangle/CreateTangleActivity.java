@@ -5,12 +5,6 @@ import java.io.ByteArrayOutputStream;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.megasoft.requests.GetRequest;
-import com.megasoft.requests.PostRequest;
-
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Base64;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -20,11 +14,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.megasoft.requests.GetRequest;
+import com.megasoft.requests.PostRequest;
 
 public class CreateTangleActivity extends Activity {
 

@@ -452,4 +452,22 @@ class TangleController extends Controller
         }
     }
 
+    public function getAction(Request $request){
+        $doctrine = $this->getDoctrine();
+        $repo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        $userId = $session->getUserId();
+        $tangles = $repo->findBy(array('userId' => $userId));
+        $ret = array();
+        foreach($tangles as $tangle){
+            $ret[] = array("id"=>$tangle->getId(),"tangleName"=>$tangle->getTangle()->getName());
+        }
+        
+        $jsonResponse = new JsonResponse();
+        $jsonResponse->setData(array("tangles"=>$ret));
+        return $jsonResponse;
+    }
 }
