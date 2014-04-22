@@ -5,6 +5,7 @@ import java.util.HashMap;
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import android.widget.EditText;
 @SuppressLint("NewApi")
 public class FilteringFragment extends DialogFragment {
 
+	private TangleFragment parent;
+	
 	/**
 	 * The domain to which the requests are sent
 	 */
@@ -63,8 +66,9 @@ public class FilteringFragment extends DialogFragment {
 	 * @return an instance of the FilteringFragment class
 	 */
 	public static FilteringFragment createInstance(
-			HashMap<String, Integer> tagToId, HashMap<String, Integer> userToId) {
+			HashMap<String, Integer> tagToId, HashMap<String, Integer> userToId, TangleFragment parent) {
 		FilteringFragment fragment = new FilteringFragment();
+		fragment.setParent(parent);
 		fragment.tagToId = tagToId;
 		fragment.userToId = userToId;
 		return fragment;
@@ -105,7 +109,7 @@ public class FilteringFragment extends DialogFragment {
 		tagText = (AutoCompleteTextView) view.findViewById(R.id.tagValue);
 		tagText.setAdapter(new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_list_item_1,
-				((TangleActivity) getActivity()).getTagsSuggestions()));
+				parent.getTagsSuggestions()));
 	}
 
 	/**
@@ -119,7 +123,12 @@ public class FilteringFragment extends DialogFragment {
 		userText = (AutoCompleteTextView) view.findViewById(R.id.userValue);
 		userText.setAdapter(new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_list_item_1,
-				((TangleActivity) getActivity()).getUsersSuggestions()));
+				parent.getUsersSuggestions()));
+	}
+	
+	
+	public void setParent(TangleFragment parent) {
+		this.parent = parent;
 	}
 
 	/**
@@ -132,6 +141,7 @@ public class FilteringFragment extends DialogFragment {
 	 */
 	private void setButtonsActions(View view) {
 		Button filter = (Button) view.findViewById(R.id.doFilteration);
+		
 		filter.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -166,13 +176,14 @@ public class FilteringFragment extends DialogFragment {
 					url = "?" + url;
 				}
 				url = rootResource + "tangle/"
-						+ ((TangleActivity) getActivity()).getTangleId()
+						+ parent.getTangleId()
 						+ "/request" + url;
-				((TangleActivity) getActivity()).sendFilteredRequest(url
+				parent.sendFilteredRequest(url
 						.replace(" ", "+"));
 				getDialog().dismiss();
 			}
 		});
+		
 		Button cancel = (Button) view.findViewById(R.id.cancelFilteration);
 		cancel.setOnClickListener(new View.OnClickListener() {
 

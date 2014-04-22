@@ -4,11 +4,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.megasoft.config.Config;
-import com.megasoft.requests.PostRequest;
-
-import android.os.Bundle;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.SharedPreferences;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,11 +17,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v4.app.NavUtils;
-import android.transition.Visibility;
-import android.annotation.TargetApi;
-import android.content.SharedPreferences;
-import android.os.Build;
+
+import com.megasoft.config.Config;
+import com.megasoft.requests.PostRequest;
 
 public class ConfirmInviteUserActivity extends Activity {
 
