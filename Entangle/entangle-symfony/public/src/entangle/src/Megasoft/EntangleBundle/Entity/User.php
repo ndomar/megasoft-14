@@ -153,7 +153,20 @@ class User {
      * @ORM\OneToMany(targetEntity="PendingInvitation", mappedBy="inviter", cascade={"persist"})
      */
     private $pendingInvitationInviters;
+<<<<<<< HEAD
 
+=======
+    
+    /**
+     * @var UnfreezeRequest[]
+     * 
+     * @ORM\OneToMany(targetEntity="UnfreezeRequest", mappedBy="user", cascade={"persist"})
+     */
+    private $unfreezeRequests;
+    
+    
+    
+>>>>>>> 5e555bb41584c161a0a9e50c57094e2c92f265b9
     /**
      * Get id
      *
@@ -692,6 +705,39 @@ class User {
      */
     public function getPendingInvitationInviters() {
         return $this->pendingInvitationInviters;
+    }
+
+    /**
+     * Add unfreezeRequests
+     *
+     * @param \Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests
+     * @return User
+     */
+    public function addUnfreezeRequest(\Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests)
+    {
+        $this->unfreezeRequests[] = $unfreezeRequests;
+        $unfreezeRequests->setUser($this);
+        return $this;
+    }
+
+    /**
+     * Remove unfreezeRequests
+     *
+     * @param \Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests
+     */
+    public function removeUnfreezeRequest(\Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests)
+    {
+        $this->unfreezeRequests->removeElement($unfreezeRequests);
+    }
+
+    /**
+     * Get unfreezeRequests
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUnfreezeRequests()
+    {
+        return $this->unfreezeRequests;
     }
 
 }
