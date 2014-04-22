@@ -45,8 +45,14 @@
         <activity
             android:name="com.megasoft.entangle.InviteUserActivity"
             android:label="@string/title_activity_invite_users" >
-            android:name="com.megasoft.entangle.ViewMessagesActivity"
-            android:label="@string/title_activity_view_messages" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.ConfirmInviteUserActivity"
+            android:label="@string/title_activity_invite_users_confirmations"
+            android:parentActivityName="com.megasoft.entangle.InviteUserActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.megasoft.entangle.InviteUsers" />
         </activity>
         <activity
             android:name="com.megasoft.entangle.ConfirmInviteUserActivity"
