@@ -76,7 +76,8 @@ class UserController extends Controller {
                 ->setUser($user)
                 ->setExpired(false)
                 ->setDeviceType("test")
-                ->setRegId("test");
+                ->setRegId("test")
+                ->setCreated(date("Y-m-d H:i:s"));
                 
         $user->addSession($session);
 
