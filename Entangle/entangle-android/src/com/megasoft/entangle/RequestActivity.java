@@ -5,6 +5,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,7 +18,10 @@ import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 
 public class RequestActivity extends Activity {
-	String requestId = "1";
+	
+	int requestId;
+	String sessionId;
+	SharedPreferences settings;
 	JSONArray offers;
 	String[][] offerDetails;
 	String[] requestDetailNames = { "Description", "Requester", "Date", "Tags",
@@ -31,30 +36,36 @@ public class RequestActivity extends Activity {
 
 	/**
 	 * this calls fillRequestDetails() to generate the request preview
-	 * @param Bundle savedInstanceState
+	 * 
+	 * @param Bundle
+	 *            savedInstanceState
 	 * @return none
 	 * @author sak93
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
-		// Intent intent = getIntent();
-		// requestId = intent.getExtras().getString("RequestId");
+		Intent intent = getIntent();
+		requestId = intent.getIntExtra("RequestId", -1);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_request);
 		this.fillRequestDetails();
 	}
 
 	/**
-	 * this receives a response from backend and calls addRequestFields and addOffers
+	 * this receives a response from back end and calls addRequestFields and
+	 * addOffers
+	 * 
 	 * @param none
 	 * @return none
 	 * @author sak93
 	 */
 	public void fillRequestDetails() {
 		layout = (LinearLayout) this.findViewById(R.id.request_activity);
-		GetRequest request = new GetRequest(
-				Config.API_BASE_URL + "/request/" + requestId) {
+		this.settings = getSharedPreferences(Config.SETTING, 0);
+		this.sessionId = settings.getString(Config.SESSION_ID, "");
+		GetRequest request = new GetRequest(Config.API_BASE_URL + "/request/"
+				+ requestId) {
 			protected void onPostExecute(String response) {
 				try {
 					JSONObject json = new JSONObject(response);
@@ -65,14 +76,17 @@ public class RequestActivity extends Activity {
 				}
 			}
 		};
-		request.addHeader("X-SESSION-ID", "asdasdasdsadasdasd");
+		request.addHeader(Config.API_SESSION_ID, sessionId);
 		request.execute();
 
 	}
 
 	/**
-	 * this retrieves request detail fields from JSONOBject and adds them to text fields
-	 * @param JSONObject json Json that holds request details
+	 * this retrieves request detail fields from JSONOBject and adds them to
+	 * text fields
+	 * 
+	 * @param JSONObject
+	 *            json Json that holds request details
 	 * @return none
 	 * @author sak93
 	 */
@@ -102,7 +116,9 @@ public class RequestActivity extends Activity {
 	}
 
 	/**
-	 * this retrieves offers and offer detail fields from JSONOBject and adds them to text fields
+	 * this retrieves offers and offer detail fields from JSONOBject and adds
+	 * them to text fields
+	 * 
 	 * @param JSONObject json Json that holds request details
 	 * @return none
 	 * @author sak93
@@ -135,7 +151,9 @@ public class RequestActivity extends Activity {
 
 	/**
 	 * this generates a String of tags
-	 * @param JSONArray tagArray JsonArray of tags
+	 * 
+	 * @param JSONArray
+	 *            tagArray JsonArray of tags
 	 * @return String tags String of tags
 	 * @author sak93
 	 */
