@@ -848,3 +848,42 @@ Post offer
 
 + Response 201
 
+## POST /user/login/{username,password}/{claimID}
+
++ Parameters
+	+ username (String , required)
+	+ password (String , required)
+	+ claimID  (String , required)
+
++ Request 
+	+ Header
+		X-SESSION-ID : "sadas"
+
+	+ Body 
+		
+		{
+			"username" :[username]
+			
+			"response_content":[response_content]
+
+		}
+
++ Reponse 201 
+
+## POST /user/{claimID}/login
+resolve issues
++ Parameters
+    
+    + claimID ( Int , required ) ... claim id
+ 
++ Request (application/json)
+    + Header
+            
+             X-SESSION-ID : "Essam"
+
+    + Body
+    
+                { 
+                    "Mssg" : "ay kalam"
+                }
++ Response 201
