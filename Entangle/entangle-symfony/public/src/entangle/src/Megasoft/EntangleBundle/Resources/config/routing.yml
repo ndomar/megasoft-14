@@ -10,6 +10,7 @@ filter_requests_in_tangle:
     requirements:
         tangleId:  \d+
 
+
 fetch_tags_in_tangle:
     pattern:  /tangle/{tangleId}/tag
     defaults: { _controller: MegasoftEntangleBundle:Tangle:allTags}
@@ -42,6 +43,7 @@ check_availability:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:checkAvailability }
     methods: [GET]
 
+
 create_tangle:
     pattern: /tangle
     defaults: { _controller: MegasoftEntangleBundle:Tangle:createTangle }
@@ -60,3 +62,28 @@ create_Offer:
     pattern: /tangle/{tangleId}/request/{requestId}/offer
     defaults: { _controller: MegasoftEntangleBundle:CreateOffer:createOffer }
     methods: [POST]
+
+index:
+    pattern: /
+    defaults: { _controller: MegasoftEntangleBundle:Site:index }
+
+
+
+
+dummy:
+    pattern: /dummy
+    defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
+
+
+
+megasoft_entangle_register:
+    pattern:  /register
+    defaults: { _controller: MegasoftEntangleBundle:Register:register }
+
+
+
+about:
+    pattern:  /about
+    defaults: { _controller: MegasoftEntangleBundle:About:about }
+
+
