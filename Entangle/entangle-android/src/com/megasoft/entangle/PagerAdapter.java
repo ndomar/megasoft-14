@@ -1,6 +1,9 @@
 package com.megasoft.entangle;
 
+import com.megasoft.config.Config;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,24 +14,27 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
 	Context context;
 	private String tangleId;
+	private int userId;
 	
-	public PagerAdapter(Context con, FragmentManager fm, String tangleId) {
+	public PagerAdapter(Context con, FragmentManager fm, String tangleId,int userId) {
 		super(fm);
 		this.tangleId = tangleId;
+		this.userId = userId;
 		this.context = con;
 	}
 
 	@Override
 	public Fragment getItem(int index) {
 		Fragment fragment = null;
+		Bundle args = new Bundle();
 		if (index == 0) {
 			fragment = new TangleFragment();
         } else if (index == 1) {
         	fragment = new ProfileFragment();
+        	args.putInt("userId", userId);
         }
-		
-		Bundle args = new Bundle();
 		args.putString("key", tangleId);
+		
 		fragment.setArguments(args);
 		return fragment;
 	}

@@ -1,8 +1,11 @@
 package com.megasoft.entangle;
 
+import com.megasoft.config.Config;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -28,8 +31,9 @@ public class SampleFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_sample, container, false);
 //        ((TextView) view.findViewById(R.id.sample)).setText(getArguments().getString("key"));
         
-        
-        tab = new PagerAdapter(activity, activity.getSupportFragmentManager(), getArguments().getString("key"));
+    	SharedPreferences settings = activity.getSharedPreferences(Config.SETTING, 0);
+		int userId = settings.getInt(Config.USER_ID, -1);
+        tab = new PagerAdapter(activity, activity.getSupportFragmentManager(), getArguments().getString("key"),userId);
         pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(tab);
        

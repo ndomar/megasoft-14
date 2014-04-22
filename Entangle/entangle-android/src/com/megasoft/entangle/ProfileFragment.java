@@ -103,7 +103,7 @@ public class ProfileFragment extends Fragment {
 		
         view = inflater.inflate(R.layout.activity_profile, container, false);
         this.tangleId = Integer.parseInt(getArguments().getString("key"));
-     
+        this.userId = getArguments().getInt("userId");
 		
         viewProfile();
        
