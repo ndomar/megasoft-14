@@ -4,6 +4,23 @@
     <string name="app_name">Entangle</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_view_stream">ViewStream</string>
+    <string name="viewStream">Stream</string>
+    <string name="viewMembers">Members</string>
+    <string name="viewProfile">Profile</string>
+    <string name="title_activity_members">Members</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_invite">Invite</string>
+    <string name="tangleName">Tangle Name</string>
+    <string name="search_title">Filter Stream</string>
+    <string name="search_hint">Enter a UserName to filter with</string>
+    <string name="title_activity_search">Filter Results</string>
+    <string name="title_activity_requester_profile">RequesterProfile</string>
+    <string name="title_activity_request_information">RequestInformation</string>
+    <string name="tagFilter">Write a tag to filter with</string>
+    <string name="requesterFilter">Write a requester name to filter with</string>
+    <string name="fullTextFilter">Choose Full Text Search to be able to write :)</string>
+    <string name="spinner">Filtering options</string>
     <string name="title_activity_invite_users">Invite Users</string>
     <string name="add_email">+</string>
     <string name="invite_continue">Continue</string>
@@ -20,5 +37,14 @@
     <string name="PREFERENCE_FILE_KEY">prefs</string>
     <string name="title_activity_gcmregistration">GCMRegistrationActivity</string>
     <string name="new_notification">new Notification</string>
+
+    <string-array name="spinnerChoice">
+        <item>None</item>
+        <item>Tag</item>
+        <item>Requester Name</item>
+        <item>Full Text Search</item>
+    </string-array>
+
+    <string name="title_activity_stream_request_fragment">StreamRequestFragment</string>
 
 </resources>

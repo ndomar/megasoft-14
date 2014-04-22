@@ -37,3 +37,7 @@ _test:
   pattern: /test
   defaults: {_controller: MegasoftEntangleBundle:Notification:test}
   methods: [GET]
+
+dummy:
+    pattern: /dummy
+    defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
