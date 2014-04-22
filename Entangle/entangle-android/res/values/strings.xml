@@ -21,6 +21,11 @@
     <string name="requesterFilter">Write a requester name to filter with</string>
     <string name="fullTextFilter">Choose Full Text Search to be able to write :)</string>
     <string name="spinner">Filtering options</string>
+    <string name="title_activity_create_tangle">Create Tangle</string>
+    <string name="iconButton">Choose an Icon</string>
+    <string name="tangleIcon">Tangle Icon</string>
+    <string name="createTangle">CREATE</string>
+    <string name="checkTangleName">Check</string>
     <string name="title_activity_invite_users">Invite Users</string>
     <string name="add_email">+</string>
     <string name="invite_continue">Continue</string>

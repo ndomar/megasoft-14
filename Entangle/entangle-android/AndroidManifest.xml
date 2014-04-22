@@ -20,11 +20,11 @@
         <activity
             android:name="com.megasoft.entangle.HomeActivity"
             android:label="@string/title_activity_home" >
-            <intent-filter>
+            <intent-filter> 
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter> >
         </activity>
         <activity
             android:name="com.megasoft.entangle.RegisterActivity"
@@ -53,6 +53,10 @@
         <activity
             android:name="com.megasoft.entangle.RequestActivity"
             android:label="@string/title_activity_request_information" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.CreateTangleActivity"
+            android:label="@string/title_activity_create_tangle" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.InviteUserActivity"

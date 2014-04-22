@@ -1,9 +1,14 @@
 <?php
 
 namespace Megasoft\EntangleBundle\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use DateTime;
+use Megasoft\EntangleBundle\Entity\InvitationCode;
+use Megasoft\EntangleBundle\Entity\Tangle;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class TangleController extends Controller
 {
@@ -218,9 +223,9 @@ class TangleController extends Controller
      * An endpoint that gets a list of emails and classify them to
      * newMember , Entangle Member not in the tangle , already in the tangle
      * and invalid emails
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @param integer $tangleId
-     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @return Response|JsonResponse
      * @author MohamedBassem
      */
     public function checkMembershipAction(Request $request, $tangleId) {
@@ -284,9 +289,9 @@ class TangleController extends Controller
     /**
      * An endpoint to invite a list of emails to join a certain tangle
      * it creates the invitation code and send it to the user
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @param integer $tangleId
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @author MohamedBassem
      */
     public function inviteAction(Request $request, $tangleId) {
@@ -347,7 +352,7 @@ class TangleController extends Controller
 
                 $newInvitationCode->setInviterId($session->getUserId());
                 $newInvitationCode->setExpired(false);
-                $newInvitationCode->setCreated(new \DateTime("NOW"));
+                $newInvitationCode->setCreated(new DateTime("NOW"));
                 $newInvitationCode->setEmail($email);
 
                 $this->getDoctrine()->getManager()->persist($newInvitationCode);
@@ -380,4 +385,71 @@ class TangleController extends Controller
         }
         return $ret;
     }
+
+    /**
+     * Parse the request and creates a new tangle
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author Mansour
+     */
+    public function createTangleAction(Request $request) {
+
+        $json = $request->getContent();
+        $json_array = json_decode($json, true);
+        $tangleName = $json_array['tangleName'];
+        $tangleIcon = $json_array['tangleIcon'];
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+
+        if ($sessionId == null || $tangleIcon == null || $tangleName == null) {
+            return new Response("Bad Request", 400);
+        }
+
+        if ($session == null) {
+            return new Response("Unauthorized", 401);
+        }
+
+        $imageData = base64_decode($tangleIcon);
+        $icon = imagecreatefromstring($imageData);
+        $iconName = $this->generateRandomString(50) . '.png';
+        $path = '/home/mansour/repos/megasoft-14/Entangle/entangle-symfony/public/src/entangle/src/Megasoft/EntangleBundle/Images/tangleIcons/' . $iconName;
+        if($icon != null){
+         imagepng($icon, $path, 9);
+         imagedestroy($icon);
+        }
+
+        $tangle = new Tangle();
+        $tangle->setName($tangleName);
+        $tangle->setIcon($iconName);
+        $tangle->setDeleted(false);
+
+        $this->getDoctrine()->getManager()->persist($tangle);
+        $this->getDoctrine()->getManager()->flush();
+
+        $response = new Response();
+        $response->setStatusCode(201);
+        return $response;
+    }
+
+    /**
+     * parse the request and checks if the tangle is available or not
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author Mansour
+     */
+    public function checkAvailabilityAction(Request $request) {
+
+        $tangleName = $request->query->get('tangleName');
+        $doctrine = $this->getDoctrine();
+        $repo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
+        $tangle = $repo->findOneBy(array('name' => $tangleName));
+
+        if ($tangle == null) {
+            return new Response('Not Found', 404);
+        } else {
+            return new Response('Found', 200);
+        }
+    }
+
 }

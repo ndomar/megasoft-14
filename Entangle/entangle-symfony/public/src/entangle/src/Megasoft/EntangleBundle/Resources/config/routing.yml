@@ -27,7 +27,6 @@ invite:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
     methods: [POST]
 
-
 login:
     pattern:  /login
     defaults: { _controller: MegasoftEntangleBundle:User:login}
@@ -37,3 +36,17 @@ login:
     pattern:  /whoami
     defaults: { _controller: MegasoftEntangleBundle:User:whoAmI}
     methods: [GET]
+    
+check_availability:
+    pattern: /tangle/check
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:checkAvailability }
+    methods: [GET]
+
+create_tangle:
+    pattern: /tangle
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:createTangle }
+    methods: [POST]
+    
+dummy:
+    pattern: /dummy
+    defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
