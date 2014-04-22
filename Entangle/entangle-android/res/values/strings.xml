@@ -19,5 +19,6 @@
     <string name="title_activity_notification_test">NotificationTest</string>
     <string name="PREFERENCE_FILE_KEY">prefs</string>
     <string name="title_activity_gcmregistration">GCMRegistrationActivity</string>
+    <string name="new_notification">new Notification</string>
 
 </resources>

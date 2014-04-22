@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.megasoft.notifications.CreateNotificationActivity;
 
 public class GcmIntentService extends IntentService {
 	public static final int NOTIFICATION_ID = 1;
@@ -62,14 +63,13 @@ public class GcmIntentService extends IntentService {
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	private void sendNotification(String msg) {
 
-		Intent resultIntent = new Intent(this, Notifications.class);
+		Intent resultIntent = new Intent(this, CreateNotificationActivity.class);
 
 		TaskStackBuilder stackBuilder;
 		PendingIntent contentIntent;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 			stackBuilder = TaskStackBuilder.create(this);
 			// Adds the back stack
-			stackBuilder.addParentStack(LoginActivity.class);
 			stackBuilder.addNextIntent(resultIntent);
 			contentIntent = stackBuilder.getPendingIntent(0,
 					PendingIntent.FLAG_UPDATE_CURRENT);
