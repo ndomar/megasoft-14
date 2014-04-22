@@ -83,7 +83,8 @@ public class Offer extends Activity {
 	 */
 	public void markCheck(View view) {
 		GetRequest initRequest = new GetRequest(
-				"http://entangle2.apiary-mock.com/request/" + 1 + "/offers/" + 1) {
+				"http://entangle2.apiary-mock.com/request/" + 1 + "/offers/"
+						+ 1) {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 200) {
 					JSONObject x;
@@ -132,7 +133,7 @@ public class Offer extends Activity {
 					Toast success = Toast.makeText(getApplicationContext(),
 							"Marked as done", Toast.LENGTH_LONG);
 					success.show();
-					CheckBox checkbox1=(CheckBox)findViewById(R.id.checkBox1);
+					CheckBox checkbox1 = (CheckBox) findViewById(R.id.checkBox1);
 					checkbox1.setEnabled(false);
 				}
 			}
