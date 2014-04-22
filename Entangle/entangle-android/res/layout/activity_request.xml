@@ -6,11 +6,115 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".RequestActivity" >
+    tools:context=".RequestsActivity"
+    android:focusable="true" 
+    android:focusableInTouchMode="true"
+     >
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:height="40dip"
+        android:text="@string/Requests"
+        android:textSize="16sp"
+        android:width="130dip" />
+
+    <EditText
+        android:id="@+id/tags"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/post"
+        android:layout_alignLeft="@+id/textView4"
+        android:digits="0,1,2,3,4,5,6,7,8,9,qwertzuiopasdfghjklyxcvbnm,,,"
+        android:ems="10"
+        android:hint="@string/tagHint"
+        android:inputType="text" />
+    <TextView
+        android:id="@+id/showMyDate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView4"
+        android:layout_alignLeft="@+id/textView4" />
+
+    <Button
+        android:id="@+id/post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/textView4"
+        android:layout_marginBottom="15dp"
+        android:height="20dp"
+        android:text="@string/post"
+        android:width="30dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1"
+        android:height="40dip"
+        android:text="@string/description"
+        android:textSize="16sp"
+        android:width="130dip" />
+
+    <EditText 
+       
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_alignTop="@+id/textView3"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:height="65dp"
+        android:inputType="textMultiLine" />
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/description"
+        android:layout_below="@+id/description"
+        android:layout_marginTop="14dp"
+        android:text="@string/price" />
+
+    <EditText
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView6"
+        android:layout_alignRight="@+id/description"
+        android:layout_below="@+id/textView6"
+        android:ems="10"
+        android:hint="@string/priceHint"
+        android:inputType="number" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/post"
+        android:layout_alignLeft="@+id/tags"
+        android:layout_toLeftOf="@+id/post"
+        android:onClick="itemClicked"
+        android:text="@string/check" />
+
+    <Button
+        android:id="@+id/myDatePickerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/textView1"
+        android:layout_below="@+id/price"
+        android:text="@string/ChooseDate" />
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tags"
+        android:layout_alignLeft="@+id/myDatePickerButton"
+        android:ems="20"
+        android:height="30dp"
+        android:text="@string/tag" />
 
 </RelativeLayout>

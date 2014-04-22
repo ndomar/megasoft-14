@@ -12,10 +12,14 @@ use Symfony\Component\Form\Exception\LogicException;
 use Megasoft\EntangleBundle\Entity\User;
 use Megasoft\EntangleBundle\Entity\UserEmail;
 
-class DefaultController extends Controller {
+class AboutController extends Controller {
 
     public function indexAction($name) {
-        return $this->render('MegasoftEntangleBundle:Default:index.html.twig', array('name' => $name));
+        return $this->render('MegasoftEntangleBundle:About:about.html.twig', array('name' => $name));
+    }
+
+    public function  aboutAction() {
+        return $this->render('MegasoftEntangleBundle:About:about.html.twig');
     }
 
 
@@ -138,8 +142,8 @@ class DefaultController extends Controller {
 //          return new Response("Created" , 201);
 //    }
 
-   
-    
+
+
     /**
      * Dummy endpoints that echgit os whatever it receives
      * @param \Symfony\Component\HttpFoundation\Request $request
