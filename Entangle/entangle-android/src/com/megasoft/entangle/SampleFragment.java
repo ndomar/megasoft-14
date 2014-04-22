@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,8 @@ public class SampleFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_sample, container, false);
 //        ((TextView) view.findViewById(R.id.sample)).setText(getArguments().getString("key"));
         
-        tab = new PagerAdapter(activity, activity.getSupportFragmentManager());
+        
+        tab = new PagerAdapter(activity, activity.getSupportFragmentManager(), getArguments().getString("key"));
         pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(tab);
        
