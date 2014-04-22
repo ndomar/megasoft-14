@@ -29,10 +29,10 @@ invite:
     methods: [POST]
 
 
-
 index:
     pattern: /
     defaults: { _controller: MegasoftEntangleBundle:Site:index }
+
 
 
 
@@ -51,3 +51,4 @@ megasoft_entangle_register:
 about:
     pattern:  /about
     defaults: { _controller: MegasoftEntangleBundle:About:about }
+
