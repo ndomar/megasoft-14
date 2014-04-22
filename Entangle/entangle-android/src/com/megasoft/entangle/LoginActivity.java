@@ -3,9 +3,6 @@ package com.megasoft.entangle;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.megasoft.config.Config;
-import com.megasoft.requests.PostRequest;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -19,6 +16,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.megasoft.config.Config;
+import com.megasoft.requests.PostRequest;
 
 @SuppressLint({ "NewApi", "WorldReadableFiles" })
 public class LoginActivity extends Activity {

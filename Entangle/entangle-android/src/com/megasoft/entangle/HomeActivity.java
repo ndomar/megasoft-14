@@ -3,7 +3,6 @@ package com.megasoft.entangle;
 import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
@@ -30,12 +29,12 @@ public class HomeActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		
-		if(!validSessionIdExists()){
-			setDestroyOnPause(true);
-			Intent intent = new Intent(this, LoginActivity.class);
-			startActivity(intent);
-			finish();
-		}
+//		if(!validSessionIdExists()){
+//			setDestroyOnPause(true);
+//			Intent intent = new Intent(this, LoginActivity.class);
+//			startActivity(intent);
+//			finish();
+//		}
 		
 		initNavigationDrawer();
 	
@@ -81,7 +80,7 @@ public class HomeActivity extends FragmentActivity {
 			public void onItemClick(AdapterView<?> arg0, View view, int position,
 					long id) {
 				int tangleId = 1;
-				switchFragment(tangleId, position);		
+				switchFragment(tangleId, position);	
 			}
 		});
 	}
