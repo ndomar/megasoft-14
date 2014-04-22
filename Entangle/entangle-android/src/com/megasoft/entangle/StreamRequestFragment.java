@@ -216,7 +216,7 @@ public class StreamRequestFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity().getBaseContext(),
-						RequestActivity.class);
+						ViewRequestActivity.class);
 				intent.putExtra("tangleId",
 						parent.getTangleId());
 				intent.putExtra("tangleName",
