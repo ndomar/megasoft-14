@@ -1,17 +1,17 @@
 package com.megasoft.entangle;
 
+import com.megasoft.config.Config;
+
 import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
 
@@ -29,19 +29,19 @@ public class HomeActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		
-//		if(!validSessionIdExists()){
-//			setDestroyOnPause(true);
-//			Intent intent = new Intent(this, LoginActivity.class);
-//			startActivity(intent);
-//			finish();
-//		}
-		
-		initNavigationDrawer();
-	
+		if(!validSessionIdExists()){
+			setDestroyOnPause(true);
+			Intent intent = new Intent(this, LoginActivity.class);
+			startActivity(intent);
+			finish();
+		}else{
+			initNavigationDrawer();
+		}
 	}
 	
 	private boolean validSessionIdExists() {
-		return getIntent().hasExtra("sessionId");
+		return getSharedPreferences(Config.SETTING, 0)
+				.getString(Config.SESSION_ID, null) != null;
 	}
 	
 	private void setDestroyOnPause(boolean b) {
