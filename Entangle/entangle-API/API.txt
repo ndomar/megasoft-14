@@ -840,7 +840,7 @@ Post offer
                 { 
                     "description" : "description of an offer",
                     "date" : "28/3/2013 12:07:20",
-                    "expectedDeadLine" : "19/4/2014",
+                    "deadLine" : "19/4/2014",
                     "requestedPrice" : "7"
                 }
 
