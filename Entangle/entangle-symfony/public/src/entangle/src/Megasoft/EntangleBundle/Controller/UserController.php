@@ -70,7 +70,15 @@ class UserController extends Controller {
         if($user == null){
             return new Response("Bad Credentials",400);
         }
-        $user->setSessionId($sessionId);
+        
+        $session = new Session();
+        $session->setSessionId($sessionId)
+                ->setUser($user)
+                ->setExpired(false)
+                ->setDeviceType("test")
+                ->setRegId("test");
+                
+        $user->addSession($session);
 
         $this->getDoctrine()->getManager()->persist($user);
         $this->getDoctrine()->getManager()->flush();
