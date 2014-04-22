@@ -23,7 +23,7 @@ class OfferController extends Controller
      * @return boolean true if the user can view this request and false otherwise
      * @author Almgohar
      */
-    public function validateUser($request,$sessionId) {
+    private function validateUser($request,$sessionId) {
         $sessionTable = $this->getDoctrine()->
                 getRepository('MegasoftEntangleBundle:Session');
         $userTangleTable = $this->getDoctrine()->
@@ -84,7 +84,7 @@ class OfferController extends Controller
      * @return array $requestInformation
      * @author Almgohar
      */
-    public function getRequestInformation($request) {
+    private function getRequestInformation($request) {
         $user = $request->getUser();
         
         $userId = $user->getId();
@@ -107,7 +107,7 @@ class OfferController extends Controller
      * @return array $offerInformation
      * @author Almgohar
      */
-    public function getOfferInformation($offer) {
+    private function getOfferInformation($offer) {
         $user = $offer->getUser();
         
         $userId = $user->getId();
