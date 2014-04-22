@@ -41,6 +41,13 @@ class UserTangle
      * @ORM\Column(name="credit", type="integer")
      */
     private $credit;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="leavingDate", type="datetime" , nullable=true)
+     */
+    private $leavingDate;
 
     /**
      * @var boolean
