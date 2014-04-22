@@ -414,6 +414,12 @@ class TangleController extends Controller
                     'tangleId' => $tangleId, 'tangleOwner' => true))) != null) {
             return new Response("Forbidden", 403);
         }
+        $userTangle = $userTangleRepo
+                ->findOneBy(array('userId' => $userId, 
+                    'tangleId' => $tangleId)); 
+        if ($userTangle->getLeavingDate() == null) {
+            return new Response("Unauthorized", 401);
+        }
         
         return null;
     }
@@ -484,13 +490,10 @@ class TangleController extends Controller
         }
     }
     
-    //remaining the deletion of userTangle or the updating of the left / leavingDate
-    
-    //it covers deleting the userTangle from the userTangles of the tangle
-    //it covers updating the deletedBalance of the tangle
     /**
      * A function that is responsible for removing a user from 
-     * a tangle and updating the deletedBalance of the tangle
+     * a tangle and updating the deletedBalance of the tangle 
+     * and setting the leavingDate of that user.
      * 
      * @param integer $tangleId
      * @param integer $userId
@@ -504,21 +507,16 @@ class TangleController extends Controller
         if($userTangle != null){
             
             $tangleRepo = $doctrine->getRepository("MegasoftEntangleBundle:Tangle");
-            $userRepo = $doctrine->getRepository("MegasoftEntangleBundle:User");
-            $user = $userRepo->find($userId);
             $tangle = $tangleRepo->find($tangleId);
-           
-            if($tangle != null & $user != null) {
-                //to be removed after deleted/ left
-                $tangle->removeUserTangle($userTangle);
-                //to be changed if there are two types of credits of a user    
+            
+            $userTangle->setLeavingDate(new \DateTime("NOW"));
+            
+            if($tangle != null) {
+                
                 $deletedBalance = $tangle->getDeletedBalance();
                 $updatedDeletedBalance = $deletedBalance + ($userTangle->getCredit());
                 $tangle->setDeletedBalance($updatedDeletedBalance);
-                
-                //to be removed after deleted/ left
-                $user->removeUserTangle($userTangle);
-                
+          
                 $doctrine->getManager()->flush();
             }
         }
