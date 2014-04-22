@@ -153,9 +153,7 @@ class User {
      * @ORM\OneToMany(targetEntity="PendingInvitation", mappedBy="inviter", cascade={"persist"})
      */
     private $pendingInvitationInviters;
-<<<<<<< HEAD
 
-=======
     
     /**
      * @var UnfreezeRequest[]
@@ -164,9 +162,6 @@ class User {
      */
     private $unfreezeRequests;
     
-    
-    
->>>>>>> 5e555bb41584c161a0a9e50c57094e2c92f265b9
     /**
      * Get id
      *
