@@ -69,8 +69,6 @@ class UserController extends Controller {
 
         $user->setSessionId($sessionId);
 
-
-
         $this->getDoctrine()->getManager()->persist($user);
         $this->getDoctrine()->getManager()->flush();
 
