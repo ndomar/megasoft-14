@@ -24,7 +24,7 @@ class ProfileController {
      * @return boolean true if the user is a memeber of this tangle, false otherwise
      * @author Almgohar
      */
-    public function validateUser($userId, $tangleId) {
+    private function validateUser($userId, $tangleId) {
          $userTangleTable = $this->getDoctrine()->
                 getRepository('MegasoftEntangleBundle:UserTangle');
           $userTangle = $userTangleTable->
@@ -42,10 +42,10 @@ class ProfileController {
      * @return boolean true if the tangle exists, false otherwise
      * @author Almgohar
      */
-    public function validateTangle($tangleId) {
+    private function validateTangle($tangleId) {
         $tangleTable = $this->getDoctrine()->
                 getRepository('MegasoftEntangleBundle:Tangle');
-        $tangle = $tangleTable->findOneBy(array ('tangleId'=>$tangleId));
+        $tangle = $tangleTable->findOneBy(array ('Id'=>$tangleId));
         if ($tangle == null) {
             return false;
         } else {
@@ -104,7 +104,7 @@ class ProfileController {
      * @return array of arrays $transactions
      * @author Almgohar
      */
-    public function getTransactions ($offers, $tangleId) {
+    private function getTransactions ($offers, $tangleId) {
         $transactions = array();
         for ($i = 0; i < count($offers); $i++) {
             $offer = $offers[i];
@@ -132,7 +132,7 @@ class ProfileController {
      * @return \Symfony\Component\HttpFoundation\Response | array #info
      * @author Almgohar
      */
-    public function getUserInfo($user, $tangleId) {
+    private function getUserInfo($user, $tangleId) {
         if ($user == null) {
             return new Response('Bad Request',400);
         }
