@@ -1,8 +1,5 @@
 package com.megasoft.entangle;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
 import java.util.Calendar;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,7 +22,7 @@ import android.widget.Toast;
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 
-public class RequestActivity extends Activity {
+public class CreateRequestActivity extends Activity {
 	/**
 	 * the Post Button that will send the server the postrequest to Post the
 	 * Request to the stream
@@ -134,7 +131,7 @@ public class RequestActivity extends Activity {
 		final int tangleID = previousIntent.getIntExtra("tangleID", 0);
 		settings = getSharedPreferences(Config.SETTING, 0);
 		sessionId = settings.getString(Config.SESSION_ID, "");
-		setContentView(R.layout.activity_request);
+		setContentView(R.layout.activity_create_request);
 		description = (EditText) findViewById(R.id.description);
 		requestedPrice = (EditText) findViewById(R.id.price);
 		tags = (EditText) findViewById(R.id.tags);

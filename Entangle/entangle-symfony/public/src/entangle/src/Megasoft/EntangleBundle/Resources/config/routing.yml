@@ -54,10 +54,6 @@ create:
     defaults: { _controller: MegasoftEntangleBundle:Request:create }
     methods: [POST]
     
-dummy:
-    pattern: /dummy
-    defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
-    
 create_Offer:
     pattern: /tangle/{tangleId}/request/{requestId}/offer
     defaults: { _controller: MegasoftEntangleBundle:CreateOffer:createOffer }
@@ -79,3 +75,12 @@ megasoft_entangle_register:
 about:
     pattern:  /about
     defaults: { _controller: MegasoftEntangleBundle:About:about }
+    
+viewRequest:
+    pattern: /request/{requestId}
+    defaults: { _controller: MegasoftEntangleBundle:Request:viewRequest }
+    methods: [GET]
+
+dummy:
+    pattern: /dummy
+    defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
