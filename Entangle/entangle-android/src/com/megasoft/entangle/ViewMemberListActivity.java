@@ -13,57 +13,41 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class ViewMemberListActivity extends ListActivity {
+public class ViewMemberListActivity extends ListActivity implements
+		OnItemClickListener {
 
 	private Intent intent;
 	private String sessionId;
 	private int tangleId;
 	private JSONObject[] members;
-	private String[] values;
+	private String[] names;
 	ListView listView;
+	private int[] userId;
+	private String[] iconUrl;
+	private int[] userBalance;
 
-	
 	public void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
 		setContentView(R.layout.activity_view_member_list);
 		setAttributes();
+		System.out.println(tangleId);
 		sendMemberListRequest(tangleId);
 
-		listView = getListView();
-
 		System.out.println("WASALNA HENA");
-		if(values==null){
-			System.out.println("Null ----");
-		}
 
-		System.out.println("weselna hena 2222222");
-
-		/*final ArrayList<String> list = new ArrayList<String>();
-		for (int i = 0; i < values.length; ++i) {
-			list.add(values[i]);
-		}*/
-		
-		/*
-		 * ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-		 * R.layout.activity_view_member_list, list);
-		 * System.out.println("weselna hena 2222222"); setListAdapter(adapter);
-		 */
-		ArrayList <String>test = new ArrayList<String>();
-		test.add("element1");
-		test.add("element2");
-		test.add("element3");
-		
-		listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,android.R.id.text1,
-				test));
-		//listView.setOnItemClickListener(this);
 	}
 
 	public void sendMemberListRequest(int tangleID) {
 		System.out.println("DAKHAAAAAALT");
+
 		GetRequest getMemberListRequest = new GetRequest(
 				"http://entangle2.apiary-mock.com/tangle/" + tangleID + "/user") {
 			protected void onPostExecute(String res) {
@@ -72,8 +56,8 @@ public class ViewMemberListActivity extends ListActivity {
 						+ res);
 				if (!this.hasError() && res != null) {
 					getMembers(res);
-					getNames();
-
+					getData();
+					displayNames();
 				} else {
 					Toast.makeText(
 							getBaseContext(),
@@ -81,13 +65,14 @@ public class ViewMemberListActivity extends ListActivity {
 							Toast.LENGTH_LONG).show();
 				}
 			}
+
 		};
 		System.out.println("GETTING SESSION ID " + sessionId);
-		//System.out.println(getSessionId());
+		// System.out.println(getSessionId());
 		getMemberListRequest.addHeader("X-SESSION-ID", getSessionId());
-		//System.out.println("FDSJGFKDGJDSLGFJSKLGJKLJGLKFDJLGKJDFs");
+		// System.out.println("FDSJGFKDGJDSLGFJSKLGJKLJGLKFDJLGKJDFs");
 		getMemberListRequest.execute();
-		//System.out.println("JKFJDSLJFKLSAJFWAIFJEWAWJ");
+		// System.out.println("JKFJDSLJFKLSAJFWAIFJEWAWJ");
 	}
 
 	private void setAttributes() {
@@ -110,7 +95,7 @@ public class ViewMemberListActivity extends ListActivity {
 			int count = json.getInt("count");
 			System.out.println("COUNT: " + count);
 			members = new JSONObject[count];
-			values = new String[count];
+			names = new String[count];
 			JSONArray jsonArray = json.getJSONArray("users");
 			for (int i = 0; i < jsonArray.length(); i++) {
 				members[i] = jsonArray.getJSONObject(i);
@@ -122,18 +107,33 @@ public class ViewMemberListActivity extends ListActivity {
 
 	}
 
-	private void getNames() {
+	private void displayNames() {
+		listView = getListView();
+		listView.setAdapter(new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, android.R.id.text1, names));
+		listView.setOnItemClickListener(this);
+
+	}
+
+	public void onItemClick(AdapterView<?> adapter, View view, int position,
+			long id) {
+		System.out.println("position: " + position);
+		System.out.println("ID: " + id);
+		System.out.println();
+		Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
+				Toast.LENGTH_SHORT).show();
+
+	}
+
+	private void getData() {
 		if (members == null)
 			System.out.println("NULL 1");
 		for (int i = 0; i < members.length; i++) {
 			try {
-				if (members[i] == null)
-					System.out.println("NULL 2");
-				if (values == null)
-					System.out.println("NULL 3");
-				if (values[i] == null)
-					System.out.println("NULL 4");
-				values[i] = members[i].getString("username");
+				iconUrl[i]= members[i].getString("iconUrl");
+				userId[i]= members[i].getInt("id");
+				names[i] = members[i].getString("username");
+				userBalance[i] = members[i].getInt("balance");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
