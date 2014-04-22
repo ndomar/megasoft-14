@@ -39,7 +39,7 @@
                 android:value="com.megasoft.entangle.InviteUsers" />
         </activity>
         <activity
-            android:name="com.megasoft.OfferActivity"
+            android:name="com.megasoft.entangle.OfferActivity"
             android:label="@string/title_activity_offer" >
         </activity>
     </application>
