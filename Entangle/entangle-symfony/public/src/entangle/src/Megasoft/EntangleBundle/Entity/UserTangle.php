@@ -222,4 +222,27 @@ class UserTangle
     {
         return $this->tangle;
     }
+
+    /**
+     * Set leavingDate
+     *
+     * @param \DateTime $leavingDate
+     * @return UserTangle
+     */
+    public function setLeavingDate($leavingDate)
+    {
+        $this->leavingDate = $leavingDate;
+
+        return $this;
+    }
+
+    /**
+     * Get leavingDate
+     *
+     * @return \DateTime 
+     */
+    public function getLeavingDate()
+    {
+        return $this->leavingDate;
+    }
 }
