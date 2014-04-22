@@ -79,8 +79,8 @@ public class TangleTitleFragment extends Fragment {
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View view, int position,
 						long id) {
-					
 					activity.switchFragment(ids.get(position), position);		
+
 				}
 			}); 
 		} catch (JSONException e) {
