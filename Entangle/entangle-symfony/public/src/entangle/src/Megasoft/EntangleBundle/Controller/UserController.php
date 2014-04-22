@@ -204,7 +204,7 @@ class UserController extends Controller {
         $user = $userTable->findOneBy(array('id'=> $userId));
         $offers = $user->getOffers();
         $info = $this->getUserInfo($user, $tangleId);
-        $transactions = $this->getTransactionsAction($offers, $tangleId);
+        $transactions = $this->getTransactions($offers, $tangleId);
         $response = new JsonResponse();
         $response->setData(array('information'=> $info,
             'transactions'=>$transactions));
