@@ -56,6 +56,11 @@
         <item >Item A</item>
         <item >Item B</item>
     </string-array>
+    <string name="edit_info">Edit your information</string>
+    <string name="leave_tangle">Leave current tangle</string>
+    <string name="transactions">Transactions: </string>
+    <string name="title_activity_edit_profile">EditProfileActivity</string>
+    <string name="title_activity_offer">OfferActivity</string>
 
     <string-array name="spinnerChoice">
         <item>None</item>
