@@ -24,7 +24,7 @@ class RequestDeletedNotification extends Notification
      * @var Request
      * 
      * @ORM\ManyToOne(targetEntity="Request", inversedBy="requestDeletedNotifications")
-     * @ORM\JoinColumn(name="requestId", referencedColumnName="id")
+     * @ORM\JoinColumn(name="deletedRequestId", referencedColumnName="id")
      */
     private $request;
 
@@ -50,5 +50,28 @@ class RequestDeletedNotification extends Notification
     public function getRequestId()
     {
         return $this->requestId;
+    }
+
+    /**
+     * Set request
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Request $request
+     * @return RequestDeletedNotification
+     */
+    public function setRequest(\Megasoft\EntangleBundle\Entity\Request $request = null)
+    {
+        $this->request = $request;
+
+        return $this;
+    }
+
+    /**
+     * Get request
+     *
+     * @return \Megasoft\EntangleBundle\Entity\Request 
+     */
+    public function getRequest()
+    {
+        return $this->request;
     }
 }

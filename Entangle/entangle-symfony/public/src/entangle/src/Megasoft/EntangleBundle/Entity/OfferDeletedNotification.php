@@ -24,7 +24,7 @@ class OfferDeletedNotification extends Notification
      * @var Offer
      * 
      * @ORM\ManyToOne(targetEntity="Offer", inversedBy="offerDeletedNotifications")
-     * @ORM\JoinColumn(name="offerId", referencedColumnName="id")
+     * @ORM\JoinColumn(name="deletedOfferId", referencedColumnName="id")
      */
     private $offer;
 
@@ -50,5 +50,28 @@ class OfferDeletedNotification extends Notification
     public function getOfferId()
     {
         return $this->offerId;
+    }
+
+    /**
+     * Set offer
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Offer $offer
+     * @return OfferDeletedNotification
+     */
+    public function setOffer(\Megasoft\EntangleBundle\Entity\Offer $offer = null)
+    {
+        $this->offer = $offer;
+
+        return $this;
+    }
+
+    /**
+     * Get offer
+     *
+     * @return \Megasoft\EntangleBundle\Entity\Offer 
+     */
+    public function getOffer()
+    {
+        return $this->offer;
     }
 }

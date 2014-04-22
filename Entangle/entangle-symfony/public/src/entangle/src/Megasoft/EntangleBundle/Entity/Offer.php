@@ -468,4 +468,70 @@ class Offer
     {
         return $this->priceChangeNotifications;
     }
+
+    /**
+     * Add offerChosenNotifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\OfferChosenNotification $offerChosenNotifications
+     * @return Offer
+     */
+    public function addOfferChosenNotification(\Megasoft\EntangleBundle\Entity\OfferChosenNotification $offerChosenNotifications)
+    {
+        $this->offerChosenNotifications[] = $offerChosenNotifications;
+
+        return $this;
+    }
+
+    /**
+     * Remove offerChosenNotifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\OfferChosenNotification $offerChosenNotifications
+     */
+    public function removeOfferChosenNotification(\Megasoft\EntangleBundle\Entity\OfferChosenNotification $offerChosenNotifications)
+    {
+        $this->offerChosenNotifications->removeElement($offerChosenNotifications);
+    }
+
+    /**
+     * Get offerChosenNotifications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOfferChosenNotifications()
+    {
+        return $this->offerChosenNotifications;
+    }
+
+    /**
+     * Add offerDeletedNotifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\OfferDeletedNotification $offerDeletedNotifications
+     * @return Offer
+     */
+    public function addOfferDeletedNotification(\Megasoft\EntangleBundle\Entity\OfferDeletedNotification $offerDeletedNotifications)
+    {
+        $this->offerDeletedNotifications[] = $offerDeletedNotifications;
+
+        return $this;
+    }
+
+    /**
+     * Remove offerDeletedNotifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\OfferDeletedNotification $offerDeletedNotifications
+     */
+    public function removeOfferDeletedNotification(\Megasoft\EntangleBundle\Entity\OfferDeletedNotification $offerDeletedNotifications)
+    {
+        $this->offerDeletedNotifications->removeElement($offerDeletedNotifications);
+    }
+
+    /**
+     * Get offerDeletedNotifications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOfferDeletedNotifications()
+    {
+        return $this->offerDeletedNotifications;
+    }
 }

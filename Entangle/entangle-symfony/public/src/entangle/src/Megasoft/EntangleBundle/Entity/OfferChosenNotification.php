@@ -15,7 +15,7 @@ class OfferChosenNotification extends Notification
     /**
      * @var integer
      *
-     * @ORM\Column(name="ChosenOfferId", type="integer")
+     * @ORM\Column(name="chosenOfferId", type="integer")
      */
     private $offerId;
     
@@ -24,7 +24,7 @@ class OfferChosenNotification extends Notification
      * @var Offer
      * 
      * @ORM\ManyToOne(targetEntity="Offer", inversedBy="offerChosenNotifications")
-     * @ORM\JoinColumn(name="offerId", referencedColumnName="id")
+     * @ORM\JoinColumn(name="chosenOfferId", referencedColumnName="id")
      */
     private $offer;
 
@@ -49,5 +49,28 @@ class OfferChosenNotification extends Notification
     public function getOfferId()
     {
         return $this->offerId;
+    }
+
+    /**
+     * Set offer
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Offer $offer
+     * @return OfferChosenNotification
+     */
+    public function setOffer(\Megasoft\EntangleBundle\Entity\Offer $offer = null)
+    {
+        $this->offer = $offer;
+
+        return $this;
+    }
+
+    /**
+     * Get offer
+     *
+     * @return \Megasoft\EntangleBundle\Entity\Offer 
+     */
+    public function getOffer()
+    {
+        return $this->offer;
     }
 }

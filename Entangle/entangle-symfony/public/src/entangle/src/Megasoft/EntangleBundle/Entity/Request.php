@@ -465,4 +465,37 @@ class Request
     {
         return $this->deleted;
     }
+
+    /**
+     * Add requestDeletedNotifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\RequestDeletedNotification $requestDeletedNotifications
+     * @return Request
+     */
+    public function addRequestDeletedNotification(\Megasoft\EntangleBundle\Entity\RequestDeletedNotification $requestDeletedNotifications)
+    {
+        $this->requestDeletedNotifications[] = $requestDeletedNotifications;
+
+        return $this;
+    }
+
+    /**
+     * Remove requestDeletedNotifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\RequestDeletedNotification $requestDeletedNotifications
+     */
+    public function removeRequestDeletedNotification(\Megasoft\EntangleBundle\Entity\RequestDeletedNotification $requestDeletedNotifications)
+    {
+        $this->requestDeletedNotifications->removeElement($requestDeletedNotifications);
+    }
+
+    /**
+     * Get requestDeletedNotifications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRequestDeletedNotifications()
+    {
+        return $this->requestDeletedNotifications;
+    }
 }
