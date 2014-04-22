@@ -89,3 +89,8 @@ viewRequest:
 dummy:
     pattern: /dummy
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
+
+Mail_Notification:
+    pattern: /mail
+    defaults: {_controller: MegasoftEntangleBundle:Mail:SendEmail }
+    methods:  [GET]
