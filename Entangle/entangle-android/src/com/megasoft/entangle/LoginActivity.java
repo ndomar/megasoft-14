@@ -99,10 +99,13 @@ public class LoginActivity extends Activity {
 		
 		try {
 			JSONObject x = new JSONObject(response);
+			String sessionId = x.getString("sessionId");
+			int userId = x.getInt("userId");
 			SharedPreferences sessionIDPrefs = this.getSharedPreferences(
 					Config.SETTING, 0);
 			SharedPreferences.Editor prefsEditor = sessionIDPrefs.edit();
 			prefsEditor.putString(Config.SESSION_ID, response);
+			prefsEditor.putInt(Config.USER_ID, userId);
 			prefsEditor.commit();
 
 			Intent homeActivity = new Intent(this, HomeActivity.class);
