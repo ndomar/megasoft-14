@@ -2,6 +2,7 @@ package com.megasoft.notifications;
 
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import com.megasoft.entangle.R;
 import com.megasoft.requests.GetRequest;
 
+@SuppressLint("NewApi")
 public class CreateNotificationActivity extends Activity {
 
 	private NotificationManager myNotificationManager;
