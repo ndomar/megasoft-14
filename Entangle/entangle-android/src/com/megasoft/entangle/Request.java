@@ -17,7 +17,7 @@ public class Request extends Activity {
 	/**
 	 * String holding the sender of the claim
 	 */
-	String offererMail = "";
+	String claimerMail = "";
 	/**
 	 * string holding the receiver of the claim
 	 */
@@ -39,7 +39,7 @@ public class Request extends Activity {
 	}
 
 	/**
-	 * This method gets the email of both the offerer and the tangle owner after
+	 * This method gets the email of both the claimer and the tangle owner after
 	 * fetching them from the back end through the delivered json response and
 	 * sends these mails to the claim form session
 	 * 
@@ -60,7 +60,7 @@ public class Request extends Activity {
 				try {
 					JSONObject object = new JSONObject(response);
 					tangleOwnerMail += object.getString("X-TANGLEOWNER-MAIL");
-					offererMail += object.getString("X-OFFERER-MAIL");
+					claimerMail += object.getString("X-CLAIMER-MAIL");
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -70,7 +70,7 @@ public class Request extends Activity {
 		requestTangleOwnerMail.addHeader("X-SESSION-ID", sessionID);
 		requestTangleOwnerMail.execute();
 		intent.putExtra("receiver", tangleOwnerMail);
-		intent.putExtra("sender", offererMail);
+		intent.putExtra("sender", claimerMail);
 		intent.putExtra("requestID", requestID);
 		intent.putExtra("sessionID", sessionID);
 		Toast.makeText(this, "Loading Claim Form", Toast.LENGTH_SHORT).show();

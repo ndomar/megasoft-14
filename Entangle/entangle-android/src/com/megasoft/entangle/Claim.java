@@ -20,7 +20,7 @@ public class Claim extends Activity {
 	/**
 	 * String holding the mail of the claim sender
 	 */
-	String offererMail;
+	String claimerMail;
 	/**
 	 * String holding the mail of the claim receiver
 	 */
@@ -48,24 +48,14 @@ public class Claim extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.claimform);
-		offererMail = this.getIntent().getStringExtra("sender");
+		claimerMail = this.getIntent().getStringExtra("sender");
 		tangleOwenerMail = this.getIntent().getStringExtra("receiver");
-		EditText fromMail = (EditText) findViewById(R.id.fromText);
-		EditText toMail = (EditText) findViewById(R.id.toText);
-		EditText subject = (EditText) findViewById(R.id.subjectText);
 		EditText mssg = (EditText) findViewById(R.id.mssgText);
-		subject.setScroller(new Scroller(getBaseContext()));
-		subject.setMaxLines(2);
-		subject.setVerticalScrollBarEnabled(true);
-		subject.setMovementMethod(new ScrollingMovementMethod());
-		subject.setMinLines(2);
 		mssg.setScroller(new Scroller(getBaseContext()));
-		mssg.setMaxLines(9);
+		mssg.setMaxLines(20);
 		mssg.setVerticalScrollBarEnabled(true);
 		mssg.setMovementMethod(new ScrollingMovementMethod());
-		mssg.setMinLines(9);
-		fromMail.setText(offererMail);
-		toMail.setText(tangleOwenerMail);
+		mssg.setMinLines(20);
 	}
 
 	/**
@@ -80,31 +70,23 @@ public class Claim extends Activity {
 	public void sendClaimForm(View view) {
 
 		final Intent intent = new Intent(this, Request.class);
-		subject = ((EditText) findViewById(R.id.subjectText)).getText()
-				.toString();
 		mssgBody = ((EditText) findViewById(R.id.mssgText)).getText()
 				.toString();
-		if (offererMail.equals("") || tangleOwenerMail.equals("")) {
-			Toast.makeText(this, "Please enter valid emails",
-					Toast.LENGTH_SHORT).show();
-		} else if (mssgBody.equals("")) {
+		if (mssgBody.equals("")) {
 			Toast.makeText(this, "Msssg body missing", Toast.LENGTH_LONG)
 					.show();
 		} else {
-			if (subject.equals("")) {
-				Toast.makeText(this, "Subject is missing", Toast.LENGTH_LONG)
-						.show();
-			}
+			
 			JSONObject object = new JSONObject();
 			try {
-				object.put("X-SENDER-MAIL", offererMail);
+				object.put("X-SENDER-MAIL", claimerMail);
 				object.put("X-RECEIVER-MAIL", tangleOwenerMail);
-				object.put("X-SUBJECT", subject);
 				object.put("X-MSSGBODY", mssgBody);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 			int requestID = (int) getIntent().getIntExtra("requestID", 0);
 			PostRequest postSubject = new PostRequest(Config.API_BASE_URL
 					+ "/claim/" + requestID + "/sendClaim") {
@@ -122,6 +104,7 @@ public class Claim extends Activity {
 					}
 				}
 			};
+			
 			String sessionID = (String) getIntent().getCharSequenceExtra(
 					"sessionID");
 			postSubject.setBody(object);
