@@ -55,10 +55,17 @@
                 android:value="com.megasoft.entangle.InviteUsers" />
         </activity>
         <activity
+            android:name="com.megasoft.entangle.EditProfileActivity"
+            android:label="@string/title_activity_edit_profile"
+            android:parentActivityName="com.megasoft.entangle.ProfileActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.megasoft.entangle.ProfileActivity" />
+        </activity>
+        <activity
             android:name="com.megasoft.entangle.OfferActivity"
             android:label="@string/title_activity_offer" >
         </activity>
-
     </application>
 
 </manifest>

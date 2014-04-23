@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -42,11 +43,16 @@ public class OfferActivity extends Activity {
 	 * layout
 	 */
 	LinearLayout layout;
+	/**
+	 * String for endpoint
+	 */
+	final String OFFER = "/offer/" + offerId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_offer);
+
 		Intent intent = getIntent();
 		offerId = intent.getIntExtra("offerId", -1);
 		validate();
@@ -61,8 +67,7 @@ public class OfferActivity extends Activity {
 	 * @author sak93
 	 */
 	public void validate() {
-		GetRequest request = new GetRequest(Config.API_BASE_URL + "/offer/"
-				+ offerId) {
+		GetRequest request = new GetRequest(Config.API_BASE_URL + OFFER) {
 
 			protected void onPostExecute(String response) {
 				try {
@@ -118,6 +123,14 @@ public class OfferActivity extends Activity {
 
 			}
 		});
+
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.offer, menu);
+		return true;
 
 	}
 
