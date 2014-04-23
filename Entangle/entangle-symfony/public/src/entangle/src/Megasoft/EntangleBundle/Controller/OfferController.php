@@ -49,11 +49,6 @@ class OfferController extends Controller {
         if($requesterId != $userOfSession){
             return $response = new Response("Error: You are unauthorized to accept this offer.", 409);
         }
-        $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
-        $requestTangle = $userTangleRepo->findOneBy(array('userId' => $requesterId,'tangleId'=>'tangle'));
-        if(count($requestTangle)<=0){
-            return $response = new Response("Error: You are unauthorized to accept this offer.", 409);
-        }
         $verificationMessage = $this->verify($offerId);
         if ($verificationMessage == "Offer Accepted.") {
             $response = new Response($verificationMessage, 201);
@@ -80,22 +75,27 @@ class OfferController extends Controller {
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
         $request = $requestRepo->findOneBy(array('id' => $requestId));
         $requesterId = $request->getUserId();
+        $tangleId = $request->getTangleId();
+        $userTangle = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $requester = $userTangle->findOneBy(array('tangleId' => $tangleId, 'userId' => $requesterId));
+        if(count($requester)<= 0){
+            return "Error: You don't belong to this tangle.";
+        }
         if ($request->getDeleted() == 1) {
             return "Error: Request deleted.";
         }
-        if ($request->getStatus() === 1) {
+        if ($request->getStatus() == 1) {
             return "Error: Request Closed.";
         }
         if ($offer->getDeleted() == 1) {
             return "Error: Offer deleted.";
         }
-        if ($offer->getStatus() === 1) {
+        if ($offer->getStatus() == 1) {
             return "Error: Offer Closed.";
         }
-        $tangleId = $request->getTangleId();
+        
         $price = $offer->getRequestedPrice();
-        $userTangle = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
-        $requester = $userTangle->findOneBy(array('tangleId' => $tangleId, 'userId' => $requesterId));
+        
         $requesterBalance = $requester->getCredit();
         if ($requesterBalance < $price) {
             return "Error: Not enough balance.";
