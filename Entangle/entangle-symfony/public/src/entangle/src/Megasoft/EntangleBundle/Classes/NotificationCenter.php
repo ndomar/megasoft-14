@@ -1,6 +1,6 @@
 <?php
 /**
- * User: mohamed
+ * User: mohamed shaban
  * Date: 4/24/14
  * Time: 12:06 AM
  */
@@ -92,6 +92,7 @@ class NotificationCenter
      */
     function newMessageNotification($messageId, $message = null)
     {
+
         $notification = new NewMessageNotification();
         $message = $this->em->getRepository('MegasoftEntangleBundle:Message')->find($messageId);
         $from = $message->getSenderId();

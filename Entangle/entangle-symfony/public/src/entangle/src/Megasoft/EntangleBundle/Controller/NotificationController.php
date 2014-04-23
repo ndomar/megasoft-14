@@ -25,6 +25,7 @@ class NotificationController extends Controller
         $name = $nc->newMessageNotification(0, "hello world");
         $arr = array('regid' => $name,);
         return $this->render('MegasoftEntangleBundle:Default:test.html.twig', $arr);
+
     }
 
     /**
@@ -53,6 +54,5 @@ class NotificationController extends Controller
         $response->setData(array('status' => 'registered to GCM'));
         return $response;
     }
-
 
 }
