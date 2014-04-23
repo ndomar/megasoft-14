@@ -27,6 +27,7 @@ invite:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
     methods: [POST]
 
+
 edit:
     pattern: /user/edit
     defaults: { _controller: MegasoftEntangleBundle:User:edit }
@@ -37,3 +38,12 @@ delete_secondary_email:
     defaults: { _controller: MegasoftEntangleBundle:User:deleteSecondaryEmail}
     methods: [DELETE]
     
+
+dummy:
+    pattern: /dummy
+    defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
+
+get_profile:
+    pattern: tangle/{tangleId}/user/{userId}/profile
+    defaults: { _controller: MegasoftEntangleBundle:User:profile }
+    methods: [GET]
