@@ -5,7 +5,6 @@ namespace Megasoft\EntangleBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 use Megasoft\EntangleBundle\Entity\UserTangle;
 use Megasoft\EntangleBundle\Entity\Request;
 use Megasoft\EntangleBundle\Entity\Offer;
@@ -14,8 +13,7 @@ use Megasoft\EntangleBundle\Entity\Offer;
  * Gets the required information to view a certain offer
  * @author Almgohar
  */
-class OfferController extends Controller
-{
+class OfferController extends Controller {
     /**
      * 
      * @param \Megasoft\EntangleBundle\Entity\Request $request
@@ -41,7 +39,7 @@ class OfferController extends Controller
             return true;
         }   
     }
-
+    
     /**
      * Sends the required information in a JSon response
      * @param \Symfony\Component\HttpFoundation\Request $req
@@ -49,10 +47,9 @@ class OfferController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
      * @author Almgohar
      */
-    public function getOfferAction(Request $req, $offerId) {
-      if (offerId == null) {
-          return new Response('Offer not found', 404);
-      }
+    public function offerAction
+            (\Symfony\Component\HttpFoundation\Request $req, $offerId) {
+   
       $sessionId = $req->headers->get('X-SESSION-ID'); 
       
       if ($sessionId == null) {
@@ -60,10 +57,23 @@ class OfferController extends Controller
       }
       
       $doctrine = $this->getDoctrine();
+       $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+      $session = $sessionTable->findOneBy(array('sessionId'=>$sessionId));
+     
+      if($session == null || $session->getExpired()) {
+          return new Response('Unauthorized',401);
+      }
+      
       $offerTable = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
       $offer = $offerTable->findOneBy(array('id'=>$offerId));
+     
+      if($offer == null) {
+          return new Response('Offer not found',404);
+      }
+      
       $request = $offer->getRequest();
       $tangleId = $request->getTangleId();
+     
       
       if(!$this->validateUser($request, $sessionId)) {
           return new Response('Unauthorized',401); 
