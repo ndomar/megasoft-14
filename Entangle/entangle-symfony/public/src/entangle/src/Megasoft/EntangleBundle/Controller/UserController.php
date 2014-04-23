@@ -1,5 +1,7 @@
 <?php
 
+namespace Megasoft\EntangleBundle\Controller;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Megasoft\EntangleBundle\Entity\Transaction;
 use Megasoft\EntangleBundle\Entity\UserTangle;
@@ -15,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Gets the required information to view a certain user's profile
  * @author almgohar
  */
-class ProfileController {
+class UserController extends Controller {
     
     /**
      * Validates that a given user is a member of a given tangle
@@ -45,7 +47,7 @@ class ProfileController {
     private function validateTangle($tangleId) {
         $tangleTable = $this->getDoctrine()->
                 getRepository('MegasoftEntangleBundle:Tangle');
-        $tangle = $tangleTable->findOneBy(array ('Id'=>$tangleId));
+        $tangle = $tangleTable->findOneBy(array ('id'=>$tangleId));
         if ($tangle == null) {
             return false;
         } else {
@@ -61,7 +63,7 @@ class ProfileController {
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
      * @author Almgohar
      */
-    public function getProfileAction (Request $request, $userId, $tangleId) {
+    public function profileAction (Request $request, $userId, $tangleId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
         
         if ($sessionId == null) {
@@ -72,6 +74,16 @@ class ProfileController {
         $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionTable->findOneBy(array('sessionId'=>$sessionId));
+        $user = $userTable->findOneBy(array('id'=> $userId));
+
+        if($session == null || $session->getExpired()) {
+            return new Response('Unauthorized',401);
+        }
+        
+        if($user == null) {
+            return new Response('User not found', 404);
+        }
+        
         $loggedInUser = $session->getUserId();
         
         if (!$this->validateTangle($tangleId)) {
@@ -86,10 +98,9 @@ class ProfileController {
             return new Response('The requested user is not a member of this tangle', 401);
         }
         
-        $user = $userTable->findOneBy(array('id'=> $userId));
         $offers = $user->getOffers();
-        $info = $this->getUserInfoAction($user, $tangleId);
-        $transactions = $this->getTransactionsAction($offers, $tangleId);
+        $info = $this->getUserInfo($user, $tangleId);
+        $transactions = $this->getTransactions($offers, $tangleId);
         $response = new JsonResponse();
         $response->setData(array('information'=> $info,
             'transactions'=>$transactions));
@@ -106,8 +117,8 @@ class ProfileController {
      */
     private function getTransactions ($offers, $tangleId) {
         $transactions = array();
-        for ($i = 0; i < count($offers); $i++) {
-            $offer = $offers[i];
+        for ($i = 0; $i < count($offers); $i++) {
+            $offer = $offers[$i];
             if ($offer == null) {
                 continue;
             }
