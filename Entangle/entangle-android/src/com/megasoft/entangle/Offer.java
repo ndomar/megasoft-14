@@ -34,7 +34,7 @@ public class Offer extends Activity {
 
 	/**
 	 * this searches for details of an offer and previews it
-	 * @param  Int OfferId offer ID
+	 * @param Int OfferId offer ID
 	 * @return None
 	 * @author mohamedzayan
 	 */
@@ -77,7 +77,7 @@ public class Offer extends Activity {
 	/**
 	 * this checks if an offer is already marked as done or not accepted.if
 	 * neither it navigates to the actual marking method
-	 * @param  View view The checkbox clicked
+	 * @param  View  view The checkbox clicked
 	 * @return None
 	 * @author mohamedzayan
 	 */
