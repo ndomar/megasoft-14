@@ -5,28 +5,25 @@ namespace Megasoft\EntangleBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
-class MailController extends Controller
-{
-
+class MailController extends Controller {
 
     /**
      * @return Response
      */
-    public function SendEmailAction()
-    {
-        $this->sendMail(1, "el 3amleya nesr", "kolo shenkan ya regala");
+    public function SendEmailAction() {
+        $this->sendMail(1, "Hello world ", "Welcome to Entangle");
         return new Response("OK", 200);
     }
 
-
     /**
-     * this is the main function that sends emails
-     * @param $userID
-     * @param $subject
-     * @param $body
+     * this function sends an email notification to user with userID
+     * @param  Int      $userid    user ID
+     * @param  String   $subject   The subject of the email notification
+     * @return string   $body      The body of the email notification
+     * @author amrelzanaty
+
      */
-    public function sendMail($userID, $subject, $body)
-    {
+    public function sendMail($userID, $subject, $body) {
         $doctrine = $this->getDoctrine();
         $repo = $doctrine->getRepository('MegasoftEntangleBundle:User');
 
@@ -36,11 +33,12 @@ class MailController extends Controller
 
         foreach ($useremail as $mail) {
             $message = \Swift_Message::newInstance()
-                ->setSubject($subject)
-                ->setFrom('Notifications-noreply@entangle.io')
-                ->setTo($mail->getEmail())
-                ->setBody($body);
+                    ->setSubject($subject)
+                    ->addFrom('Notifications-noreply@entangle.io', 'Entangle')
+                    ->setTo($mail->getEmail())
+                    ->setBody($body);
             $this->get('mailer')->send($message);
         }
     }
+
 }
