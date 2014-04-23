@@ -1,5 +1,6 @@
 package com.megasoft.entangle;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,10 +95,13 @@ public class ProfileActivity extends Activity {
 	
 	private String sessionId;
 	
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
+
 		Intent intent = getIntent();
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		
@@ -107,10 +111,12 @@ public class ProfileActivity extends Activity {
 		this.userId = intent.getIntExtra("user id", -1);		
 		
 		viewProfile();		
+
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
