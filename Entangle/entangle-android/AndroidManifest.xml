@@ -26,15 +26,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-
-            android:name="com.megasoft.entangle.RequestActivity"
-          	android:label="Request" />
-
+        
             <activity
-            android:name="com.megasoft.entangle.InviteUserActivity"
-            android:label="@string/title_activity_invite_users" >
+            android:name="com.megasoft.entangle.TangleActivity"
+            android:label="@string/title_activity_view_stream" >
         </activity>
+        <activity
+            android:name="com.megasoft.entangle.Members"
+            android:label="@string/title_activity_members" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.ProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.RequestActivity"
+            android:label="@string/title_activity_request_information" >
+        </activity>
+       
         <activity
             android:name="com.megasoft.entangle.ConfirmInviteUserActivity"
             android:label="@string/title_activity_invite_users_confirmations"
@@ -44,6 +53,12 @@
                 android:value="com.megasoft.entangle.InviteUsers" />
 
         </activity>
+      
+        <activity
+            android:name="com.megasoft.entangle.InviteUserActivity"
+            android:label="@string/title_activity_invite_users" >
+        </activity>
+       
     </application>
 
 </manifest>
