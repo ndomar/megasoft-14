@@ -67,11 +67,17 @@ class OfferController extends Controller {
       $offerTable = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
       $offer = $offerTable->findOneBy(array('id'=>$offerId));
      
-      if($offer == null) {
+      if($offer == null || $offer->getDeleted()) {
           return new Response('Offer not found',404);
       }
       
+     
       $request = $offer->getRequest();
+      
+      if($request->getDeleted()) {
+          return new Response("Request not found",404);
+      }
+      
       $tangleId = $request->getTangleId();
      
       
