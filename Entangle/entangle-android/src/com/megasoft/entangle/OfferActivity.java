@@ -3,6 +3,8 @@ package com.megasoft.entangle;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.view.View;
@@ -15,15 +17,38 @@ import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.PostRequest;
 
 public class OfferActivity extends Activity {
+	/**
+	 * the session Id
+	 */
+	String sessionId;
+	/**
+	 * settings
+	 */
+	SharedPreferences settings;
+	/**
+	 * this activity
+	 */
+
 	final Activity self = this;
-	int offerId = 1;
+	/**
+	 * offer Id
+	 */
+	int offerId;
+	/**
+	 * JSON object to be received from Get request
+	 */
 	JSONObject returnedResponse = null;
+	/**
+	 * layout
+	 */
 	LinearLayout layout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_offer);
+		Intent intent = getIntent();
+		offerId = intent.getIntExtra("offerId", -1);
 		validate();
 	}
 
@@ -64,7 +89,7 @@ public class OfferActivity extends Activity {
 			}
 
 		};
-		request.addHeader("x-session-id", "asdasdasdsadasdasd");
+		request.addHeader(Config.API_SESSION_ID, sessionId);
 		request.execute();
 	}
 
