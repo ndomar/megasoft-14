@@ -45,7 +45,13 @@ class OfferController extends Controller {
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
         $request = $requestRepo->findOneBy(array('id' => $requestId));
         $requesterId = $request->getUserId();
+        $tangle = $request->getTangleId();
         if($requesterId != $userOfSession){
+            return $response = new Response("Error: You are unauthorized to accept this offer.", 409);
+        }
+        $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $requestTangle = $userTangleRepo->findOneBy(array('userId' => $requesterId,'tangleId'=>'tangle'));
+        if(count($requestTangle)<=0){
             return $response = new Response("Error: You are unauthorized to accept this offer.", 409);
         }
         $verificationMessage = $this->verify($offerId);
