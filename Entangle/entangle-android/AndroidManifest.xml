@@ -54,9 +54,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.megasoft.entangle.InviteUsers" />
             android:name="com.megasoft.entangle.ViewMessagesActivity"
-            android:label="@string/title_activity_view_messages" >
+            android:label="@string/title_activity_view_messages" >
         </activity>
-       
+        <activity
+            android:name="com.megasoft.entangle.ChatActivity"
+            android:label="@string/title_activity_chat" >
+        </activity>
     </application>
 
 </manifest>

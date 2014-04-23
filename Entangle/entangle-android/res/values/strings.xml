@@ -43,5 +43,6 @@
     </string-array>
 
     <string name="title_activity_stream_request_fragment">StreamRequestFragment</string>
+    <string name="title_activity_chat">ChatActivity</string>
 
 </resources>
