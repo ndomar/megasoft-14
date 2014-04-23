@@ -44,9 +44,13 @@ public class OfferActivity extends Activity {
 	 */
 	LinearLayout layout;
 	/**
-	 * String for endpoint
+	 * String for get offer details endpoint
 	 */
 	final String OFFER = "/offer/" + offerId;
+	/**
+	 * String for post offer endpoint
+	 */
+	final String ACCEPT = "/accept/offer"; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +119,7 @@ public class OfferActivity extends Activity {
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				PostRequest r = new PostRequest(Config.API_BASE_URL
-						+ "/accept/offer");
+						+ ACCEPT);
 				r.setBody(returnedResponse);
 				r.addHeader("x-session-id", Config.SESSION_ID);
 				r.execute();
