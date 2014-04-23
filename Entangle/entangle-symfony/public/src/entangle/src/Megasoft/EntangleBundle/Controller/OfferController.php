@@ -33,8 +33,14 @@ class OfferController extends Controller {
         $userOfSession = $session->getUserId();
         $json_array = json_decode($json, true);
         $offerId = $json_array['offerId'];
+        if($offerId==null){
+            return $response = new Response("Error: No offer selected.", 404);
+        }
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $offer = $offerRepo->findOneBy(array('id' => $offerId));
+        if($offer==null){
+            return $response = new Response("Error: No such offer.", 404); 
+        }
         $requestId = $offer->getRequestId();
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
         $request = $requestRepo->findOneBy(array('id' => $requestId));
