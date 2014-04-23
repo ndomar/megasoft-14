@@ -20,21 +20,21 @@ class OfferController extends Controller {
         $json = $request->getContent();
         $sessionId = $request->headers->get('X-SESSION-ID');
         if($sessionId==null){
-            return $response = new Response("No Session Id.", 409);
+            return $response = new Response("No Session Id.", 400);
         }
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if($session==null){
-            return $response = new Response("Error: Incorrect Session Id.", 409);
+            return $response = new Response("Error: Incorrect Session Id.", 400);
         }
         if($session->getExpired()==1){
-            return $response = new Response("Error: Session Expired.", 409);
+            return $response = new Response("Error: Session Expired.", 401);
         }
         $userOfSession = $session->getUserId();
         $json_array = json_decode($json, true);
         $offerId = $json_array['offerId'];
         if($offerId==null){
-            return $response = new Response("Error: No offer selected.", 404);
+            return $response = new Response("Error: No offer selected.", 400);
         }
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $offer = $offerRepo->findOneBy(array('id' => $offerId));
@@ -52,7 +52,7 @@ class OfferController extends Controller {
         if ($verificationMessage == "Offer Accepted.") {
             $response = new Response($verificationMessage, 201);
         } else {
-            $response = new Response($verificationMessage, 409);
+            $response = new Response($verificationMessage, 401);
         }
         return $response;
     }
