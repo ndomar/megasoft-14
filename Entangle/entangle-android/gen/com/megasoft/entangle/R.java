@@ -8,6 +8,9 @@
 package com.megasoft.entangle;
 
 public final class R {
+    public static final class array {
+        public static final int spinnerChoice=0x7f060000;
+    }
     public static final class attr {
     }
     public static final class dimen {
@@ -22,70 +25,124 @@ public final class R {
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
+        public static final int verified=0x7f020001;
+        public static final int verify=0x7f020002;
     }
     public static final class id {
-        public static final int action_settings=0x7f080016;
-        public static final int claimbutton=0x7f080015;
-        public static final int fromLabel=0x7f08000c;
-        public static final int fromText=0x7f08000d;
-        public static final int invite_already_in_tangle=0x7f080006;
-        public static final int invite_already_in_tangle_text=0x7f080005;
-        public static final int invite_emails=0x7f080000;
-        public static final int invite_entangle_members=0x7f080004;
-        public static final int invite_entangle_members_text=0x7f080003;
-        public static final int invite_invalid_emails=0x7f080008;
-        public static final int invite_invalid_emails_text=0x7f080007;
-        public static final int invite_invitation_message=0x7f080009;
-        public static final int invite_not_members=0x7f080002;
-        public static final int invite_not_members_text=0x7f080001;
-        public static final int linearLayout=0x7f08000a;
-        public static final int mssgLabel=0x7f080010;
-        public static final int mssgText=0x7f080012;
-        public static final int pageNameLabel=0x7f080013;
-        public static final int send=0x7f080014;
-        public static final int subjectLabel=0x7f08000f;
-        public static final int subjectText=0x7f080011;
-        public static final int toLabel=0x7f08000b;
-        public static final int toText=0x7f08000e;
+        public static final int EditProfile=0x7f09000d;
+        public static final int LeaveTangle=0x7f09000f;
+        public static final int action_settings=0x7f09002a;
+        public static final int balanceView=0x7f09000e;
+        public static final int birthdateView=0x7f090011;
+        public static final int cancelFilteration=0x7f090024;
+        public static final int claimbutton=0x7f090026;
+        public static final int descriptionView=0x7f090010;
+        public static final int doFilteration=0x7f090025;
+        public static final int footerLayout=0x7f090017;
+        public static final int fragmentLayout=0x7f090027;
+        public static final int fullTextValue=0x7f090023;
+        public static final int invite=0x7f09001c;
+        public static final int invite_already_in_tangle=0x7f090006;
+        public static final int invite_already_in_tangle_text=0x7f090005;
+        public static final int invite_emails=0x7f090000;
+        public static final int invite_entangle_members=0x7f090004;
+        public static final int invite_entangle_members_text=0x7f090003;
+        public static final int invite_invalid_emails=0x7f090008;
+        public static final int invite_invalid_emails_text=0x7f090007;
+        public static final int invite_invitation_message=0x7f090009;
+        public static final int invite_not_members=0x7f090002;
+        public static final int invite_not_members_text=0x7f090001;
+        public static final int linearLayout=0x7f09001d;
+        public static final int members=0x7f09001a;
+        public static final int mssgText=0x7f09001f;
+        public static final int nameView=0x7f09000b;
+        public static final int pageNameLabel=0x7f09001e;
+        public static final int profile=0x7f09001b;
+        public static final int profileImage=0x7f09000a;
+        public static final int requestButton=0x7f090029;
+        public static final int requesterButton=0x7f090028;
+        public static final int scroll=0x7f090016;
+        public static final int searchLayout=0x7f090015;
+        public static final int send=0x7f090020;
+        public static final int stream=0x7f090019;
+        public static final int streamLayout=0x7f090018;
+        public static final int tagValue=0x7f090021;
+        public static final int tangleName=0x7f090014;
+        public static final int tangleNameLayout=0x7f090013;
+        public static final int transactions_layout=0x7f090012;
+        public static final int userValue=0x7f090022;
+        public static final int verifiedView=0x7f09000c;
     }
     public static final class layout {
-        public static final int activity_invite_users=0x7f030000;
-        public static final int activity_invite_users_confirmations=0x7f030001;
-        public static final int activity_main=0x7f030002;
-        public static final int claimform=0x7f030003;
-        public static final int request=0x7f030004;
+        public static final int activity_edit_profile=0x7f030000;
+        public static final int activity_invite_users=0x7f030001;
+        public static final int activity_invite_users_confirmations=0x7f030002;
+        public static final int activity_main=0x7f030003;
+        public static final int activity_members=0x7f030004;
+        public static final int activity_offer=0x7f030005;
+        public static final int activity_profile=0x7f030006;
+        public static final int activity_request=0x7f030007;
+        public static final int activity_tangle=0x7f030008;
+        public static final int claimform=0x7f030009;
+        public static final int filtering_fragment=0x7f03000a;
+        public static final int request=0x7f03000b;
+        public static final int stream_request_fragment=0x7f03000c;
     }
     public static final class menu {
-        public static final int invite_users=0x7f070000;
-        public static final int invite_users_confirmations=0x7f070001;
-        public static final int main=0x7f070002;
+        public static final int edit_profile=0x7f080000;
+        public static final int invite=0x7f080001;
+        public static final int invite_users=0x7f080002;
+        public static final int invite_users_confirmations=0x7f080003;
+        public static final int main=0x7f080004;
+        public static final int members=0x7f080005;
+        public static final int offer=0x7f080006;
+        public static final int profile=0x7f080007;
+        public static final int request_information=0x7f080008;
+        public static final int view_stream=0x7f080009;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
-        public static final int add_email=0x7f05000e;
-        public static final int already_in_the_tangle=0x7f050015;
+        public static final int add_email=0x7f050019;
+        public static final int already_in_the_tangle=0x7f050020;
         public static final int app_name=0x7f050000;
-        public static final int claim_button=0x7f050005;
-        public static final int entangle_members=0x7f050014;
-        public static final int fromMail=0x7f050007;
-        public static final int hello_world=0x7f05000c;
-        public static final int invite=0x7f050018;
-        public static final int invite_continue=0x7f05000f;
-        public static final int invite_write_the_invitation_message=0x7f050017;
-        public static final int mssg=0x7f050009;
-        public static final int name=0x7f05000a;
-        public static final int not_members=0x7f050013;
-        public static final int offerer_is_here=0x7f050003;
-        public static final int request_is_here=0x7f050002;
-        public static final int requester_is_here=0x7f050004;
-        public static final int send=0x7f05000b;
-        public static final int subject=0x7f050008;
-        public static final int title_activity_invite_users=0x7f05000d;
-        public static final int title_activity_invite_users_confirmation=0x7f050011;
-        public static final int title_activity_invite_users_confirmations=0x7f050012;
-        public static final int toMail=0x7f050006;
-        public static final int user_email=0x7f050010;
-        public static final int wrong_emails=0x7f050016;
+        public static final int claim_button=0x7f050002;
+        public static final int edit_info=0x7f050024;
+        public static final int entangle_members=0x7f05001f;
+        public static final int fullTextFilter=0x7f050016;
+        public static final int hello_world=0x7f050006;
+        public static final int invite=0x7f050023;
+        public static final int invite_continue=0x7f05001a;
+        public static final int invite_write_the_invitation_message=0x7f050022;
+        public static final int leave_tangle=0x7f050025;
+        public static final int mssg=0x7f050003;
+        public static final int name=0x7f050004;
+        public static final int not_members=0x7f05001e;
+        public static final int requesterFilter=0x7f050015;
+        public static final int search_hint=0x7f050010;
+        public static final int search_title=0x7f05000f;
+        public static final int send=0x7f050005;
+        public static final int spinner=0x7f050017;
+        public static final int tagFilter=0x7f050014;
+        public static final int tangleName=0x7f05000e;
+        public static final int title_activity_edit_profile=0x7f050027;
+        public static final int title_activity_invite=0x7f05000d;
+        public static final int title_activity_invite_users=0x7f050018;
+        public static final int title_activity_invite_users_confirmation=0x7f05001c;
+        public static final int title_activity_invite_users_confirmations=0x7f05001d;
+        public static final int title_activity_members=0x7f05000b;
+        public static final int title_activity_offer=0x7f050028;
+        public static final int title_activity_profile=0x7f05000c;
+        public static final int title_activity_request_information=0x7f050013;
+        public static final int title_activity_requester_profile=0x7f050012;
+        public static final int title_activity_search=0x7f050011;
+        public static final int title_activity_stream_request_fragment=0x7f050029;
+        public static final int title_activity_view_stream=0x7f050007;
+        public static final int transactions=0x7f050026;
+        public static final int user_email=0x7f05001b;
+        public static final int viewMembers=0x7f050009;
+        public static final int viewProfile=0x7f05000a;
+        public static final int viewStream=0x7f050008;
+        public static final int wrong_emails=0x7f050021;
     }
     public static final class style {
         /** 
@@ -109,10 +166,10 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f060000;
+        public static final int AppBaseTheme=0x7f070000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f060001;
+        public static final int AppTheme=0x7f070001;
     }
 }
