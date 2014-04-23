@@ -28,7 +28,7 @@ invite:
     methods: [POST]
 
 acceptOffer:
-    pattern: /accept
+    pattern: /accept/offer
     defaults: {_controller: MegasoftEntangleBundle:Offer:acceptOffer }
     methods: [POST]
 
