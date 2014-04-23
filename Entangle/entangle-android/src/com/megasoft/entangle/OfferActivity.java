@@ -1,9 +1,11 @@
 package com.megasoft.entangle;
 
+import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 import android.widget.TextView;
 import org.json.JSONException;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.app.Activity;
 import org.json.JSONObject;
 import android.os.Bundle;
@@ -19,37 +21,37 @@ public class OfferActivity extends Activity {
 	/**
 	 * The TextView that holds the request's description
 	 */
-	TextView requestDescription; 
+	private TextView requestDescription; 
 	
 	/**
 	 * The TextView that holds the offer's description
 	 */
-	TextView offerDescription;
+	private TextView offerDescription;
 	
 	/**
 	 * The TextView that holds the offer's expected deadline
 	 */
-	TextView offerDeadline;
+	private TextView offerDeadline;
 	
 	/**
 	 * The TextView that holds the requester's name
 	 */
-	TextView requesterName;
+	private TextView requesterName;
 	
 	/**
 	 * The TextView that holds the offerer's name
 	 */
-	TextView offererName;
+	private TextView offererName;
 	
 	/**
 	 * The TextView that holds the offer's status
 	 */
-	TextView offerStatus;
+	private TextView offerStatus;
 	
 	/**
 	 * The TextView that holds the offer's price
 	 */
-	TextView offerPrice;
+	private TextView offerPrice;
 	
 	/**
 	 * The TextView that holds the date on which the offer was created
@@ -59,18 +61,30 @@ public class OfferActivity extends Activity {
 	/**
 	 * The tangle Id
 	 */
-	int tangleId;
+	private int tangleId;
 	
 	/**
 	 * The offer Id
 	 */
-	int offerId;
+	private int offerId;
+	
+	/**
+	 * The session Id
+	 */
+	private String sessionId;
+	
+	/**
+	 * The preferences instance
+	 */
+	SharedPreferences settings;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_offer);
-		Intent intent = new Intent();
+		Intent intent = getIntent();
+		this.settings = getSharedPreferences(Config.SETTING, 0);
+		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		offerId = intent.getIntExtra("offerID", 3);
 		viewOffer();
 	}
@@ -115,6 +129,7 @@ public class OfferActivity extends Activity {
 				}
 			}
 		};
+		request.addHeader("X-SESSION-ID", this.sessionId);
 		request.execute();
 	}
 		
@@ -124,7 +139,7 @@ public class OfferActivity extends Activity {
 	 * @param JSonObject requestInformation
 	 * @author Almgohar
 	 */
-	public void viewRequestInfo(JSONObject requestInformation) {
+	private void viewRequestInfo(JSONObject requestInformation) {
 			try {
 				requesterName.setText(requestInformation.getString("requesterName"));
 				requestDescription.setText(requestInformation.getString("requestDescription"));
@@ -157,7 +172,7 @@ public class OfferActivity extends Activity {
 	 * @param JSonObject offerInformation
 	 * @author Almgohar
 	 */
-	public void viewOfferInfo(JSONObject offerInformation) {
+	private void viewOfferInfo(JSONObject offerInformation) {
 		
 		try {
 			offerDescription.setText(offerInformation.getString("offerDescription"));
@@ -193,7 +208,7 @@ public class OfferActivity extends Activity {
 	 * @param int userId
 	 * @author Almgohar
 	 */
-	public void goToProfile(int userId) {
+	private void goToProfile(int userId) {
 		Intent profile = new Intent(this,ProfileActivity.class);
 		profile.putExtra("user id", userId);
 		profile.putExtra("tangle id", this.tangleId);
@@ -205,7 +220,7 @@ public class OfferActivity extends Activity {
 	 * @param int requestId
 	 * @author Almgohar
 	 */
-	public void goToRequest(int requestId) {
+	private void goToRequest(int requestId) {
 		Intent request = new Intent(this,RequestActivity.class);
 		request.putExtra("request id", requestId);
 		startActivity(request);
