@@ -122,7 +122,7 @@ public class CreateRequestActivity extends Activity {
 	/**
 	 * on creation of the activity it takes data from the fields and send it as
 	 * json object on clicking the Post Button
-	 * 
+	 * @param savedInstanceState
 	 * @author Salma Khaled
 	 */
 	protected void onCreate(Bundle savedInstanceState) {
@@ -199,7 +199,7 @@ public class CreateRequestActivity extends Activity {
 
 	/**
 	 * this method update the display of the chosen deadLine
-	 * 
+	 * @param none
 	 * @author Salma Khaled
 	 */
 
@@ -282,7 +282,7 @@ public class CreateRequestActivity extends Activity {
 	/**
 	 * this method checks if there is no error messages set, and if the checkbox
 	 * is checked and only then it enables the Post button
-	 * 
+	 * @param none
 	 * @author Salma Khaled
 	 */
 	private void enablePostButton() {
@@ -316,7 +316,7 @@ public class CreateRequestActivity extends Activity {
 
 	/**
 	 * check if the deadLine is valid and not in the past
-	 * 
+	 * @param none
 	 * @return true if it is valid , false otherwise
 	 * @author Salma Khaled
 	 */
