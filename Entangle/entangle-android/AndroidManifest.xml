@@ -88,10 +88,6 @@
             android:label="@string/title_activity_offer" >
         </activity>
         <activity
-            android:name="com.megasoft.entangle.RequestActivity"
-            android:label="@string/preview_request" >
-        </activity>
-        <activity
             android:name="com.megasoft.entangle.ViewRequestActivity"
             android:label="@string/title_activity_view_request" >
         </activity>
