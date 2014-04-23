@@ -538,9 +538,9 @@ Unfreeze points related resources of the **Entangle API**
 + Response 200 (application/json)
 
         [{
-          "UnfreezeReqid": "UnfreezeReqid1","tangle id": "idTangle", "userid": "user1Id"
+          "UnfreezeReqid": "UnfreezeReqid1","tangle id": "idTangle", "userid": "user1Id" , "requestId": "requestId1"
         }, {
-          "UnfreezeReqid": "UnfreezeReqid2","tangle id": "idTangle2", "userid": "user2Id"
+          "UnfreezeReqid": "UnfreezeReqid2","tangle id": "idTangle2", "userid": "user2Id", "requestId" :"requestId2"
         }]
 
 ### Create an unfreeze request [POST]
@@ -548,7 +548,8 @@ Unfreeze points related resources of the **Entangle API**
 
         { 
         "tangle id": "idTangle" ,
-        "user id": "UserId"
+        "user id": "UserId" , 
+        "requestId" : "requestId"
         }
 
 + Response 201 
@@ -562,15 +563,14 @@ A single unfreeze Request object with all its details
 ### Retrieve an Unfreeze Request [GET]
 + Response 200 (application/json)
 
-        { "UnfreezeReqid": "UnfreezeReqid1","tangle id": "idTangle", "userid": "user1Id" }
+        { "UnfreezeReqid": "UnfreezeReqid1","tangle id": "idTangle", "userid": "user1Id" , "requestId" : "requestId"}
 
 ### Remove a Request [DELETE]
 + Response 204
 
-## frozenPoints [/unfreeze/tangle/{tangleId}/user/{userid}/frozenpoints]
+## frozenPoints [/unfreeze/{unfreezeRequestId}/frozenpoints]
 + Parameters
-    + tangleId (required,int)
-    + userid (required,int)
+    + unfreezeRequestId (required,int)
 
 ###  get Frozen points [GET]
 + Response 200 (application/json)
