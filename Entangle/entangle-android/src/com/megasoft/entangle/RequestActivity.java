@@ -18,20 +18,48 @@ import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 
 public class RequestActivity extends Activity {
-	
+	/**
+	 * the request Id
+	 */
 	int requestId;
+	/**
+	 * the session Id
+	 */
 	String sessionId;
+	/**
+	 * settings
+	 */
 	SharedPreferences settings;
+	/**
+	 * array of offers for a request
+	 */
 	JSONArray offers;
+	/**
+	 * array to add details about offer
+	 */
 	String[][] offerDetails;
+	/**
+	 * saved values to add to request fields 
+	 */
 	String[] requestDetailNames = { "Description", "Requester", "Date", "Tags",
 			"Price", "Deadline", "Status" };
+	/**
+	 * saved values for json fields of apiary
+	 */
 	String[] apiOfferNames = { "requestedPrice", "date", "description",
 			"offererId", "status" };
+	/**
+	 * saved values of offer fields of apairy
+	 */
 	String[] offerFieldNames = { "Requested Price: ", "Date: ",
 			"Description: ", "Offered By: ", "Status: " };
-
+	/**
+	 * this activity
+	 */
 	final Activity self = this;
+	/**
+	 * this layout
+	 */
 	LinearLayout layout;
 
 	/**

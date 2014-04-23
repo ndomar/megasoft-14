@@ -5,6 +5,8 @@ namespace Megasoft\EntangleBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class RequestController extends Controller {
 
@@ -14,7 +16,20 @@ class RequestController extends Controller {
      * @return Response 
      * @author sak93
      */
-    public function viewRequestAction($requestId) {
+    public function viewRequestAction($requestId, Request $request) {
+        $doctrine = $this->getDoctrine();
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        if($sessionId==null){
+            return $response = new Response("No Session Id.", 409);
+        }
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        if($session==null){
+            return $response = new Response("Error: Incorrect Session Id.", 409);
+        }
+        if($session->getExpired()==1){
+            return $response = new Response("Error: Session Expired.", 409);
+        }
         $requestDetails = $this->getRequestDetails($requestId);
         if (count($requestDetails) == 0) {
             return new Response("No such request.", 404);
@@ -22,6 +37,7 @@ class RequestController extends Controller {
             $response = new JsonResponse();
             $response->setData(array($requestDetails));
             $response->setStatusCode(200);
+            $response->headers->set('X-SESSION-ID', $sessionId);
             return $response;
         }
     }
