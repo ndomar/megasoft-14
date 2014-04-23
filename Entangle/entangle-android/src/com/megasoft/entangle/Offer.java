@@ -3,6 +3,7 @@ package com.megasoft.entangle;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.PostRequest;
 
@@ -34,31 +35,32 @@ public class Offer extends Activity {
 
 	/**
 	 * this searches for details of an offer and previews it
-	 * @param Int OfferId offer ID
+	 * @param  Int OfferId offer ID
 	 * @return None
 	 * @author mohamedzayan
 	 */
 	public void searchOffer(int OfferId) {
 
-		GetRequest request = new GetRequest(
-				"http://entangle2.apiary-mock.com/request/" + 1 + "/offer/"
-						+ OfferId) {
+		GetRequest request = new GetRequest(Config.API_BASE_URL + "/request/"
+				+ 1 + "/offer/" + OfferId) {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 200) {
-					JSONObject x;
+					JSONObject jresponse;
 					try {
-						x = new JSONObject(response);
+						jresponse = new JSONObject(response);
 						EditText priceText = (EditText) findViewById(R.id.priceTextField);
-						priceText.setText(x.getString("price"));
+						priceText.setText(jresponse.getString("price"));
 						priceText.setEnabled(false);
 						EditText dateText = (EditText) findViewById(R.id.dateTextField);
-						dateText.setText(x.getString("date"));
+						dateText.setText(jresponse.getString("date"));
 						dateText.setEnabled(false);
 						EditText descriptionText = (EditText) findViewById(R.id.descriptionTextField);
-						descriptionText.setText(x.getString("description"));
+						descriptionText.setText(jresponse
+								.getString("description"));
 						descriptionText.setEnabled(false);
 						EditText deadLineText = (EditText) findViewById(R.id.expectedDeadLineTextField);
-						deadLineText.setText(x.getString("expecteddeadline"));
+						deadLineText.setText(jresponse
+								.getString("expecteddeadline"));
 						deadLineText.setEnabled(false);
 
 					} catch (JSONException e) {
@@ -77,21 +79,20 @@ public class Offer extends Activity {
 	/**
 	 * this checks if an offer is already marked as done or not accepted.if
 	 * neither it navigates to the actual marking method
-	 * @param  View  view The checkbox clicked
+	 * @param  View view The checkbox clicked
 	 * @return None
 	 * @author mohamedzayan
 	 */
 	public void markCheck(View view) {
-		GetRequest initRequest = new GetRequest(
-				"http://entangle2.apiary-mock.com/request/" + 1 + "/offers/"
-						+ 1) {
+		GetRequest initRequest = new GetRequest(Config.API_BASE_URL
+				+ "/request/" + 1 + "/offers/" + 1) {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 200) {
-					JSONObject x;
+					JSONObject jresponse;
 					try {
-						x = new JSONObject(response);
-						if (x.getString("status").equals("0")
-								|| x.getString("status").equals("2")) {
+						jresponse = new JSONObject(response);
+						if (jresponse.getString("status").equals("0")
+								|| jresponse.getString("status").equals("2")) {
 							Toast error = Toast.makeText(
 									getApplicationContext(), "Error",
 									Toast.LENGTH_LONG);
@@ -126,8 +127,8 @@ public class Offer extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		PostRequest request = new PostRequest(
-				"http://entangle2.apiary-mock.com/request/" + Offerid) {
+		PostRequest request = new PostRequest(Config.API_BASE_URL + "/request/"
+				+ Offerid) {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 201) {
 					Toast success = Toast.makeText(getApplicationContext(),
