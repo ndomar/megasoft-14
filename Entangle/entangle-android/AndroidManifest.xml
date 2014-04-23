@@ -40,7 +40,7 @@
             android:label="@string/title_activity_profile" >
         </activity>
         <activity
-            android:name="com.megasoft.entangle.RequestActivity"
+            android:name="com.megasoft.entangle.CreateRequestActivity"
             android:label="@string/title_activity_request_information" >
         </activity>
        
