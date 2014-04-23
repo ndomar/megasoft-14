@@ -9,10 +9,12 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
 		setContentView(R.layout.activity_main);
 		Intent intent = new Intent(this, Request.class);
 		startActivity(intent);
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		startActivity(new Intent(this, TangleActivity.class));
 	}
 
 	@Override

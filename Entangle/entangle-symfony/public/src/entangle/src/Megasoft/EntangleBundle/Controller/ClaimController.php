@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class Claim extends Controller {
 
     /**
-     * This function gets the emails of both the offerer and the tangle owner from 
+     * This function gets the emails of both the claimer and the tangle owner from 
      * the data base after making sure of the validation of all the information
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param int $requestId
@@ -24,12 +24,12 @@ class Claim extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $doctrine = $this->getDoctrine();
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
-        $offererRequest = $requestRepo->findOneBy(array('id' => $requestId));
+        $claimerRequest = $requestRepo->findOneBy(array('id' => $requestId));
 
-        if ($offererRequest == null) {
+        if ($claimerRequest == null) {
             return new Response('Bad Request', 400);
         }
-        $tangleId = $offererRequest->getTangleId();
+        $tangleId = $claimerRequest->getTangleId();
 
         if ($tangleId == null || $sessionId == null) {
             return new Response('Bad Request', 400);
@@ -47,12 +47,12 @@ class Claim extends Controller {
         }
         $userId = $session->getUserId();
         $userRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserEmail');
-        $offererMail = $userRepo->findOneBy(array('userId' => $userId))->getEmail();
+        $claimerMail = $userRepo->findOneBy(array('userId' => $userId))->getEmail();
         $tangleOwnerId = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'tangleOwner' => 'true'));
         $tangleOwnerMail = $userRepo->findOneBy(array('userId' => $tangleOwnerId))->getEmail();
         $response = new JsonResponse();
         $response->setJsonContent
-                (array('X-TANGLEOWNER-MAIL' => $tangleOwnerMail, 'X-OFFERER-MAIL' => $offererMail));
+                (array('X-TANGLEOWNER-MAIL' => $tangleOwnerMail, 'X-CLAIMER-MAIL' => $claimerMail));
         $response->setStatusCode(200);
         return $response;
     }
@@ -73,12 +73,12 @@ class Claim extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $doctrine = $this->getDoctrine();
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
-        $offererRequest = $requestRepo->findOneBy(array('id' => $requestId));
+        $claimerRequest = $requestRepo->findOneBy(array('id' => $requestId));
 
-        if ($offererRequest == null) {
+        if ($claimerRequest == null) {
             return new Response('Bad Request', 400);
         }
-        $tangleId = $offererRequest->getTangleId();
+        $tangleId = $claimerRequest->getTangleId();
 
         if ($tangleId == null || $sessionId == null) {
             return new Response('Bad Request', 400);
@@ -96,7 +96,6 @@ class Claim extends Controller {
         if ($tangle == null) {
             return new Response('Bad Request', 400);
         }
-        $subject = $request->body->get('X-SUBJECT');
         $mssgBody = $request->body->get('X-MSSGBODY');
         $userId = $session->getUserId();
         $user = $session->getUser();

@@ -81,13 +81,6 @@ class Request
     private $tangle;
     
     /**
-     * @var Notification[]
-     * 
-     * @ORM\OneToMany(targetEntity="PriceChangeNotification", mappedBy="request", cascade={"persist"})
-     */
-    private $notifications;
-    
-    /**
      * @var Offer[]
      * 
      * @ORM\OneToMany(targetEntity="Offer", mappedBy="request", cascade={"persist"})
@@ -126,6 +119,20 @@ class Request
      * @ORM\Column(name="deleted", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
      */
     private $deleted = false;
+    
+    /**
+     * @var RequestDeletedNotification[]
+     * 
+     * @ORM\OneToMany(targetEntity="RequestDeletedNotification", mappedBy="request", cascade={"persist"})
+     */
+    private $requestDeletedNotifications;
+    
+    /**
+     * @var UnfreezeRequest[]
+     * 
+     * @ORM\OneToMany(targetEntity="UnfreezeRequest", mappedBy="request", cascade={"persist"})
+     */
+    private $unfreezeRequests;
     
 
     /**
@@ -355,39 +362,6 @@ class Request
     }
 
     /**
-     * Add notifications
-     *
-     * @param \Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications
-     * @return Request
-     */
-    public function addNotification(\Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications)
-    {
-        $this->notifications[] = $notifications;
-        $notifications->setRequest($this);
-        return $this;
-    }
-
-    /**
-     * Remove notifications
-     *
-     * @param \Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications
-     */
-    public function removeNotification(\Megasoft\EntangleBundle\Entity\PriceChangeNotification $notifications)
-    {
-        $this->notifications->removeElement($notifications);
-    }
-
-    /**
-     * Get notifications
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getNotifications()
-    {
-        return $this->notifications;
-    }
-
-    /**
      * Add offers
      *
      * @param \Megasoft\EntangleBundle\Entity\Offer $offers
@@ -497,5 +471,71 @@ class Request
     public function getDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * Add requestDeletedNotifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\RequestDeletedNotification $requestDeletedNotifications
+     * @return Request
+     */
+    public function addRequestDeletedNotification(\Megasoft\EntangleBundle\Entity\RequestDeletedNotification $requestDeletedNotifications)
+    {
+        $this->requestDeletedNotifications[] = $requestDeletedNotifications;
+
+        return $this;
+    }
+
+    /**
+     * Remove requestDeletedNotifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\RequestDeletedNotification $requestDeletedNotifications
+     */
+    public function removeRequestDeletedNotification(\Megasoft\EntangleBundle\Entity\RequestDeletedNotification $requestDeletedNotifications)
+    {
+        $this->requestDeletedNotifications->removeElement($requestDeletedNotifications);
+    }
+
+    /**
+     * Get requestDeletedNotifications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRequestDeletedNotifications()
+    {
+        return $this->requestDeletedNotifications;
+    }
+
+    /**
+     * Add unfreezeRequests
+     *
+     * @param \Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests
+     * @return Request
+     */
+    public function addUnfreezeRequest(\Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests)
+    {
+        $this->unfreezeRequests[] = $unfreezeRequests;
+        $unfreezeRequests->setRequest($this);
+        return $this;
+    }
+
+    /**
+     * Remove unfreezeRequests
+     *
+     * @param \Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests
+     */
+    public function removeUnfreezeRequest(\Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests)
+    {
+        $this->unfreezeRequests->removeElement($unfreezeRequests);
+    }
+
+    /**
+     * Get unfreezeRequests
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUnfreezeRequests()
+    {
+        return $this->unfreezeRequests;
     }
 }
