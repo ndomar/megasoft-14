@@ -2,6 +2,7 @@ package com.megasoft.entangle;
 
 import java.util.Calendar;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,8 +38,8 @@ public class ChatActivity extends Activity {
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		send = (Button) this.findViewById(R.id.send);
 		messageBox = (EditText) this.findViewById(R.id.message);
-		this.setSendButton(findViewById(android.R.id.content));
 		chatLayout = (LinearLayout) this.findViewById(R.id.chat);
+		this.setSendButton(findViewById(android.R.id.content));
 		this.getChat();
 	}
 	
@@ -74,7 +75,8 @@ public class ChatActivity extends Activity {
 		                    Toast sucessToast =Toast.makeText(current,"Message sent Sucessfully"
 		                    		, Toast.LENGTH_SHORT);
 		                    sucessToast.show();
-		                  }else if( this.getStatusCode() == 400 ) {
+		                 }
+		                 else {
 		                	  Toast failToast =Toast.makeText(current,"Unable to send the message"
 		                			  , Toast.LENGTH_SHORT);
 		                	  failToast.show();
@@ -98,13 +100,50 @@ public class ChatActivity extends Activity {
 				offerId + "/message"){
 			 protected void onPostExecute(String response){
 				 if( this.getStatusCode() == 200){
-					 
+					 try {
+						JSONObject jsonObject = new JSONObject(response);
+						JSONArray jsonArray = jsonObject.getJSONArray("Messages");
+						for(int i = 0;i < jsonArray.length();i++){
+							JSONObject loopObject = jsonArray.getJSONObject(i);
+							String displayMessage = loopObject.getString("senderName");
+							displayMessage.concat(loopObject.getString("body"));
+							displayMessage.concat("\n sent on" + loopObject.getString("body"));
+							TextView text = new TextView(current);
+							text.setText(displayMessage);
+							chatLayout.addView(text);
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				 }
+				 else {
+					 Toast failToast =Toast.makeText(current,"Unable to view chat,please try again"
+               			  , Toast.LENGTH_SHORT);
+               	  failToast.show();
 				 }
 	                   
-				 
 			 }
-			
+			 
 		};
+		getChatRequest.addHeader("X-SESSION-ID", sessionId); 
+		getChatRequest.execute();
+	}
+	private void RenderMessages(String response) {
+		try {
+			JSONObject jsonObject = new JSONObject(response);
+			JSONArray jsonArray = jsonObject.getJSONArray("Messages");
+			for(int i = 0;i < jsonArray.length();i++){
+				JSONObject loopObject = jsonArray.getJSONObject(i);
+				String displayMessage = loopObject.getString("senderName");
+				displayMessage.concat(loopObject.getString("body"));
+				displayMessage.concat("\n sent on" + loopObject.getString("body"));
+				TextView text = new TextView(current);
+				text.setText(displayMessage);
+				chatLayout.addView(text);
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
