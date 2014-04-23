@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:soundEffectsEnabled="true" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal" >
+
+        <AutoCompleteTextView
+            android:id="@+id/tagValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write a Tag to filter with" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal" >
+
+        <AutoCompleteTextView
+            android:id="@+id/userValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write UserName to filter with" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/fullTextValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:hint="Write a Full Text to filter with"
+        android:inputType="textMultiLine"
+        android:textAlignment="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/cancelFilteration"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/doFilteration"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Filter" />
+    </LinearLayout>
+
+</LinearLayout>

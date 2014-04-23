@@ -1,5 +1,6 @@
 package com.megasoft.entangle;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -194,12 +195,16 @@ public class RequestActivity extends Activity {
 				tags += tagArray.get(i);
 		}
 		return tags;
+
 	}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+
+		getMenuInflater().inflate(R.menu.request_information, menu);
 		return true;
 	}
 }
+

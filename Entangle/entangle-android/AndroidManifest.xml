@@ -27,6 +27,22 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.megasoft.entangle.TangleActivity"
+            android:label="@string/title_activity_view_stream" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.Members"
+            android:label="@string/title_activity_members" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.ProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.RequestActivity"
+            android:label="@string/title_activity_request_information" >
+        </activity>
+        <activity
             android:name="com.megasoft.entangle.InviteUserActivity"
             android:label="@string/title_activity_invite_users" >
         </activity>
@@ -37,10 +53,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.megasoft.entangle.InviteUsers" />
-        </activity>
-        <activity
-            android:name="com.megasoft.entangle.RequestActivity"
-            android:label="@string/preview_request" >
         </activity>
     </application>
 
