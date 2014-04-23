@@ -39,6 +39,11 @@
     <string name="title_activity_manage_pending_invitation">ManagePendingInvitationActivity</string>
     <string name="pending_invitation_no_pending">No Pending Invitations now !</string>
     <string name="refresh">Refresh</string>
+    <string name="edit_info">Edit your information</string>
+    <string name="leave_tangle">Leave current tangle</string>
+    <string name="transactions">Transactions: </string>
+    <string name="title_activity_edit_profile">EditProfileActivity</string>
+    <string name="title_activity_offer">OfferActivity</string>
 
     <string-array name="spinnerChoice">
         <item>None</item>
