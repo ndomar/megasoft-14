@@ -19,34 +19,34 @@ class OfferController extends Controller {
         $doctrine = $this->getDoctrine();
         $json = $request->getContent();
         $sessionId = $request->headers->get('X-SESSION-ID');
-        if($sessionId==null){
+        if ($sessionId == null) {
             return $response = new Response("No Session Id.", 400);
         }
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
-        if($session==null){
+        if ($session == null) {
             return $response = new Response("Error: Incorrect Session Id.", 400);
         }
-        if($session->getExpired()==1){
+        if ($session->getExpired() == 1) {
             return $response = new Response("Error: Session Expired.", 401);
         }
         $userOfSession = $session->getUserId();
         $json_array = json_decode($json, true);
         $offerId = $json_array['offerId'];
-        if($offerId==null){
+        if ($offerId == null) {
             return $response = new Response("Error: No offer selected.", 400);
         }
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $offer = $offerRepo->findOneBy(array('id' => $offerId));
-        if($offer==null){
-            return $response = new Response("Error: No such offer.", 404); 
+        if ($offer == null) {
+            return $response = new Response("Error: No such offer.", 404);
         }
         $requestId = $offer->getRequestId();
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
         $request = $requestRepo->findOneBy(array('id' => $requestId));
         $requesterId = $request->getUserId();
         $tangle = $request->getTangleId();
-        if($requesterId != $userOfSession){
+        if ($requesterId != $userOfSession) {
             return $response = new Response("Error: You are unauthorized to accept this offer.", 409);
         }
         $verificationMessage = $this->verify($offerId);
@@ -78,7 +78,7 @@ class OfferController extends Controller {
         $tangleId = $request->getTangleId();
         $userTangle = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
         $requester = $userTangle->findOneBy(array('tangleId' => $tangleId, 'userId' => $requesterId));
-        if(count($requester)<= 0){
+        if (count($requester) <= 0) {
             return "Error: You don't belong to this tangle.";
         }
         if ($request->getDeleted() == 1) {
@@ -93,9 +93,9 @@ class OfferController extends Controller {
         if ($offer->getStatus() == 1) {
             return "Error: Offer Closed.";
         }
-        
+
         $price = $offer->getRequestedPrice();
-        
+
         $requesterBalance = $requester->getCredit();
         if ($requesterBalance < $price) {
             return "Error: Not enough balance.";
