@@ -4,6 +4,7 @@ namespace Megasoft\EntangleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Megasoft\EntangleBundle\Entity\Request;
 use Megasoft\EntangleBundle\Entity\Tag;
 
@@ -30,6 +31,7 @@ class RequestController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         if ($sessionId == null) {
             $response->setStatusCode(400);
+            $response->setContent("bad request");
             return $response;
         }
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
@@ -38,6 +40,7 @@ class RequestController extends Controller {
         $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
         if ($session == null || $session->getExpired() == true) {
             $response->setStatusCode(401);
+            $response->setContent("Unauthorized");
             return $response;
         }
         $userId = $session->getUserId();
@@ -48,23 +51,43 @@ class RequestController extends Controller {
         $deadLine = $json_array['deadLine'];
         $deadLineFormated = new \DateTime($deadLine);
         if ($deadLineFormated->format("Y-m-d") < $dateFormated->format("Y-m-d")) {
-            $response->setStatusCode(401);
+            $response->setStatusCode(400);
+            $response->setContent("deadline has passed!");
             return $response;
         }
         $requestedPrice = $json_array['requestedPrice'];
         if ($requestedPrice < 0) {
-            $response->setStatusCode(401);
+            $response->setStatusCode(400);
+            $response->setContent("price must be a positive value!");
             return $response;
         }
         $theTangleId = (int) $tangleId;
         $tangle = $tangleTable->findOneBy(array('id' => $theTangleId));
         $user = $userTable->findOneBy(array('id' => $userId));
-        if ($tangle == null || $user == null || $tangle->getDeleted() == true) {
+        if ($tangle == null || $user == null) {
             $response->setStatusCode(401);
             return $response;
+        } else if ($tangle->getDeleted() == true) {
+            $response->setStatusCode(401);
+            $response->setContent("tangle is deleted");
+            return $response;
+        }
+        $tangleUsers = $tangle->getUsers();
+        $arrlength = count($tangleUsers);
+        $userIsMember = false;
+        for ($i = 0; $i < $arrlength; $i++) {
+            if ($user == $tangleUsers[$i]) {
+                $userIsMember = true;
+                break;
+            }
+        }
+        if (!$userIsMember) {
+            $response->setStatusCode(401);
+            return new Response('Unauthorized', 401);
         }
         if ($description == null || $date == null) {
             $response->setStatusCode(400);
+            $response->setContent("some data are missing");
             return $response;
         }
         $newRequest = new Request();
