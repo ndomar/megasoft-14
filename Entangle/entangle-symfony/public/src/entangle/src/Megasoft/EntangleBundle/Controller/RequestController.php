@@ -52,7 +52,10 @@ class RequestController extends Controller {
             return $response;
         }
         $requestedPrice = $json_array['requestedPrice'];
-
+        if($requestedPrice < 0){
+            $response->setStatusCode(401);
+            return $response;
+        }
         $theTangleId = (int) $tangleId;
         $tangle = $tangleTable->findOneBy(array('id' => $theTangleId));
         $user = $userTable->findOneBy(array('id' => $userId));
