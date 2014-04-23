@@ -62,6 +62,10 @@ public class RequestActivity extends Activity {
 	 * this layout
 	 */
 	LinearLayout layout;
+	/**
+	 * this is the endpoint string
+	 */
+	final String REQUEST = "/request/" + requestId;
 
 	/**
 	 * this calls fillRequestDetails() to generate the request preview
@@ -93,8 +97,7 @@ public class RequestActivity extends Activity {
 		layout = (LinearLayout) this.findViewById(R.id.request_activity);
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
-		GetRequest request = new GetRequest(Config.API_BASE_URL + "/request/"
-				+ requestId) {
+		GetRequest request = new GetRequest(Config.API_BASE_URL + REQUEST) {
 			protected void onPostExecute(String response) {
 				try {
 					JSONObject json = new JSONObject(response);
