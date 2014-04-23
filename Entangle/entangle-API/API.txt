@@ -763,7 +763,7 @@ get the details of an offer
     + Body 
     
             {
-               "username" : "maisara",
+               "name" : "maisara",
                 "password" : "95bcadd58e0aa59e8f6e09c86ed310c7"
             }
              
