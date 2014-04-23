@@ -128,23 +128,6 @@ public class ChatActivity extends Activity {
 		getChatRequest.addHeader("X-SESSION-ID", sessionId); 
 		getChatRequest.execute();
 	}
-	private void RenderMessages(String response) {
-		try {
-			JSONObject jsonObject = new JSONObject(response);
-			JSONArray jsonArray = jsonObject.getJSONArray("Messages");
-			for(int i = 0;i < jsonArray.length();i++){
-				JSONObject loopObject = jsonArray.getJSONObject(i);
-				String displayMessage = loopObject.getString("senderName");
-				displayMessage.concat(loopObject.getString("body"));
-				displayMessage.concat("\n sent on" + loopObject.getString("body"));
-				TextView text = new TextView(current);
-				text.setText(displayMessage);
-				chatLayout.addView(text);
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
