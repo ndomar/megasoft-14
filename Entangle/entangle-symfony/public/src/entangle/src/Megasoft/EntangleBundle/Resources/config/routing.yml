@@ -33,4 +33,4 @@ dummy:
 
 get_offer:
     pattern: /offer/{offerId}
-    defaults: { _controller: MegasoftEntangleBundle:Offer:view }
+    defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
