@@ -39,6 +39,11 @@
     <string name="wrong_emails">Not Valid Emails</string>
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
+    <string name="edit_info">Edit your information</string>
+    <string name="leave_tangle">Leave current tangle</string>
+    <string name="transactions">Transactions: </string>
+    <string name="title_activity_edit_profile">EditProfileActivity</string>
+    <string name="title_activity_offer">OfferActivity</string>
 
     <string-array name="spinnerChoice">
         <item>None</item>
