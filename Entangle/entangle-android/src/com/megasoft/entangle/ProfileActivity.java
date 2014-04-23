@@ -88,6 +88,11 @@ public class ProfileActivity extends Activity {
 	 */
 	private int userId;
 	
+	/**
+	 * The session Id of the logged in user
+	 */
+	
+	private String sessionId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +100,8 @@ public class ProfileActivity extends Activity {
 		setContentView(R.layout.activity_profile);
 		Intent intent = getIntent();
 		this.settings = getSharedPreferences(Config.SETTING, 0);
+		
+		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		this.loggedInId = settings.getInt(Config.USER_ID, -1);
 		this.tangleId = intent.getIntExtra("tangle id", -1);
 		this.userId = intent.getIntExtra("user id", -1);		
@@ -180,6 +187,7 @@ public class ProfileActivity extends Activity {
 					}
 				}
 			};
+			request.addHeader("X-SESSION-ID", this.sessionId);
 			request.execute();
 	}
 	
