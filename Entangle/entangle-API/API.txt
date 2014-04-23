@@ -790,7 +790,7 @@ get the details of an offer
             }
 
 
-##POST /accept/offer
+##POST /accept
 accept an offer
 + Request (application/json)
 
