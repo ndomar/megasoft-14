@@ -29,11 +29,8 @@ invite:
 
 
 login:
-    pattern:  /login
+    pattern:  /user/login
     defaults: { _controller: MegasoftEntangleBundle:User:login}
     methods: [POST]
     
     
-    pattern:  /whoami
-    defaults: { _controller: MegasoftEntangleBundle:User:whoAmI}
-    methods: [GET]

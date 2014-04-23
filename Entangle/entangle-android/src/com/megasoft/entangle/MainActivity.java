@@ -88,9 +88,10 @@ public class MainActivity extends Activity {
 							"Wrong Credentials", Toast.LENGTH_SHORT).show();
 
 				} else {
-					Toast.makeText(getApplicationContext(), "Didn't merge the API yet",
-							Toast.LENGTH_SHORT).show();
-					
+					Toast.makeText(getApplicationContext(),
+							"Didn't merge the API yet", Toast.LENGTH_SHORT)
+							.show();
+
 				}
 
 			}
@@ -117,6 +118,7 @@ public class MainActivity extends Activity {
 		Intent homeActivity = new Intent(this, HomeActivity.class);
 		homeActivity.putExtra("sessionId", response);
 		startActivity(homeActivity);
+		startActivity(new Intent(this, TangleActivity.class));
 	}
 
 	@Override
