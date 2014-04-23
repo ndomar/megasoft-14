@@ -36,7 +36,7 @@ class RequestController extends Controller {
         $tangleTable = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
         $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
         $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
-        if ($session == null) {
+        if ($session == null || $session->getExpired() == true) {
             $response->setStatusCode(401);
             return $response;
         }
@@ -47,19 +47,19 @@ class RequestController extends Controller {
         $dateFormated = new \DateTime($date);
         $deadLine = $json_array['deadLine'];
         $deadLineFormated = new \DateTime($deadLine);
-        if($deadLineFormated->format("Y-m-d") < $dateFormated->format("Y-m-d")) { 
+        if ($deadLineFormated->format("Y-m-d") < $dateFormated->format("Y-m-d")) {
             $response->setStatusCode(401);
             return $response;
         }
         $requestedPrice = $json_array['requestedPrice'];
-        if($requestedPrice < 0){
+        if ($requestedPrice < 0) {
             $response->setStatusCode(401);
             return $response;
         }
         $theTangleId = (int) $tangleId;
         $tangle = $tangleTable->findOneBy(array('id' => $theTangleId));
         $user = $userTable->findOneBy(array('id' => $userId));
-        if ($tangle == null || $user == null) {
+        if ($tangle == null || $user == null || $tangle->getDeleted() == true) {
             $response->setStatusCode(401);
             return $response;
         }
