@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-
 class RequestController extends Controller {
 
     /**
@@ -19,15 +18,15 @@ class RequestController extends Controller {
     public function viewRequestAction($requestId, Request $request) {
         $doctrine = $this->getDoctrine();
         $sessionId = $request->headers->get('X-SESSION-ID');
-        if($sessionId==null){
+        if ($sessionId == null) {
             return $response = new Response("No Session Id.", 400);
         }
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
-        if($session==null){
+        if ($session == null) {
             return $response = new Response("Error: Incorrect Session Id.", 400);
         }
-        if($session->getExpired()==1){
+        if ($session->getExpired() == 1) {
             return $response = new Response("Error: Session Expired.", 401);
         }
         $requestDetails = $this->getRequestDetails($requestId);
