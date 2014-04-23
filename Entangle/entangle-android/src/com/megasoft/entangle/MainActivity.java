@@ -10,12 +10,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -36,19 +34,6 @@ public class MainActivity extends Activity {
 		login = (Button) findViewById(R.id.loginButton);
 		register = (Button) findViewById(R.id.registerButton);
 
-		register.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-
-				// this google url , needs to be changed to the url that islam
-				// will provide me with
-				Uri uri = Uri.parse("http://www.google.com");
-				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-				startActivity(intent);
-
-			}
-
-		});
 	}
 
 	/*
@@ -86,12 +71,6 @@ public class MainActivity extends Activity {
 				} else if (this.getStatusCode() == 400) {
 					Toast.makeText(getApplicationContext(),
 							"Wrong Credentials", Toast.LENGTH_SHORT).show();
-
-				} else {
-					Toast.makeText(getApplicationContext(),
-							"Didn't merge the API yet", Toast.LENGTH_SHORT)
-							.show();
-
 				}
 
 			}
@@ -138,4 +117,8 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	public void register(View view) {
+		Intent registerActivity = new Intent(this, RegisterActivity.class);
+		startActivity(registerActivity);
+	}
 }

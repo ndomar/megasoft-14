@@ -82,6 +82,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/Register"
         android:layout_marginBottom="45dp"
+        android:onClick="register"
         android:text="Register"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="25dp" />
