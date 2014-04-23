@@ -47,15 +47,23 @@ class RequestController extends Controller {
         $dateFormated = new \DateTime($date);
         $deadLine = $json_array['deadLine'];
         $deadLineFormated = new \DateTime($deadLine);
+        if($deadLineFormated->format("Y-m-d") < $dateFormated->format("Y-m-d")) { 
+            $response->setStatusCode(401);
+            return $response;
+        }
         $requestedPrice = $json_array['requestedPrice'];
 
         $theTangleId = (int) $tangleId;
         $tangle = $tangleTable->findOneBy(array('id' => $theTangleId));
-        if ($tangle == null) {
+        $user = $userTable->findOneBy(array('id' => $userId));
+        if ($tangle == null || $user == null) {
             $response->setStatusCode(401);
             return $response;
         }
-        $user = $userTable->findOneBy(array('id' => $userId));
+        if ($description == null || $date == null) {
+            $response->setStatusCode(400);
+            return $response;
+        }
         $newRequest = new Request();
 
         $newRequest->setTangle($tangle);

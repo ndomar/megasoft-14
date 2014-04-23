@@ -59,8 +59,8 @@ public class RequestActivity extends Activity {
 	 */
 	int deadLineYear;
 	/**
-	 * the chosen deadLine month , in case user didn't choose a value it will
-	 * be set to current month
+	 * the chosen deadLine month , in case user didn't choose a value it will be
+	 * set to current month
 	 */
 	int deadLineMonth;
 	/**
@@ -139,8 +139,6 @@ public class RequestActivity extends Activity {
 		checkBox = (CheckBox) findViewById(R.id.checkBox);
 		Post.setEnabled(false);
 		description.setOnFocusChangeListener(focusListener);
-		requestedPrice.setOnFocusChangeListener(focusListener);
-		tags.setOnFocusChangeListener(focusListener);
 		dateDisplay = (TextView) findViewById(R.id.showMyDate);
 		pickDate = (Button) findViewById(R.id.myDatePickerButton);
 		deadLineYear = calendar.get(Calendar.YEAR);
@@ -288,15 +286,14 @@ public class RequestActivity extends Activity {
 	 * @author Salma Khaled
 	 */
 	private void enablePostButton() {
-		if (description.getError() == null && requestedPrice.getError() == null
-				&& tags.getError() == null && checkBox.isChecked()) {
+		if (description.getError() == null && checkBox.isChecked()) {
 			Post.setEnabled(true);
 		}
 	}
 
 	/**
 	 * this method takes a view which will be the checkbox then clear focus from
-	 * other views if the fields are empty it unchecks the checkedbox it calls
+	 * other views if the required field is empty it unchecks the checkedbox it calls
 	 * enablePostButton() to check if we can enable the post button and then
 	 * take the action of enabling it or setting error messages
 	 * 
@@ -309,24 +306,12 @@ public class RequestActivity extends Activity {
 		focusedView.clearFocus();
 		CheckBox checkBox = (CheckBox) view;
 		if (checkBox.isChecked()) {
-			if (!fieldsNotEmpty()) {
+			if (isEmpty(description)) {
 				checkBox.setChecked(false);
 			}
 			flag = false;
 			enablePostButton();
 		}
-	}
-
-	/**
-	 * check if all the fields required are not empty
-	 * 
-	 * @return boolean true if they are all not empty false otherwise
-	 * @author Salma Khaled
-	 */
-	private boolean fieldsNotEmpty() {
-		if (!isEmpty(description) & !isEmpty(requestedPrice) & !isEmpty(tags))
-			return true;
-		return false;
 	}
 
 	/**
