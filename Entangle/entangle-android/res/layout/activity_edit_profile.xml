@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:maxLines="10"
-            android:text=""
+            android:text="This is My Description"
             android:verticalScrollbarPosition="right" />
 
         <View
@@ -72,7 +72,7 @@
             android:id="@+id/CurrentPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/confirm_password" />
+            android:text="@string/current_password" />
 
         <EditText
             android:id="@+id/AddCurrentPassword"
