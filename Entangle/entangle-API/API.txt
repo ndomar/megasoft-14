@@ -622,7 +622,6 @@ Post request
                 { 
                     "X-SENDER-MAIL" : "SALMA@GMAIL.COM",
                     "X-RECIEVER-MAIL" : "SALOUM@GMAIL.COM",
-                    "X-SUBJECT" : "PLEASE",
                     "X-MSSGBODY" : "NONO"
                 }
 
