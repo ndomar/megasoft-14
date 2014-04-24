@@ -73,6 +73,10 @@ public class RequestActivity extends Activity {
 	 * this is for checking if I have my own request open
 	 */
 	boolean myRequest = false;
+	/**
+	 * this is an array to match the status code to it's worded equivalent
+	 */
+	String[] statusCodes = { "OPEN", "CLOSED", "FROZEN" };
 
 	/**
 	 * this calls fillRequestDetails() to generate the request preview
@@ -149,8 +153,14 @@ public class RequestActivity extends Activity {
 				JSONArray tagArray = (JSONArray) json.get("Tags");
 				fieldDetails = getTags(tagArray);
 			} else {
-				fieldDetails += requestDetailNames[i] + ": "
-						+ json.get(requestDetailNames[i]);
+				if (i == 6) {
+					String status = (String) json.get(requestDetailNames[i]);
+					fieldDetails += requestDetailNames[i] + ": "
+							+ statusCodes[Integer.parseInt(status)];
+				} else {
+					fieldDetails += requestDetailNames[i] + ": "
+							+ json.get(requestDetailNames[i]);
+				}
 			}
 			detail.setTypeface(null, Typeface.BOLD_ITALIC);
 			detail.setTextSize(20);
