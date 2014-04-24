@@ -343,6 +343,7 @@ contact offerer and requester after claim
                     "Price": "3",
                     "Deadline":"1/2/1",
                     "Status":"done",
+		    "MyRequest": "1",
                     "Description" : "description of a request",
                     "Offers" : [
                                     {
