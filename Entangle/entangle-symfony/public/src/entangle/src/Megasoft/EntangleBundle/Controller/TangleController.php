@@ -572,5 +572,35 @@ class TangleController extends Controller
         $this->getDoctrine()->getManager()->flush();
         return new Response("Deleted",200);
     }
+    
+    public function getTanglesAction(Request $request){
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        $doctrine = $this->getDoctrine();
+        
+        if ($sessionId == null) {
+            return new Response("Bad Request", 400);
+        }
+
+        $sesionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+
+        $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
+
+        if ($session == null || $session->getExpired()) {
+            return new Response("Unauthorized", 401);
+        }
+        
+        
+        $userId = $session->getUserId();
+        $UserTanglerepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $tangles = $UserTanglerepo->findBy(array('userId' => $userId,'leavingDate'=>null));
+        $ret = array();
+        foreach($tangles as $tangle){
+            $ret[] = array("id"=>$tangle->getId(),"name"=>$tangle->getTangle()->getName());
+        }
+        
+        $jsonResponse = new JsonResponse();
+        $jsonResponse->setData(array("tangles"=>$ret));
+        return $jsonResponse;
+    }
 
 }
