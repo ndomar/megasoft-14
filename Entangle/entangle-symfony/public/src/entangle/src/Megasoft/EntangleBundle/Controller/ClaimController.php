@@ -16,7 +16,7 @@ class ClaimController extends Controller {
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @author Salma Amr
      */
-    public function getMails($request, $requestId) {
+    public function getMailsAction($request, $requestId) {
 
         if ($requestId == null) {
             return new Response('Bad Request', 400);
@@ -65,7 +65,7 @@ class ClaimController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response
      * @author Salma Amr
      */
-    public function createClaim($request, $requestId) {
+    public function createClaimAction($request, $requestId) {
 
         if ($requestId == null) {
             return new Response('Bad Request', 400);
