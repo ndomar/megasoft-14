@@ -31,7 +31,6 @@ class NotificationCenter
      */
     private $container;
 
-
     /**
      * @var string
      */
@@ -52,10 +51,19 @@ class NotificationCenter
      */
     private $offerChosenNotificationDefaultTitle = "offer chosen notification";
 
+    /**
+     * @var string
+     */
     private $newOfferNotifcationTitle = "new offer Notification";
 
+    /**
+     * @var string
+     */
     private $offerDeletedNotificationDefaultTitle = "offer deleted notification";
 
+    /**
+     * @var string
+     */
     private $requestDeletedNotificationDefaultTitle = "request deleted notification";
 
     /**
@@ -155,7 +163,7 @@ class NotificationCenter
 
 
     /**
-     * this is fired when there is a requester accepts an offer
+     * this is invoked when there is a requester accepts an offer
      * data array ("title"=> notification title, "body" => notification body, "requester"=>requester from,
      * "requestDesc" => Description of request, "finalPrice" => price of final offer)
      * @param $transactionId
@@ -197,7 +205,7 @@ class NotificationCenter
     }
 
     /**
-     *
+     *  this notifies the requester that an offer changed
      * data array ("title"=> notification title, "body" => notification body, "from"=>offerer,"newPrice" => new price,
      * "oldPrice" => price after changing)
      * @param $offerId
@@ -241,7 +249,7 @@ class NotificationCenter
     }
 
     /**
-     *
+     * this notifies the offerer that his offer was chosen
      * data array ("title"=> notification title, "body" => notification body, "from"=>offerer ,)
      * @param $offerId
      * @param null $title
