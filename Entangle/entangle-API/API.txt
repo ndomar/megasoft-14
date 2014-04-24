@@ -1,6 +1,7 @@
 FORMAT: 1A
 HOST: http://www.google.com
 
+
 # Entangle
 asdsadasd
 
@@ -81,9 +82,9 @@ Get requests in a specific tangle filtered by user, tag, full text or a prefix o
             ]
         }
 
-## GET /tangle/{tangleId}/user
-Get list of users in tangle
 
+## USER RELATED TO TANGLE ENDPOINTS [/tangle/{tangleId}/user]
+### Get list of users in tangle [GET]
 
 + Parameters
     + tangleId ( Int , required ) ... tangle id
@@ -115,6 +116,19 @@ Get list of users in tangle
         }
 
 
+### Delete user from tangle [DELETE]
+        
++ Parameters
+    + tangleId ( Int , required ) ... tangle id
+    
++ Request
+
+    + Header
+            
+             X-SESSION-ID : asdasdasdsadasdasd
+                 
++ Response 204
+
 ## POST /tangle/{tangleId}/request
 Post request
 + Parameters
@@ -131,37 +145,15 @@ Post request
     
                 { 
                     "description" : "description of a request",
-                    "date" : "28/May/2013",
-                    "deadLine" : "3/April/2014",
+                    "date" : "28/3/2013 12:07:20",
+                    "deadLine" : "3/4/2014",
                     "requestedPrice" : "7",
                     "tags": ["guc", "farghal", "ay7aga"]
                 }
 
-+ Response 201
-
-## POST /request/{requestId}/icon
-Post icon for a specific request
-+ parameters
-
-    + requestId (Int, required) ... request id
     
-+ Request (application/json)
 
-    +Header
-            
-            X-SESSION-ID : '549048320948219058409580'
-            
-    + Body
-                
-                {
-                    "requestIcon" : "fjdlgjfkjlgk'jwlkf'wjadgl'h'rjhgWGJAEKGJKLSJGDFKGHSK;GRIG;EJ"
-                }
-                
-+ Response 201(application/json)
-
-        {
-            "iconUrl" : "http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/icons/test.jpg"
-        }
++ Response 201
 
 
 ## GET /tangle/check/{tangleName}
@@ -177,59 +169,7 @@ check tangle name availability
              X-SESSION-ID : asdasdasdsadasdasd
 
 + Response 404
-
-
-## GET /tangle/{tangleId}/getRecieverMail
-+ Parameters
-    + tangleId(Int, required)
-
-+ Request
-
-    + Header
-            
-             X-SESSION-ID : "salma"
-             
-+ Response 200(application/json)
-
-        {
-            "X-TANGLE_OWNER-MAIL" : "salmaumr@gmail.com"
-        }
-
-## GET /session/{sessionId}/getSenderMail
-+ Parameters
-    + sessionId(String, required)
-
-+ Request
-
-    + Header
-            
-             X-SESSION-ID : "salma"
-             
-+ Response 200(application/json)
-
-        {
-            "X-OFFERER-MAIL" : "salmaumr@gmail.com"
-        }
-        
-## POST /claim/{tangleId}/createClaim
-
-+ Parameters
-    + tangleId(Int, required)
-
-+ Request
-
-    + Header
-            
-             X-SESSION-ID : "salma"
- 
-             
-+ Response 200(application/json)
-
-        {
-             "X-CLAIM-ID" : "1234567"
-        }
-
-        
+     
 ## GET /transaction/{transactionID}/
 get the details of a transaction
 
@@ -273,10 +213,12 @@ Get profile
                                  "Description" : "afafsgsbsger",
                                  "balance" :"1500",
                                  "birthdate":"1/1/1",
-                                 "verified":true
+                                 "verified":true,
+                                 "picture URL":"http://1.bp.blogspot.com/-p1nPSZa1NNw/UW81W_61ZgI/AAAAAAAAAjw/pd1N-Yhz-pY/s200/sad-face-smiley-facebook.jpg"
                              },
             "transactions" : [
                                  {
+                                     "offerId" : 3,
                                      "requesterName"  : "Mohamed Bassem" ,
                                      "requestDescription" : "I want to learn how to study." ,
                                      "amount" : "5"  
@@ -301,7 +243,11 @@ Get profile
                 "message" : "Hello , Join my tangle"
             }
              
-+ Response 201
++ Response 201 (application/json)
+            
+            {
+                "pending" : 1
+            }
 
 ## POST /tangle/{tangleId}/check-membership
 
@@ -328,19 +274,6 @@ Get profile
                 "invalid" : [ "test" ]
             }
             
-
-## DELETE /offer/{offerId}
-Withdraw offer
-
-+ Parameters
-    + offerId ( String , required ) ... offer id
-
-+ Request
-    + Header
-            
-             X-SESSION-ID : "asdasdasdsadasdasd"
-             
-+ Response 204
 
 ## GET /claim/{claimID}/contact
 contact offerer and requester after claim
@@ -386,22 +319,10 @@ contact offerer and requester after claim
 
         { "message": "message was sent successfully" }
         
-        
-## Request Collection [/request/{requestId}]
-### Delete Request [DELETE]
-
-+ Parameters
-    + requestId ( String , required ) ... request id
-
-+ Request
-    + Header
-            
-             X-SESSION-ID : "asdasdasdsadasdasd"
-             
-+ Response 204
 
 
-### Retrieve Request [GET]
+
+## GET /tangle/{tangleId}/request/{requestId}
 
 + Parameters
     + requestId ( String , required ) ... request id
@@ -413,18 +334,71 @@ contact offerer and requester after claim
              
 + Response 200 (application/json)
 
+                { 
+                    "Requester" : "name",
+                    "Description":"request desc",  
+                    "Date" : "1/1/1",
+                    "Tags" :["tag1", "tag2","tag3"],
+                    "Price": "3",
+                    "Deadline":"1/2/1",
+                    "Status":"0",
+                    "MyRequest":"0",
+                    "Description" : "description of a request",
+                    "Offers" : [
+                                    {
+                                    "id" : "1", 
+                                    "requestedPrice" : "5",
+                                    "date" : "1/1/1",
+                                    "description": "Offer Description", 
+                                    "offererId" : "10",
+                                    "status" : "1"
+                                     },
+                                     {
+                                    "id" : "1", 
+                                    "requestedPrice" : "5",
+                                    "date" : "1/1/1",
+                                    "description": "Offer Description", 
+                                    "offererId" : "10",
+                                    "status" : "0"
+                                     },
+                                     {
+                                    "id" : "1", 
+                                    "requestedPrice" : "5",
+                                    "date" : "1/1/1",
+                                    "description": "Offer Description", 
+                                    "offererId" : "10",
+                                    "status" : "3"
+                                     }
+                                ]
+                }
+
+
+
+
+## POST /request/{requestId}/icon
+Post icon for a specific request
+
++ parameters
+
+    + requestId (Int, required) ... request id
+    
++ Request (application/json)
+
+    +Header
+            
+            X-SESSION-ID : '549048320948219058409580'
+            
+    + Body
+                
+                {
+                    "requestIcon" : "fjdlgjfkjlgk'jwlkf'wjadgl'h'rjhgWGJAEKGJKLSJGDFKGHSK;GRIG;EJ"
+                }
+                
++ Response 201(application/json)
+
         {
-             "requester" : "name",
-             "description":"request desc",  
-             "date" : "1/1/1",
-             "tags" :" tag tag", 
-             "price": "3",
-             "deadline":"1/2/1",
-             "status":"done"
-
-                                 
+            "iconUrl" : "http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/icons/test.jpg"
         }
-
 
 ## GET /user/whoami/{sessionId}
 
@@ -442,7 +416,12 @@ contact offerer and requester after claim
             "user" : "UserWithSessionId"
         }
         
-## POST /login
+## POST /user/login/{username,password}
+
++ Parameters
+    + username ( String , required ) ... username
+    + password (String , required ) ... password
+    
 + Request (application/json)
     + Header
             
@@ -451,17 +430,11 @@ contact offerer and requester after claim
     + Body 
     
             {
-               "username" : "username"
-                "password" : "password"
+               "username" : [username]
+                "password" : [password]
             }
              
-+ Response 201 (application/json)
-
-            {
-                "sessionId": "session",
-                "userId" : "1"
-            }
-
++ Response 201
 
 
 ## POST /register
@@ -486,7 +459,384 @@ As a user, i can register
            
 + Response 201 
 
-## GET /tangle
+## GET /tangle/{tangleId}/pending-invitations
+
++ Parameters
+    + tangleId ( integer , required ) ... tangle id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 200 (application/json)
+
+        {
+             "pending-invitations" : [
+                                        {
+                                            "id":1,
+                                            "invitee":"Elprince",
+                                            "inviter":"3m el kol",
+                                            "email":"prince@prince.com"
+                                        },
+                                        {
+                                            "id":1,
+                                            "invitee":"Elprince",
+                                            "inviter":"3m el kol",
+                                            "email":"prince@prince.com"
+                                        },
+                                        {
+                                            "id":1,
+                                            "invitee":"Elprince",
+                                            "inviter":"3m el kol",
+                                            "email":"prince@prince.com"
+                                        }
+                                    ]
+        }
+
+## PUT /pending-invitation/{pendingInvitationId}/accept
+
++ Parameters
+    + pendingInvitationId ( integer , required ) ... Pending Invitation Id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 200
+
+## DELETE /pending-invitation/{pendingInvitationId}/reject
+
++ Parameters
+    + pendingInvitationId ( integer , required ) ... Pending Invitation Id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 200
+
+# Group ufreeze 
+Unfreeze points related resources of the **Entangle API**
+
+## unfreeze [/unfreze]
+### List all unfreze requests [GET]
++ Response 200 (application/json)
+
+        [{
+          "UnfreezeReqid": "UnfreezeReqid1","tangle id": "idTangle", "userid": "user1Id" , "requestId": "requestId1"
+        }, {
+          "UnfreezeReqid": "UnfreezeReqid2","tangle id": "idTangle2", "userid": "user2Id", "requestId" :"requestId2"
+        }]
+
+### Create an unfreeze request [POST]
++ Request (application/json)
+
+        { 
+        "tangle id": "idTangle" ,
+        "user id": "UserId" , 
+        "requestId" : "requestId"
+        }
+
++ Response 201 
+
+##  UnfreezeReq [/unfreeze/{unfreezeReqid}]
+A single unfreeze Request object with all its details
+
++ Parameters
+    + unfreezeReqid (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
+
+### Retrieve an Unfreeze Request [GET]
++ Response 200 (application/json)
+
+        { "UnfreezeReqid": "UnfreezeReqid1","tangle id": "idTangle", "userid": "user1Id" , "requestId" : "requestId"}
+
+### Remove a Request [DELETE]
++ Response 204
+
+## frozenPoints [/unfreeze/{unfreezeRequestId}/frozenpoints]
++ Parameters
+    + unfreezeRequestId (required,int)
+
+###  get Frozen points [GET]
++ Response 200 (application/json)
+    
+        {"frozenPoints" : "frozenPoints"}
+
+### Restore Balance [PUT]
++ Request (application/json)
+
+        {"balanceToRestore":"balanceamount"}
+
++ Response 200
+
+
+## GET /tangleOwnerAndClaimerMail/{requestId}/claim
+Get the email of the offerer
+
++ Parameters
+    + requestId  ( Int , required ) ... request id
+
++ Request
+
+    + Header
+    
+            X-SESSION-ID : salma
+            
++ Response 200(application/json)
+
+        {
+            "X-CLAIMER-MAIL" : "salma@gmail.com",
+            "X-TANGLEOWNER-MAIL" : "saloum@gmail.com"
+           
+        }
+        
+## POST /claim/{requestId}/sendClaim
+Post request
++ Parameters
+    
+    + requestId ( Int , required ) ... request id
+ 
++ Request (application/json)
+    
+    + Header
+            
+             X-SESSION-ID : salma
+
+    + Body
+    
+                { 
+                    "X-SENDER-MAIL" : "SALMA@GMAIL.COM",
+                    "X-RECIEVER-MAIL" : "SALOUM@GMAIL.COM",
+                    "X-MSSGBODY" : "NONO"
+                }
+
++ Response 200(application/json)
+
+        {
+            "X-CLAIM-ID" : "1234"
+           
+        }
+
+## GET /offer/{offerID}/
+get the details of an offer
+
++ Parameters
+    + offerID(Int , required)
+    
++ Request
+    
+    + Header
+    
+             sessionID : "testest"
+
++ Response 200 (application/json)
+
+        {
+           "tangleId" : 1,
+           "requestInformation" :  {
+                                 "requesterName" : "Alaa Maher",
+                                 "requestDescription" : "I want to understand this app.",
+                                 "requesterID" : 1,
+                                 "requestID" : 2,
+                                 "requestStatus" : 0
+                                },
+            "offerInformation" :    {
+                                     "offererName"  : "Mohamed Bassem" ,
+                                     "offerDescription" : "fgsherhsgs",
+                                     "offerDeadline" : "3/3/2015",
+                                     "offerStatus" : 0,
+                                     "offerPrice" : 300,
+                                     "offerDate" : "3/3/2014",
+                                     "offererID" : 2
+                                }
+        }
+                             
+             
+
+## GET /notification/{notificationId}/get-seen
+ 
+ + Parameters
+    + notificationId (String , required ) 
+ + Request
+     + Header 
+         
+              sessionID : “testest”
+ 
+ + Response 200 (application/json)
+ 
+        {
+            “seen” : 1
+        }
+
+ 
+## GET /notification/{notificationId}
+ 
+ + Parameters
+    + notificationId (String , required )
+ 
+ + Request
+     + Header
+     
+            sessionID : “testest”
+ 
+ + Response 200 (application/json)
+ 
+        {
+            “description” : “this is notification description”
+            “offerer”  :  “Mohamed”
+            “Amount”  : “1000”
+            “request”  : “This is request”
+        }
+
+## PUT /notification/{notificationId}/set-seen
+ 
+ + Parameters
+    + notificationId (String , required ) 
+ + Request
+     + Header 
+         
+              sessionID : “testest”
+ 
+ + Response 201
+## POST /request/{id}
+
++ Parameters
+    + id ( Int , required ) ... offerid  
+
+
++ Request (application/json)
+     
+    + Header
+     
+                        X-SESSION-ID : asdasdasdsadasdasd
+    + Body 
+    
+            {
+               "status" : "2"
+            }
+
++ Response 201 (application/json)
+
+            {
+
+            "message" : "success"
+
+            }
+
+            
+
+## GET /request/{requestid}/offer/{offerid}
+
++ Parameters
+    + requestid ( Int , required ) ... requestid  
+    + offerid ( Int , required ) ... offerid 
+
+
++ Request 
+     
+    + Header
+     
+                        X-SESSION-ID : first
+
++ Response 200 (application/json)
+
+            {
+            
+            "price" : "20",
+            "date" : "01/04/2014",
+            "expecteddeadline" : "02/04/2014",
+            "description" : "Done"
+
+            }
+            
+            
+            
+
+    
+## GET /request/{requestid}/offers/{offerid}
+
++ Parameters
+    + requestid ( Int , required ) ... requestid  
+    + offerid ( Int , required ) ... offerid 
+
+
++ Request 
+     
+    + Header
+     
+                        X-SESSION-ID : second
+
++ Response 200 (application/json)
+
+            {
+            
+            "status" : "1"
+
+            }
+
+
+##POST /accept/offer
+accept an offer
++ Request (application/json)
+
+    + Header
+
+            X-SESSION-ID : "asdasdasdsadasdasd"
+
+    + Body
+
+            { "offerId": "1"} 
+
++ Response 201 
+
+## PUT /user/edit
++ Request (application/json) 
+
+    + Body
+    
+            {
+                "description" : "el description bta3 menna isA :D",
+                "date_of_birth" : "29-05-1992",
+                "email" : "mennatarek92@gmail.com",
+                "current_password" : "12345678",
+                "new_password" : "123456789",
+                "confirm_password" : "123456789"
+            }
+            
+    + Response 200
+            
+
+## POST /tangle/{tangleId}/request/{requestId}/offer
+Post offer
++ Parameters
+    
+    + tangleId ( Int , required ) ... tangle id
+    + requestId ( Int , required ) ... request id
+ 
++ Request (application/json)
+    
+    + Header
+            
+             X-SESSION-ID : "abc123"
+
+    + Body
+    
+                { 
+                    "description" : "description of an offer",
+                    "date" : "28/3/2013 12:07:20",
+                    "deadLine" : "19/4/2014",
+                    "requestedPrice" : "7"
+                }
+
+    
+
++ Response 201
+
+## Tangle Related endpoints [/tangle]
+### Get list of tangles[GET]
 
 + Request
     + Header
@@ -498,21 +848,46 @@ As a user, i can register
         {
             "tangles" : [
                             {
-                                "id":"2",
-                                "tangleName" : "test"
+                                "id":"1",
+                                "tangleName" : "test1"
                             },
                             
                             {
                                 "id":"2",
-                                "tangleName" : "test"
+                                "tangleName" : "test2"
                             },
                             
                             {
-                                "id":"2",
-                                "tangleName" : "test"
+                                "id":"3",
+                                "tangleName" : "test3"
                             }
                         ]
         }
 
+### Creates a new Tangle [POST]
+        
++ Request (application/json)
+    
+        {
+            "tangleName" : "kokoTangle"
+            "tangleIcon" : "asdfcsdfsadfsdfaewrf"
+        }
 
+        +Header
+            
+            X-SESSION-ID : asdasdasdsadasdasd
+            
++ Response 201 
 
+## DELETE /offer/{offerId}
+Withdraw offer
+
++ Parameters
+    + offerId ( String , required ) ... offer id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 204
