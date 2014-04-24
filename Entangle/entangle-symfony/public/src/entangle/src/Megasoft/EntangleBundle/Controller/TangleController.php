@@ -417,7 +417,7 @@ class TangleController extends Controller
         $userTangle = $userTangleRepo
                 ->findOneBy(array('userId' => $userId, 
                     'tangleId' => $tangleId)); 
-        if ($userTangle->getLeavingDate() == null) {
+        if ($userTangle->getLeavingDate() != null) {
             return new Response("Unauthorized", 401);
         }
         
@@ -440,17 +440,16 @@ class TangleController extends Controller
         
         if($requests != null) {
             foreach ($requests as $request) {
-               
-                //to be changed when the request status values are known
-                //if($request->getStatus() == OPEN) {
-                    
-                    //call the function of closing a request
-                
-                //} else if ($request->getStatus() == CLOSED) {
-                    //$request->setDeleted(true);
-                //}               
-                
+                if($request != null) {
+                    if($request->getStatus() != $request->CLOSED) {
+                        //to be changed to call function of removing a request 
+                        //function call    
+                    } else {
+                        $request->setDeleted(true);
+                    }               
+                }
             }
+            $this->getDoctrine()->getManager()->flush();
         }
     }
     
@@ -468,28 +467,56 @@ class TangleController extends Controller
         $offerRepo = $doctrine->getRepository("MegasoftEntangleBundle:Offer");
         
         $offers = $offerRepo->findBy(array('userId' => $userId, 'deleted' => false));
-        
         if($offers != null) {
             $requestRepo = $doctrine->getRepository("MegasoftEntangleBundle:Request");
+            $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
+            $user = $userRepo->find($userId);
             
             foreach ($offers as $offer) {
-                $requestId = $offer->getRequestId();
-                $request = $requestRepo->findOneBy(array('requestId' => $requestId, 'tangleId' => $tangleId));
-                if($request != null) {
-                    $status = $offer->getStatus();
-                    //if($status == ACCEPTED | $status == PENDING) {
-                        //call the function of withdrawing an offer
-                    //}else if($status == REJECTED | $status == FAILED) {
-                        //do nothing till now 
-                    //}
+                if($offer != null) {
+                    $requestId = $offer->getRequestId();
+                    $request = $requestRepo->findOneBy(array('requestId' => $requestId, 'tangleId' => $tangleId));
+                    
+                    if($request != null) {
+                        $offerStatus = $offer->getStatus();
+                        if($offerStatus == $offer->ACCEPTED || $offerStatus == $offer->PENDING) {
+                            //to be changed to call the function of withdrawing an offer
+                            deleteOffer($user, $offer);
+                            $offer->setDeleted(true);
+                            
+                        }else if($offerStatus == $offer->REJECTED || $offerStatus == $offer->FAILED) {
+                            $offer->setDeleted(true);
+                            if($user != null) {
+                                $user->removeOffer($offer);
+                            }
+                        }
+                    }
                 }
-                
             }
-            
-            
+            $this->getDoctrine()->getManager()->flush();
         }
     }
     
+    private function deleteOffer($user, $offer) {
+        if($offer->getStatus() == $offer->PENDING) {
+            //to be done in the coming sprint
+            //send notification to the requester
+            if($user != null) {
+                $user->removerOffer($offer);
+            }
+            
+            $messages = $offer->getMessages();
+            foreach ($messages as $message) {
+                if($message != null) {
+                    $message->setDeleted(true);
+                    if($user != null) {
+                        $user->removeMessage($message);
+                    }
+                }
+            }
+        }
+    }
+   
     /**
      * A function that is responsible for removing a user from 
      * a tangle and updating the deletedBalance of the tangle 
@@ -549,7 +576,7 @@ class TangleController extends Controller
         $this->removeRequests($tangleId, $userId);
         $this->removeUser($tangleId, $userId);
         
-        return new Response("You have left successfully", 201);
+        return new Response("You have left successfully", 204);
     }
 
     
