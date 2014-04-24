@@ -31,14 +31,18 @@ class MailController extends Controller {
         $useremail = $doctrine->getRepository("MegasoftEntangleBundle:UserEmail")->findBy(array('userId' => $user->getId(), 'deleted' => 0));
 
 
-        foreach ($useremail as $mail) {
-            $message = \Swift_Message::newInstance()
-                    ->setSubject($subject)
-                    ->addFrom('Notifications-noreply@entangle.io', 'Entangle')
-                    ->setTo($mail->getEmail())
-                    ->setBody($body);
-             $this->get('mailer')->send($message);
+        if ($user->getAcceptMailNotifications() == true) {
+            foreach ($useremail as $mail) {
+                if ($mail->getDeleted() == false) {
+                    $message = \Swift_Message::newInstance()
+                            ->setSubject($subject)
+                            ->addFrom('Notifications-noreply@entangle.io', 'Entangle')
+                            ->setTo($mail->getEmail())
+                            ->setBody($body);
+                    $this->get('mailer')->send($message);
+                }
+            }
         }
     }
-
 }
+     
