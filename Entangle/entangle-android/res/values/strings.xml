@@ -10,7 +10,6 @@
     <string name="tag">Please Add comma separated tags</string>
     <string name="tagHint">Only letters, digits, and , allowed</string>
     <string name="priceHint">enter a positive number</string>
-    <string name="title_activity_request">RequestActivity</string>
     <string name="hello_world">Hello world!</string>
 
     <string name="date">Date</string>
