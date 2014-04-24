@@ -878,3 +878,16 @@ Post offer
             X-SESSION-ID : asdasdasdsadasdasd
             
 + Response 201 
+
+## DELETE /offer/{offerId}
+Withdraw offer
+
++ Parameters
+    + offerId ( String , required ) ... offer id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 204
