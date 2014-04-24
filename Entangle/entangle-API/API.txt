@@ -394,42 +394,23 @@ contact offerer and requester after claim
         }
 
 
-## GET /user/whoami/{sessionId}
+## POST /user/login
 
-+ parameter 
-    + sessionId (String , required) ... session id
-    
-+ Request
-    + Header 
-        
-             X-SESSION-ID : "asd123"
 
-+ Response 200 (application/json)
-
-        {
-            "user" : "UserWithSessionId"
-        }
-        
-## POST /user/login/{username,password}
-
-+ Parameters
-    + username ( String , required ) ... username
-    + password (String , required ) ... password
-    
 + Request (application/json)
-    + Header
-            
-             X-SESSION-ID : "asd123"
     
     + Body 
     
             {
-               "username" : [username]
-                "password" : [password]
+               "username" : "maisara",
+                "password" : "95bcadd58e0aa59e8f6e09c86ed310c7"
             }
              
-+ Response 201
++ Response 201 (application/json)
 
+        {
+             "session_id" : "abcdefghijklmnopqrstuvwxyz1234"                                 
+        }
 
 ## POST /register
 As a user, i can register
@@ -449,7 +430,8 @@ As a user, i can register
                 "confirmPassword": "ThisIsADummyPassword"
             }
 
-        
+
            
 + Response 201 
+
 

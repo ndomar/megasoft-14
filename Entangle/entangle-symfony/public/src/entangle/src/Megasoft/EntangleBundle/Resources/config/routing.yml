@@ -27,6 +27,13 @@ invite:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
     methods: [POST]
 
+
+login:
+    pattern:  /user/login
+    defaults: { _controller: MegasoftEntangleBundle:User:login}
+    methods: [POST]
+    
+    
 acceptOffer:
     pattern: /accept/offer
     defaults: {_controller: MegasoftEntangleBundle:Offer:acceptOffer }

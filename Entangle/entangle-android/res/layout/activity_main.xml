@@ -1,16 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
+    tools:context="com.component2.blog.LoginActivity"
+    tools:ignore="MergeRootFrame" >
 
     <TextView
+        android:id="@+id/Login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:text="Welcome To Entangle"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/usernameView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/Login"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="100dp"
+        android:text="Username:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="25dp" />
+
+    <EditText
+        android:id="@+id/usernameBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Login"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="100dp"
+        android:layout_toRightOf="@id/usernameView"
+        android:hint="Enter Your Username!"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/passwordView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/usernameView"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="25dp"
+        android:text="Password:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="25dp" />
+
+    <EditText
+        android:id="@+id/passwordBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/usernameBox"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="25dp"
+        android:layout_toRightOf="@id/passwordView"
+        android:hint="Enter Your Password"
+        android:inputType="textPassword"
+        android:textSize="15dp" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/Login"
+        android:layout_marginBottom="45dp"
+        android:onClick="login"
+        android:text="Login"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="25dp" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/Register"
+        android:layout_marginBottom="45dp"
+        android:onClick="register"
+        android:text="Register"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="25dp" />
 
 </RelativeLayout>
