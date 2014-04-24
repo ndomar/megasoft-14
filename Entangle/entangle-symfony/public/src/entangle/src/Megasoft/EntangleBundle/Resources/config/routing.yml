@@ -33,7 +33,7 @@ getMails:
     methods: [GET]
     
 createClaim:
-    patern: /claim/{requestID}/sendClaim
+    pattern: /claim/{requestID}/sendClaim
     defaults: { _controller: MegasoftEntangleBundle:Claim:create }
     methods: [POST]
         
