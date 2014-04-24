@@ -157,32 +157,33 @@ public class ProfileActivity extends Activity {
 	 */
 	private void sendLeaveRequest() {
 		DeleteRequest leaveRequest = new DeleteRequest(
-				"http://entangle2.apiary-mock.com/tangle/" + tangleId + "user") {
+				"http://entangle2.apiary-mock.com/tangle/" + tangleId + "/user") {
 			public void onPostExecute(String response) {
-				if (response != null) {
-					if (getStatusCode() == 201) {
-						Toast.makeText(getBaseContext(),
-								"You left the tangle successfully",
-								Toast.LENGTH_LONG).show();
-						// redirect to the tangles stream Activity
-						Intent newIntent = new Intent(getBaseContext(),
-								MainActivity.class);
-						newIntent.putExtra("userId", userId);
-						startActivity(newIntent);
+				if (getStatusCode() == 204) {
+					Toast.makeText(getBaseContext(),
+							"You left the tangle successfully",
+							Toast.LENGTH_LONG).show();
+					// redirect to the tangles stream Activity
+					Intent newIntent = new Intent(getBaseContext(),
+							MainActivity.class);
+					newIntent.putExtra("userId", userId);
+					// getIntent().addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+					// ProfileActivity.this.
+					// newIntent.addFlags(Intent.)
+					startActivity(newIntent);
 
-					} else if (getStatusCode() == 403) {
-						Toast.makeText(
-								getBaseContext(),
-								"Sorry, you are not allowed to leave the tangle",
-								Toast.LENGTH_LONG).show();
-					} else {
-						Toast.makeText(
-								getBaseContext(),
-								"Sorry, problem happened while leaving the tangle. Try again later",
-								Toast.LENGTH_LONG).show();
-					}
+				} else if (getStatusCode() == 403) {
+					Toast.makeText(getBaseContext(),
+							"Sorry, you are not allowed to leave the tangle",
+							Toast.LENGTH_LONG).show();
+				} else {
+					Toast.makeText(
+							getBaseContext(),
+							"Sorry, problem happened while leaving the tangle. Try again later",
+							Toast.LENGTH_LONG).show();
 				}
 			}
+
 		};
 		leaveRequest.addHeader("X-SESSION-ID", sessionId);
 		leaveRequest.execute();
