@@ -11,4 +11,6 @@ public class Config {
 	public static final String USER_ID = "0";
 	public static final String REQUEST_ID = "requestId";
 	public static final String RESOURCE_TYPE = "resourceType";
+	public static final String REQUEST_TYPE = "request";
+	public static final String OFFER_TYPE = "offer";
 }
