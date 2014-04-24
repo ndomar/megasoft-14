@@ -43,6 +43,14 @@ class UserEmail
      * @ORM\JoinColumn(name="userId", referencedColumnName="id")
      */
     private $user;
+    
+    /**
+     *
+     * @var boolean
+     * 
+     * @ORM\Column(name="verified", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
+     */
+    private $verified  = false;
 
     /**
      *
@@ -152,5 +160,28 @@ class UserEmail
     public function getDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * Set verified
+     *
+     * @param boolean $verified
+     * @return UserEmail
+     */
+    public function setVerified($verified)
+    {
+        $this->verified = $verified;
+
+        return $this;
+    }
+
+    /**
+     * Get verified
+     *
+     * @return boolean 
+     */
+    public function getVerified()
+    {
+        return $this->verified;
     }
 }
