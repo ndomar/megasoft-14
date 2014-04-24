@@ -25,10 +25,10 @@ public class RequestActivity extends Activity {
 	 * @return None
 	 * @author mohamedzayan
 	 */
-	public void goToOffer(View view) {
+	/*public void goToOffer(View view) {
 		Intent intent = new Intent(this, Offer.class);
 		startActivity(intent);
 
-	}
+	}*/
 
 }

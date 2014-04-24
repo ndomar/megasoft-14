@@ -9,89 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Offer" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Pri_ce" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="36dp"
-        android:text="@string/Da_te" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/textView4"
-        android:layout_marginTop="50dp"
-        android:text="@string/Des_cription" />
-
-    <EditText
-        android:id="@+id/priceTextField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView1"
-        android:layout_toRightOf="@+id/textView2"
-        android:ems="10"
-        android:inputType="text" />
-
-    <EditText
-        android:id="@+id/dateTextField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView4"
-        android:layout_toRightOf="@+id/textView3"
-        android:ems="10"
-        android:inputType="text" />
-
-    <EditText
-        android:id="@+id/descriptionTextField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView3"
-        android:layout_toRightOf="@+id/textView3"
-        android:ems="10"
-        android:inputType="text" />
-
-    <EditText
-        android:id="@+id/expectedDeadLineTextField"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/priceTextField"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="33dp"
-        android:ems="10"
-        android:inputType="text" >
-
-        <requestFocus />
-    </EditText>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/expectedDeadLineTextField"
-        android:layout_alignBottom="@+id/expectedDeadLineTextField"
-        android:layout_alignLeft="@+id/textView1"
-        android:text="@string/Ex_pected" />
-
-    <CheckBox
-        android:id="@+id/checkBox1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/expectedDeadLineTextField"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:onClick="markCheck"
-        android:text="@string/Do_ne" />
-
+   
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -162,6 +80,13 @@
             android:layout_marginLeft="25dp"
             android:layout_marginTop="5dp"
             android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/checkBox1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Do_ne"
+            android:onClick="markCheck" />
 
         <LinearLayout
             android:layout_width="fill_parent"
