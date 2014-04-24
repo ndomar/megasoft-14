@@ -83,9 +83,9 @@ public class Claim extends Activity {
 				e.printStackTrace();
 			}
 
-			int requestID = (int) getIntent().getIntExtra("requestID", 0);
+			int requestId = (int) getIntent().getIntExtra("requestId", 0);
 			PostRequest postSubject = new PostRequest(Config.API_BASE_URL
-					+ "/claim/" + requestID + "/sendClaim") {
+					+ "/claim/" + requestId + "/sendClaim") {
 
 				protected void onPostExecute(String response) {
 					try {
@@ -110,7 +110,7 @@ public class Claim extends Activity {
 			postSubject.addHeader("X-SESSION-ID", sessionID);
 			postSubject.execute();
 			if (!connection) {
-				Toast.makeText(this, "Sorry connection lost",
+				Toast.makeText(this, "Something went wrong",
 						Toast.LENGTH_SHORT).show();
 			} else {
 				Toast.makeText(this, "Claim Sent", Toast.LENGTH_SHORT).show();

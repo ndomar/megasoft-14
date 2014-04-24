@@ -56,9 +56,9 @@ public class Request extends Activity {
 		final Intent intent = new Intent(this, Claim.class);
 		String sessionID = (String) getIntent().getCharSequenceExtra(
 				"sessionID");
-		int requestID = (int) getIntent().getIntExtra("requestID", 0);
+		int requestId = (int) getIntent().getIntExtra("requestId", 0);
 		GetRequest requestTangleOwnerMail = new GetRequest(Config.API_BASE_URL
-				+ "/tangleOwnerAndClaimerMail/" + requestID + "/claim") {
+				+ "/tangleOwnerAndClaimerMail/" + requestId + "/claim") {
 
 			protected void onPostExecute(String response) {
 				try {
@@ -79,12 +79,12 @@ public class Request extends Activity {
 		requestTangleOwnerMail.addHeader("X-SESSION-ID", sessionID);
 		requestTangleOwnerMail.execute();
 		if (!connection) {
-			Toast.makeText(this, "Sorry connection lost", Toast.LENGTH_SHORT)
+			Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT)
 					.show();
 		} else {
 			intent.putExtra("receiver", tangleOwnerMail);
 			intent.putExtra("sender", claimerMail);
-			intent.putExtra("requestID", requestID);
+			intent.putExtra("requestId", requestId);
 			intent.putExtra("sessionID", sessionID);
 			Toast.makeText(this, "Loading Claim Form", Toast.LENGTH_SHORT)
 					.show();
