@@ -168,6 +168,7 @@
         <item>2010</item>
     </string-array>
 
+    <string name="preview_request">Preview Request</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_create_offer">CreateOfferActivity</string>
     <string name="create_offer">Create Offer</string>
