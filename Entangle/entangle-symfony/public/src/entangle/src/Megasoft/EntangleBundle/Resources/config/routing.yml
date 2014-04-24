@@ -51,3 +51,9 @@ megasoft_entangle_register:
 megasoft_entangle_about:
     pattern:  /about
     defaults: { _controller: MegasoftEntangleBundle:About:about }
+
+get_profile:
+    pattern: tangle/{tangleId}/user/{userId}/profile
+    defaults: { _controller: MegasoftEntangleBundle:User:profile }
+    methods: [GET]
+
