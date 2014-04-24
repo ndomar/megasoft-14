@@ -147,11 +147,37 @@ class OfferController extends Controller {
             return new Response('Unauthorized', 401);
         }
         
+        if($offer->getStatus() == $offer->Accepted){
+            unfreezePoints($offer->getRequest(), $offer->getRequestedPrice());
+        }
+        
         $offer->setDeleted(true);
         $offer->setStatus($offer->FAILED);
         $this->getDoctrine()->getManager()->persist($offer);
         $this->getDoctrine()->getManager()->flush();
         
         return new Response("Deleted", 204);
+    }
+    
+    /**
+      * A function to unfreeze points for the requester for withdrawn offer.
+      * @param Request $request
+      * @param integer $points
+      * @return 
+      * @author OmarElAzazy
+     */
+    public function unfreezePoints($request, $points){
+        $requester = $request->getUser();
+        $tangleId = $request->getTangleId();
+        
+        $userTangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserTangle');
+        $userTangle = $userTangleRepo->findOneBy(array('userId' => $requester.getId(), 'tangleId' => $tangleId));
+        
+        $newCredit = $userTangle->getCredit + $points;
+        $userTangle->setCredit($newCredit);
+        
+        $this->getDoctrine()->getManager()->persist($offer);
+        $this->getDoctrine()->getManager()->flush();
+        return ;
     }
 }
