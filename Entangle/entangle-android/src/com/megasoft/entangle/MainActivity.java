@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationActivity;
 
 public class MainActivity extends Activity {
 
@@ -15,6 +15,8 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		startActivity(new Intent(getApplicationContext(),
 				GCMRegistrationActivity.class));
+		setContentView(R.layout.activity_main); 
+		startActivity((new Intent(this,ManagePendingInvitationActivity.class)).putExtra("com.megasoft.entangle.tangleId", 2));
 	}
 
 	@Override

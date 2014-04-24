@@ -21,6 +21,7 @@ config/initializers/secret_token.rb
 FrameworkTask/Component3/Backend/symfony-vagrant/.vagrant
 FrameworkTask/Component3/FrontEnd/MegaTODO/bin/classes/*.class
 /Entangle/entangle-symfony/public/src/entangle/nbproject/private/
+<<<<<<< HEAD
 
 # mac
 .DS_Store
@@ -84,3 +85,6 @@ Entangle/entangle-android/build.gradle
 Entangle/entangle-android/gradle/
 Entangle/entangle-android/gradlew
 Entangle/entangle-android/gradlew.bat
+=======
+/Entangle/entangle-symfony/public/src/nbproject/private/
+>>>>>>> a984d3053c3a73a9ede620aa791f97139e47eef5
