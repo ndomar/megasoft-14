@@ -9,4 +9,5 @@ public class Config {
 	public static final String SETTING = "SETTINGS";
 	public static final String SESSION_ID = "sessionId";
 	public static final String REQUEST_ID = "requestId";
+	public static final String USER_ID = "0";
 }
