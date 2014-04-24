@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+
+import com.megasoft.config.Config;
 
 public class UploadRequestIconActivity extends Activity{
-	private String sessionId;
 	private int requestId;
 	
 	public int getRequestId() {
@@ -17,25 +19,22 @@ public class UploadRequestIconActivity extends Activity{
 		this.requestId = requestId;
 	}
 	
-	public String getSessionId() {
-		return sessionId;
-	}
-	
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
-		System.out.println("hello");  
-	}
-	
 	@Override	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_upload_request_icon);
 		
-		setSessionId(getIntent().getStringExtra("sessionId"));
-		setRequestId(getIntent().getIntExtra("requestId", 1));
+		setRequestId(getIntent().getIntExtra(Config.REQUEST_ID, 1));
+		
+		Bundle bundle = new Bundle();
+		bundle.putInt(Config.REQUEST_ID, getRequestId());
 		
 		FragmentManager manager = getFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
-		transaction.add(R.id.iconUploadLayoutPlaceHolder, new PhotoUploaderFragment()).commit();
+
+		PhotoUploaderFragment fragment = new PhotoUploaderFragment();
+		fragment.setArguments(bundle);
+		
+		transaction.add(R.id.iconUploadLayoutPlaceHolder, fragment).commit();
 	}
 }
