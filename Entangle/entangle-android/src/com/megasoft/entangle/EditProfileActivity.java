@@ -93,6 +93,11 @@ public class EditProfileActivity extends Activity {
 		initializeView();
 	}
 
+	/**
+	 * This Method Initilaze the view
+	 * 
+	 * @author menna
+	 */
 	private void initializeView() {
 		emailNotification = (CheckBox) findViewById(R.id.set_notification);
 		if (notification != true) {
@@ -109,6 +114,13 @@ public class EditProfileActivity extends Activity {
 		addedMail = (EditText) findViewById(R.id.AddedMail);
 	}
 
+	/**
+	 * This method runs on button save click and saves all edited data
+	 * 
+	 * @param View
+	 *            view
+	 * @author menna
+	 */
 	@SuppressLint("SimpleDateFormat")
 	public void saveAll(View view) {
 
@@ -185,16 +197,37 @@ public class EditProfileActivity extends Activity {
 
 	}
 
+	/**
+	 * This Method sets the Intent using the current activity
+	 * 
+	 * @author menna
+	 */
 	private void getActivity() {
 		viewEditedProfile = new Intent(this, ProfileActivity.class);
 	}
 
+	/**
+	 * This emails chech that the String is in Email format
+	 * 
+	 * @param String
+	 *            email
+	 * @return boolean
+	 * @author menna
+	 */
 	public boolean emailValidator(String email) {
 		pattern = Pattern.compile(EMAIL_PATTERN);
 		matcher = pattern.matcher(email);
 		return matcher.matches();
 	}
 
+	/**
+	 * This method converts month name into number
+	 * 
+	 * @param String
+	 *            month
+	 * @return String monthNumber
+	 * @author menna
+	 */
 	public static String getMonthNumber(String month) {
 
 		String monthNumber = "00";
