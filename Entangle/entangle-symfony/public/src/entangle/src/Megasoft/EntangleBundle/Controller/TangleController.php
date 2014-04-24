@@ -202,7 +202,7 @@ class TangleController extends Controller
      */
     private function isNewMember($email) {
         $userEmailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
-        $mail = $userEmailRepo->findOneByEmail($email);
+        $mail = $userEmailRepo->findOneBy(array('email'=>$email,'deleted'=>false));
         return ($mail == null);
     }
 
@@ -230,7 +230,7 @@ class TangleController extends Controller
      * @return Response|JsonResponse
      * @author MohamedBassem
      */
-    public function checkMembershipAction(Request $request, $tangleId) {
+    public function checkMembershipAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($sessionId == null) {
@@ -259,7 +259,7 @@ class TangleController extends Controller
         $jsonString = $request->getContent();
         $json = json_decode($jsonString, true);
 
-        if (!isset($json['emails'])) {
+        if (!isset($json['emails']) || !is_array($json['emails'])) {
             return new Response("Bad Request", 400);
         }
 
