@@ -1,12 +1,12 @@
 package com.megasoft.entangle;
 
-import org.apache.http.client.methods.HttpPost;
-import com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationActivity;
-import com.megasoft.requests.PostRequest;
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.content.Intent;
 import android.view.Menu;
+
+import com.megasoft.config.Config;
 
 public class MainActivity extends Activity {
 
@@ -14,7 +14,18 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main); 
-		startActivity((new Intent(this,ManagePendingInvitationActivity.class)).putExtra("com.megasoft.entangle.tangleId", 2));
+		
+		Bundle bundle = new Bundle();
+		bundle.putInt(Config.REQUEST_ID, 1);
+		bundle.putString(Config.RESOURCE_TYPE, Config.REQUEST_TYPE);
+
+		FragmentManager manager = getFragmentManager();
+		FragmentTransaction transaction = manager.beginTransaction();
+
+		DeleteButtonFragment fragment = new DeleteButtonFragment();
+		fragment.setArguments(bundle);
+
+		transaction.add(R.id.deleteButtonPlaceHolder, fragment).commit();
 	}
 
 	@Override
