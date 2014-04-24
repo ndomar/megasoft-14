@@ -23,12 +23,23 @@ import com.megasoft.entangle.R;
 import com.megasoft.entangle.TangleActivity;
 import com.megasoft.requests.GetRequest;
 
-
+/**
+ * The Activity responsible for view the list of tangles the user is in
+ * @author MohamedBassem
+ *
+ */
 public class TangleStreamActivity extends Activity {
 	
 	private SharedPreferences settings;
 	private String sessionId;
+	/**
+	 * An arraylist to map the list items to their id
+	 */
 	private ArrayList<Integer> tangleIds;
+	
+	/**
+	 * An arraylist to map the list items to their name
+	 */
 	private ArrayList<String> tangleNames;
 	
 	@Override
@@ -62,6 +73,10 @@ public class TangleStreamActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	/**
+	 * The method responsible for fetching the tangles from the api
+	 * @author MohamedBassem
+	 */
 	private void fetchTangles() {
 		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
 				+ "/tangle") {
@@ -78,7 +93,12 @@ public class TangleStreamActivity extends Activity {
 		getRequest.execute();
 
 	}
-
+	
+	/**
+	 * The method responsible for populating the list view from the response of the request
+	 * @param response
+	 * @author MohamedBassem
+	 */
 	private void showData(String response) {
 		ListView listView = (ListView) findViewById(R.id.view_tangle_tangle_titles);
 		listView.removeViews(0, listView.getCount());
@@ -107,7 +127,12 @@ public class TangleStreamActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * The onclick handlers for the each tangle item
+	 * @param position The position of the tangle in the list
+	 * @author MohamedBassem
+	 */
 	public void goToTangle(int position){
 		Intent intent = new Intent(this,TangleActivity.class);
 		intent.putExtra("tangleId", tangleIds.get(position));
@@ -116,6 +141,11 @@ public class TangleStreamActivity extends Activity {
 		startActivity(intent);		
 	}
 	
+	/**
+	 * The onclick handler for the create tangle button
+	 * @param view
+	 * @author MohamedBassem
+	 */
 	public void goToCreateTangle(View view){
 		startActivity(new Intent(this,CreateTangleActivity.class));
 	}
