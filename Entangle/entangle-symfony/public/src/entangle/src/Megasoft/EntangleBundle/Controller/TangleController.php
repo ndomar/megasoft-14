@@ -1,17 +1,21 @@
 <?php
 
 namespace Megasoft\EntangleBundle\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Megasoft\EntangleBundle\Entity\InvitationCode;
 
 class TangleController extends Controller
 {
     /**
       * Validates that the request has correct format, session Id is active and of a user and that the user is in the tangle
-      * @param \Symfony\Component\HttpFoundation\Request $request
+      * @param Request $request
       * @param integer $tangleId
-      * @return \Symfony\Component\HttpFoundation\Response | null
+      * @return Response | null
       * @author OmarElAzazy
       */
     private function verifyUser($request, $tangleId){
@@ -42,12 +46,12 @@ class TangleController extends Controller
     
     /**
       * An endpoint to filter requests of a specific tangle by requester, tag, prefix of requester's name or description
-      * @param \Symfony\Component\HttpFoundation\Request $request
+      * @param Request $request
       * @param integer $tangleId
-      * @return \Symfony\Component\HttpFoundation\Response | Symfony\Component\HttpFoundation\JsonResponse
+      * @return Response | Symfony\Component\HttpFoundation\JsonResponse
       * @author OmarElAzazy
       */
-    public function filterRequestsAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId)
+    public function filterRequestsAction(Request $request, $tangleId)
     { 
         $verification = $this->verifyUser($request, $tangleId);
         
@@ -122,12 +126,12 @@ class TangleController extends Controller
     
     /**
       * An endpoint to return the list of tags in a specific tangle
-      * @param \Symfony\Component\HttpFoundation\Request $request
+      * @param Request $request
       * @param integer $tangleId
-      * @return \Symfony\Component\HttpFoundation\Response | Symfony\Component\HttpFoundation\JsonResponse
+      * @return Response | Symfony\Component\HttpFoundation\JsonResponse
       * @author OmarElAzazy
       */
-    public function allTagsAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId){
+    public function allTagsAction(Request $request, $tangleId){
         $verification = $this->verifyUser($request, $tangleId);
         
         if($verification != null){
@@ -218,9 +222,9 @@ class TangleController extends Controller
      * An endpoint that gets a list of emails and classify them to
      * newMember , Entangle Member not in the tangle , already in the tangle
      * and invalid emails
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @param integer $tangleId
-     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @return Response|JsonResponse
      * @author MohamedBassem
      */
     public function checkMembershipAction(Request $request, $tangleId) {
@@ -304,7 +308,7 @@ class TangleController extends Controller
 
         $newInvitationCode->setInviterId($inviterId);
         $newInvitationCode->setExpired(false);
-        $newInvitationCode->setCreated(new \DateTime("NOW"));
+        $newInvitationCode->setCreated(new DateTime("NOW"));
         $newInvitationCode->setEmail($email);
 
         $this->getDoctrine()->getManager()->persist($newInvitationCode);
@@ -320,9 +324,9 @@ class TangleController extends Controller
     /**
      * An endpoint to invite a list of emails to join a certain tangle
      * it creates the invitation code and send it to the user
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @param integer $tangleId
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @author MohamedBassem
      */
     public function inviteAction(Request $request, $tangleId) {
@@ -396,7 +400,7 @@ class TangleController extends Controller
      * tangle id $tangleId , If yes the function returns null, returns the appropriate exception otherwise 
      * @param integer $sessionId
      * @param integer $tangleId
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      * @author MohamedBassem
      */
     public function validateIsOwner($sessionId,$tangleId){
@@ -423,9 +427,9 @@ class TangleController extends Controller
     
     /**
      * The endpoint responsable for fetching the pending invitations for the tangle with id $tangleId
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @param integer $tangleId
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      * @author MohamedBassem
      */
     public function pendingInvitationsAction(Request $request,$tangleId){
@@ -460,9 +464,9 @@ class TangleController extends Controller
     /**
      * An endpoint to accept the pending invitation with id $pendingInvitationId and sends the
      * invitation email to the user
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @param integer $pendingInvitationId
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @author MohamedBassem
      */
     public function acceptPendingInvitationAction(Request $request,$pendingInvitationId){
@@ -489,17 +493,26 @@ class TangleController extends Controller
         $message = $pendingInvitation->getMessage()->getBody();
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
-        $this->inviteuser($pendingInvitation->getEmail(),$session->getUserId(),$message);
-        $pendingInvitation->setApproved(true);
-        $this->getDoctrine()->getManager()->flush();
-        return new Response("Approved",200);
+        $email = $pendingInvitation->getEmail();
+        if ($this->isNewMember($email) || !$this->isTangleMember($email, $pendingInvitation->getTangleId()) ) {
+            $this->inviteuser($email,$pendingInvitation->getInviterId(),$message);
+            $pendingInvitation->setApproved(true);
+            $this->getDoctrine()->getManager()->flush();
+            return new Response("Approved",200);
+        }else{
+            $pendingInvitation->setApproved(true);
+            $this->getDoctrine()->getManager()->flush();
+            return new Response("Already in the tangle",200);
+        }
+        
+        
     }
     
     /**
      * An endpoint to reject the pending invitation with id $pendingInvitationId
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @param integer $pendingInvitationId
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @author MohamedBassem
      */
     public function rejectPendingInvitationAction(Request $request,$pendingInvitationId){
