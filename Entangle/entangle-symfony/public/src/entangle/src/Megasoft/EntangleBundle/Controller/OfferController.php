@@ -143,12 +143,12 @@ class OfferController extends Controller {
         
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $offer = $offerRepo->findOneBy(array('id' => $offerId));
-        if($offer == null || $offer->getUserId() != $offererId){
+        if($offer == null || $offer->getUserId() != $offererId || $offer->getDeleted()){
             return new Response('Unauthorized', 401);
         }
         
-        if($offer->getStatus() == $offer->Accepted){
-            unfreezePoints($offer->getRequest(), $offer->getRequestedPrice());
+        if($offer->getStatus() == $offer->ACCEPTED){
+            $this->unfreezePoints($offer->getRequest(), $offer->getRequestedPrice());
         }
         
         $offer->setDeleted(true);
@@ -171,12 +171,12 @@ class OfferController extends Controller {
         $tangleId = $request->getTangleId();
         
         $userTangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserTangle');
-        $userTangle = $userTangleRepo->findOneBy(array('userId' => $requester.getId(), 'tangleId' => $tangleId));
+        $userTangle = $userTangleRepo->findOneBy(array('userId' => $requester->getId(), 'tangleId' => $tangleId));
         
-        $newCredit = $userTangle->getCredit + $points;
+        $newCredit = $userTangle->getCredit() + $points;
         $userTangle->setCredit($newCredit);
         
-        $this->getDoctrine()->getManager()->persist($offer);
+        $this->getDoctrine()->getManager()->persist($userTangle);
         $this->getDoctrine()->getManager()->flush();
         return ;
     }
