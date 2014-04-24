@@ -322,7 +322,7 @@ contact offerer and requester after claim
 
 
 
-## GET /request/{requestId}
+## GET /tangle/{tangleId}/request/{requestId}
 
 + Parameters
     + requestId ( String , required ) ... request id
@@ -341,7 +341,8 @@ contact offerer and requester after claim
                     "Tags" :["tag1", "tag2","tag3"],
                     "Price": "3",
                     "Deadline":"1/2/1",
-                    "Status":"done",
+                    "Status":"0",
+                    "MyRequest":"0",
                     "Description" : "description of a request",
                     "Offers" : [
                                     {
@@ -350,7 +351,7 @@ contact offerer and requester after claim
                                     "date" : "1/1/1",
                                     "description": "Offer Description", 
                                     "offererId" : "10",
-                                    "status" : "Status"
+                                    "status" : "1"
                                      },
                                      {
                                     "id" : "1", 
@@ -358,7 +359,7 @@ contact offerer and requester after claim
                                     "date" : "1/1/1",
                                     "description": "Offer Description", 
                                     "offererId" : "10",
-                                    "status" : "Status"
+                                    "status" : "0"
                                      },
                                      {
                                     "id" : "1", 
@@ -366,10 +367,12 @@ contact offerer and requester after claim
                                     "date" : "1/1/1",
                                     "description": "Offer Description", 
                                     "offererId" : "10",
-                                    "status" : "Status"
+                                    "status" : "3"
                                      }
                                 ]
                 }
+
+
 
 
 ## POST /request/{requestId}/icon
