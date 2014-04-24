@@ -69,6 +69,9 @@ public class RequestActivity extends Activity {
 	 * this is the endpoint string
 	 */
 	final String REQUEST = "/request/" + requestId;
+	/**
+	 * this is for checking if I have my own request open
+	 */
 	boolean myRequest = false;
 
 	/**
