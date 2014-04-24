@@ -9,14 +9,11 @@
     tools:context=".Notification" >
 
 
-    =
+    
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/checkBox1"
-        android:layout_marginTop="16dp"
-        android:layout_toRightOf="@+id/checkBox1"
-        android:text="This is another notification" />
+        android:layout_marginTop="16dp"/>
 
 </RelativeLayout>

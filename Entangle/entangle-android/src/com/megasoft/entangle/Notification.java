@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.PutRequest;
 
-import android.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -46,8 +45,6 @@ public class Notification extends Activity {
 		});
 				
 	}
-	
-	
 	/**
 	 * This method is used to set the notification status as seen
 	 * @author Mohamed Ayman
@@ -62,5 +59,37 @@ public class Notification extends Activity {
 		putRequest.setBody(json);
 		putRequest.execute("http://entangle2.apiary.io/1/notification/set-seen");
 	}
-	
+	/**
+	 * This method checks the status of the notification(new or seen).
+	 * @param text
+	 * @author Mohamed Ayman
+	 */
+	public void checkStatus(TextView text) {
+		GetRequest getRequest = new GetRequest("http://entangle2.apiary.io/notification/1/get-seen");
+		getRequest.addHeader("sessionID" , "testest");
+		
+		JSONObject json = new JSONObject();
+		
+		try {
+			getRequest.execute("http://entangle2.apiary.io/notification/1/get-seen");
+			json = new JSONObject(getRequest.get());
+		 
+			//Different displays for seen and new notifications
+			if(json.optInt("seen") == 1) { 
+				text.setTypeface(null, Typeface.NORMAL);
+				text.setTextColor(Color.GRAY);
+			} else {
+				text.setTypeface(null, Typeface.BOLD_ITALIC);
+			} 
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}  
 }
