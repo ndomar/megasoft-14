@@ -132,9 +132,7 @@ class RegisterController extends Controller {
                         $user->setPhoto($filepath);
                     }
                 }
-            } else
-                return new Response('Bad Request', 400);
-
+            }
             $entityManager = $this->getDoctrine()->getEntityManager();
             $entityManager->persist($user);
             $entityManager->persist($userEmail);
