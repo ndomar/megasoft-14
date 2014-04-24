@@ -44,6 +44,11 @@ reject_pending_invitation:
     methods: [DELETE]
 
 
+viewRequest:
+    pattern: tangle/{tangleId}/request/{requestId}
+    defaults: { _controller: MegasoftEntangleBundle:Request:viewRequest }
+    methods: [GET]
+
 
 create:
     pattern: /tangle/{tangleId}/request
@@ -57,12 +62,9 @@ acceptOffer:
     methods: [POST]
 
 
-
-
 index:
     pattern: /
     defaults: { _controller: MegasoftEntangleBundle:Site:index }
-
 
 
 dummy:
