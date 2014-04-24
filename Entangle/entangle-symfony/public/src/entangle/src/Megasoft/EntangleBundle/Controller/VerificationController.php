@@ -61,6 +61,7 @@ class VerificationController extends Controller {
         }
         $user = $search->getUser();
         $user->setVerified(true);
+        $this->getDoctrine()->getManager()->flush();
         return new Response("User verified",201);
     }
 
