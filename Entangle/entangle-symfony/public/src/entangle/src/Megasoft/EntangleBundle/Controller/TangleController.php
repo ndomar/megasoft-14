@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Megasoft\EntangleBundle\Entity\InvitationCode;
+use Megasoft\EntangleBundle\Entity\Offer;
+use Megasoft\EntangleBundle\Controller\OfferController;
 
 class TangleController extends Controller
 {
@@ -265,8 +267,6 @@ class TangleController extends Controller
         $response['alreadyInTheTangle'] = array();
         $response['invalid'] = array();
 
-
-
         foreach ($json['emails'] as $email) {
             if (!$this->isValidEmail($email)) {
                 $response['invalid'][] = $email;
@@ -435,7 +435,8 @@ class TangleController extends Controller
     private function removeRequests($tangleId, $userId) {
         $requestRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Request");
         
-        $requests = $requestRepo->findBy(array('tangleId' => $tangleId, 'userId' => $userId, 'deleted' => false));
+        $requests = $requestRepo->findBy(array('tangleId' => $tangleId, 
+            'userId' => $userId, 'deleted' => false));
         
         if($requests != null) {
             foreach ($requests as $request) {
@@ -443,6 +444,7 @@ class TangleController extends Controller
                     if($request->getStatus() != $request->CLOSED) {
                         //to be changed to call function of removing a request 
                         //function call    
+                        //$requestController = $this->get('getting_request_controller');
                     } else {
                         $request->setDeleted(true);
                     }               
@@ -474,13 +476,15 @@ class TangleController extends Controller
             foreach ($offers as $offer) {
                 if($offer != null) {
                     $requestId = $offer->getRequestId();
-                    $request = $requestRepo->findOneBy(array('requestId' => $requestId, 'tangleId' => $tangleId));
+                    $request = $requestRepo->findOneBy(array(
+                        'requestId' => $requestId, 'tangleId' => $tangleId));
                     
                     if($request != null) {
                         $offerStatus = $offer->getStatus();
                         if($offerStatus != $offer->DONE ) {
-                            //may be it is going to be changed to call the function of withdrawing an offer
-                            deleteOfferMessages($user, $offer);
+                            //may be it is going to be changed to call the 
+                            //function of withdrawing an offer
+                            $this->deleteOfferMessages($user, $offer);
                         }
                     }
                 }
@@ -489,6 +493,13 @@ class TangleController extends Controller
         }
     }
     
+    /**
+     * This function is responsible for handling the deletion of an offer
+     * 
+     * @param integer $user
+     * @param Offer $offer
+     * @author HebaAamer
+     */
     private function deleteOfferMessages($user, $offer) {
         //to be done in the coming sprint
         //send notification to the requester only in case of PENDING and ACCEPTED
@@ -521,7 +532,8 @@ class TangleController extends Controller
         $doctrine = $this->getDoctrine();
         $userTangleRepo = $doctrine->getRepository("MegasoftEntangleBundle:UserTangle");
         
-        $userTangle = $userTangleRepo->findOneBy(array('userId' => $userId, 'tangleId' => $tangleId));
+        $userTangle = $userTangleRepo->findOneBy(array('userId' => $userId, 
+            'tangleId' => $tangleId));
         if($userTangle != null){
             
             $tangleRepo = $doctrine->getRepository("MegasoftEntangleBundle:Tangle");
@@ -534,8 +546,6 @@ class TangleController extends Controller
                 $deletedBalance = $tangle->getDeletedBalance();
                 $updatedDeletedBalance = $deletedBalance + ($userTangle->getCredit());
                 $tangle->setDeletedBalance($updatedDeletedBalance);
-          
-                $doctrine->getManager()->flush();
             }
         }
     }
