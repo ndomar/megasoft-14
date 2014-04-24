@@ -18,5 +18,6 @@
     <string name="invite">Invite</string>
     <string name="icon">icon</string>
     <string name="iconButton">Upload Icon</string>
+    <string name="title_activity_upload_request_icon">Upload Request Icon</string>
 
 </resources>
