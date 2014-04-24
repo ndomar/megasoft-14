@@ -15,7 +15,7 @@ use Megasoft\EntangleBundle\Entity\Session;
 class TangleController extends Controller
 {
     /**
-      * Validates that the request has correct format, session Id is active and of a user and that the user is in the tangle
+      * Validates that the request has correct format,  session Id is active and of a user and that the user is in the tangle
       * @param Request $request
       * @param integer $tangleId
       * @return Response | null
@@ -26,9 +26,9 @@ class TangleController extends Controller
         
         if($tangleId == null || $sessionId == null){
             return new Response('Bad Request', 400);
-        }
+         }
         
-        $doctrine = $this->getDoctrine();
+        $dcotrine = $this->getDoctrine();
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
