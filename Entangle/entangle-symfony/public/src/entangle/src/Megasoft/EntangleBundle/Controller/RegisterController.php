@@ -24,121 +24,114 @@ class RegisterController extends Controller {
         return $this->render('MegasoftEntangleBundle:Register:register.html.twig', array('name' => $name));
     }
 
-
     /**
      * generates a random string
      * @param string $len
      * @return String $ret
      * @author: Eslam
-     * **/
-    private function generate($len){
+     * * */
+    private function generate($len) {
         $ret = '';
         $seed = "abcdefghijklmnopqrstuvwxyz123456789";
-        for($i=0;$i<$len;$i++){
-            $ret .= $seed[rand(0,strlen($seed)-1)];
+        for ($i = 0; $i < $len; $i++) {
+            $ret .= $seed[rand(0, strlen($seed) - 1)];
         }
         return $ret;
     }
+
     /**
      * checks if this username is unique
      * @param string $username
      * @return boolean true if the username is unique , false otherwise
      * @author: Eslam
-     * **/
+     * * */
     private function validateUniqueUsername($username) {
-
-        //TO BE COMPLETED
-
+        $nameRepo = $this->getDoctrine()->getRepository('MegsMegasoftEntangleBundle:User');
+        if ($nameRepo->findOneBy($username) == null && $username != null && $username != "") {
+            return true;
+        } else {
+            return false;
+        }
     }
 
+    private function passwordsMatch($password, $confirmPassword) {
+        if ($password == $confirmPassword) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function EmailIsUnique($email) {
+        $emailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
+        if ($emailRepo->findOneBy($email)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private function imageFunction($image) {
+        
+    }
 
     /**
      * Creates a new user once all required fields are filled
      * @param Request $request
      * @return void (Creates a new user if successful, otherwise it returns an error)
      * @author: Eslam
-     * **/
-    public function registerAction(\Symfony\Component\HttpFoundation\Request $request)  {
-        if ($request->getMethod() == 'POST') {  //reading the request object and getting data out of it
-            //$username = $request->get('username');
+     * * */
+    public function registerAction(\Symfony\Component\HttpFoundation\Request $request) {
+        if ($request->getMethod() == 'POST') {
             $name = $request->get('name');
             $password = $request->get('password');
-            $confirmPassword = $request->get('confirmPassword'); //Remember to do the check matching passwords
+            $confirmPassword = $request->get('confirmPassword');
             $email = $request->get('email');
             $userBio = $request->get('userBio');
             $birthDate = new \DateTime($request->get('birthDate'));
-            $verified = false;
             $user = new User;
             $userEmail = new UserEmail();
-
             $user->addEmail($userEmail);
-            if($name != null && $name != "") {
+            if ($this->validateUniqueUsername($name) && ($this->passwordsMatch($password, $confirmPassword) && ($this->EmailIsUnique($email)))) {
                 $user->setName($name);
-            }
-            if($password == $confirmPassword ) {
                 $user->setPassword($password);
+                $userEmail->setEmail($email);
             }
+            $user->setUserBio($userBio);
 
-            if($userBio!=null && $userBio!="") {
-                $user->setUserBio($userBio);
-            }
-
-            if($birthDate != null && $birthDate!= ""){
+            if ($birthDate != null && $birthDate != "") {
                 $user->setBirthDate($birthDate);
             }
 
-            $user->setVerified($verified);
-            $userEmail->setEmail($email);
+            $user->setVerified(FALSE);
+
 
             $image = $request->files->get('img');
-            $status = 'succes';
-            $uploadedURL = '';
-            $message='';
-            if(($image instanceof UploadedFile)&&($image->getError() == '0')) {
-                if($image->getSize() < 4194304) { //if image size is less that 4MB
+            if (($image instanceof UploadedFile) && ($image->getError() == '0')) {
+                if ($image->getSize() < 4194304) { //if image size is less that 4MB
                     $originalName = $image->getClientOriginalName();
                     $nameArray = explode('.', $originalName);
                     $fileType = $nameArray[sizeof($nameArray) - 1];
-                    $validFileTypes = array('jpg', 'jpeg' , 'bmp' ,
+                    $validFileTypes = array('jpg', 'jpeg', 'bmp',
                         'png');
 
-                    if(in_array(strtolower($fileType), $validFileTypes)) {
+                    if (in_array(strtolower($fileType), $validFileTypes)) {
 
-                        $filepath = '/home/neuron/Documents/megasoft-14/Entangle/entangle-symfony/public/src/entangle/web/images/profilePictures/' . substr(md5(time()),0,10) . $this->generate(5) . '.' .$fileType;
-                        move_uploaded_file($image,$filepath);
+                        $filepath = '/home/neuron/Documents/megasoft-14/Entangle/entangle-symfony/public/src/entangle/web/images/profilePictures/' . substr(md5(time()), 0, 10) . $this->generate(5) . '.' . $fileType;
+                        move_uploaded_file($image, $filepath);
                         $user->setPhoto($filepath);
-
-                    }
-                    else {
-                        $status = 'failed';
-                        $message = 'Invalid File Type';
                     }
                 }
-                else {
-                    $status = 'failed';
-                    $message = 'Size limit exceeded';
-                }
-            }
-            else {
-                $status = 'failed';
-                $message = 'File Error';
-            }
-
-
-
-
+            } else
+                return new Response('Bad Request', 400);
 
             $entityManager = $this->getDoctrine()->getEntityManager();
             $entityManager->persist($user);
             $entityManager->persist($userEmail);
             $entityManager->flush();
-
-            return new Response("Created" , 201);
+            return new Response("Created", 201);
         }
         return $this->render('MegasoftEntangleBundle:Register:register.html.twig');
     }
-
-
-
 
 }

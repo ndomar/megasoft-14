@@ -17,12 +17,13 @@ class AboutController extends Controller {
     public function indexAction($name) {
         return $this->render('MegasoftEntangleBundle:About:about.html.twig', array('name' => $name));
     }
-**
+/**
 * Renders the About.html.twig page
 * @param null
 * @return rendered page
 * @author Eslam Maged
 */
+
     public function  aboutAction() {
         return $this->render('MegasoftEntangleBundle:About:about.html.twig');
     }
