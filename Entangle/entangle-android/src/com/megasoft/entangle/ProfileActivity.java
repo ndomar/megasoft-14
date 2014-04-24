@@ -8,12 +8,15 @@ import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.view.View;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.ImageRequest;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -106,16 +109,20 @@ public class ProfileActivity extends Activity {
 	 * This is method is invoked by the button of leave tangle when it is
 	 * clicked
 	 * 
-	 * @param view
-	 *            , in this case is the leave tangle button
-	 * 
-	 * @author HebaAamer
+	 * @author Almgohar, HebaAamer
 	 */
 	@SuppressWarnings("deprecation")
 	private void leaveTangle() {
-		showDialog(0);
+		this.showDialog(0);
 	}
 
+	/**
+	 * This method is called when showDialog(int) method is called and it is
+	 * responsible for creating a dialog to make sure that the user wants to
+	 * leave the tangle
+	 * 
+	 * @author HebaAamer
+	 */
 	@Override
 	protected Dialog onCreateDialog(int dialogId) {
 		Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -128,6 +135,7 @@ public class ProfileActivity extends Activity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						sendLeaveRequest();
+						dialog.dismiss();
 					}
 				});
 		dialogBuilder.setNegativeButton("NO",
@@ -139,6 +147,45 @@ public class ProfileActivity extends Activity {
 					}
 				});
 		return dialogBuilder.create();
+	}
+
+	/**
+	 * This method is used to send the request of leaving the tangle and handles
+	 * different responses
+	 * 
+	 * @author HebaAamer
+	 */
+	private void sendLeaveRequest() {
+		DeleteRequest leaveRequest = new DeleteRequest(
+				"http://entangle2.apiary-mock.com/tangle/" + tangleId + "user") {
+			public void onPostExecute(String response) {
+				if (response != null) {
+					if (getStatusCode() == 201) {
+						Toast.makeText(getBaseContext(),
+								"You left the tangle successfully",
+								Toast.LENGTH_LONG).show();
+						// redirect to the tangles stream Activity
+						Intent newIntent = new Intent(getBaseContext(),
+								MainActivity.class);
+						newIntent.putExtra("userId", userId);
+						startActivity(newIntent);
+
+					} else if (getStatusCode() == 403) {
+						Toast.makeText(
+								getBaseContext(),
+								"Sorry, you are not allowed to leave the tangle",
+								Toast.LENGTH_LONG).show();
+					} else {
+						Toast.makeText(
+								getBaseContext(),
+								"Sorry, problem happened while leaving the tangle. Try again later",
+								Toast.LENGTH_LONG).show();
+					}
+				}
+			}
+		};
+		leaveRequest.addHeader("X-SESSION-ID", sessionId);
+		leaveRequest.execute();
 	}
 
 	@Override
@@ -161,7 +208,7 @@ public class ProfileActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.profile, menu);
 		return true;
 
 	}
@@ -249,37 +296,6 @@ public class ProfileActivity extends Activity {
 		};
 		request.addHeader("X-SESSION-ID", this.sessionId);
 		request.execute();
-	}
-
-	private void sendLeaveRequest() {
-		// to be changed to the tangleId
-		DeleteRequest leaveRequest = new DeleteRequest(
-				"http://entangle2.apiary-mock.com/tangle/"
-						+ getIntent().getIntExtra("tangleId", 0) + "user") {
-			public void onPostExecute(String response) {
-				if (response != null) {
-					if (getStatusCode() == 201) {
-						Toast.makeText(getBaseContext(),
-								"You left the tangle successfully",
-								Toast.LENGTH_LONG).show();
-						// redirect to the tangles stream Activity
-					} else if (getStatusCode() == 403) {
-						Toast.makeText(
-								getBaseContext(),
-								"Sorry, you are not allowed to leave the tangle",
-								Toast.LENGTH_LONG).show();
-					} else {
-						Toast.makeText(
-								getBaseContext(),
-								"Sorry, problem happened while leaving the tangle. Try again later",
-								Toast.LENGTH_LONG).show();
-					}
-				}
-			}
-		};
-		// to be changed to sessionId
-		leaveRequest.addHeader("X-SESSION-ID", "sessionId");
-		leaveRequest.execute();
 	}
 
 	/**
