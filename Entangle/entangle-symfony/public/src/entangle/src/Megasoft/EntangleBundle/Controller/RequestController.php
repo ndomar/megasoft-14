@@ -31,16 +31,17 @@ class RequestController extends Controller {
         if ($session->getExpired() == 1) {
             return $response = new Response("Error: Session Expired.", 401);
         }
-        $requestDetails = $this->getRequestDetails($requestId);
+        $sessionUserId =$session->getUserId(); 
+        $requestDetails = $this->getRequestDetails($requestId, $sessionUserId);
         if (count($requestDetails) == 0) {
             return new Response("No such request.", 404);
-        } else {
-            $response = new JsonResponse();
+        }     
+        $response = new JsonResponse();
             $response->setData(array($requestDetails));
             $response->setStatusCode(200);
             $response->headers->set('X-SESSION-ID', $sessionId);
             return $response;
-        }
+        
     }
 
     /**
@@ -49,7 +50,7 @@ class RequestController extends Controller {
      * @return Array $requestDetails 
      * @author sak93
      */
-    public function getRequestDetails($requestId) {
+    public function getRequestDetails($requestId, $sessionUserId) {
         $repository = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Request');
         $request = $repository->findOneBy(array('id' => $requestId));
         $requestDetails = array();
@@ -64,8 +65,12 @@ class RequestController extends Controller {
             $tangle = $request->getTangleId();
             $tags = $request->getTags();
             $offers = $this->getOfferDetails($requestId);
+            $myRequest = 0; 
+            if($sessionUserId==$requester){
+                $myRequest =1; 
+            }
             $requestDetails = array('requester' => $requester, 'description' => $description,
-                'status' => $status, 'date' => $date, 'deadline' => $deadline, 'icon' => $icon,
+                'status' => $status,'MyRequest'=> $myRequest,  'date' => $date, 'deadline' => $deadline, 'icon' => $icon,
                 'price' => $price, 'tangle' => $tangle, 'tags' => $tags, 'offers' => $offers);
         }
         return $requestDetails;
