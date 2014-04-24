@@ -169,7 +169,7 @@ class NotificationCenter
 
     /**
      * this function is used to send notification for new message
-     * data array ("title"=> notification title, "body" => notification body, "from"=>message from, "to", Message to,
+     * data array ("title"=> notification title, "body" => notification body, "by"=>message from, "to", Message to,
      * "message" => message sent)
      * @param $messageId
      * @param null $body
@@ -215,7 +215,7 @@ class NotificationCenter
 
     /**
      * this is invoked when there is a requester accepts an offer
-     * data array ("title"=> notification title, "body" => notification body, "requester"=>requester from,
+     * data array ("title"=> notification title, "body" => notification body, "by"=>requester from,
      * "requestDesc" => Description of request, "finalPrice" => price of final offer)
      * @param $transactionId
      * @param null $title
@@ -250,14 +250,14 @@ class NotificationCenter
         else
             $body = $fromName . "accepted your offer";
 
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->transactionNotificationId, 'requester' => $fromName, 'finalPrice' => $finalPrice,
+        $data = array('title' => $title, 'body' => $body, 'type' => $this->transactionNotificationId, 'by' => $fromName, 'finalPrice' => $finalPrice,
             'requestDesc' => $requestDesc, 'transactionId' => $transactionId);
         return $this->notificationCenter($to->getId(), $data);
     }
 
     /**
      *  this notifies the requester that an offer changed
-     * data array ("title"=> notification title, "body" => notification body, "from"=>offerer,"newPrice" => new price,
+     * data array ("title"=> notification title, "body" => notification body, "by"=>offerer,"newPrice" => new price,
      * "oldPrice" => price after changing)
      * @param $offerId
      * @param $oldPrice
@@ -302,7 +302,7 @@ class NotificationCenter
 
     /**
      * this notifies the offerer that his offer was chosen
-     * data array ("title"=> notification title, "body" => notification body, "from"=>offerer ,)
+     * data array ("title"=> notification title, "body" => notification body, "by"=>offerer ,)
      * @param $offerId
      * @param null $title
      * @param null $body
@@ -350,7 +350,7 @@ class NotificationCenter
 
     /**
      *  this should be invoked when a user delete an offer
-     * data array ("title"=> notification title, "body" => notification body, "from"=>offerer,)
+     * data array ("title"=> notification title, "body" => notification body, "by"=>offerer,)
      * @param $offerId
      * @param null $title
      * @param null $body
@@ -392,7 +392,7 @@ class NotificationCenter
 
     /**
      * this should be invoked when a user delete a request
-     * data array ("title"=> notification title, "body" => notification body, "from"=>requester,"requestId"=>requestId)
+     * data array ("title"=> notification title, "body" => notification body, "by"=>requester,"requestId"=>requestId)
      * @param $requestId
      * @param null $title
      * @param null $body
