@@ -26,7 +26,7 @@ invite:
     pattern: /tangle/{tangleId}/invite
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
     methods: [POST]
-<<<<<<< HEAD
+
 
 set_seen:
     pattern: /notification/{notificationId}/set-seen
@@ -37,5 +37,4 @@ get_seen:
     pattern: /notification/{notificationId}/get-seen
     defaults: { _controller :MegasoftEntangleBundle:Notification:getSeen }
     methods : [GET]
-=======
->>>>>>> 93c9ea3e8afc54b193b4fcbbf94008df15edf09b
+
