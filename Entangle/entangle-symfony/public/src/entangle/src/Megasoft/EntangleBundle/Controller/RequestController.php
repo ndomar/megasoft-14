@@ -17,7 +17,7 @@ class RequestController extends Controller {
      * @return Response 
      * @author sak93
      */
-    public function viewRequestAction($requestId, \Symfony\Component\HttpFoundation\Request $request) {
+    public function viewRequestAction($tangleId, $requestId, \Symfony\Component\HttpFoundation\Request $request) {
         $doctrine = $this->getDoctrine();
         $sessionId = $request->headers->get('X-SESSION-ID');
         if ($sessionId == null) {
@@ -32,7 +32,13 @@ class RequestController extends Controller {
             return $response = new Response("Error: Session Expired.", 401);
         }
         $sessionUserId =$session->getUserId(); 
+        $userTangle = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $viewer = $userTangle->findOneBy(array('tangleId' => $tangleId, 'userId' => $sessionUserId));
+        if (count($viewer) <= 0) {
+            return $response = new Response("Error: You do not belong to this tangle.", 401);
+        }
         $requestDetails = $this->getRequestDetails($requestId, $sessionUserId);
+        
         if (count($requestDetails) == 0) {
             return new Response("No such request.", 404);
         }     

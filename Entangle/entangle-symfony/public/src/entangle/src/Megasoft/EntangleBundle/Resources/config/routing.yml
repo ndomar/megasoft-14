@@ -44,7 +44,7 @@ reject_pending_invitation:
 
 
 viewRequest:
-    pattern: /request/{requestId}
+    pattern: tangle/{tangleId}/request/{requestId}
     defaults: { _controller: MegasoftEntangleBundle:Request:viewRequest }
     methods: [GET]
 
