@@ -428,47 +428,6 @@ class TangleController extends Controller
         return $ret;
     }
 
-
-    /**
-     * A function that is responsible of verifing the request from 
-     * a user leaving a tangle
-     * 
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param integer $tangleId
-     * @return \Symfony\Component\HttpFoundation\Response|null
-     * @author HebaAamer
-     */
-    private function leaveTangleVerification($request, $tangleId) {
-        $verification = $this->verifyUser($request, $tangleId);
-        
-        if($verification != null){
-            return $verification;
-        }
-                
-        $sessionId = $request->headers->get("X-SESSION_ID");
-        
-        $doctrine = $this->getDoctrine();
-        
-        $sessionRepo = $doctrine->getRepository("MegasoftEntangleBundle:Session");
-        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
-        $userId = $session->getUserId();
-        
-        $userTangleRepo = $doctrine->getRepository("MegasoftEntangleBundle:UserTangle");
-        if (($userTangle = $userTangleRepo
-                ->findOneBy(array('userId' => $userId, 
-                    'tangleId' => $tangleId, 'tangleOwner' => true))) != null) {
-            return new Response("Forbidden", 403);
-        }
-        $userTangle = $userTangleRepo
-                ->findOneBy(array('userId' => $userId, 
-                    'tangleId' => $tangleId)); 
-        if ($userTangle->getLeavingDate() != null) {
-            return new Response("Unauthorized", 401);
-        }
-        
-        return null;
-    }
-
     
     /**
      * Validates whether the user with the session id $sessionId is the owner of the tangle with
@@ -495,6 +454,48 @@ class TangleController extends Controller
 
         if (($userTangle = $userTangleRepo->findOneBy(array('userId' => $session->getUserId(), 'tangleId' => $tangleId))) == null || !$userTangle->getTangleOwner() ) {
 
+            return new Response("Unauthorized", 401);
+        }
+        
+        return null;
+    }
+    
+
+    
+    /**
+     * A function that is responsible of verifing the request from 
+     * a user leaving a tangle
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param integer $tangleId
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @author HebaAamer
+     */
+    private function leaveTangleVerification($request, $tangleId) {
+        $verification = $this->verifyUser($request, $tangleId);
+        
+        if($verification != null){
+            return $verification;
+        }
+                
+        $sessionId = $request->headers->get("X-SESSION-ID");
+        
+        $doctrine = $this->getDoctrine();
+        
+        $sessionRepo = $doctrine->getRepository("MegasoftEntangleBundle:Session");
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        $userId = $session->getUserId();
+        
+        $userTangleRepo = $doctrine->getRepository("MegasoftEntangleBundle:UserTangle");
+        if (($userTangle = $userTangleRepo
+                ->findOneBy(array('userId' => $userId, 
+                    'tangleId' => $tangleId, 'tangleOwner' => true))) != null) {
+            return new Response("Forbidden", 403);
+        }
+        $userTangle = $userTangleRepo
+                ->findOneBy(array('userId' => $userId, 
+                    'tangleId' => $tangleId)); 
+        if ($userTangle->getLeavingDate() != null) {
             return new Response("Unauthorized", 401);
         }
         
@@ -622,7 +623,7 @@ class TangleController extends Controller
             $tangleRepo = $doctrine->getRepository("MegasoftEntangleBundle:Tangle");
             $tangle = $tangleRepo->find($tangleId);
             
-            $userTangle->setLeavingDate(new DateTime("NOW"));
+            $userTangle->setLeavingDate(new DateTime('NOW'));
             
             if($tangle != null) {
                 
@@ -630,11 +631,12 @@ class TangleController extends Controller
                 $updatedDeletedBalance = $deletedBalance + ($userTangle->getCredit());
                 $tangle->setDeletedBalance($updatedDeletedBalance);
             }
+            $doctrine->getManager()->flush();
         }
     }
     
     /**
-     * This function is used to remove all the claims related to specific user
+     * This function is used to remove all the claims related to specific 
      * 
      * @param integer $tangleId
      * @param integer $userId
@@ -645,7 +647,8 @@ class TangleController extends Controller
         $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
         $user = $userRepo->find($userId);
         
-        $claims = $claimRepo->findBy(array('tangleId' => $tangleId, 'userId' => $userId));
+        //to be changed to userId
+        $claims = $claimRepo->findBy(array('tangleId' => $tangleId, 'usedId' => $userId));
         if($claims != null) {
             foreach($claims as $claim) {
                 if($claim != null) {
@@ -676,16 +679,18 @@ class TangleController extends Controller
             return $verified;
         }
         
-        $sessionId = $request->headers->get("X-SESSION_ID");
+        $sessionId = $request->headers->get("X-SESSION-ID");
         
         $sessionRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Session");
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         $userId = $session->getUserId();
         
+        $this->removeUser($tangleId, $userId);
         $this->removeOffers($tangleId, $userId);
         $this->removeRequests($tangleId, $userId);
-        $this->removeUser($tangleId, $userId);
         $this->removeClaims($tangleId, $userId);
+        
+        //removing notifications to be added in the coming sprint
         
         return new Response("You have left successfully", 204);
     }
