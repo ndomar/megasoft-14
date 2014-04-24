@@ -1,4 +1,4 @@
-﻿FORMAT: 1A
+FORMAT: 1A
 HOST: http://www.google.com
 
 
@@ -878,3 +878,17 @@ Post offer
             X-SESSION-ID : asdasdasdsadasdasd
             
 + Response 201 
+
+## DELETE /request/{requestId}
+Delete a request
+
++ Parameters
+    + requestId ( Int , required ) ... request id
+    
++ Request
+
+    + Header
+            
+             X-SESSION-ID : asdasdasdsadasdasd
+                 
++ Response 204
