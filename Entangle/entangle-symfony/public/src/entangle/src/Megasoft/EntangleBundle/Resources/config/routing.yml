@@ -39,9 +39,15 @@ delete_secondary_email:
     methods: [DELETE]
     
 
+acceptOffer:
+    pattern: /accept/offer
+    defaults: {_controller: MegasoftEntangleBundle:Offer:acceptOffer }
+    methods: [POST]
+
 dummy:
     pattern: /dummy
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
+
 
 get_profile:
     pattern: tangle/{tangleId}/user/{userId}/profile
