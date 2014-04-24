@@ -107,8 +107,5 @@
         	android:orientation="vertical"/>
 		
 		
-   	</LinearLayout>
-   	
-   	
-   	
+   	</LinearLayout> 	
    	</ScrollView>

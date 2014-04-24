@@ -195,11 +195,11 @@ public class ProfileActivity extends Activity {
 		leaveRequest.execute();
 	}
 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
-
 		Intent intent = getIntent();
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 
@@ -214,10 +214,8 @@ public class ProfileActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
 		getMenuInflater().inflate(R.menu.profile, menu);
 		return true;
-
 	}
 
 	/**
