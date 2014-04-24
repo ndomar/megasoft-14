@@ -53,6 +53,13 @@ class RegisterController extends Controller {
             return false;
         }
     }
+    
+    /**
+     * Checks that both passwords match.
+     * @param String password, String confirm password
+     * @return Boolean value, true if they match. False otherwise.
+     * @author: Eslam
+     * * */
 
     private function passwordsMatch($password, $confirmPassword) {
         if ($password == $confirmPassword) {
@@ -61,7 +68,12 @@ class RegisterController extends Controller {
             return false;
         }
     }
-
+    /**
+     * Checks that the email provided is unique
+     * @param String email
+     * @return Boolean value, true if unique. false otherwise
+     * @author: Eslam
+     * * */
     private function EmailIsUnique($email) {
         $emailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
         if ($emailRepo->findOneBy($email)) {
@@ -69,10 +81,6 @@ class RegisterController extends Controller {
         } else {
             return true;
         }
-    }
-
-    private function imageFunction($image) {
-        
     }
 
     /**
