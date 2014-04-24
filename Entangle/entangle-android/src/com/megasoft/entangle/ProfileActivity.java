@@ -151,26 +151,28 @@ public class ProfileActivity extends Activity {
 
 	/**
 	 * This method is used to send the request of leaving the tangle and handles
-	 * different responses
+	 * different responses, if the user left the tangle it will be redirected to
+	 * the list of tangles activity
 	 * 
 	 * @author HebaAamer
 	 */
 	private void sendLeaveRequest() {
-		DeleteRequest leaveRequest = new DeleteRequest(
-				"http://entangle2.apiary-mock.com/tangle/" + tangleId + "/user") {
+		DeleteRequest leaveRequest = new DeleteRequest(Config.API_BASE_URL
+				+ "/tangle/" + tangleId + "/user") {
 			public void onPostExecute(String response) {
 				if (getStatusCode() == 204) {
 					Toast.makeText(getBaseContext(),
 							"You left the tangle successfully",
 							Toast.LENGTH_LONG).show();
-					// redirect to the tangles stream Activity
+					// redirect to the tangles list Activity
 					Intent newIntent = new Intent(getBaseContext(),
 							MainActivity.class);
 					newIntent.putExtra("userId", userId);
-					// getIntent().addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-					// ProfileActivity.this.
-					// newIntent.addFlags(Intent.)
+					// it will either remove the whole history or we just finish
+					// the activity
+					// newIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 					startActivity(newIntent);
+					finish();
 
 				} else if (getStatusCode() == 403) {
 					Toast.makeText(getBaseContext(),
@@ -185,7 +187,7 @@ public class ProfileActivity extends Activity {
 			}
 
 		};
-		leaveRequest.addHeader("X-SESSION-ID", sessionId);
+		leaveRequest.addHeader(Config.API_SESSION_ID, sessionId);
 		leaveRequest.execute();
 	}
 
