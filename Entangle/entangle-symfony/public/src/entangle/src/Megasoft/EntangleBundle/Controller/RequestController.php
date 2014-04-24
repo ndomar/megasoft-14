@@ -97,6 +97,11 @@ class RequestController extends Controller {
         $response = new JsonResponse();
         $json_array = json_decode($json, true);
         $sessionId = $request->headers->get('X-SESSION-ID');
+        if ($sessionId == null) {
+            $response->setStatusCode(400);
+            $response->setContent("bad request");
+            return $response;
+        }
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $tangleTable = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
         $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
