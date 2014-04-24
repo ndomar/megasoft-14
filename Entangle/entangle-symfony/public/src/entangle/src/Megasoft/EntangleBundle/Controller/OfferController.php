@@ -3,9 +3,9 @@
 namespace Megasoft\EntangleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\Tests\String;
 
 class OfferController extends Controller {
 
@@ -117,4 +117,41 @@ class OfferController extends Controller {
         return "Offer Accepted.";
     }
 
+    /**
+      * An endpoint to withdraw an offer.
+      * @param Request $request
+      * @param integer $offerId
+      * @return Response
+      * @author OmarElAzazy
+     */
+    public function withdrawAction(Request $request, $offerId){
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        
+        if($offerId == null || $sessionId == null){
+            return new Response('Bad Request', 400);
+        }
+        
+        $doctrine = $this->getDoctrine();
+        
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        if($session == null || $session->getExpired()){
+            return new Response('Bad Request', 400);
+        }
+        
+        $offererId = $session->getUserId();
+        
+        $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $offer = $offerRepo->findOneBy(array('id' => $offerId));
+        if($offer == null || $offer->getUserId() != $offererId){
+            return new Response('Unauthorized', 401);
+        }
+        
+        $offer->setDeleted(true);
+        $offer->setStatus($offer->FAILED);
+        $this->getDoctrine()->getManager()->persist($offer);
+        $this->getDoctrine()->getManager()->flush();
+        
+        return new Response("Deleted", 204);
+    }
 }
