@@ -131,8 +131,17 @@ public class RequestActivity extends Activity {
 			protected void onPostExecute(String response) {
 				try {
 					JSONObject json = new JSONObject(response);
-					addRequestFields(json);
-					addOffers(json);
+					if (this.getStatusCode() == 200) {
+						addRequestFields(json);
+						addOffers(json);
+					} else {
+						TextView errorMessage = new TextView(self);
+						errorMessage.setText(json.getString("Error"));
+						errorMessage.setTextSize(25);
+						errorMessage.setTypeface(null, Typeface.BOLD_ITALIC);
+						errorMessage.setTextColor(Color.WHITE);
+						layout.addView(errorMessage);
+					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

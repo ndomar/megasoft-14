@@ -19,28 +19,39 @@ class RequestController extends Controller {
     public function viewRequestAction($tangleId, $requestId, \Symfony\Component\HttpFoundation\Request $request) {
         $doctrine = $this->getDoctrine();
         $sessionId = $request->headers->get('X-SESSION-ID');
+        $response = new JsonResponse();
         if ($sessionId == null) {
-            return $response = new Response("No Session Id.", 400);
+            $response->setData(array('Error' => 'No session Id.'));
+            $response->setStatusCode(400);
+            return $response;
         }
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($session == null) {
-            return $response = new Response("Error: Incorrect Session Id.", 400);
+            $response->setData(array('Error' => 'Incorrect Session Id.'));
+            $response->setStatusCode(400);
+            return $response;
         }
         if ($session->getExpired() == 1) {
-            return $response = new Response("Error: Session Expired.", 401);
+            $response->setData(array('Error' => 'Session Expired.'));
+            $response->setStatusCode(400);
+            return $response;
         }
         $sessionUserId = $session->getUserId();
         $userTangle = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
         $viewer = $userTangle->findOneBy(array('tangleId' => $tangleId, 'userId' => $sessionUserId));
         if (count($viewer) <= 0) {
-            return $response = new Response("Error: You do not belong to this tangle.", 401);
+            $response->setData(array('Error' => 'You do not belong to this tangle.'));
+            $response->setStatusCode(400);
+            return $response;
         }
 
         $requestDetails = $this->getRequestDetails($requestId, $sessionUserId, $tangleId);
 
         if (count($requestDetails) == 0) {
-            return new Response("No such request.", 404);
+            $response->setData(array('Error' => 'No such request.'));
+            $response->setStatusCode(400);
+            return $response;
         }
 
         $response = new JsonResponse();
