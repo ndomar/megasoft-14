@@ -106,7 +106,8 @@ public class CreateOfferActivity extends Activity {
 	/**
 	 * on creation of the activity it takes data from the fields and send it as
 	 * json object on clicking the Post Button
-	 * 
+	 * @param savedInstanceState
+	 * @return none
 	 * @author Salma Khaled
 	 */
 	protected void onCreate(Bundle savedInstanceState) {
@@ -174,7 +175,8 @@ public class CreateOfferActivity extends Activity {
 	}
 	/**
 	 * this method update the display of the chosen deadLine
-	 * 
+	 * @param none
+	 * @return none
 	 * @author Salma Khaled
 	 */
 
@@ -221,7 +223,7 @@ public class CreateOfferActivity extends Activity {
 	}
 	/**
 	 * check if the deadLine is valid and not in the past
-	 * 
+	 * @param none
 	 * @return true if it is valid , false otherwise
 	 * @author Salma Khaled
 	 */
@@ -252,6 +254,7 @@ public class CreateOfferActivity extends Activity {
 	 * it checks whether the fields are empty or not and then accordingly 
 	 * either error messages will be set or Post button will be enabled
 	 * @param View view which will be the checkbox
+	 * @return none
 	 * @author Salma Khaled
 	 */
 	public void itemClicked(View view) {
