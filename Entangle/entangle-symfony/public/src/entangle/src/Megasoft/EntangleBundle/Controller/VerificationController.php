@@ -51,6 +51,7 @@ class VerificationController extends Controller {
      * This method changes verified status of user to true
      * @param type $verificationCode
      * @return type
+     * @author MahmoudGamal
      */
     public function verifyUserAction($verificationCode) {
         $search = $this->getDoctrine()
