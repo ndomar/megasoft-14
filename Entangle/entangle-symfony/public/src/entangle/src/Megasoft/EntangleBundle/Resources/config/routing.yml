@@ -27,9 +27,15 @@ invite:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
     methods: [POST]
 
+acceptOffer:
+    pattern: /accept/offer
+    defaults: {_controller: MegasoftEntangleBundle:Offer:acceptOffer }
+    methods: [POST]
+
 dummy:
     pattern: /dummy
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
+
 
 get_profile:
     pattern: tangle/{tangleId}/user/{userId}/profile
