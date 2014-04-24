@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Megasoft\EntangleBundle\Entity\Offer;
 use Megasoft\EntangleBundle\Entity\InvitationCode;
 use Megasoft\EntangleBundle\Entity\InvitationMessage;
@@ -623,13 +622,41 @@ class TangleController extends Controller
             $tangleRepo = $doctrine->getRepository("MegasoftEntangleBundle:Tangle");
             $tangle = $tangleRepo->find($tangleId);
             
-            $userTangle->setLeavingDate(new \DateTime("NOW"));
+            $userTangle->setLeavingDate(new DateTime("NOW"));
             
             if($tangle != null) {
                 
                 $deletedBalance = $tangle->getDeletedBalance();
                 $updatedDeletedBalance = $deletedBalance + ($userTangle->getCredit());
                 $tangle->setDeletedBalance($updatedDeletedBalance);
+            }
+        }
+    }
+    
+    /**
+     * This function is used to remove all the claims related to specific user
+     * 
+     * @param integer $tangleId
+     * @param integer $userId
+     * @author HebaAamer
+     */
+    private function removeClaims ($tangleId, $userId) {
+        $claimRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Claim");
+        $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
+        $user = $userRepo->find($userId);
+        
+        $claims = $claimRepo->findBy(array('tangleId' => $tangleId, 'userId' => $userId));
+        if($claims != null) {
+            foreach($claims as $claim) {
+                if($claim != null) {
+                    //assuming 1 resolved
+                    if($claim->getStatus() == 1) {
+                        $claim->setDeleted(true);
+                    }
+                    if($user != null){
+                        $user->removeClaim($claim);
+                    }
+                }
             }
         }
     }
@@ -658,6 +685,7 @@ class TangleController extends Controller
         $this->removeOffers($tangleId, $userId);
         $this->removeRequests($tangleId, $userId);
         $this->removeUser($tangleId, $userId);
+        $this->removeClaims($tangleId, $userId);
         
         return new Response("You have left successfully", 204);
     }

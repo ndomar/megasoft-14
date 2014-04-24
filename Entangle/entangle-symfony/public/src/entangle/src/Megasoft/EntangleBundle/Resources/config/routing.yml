@@ -1,5 +1,5 @@
 megasoft_entangle_homepage:
-    pattern:  /hello/{hello}
+    pattern:  /hello/{name}
     defaults: { _controller: MegasoftEntangleBundle:Default:index }
     methods: [GET]
     
