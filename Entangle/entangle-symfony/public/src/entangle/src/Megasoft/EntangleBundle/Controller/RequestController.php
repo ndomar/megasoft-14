@@ -21,7 +21,7 @@ class RequestController extends Controller{
         $icon = imagecreatefromstring($decodedIcon);
         
         $iconFileName = 'request' . "$requestId" . '.png';
-        $outputFilePath = asset('bundles/megasoftentangle/images/icons/requests/') . $iconFileName;
+        $outputFilePath = '/vagrant/public/src/entangle/web/bundles/megasoftentangle/images/icons/' . $iconFileName;
         imagepng($icon, $outputFilePath, 9);
         imagedestroy($icon);
         return 'http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/icons/' . $iconFileName;
