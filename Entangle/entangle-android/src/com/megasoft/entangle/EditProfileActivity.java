@@ -100,7 +100,7 @@ public class EditProfileActivity extends Activity {
 	 */
 	private void initializeView() {
 		emailNotification = (CheckBox) findViewById(R.id.set_notification);
-		if (notification != true) {
+		if (!notification) {
 			emailNotification.setText("Turn on notification");
 		}
 
@@ -144,8 +144,8 @@ public class EditProfileActivity extends Activity {
 
 			String notificationState = emailNotification.getText().toString();
 			if (notificationState.equals("Turn off notification")) {
-				if ((notification == true && emailNotification.isChecked())
-						|| (notification == false && !emailNotification
+				if ((notification && emailNotification.isChecked())
+						|| (! notification && !emailNotification
 								.isChecked())) {
 					putReJsonObject.put("notification_state", false);
 				} else {
@@ -187,7 +187,6 @@ public class EditProfileActivity extends Activity {
 					.toString());
 
 			putReJsonObject.put("email", addedMail.getText().toString());
-			Log.i("batata", "anageeet");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -207,7 +206,7 @@ public class EditProfileActivity extends Activity {
 	}
 
 	/**
-	 * This emails chech that the String is in Email format
+	 * This emails check that the String is in Email format
 	 * 
 	 * @param String
 	 *            email

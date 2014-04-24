@@ -32,7 +32,7 @@ class UserController extends Controller {
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $currentSession = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
         $user = $currentSession->getUser();
-        if ($user != null) {
+        if ($user) {
             $newDescription = $jsonArray['description'];
             if ($user->getUserBio() != $newDescription) {
                 $user->setUserBio($newDescription);
@@ -46,7 +46,7 @@ class UserController extends Controller {
             }
             $newDateOfBirthString = $jsonArray['date_of_birth'];
 
-            if ($newDateOfBirthString != null) {
+            if ($newDateOfBirthString) {
                 $newDateOfBirth = strtotime($newDateOfBirthString);
                 $dateGiven = $user->getBirthDate();
                 if ($newDateOfBirth != $dateGiven) {
@@ -58,7 +58,7 @@ class UserController extends Controller {
                 $newMail = new UserEmail();
                 $newMail->setEmail($jsonArray['added_email']);
                 $newMail->setUser($user);
-                if ($user->getId() != null) {
+                if ($user->getId()) {
                     $newMail->setUserId($user->getId());
                     $user->addEmail($newMail);
                     $doctrineManger->persist($newMail);
@@ -82,7 +82,7 @@ class UserController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $currentSession = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
-        if ($currentSession != null) {
+        if ($currentSession) {
             $user = $currentSession->getUser();
             $deletedMail = $jsonArray['deletedMail'];
             $user->removeEmail($deletedMail);
