@@ -400,42 +400,6 @@ Post icon for a specific request
             "iconUrl" : "http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/icons/test.jpg"
         }
 
-## GET /user/whoami/{sessionId}
-
-+ parameter 
-    + sessionId (String , required) ... session id
-    
-+ Request
-    + Header 
-        
-             X-SESSION-ID : "asd123"
-
-+ Response 200 (application/json)
-
-        {
-            "user" : "UserWithSessionId"
-        }
-        
-## POST /user/login/{username,password}
-
-+ Parameters
-    + username ( String , required ) ... username
-    + password (String , required ) ... password
-    
-+ Request (application/json)
-    + Header
-            
-             X-SESSION-ID : "asd123"
-    
-    + Body 
-    
-            {
-               "username" : [username]
-                "password" : [password]
-            }
-             
-+ Response 201
-
 
 ## POST /register
 As a user, i can register
@@ -777,6 +741,24 @@ get the details of an offer
 
             }
 
+
+## POST /user/login
+
+
++ Request (application/json)
+    
+    + Body 
+    
+            {
+               "name" : "maisara",
+                "password" : "95bcadd58e0aa59e8f6e09c86ed310c7"
+            }
+             
++ Response 201 (application/json)
+
+        {
+             "session_id" : "abcdefghijklmnopqrstuvwxyz1234"                                 
+        }
 
 ##POST /accept/offer
 accept an offer
