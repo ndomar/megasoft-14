@@ -106,7 +106,18 @@ public class OfferActivity extends Activity {
 	 * String for post offer endpoint
 	 */
 	final String ACCEPT = "/accept/offer";
-
+	/**
+	 * String for get and post offer details endpoint
+	 */
+	final String Request = "/request/";
+	/**
+	 * String for get offer details endpoint
+	 */
+	final String Offer= "/offers/";
+	/**
+	 * offer status
+	 */
+	final String done= "2";
 	/**
 	 * The id of the logged in user
 	 */
@@ -385,11 +396,11 @@ public class OfferActivity extends Activity {
 						if (jresponse.getString("status").equals("0")
 								|| jresponse.getString("status").equals("2")) {
 							Toast error = Toast.makeText(
-									getApplicationContext(), "Error",
+									getApplicationContext(), R.string.error,
 									Toast.LENGTH_LONG);
 							error.show();
 						} else {
-							markAsDone(1);
+							markAsDone(offerId);
 						}
 
 					} catch (JSONException e) {
@@ -399,7 +410,7 @@ public class OfferActivity extends Activity {
 				}
 			}
 		};
-		initRequest.addHeader("X-SESSION-ID", "second");
+		initRequest.addHeader(Config.API_SESSION_ID, "second");
 		initRequest.execute();
 
 	}
@@ -414,7 +425,7 @@ public class OfferActivity extends Activity {
 
 		JSONObject json = new JSONObject();
 		try {
-			json.put("status", "2");
+			json.put("status", done);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -423,7 +434,7 @@ public class OfferActivity extends Activity {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 201) {
 					Toast success = Toast.makeText(getApplicationContext(),
-							"Marked as done", Toast.LENGTH_LONG);
+							R.string.mark, Toast.LENGTH_LONG);
 					success.show();
 					CheckBox checkbox1 = (CheckBox) findViewById(R.id.checkBox1);
 					checkbox1.setEnabled(false);
@@ -431,7 +442,7 @@ public class OfferActivity extends Activity {
 			}
 
 		};
-		request.addHeader("X-SESSION-ID", "asdasdasdsadasdasd");
+		request.addHeader(Config.API_SESSION_ID, "asdasdasdsadasdasd");
 		request.setBody(json);
 		request.execute();
 

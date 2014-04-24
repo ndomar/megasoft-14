@@ -11,6 +11,7 @@ update:
 search:
     path:      /search/{offerid}
     defaults:  { _controller: MegasoftEntangleBundle:Offer:search }
+    methods: [GET]
 
 profile:
     pattern: tangle/{tangleId}/user/{userId}/profile

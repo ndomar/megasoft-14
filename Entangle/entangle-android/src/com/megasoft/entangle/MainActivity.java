@@ -13,13 +13,8 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-
-		startActivity(new Intent(this, TangleActivity.class));
-
 		setContentView(R.layout.activity_main); 
-		startActivity((new Intent(this,ManagePendingInvitationActivity.class)).putExtra("com.megasoft.entangle.tangleId", 2));
-
+		startActivity(new Intent(this,OfferActivity.class));
 	}
 
 	@Override
