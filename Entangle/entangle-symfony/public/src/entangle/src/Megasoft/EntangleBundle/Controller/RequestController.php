@@ -15,28 +15,36 @@ class RequestController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
+        $sessionExpired = $session->getExpired();
         if ($sessionId == null) {
             return new Response("Bad Request", 400);
         }
         if ($session == null) {
             return new Response("Unauthorized", 401);
         }
+        if ($sessionExpired) {
+            return new Response("Session expired", 440);
+        }
         $requestRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Request');
         $tangleRequest = $requestRepo->findOneBy(array('id' => $requestId));
         if ($tangleRequest == null) {
-            return new Response("Bad Request", 400);
+            return new Response("Not Found", 404);
         } else {
             if ($tangleRequest->getStatus() == \Megasoft\EntangleBundle\Entity\Request::OPEN) {
                 return new Response("Request is already open", 400);
             }
         }
-        if($tangleRequest->getStatus() == \Megasoft\EntangleBundle\Entity\Request::CLOSED) {
+        if (($session->getUserId()) != ($tangleRequest->getUserId())) {
+            return new Response("Unauthorized", 401);
+        }
+        if ($tangleRequest->getStatus() == \Megasoft\EntangleBundle\Entity\Request::CLOSED) {
             $tangleRequest->setStatus(\Megasoft\EntangleBundle\Entity\Request::OPEN);
             $this->getDoctrine()->getManager()->persist($tangleRequest);
             $this->getDoctrine()->getManager()->flush();
             return new Response('Reopened', 200);
         }
     }
+
     /**
      * this method is used to validate data and return response accordingly 
      * @param String $sessionId
@@ -191,4 +199,3 @@ class RequestController extends Controller {
     }
 
 }
-
