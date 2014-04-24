@@ -875,3 +875,16 @@ Post offer
             X-SESSION-ID : asdasdasdsadasdasd
             
 + Response 201 
+
+
+## POST /user/logout
+
+
++ Request 
+    
+   
+               X-SESSION_ID = "qyAzBShe7XMBrWhjyi1q8qi4jBtYLt"
+            
+             
++ Response 200
+
