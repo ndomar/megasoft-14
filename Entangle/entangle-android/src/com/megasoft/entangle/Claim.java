@@ -72,7 +72,7 @@ public class Claim extends Activity {
 			Toast.makeText(this, "Msssg body missing", Toast.LENGTH_LONG)
 					.show();
 		} else {
-			
+
 			JSONObject object = new JSONObject();
 			try {
 				object.put("X-SENDER-MAIL", claimerMail);
@@ -82,7 +82,7 @@ public class Claim extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			int requestID = (int) getIntent().getIntExtra("requestID", 0);
 			PostRequest postSubject = new PostRequest(Config.API_BASE_URL
 					+ "/claim/" + requestID + "/sendClaim") {
@@ -90,11 +90,10 @@ public class Claim extends Activity {
 				protected void onPostExecute(String response) {
 					try {
 						if (this.getStatusCode() == 200) {
-						JSONObject obj = new JSONObject(response);
-						int claimId = obj.getInt("X-CLAIM-ID");
-						intent.putExtra("claimId", claimId);
-						}
-						else {
+							JSONObject obj = new JSONObject(response);
+							int claimId = obj.getInt("X-CLAIM-ID");
+							intent.putExtra("claimId", claimId);
+						} else {
 							connection = false;
 						}
 
@@ -104,20 +103,20 @@ public class Claim extends Activity {
 					}
 				}
 			};
-			
+
 			String sessionID = (String) getIntent().getCharSequenceExtra(
 					"sessionID");
 			postSubject.setBody(object);
 			postSubject.addHeader("X-SESSION-ID", sessionID);
 			postSubject.execute();
 			if (!connection) {
-				Toast.makeText(this, "Sorry connection lost", Toast.LENGTH_SHORT).show();
-				}
-			else {
+				Toast.makeText(this, "Sorry connection lost",
+						Toast.LENGTH_SHORT).show();
+			} else {
 				Toast.makeText(this, "Claim Sent", Toast.LENGTH_SHORT).show();
 				startActivity(intent);
 			}
-			
+
 		}
 
 	}
