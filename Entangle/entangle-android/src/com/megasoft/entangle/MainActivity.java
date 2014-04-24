@@ -97,7 +97,6 @@ public class MainActivity extends Activity {
 		Intent homeActivity = new Intent(this, HomeActivity.class);
 		homeActivity.putExtra("sessionId", response);
 		startActivity(homeActivity);
-		startActivity(new Intent(this, TangleActivity.class));
 	}
 
 	@Override
