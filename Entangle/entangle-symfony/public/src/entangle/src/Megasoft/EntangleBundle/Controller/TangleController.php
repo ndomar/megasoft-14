@@ -514,7 +514,7 @@ class TangleController extends Controller
         $requestRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Request");
         
         $requests = $requestRepo->findBy(array('tangleId' => $tangleId, 
-            'userId' => $userId, 'deleted' => false));
+            'userId' => $userId));
         $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
         $user = $userRepo->find($userId);
         
@@ -522,7 +522,7 @@ class TangleController extends Controller
             foreach ($requests as $request) {
                 if($request != null) {
                     if($request->getStatus() != $request->CLOSE) {
-                        //we need to add done
+                        //we need to add DONE requests
                         $request->setStatus($request->CLOSE);
                         $request->setDeleted(true);
                         //to add a notification in the next sprint
@@ -532,6 +532,12 @@ class TangleController extends Controller
                     if($user != null) {
                         $user->removeRequest($request);
                     }
+                    $offers = $request->getOffers();
+                    if($offers != null) {
+                        foreach($offers as $offer) {
+                            $this->deleteOfferMessages($user, $offer);
+                        }
+                    }    
                 }
             }
             $this->getDoctrine()->getManager()->flush();
@@ -551,7 +557,7 @@ class TangleController extends Controller
         $doctrine = $this->getDoctrine();
         $offerRepo = $doctrine->getRepository("MegasoftEntangleBundle:Offer");
         
-        $offers = $offerRepo->findBy(array('userId' => $userId, 'deleted' => false));
+        $offers = $offerRepo->findBy(array('userId' => $userId));
         if($offers != null) {
             $requestRepo = $doctrine->getRepository("MegasoftEntangleBundle:Request");
             $userRepo = $doctrine->getRepository("MegasoftEntangleBundle:User");
@@ -561,16 +567,19 @@ class TangleController extends Controller
                 if($offer != null) {
                     $requestId = $offer->getRequestId();
                     $request = $requestRepo->findOneBy(array(
-                        'requestId' => $requestId, 'tangleId' => $tangleId));
+                        'id' => $requestId, 'tangleId' => $tangleId));
                     
                     if($request != null) {
                         $offerStatus = $offer->getStatus();
                         if($offerStatus != $offer->DONE ) {
-                            //may be it is going to be changed to call the 
-                            //function of withdrawing an offer
                             $this->deleteOfferMessages($user, $offer);
+                            $offer->setDeleted(true);
+                            $user->removeOffer($offer);
                         }
                     }
+                    //to be done in the coming sprint
+                    //send notification to the requester only in 
+                    //case of PENDING and ACCEPTED
                 }
             }
             $this->getDoctrine()->getManager()->flush();
@@ -578,25 +587,19 @@ class TangleController extends Controller
     }
     
     /**
-     * This function is responsible for handling the deletion of an offer
+     * This function is responsible for handling the deletion of the messages 
+     * related to an offer
      * 
      * @param integer $user
      * @param Offer $offer
      * @author HebaAamer
      */
     private function deleteOfferMessages($user, $offer) {
-        //to be done in the coming sprint
-        //send notification to the requester only in case of PENDING and ACCEPTED
-        $offer->setDeleted(true);
         if($user != null) {
-            $user->removeOffer($offer);
-        }
-            
-        $messages = $offer->getMessages();
-        foreach ($messages as $message) {
-            if($message != null) {
-                $message->setDeleted(true);
-                if($user != null) {
+            $messages = $offer->getMessages();
+            foreach ($messages as $message) {
+                if($message != null && $message->getSenderId() == $user->getId()) {
+                    $message->setDeleted(true);
                     $user->removeMessage($message);
                 }
             }
