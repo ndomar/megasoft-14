@@ -40,7 +40,7 @@ class RequestController extends Controller {
             $response->setContent("Unauthorized");
             return $response;
         }
-        
+
         if ($tangle == null || $user == null) {
             $response->setStatusCode(401);
             return $response;
@@ -102,10 +102,16 @@ class RequestController extends Controller {
             $response->setContent("bad request");
             return $response;
         }
+
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $tangleTable = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
         $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
         $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
+        if ($session == null || $session->getExpired() == true) {
+            $response->setStatusCode(401);
+            $response->setContent("Unauthorized");
+            return $response;
+        }
         $userId = $session->getUserId();
         $description = $json_array['description'];
         $tags = $json_array['tags'];
