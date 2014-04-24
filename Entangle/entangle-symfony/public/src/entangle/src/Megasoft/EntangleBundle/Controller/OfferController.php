@@ -167,11 +167,12 @@ class OfferController extends Controller {
       * @author OmarElAzazy
      */
     public function unfreezePoints($request, $points){
-        $requester = $request->getUser();
+        $requesterId = $request->getUser()->getId();
         $tangleId = $request->getTangleId();
         
         $userTangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserTangle');
-        $userTangle = $userTangleRepo->findOneBy(array('userId' => $requester->getId(), 'tangleId' => $tangleId));
+        
+        $userTangle = $userTangleRepo->findOneBy(array('userId' => $requesterId, 'tangleId' => $tangleId));
         
         $newCredit = $userTangle->getCredit() + $points;
         $userTangle->setCredit($newCredit);
