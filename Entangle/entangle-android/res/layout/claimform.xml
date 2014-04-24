@@ -23,7 +23,7 @@
         android:layout_alignRight="@+id/linearLayout"
         android:layout_marginRight="19dp"
         android:layout_marginTop="15dp"
-        android:text="@string/name"
+        android:text="@string/claimName"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText

@@ -1,0 +1,96 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".CreateOfferActivity"
+    android:focusable="true" 
+    android:focusableInTouchMode="true" >
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_offer" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="18dp"
+        android:text="@string/offer_description" />
+
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:inputType="textMultiLine" >
+        
+    </EditText>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/description"
+        android:layout_alignRight="@+id/textView1"
+        android:layout_below="@+id/description"
+        android:layout_marginTop="19dp"
+        android:text="@string/offer_requested_price" />
+
+    <EditText
+        android:id="@+id/requestedPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="number" 
+        android:hint="@string/requested_price_hint" />
+
+    <Button
+        android:id="@+id/deadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/requestedPrice"
+        android:layout_below="@+id/requestedPrice"
+        android:layout_marginTop="16dp"
+        android:text="@string/expected_deadline" />
+
+    <TextView
+        android:id="@+id/showMyDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/deadline"
+        android:layout_alignRight="@+id/Post"
+        android:layout_below="@+id/deadline" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/showMyDate"
+        android:layout_below="@+id/showMyDate"
+        android:text="@string/offer_check"
+        android:onClick="itemClicked" />
+
+    <Button
+        android:id="@+id/Post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/checkBox"
+        android:layout_marginLeft="34dp"
+        android:layout_toRightOf="@+id/textView3"
+        android:text="@string/post_offer" />
+
+</RelativeLayout>
