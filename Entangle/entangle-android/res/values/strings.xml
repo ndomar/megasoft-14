@@ -12,13 +12,11 @@
     <string name="priceHint">enter a positive number</string>
     <string name="title_activity_request">RequestActivity</string>
     <string name="hello_world">Hello world!</string>
-
     <string name="date">Date</string>
     <string name="ChooseDate">Choose DeadLine</string>
     <string name="deadLine">Expected deadline</string>
     <string name="price">Requested price</string>
     <string name="check">please check when you are done</string>
-    
     <string name="title_activity_view_stream">ViewStream</string>
     <string name="viewStream">Stream</string>
     <string name="viewMembers">Members</string>
@@ -36,7 +34,6 @@
     <string name="requesterFilter">Write a requester name to filter with</string>
     <string name="fullTextFilter">Choose Full Text Search to be able to write :)</string>
     <string name="spinner">Filtering options</string>
-
     <string name="title_activity_invite_users">Invite Users</string>
     <string name="add_email">+</string>
     <string name="invite_continue">Continue</string>
@@ -70,5 +67,8 @@
     </string-array>
 
     <string name="title_activity_stream_request_fragment">StreamRequestFragment</string>
+    <string name="title_activity_tangle_stream">TangleStreamActivity</string>
+    <string name="create_tangle">Create Tangle</string>
+    <string name="title_activity_create_tangle">asd</string>
 
 </resources>

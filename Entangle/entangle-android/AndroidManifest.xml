@@ -74,6 +74,14 @@
             android:name="com.megasoft.entangle.OfferActivity"
             android:label="@string/title_activity_offer" >
         </activity>
+        <activity
+            android:name="com.megasoft.entangle.viewtanglelsit.TangleStreamActivity"
+            android:label="@string/title_activity_tangle_stream" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.CreateTangleActivity"
+            android:label="@string/title_activity_create_tangle" >
+        </activity>
     </application>
 
 </manifest>
