@@ -31,7 +31,6 @@ class NotificationCenter
      */
     private $container;
 
-
     /**
      * @param EntityManager $em
      * @param Container $container
@@ -51,7 +50,6 @@ class NotificationCenter
      * @param $notification
      * @return bool|mixed
      */
-
     function notificationCenter($userID, $notification)
     {
         $Authorization = $this->container->getParameter('GOOGLE_API_KEY');
@@ -92,7 +90,7 @@ class NotificationCenter
      * @param null $title
      * @return bool|mixed
      */
-    function newMessageNotification($messageId, $body = null, $title = null)
+    function newMessageNotification($messageId, $title = null, $body = null)
     {
 
         $notification = new NewMessageNotification();
@@ -122,7 +120,7 @@ class NotificationCenter
             $body = $this->formatMessage($body, $fromName, $toName);
 
         $data = array('title' => $title, 'body' => $body, 'from' => $fromName, 'message' => $message->getBody());
-        return $this->notificationCenter($to, $data);
+        return $this->notificationCenter($to->getId(), $data);
 
     }
 
@@ -132,11 +130,11 @@ class NotificationCenter
      * data array ("title"=> notification title, "body" => notification body, "requester"=>requester from,
      * "requestDesc" => Description of request, "finalPrice" => price of final offer)
      * @param $transactionid
-     * @param null $body
      * @param null $title
+     * @param null $body
      * @return bool|mixed
      */
-    function transactionNotification($transactionid, $body = null, $title = null)
+    function transactionNotification($transactionid, $title = null, $body = null)
     {
         $notification = new  TransactionNotification();
         $transaction = $this->em->getRepository('MegasoftEntangleBundle:Transaction')->find($transactionid);
@@ -155,25 +153,29 @@ class NotificationCenter
 
         $finalPrice = $transaction->getFinalPrice();
         $requestDesc = $transaction->getOffer()->getRequest()->getDescription();
-        $requester = $from->getName();
+        $fromName = $from->getName();
+        $toName = $to->getName();
         if (!$title)
-            $title = $requester . "accepted your offer";
+            $title = $fromName . "accepted your offer";
         if (!$body)
-            $body = $this->formatMessage($body, $requester, $to->getName());
+            $body = $this->formatMessage($body, $fromName, $toName);
 
-        $data = array('title' => $title, 'body' => $body, 'requester' => $requester, "finalPrice" => $finalPrice, "requestDesc" => $requestDesc);
+        $data = array('title' => $title, 'body' => $body, 'requester' => $fromName, "finalPrice" => $finalPrice, "requestDesc" => $requestDesc);
         return $this->notificationCenter($to->getId(), $data);
     }
 
     /**
+     *
+     * 
+     * data array ("title"=> notification title, "body" => notification body, "from"=>offerer,"newPrice" => new price,
+     * "oldPrice" => price after changing)
      * @param $offerid
      * @param $oldPrice
-     * @param $newPrice
-     * * @param null $title
+     * @param null $title
      * @param null $body
      * @return bool|mixed
      */
-    function offerChangeNotification($offerid, $oldPrice, $newPrice, $title = null, $body = null)
+    function offerChangeNotification($offerid, $oldPrice, $title = null, $body = null)
     {
 
         $notification = new PriceChangeNotification();
@@ -181,10 +183,11 @@ class NotificationCenter
         $request = $offer->getRequest();
         $from = $offer->getUser();
         $to = $request->getUser();
+        $newPrice = $offer->getRequestedPrice();
         $date = date('m/d/Y h:i:s a', time());
         $date = DateTime::createFromFormat('m/d/Y h:i:s a', $date);
 
-        $notification->set
+
         $notification->setCreated($date);
         $notification->setSeen(false);
         $notification->setNewPrice($newPrice);
@@ -194,21 +197,24 @@ class NotificationCenter
         $this->em->flush();
 
 
-        $toName = $request->getUser()->getName();
-        $fromName = $offer->getUser()->getName();
-        $to = $request->getUserId();
-        $user = $this->em->getRepository('MegasoftEntangleBundle:User')->find($to);
-        $data = array('to' => $toName, 'from' => $fromName, 'newPrice' => $newPrice,);
+        $fromName = $from->getName();
+        $toName = $to->getName();
+        if (!$title)
+            $title = $toName . "changed his offer";
+        if (!$body)
+            $body = $this->formatMessage($body, $fromName, $toName);
 
-        return $this->notificationCenter($to, $data);
+        $data = array('title' => $title, 'body' => $body, 'from' => $fromName, "newPrice" => $newPrice, "oldPrice" => $oldPrice);
+        return $this->notificationCenter($to->getId(), $data);
     }
 
     /**
      * @param $offerid
-     * @param null $message
+     * @param null $title
+     * @param null $body
      * @return bool|mixed
      */
-    function chooseOfferNotification($offerid, $message = null)
+    function chooseOfferNotification($offerid, $title = null, $body = null)
     {
         $notification = new OfferChosenNotification();
         $offer = $this->em->getRepository('MegasoftEntangleBundle:Offer')->find($offerid);
