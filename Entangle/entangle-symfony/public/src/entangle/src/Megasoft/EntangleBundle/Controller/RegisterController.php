@@ -47,7 +47,7 @@ class RegisterController extends Controller {
      * * */
     private function validateUniqueUsername($username) {
         $nameRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
-        if ($nameRepo->findOneBy($username) == null && $username != null && $username != "") {
+        if ($nameRepo->findOneBy(array('name' => $username)) == null && $username != null && $username != "") {
             return true;
         } else {
             return false;
@@ -76,7 +76,7 @@ class RegisterController extends Controller {
      * * */
     private function EmailIsUnique($email) {
         $emailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
-        if ($emailRepo->findOneBy($email)) {
+        if ($emailRepo->findOneBy(array('email' =>$email))) {
             return false;
         } else {
             return true;
