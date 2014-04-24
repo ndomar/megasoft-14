@@ -323,7 +323,7 @@ contact offerer and requester after claim
 
 
 
-## GET /request/{requestId}
+## GET /tangle/{tangleId}/request/{requestId}
 
 + Parameters
     + requestId ( String , required ) ... request id
