@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.megasoft.config.Config;
+import com.megasoft.entangle.CreateTangleActivity;
 import com.megasoft.entangle.R;
 import com.megasoft.entangle.TangleActivity;
 import com.megasoft.requests.GetRequest;
@@ -113,6 +114,10 @@ public class TangleStreamActivity extends Activity {
 		intent.putExtra("tangleName", tangleNames.get(position));
 		intent.putExtra("sessionId", sessionId);
 		startActivity(intent);		
+	}
+	
+	public void goToCreateTangle(View view){
+		startActivity(new Intent(this,CreateTangleActivity.class));
 	}
 
 }
