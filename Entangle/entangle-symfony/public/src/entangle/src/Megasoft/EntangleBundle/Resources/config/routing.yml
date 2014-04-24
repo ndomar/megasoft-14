@@ -15,7 +15,7 @@ fetch_tags_in_tangle:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:allTags}
     methods: [GET]
     requirements:
-        tangleId:  \d+
+        tangleId: \d+
         
 check_membership:
     pattern: /tangle/{tangleId}/check-membership
@@ -32,12 +32,18 @@ acceptOffer:
     defaults: {_controller: MegasoftEntangleBundle:Offer:acceptOffer }
     methods: [POST]
 
-dummy:
-    pattern: /dummy
-    defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
-
-
 get_profile:
     pattern: tangle/{tangleId}/user/{userId}/profile
     defaults: { _controller: MegasoftEntangleBundle:User:profile }
     methods: [GET]
+
+delete_request:
+    pattern: /request/{requestId}
+    defaults: { _controller: MegasoftEntangleBundle:Request:Delete }
+    methods: [DELETE]
+    requirements:
+        requestId: \d+
+    
+dummy:
+    pattern: /dummy
+    defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
