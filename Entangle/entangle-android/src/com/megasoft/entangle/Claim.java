@@ -9,11 +9,9 @@ import com.megasoft.requests.PostRequest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Scroller;
 import android.widget.Toast;
 
 public class Claim extends Activity {
@@ -50,12 +48,6 @@ public class Claim extends Activity {
 		setContentView(R.layout.claimform);
 		claimerMail = this.getIntent().getStringExtra("sender");
 		tangleOwenerMail = this.getIntent().getStringExtra("receiver");
-		EditText mssg = (EditText) findViewById(R.id.mssgText);
-		mssg.setScroller(new Scroller(getBaseContext()));
-		mssg.setMaxLines(20);
-		mssg.setVerticalScrollBarEnabled(true);
-		mssg.setMovementMethod(new ScrollingMovementMethod());
-		mssg.setMinLines(20);
 	}
 
 	/**

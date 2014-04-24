@@ -28,26 +28,26 @@
 
     <EditText
         android:id="@+id/mssgText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/linearLayout"
-        android:layout_alignParentLeft="true"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/pageNameLabel"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="38dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
         android:ems="10"
-        android:inputType="textMultiLine" />
+        android:hint="Enter your Claim here ..."
+        android:inputType="textMultiLine">
+
+        <requestFocus />
+    </EditText>
 
     <Button
         android:id="@+id/send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="98dp"
-        android:layout_marginRight="20dp"
+        android:layout_alignRight="@+id/mssgText"
+        android:layout_marginBottom="95dp"
         android:inputType="none"
         android:onClick="sendClaimForm"
         android:text="@string/send" />
-
 </RelativeLayout>
