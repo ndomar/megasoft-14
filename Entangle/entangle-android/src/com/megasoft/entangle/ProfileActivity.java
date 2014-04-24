@@ -121,6 +121,10 @@ public class ProfileActivity extends Activity {
 	 * responsible for creating a dialog to make sure that the user wants to
 	 * leave the tangle
 	 * 
+	 * @param dialodId
+	 *            , is an int that corresponds to the id of the dialog being
+	 *            created but it is not used in this situation
+	 * 
 	 * @author HebaAamer
 	 */
 	@Override
