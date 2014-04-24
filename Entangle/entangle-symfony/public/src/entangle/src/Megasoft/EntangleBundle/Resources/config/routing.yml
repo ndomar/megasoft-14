@@ -29,12 +29,12 @@ invite:
 
 getMails:
     pattern: /tangleOwnerAndClaimerMail/{requestID}/claim
-    defaults: { _controller: MegasoftEntangleBundle:Claim:get }
+    defaults: { _controller: MegasoftEntangleBundle:Claim:getMails }
     methods: [GET]
     
 createClaim:
     pattern: /claim/{requestID}/sendClaim
-    defaults: { _controller: MegasoftEntangleBundle:Claim:create }
+    defaults: { _controller: MegasoftEntangleBundle:Claim:createClaim }
     methods: [POST]
         
 dummy:
