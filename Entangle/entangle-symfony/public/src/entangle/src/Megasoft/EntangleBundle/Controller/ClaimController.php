@@ -5,6 +5,7 @@ namespace Megasoft\EntangleBundle\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Megasoft\EntangleBundle\Entity\Claim;
 
 class ClaimController extends Controller {
 
@@ -30,36 +31,49 @@ class ClaimController extends Controller {
             return new Response('No such claimer', 400);
         }
         $tangleId = $claimerRequest->getTangleId();
-        
+
         if ($sessionId == null) {
             return new Response('No such session', 400);
         }
-        
+
         if ($tangleId == null) {
             return new Response('No such tangle', 400);
         }
-
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
-        if ($session == null || $session->getExpired()) {
+        if ($session == null) {
+            return new Response('No such session', 400);
+        }
+        if ($session->getExpired()) {
             return new Response('Expired session', 400);
         }
-        $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
-        $tangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId));
+        $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
+        $tangle = $tangleRepo->findOneBy(array('id' => $tangleId, 'deleted' => false));
+
         if ($tangle == null) {
             return new Response('No such tangle', 400);
         }
-        $ownerBoolean = true;
         $userId = $session->getUserId();
-        $tangleOwnerId = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'tangleOwner' => $ownerBoolean));
+        $tangleUsers = $tangle->getUserTangles();
+        $arrlength = count($tangleUsers);
         
-        if ($userId == null || $tangleOwnerId == null) {
-            return new Response('No such user', 400);
+         for ($i = 0; $i < $arrlength; $i++) {
+             if (($tangleUsers[$i]->getTangleId() == $tangleId)
+                     && ($tangleUsers[$i]->getTangleOwner() == TRUE)) {
+                 $tangleOwnerId = $tangleUsers[$i]->getUserId();
+                 break;
+             }
+         }
+
+        if ($tangleOwnerId) {
+            return new Response('No such tangle owner', 400);
+        }
+        if ($userId == null) {
+            return new Response('No such claimer', 400);
         }
         $userRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserEmail');
         $claimerMail = $userRepo->findOneBy(array('userId' => $userId))->getEmail();
-        $tangleOwnerMail = $tangleOwnerId;
-##$userRepo->findOneBy(array('userId' => $tangleOwnerId))->getEmail();
+        $tangleOwnerMail = $userRepo->findOneBy(array('userId' => $tangleOwnerId))->getEmail();
         $response = new JsonResponse();
         $response->setData
                 (array('X-TANGLEOWNER-MAIL' => $tangleOwnerMail, 'X-CLAIMER-MAIL' => $claimerMail));
@@ -90,42 +104,47 @@ class ClaimController extends Controller {
         }
         $tangleId = $claimerRequest->getTangleId();
 
-        if ($tangleId == null || $sessionId == null) {
-            return new Response('either tangle id or session id is null', 400);
+        if ($tangleId == null) {
+            return new Response('Tangle id is null', 400);
+        }
+        if ($sessionId == null) {
+            return new Response('session id is null', 400);
         }
 
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
 
         if ($session == null || $session->getExpired()) {
-            return new Response('session expired', 400);
+            return new Response('No such session', 400);
         }
+        $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
+        $tangle = $tangleRepo->findOneBy(array('id' => $tangleId, 'deleted' => false));
 
-        $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
-        $tangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId));
         if ($tangle == null) {
             return new Response('No such tangle', 400);
         }
-        
         $jsonString = $request->getContent();
         $json_array = json_decode($jsonString, true);
         $mssgBody = $json_array['X-MSSGBODY'];
-        
-        $userId = $session->getUserId();
         $user = $session->getUser();
+        $userId = $user->getId();
         if ($mssgBody == null) {
             return new Response('Empty MssgBody', 400);
         }
         $claim = new Claim();
         $claim->setUser($user);
-        $claim->setUserId($userId);
+        $claim->setUsedId($userId);
         $claim->setTangle($tangle);
         $claim->setTangleId($tangleId);
         $claim->setMessage($mssgBody);
         $claim->setDeleted(false);
+        $claim->setStatus(0);
+        $doctrine->getManager()->persist($claim);
+        $doctrine->getManager()->flush();
         $response = new JsonResponse();
         $response->setData(array('X-CLAIM-ID' => $claim->getId()));
-        $response->setStatusCode(200);
+        $response->setStatusCode(201);
         return $response;
     }
+
 }
