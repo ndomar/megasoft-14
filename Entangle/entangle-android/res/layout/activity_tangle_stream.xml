@@ -7,18 +7,17 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin" >
-    
-		<ListView
-		    android:id="@+id/view_tangle_tangle_titles"
-		    android:layout_width="match_parent"
-		    android:layout_height="match_parent" >
-		
-		</ListView>
-		
-		<Button 
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:text="@string/create_tangle"
-		    android:onClick="goToCreateTangle"/>
-		
+
+    <ListView
+        android:id="@+id/view_tangle_tangle_titles"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </ListView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="goToCreateTangle"
+        android:text="@string/create_tangle" />
+
 </LinearLayout>
