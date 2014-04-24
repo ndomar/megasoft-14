@@ -1,17 +1,12 @@
 <?php
 
 namespace Megasoft\EntangleBundle\Controller;
-
+    
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Megasoft\EntangleBundle\Entity\Request;
 use Megasoft\EntangleBundle\Entity\Tag;
 
-/**
- * RequestController takes the json Object
- * and fill the Request and Tag tables with data given
- * @author Salma Khaled
- */
 class RequestController extends Controller {
 
     /**
@@ -166,5 +161,42 @@ class RequestController extends Controller {
             $doctrine->getManager()->flush();
         }
     }
-
+    
+    /**
+      * An endpoint to delete a request.
+      * @param Request $request
+      * @param integer $requestId
+      * @return Response
+      * @author OmarElAzazy
+     */
+    public function deleteAction(Request $request, $requestId){
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        
+        if($requestId == null || $sessionId == null){
+            return new Response('Bad Request', 400);
+        }
+        
+        $doctrine = $this->getDoctrine();
+        
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        if($session == null || $session->getExpired()){
+            return new Response('Bad Request', 400);
+        }
+        
+        $requesterId = $session->getUserId();
+        
+        $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+        $request = $requestRepo->findOneBy(array('id' => $requestId));
+        if($request == null || $request->getUserId() != $requesterId){
+            return new Response('Unauthorized', 401);
+        }
+        
+        $request->setDeleted(true);
+        $this->getDoctrine()->getManager()->persist($request);
+        $this->getDoctrine()->getManager()->flush();
+        
+        return new Response("Deleted", 204);
+    }
+    
 }
