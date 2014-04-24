@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
  * @author almgohar
  */
 class UserController extends Controller {
-    
+
     /**
      * Validates that a given user is a member of a given tangle
      * @param integer $userId
@@ -27,17 +27,17 @@ class UserController extends Controller {
      * @author Almgohar
      */
     private function validateUser($userId, $tangleId) {
-         $userTangleTable = $this->getDoctrine()->
+        $userTangleTable = $this->getDoctrine()->
                 getRepository('MegasoftEntangleBundle:UserTangle');
-          $userTangle = $userTangleTable->
-                findOneBy(array ('userId'=>$userId,'tangleId'=>$tangleId)); 
-          if ($userTangle == null) {
-              return false;
-          } else {
-              return true;
-          }
+        $userTangle = $userTangleTable->
+                findOneBy(array('userId' => $userId, 'tangleId' => $tangleId));
+        if ($userTangle == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
-    
+
     /**
      * Validates the existence of a given tangle
      * @param integer $tangleId
@@ -47,7 +47,7 @@ class UserController extends Controller {
     private function validateTangle($tangleId) {
         $tangleTable = $this->getDoctrine()->
                 getRepository('MegasoftEntangleBundle:Tangle');
-        $tangle = $tangleTable->findOneBy(array ('id'=>$tangleId));
+        $tangle = $tangleTable->findOneBy(array('id' => $tangleId));
         if ($tangle == null) {
             return false;
         } else {
@@ -63,51 +63,51 @@ class UserController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
      * @author Almgohar
      */
-    public function profileAction (Request $request, $userId, $tangleId) {
+    public function profileAction(Request $request, $userId, $tangleId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
-        
+
         if ($sessionId == null) {
-            return new Response('Unauthorized',401);
+            return new Response('Unauthorized', 401);
         }
-        
+
         $doctrine = $this->getDoctrine();
         $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
-        $session = $sessionTable->findOneBy(array('sessionId'=>$sessionId));
-        $user = $userTable->findOneBy(array('id'=> $userId));
+        $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
+        $user = $userTable->findOneBy(array('id' => $userId));
 
-        if($session == null || $session->getExpired()) {
-            return new Response('Unauthorized',401);
+        if ($session == null || $session->getExpired()) {
+            return new Response('Unauthorized', 401);
         }
-        
-        if($user == null) {
+
+        if ($user == null) {
             return new Response('User not found', 404);
         }
-        
+
         $loggedInUser = $session->getUserId();
-        
+
         if (!$this->validateTangle($tangleId)) {
-            return new Response('Tangle not found',404);
+            return new Response('Tangle not found', 404);
         }
-        
+
         if (!$this->validateUser($loggedInUser, $tangleId)) {
             return new Response('You are not a member of this tangle', 401);
         }
-        
+
         if (!$this->validateUser($userId, $tangleId)) {
             return new Response('The requested user is not a member of this tangle', 401);
         }
-        
+
         $offers = $user->getOffers();
         $info = $this->getUserInfo($user, $tangleId);
         $transactions = $this->getTransactions($offers, $tangleId);
         $response = new JsonResponse();
-        $response->setData(array('information'=> $info,
-            'transactions'=>$transactions));
+        $response->setData(array('information' => $info,
+            'transactions' => $transactions));
         $response->setStatusCode(200);
-        return $response;       
+        return $response;
     }
-    
+
     /**
      * Gets the user's transactions in a given tangle
      * @param array $offers
@@ -115,27 +115,26 @@ class UserController extends Controller {
      * @return array of arrays $transactions
      * @author Almgohar
      */
-    private function getTransactions ($offers, $tangleId) {
+    private function getTransactions($offers, $tangleId) {
         $transactions = array();
         for ($i = 0; $i < count($offers); $i++) {
             $offer = $offers[$i];
             if ($offer == null) {
                 continue;
             }
-            if (($offer->getRequest()->getTangleId() == $tangleId)
-                    && ($offer->getTransaction() != null)) {
-                $requesterName =$offer->getRequest()->getUser()->getName();
+            if (($offer->getRequest()->getTangleId() == $tangleId) && ($offer->getTransaction() != null)) {
+                $requesterName = $offer->getRequest()->getUser()->getName();
                 $requestDescription = $offer->getRequest()->getDescription();
                 $amount = $offer->getTransaction()->getFinalPrice();
-                $transactions[] = array('offerId'=>$offer->getId(),
-                    'requesterName'=> $requesterName,
-                    'requestDescription'=>$requestDescription,
-                    'amount'=>$amount);
-            }           
+                $transactions[] = array('offerId' => $offer->getId(),
+                    'requesterName' => $requesterName,
+                    'requestDescription' => $requestDescription,
+                    'amount' => $amount);
+            }
         }
-        return $transactions;    
+        return $transactions;
     }
-    
+
     /**
      * Gets the basic information of a given user in a give tangle
      * @param user $user
@@ -145,25 +144,69 @@ class UserController extends Controller {
      */
     private function getUserInfo($user, $tangleId) {
         if ($user == null) {
-            return new Response('Bad Request',400);
+            return new Response('Bad Request', 400);
         }
         $doctrine = $this->getDoctrine();
         $userId = $user->getId();
         $userTangleTable = $doctrine->
-                getRepository ('MegasoftEntangleBundle:UserTangle');
+                getRepository('MegasoftEntangleBundle:UserTangle');
         $userTangle = $userTangleTable->
-                findOneBy(array ('userId'=>$userId,'tangleId'=>$tangleId)); 
+                findOneBy(array('userId' => $userId, 'tangleId' => $tangleId));
         $name = $user->getName();
         $description = $user->getUserBio();
         $credit = $userTangle->getCredit();
         $photo = $user->getPhoto();
         $birthdate = $user->getBirthDate();
         $verfied = $user->getVerified();
-        $info = array ('name'=>$name , 'description'=>$description , 
-            'credit'=>$credit, 'photo'=>$photo , 'birthdate'=>$birthdate , 
+        $info = array('name' => $name, 'description' => $description,
+            'credit' => $credit, 'photo' => $photo, 'birthdate' => $birthdate,
             'verified' => $verfied);
         return $info;
-    }  
+    }
+
+    /**
+     * checks if a session id exists and removes it from the user sessions
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse $response
+     * 
+     * @author maisaraFarahat
+     */
+    public function logoutAction(\Symfony\Component\HttpFoundation\Request $request) {
+        $response = new JsonResponse();
+        $badReq = "bad request";
+        if (!$request) {
+            return new JsonResponse($badReq, 400);
+        }
+        $json = $request->getContent();
+        if (!$json) {
+            return new JsonResponse($badReq, 400);
+        }
+        $json_array = json_decode($json, true);
+        $sessionId = $json_array['sessionid'];
+
+        if (!$sessionId) {
+            return new JsonResponse($badReq, 400);
+        }
+        $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        if (!$session) {
+            return new JsonResponse("the sessionId does not exist", 404);
+        }
+        $user = $session->getUser();
+
+        $user->removeSession($session);
+
+        $session->setExpired(1);
+
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->persist($session);
+
+        $this->getDoctrine()->getManager()->flush();
+//        $response->setData(array('sessionId' => $sessionId));
+
+        $response->setStatusCode(200);
+
+        return $response;
+    }
+
 }
-        
- 
