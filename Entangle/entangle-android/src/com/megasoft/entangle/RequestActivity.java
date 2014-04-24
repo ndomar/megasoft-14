@@ -257,4 +257,5 @@ public class RequestActivity extends Activity {
 		getMenuInflater().inflate(R.menu.request_information, menu);
 		return true;
 	}
+
 }
