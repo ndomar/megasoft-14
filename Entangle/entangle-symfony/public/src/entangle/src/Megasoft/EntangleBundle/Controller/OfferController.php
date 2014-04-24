@@ -84,8 +84,11 @@ class OfferController extends Controller {
         if ($request->getDeleted() == 1) {
             return "Error: Request deleted.";
         }
-        if ($request->getStatus() == 1) {
+        if ($request->getStatus() == 1 ) {
             return "Error: Request Closed.";
+        }
+         if ($request->getStatus() == 2 ) {
+            return "Error: Request is Frozen.";
         }
         if ($offer->getDeleted() == 1) {
             return "Error: Offer deleted.";
