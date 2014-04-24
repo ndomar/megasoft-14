@@ -120,7 +120,7 @@ public class EditProfileActivity extends Activity {
 					startActivity(viewEditedProfile);
 				} else {
 					Context context = getApplicationContext();
-					CharSequence text = "Internal Error please try again";
+					CharSequence text = "An Internal Error please try again";
 					int duration = Toast.LENGTH_SHORT;
 					Toast toast = Toast.makeText(context, text, duration);
 					toast.show();
@@ -186,7 +186,7 @@ public class EditProfileActivity extends Activity {
 	}
 
 	private void getActivity() {
-		viewEditedProfile = new Intent(this, EditProfileActivity.class);
+		viewEditedProfile = new Intent(this, ProfileActivity.class);
 	}
 
 	public boolean emailValidator(String email) {
