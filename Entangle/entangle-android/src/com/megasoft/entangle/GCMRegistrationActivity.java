@@ -19,6 +19,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.megasoft.requests.PostRequest;
 import com.megasoft.utils.UI;
+import com.megasoft.utils.Util;
 
 public class GCMRegistrationActivity extends Activity {
 
@@ -71,9 +72,11 @@ public class GCMRegistrationActivity extends Activity {
 	public void register() {
 		if (checkPlayServices()) {
 			regid = getRegistrationId(getApplicationContext());
-			if (regid.equals("")) {
+			if (regid.equals(""))
 				registerInBackground();
-			}
+			else
+				UI.makeToast(getApplicationContext(),
+						"user already registerd to GCM", Toast.LENGTH_SHORT);
 		} else {
 			Log.i(TAG, "no play services api found");
 		}

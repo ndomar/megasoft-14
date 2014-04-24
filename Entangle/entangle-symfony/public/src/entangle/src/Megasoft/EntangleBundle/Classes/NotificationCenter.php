@@ -205,7 +205,7 @@ class NotificationCenter
         if ($body)
             $body = $this->formatMessage($body, $fromName, $toName);
         else
-            $body = "new Message from" . $fromName;
+            $body = "new Message from " . $fromName;
 
         $data = array('title' => $title, 'body' => $body, 'type' => $this->newMessageNotificationId, 'by' => $fromName, 'message' => $message->getBody(), "messageId" => $messageId);
         return $this->notificationCenter($to->getId(), $data);
@@ -443,7 +443,7 @@ class NotificationCenter
      */
     function formatMessage($message, $from, $to)
     {
-        $message = str_replace("{{from}}", $from, $message);
+        $message = str_replace("{{from}} ", $from, $message);
         $message = str_replace("{{to}}", $to, $message);
         return $message;
     }
