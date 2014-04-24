@@ -122,7 +122,7 @@ class Claim extends Controller {
         $claim->setTangle($tangle);
         $claim->setTangleId($tangleId);
         $claim->setMessage($mssgBody);
-        $claim->setDeleted('false');
+        $claim->setDeleted(false);
         $response = new JsonResponse();
         $response->setJsonContent(array('X-CLAIM-ID' => $claim->getId()));
         $response->setStatusCode(200);
