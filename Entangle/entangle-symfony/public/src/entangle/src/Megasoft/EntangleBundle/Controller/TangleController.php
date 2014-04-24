@@ -325,7 +325,7 @@ class TangleController extends Controller
         $jsonString = $request->getContent();
         $json = json_decode($jsonString, true);
 
-        if (!isset($json['emails']) || !isset($json['message'])) {
+        if (!isset($json['emails']) || !isset($json['message']) || !is_array($json['emails'])) {
             return new Response("Bad Request", 400);
         }
 
