@@ -17,10 +17,10 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
-        android:divider="#FFFFFF"
+        android:divider="@color/lightGray"
         android:dividerHeight="1dp"
         android:orientation ="vertical"
-        android:background="#333333">
+        android:background="@color/darkGray">
     
         <LinearLayout 
             android:orientation="vertical"
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:text="Mohamed Farghal"
             android:layout_gravity="center"
-            android:textColor="#FFFFFF"/>
+            android:textColor="@color/lightText"/>
         
         </LinearLayout>
         
@@ -51,14 +51,14 @@
     	android:layout_width="fill_parent"
     	android:layout_height="1dp"
     	android:layout_marginTop="10dp"
-    	android:background="#FFFFFF" />
+    	android:background="@color/lightGray" />
         
         <ListView android:id="@+id/tangleList"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
-        android:divider="#FFFFFF"
+        android:divider="@color/lightGray"
         android:dividerHeight="1dp"
         />
            

@@ -78,6 +78,9 @@
     <string name="transactions">Transactions: </string>
     <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="title_activity_offer">OfferActivity</string>
+    
+    <string name="navigation_drawer_open">Entangle</string>
+    <string name="navigation_drawer_close">Stream</string>
 
     <string-array name="spinnerChoice">
         <item>None</item>

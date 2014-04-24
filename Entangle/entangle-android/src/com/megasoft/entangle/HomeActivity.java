@@ -4,10 +4,13 @@ import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ActionBar.Tab;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,11 +21,25 @@ import android.widget.Toast;
 
 public class HomeActivity extends FragmentActivity {
 
+	
 	private String[] listTitles;
+	
+	/**
+	 * navigation drawer layout object
+	 */
 	private DrawerLayout drawer;
+	
+	/**
+	 * navigation drawer list view
+	 */
 	private ListView drawerList;
+	
+	/**
+	 * the main layout of the navigation drawer
+	 */
 	private LinearLayout drawerLayout;
 	private ActionBar actionBar;
+	private ActionBarDrawerToggle mDrawerToggle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +47,7 @@ public class HomeActivity extends FragmentActivity {
 		setContentView(R.layout.activity_home);
 
 		initNavigationDrawer();
+		initializeDrawerToggle();
 	
 	}
 	
@@ -49,6 +67,13 @@ public class HomeActivity extends FragmentActivity {
 	    drawer.closeDrawer(drawerLayout);
 	}
 	
+	/**
+	 * Initialize the navigation drawer (sidebar menu)
+	 * 
+	 * @param 
+	 * @return 
+	 * @author Mohamed Farghal
+	 */
 	private void initNavigationDrawer() {
 		//Navigation Drawer
 		listTitles		= getResources().getStringArray(R.array.sidebar_list);
@@ -74,11 +99,79 @@ public class HomeActivity extends FragmentActivity {
 	}
 	
 	
-	/*
-	 * This methods shows the profile fragment
+	/**
+	 * Template method to show the profile of the user
+	 * 
+	 * @param view
+	 * @return 
+	 * @author Mohamed Farghal
 	 */
-	public void showProfile(View v) {
+	public void showProfile(View view) {
 		Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
+	}
+	
+	
+	/**
+	 * Initialize the navigation drawer trigger button on the action bar
+	 * 
+	 * @param 
+	 * @return 
+	 * @author Mohamed Farghal
+	 */
+	private void initializeDrawerToggle(){
+	    ActionBar actionBar = getActionBar();
+	    actionBar.setDisplayHomeAsUpEnabled(true);
+	    actionBar.setHomeButtonEnabled(true);
+	    mDrawerToggle = new ActionBarDrawerToggle(
+	            this,                      /* host Activity */
+	            drawer,                    /* DrawerLayout object */
+	            R.drawable.ic_drawer,             /* nav drawer image to replace 'Up' caret */
+	            R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
+	            R.string.navigation_drawer_close  /* "close drawer" description for accessibility */
+	    ) {
+	        @Override
+	        public void onDrawerClosed(View drawerView) {
+	            invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+	        }
+
+	        @Override
+	        public void onDrawerOpened(View drawerView) {
+	            invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+	        }
+	    };
+
+	    drawer.post(new Runnable() {
+	        @Override
+	        public void run() {
+	            mDrawerToggle.syncState();
+	        }
+	    });
+
+	    drawer.setDrawerListener(mDrawerToggle);
+	}
+	
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	    super.onConfigurationChanged(newConfig);
+	    mDrawerToggle.onConfigurationChanged(newConfig);
+	}
+
+	
+	/**
+	 * Navigation drawer indicator click event
+	 * 
+	 * @param item
+	 * @return 
+	 * @author Mohamed Farghal
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	     
+	     if (mDrawerToggle.onOptionsItemSelected(item)) {
+	         return true;
+	     }
+	     return super.onOptionsItemSelected(item);
 	}
 	
 }

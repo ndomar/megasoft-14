@@ -29,7 +29,7 @@ public class SampleFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 		
-        view = inflater.inflate(R.layout.fragment_sample, container, false);
+        view = inflater.inflate(R.layout.fragment_pager, container, false);
 //        ((TextView) view.findViewById(R.id.sample)).setText(getArguments().getString("key"));
         
         tab = new PagerAdapter(activity, activity.getSupportFragmentManager());
