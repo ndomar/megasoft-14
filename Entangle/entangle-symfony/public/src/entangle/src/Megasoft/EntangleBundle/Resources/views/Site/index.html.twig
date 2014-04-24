@@ -3,77 +3,77 @@
 {% block title %}MegasoftEntangleBundle:Site:index{% endblock %}
 
 {% block body %}
-         <div class="single-page-nav">
-            <ul>
-                <li><a href="#entangle">Entangle</a></li>
-                <li><a href="#what-is-entangle">What is Entangle ?</a></li>
-                <li><a href="#register">Register</a></li>
-                <li><a href="#about-us">About Us</a></li>
-            </ul>
-        </div>
+    <div class="single-page-nav">
+        <ul>
+            <li><a href="#entangle">Entangle</a></li>
+            <li><a href="#what-is-entangle">What is Entangle ?</a></li>
+            <li><a href="#register">Register</a></li>
+            <li><a href="#about-us">About Us</a></li>
+        </ul>
+    </div>
 
-        <div class="section fulled" id="entangle">
-        	<div class="center-vertically">
-            	<h1 class="text-center entangle">Entangle</h1>
-            </div>	
-        </div>
+    <div class="section fulled" id="entangle">
+        <div class="center-vertically">
+            <h1 class="text-center entangle">Entangle</h1>
+        </div>	
+    </div>
 
-        <div class="section section-even fulled" id="what-is-entangle">
+    <div class="section section-even fulled" id="what-is-entangle">
+        <div class="row">
+            <div class="col-md-4" id="why-entangle">
+
+            </div>
+
+            <div class="col-md-8 text-center">
+                <h1 class="text-center">What is Entangle ?</h1>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dui arcu, tempor quis nulla eget, aliquam euismod dolor. Quisque nec mollis elit, id ultricies augue. Sed at ante et orci aliquet sollicitudin. Quisque et turpis mauris. Sed eget dictum justo, et semper eros. Nam faucibus aliquam dictum. Pellentesque luctus justo ut malesuada lobortis. Mauris id porta turpis, accumsan tempus risus. Cras non elit sit amet nulla rhoncus porta. Aenean pharetra aliquam orci et ornare.
+                </p>
+                <p>
+                    Curabitur ornare metus vel malesuada fermentum. Morbi eu nunc vitae velit porta fermentum eu et risus. Cras sit amet tempor est. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce orci nisi, vulputate in enim id, ullamcorper pretium sem. Nam quis dolor tellus. Donec ornare ac odio sit amet pretium. Sed at velit pharetra, sodales nisl sed, bibendum purus. Fusce ultrices nisi in gravida vestibulum. Integer rutrum lorem non gravida laoreet. Etiam porta leo et ante molestie, vel tristique libero iaculis. Nulla egestas, nulla nec interdum rhoncus, dolor est pharetra lorem, id laoreet turpis nibh nec quam. Nulla iaculis nisl sapien, quis suscipit magna rutrum tincidunt.
+                </p>
+                <p>
+                    Vivamus pharetra fermentum risus eu pulvinar. Aliquam augue magna, rhoncus non faucibus eu, mattis ac lorem. Suspendisse sagittis sit amet mi sed cursus. Mauris non urna eget tellus ultrices lobortis a eu tellus. Vivamus ac libero et nisl dapibus bibendum. Donec at nibh quis leo condimentum viverra. Nullam rutrum gravida ligula, at ultrices lacus sollicitudin in. Proin ac sagittis libero. Aliquam vulputate nunc magna, eleifend facilisis ligula malesuada non. Sed consectetur scelerisque justo quis lobortis.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="section halfed" id="register">
+        <div class="center-vertically">
             <div class="row">
-            	<div class="col-md-4" id="why-entangle">
-            		
-            	</div>
+                <h1 class="text-center">Register Now !</h1>
+            </div>
 
-            	<div class="col-md-8 text-center">
-            		<h1 class="text-center">What is Entangle ?</h1>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dui arcu, tempor quis nulla eget, aliquam euismod dolor. Quisque nec mollis elit, id ultricies augue. Sed at ante et orci aliquet sollicitudin. Quisque et turpis mauris. Sed eget dictum justo, et semper eros. Nam faucibus aliquam dictum. Pellentesque luctus justo ut malesuada lobortis. Mauris id porta turpis, accumsan tempus risus. Cras non elit sit amet nulla rhoncus porta. Aenean pharetra aliquam orci et ornare.
-                    </p>
-                    <p>
-                        Curabitur ornare metus vel malesuada fermentum. Morbi eu nunc vitae velit porta fermentum eu et risus. Cras sit amet tempor est. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce orci nisi, vulputate in enim id, ullamcorper pretium sem. Nam quis dolor tellus. Donec ornare ac odio sit amet pretium. Sed at velit pharetra, sodales nisl sed, bibendum purus. Fusce ultrices nisi in gravida vestibulum. Integer rutrum lorem non gravida laoreet. Etiam porta leo et ante molestie, vel tristique libero iaculis. Nulla egestas, nulla nec interdum rhoncus, dolor est pharetra lorem, id laoreet turpis nibh nec quam. Nulla iaculis nisl sapien, quis suscipit magna rutrum tincidunt.
-                    </p>
-                    <p>
-                        Vivamus pharetra fermentum risus eu pulvinar. Aliquam augue magna, rhoncus non faucibus eu, mattis ac lorem. Suspendisse sagittis sit amet mi sed cursus. Mauris non urna eget tellus ultrices lobortis a eu tellus. Vivamus ac libero et nisl dapibus bibendum. Donec at nibh quis leo condimentum viverra. Nullam rutrum gravida ligula, at ultrices lacus sollicitudin in. Proin ac sagittis libero. Aliquam vulputate nunc magna, eleifend facilisis ligula malesuada non. Sed consectetur scelerisque justo quis lobortis.
-                    </p>
-            	</div>
-
+            <div class="row" style="margin-top:30px;">
+                <div class="col-md-4 col-md-offset-4">
+                    <button class="btn btn-success" style="width:100%;">
+                        <a href="{# {{  path('megasoft_entangle_register') }} #}" style="color:white;">
+                            Register !
+                        </a>
+                    </button>
+                </div>
             </div>
         </div>
 
+    </div>
+    <div class="section section-even halfed" id="about-us">
+        <div class="center-vertically">
+            <div class="row">
+                <h1 class="text-center">About Us !</h1>
+            </div>
 
-        <div class="section halfed" id="register">
-        	<div class="center-vertically">
-	        	<div class="row">
-	        		<h1 class="text-center">Register Now !</h1>
-	        	</div>
-
-	        	<div class="row" style="margin-top:30px;">
-	        		<div class="col-md-4 col-md-offset-4">
-		        		<button class="btn btn-success" style="width:100%;">
-		        			<a href="{# {{  path('megasoft_entangle_register') }} #}" style="color:white;">
-		        				Register !
-		        			</a>
-		        		</button>
-	        		</div>
-	        	</div>
-        	</div>
-            
+            <div class="row" style="margin-top:30px;">
+                <div class="col-md-4 col-md-offset-4">
+                    <button class="btn btn-info" style="width:100%;">
+                        <a href="{# {{  path('megasoft_entangle_about') }} #}" style="color:white;">
+                            About Us !
+                        </a>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="section section-even halfed" id="about-us">
-            <div class="center-vertically">
-	        	<div class="row">
-	        		<h1 class="text-center">About Us !</h1>
-	        	</div>
-
-	        	<div class="row" style="margin-top:30px;">
-	        		<div class="col-md-4 col-md-offset-4">
-		        		<button class="btn btn-info" style="width:100%;">
-		        			<a href="{# {{  path('megasoft_entangle_about') }} #}" style="color:white;">
-		        				About Us !
-		        			</a>
-		        		</button>
-	        		</div>
-	        	</div>
-        	</div>
-        </div>
+    </div>
 {% endblock %}
