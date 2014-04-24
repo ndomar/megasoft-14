@@ -46,7 +46,7 @@ public class LoginActivity extends Activity {
 	 * @author maisaraFarahat
 	 */
 
-	public void login(View view) {
+	public void login() {
 
 		username = (EditText) findViewById(R.id.usernameBox);
 		password = (EditText) findViewById(R.id.passwordBox);
@@ -115,7 +115,7 @@ public class LoginActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void register(View view) {
+	public void register() {
 		Intent registerActivity = new Intent(this, HomeActivity.class);
 		startActivity(registerActivity);
 	}
