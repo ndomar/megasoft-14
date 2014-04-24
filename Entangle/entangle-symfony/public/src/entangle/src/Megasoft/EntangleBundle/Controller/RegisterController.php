@@ -46,7 +46,7 @@ class RegisterController extends Controller {
      * @author: Eslam
      * * */
     private function validateUniqueUsername($username) {
-        $nameRepo = $this->getDoctrine()->getRepository('MegsMegasoftEntangleBundle:User');
+        $nameRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
         if ($nameRepo->findOneBy($username) == null && $username != null && $username != "") {
             return true;
         } else {
