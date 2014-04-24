@@ -8,6 +8,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Megasoft\EntangleBundle\Entity\InvitationCode;
+use Megasoft\EntangleBundle\Entity\InvitationCode;
+use Megasoft\EntangleBundle\Entity\InvitationMessage;
+use Megasoft\EntangleBundle\Entity\PendingInvitation;
+use Megasoft\EntangleBundle\Entity\Session;
 
 class TangleController extends Controller
 {
@@ -199,7 +203,7 @@ class TangleController extends Controller
      */
     private function isNewMember($email) {
         $userEmailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
-        $mail = $userEmailRepo->findOneByEmail($email);
+        $mail = $userEmailRepo->findOneBy(array('email'=>$email,'deleted'=>false));
         return ($mail == null);
     }
 
@@ -227,7 +231,7 @@ class TangleController extends Controller
      * @return Response|JsonResponse
      * @author MohamedBassem
      */
-    public function checkMembershipAction(Request $request, $tangleId) {
+    public function checkMembershipAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($sessionId == null) {
@@ -238,7 +242,7 @@ class TangleController extends Controller
 
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
 
-        if ($session == null) {
+        if ($session == null || $session->getExpired()) {
             return new Response("Unauthorized", 401);
         }
 
@@ -256,7 +260,7 @@ class TangleController extends Controller
         $jsonString = $request->getContent();
         $json = json_decode($jsonString, true);
 
-        if (!isset($json['emails'])) {
+        if (!isset($json['emails']) || !is_array($json['emails'])) {
             return new Response("Bad Request", 400);
         }
 
@@ -341,7 +345,7 @@ class TangleController extends Controller
 
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
 
-        if ($session == null) {
+        if ($session == null || $session->getExpired()) {
             return new Response("Unauthorized", 401);
         }
 
@@ -358,12 +362,13 @@ class TangleController extends Controller
         $jsonString = $request->getContent();
         $json = json_decode($jsonString, true);
 
-        if (!isset($json['emails']) || !isset($json['message'])) {
+        if (!isset($json['emails']) || !isset($json['message']) || !is_array($json['emails'])) {
             return new Response("Bad Request", 400);
         }
 
         $isOwner = $userTangle->getTangleOwner();
-
+        
+        
         foreach ($json['emails'] as $email) {
 
             if (!$this->isValidEmail($email) || (!$this->isNewMember($email) && $this->isTangleMember($email, $tangleId) )) {
@@ -373,11 +378,40 @@ class TangleController extends Controller
             if ($isOwner) {
                 $this->inviteuser($email,$session->getUserId(),$json['message']);
             } else {
-                // TODO not this userstory
+                $em = $this->getDoctrine()->getManager();
+                
+                $invitationMessage = new InvitationMessage();
+                $invitationMessage->setBody($json['message']);
+                
+                $pendingInvitation = new PendingInvitation();
+                if ($this->isNewMember($email)) {
+                    $pendingInvitation->setInvitee(null);
+                } else {
+
+                    $userEmailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
+                    $user = $userEmailRepo->findOneByEmail($email)->getUser();
+                    $pendingInvitation->setInvitee($user);
+                }
+                $pendingInvitation->setInviter($session->getUser());
+                $pendingInvitation->setMessage($invitationMessage);
+                $pendingInvitation->setTangle($userTangle->getTangle());
+                $pendingInvitation->setEmail($email);
+                
+                $em->persist($invitationMessage);
+                $em->persist($pendingInvitation);
+                $em->flush();
             }
         }
-
-        return new Response("Invitation Sent", 200);
+        
+        $jsonResponse = new JsonResponse();
+        $jsonResponse->setStatusCode(201);
+        
+        if($isOwner){
+            $jsonResponse->setData(array('pending'=>0));
+        }else{
+            $jsonResponse->setData(array('pending'=>1));
+        }
+        return $jsonResponse;
     }
 
     /**
