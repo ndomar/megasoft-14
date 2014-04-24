@@ -25,6 +25,7 @@ class VerificationController extends Controller {
      * @param type $userName
      * @param type $userEmail
      * @param type $verificationHash
+     * @author MahmoudGamal
      */
     public function emailUserAction($userName, $userEmail, $verificationHash) {
         $body = 'Thanks for signing up!
