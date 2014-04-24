@@ -28,10 +28,18 @@ class CreateOfferController extends Controller {
         $response = new JsonResponse();
         $json_array = json_decode($json, true);
         $sessionId = $request->headers->get('X-SESSION-ID');
-
+        if ($sessionId == null) {
+            $response->setStatusCode(400);
+            $response->setContent("bad request");
+            return $response;
+        }
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
-
+        if ($session == null || $session->getExpired() == true) {
+            $response->setStatusCode(401);
+            $response->setContent("Unauthorized");
+            return $response;
+        }
         $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
         $userId = $session->getUserId();
         $user = $userTable->findOneBy(array('id' => $userId));
