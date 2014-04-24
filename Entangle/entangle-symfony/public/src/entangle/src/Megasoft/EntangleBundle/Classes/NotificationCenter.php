@@ -31,6 +31,33 @@ class NotificationCenter
      */
     private $container;
 
+
+    /**
+     * @var string
+     */
+    private $newMessageDefaultTitle = "new message notification";
+
+    /**
+     * @var string
+     */
+    private $transactionNotificationDefaultTitle = "new transaction notification";
+
+    /**
+     * @var string
+     */
+    private $offerChangeNotificationDefaultTitle = "offer change notification";
+
+    /**
+     * @var string
+     */
+    private $offerChosenNotificationDefaultTitle = "offer chosen notification";
+
+    private $newOfferNotifcationTitle = "new offer Notification";
+
+    private $offerDeletedNotificationDefaultTitle = "offer deleted notification";
+
+    private $requestDeletedNotificationDefaultTitle = "request deleted notification";
+
     /**
      * @param EntityManager $em
      * @param Container $container
@@ -115,11 +142,13 @@ class NotificationCenter
         $fromName = $from->getName();
         $toName = $to->getName();
         if (!$title)
-            $title = "new Message from" . $fromName;
-        if (!$body)
+            $title = $this->newMessageDefaultTitle;
+        if ($body)
             $body = $this->formatMessage($body, $fromName, $toName);
+        else
+            $body = "new Message from" . $fromName;
 
-        $data = array('title' => $title, 'body' => $body, 'from' => $fromName, 'message' => $message->getBody());
+        $data = array('title' => $title, 'body' => $body, 'from' => $fromName, 'message' => $message->getBody(), "messageId" => $messageId);
         return $this->notificationCenter($to->getId(), $data);
 
     }
@@ -129,15 +158,15 @@ class NotificationCenter
      * this is fired when there is a requester accepts an offer
      * data array ("title"=> notification title, "body" => notification body, "requester"=>requester from,
      * "requestDesc" => Description of request, "finalPrice" => price of final offer)
-     * @param $transactionid
+     * @param $transactionId
      * @param null $title
      * @param null $body
      * @return bool|mixed
      */
-    function transactionNotification($transactionid, $title = null, $body = null)
+    function transactionNotification($transactionId, $title = null, $body = null)
     {
         $notification = new  TransactionNotification();
-        $transaction = $this->em->getRepository('MegasoftEntangleBundle:Transaction')->find($transactionid);
+        $transaction = $this->em->getRepository('MegasoftEntangleBundle:Transaction')->find($transactionId);
         $to = $transaction->getOffer()->getUser();
         $from = $transaction->getOffer()->getRequest()->getUser();
         $date = date('m/d/Y h:i:s a', time());
@@ -156,11 +185,14 @@ class NotificationCenter
         $fromName = $from->getName();
         $toName = $to->getName();
         if (!$title)
-            $title = $fromName . "accepted your offer";
-        if (!$body)
+            $title = $this->transactionNotificationDefaultTitle;
+        if ($body)
             $body = $this->formatMessage($body, $fromName, $toName);
+        else
+            $body = $fromName . "accepted your offer";
 
-        $data = array('title' => $title, 'body' => $body, 'requester' => $fromName, "finalPrice" => $finalPrice, "requestDesc" => $requestDesc);
+        $data = array('title' => $title, 'body' => $body, 'requester' => $fromName, "finalPrice" => $finalPrice,
+            "requestDesc" => $requestDesc, "transactionId" => $transactionId);
         return $this->notificationCenter($to->getId(), $data);
     }
 
@@ -168,17 +200,17 @@ class NotificationCenter
      *
      * data array ("title"=> notification title, "body" => notification body, "from"=>offerer,"newPrice" => new price,
      * "oldPrice" => price after changing)
-     * @param $offerid
+     * @param $offerId
      * @param $oldPrice
      * @param null $title
      * @param null $body
      * @return bool|mixed
      */
-    function offerChangeNotification($offerid, $oldPrice, $title = null, $body = null)
+    function offerChangeNotification($offerId, $oldPrice, $title = null, $body = null)
     {
 
         $notification = new PriceChangeNotification();
-        $offer = $this->em->getRepository('MegasoftEntangleBundle:Offer')->find($offerid);
+        $offer = $this->em->getRepository('MegasoftEntangleBundle:Offer')->find($offerId);
         $request = $offer->getRequest();
         $from = $offer->getUser();
         $to = $request->getUser();
@@ -199,27 +231,30 @@ class NotificationCenter
         $fromName = $from->getName();
         $toName = $to->getName();
         if (!$title)
-            $title = $toName . "changed his offer";
-        if (!$body)
+            $title = $this->offerChangeNotificationDefaultTitle;
+        if ($body)
             $body = $this->formatMessage($body, $fromName, $toName);
-
-        $data = array('title' => $title, 'body' => $body, 'from' => $fromName, "newPrice" => $newPrice, "oldPrice" => $oldPrice);
+        else
+            $body = $fromName . "changed his offer";
+        $data = array('title' => $title, 'body' => $body, 'from' => $fromName, "newPrice" => $newPrice, "oldPrice" => $oldPrice, "offerId" => $offerId);
         return $this->notificationCenter($to->getId(), $data);
     }
 
     /**
-     * @param $offerid
+     *
+     * data array ("title"=> notification title, "body" => notification body, "from"=>offerer ,)
+     * @param $offerId
      * @param null $title
      * @param null $body
      * @return bool|mixed
      */
-    function chooseOfferNotification($offerid, $title = null, $body = null)
+    function offerChosenNotification($offerId, $title = null, $body = null)
     {
         $notification = new OfferChosenNotification();
-        $offer = $this->em->getRepository('MegasoftEntangleBundle:Offer')->find($offerid);
-        $request = $this->em->getRepository('MegasoftEntangleBundle:Request')->find($offer->getRequestId());
-        $to = $request->getUser();
-
+        $offer = $this->em->getRepository('MegasoftEntangleBundle:Offer')->find($offerId);
+        $request = $offer->getRequest();
+        $to = $offer->getUser();
+        $from = $request->getUser();
         $date = date('m/d/Y h:i:s a', time());
         $date = DateTime::createFromFormat('m/d/Y h:i:s a', $date);
 
@@ -227,67 +262,94 @@ class NotificationCenter
         $notification->setUser($to);
         $notification->setSeen(false);
         $notification->setOffer($offer);
-
         $this->em->persist($notification);
         $this->em->flush();
-        $data = array('');
 
+
+        $fromName = $from->getName();
+        $toName = $to->getName();
+        if (!$title)
+            $title = $this->offerChosenNotificationDefaultTitle;
+        if ($body)
+            $body = $this->formatMessage($body, $fromName, $toName);
+        else
+            $body = $fromName . "deleted his offer";
+
+        $data = array('title' => $title, 'body' => $body, 'from' => $fromName, "offerId" => $offerId);
         return $this->notificationCenter($to->getId(), $data);
     }
 
 
-// waiting for the next migrations
+    // waiting for the next migrations
 
-    function newOfferNotfication($offerid, $message = null)
+    function newOfferNotfication($offerid, $title = null, $body = null)
     {
 
     }
 
 
     /**
-     * @param $offerid
-     * @param null $message
+     *  this should be invoked when a user delete an offer
+     * data array ("title"=> notification title, "body" => notification body, "from"=>offerer,)
+     * @param $offerId
+     * @param null $title
+     * @param null $body
      * @return bool|mixed
      */
-    function offerDeletedNotification($offerid, $message = null)
+    function offerDeletedNotification($offerId, $title = null, $body = null)
     {
         $notification = new OfferDeletedNotification();
-
-        $offer = $this->em->getRepository('MegasoftEntangleBundle:Offer')->find($offerid);
+        $offer = $this->em->getRepository('MegasoftEntangleBundle:Offer')->find($offerId);
         $request = $this->em->getRepository('MegasoftEntangleBundle:Request')->find($offer->getRequestId());
         $to = $request->getUser();
-
+        $from = $offer->getUser();
         $date = date('m/d/Y h:i:s a', time());
         $date = DateTime::createFromFormat('m/d/Y h:i:s a', $date);
+
 
         $notification->setCreated($date);
         $notification->setUser($to);
         $notification->setSeen(false);
         $notification->setOffer($offer);
-
         $this->em->persist($notification);
         $this->em->flush();
-        $data = array('');
 
+
+        $fromName = $from->getName();
+        $toName = $to->getName();
+        if (!$title)
+            $title = $this->offerDeletedNotificationDefaultTitle;
+        if ($body)
+            $body = $this->formatMessage($body, $fromName, $toName);
+        else
+            $body = $fromName . "deleted his offer";
+
+        $data = array('title' => $title, 'body' => $body, 'from' => $fromName, "offerId" => $offerId);
         return $this->notificationCenter($to->getId(), $data);
 
     }
 
 
     /**
-     * @param $requestid
-     * @param null $message
+     * this should be invoked when a user delete a request
+     * data array ("title"=> notification title, "body" => notification body, "from"=>requester,"requestId"=>requestId)
+     * @param $requestId
+     * @param null $title
+     * @param null $body
      */
-    function requestDeletedNotification($requestid, $message = null)
+    function requestDeletedNotification($requestId, $title = null, $body = null)
     {
 
-        $request = $this->em->getRepository('MegasoftEntangleBundle:Request')->find($requestid);
-        $offers = $this->em->getRepository('MegasoftEntangleBundle:Offer')->findBy(array('reqestid' => $requestid));
+        $request = $this->em->getRepository('MegasoftEntangleBundle:Request')->find($requestId);
+        $offerArray = $this->em->getRepository('MegasoftEntangleBundle:Offer')->findBy(array('reqestid' => $requestId));
+        $from = $request->getUser();
 
         $date = date('m/d/Y h:i:s a', time());
         $date = DateTime::createFromFormat('m/d/Y h:i:s a', $date);
 
-        foreach ($offers as $offer) {
+        foreach ($offerArray as $offer) {
+            $to = $offer->getUser();
+
             $notification = new RequestDeletedNotification();
             $notification->setSeen(false);
             $notification->setCreated($date);
@@ -297,13 +359,23 @@ class NotificationCenter
             $this->em->persist($notification);
             $this->em->flush();
 
-            $data = array('');
+            $fromName = $from->getName();
+            $toName = $to->getName();
+            if (!$title)
+                $titlge = $this->requestDeletedNotificationDefaultTitle;
+            if ($body)
+                $body = $this->formatMessage($body, $fromName, $toName);
+            else
+                $body = $fromName . "deleted his request";
+
+            $data = array('title' => $title, 'body' => $body, 'from' => $fromName, "offerId" => $requestId);
             $this->notificationCenter($offer->getUserId(), $data);
         }
     }
 
     /**
      * this should be used to format user messages
+     * currently it's for to and from only
      * @param $message
      * @param $from
      * @param $to
