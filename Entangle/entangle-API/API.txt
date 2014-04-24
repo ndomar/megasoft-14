@@ -342,7 +342,7 @@ contact offerer and requester after claim
                     "Tags" :["tag1", "tag2","tag3"],
                     "Price": "3",
                     "Deadline":"1/2/1",
-                    "Status":"done",
+                    "Status":"0",
 		    "MyRequest": "1",
                     "Description" : "description of a request",
                     "Offers" : [
