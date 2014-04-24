@@ -39,12 +39,8 @@
             android:label="@string/title_activity_profile" >
         </activity>
         <activity
-            android:name="com.megasoft.entangle.RequestActivity"
+            android:name="com.megasoft.entangle.CreateRequestActivity"
             android:label="@string/title_activity_request_information" >
-        </activity>
-        <activity
-            android:name="com.megasoft.entangle.InviteUserActivity"
-            android:label="@string/title_activity_invite_users" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.ConfirmInviteUserActivity"
@@ -52,7 +48,19 @@
             android:parentActivityName="com.megasoft.entangle.InviteUserActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.megasoft.entangle.InviteUsers" />
+                android:value="com.megasoft.entangle.InviteUserActivity" />
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.acceptPendingInvitation.AcceptPendingInvitationActivity"
+            android:label="@string/title_activity_accept_pending_invitation" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationActivity"
+            android:label="@string/title_activity_manage_pending_invitation" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.InviteUserActivity"
+            android:label="@string/title_activity_invite_users" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.EditProfileActivity"
