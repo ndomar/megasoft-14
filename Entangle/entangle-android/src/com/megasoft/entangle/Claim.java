@@ -111,10 +111,13 @@ public class Claim extends Activity {
 			postSubject.addHeader("X-SESSION-ID", sessionID);
 			postSubject.execute();
 			if (!connection) {
-				Toast.makeText(this, "Sorry lost connection", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Sorry connection lost", Toast.LENGTH_SHORT).show();
 				}
-			Toast.makeText(this, "Claim Sent", Toast.LENGTH_SHORT).show();
-			startActivity(intent);
+			else {
+				Toast.makeText(this, "Claim Sent", Toast.LENGTH_SHORT).show();
+				startActivity(intent);
+			}
+			
 		}
 
 	}

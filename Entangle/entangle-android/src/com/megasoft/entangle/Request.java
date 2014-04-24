@@ -79,14 +79,17 @@ public class Request extends Activity {
 		requestTangleOwnerMail.addHeader("X-SESSION-ID", sessionID);
 		requestTangleOwnerMail.execute();
 		if (!connection) {
-		Toast.makeText(this, "Sorry lost connection", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Sorry connection lost", Toast.LENGTH_SHORT).show();
 		}
-		intent.putExtra("receiver", tangleOwnerMail);
-		intent.putExtra("sender", claimerMail);
-		intent.putExtra("requestID", requestID);
-		intent.putExtra("sessionID", sessionID);
-		Toast.makeText(this, "Loading Claim Form", Toast.LENGTH_SHORT).show();
-		startActivity(intent);
+		else {
+			intent.putExtra("receiver", tangleOwnerMail);
+			intent.putExtra("sender", claimerMail);
+			intent.putExtra("requestID", requestID);
+			intent.putExtra("sessionID", sessionID);
+			Toast.makeText(this, "Loading Claim Form", Toast.LENGTH_SHORT).show();
+			startActivity(intent);
+		}
+		
 	}
 
 	@Override
