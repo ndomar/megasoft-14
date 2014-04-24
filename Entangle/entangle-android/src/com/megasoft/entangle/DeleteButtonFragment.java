@@ -3,6 +3,7 @@ package com.megasoft.entangle;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -49,8 +50,12 @@ public class DeleteButtonFragment extends Fragment {
 		SharedPreferences settings = getActivity().getSharedPreferences(Config.SETTING, 0);
 		setSessionId(settings.getString(Config.SESSION_ID, ""));
 		
-		setResourceId(getArguments().getInt(Config.REQUEST_ID));
+		setResourceId(getArguments().getInt(Config.REQUEST_ID, -1));
 		setResourceType(getArguments().getString(Config.RESOURCE_TYPE));
+		
+		if(getResourceId() == -1 || getResourceType() == null || getSessionId() == null){
+			toasterShow("Sorry, there are problems in deleting. Please, try again later");
+		}
 		
 		View view = inflater.inflate(R.layout.delete_button_fragment, container, false);
 		
@@ -70,13 +75,18 @@ public class DeleteButtonFragment extends Fragment {
 				
 				DeleteRequest deleteRequest = new DeleteRequest(url){
 					protected void onPostExecute(String res) {
-						String message = "Sorry, there are problems in deleting. Please, try again later";
+						String message = "Sorry, there are problems in the delete process. Please, try again later";
+						Log.e("test", this.getStatusCode() + "");
+						Log.e("test", this.getErrorMessage());
 						if (!this.hasError() && res != null) {
 							message = "Deleted!";
 						}
 						toasterShow(message);
 					}
 				};
+				
+				deleteRequest.addHeader(Config.API_SESSION_ID, getSessionId());
+				deleteRequest.execute();
 			}
 		});
 		
