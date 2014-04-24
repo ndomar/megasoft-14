@@ -10,8 +10,8 @@ import org.json.JSONObject;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,7 +38,17 @@ public class PhotoUploaderFragment extends Fragment{
 	private ImageView icon;
 	private Button button;
 	private String encodedImage;
+	private int requestId;
+	private String sessionId;
 	private boolean pickedImage = false;
+	
+	public int getRequestId() {
+		return requestId;
+	}
+
+	public void setRequestId(int requestId) {
+		this.requestId = requestId;
+	}
 	
 	public void setPickedImage(boolean pickedImage){
 		this.pickedImage = pickedImage;
@@ -51,10 +61,6 @@ public class PhotoUploaderFragment extends Fragment{
 	public void setEncodedImage(String encodedImage){
 		this.encodedImage = encodedImage;
 		setPickedImage(true);
-	}
-	
-	public static PhotoUploaderFragment getInstance(){
-		return new PhotoUploaderFragment();
 	}
 	
 	public void setIcon(ImageView icon){
@@ -77,10 +83,22 @@ public class PhotoUploaderFragment extends Fragment{
 		return encodedImage;
 	}
 	
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+	
+	public String getSessionId(){
+		return this.sessionId;
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.upload_photo_fragement, container, false);
+        
+		SharedPreferences settings = getActivity().getSharedPreferences(Config.SETTING, 0);
+		setSessionId(settings.getString(Config.SESSION_ID, ""));
+		
+		View view = inflater.inflate(R.layout.upload_photo_fragement, container, false);
         
         final ImageView icon = (ImageView) view.findViewById(R.id.icon);
         setIcon(icon);
@@ -99,10 +117,10 @@ public class PhotoUploaderFragment extends Fragment{
        
         icon.setOnClickListener(new OnClickListener(){
         	public void onClick(View view){
-        		iconButton.setClickable(false);
-        		iconButton.setEnabled(false);
         		icon.setClickable(false);
         		icon.setEnabled(false);
+        		iconButton.setClickable(false);
+        		iconButton.setEnabled(false);
         		
         		chooseIcon();
         		
@@ -125,7 +143,7 @@ public class PhotoUploaderFragment extends Fragment{
 	        		ad.setCancelable(false);
 	        		ad.setMessage("Uploading ...");
 	        		ad.show();
-	        		sendPhotoData(Config.API_BASE_URL + "/request/1" + "/icon", ad);         
+	        		sendPhotoData(Config.API_BASE_URL + "/request/" + getRequestId() + "/icon", ad);         
 	        		
 	        		icon.setClickable(true);
 	        		icon.setEnabled(true);
@@ -205,9 +223,5 @@ public class PhotoUploaderFragment extends Fragment{
 		Toast.makeText(getActivity().getBaseContext(),
 				message,
 				Toast.LENGTH_LONG).show();
-	}
-	
-	public String getSessionId(){
-		return ((UploadRequestIconActivity) getActivity()).getSessionId();
 	}
 }
