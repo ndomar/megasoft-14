@@ -56,6 +56,13 @@ acceptOffer:
     methods: [POST]
 
 
+withdraw_offer:
+    pattern: /offer/{offerId}
+    defaults: { _controller: MegasoftEntangleBundle:Offer:withdraw }
+    methods: [DELETE]
+    requirements:
+        offerId: \d+
+
 dummy:
     pattern: /dummy
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
