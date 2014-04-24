@@ -26,6 +26,21 @@ invite:
     pattern: /tangle/{tangleId}/invite
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
     methods: [POST]
+    
+fetch_pending_invitations:
+    pattern: /tangle/{tangleId}/pending-invitations
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:pendingInvitations}
+    methods: [GET]
+
+accept_pending_invitation:
+    pattern: /pending-invitation/{pendingInvitationId}/accept
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:acceptPendingInvitation}
+    methods: [PUT]
+
+reject_pending_invitation:
+    pattern: /pending-invitation/{pendingInvitationId}/reject
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:rejectPendingInvitation}
+    methods: [DELETE]
 
 
 
@@ -57,6 +72,3 @@ get_profile:
     pattern: tangle/{tangleId}/user/{userId}/profile
     defaults: { _controller: MegasoftEntangleBundle:User:profile }
     methods: [GET]
-
-
-  
