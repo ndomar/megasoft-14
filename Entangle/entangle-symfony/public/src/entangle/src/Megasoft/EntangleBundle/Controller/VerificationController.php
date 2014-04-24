@@ -60,7 +60,7 @@ class VerificationController extends Controller {
                 ->getRepository('MegasoftEntangleBundle:VerificationCode')
                 ->findBy($criteria));
         
-        if ($search == null) {
+        if (!$search) {
             return new Response("User not found" , 404 );
         }
         $user = $search->getUser();
