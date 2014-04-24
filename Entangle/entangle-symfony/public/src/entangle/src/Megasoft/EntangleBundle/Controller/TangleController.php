@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Megasoft\EntangleBundle\Entity\Offer;
-use Megasoft\EntangleBundle\Controller\OfferController;
 use Megasoft\EntangleBundle\Entity\InvitationCode;
 use Megasoft\EntangleBundle\Entity\InvitationMessage;
 use Megasoft\EntangleBundle\Entity\PendingInvitation;
@@ -516,17 +515,23 @@ class TangleController extends Controller
         
         $requests = $requestRepo->findBy(array('tangleId' => $tangleId, 
             'userId' => $userId, 'deleted' => false));
+        $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
+        $user = $userRepo->find($userId);
         
         if($requests != null) {
             foreach ($requests as $request) {
                 if($request != null) {
-                    if($request->getStatus() != $request->CLOSED) {
-                        //to be changed to call function of removing a request 
-                        //function call    
-                        //$requestController = $this->get('getting_request_controller');
+                    if($request->getStatus() != $request->CLOSE) {
+                        //we need to add done
+                        $request->setStatus($request->CLOSE);
+                        $request->setDeleted(true);
+                        //to add a notification in the next sprint
                     } else {
                         $request->setDeleted(true);
-                    }               
+                    }
+                    if($user != null) {
+                        $user->removeRequest($request);
+                    }
                 }
             }
             $this->getDoctrine()->getManager()->flush();
