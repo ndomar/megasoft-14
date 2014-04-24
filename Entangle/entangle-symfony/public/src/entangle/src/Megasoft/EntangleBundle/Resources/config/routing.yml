@@ -32,7 +32,11 @@ login:
     pattern:  /user/login
     defaults: { _controller: MegasoftEntangleBundle:User:login}
     methods: [POST]
-    
+## log out    
+logout:
+    pattern:  /user/logout
+    defaults: { _controller: MegasoftEntangleBundle:User:logout}
+    methods: [POST]
     
 acceptOffer:
     pattern: /accept/offer

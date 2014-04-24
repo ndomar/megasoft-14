@@ -35,7 +35,7 @@ class UserController extends Controller {
     /**
      * Validates the username and password from request and returns sessionID
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response $response
+     * @return \Symfony\Component\HttpFoundation\JsonResponse $response
      * 
      * @author maisaraFarahat
      */
@@ -43,8 +43,7 @@ class UserController extends Controller {
         $response = new JsonResponse();
         $badReq = "bad request";
         if (!$request) {
-            $response->setStatusCode(400, $badReq);
-            return $response;
+            return new JsonResponse($badReq, 400);
         }
         $json = $request->getContent();
         if (!$json) {
@@ -56,16 +55,13 @@ class UserController extends Controller {
         $password = md5($json_array['password']);
 
         if (!$name) {
-            $response->setStatusCode(400, "missing name");
-            return $response;
+            return new JsonResponse("missing name", 400);
         }
         if (!$password) {
-            $response->setStatusCode(400, "missing password");
-            return $response;
+            return new JsonResponse("missing password", 400);
         }
         if (strstr("\"", $name) || strstr("'", $name)) {
-            $response->setStatusCode(400, "name has special characters");
-            return $response;
+            return new JsonResponse("the name has special characters", 400);
         }
         $sessionId = $this->generateSessionId(30);
 
@@ -235,6 +231,51 @@ class UserController extends Controller {
             'credit' => $credit, 'photo' => $photo, 'birthdate' => $birthdate,
             'verified' => $verfied);
         return $info;
+    }
+
+    /**
+     * checks if a session id exists and removes it from the user sessions
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse $response
+     * 
+     * @author maisaraFarahat
+     */
+    public function logoutAction(\Symfony\Component\HttpFoundation\Request $request) {
+        $response = new JsonResponse();
+        $badReq = "bad request";
+        if (!$request) {
+            return new JsonResponse($badReq, 400);
+        }
+        $json = $request->getContent();
+        if (!$json) {
+            return new JsonResponse($badReq, 400);
+        }
+        $json_array = json_decode($json, true);
+        $sessionId = $json_array['sessionid'];
+
+        if (!$sessionId) {
+            return new JsonResponse($badReq, 400);
+        }
+        $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        if (!$session) {
+            return new JsonResponse("the sessionId does not exist", 404);
+        }
+        $user = $session->getUser();
+
+        $user->removeSession($session);
+
+        $session->setExpired(1);
+
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->persist($session);
+
+        $this->getDoctrine()->getManager()->flush();
+//        $response->setData(array('sessionId' => $sessionId));
+
+        $response->setStatusCode(200);
+
+        return $response;
     }
 
 }
