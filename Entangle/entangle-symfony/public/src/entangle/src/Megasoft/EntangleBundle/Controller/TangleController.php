@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Megasoft\EntangleBundle\Entity\InvitationCode;
-use Megasoft\EntangleBundle\Entity\InvitationCode;
 use Megasoft\EntangleBundle\Entity\InvitationMessage;
 use Megasoft\EntangleBundle\Entity\PendingInvitation;
 use Megasoft\EntangleBundle\Entity\Session;
@@ -118,7 +117,8 @@ class TangleController extends Controller
                                         'username' => $tangleRequest->getUser()->getName(),
                                         'userId' => $tangleRequest->getUserId(),
                                         'description' => $tangleRequest->getDescription(),
-                                        'offersCount' => sizeof($tangleRequest->getOffers())
+                                        'offersCount' => sizeof($tangleRequest->getOffers()),
+                                        'price' => $tangleRequest->getRequestedPrice()
                                     );
         }
         
