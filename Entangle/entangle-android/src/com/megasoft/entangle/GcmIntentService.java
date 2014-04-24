@@ -24,14 +24,16 @@ public class GcmIntentService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		Bundle extras = intent.getExtras();
 		if (!extras.isEmpty()) {
-			sendNotification("Received: " + extras.toString());
+			sendNotification(intent);
 		}
 		GcmBroadcastReceiver.completeWakefulIntent(intent);
 	}
 
-	private void sendNotification(String msg) {
+	private void sendNotification(Intent intent) {
 		mNotificationManager = (NotificationManager) this
 				.getSystemService(Context.NOTIFICATION_SERVICE);
+		String title = intent.getExtras().getString("title");
+		String body = intent.getExtras().getString("body");
 
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
 				new Intent(this, CreateNotificationActivity.class), 0);
@@ -39,8 +41,8 @@ public class GcmIntentService extends IntentService {
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				this).setSmallIcon(R.drawable.common_signin_btn_icon_dark)
 				.setContentTitle("GCM Notification")
-				.setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
-				.setContentText(msg);
+				.setStyle(new NotificationCompat.BigTextStyle().bigText(title))
+				.setContentText(body);
 		mBuilder.setContentIntent(contentIntent);
 		mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
 	}

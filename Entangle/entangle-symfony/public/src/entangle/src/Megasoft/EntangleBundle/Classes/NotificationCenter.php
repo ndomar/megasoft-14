@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Container;
 class NotificationCenter
 {
     /**
-     * Entity Manager foth Notification Center
+     * Entity Manager for Notification Center
      * @var \Doctrine\ORM\EntityManager
      */
     private $em;
@@ -144,7 +144,7 @@ class NotificationCenter
         $result = $repo->findBy(array('userId' => $userID, 'expired' => 0,));
 
         if (!$result)
-            return false;
+            return array('success' => 0);
 
         $regIdArray = array();
         foreach ($result as $id)
@@ -153,7 +153,7 @@ class NotificationCenter
 
         $header = array('Authorization:key=' . $Authorization, 'Content-Type: application/json');
         $body = array("registration_ids" => $regIdArray,
-            "notification" => $notification,
+            "data" => $notification,
         );
 
 
@@ -163,6 +163,7 @@ class NotificationCenter
         curl_setopt($request, CURLOPT_POST, true);
         curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($request);
+        $result = json_decode($result, true);
         return $result;
     }
 
@@ -206,7 +207,7 @@ class NotificationCenter
         else
             $body = "new Message from" . $fromName;
 
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->newMessageNotificationId, 'from' => $fromName, 'message' => $message->getBody(), "messageId" => $messageId);
+        $data = array('title' => $title, 'body' => $body, 'type' => $this->newMessageNotificationId, 'by' => $fromName, 'message' => $message->getBody(), "messageId" => $messageId);
         return $this->notificationCenter($to->getId(), $data);
 
     }
@@ -282,6 +283,7 @@ class NotificationCenter
         $notification->setNewPrice($newPrice);
         $notification->setOldPrice($oldPrice);
         $notification->setOffer($offer);
+        $notification->setUser($to);
         $this->em->persist($notification);
         $this->em->flush();
 
@@ -294,7 +296,7 @@ class NotificationCenter
             $body = $this->formatMessage($body, $fromName, $toName);
         else
             $body = $fromName . "changed his offer";
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerChangeNotificationId, 'from' => $fromName, 'newPrice' => $newPrice, 'oldPrice' => $oldPrice, 'offerId' => $offerId);
+        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerChangeNotificationId, 'by' => $fromName, 'newPrice' => $newPrice, 'oldPrice' => $oldPrice, 'offerId' => $offerId);
         return $this->notificationCenter($to->getId(), $data);
     }
 
@@ -333,7 +335,7 @@ class NotificationCenter
         else
             $body = $fromName . "deleted his offer";
 
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerChosenNotificationId, 'from' => $fromName, 'offerId' => $offerId);
+        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerChosenNotificationId, 'by' => $fromName, 'offerId' => $offerId);
         return $this->notificationCenter($to->getId(), $data);
     }
 
@@ -382,7 +384,7 @@ class NotificationCenter
         else
             $body = $fromName . "deleted his offer";
 
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerDeletedNotificationId, 'from' => $fromName, 'offerId' => $offerId);
+        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerDeletedNotificationId, 'by' => $fromName, 'offerId' => $offerId);
         return $this->notificationCenter($to->getId(), $data);
 
     }
@@ -399,7 +401,7 @@ class NotificationCenter
     {
 
         $request = $this->em->getRepository('MegasoftEntangleBundle:Request')->find($requestId);
-        $offerArray = $this->em->getRepository('MegasoftEntangleBundle:Offer')->findBy(array('reqestid' => $requestId));
+        $offerArray = $this->em->getRepository('MegasoftEntangleBundle:Offer')->findBy(array('requestId' => $requestId));
         $from = $request->getUser();
 
         $date = date('m / d / Y h:i:s a', time());
@@ -426,7 +428,7 @@ class NotificationCenter
             else
                 $body = $fromName . "deleted his request";
 
-            $data = array('title' => $title, 'body' => $body, 'type' => $this->requestDeletedNotificationId, 'from' => $fromName, 'offerId' => $requestId);
+            $data = array('title' => $title, 'body' => $body, 'type' => $this->requestDeletedNotificationId, 'by' => $fromName, 'offerId' => $requestId);
             $this->notificationCenter($offer->getUserId(), $data);
         }
     }

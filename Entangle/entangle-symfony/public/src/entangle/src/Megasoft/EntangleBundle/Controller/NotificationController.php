@@ -22,10 +22,10 @@ class NotificationController extends Controller
     function testAction()
     {
         $nc = $this->get('notification_center.service');
-        $name = $nc->newMessageNotification(0, "hello world");
-        $arr = array('regid' => $name,);
-        return $this->render('MegasoftEntangleBundle:Default:test.html.twig', $arr);
-
+        $response = new JsonResponse();
+        $name = $nc->offerDeletedNotification(0);
+        $response->setData($name);
+        return $response;
     }
 
     /**
