@@ -86,11 +86,8 @@ class PendingInvitation
     private $message;
 
     /**
-<<<<<<< Updated upstream
-=======
      *
      *
->>>>>>> Stashed changes
      * @var string
      *
      * @ORM\Column(name="email", type="string")
@@ -98,10 +95,7 @@ class PendingInvitation
     private $email;
 
     /**
-<<<<<<< Updated upstream
      *
-=======
->>>>>>> Stashed changes
      * @var boolean
      *
      * @ORM\Column(name="approved", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
@@ -109,10 +103,7 @@ class PendingInvitation
     private $approved = false;
 
     /**
-<<<<<<< Updated upstream
-=======
      *
->>>>>>> Stashed changes
      * Get id
      *
      * @return integer
