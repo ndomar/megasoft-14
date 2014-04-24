@@ -10,7 +10,7 @@
  * Description of VerificationController
  * this controller controls the process of sending emails to users
  * and verifying them 
- * @author MahmoudEid
+ * @author MahmoudGamal
  */
 
 namespace Megasoft\EntangleBundle\Controller;
@@ -25,6 +25,7 @@ class VerificationController extends Controller {
      * @param type $userName
      * @param type $userEmail
      * @param type $verificationHash
+     * @return  response
      * @author MahmoudGamal
      */
     public function emailUserAction($userName, $userEmail, $verificationHash) {
@@ -49,9 +50,9 @@ class VerificationController extends Controller {
     }
 
     /**
-     * This method changes verified status of user to true
+     * This method changes the verified parameter of the user to true
      * @param type $verificationCode
-     * @return type
+     * @return \Symfony\Component\HttpFoundation\Response
      * @author MahmoudGamal
      */
     public function verifyUserAction($verificationCode) {
