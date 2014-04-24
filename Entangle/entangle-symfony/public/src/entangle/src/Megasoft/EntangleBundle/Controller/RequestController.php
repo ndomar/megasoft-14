@@ -1,26 +1,35 @@
 <?php
 
 namespace Megasoft\EntangleBundle\Controller;
-    
+
+use DateTime as DateTime2;
+use Megasoft\EntangleBundle\Entity\Request;
+use Megasoft\EntangleBundle\Entity\Session;
+use Megasoft\EntangleBundle\Entity\Tag;
+use Megasoft\EntangleBundle\Entity\Tangle;
+use Megasoft\EntangleBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Megasoft\EntangleBundle\Entity\Request;
-use Megasoft\EntangleBundle\Entity\Tag;
+use Symfony\Component\HttpFoundation\Request as Request2;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\Tests\String;
+use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class RequestController extends Controller {
 
     /**
      * this method is used to validate data and return response accordingly 
      * @param String $sessionId
-     * @param \Megasoft\EntangleBundle\Entity\Session $session
+     * @param Session $session
      * @param Date $deadLineFormated
      * @param DateTime $dateFormated
      * @param int $requestedPrice
-     * @param \Megasoft\EntangleBundle\Entity\Tangle $tangle
+     * @param Tangle $tangle
      * @param String $description
-     * @param \Megasoft\EntangleBundle\Entity\User $user
+     * @param User $user
      * @param String $date
-     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse|null
+     * @return Response|JsonResponse|null
      * @author Salma Khaled
      */
     public function validate($sessionId, $session, $deadLineFormated, $dateFormated, $requestedPrice, $tangle, $description, $user, $date) {
@@ -81,12 +90,12 @@ class RequestController extends Controller {
     /**
      * take the json Object from the request then decode it and seprate 
      * the data and enter it in the Request Table
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request2 $request
      * @param String $tangleId
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      * @author Salma Khaled
      */
-    public function createAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId) {
+    public function createAction(Request2 $request, $tangleId) {
         $doctrine = $this->getDoctrine();
         $json = $request->getContent();
         $response = new JsonResponse();
@@ -111,9 +120,9 @@ class RequestController extends Controller {
         $description = $json_array['description'];
         $tags = $json_array['tags'];
         $date = $json_array['date'];
-        $dateFormated = new \DateTime($date);
+        $dateFormated = new DateTime2($date);
         $deadLine = $json_array['deadLine'];
-        $deadLineFormated = new \DateTime($deadLine);
+        $deadLineFormated = new DateTime2($deadLine);
         $requestedPrice = $json_array['requestedPrice'];
         $theTangleId = (int) $tangleId;
         $tangle = $tangleTable->findOneBy(array('id' => $theTangleId));
@@ -169,7 +178,7 @@ class RequestController extends Controller {
       * @return Response
       * @author OmarElAzazy
      */
-    public function deleteAction(Request $request, $requestId){
+    public function deleteAction(Request2 $request, $requestId){
         $sessionId = $request->headers->get('X-SESSION-ID');
         
         if($requestId == null || $sessionId == null){
