@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 
 @SuppressLint("NewApi") 
@@ -52,7 +53,7 @@ public class PhotoUploaderFragment extends Fragment{
 		setPickedImage(true);
 	}
 	
-	public static PhotoUploaderFragment getInstance(ContentResolver contentResolver){
+	public static PhotoUploaderFragment getInstance(){
 		return new PhotoUploaderFragment();
 	}
 	
@@ -98,7 +99,17 @@ public class PhotoUploaderFragment extends Fragment{
        
         icon.setOnClickListener(new OnClickListener(){
         	public void onClick(View view){
+        		iconButton.setClickable(false);
+        		iconButton.setEnabled(false);
+        		icon.setClickable(false);
+        		icon.setEnabled(false);
+        		
         		chooseIcon();
+        		
+        		icon.setClickable(true);
+        		icon.setEnabled(true);
+        		iconButton.setClickable(true);
+        		iconButton.setEnabled(true);
         	}
         });
         
@@ -107,14 +118,17 @@ public class PhotoUploaderFragment extends Fragment{
         		if(getPickedImage()){
 	        		iconButton.setClickable(false);
 	        		iconButton.setEnabled(false);
+	        		icon.setClickable(false);
+	        		icon.setEnabled(false);
 	        		
 	        		AlertDialog ad = new AlertDialog.Builder(getActivity()).create();
 	        		ad.setCancelable(false);
 	        		ad.setMessage("Uploading ...");
 	        		ad.show();
+	        		sendPhotoData(Config.API_BASE_URL + "/request/1" + "/icon", ad);         
 	        		
-	        		sendPhotoData("http://entangletemp.apiary-mock.com/request/1/icon", ad);         
-	        		
+	        		icon.setClickable(true);
+	        		icon.setEnabled(true);
 	        		iconButton.setClickable(true);
 	        		iconButton.setEnabled(true);
         		}
