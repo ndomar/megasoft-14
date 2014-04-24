@@ -69,6 +69,7 @@ public class RequestActivity extends Activity {
 	 * this is the endpoint string
 	 */
 	final String REQUEST = "/request/" + requestId;
+	boolean myRequest = false;
 
 	/**
 	 * this calls fillRequestDetails() to generate the request preview
@@ -154,6 +155,10 @@ public class RequestActivity extends Activity {
 			detail.setTextColor(Color.WHITE);
 			layout.addView(detail);
 		}
+		String myRequestString = json.getString("MyRequest");
+		if (myRequestString.equals("1")) {
+			myRequest = true;
+		}
 	}
 
 	/**
@@ -189,9 +194,11 @@ public class RequestActivity extends Activity {
 			details.setTextColor(Color.WHITE);
 			layout.addView(details);
 		}
-		Button deleteRequest = new Button(this);
-		deleteRequest.setText("Delete");
-		layout.addView(deleteRequest);
+		if (myRequest == true) {
+			Button deleteRequest = new Button(this);
+			deleteRequest.setText("Delete");
+			layout.addView(deleteRequest);
+		}
 	}
 
 	/**
