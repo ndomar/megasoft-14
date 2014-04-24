@@ -152,12 +152,12 @@ class CreateOfferController extends Controller {
             $response->setContent("request is deleted");
             return $response;
         }
-        if ($tangleRequest->getStatus() == 1 || $tangleRequest->getStatus() == 2) {
+        if ($tangleRequest->getStatus() == $tangleRequest->CLOSE || $tangleRequest->getStatus() == $tangleRequest->FROZEN) {
             $response->setStatusCode(400);
             $response->setContent("can not create offer on this request");
             return $response;
         }
-        if($tangleRequest->getUserId() == $userId) {
+        if ($tangleRequest->getUserId() == $userId) {
             $response->setStatusCode(400);
             $response->setContent("can not create offer on your request");
             return $response;
