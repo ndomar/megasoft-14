@@ -9,6 +9,12 @@
         android:background="#CCCCCC"
         android:orientation="vertical" >
 
+        <CheckBox
+            android:id="@+id/set_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email_notification_off" />
+
         <TextView
             android:id="@+id/Description"
             android:layout_width="match_parent"

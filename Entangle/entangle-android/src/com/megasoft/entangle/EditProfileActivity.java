@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ public class EditProfileActivity extends Activity {
 	String sessionId;
 	String emails;
 	String[] userEmails;
+	CheckBox emailNotification;
 	EditText currentDescription;
 	Spinner newday;
 	Spinner newmonth;
@@ -40,7 +42,7 @@ public class EditProfileActivity extends Activity {
 	EditText addedMail;
 	String oldBirthDate;
 	String[] splittedDate;
-	JSONObject whoamiResponse;
+	JSONObject retrieveDataResponse;
 	String addedEmail;
 	Activity currentActivity = this;
 	Intent viewEditedProfile;
@@ -49,42 +51,54 @@ public class EditProfileActivity extends Activity {
 	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	JSONObject putReJsonObject = new JSONObject();
+	Boolean notification = true;
 
 	@SuppressLint("SimpleDateFormat")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_profile);
-
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
-		/*
-		 * GetRequest getRequest = new GetRequest("http://menna.apiary-mock.com"
-		 * + "/user/" + "/whoami/fdghdhjdgf") { public void onPostExecute(String
-		 * response) { try { whoamiResponse = new JSONObject(response); } catch
-		 * (JSONException e) { e.printStackTrace(); } finish(); } };
-		 */
 
-		// getRequest.addHeader(Config.API_SESSION_ID, sessionId);
-		// getRequest.execute();
-		// try {
-		// SimpleDateFormat dateformatJava = new SimpleDateFormat("dd-MM-yyyy");
-		// oldBirthDate = dateformatJava.format(whoamiResponse
-		// .get("date_of_birth"));
-		// splittedDate = oldBirthDate.split("-");
-		// newday.setSelection(Integer.parseInt(splittedDate[0]) - 1);
-		// newmonth.setSelection(Integer.parseInt(splittedDate[1]) - 1);
-		// newyear.setSelection(Integer.parseInt(splittedDate[2]) - 1951);
-		// currentDescription.setText(whoamiResponse.getString("description"));
-		//
-		// } catch (JSONException e) {
-		// e.printStackTrace();
-		// }
+		GetRequest getRequest = new GetRequest(Config.API_BASE_URL + "/user/"
+				+ "/retrieveData") {
+			public void onPostExecute(String response) {
+				try {
+					retrieveDataResponse = new JSONObject(response);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				finish();
+			}
+		};
+
+		getRequest.addHeader(Config.API_SESSION_ID, sessionId);
+		getRequest.execute();
+		try {
+
+			oldBirthDate = retrieveDataResponse.getString("date_of_birth");
+			splittedDate = oldBirthDate.split("-");
+			newday.setSelection(Integer.parseInt(splittedDate[0]) - 1);
+			newmonth.setSelection(Integer.parseInt(splittedDate[1]) - 1);
+			newyear.setSelection(Integer.parseInt(splittedDate[2]) - 1951);
+			currentDescription.setText(retrieveDataResponse
+					.getString("description"));
+			notification = retrieveDataResponse
+					.getBoolean("notification_state");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 
 		initializeView();
 	}
 
 	private void initializeView() {
+		emailNotification = (CheckBox) findViewById(R.id.set_notification);
+		if (notification != true) {
+			emailNotification.setText("Turn on notification");
+		}
+
 		currentDescription = (EditText) findViewById(R.id.CurrentDescription);
 		newday = (Spinner) findViewById(R.id.days);
 		newmonth = (Spinner) findViewById(R.id.months);
@@ -97,10 +111,11 @@ public class EditProfileActivity extends Activity {
 
 	@SuppressLint("SimpleDateFormat")
 	public void saveAll(View view) {
-		PutRequest putRequest = new PutRequest(Config.API_BASE_URL + "/user/"
-				+ "edit") {
+
+		PutRequest putRequest = new PutRequest(Config.API_BASE_URL
+				+ "/user/" + "edit") {
 			protected void onPostExecute(String result) {
-				if (result.toString().equals("200 OK")) {
+				if (this.getStatusCode() == 200) {
 					getActivity();
 					startActivity(viewEditedProfile);
 				} else {
@@ -114,11 +129,22 @@ public class EditProfileActivity extends Activity {
 		};
 		putRequest.addHeader(Config.API_SESSION_ID, sessionId);
 		try {
+
+			String notificationState = emailNotification.getText().toString();
+			if (notificationState.equals("Turn off notification")) {
+				if ((notification == true && emailNotification.isChecked())
+						|| (notification == false && !emailNotification
+								.isChecked())) {
+					putReJsonObject.put("notification_state", false);
+				} else {
+					putReJsonObject.put("notification_state", true);
+				}
+			}
 			String date = newday.getSelectedItem().toString() + "-"
 					+ getMonthNumber(newmonth.getSelectedItem().toString())
 					+ "-" + newyear.getSelectedItem().toString();
 
-			putReJsonObject.put("newDescription", currentDescription.getText()
+			putReJsonObject.put("description", currentDescription.getText()
 					.toString());
 			putReJsonObject.put("new_date_of_birth", date);
 			if (!(TextUtils.isEmpty(currentPassword.getText().toString())
@@ -148,8 +174,8 @@ public class EditProfileActivity extends Activity {
 			putReJsonObject.put("confirm_password", confirmPassword.getText()
 					.toString());
 
-			putReJsonObject.put("added_mail", addedMail.getText().toString());
-
+			putReJsonObject.put("email", addedMail.getText().toString());
+			Log.i("batata", "anageeet");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -169,9 +195,9 @@ public class EditProfileActivity extends Activity {
 		return matcher.matches();
 	}
 
-	public static int getMonthNumber(String month) {
+	public static String getMonthNumber(String month) {
 
-		int monthNumber = 0;
+		String monthNumber = "00";
 
 		if (month == null) {
 			return monthNumber;
@@ -179,46 +205,47 @@ public class EditProfileActivity extends Activity {
 
 		switch (month.toLowerCase()) {
 		case "january":
-			monthNumber = 1;
+			monthNumber = "01";
 			break;
 		case "february":
-			monthNumber = 2;
+			monthNumber = "02";
 			break;
 		case "march":
-			monthNumber = 3;
+			monthNumber = "03";
 			break;
 		case "april":
-			monthNumber = 4;
+			monthNumber = "04";
 			break;
 		case "may":
-			monthNumber = 5;
+			monthNumber = "05";
 			break;
 		case "june":
-			monthNumber = 6;
+			monthNumber = "06";
 			break;
 		case "july":
-			monthNumber = 7;
+			monthNumber = "07";
 			break;
 		case "august":
-			monthNumber = 8;
+			monthNumber = "08";
 			break;
 		case "september":
-			monthNumber = 9;
+			monthNumber = "09";
 			break;
 		case "october":
-			monthNumber = 10;
+			monthNumber = "10";
 			break;
 		case "november":
-			monthNumber = 11;
+			monthNumber = "11";
 			break;
 		case "december":
-			monthNumber = 12;
+			monthNumber = "12";
 			break;
 		default:
-			monthNumber = 0;
+			monthNumber = "00";
 			break;
 		}
 
 		return monthNumber;
 	}
+
 }

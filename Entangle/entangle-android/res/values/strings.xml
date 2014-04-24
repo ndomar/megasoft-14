@@ -43,6 +43,8 @@
     <string name="save">Save</string>
     <string name="title_activity_edit_profile">Edit Profile</string>
     <string name="date_of_birth">Date Of Birth</string>
+    <string name="email_notification_off">Turn off notification</string>
+    <string name="email_notification_on">Turn on notification</string>
 
     <string-array name="day_number">
         <item>1</item>
