@@ -30,7 +30,6 @@ import android.widget.Toast;
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 
-@SuppressLint("NewApi") 
 public class PhotoUploaderFragment extends Fragment{
 	
 	private static final int REQUEST_CODE = 2;
@@ -215,7 +214,7 @@ public class PhotoUploaderFragment extends Fragment{
 			e.printStackTrace();
 		}
 		iconDataRequest.setBody(jsonBody);
-		iconDataRequest.addHeader("X-SESSION-ID", "session1");
+		iconDataRequest.addHeader(Config.API_SESSION_ID, "session1");
 		iconDataRequest.execute();
 	}
 	
