@@ -11,6 +11,11 @@
     </head>
     <body>
         {% block body %}{% endblock %}
+
+         {{ include(
+            '::footer.html.twig'
+        ) }}
+        
         {% block javascripts %}
                 
             {% javascripts '@MegasoftEntangleBundle/Resources/public/js/*' %}

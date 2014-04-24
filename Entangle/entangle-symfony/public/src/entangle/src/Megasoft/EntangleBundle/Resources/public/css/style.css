@@ -67,3 +67,9 @@ a {
 	background:#242424;
 	min-height:300px;
 }
+
+#why-entangle{
+    background:white;
+    min-height:400px;
+    padding: 50px;
+}
