@@ -70,5 +70,6 @@
     </string-array>
 
     <string name="title_activity_stream_request_fragment">StreamRequestFragment</string>
+    <string name="delete_button_text">Delete</string>
 
 </resources>
