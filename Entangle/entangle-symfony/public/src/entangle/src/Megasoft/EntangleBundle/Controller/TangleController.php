@@ -575,8 +575,8 @@ class TangleController extends Controller
     }
     /**
      * An endpoint for accepting tangle invitations sent to user
-     * @param type $userId
-     * @param type $tangleId
+     * @param int $userId
+     * @param int $tangleId
      * @return Response
      * @author MahmoudGamal
      */
