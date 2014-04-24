@@ -38,7 +38,7 @@ public class GcmIntentService extends IntentService {
 				new Intent(this, CreateNotificationActivity.class), 0);
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-				this).setSmallIcon(R.drawable.common_signin_btn_icon_dark)
+				this).setSmallIcon(R.drawable.ic_launcher)
 				.setContentTitle("New Entangle Notification")
 				.setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
 				.setTicker("New Entangle Notification")
