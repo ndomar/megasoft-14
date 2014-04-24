@@ -29,8 +29,7 @@
     <EditText
         android:id="@+id/mssgText"
         android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:layout_alignBottom="@+id/linearLayout"
+        android:layout_height="150dp"
         android:layout_below="@+id/pageNameLabel"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
