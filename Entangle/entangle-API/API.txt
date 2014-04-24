@@ -1,6 +1,7 @@
 ﻿FORMAT: 1A
 HOST: http://www.google.com
 
+
 # Entangle
 asdsadasd
 
@@ -81,9 +82,9 @@ Get requests in a specific tangle filtered by user, tag, full text or a prefix o
             ]
         }
 
-## GET /tangle/{tangleId}/user
-Get list of users in tangle
 
+## USER RELATED TO TANGLE ENDPOINTS [/tangle/{tangleId}/user]
+### Get list of users in tangle [GET]
 
 + Parameters
     + tangleId ( Int , required ) ... tangle id
@@ -115,6 +116,19 @@ Get list of users in tangle
         }
 
 
+### Delete user from tangle [DELETE]
+        
++ Parameters
+    + tangleId ( Int , required ) ... tangle id
+    
++ Request
+
+    + Header
+            
+             X-SESSION-ID : asdasdasdsadasdasd
+                 
++ Response 204
+
 ## POST /tangle/{tangleId}/request
 Post request
 + Parameters
@@ -131,8 +145,8 @@ Post request
     
                 { 
                     "description" : "description of a request",
-                    "date" : "28/May/2013",
-                    "deadLine" : "3/April/2014",
+                    "date" : "28/3/2013 12:07:20",
+                    "deadLine" : "3/4/2014",
                     "requestedPrice" : "7",
                     "tags": ["guc", "farghal", "ay7aga"]
                 }
@@ -141,21 +155,6 @@ Post request
 
 + Response 201
 
-## POST /tangle
-Create a tangle
-
-+ Request (application/json)
-    
-        {
-            "tangleName" : "kokoTangle"
-            "tangleIcon" : "asdfcsdfsadfsdfaewrf"
-        }
-
-        +Header
-            
-            X-SESSION-ID : asdasdasdsadasdasd
-            
-+ Response 201 
 
 ## GET /tangle/check/{tangleName}
 check tangle name availability
@@ -373,8 +372,12 @@ contact offerer and requester after claim
                                 ]
                 }
 
+
+
+
 ## POST /request/{requestId}/icon
 Post icon for a specific request
+
 + parameters
 
     + requestId (Int, required) ... request id
@@ -515,28 +518,66 @@ As a user, i can register
              
 + Response 200
 
+# Group ufreeze 
+Unfreeze points related resources of the **Entangle API**
 
-##DELETE /tangle/{tangleId}/user/{userId}
-Delete user from tangle        
-        
+## unfreeze [/unfreze]
+### List all unfreze requests [GET]
++ Response 200 (application/json)
+
+        [{
+          "UnfreezeReqid": "UnfreezeReqid1","tangle id": "idTangle", "userid": "user1Id" , "requestId": "requestId1"
+        }, {
+          "UnfreezeReqid": "UnfreezeReqid2","tangle id": "idTangle2", "userid": "user2Id", "requestId" :"requestId2"
+        }]
+
+### Create an unfreeze request [POST]
++ Request (application/json)
+
+        { 
+        "tangle id": "idTangle" ,
+        "user id": "UserId" , 
+        "requestId" : "requestId"
+        }
+
++ Response 201 
+
+##  UnfreezeReq [/unfreeze/{unfreezeReqid}]
+A single unfreeze Request object with all its details
+
 + Parameters
-    + tangleId ( Int , required ) ... tangle id
-    + userId ( Int , required ) ... user id
-    
-+ Request
+    + unfreezeReqid (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
 
-    + Header
-            
-             X-SESSION-ID : asdasdasdsadasdasd
-                 
+### Retrieve an Unfreeze Request [GET]
++ Response 200 (application/json)
+
+        { "UnfreezeReqid": "UnfreezeReqid1","tangle id": "idTangle", "userid": "user1Id" , "requestId" : "requestId"}
+
+### Remove a Request [DELETE]
 + Response 204
 
+## frozenPoints [/unfreeze/{unfreezeRequestId}/frozenpoints]
++ Parameters
+    + unfreezeRequestId (required,int)
 
-## GET /tangleOwnerAndOffererMail/{tangleId}/claim
+###  get Frozen points [GET]
++ Response 200 (application/json)
+    
+        {"frozenPoints" : "frozenPoints"}
+
+### Restore Balance [PUT]
++ Request (application/json)
+
+        {"balanceToRestore":"balanceamount"}
+
++ Response 200
+
+
+## GET /tangleOwnerAndClaimerMail/{requestId}/claim
 Get the email of the offerer
 
 + Parameters
-    + tangleId  ( Int , required ) ... tangle id
+    + requestId  ( Int , required ) ... request id
 
 + Request
 
@@ -547,16 +588,16 @@ Get the email of the offerer
 + Response 200(application/json)
 
         {
-            "X-OFFERER-MAIL" : "salma@gmail.com",
+            "X-CLAIMER-MAIL" : "salma@gmail.com",
             "X-TANGLEOWNER-MAIL" : "saloum@gmail.com"
            
         }
         
-## POST /claim/{tangleId}/sendClaim
+## POST /claim/{requestId}/sendClaim
 Post request
 + Parameters
     
-    + tangleId ( Int , required ) ... tangle id
+    + requestId ( Int , required ) ... request id
  
 + Request (application/json)
     
@@ -569,7 +610,6 @@ Post request
                 { 
                     "X-SENDER-MAIL" : "SALMA@GMAIL.COM",
                     "X-RECIEVER-MAIL" : "SALOUM@GMAIL.COM",
-                    "X-SUBJECT" : "PLEASE",
                     "X-MSSGBODY" : "NONO"
                 }
 
@@ -594,18 +634,25 @@ get the details of an offer
 
 + Response 200 (application/json)
 
-        "requestInformation" :  {
+        {
+           "tangleId" : 1,
+           "requestInformation" :  {
                                  "requesterName" : "Alaa Maher",
-                                 "requestDescription" : "I want to understand this app."
+                                 "requestDescription" : "I want to understand this app.",
+                                 "requesterID" : 1,
+                                 "requestID" : 2,
+                                 "requestStatus" : 0
                                 },
-        "offerInformation" :    {
+            "offerInformation" :    {
                                      "offererName"  : "Mohamed Bassem" ,
                                      "offerDescription" : "fgsherhsgs",
                                      "offerDeadline" : "3/3/2015",
-                                     "offerSatus" : 0,
+                                     "offerStatus" : 0,
                                      "offerPrice" : 300,
-                                     "offerDate" : "3/3/2014"
+                                     "offerDate" : "3/3/2014",
+                                     "offererID" : 2
                                 }
+        }
                              
              
 
@@ -729,20 +776,105 @@ get the details of an offer
             "status" : "1"
 
             }
-##POST /accept/offer/{offerId}
+
+
+##POST /accept/offer
 accept an offer
++ Request (application/json)
 
-+ Parameters
-    + offerId ( int , required ) ... offer id
-
-+ Request(application/json)
     + Header
-            
-             X-SESSION-ID : "asdasdasdsadasdasd"
+
+            X-SESSION-ID : "asdasdasdsadasdasd"
+
+    + Body
+
+            { "offerId": "1"} 
+
++ Response 201 
+
+## PUT /user/edit
++ Request (application/json) 
+
     + Body
     
             {
-             "offerId" : "1"
+                "description" : "el description bta3 menna isA :D",
+                "date_of_birth" : "29-05-1992",
+                "email" : "mennatarek92@gmail.com",
+                "current_password" : "12345678",
+                "new_password" : "123456789",
+                "confirm_password" : "123456789"
             }
+            
+    + Response 200
+            
 
-+ Response 201           
+## POST /tangle/{tangleId}/request/{requestId}/offer
+Post offer
++ Parameters
+    
+    + tangleId ( Int , required ) ... tangle id
+    + requestId ( Int , required ) ... request id
+ 
++ Request (application/json)
+    
+    + Header
+            
+             X-SESSION-ID : "abc123"
+
+    + Body
+    
+                { 
+                    "description" : "description of an offer",
+                    "date" : "28/3/2013 12:07:20",
+                    "deadLine" : "19/4/2014",
+                    "requestedPrice" : "7"
+                }
+
+    
+
++ Response 201
+
+## Tangle Related endpoints [/tangle]
+### Get list of tangles[GET]
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+
++ Response 200 (application/json)
+    
+        {
+            "tangles" : [
+                            {
+                                "id":"1",
+                                "tangleName" : "test1"
+                            },
+                            
+                            {
+                                "id":"2",
+                                "tangleName" : "test2"
+                            },
+                            
+                            {
+                                "id":"3",
+                                "tangleName" : "test3"
+                            }
+                        ]
+        }
+
+### Creates a new Tangle [POST]
+        
++ Request (application/json)
+    
+        {
+            "tangleName" : "kokoTangle"
+            "tangleIcon" : "asdfcsdfsadfsdfaewrf"
+        }
+
+        +Header
+            
+            X-SESSION-ID : asdasdasdsadasdasd
+            
++ Response 201 
