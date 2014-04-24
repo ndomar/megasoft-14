@@ -233,49 +233,5 @@ class UserController extends Controller {
         return $info;
     }
 
-    /**
-     * checks if a session id exists and removes it from the user sessions
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\JsonResponse $response
-     * 
-     * @author maisaraFarahat
-     */
-    public function logoutAction(\Symfony\Component\HttpFoundation\Request $request) {
-        $response = new JsonResponse();
-        $badReq = "bad request";
-        if (!$request) {
-            return new JsonResponse($badReq, 400);
-        }
-        $json = $request->getContent();
-        if (!$json) {
-            return new JsonResponse($badReq, 400);
-        }
-        $json_array = json_decode($json, true);
-        $sessionId = $json_array['sessionid'];
-
-        if (!$sessionId) {
-            return new JsonResponse($badReq, 400);
-        }
-        $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
-        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
-        if (!$session) {
-            return new JsonResponse("the sessionId does not exist", 404);
-        }
-        $user = $session->getUser();
-
-        $user->removeSession($session);
-
-        $session->setExpired(1);
-
-        $this->getDoctrine()->getManager()->persist($user);
-        $this->getDoctrine()->getManager()->persist($session);
-
-        $this->getDoctrine()->getManager()->flush();
-//        $response->setData(array('sessionId' => $sessionId));
-
-        $response->setStatusCode(200);
-
-        return $response;
-    }
 
 }

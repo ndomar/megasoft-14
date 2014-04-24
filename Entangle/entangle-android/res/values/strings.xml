@@ -47,7 +47,6 @@
     </string-array>
 
     <string name="title_activity_stream_request_fragment">StreamRequestFragment</string>
-    <string name="title_activity_logout">LogoutActivity</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
