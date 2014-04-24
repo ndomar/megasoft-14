@@ -10,7 +10,6 @@
     <string name="tag">Please Add comma separated tags</string>
     <string name="tagHint">Only letters, digits, and , allowed</string>
     <string name="priceHint">enter a positive number</string>
-    <string name="title_activity_request">RequestActivity</string>
     <string name="hello_world">Hello world!</string>
 
     <string name="date">Date</string>
@@ -24,7 +23,6 @@
     <string name="viewMembers">Members</string>
     <string name="viewProfile">Profile</string>
     <string name="title_activity_members">Members</string>
-    <string name="title_activity_profile">Profile</string>
     <string name="title_activity_invite">Invite</string>
     <string name="tangleName">Tangle Name</string>
     <string name="search_title">Filter Stream</string>
@@ -49,6 +47,8 @@
     <string name="wrong_emails">Not Valid Emails</string>
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_request">RequestActivity</string>
     <string name="title_activity_accept_pending_invitation">AcceptPendingInvitation</string>
     <string name="pending_invitation_approve">Approve</string>
     <string name="pending_invitation_reject">Reject</string>
