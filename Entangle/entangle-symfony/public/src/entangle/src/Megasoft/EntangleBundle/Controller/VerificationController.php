@@ -55,9 +55,11 @@ class VerificationController extends Controller {
      * @author MahmoudGamal
      */
     public function verifyUserAction($verificationCode) {
+        $criteria = array('verificationCode' => $verificationCode);
         $search = $this->getDoctrine()
                 ->getRepository('MegasoftEntangleBundle:VerificationCode')
-                ->findBy($verificationCode);
+                ->findBy($criteria);
+        
         if (!$search) {
             return new Response("User not found" , 404 );
         }
