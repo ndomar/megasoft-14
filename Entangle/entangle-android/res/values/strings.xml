@@ -47,6 +47,12 @@
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
     <string name="preview_request">Preview Request</string>
+    <string name="title_activity_accept_pending_invitation">AcceptPendingInvitation</string>
+    <string name="pending_invitation_approve">Approve</string>
+    <string name="pending_invitation_reject">Reject</string>
+    <string name="title_activity_manage_pending_invitation">ManagePendingInvitationActivity</string>
+    <string name="pending_invitation_no_pending">No Pending Invitations now !</string>
+    <string name="refresh">Refresh</string>
     <string name="title_activity_date_picker_fragment">DatePickerFragment</string>
     <string name="edit_info">Edit your information</string>
     <string name="leave_tangle">Leave current tangle</string>
