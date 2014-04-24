@@ -177,12 +177,7 @@ class UserController extends Controller {
         if (!$request) {
             return new JsonResponse($badReq, 400);
         }
-        $json = $request->getContent();
-        if (!$json) {
-            return new JsonResponse($badReq, 400);
-        }
-        $json_array = json_decode($json, true);
-        $sessionId = $json_array['sessionid'];
+        $sessionId = $request->headers->get("X-SESSION-ID");
 
         if (!$sessionId) {
             return new JsonResponse($badReq, 400);
