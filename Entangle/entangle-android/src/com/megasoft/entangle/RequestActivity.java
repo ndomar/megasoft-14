@@ -74,9 +74,15 @@ public class RequestActivity extends Activity {
 	 */
 	boolean myRequest = false;
 	/**
-	 * this is an array to match the status code to it's worded equivalent
+	 * this is an array to match the request status code to it's worded
+	 * equivalent
 	 */
-	String[] statusCodes = { "OPEN", "CLOSED", "FROZEN" };
+	String[] requestStatusCodes = { "OPEN", "CLOSED", "FROZEN" };
+	/**
+	 * this is an array to match the offer status code to it's worded equivalent
+	 */
+	String[] offerStatusCodes = { "PENDING", "DONE", "ACCEPTED", "FAILED",
+			"REJECTED" };
 
 	/**
 	 * this calls fillRequestDetails() to generate the request preview
@@ -156,7 +162,7 @@ public class RequestActivity extends Activity {
 				if (i == 6) {
 					String status = (String) json.get(requestDetailNames[i]);
 					fieldDetails += requestDetailNames[i] + ": "
-							+ statusCodes[Integer.parseInt(status)];
+							+ requestStatusCodes[Integer.parseInt(status)];
 				} else {
 					fieldDetails += requestDetailNames[i] + ": "
 							+ json.get(requestDetailNames[i]);
@@ -197,9 +203,14 @@ public class RequestActivity extends Activity {
 			TextView details = new TextView(self);
 			String add = "\n Offer " + (i + 1) + ": ";
 			for (int j = 0; j < apiOfferNames.length; j++) {
-
-				String field = (String) offer.get(apiOfferNames[j]);
-				add += "\n " + offerFieldNames[j] + field;
+				if (j == 4) {
+					String field = (String) offer.get(apiOfferNames[j]);
+					add += "\n" + offerFieldNames[j]
+							+ offerStatusCodes[Integer.parseInt(field)];
+				} else {
+					String field = (String) offer.get(apiOfferNames[j]);
+					add += "\n " + offerFieldNames[j] + field;
+				}
 			}
 			details.setTextSize(20);
 			details.setTypeface(null, Typeface.BOLD_ITALIC);
