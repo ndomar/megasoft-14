@@ -33,6 +33,12 @@ post_request_icon:
     methods: [POST]
     requirements:
         requestId:  \d+
+        
+create:
+    pattern: /tangle/{tangleId}/request
+    defaults: { _controller: MegasoftEntangleBundle:Request:create }
+    methods: [POST]
+    
 acceptOffer:
     pattern: /accept/offer
     defaults: {_controller: MegasoftEntangleBundle:Offer:acceptOffer }
@@ -42,7 +48,12 @@ get_profile:
     pattern: tangle/{tangleId}/user/{userId}/profile
     defaults: { _controller: MegasoftEntangleBundle:User:profile }
     methods: [GET]
-    
+
+get_profile:
+    pattern: tangle/{tangleId}/user/{userId}/profile
+    defaults: { _controller: MegasoftEntangleBundle:User:profile }
+    methods: [GET]
+
 dummy:
     pattern: /dummy
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
