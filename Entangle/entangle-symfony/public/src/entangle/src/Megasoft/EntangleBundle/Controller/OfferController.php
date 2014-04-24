@@ -84,18 +84,22 @@ class OfferController extends Controller {
         if ($request->getDeleted() == 1) {
             return "Error: Request deleted.";
         }
-        if ($request->getStatus() == 1 ) {
+        if ($request->getStatus() == $request->CLOSE) {
             return "Error: Request Closed.";
         }
-         if ($request->getStatus() == 2 ) {
+        if ($request->getStatus() == $request->FROZEN) {
             return "Error: Request is Frozen.";
         }
         if ($offer->getDeleted() == 1) {
             return "Error: Offer deleted.";
         }
-        if ($offer->getStatus() == 1) {
-            return "Error: Offer Closed.";
+        if ($offer->getStatus() == $offer->DONE || $offer->getStatus() == $offer->ACCEPTED) {
+            return "Error: Offer has already been accepted.";
         }
+        if ($offer->getStatus() == $offer->FAILED || $offer->getStatus() == $offer->REJECTED) {
+            return "Error: Offer closed.";
+        }
+
 
         $price = $offer->getRequestedPrice();
 
@@ -103,7 +107,7 @@ class OfferController extends Controller {
         if ($requesterBalance < $price) {
             return "Error: Not enough balance.";
         }
-        $request->setStatus(2);
+        $request->setStatus($request->FROZEN);
         $requester->setCredit($requesterBalance - $price);
         $offer->setStatus(1);
         $doctrine->getManager()->persist($request);
