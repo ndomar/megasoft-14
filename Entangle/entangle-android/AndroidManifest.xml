@@ -26,10 +26,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.megasoft.entangle.InviteUserActivity"
-            android:label="@string/title_activity_invite_users" >
+        
+            <activity
+            android:name="com.megasoft.entangle.TangleActivity"
+            android:label="@string/title_activity_view_stream" >
         </activity>
+        <activity
+            android:name="com.megasoft.entangle.Members"
+            android:label="@string/title_activity_members" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.ProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.CreateRequestActivity"
+            android:label="@string/title_activity_request_information" >
+        </activity>
+       
         <activity
             android:name="com.megasoft.entangle.ConfirmInviteUserActivity"
             android:label="@string/title_activity_invite_users_confirmations"
@@ -37,6 +51,24 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.megasoft.entangle.InviteUsers" />
+
+        </activity>
+      
+        <activity
+            android:name="com.megasoft.entangle.InviteUserActivity"
+            android:label="@string/title_activity_invite_users" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.EditProfileActivity"
+            android:label="@string/title_activity_edit_profile"
+            android:parentActivityName="com.megasoft.entangle.ProfileActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.megasoft.entangle.ProfileActivity" />
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.OfferActivity"
+            android:label="@string/title_activity_offer" >
         </activity>
     </application>
 
