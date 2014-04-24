@@ -573,5 +573,21 @@ class TangleController extends Controller
         $this->getDoctrine()->getManager()->flush();
         return new Response("Deleted",200);
     }
-
+    public function addUserAction($sessionId , $tangleId){
+        $tangle = $this->getDoctrine()
+                ->getRepository('MegasoftEntangleBundle:Tangle')
+                ->findBy($tangleId);
+        if(!$tangle){
+            return new Response("Tangle not found",404);
+        }
+        $user = $this->getDoctrine()
+                ->getRepository('MegasoftEntangleBundle:User')
+                ->findBy($sessionId);
+        if(!$user){
+            return new Response("User not found",404);
+        }
+        $tangle->addUserTangle($user);
+        $this->getDoctrine()->getManager()->flush();
+        return new Respone("User added",201);
+    }
 }
