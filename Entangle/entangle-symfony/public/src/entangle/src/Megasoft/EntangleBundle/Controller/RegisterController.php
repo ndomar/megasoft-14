@@ -53,14 +53,13 @@ class RegisterController extends Controller {
             return false;
         }
     }
-    
+
     /**
      * Checks that both passwords match.
      * @param String password, String confirm password
      * @return Boolean value, true if they match. False otherwise.
      * @author: Eslam
      * * */
-
     private function passwordsMatch($password, $confirmPassword) {
         if ($password == $confirmPassword) {
             return true;
@@ -68,6 +67,7 @@ class RegisterController extends Controller {
             return false;
         }
     }
+
     /**
      * Checks that the email provided is unique
      * @param String email
@@ -125,7 +125,9 @@ class RegisterController extends Controller {
 
                     if (in_array(strtolower($fileType), $validFileTypes)) {
 
-                        $filepath = '/home/neuron/Documents/megasoft-14/Entangle/entangle-symfony/public/src/entangle/web/images/profilePictures/' . substr(md5(time()), 0, 10) . $this->generate(5) . '.' . $fileType;
+                        $filepath = '/home/neuron/Documents/megasoft-14/Entangle/entangle-symfony/public/src'
+                                . '/entangle/web/images/profilePictures/' . substr(md5(time()), 0, 10) .
+                                $this->generate(5) . '.' . $fileType;
                         move_uploaded_file($image, $filepath);
                         $user->setPhoto($filepath);
                     }
