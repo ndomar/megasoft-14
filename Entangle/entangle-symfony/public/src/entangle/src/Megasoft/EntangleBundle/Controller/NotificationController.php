@@ -23,10 +23,10 @@ class NotificationController extends Controller
         $sessionId = $request->headers->get('SessionID');
         if( $sessionId == null )
         {
-            return new Response("Unauthorized",401);
+            //return new Response("Unauthorized",401);
         }
         $notificationRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Notification');
-        $notification = $notificationRepo->findOneById($notificationId);
+        $notification = $notificationRepo->findOneBy(array('id' =>$notificationId));
             
         if($notification == null)
         {
