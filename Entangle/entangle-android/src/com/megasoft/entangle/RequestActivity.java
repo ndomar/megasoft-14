@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.widget.Button;
@@ -72,7 +73,8 @@ public class RequestActivity extends Activity {
 	/**
 	 * this is the endpoint string
 	 */
-	final String REQUEST = "tangle" + tangleId + "/request/" + requestId;
+	final String REQUEST = "/tangle/" + tangleId + "/request/" + requestId;
+	
 	/**
 	 * this is for checking if I have my own request open
 	 */
@@ -100,8 +102,8 @@ public class RequestActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		Intent intent = getIntent();
-		requestId = intent.getIntExtra("RequestId", -1);
-		tangleId = intent.getIntExtra("TangleId", -1);
+		this.requestId = intent.getIntExtra("RequestId", -1);
+		this.tangleId = intent.getIntExtra("TangleId", -1);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_request);
 		this.fillRequestDetails();
@@ -128,6 +130,7 @@ public class RequestActivity extends Activity {
 		GetRequest request = new GetRequest(Config.API_BASE_URL + REQUEST) {
 			protected void onPostExecute(String response) {
 				try {
+					Log.e("zeft", response);
 					JSONObject json = new JSONObject(response);
 					addRequestFields(json);
 					addOffers(json);

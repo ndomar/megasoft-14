@@ -51,9 +51,7 @@
             android:name="com.megasoft.entangle.CreateOfferActivity"
             android:label="@string/title_activity_create_offer" >
         </activity>
-
-
-        <activity
+		<activity
             android:name="com.megasoft.entangle.RequestActivity"
             android:label="@string/title_activity_request" >
         </activity>
