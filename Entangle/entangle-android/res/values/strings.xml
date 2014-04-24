@@ -52,6 +52,12 @@
     <string name="icon">icon</string>
     <string name="iconButton">Upload Icon</string>
     <string name="title_activity_upload_request_icon">Upload Request Icon</string>
+    <string name="title_activity_accept_pending_invitation">AcceptPendingInvitation</string>
+    <string name="pending_invitation_approve">Approve</string>
+    <string name="pending_invitation_reject">Reject</string>
+    <string name="title_activity_manage_pending_invitation">ManagePendingInvitationActivity</string>
+    <string name="pending_invitation_no_pending">No Pending Invitations now !</string>
+    <string name="refresh">Refresh</string>
     <string name="title_activity_date_picker_fragment">DatePickerFragment</string>
     <string name="edit_info">Edit your information</string>
     <string name="leave_tangle">Leave current tangle</string>

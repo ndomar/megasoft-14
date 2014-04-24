@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="11"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -34,8 +34,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-            <activity
+        <activity
             android:name="com.megasoft.entangle.TangleActivity"
             android:label="@string/title_activity_view_stream" >
         </activity>
@@ -57,8 +56,15 @@
             android:parentActivityName="com.megasoft.entangle.InviteUserActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.megasoft.entangle.InviteUsers" />
-
+                android:value="com.megasoft.entangle.InviteUserActivity" />
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.acceptPendingInvitation.AcceptPendingInvitationActivity"
+            android:label="@string/title_activity_accept_pending_invitation" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationActivity"
+            android:label="@string/title_activity_manage_pending_invitation" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.EditProfileActivity"
