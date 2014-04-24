@@ -43,6 +43,10 @@
             android:label="@string/title_activity_request_information" >
         </activity>
         <activity
+            android:name="com.megasoft.entangle.RequestActivity"
+            android:label="@string/title_activity_request" >
+        </activity>
+        <activity
             android:name="com.megasoft.entangle.ConfirmInviteUserActivity"
             android:label="@string/title_activity_invite_users_confirmations"
             android:parentActivityName="com.megasoft.entangle.InviteUserActivity" >

@@ -1,17 +1,20 @@
 package com.megasoft.entangle;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -40,7 +43,7 @@ public class RequestActivity extends Activity {
 	 */
 	String[][] offerDetails;
 	/**
-	 * saved values to add to request fields 
+	 * saved values to add to request fields
 	 */
 	String[] requestDetailNames = { "Description", "Requester", "Date", "Tags",
 			"Price", "Deadline", "Status" };
@@ -95,6 +98,12 @@ public class RequestActivity extends Activity {
 	 */
 	public void fillRequestDetails() {
 		layout = (LinearLayout) this.findViewById(R.id.request_activity);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		params.gravity = Gravity.RIGHT;
+		ImageView icon = new ImageView(this);
+		icon.setLayoutParams(params);
+		layout.addView(icon);
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		GetRequest request = new GetRequest(Config.API_BASE_URL + REQUEST) {
@@ -151,7 +160,8 @@ public class RequestActivity extends Activity {
 	 * this retrieves offers and offer detail fields from JSONOBject and adds
 	 * them to text fields
 	 * 
-	 * @param JSONObject json Json that holds request details
+	 * @param JSONObject
+	 *            json Json that holds request details
 	 * @return none
 	 * @author sak93
 	 */
@@ -179,6 +189,9 @@ public class RequestActivity extends Activity {
 			details.setTextColor(Color.WHITE);
 			layout.addView(details);
 		}
+		Button deleteRequest = new Button(this);
+		deleteRequest.setText("Delete");
+		layout.addView(deleteRequest);
 	}
 
 	/**
@@ -201,7 +214,6 @@ public class RequestActivity extends Activity {
 
 	}
 
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -210,7 +222,3 @@ public class RequestActivity extends Activity {
 		return true;
 	}
 }
-
-
-
-
