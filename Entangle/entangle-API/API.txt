@@ -1,6 +1,5 @@
-﻿FORMAT: 1A
+FORMAT: 1A
 HOST: http://www.google.com
-
 
 # Entangle
 asdsadasd
@@ -63,25 +62,27 @@ Get requests in a specific tangle filtered by user, tag, full text or a prefix o
                     "username" : "Aly",
                     "id" : "1",
                     "description" : "I want to understand Math.",
-                    "offersCount" : "1"
+                    "offersCount" : "1",
+                    "price" : "25"
                 },
                 {
                     "userId" : "1",
                     "username" : "Aly",
                     "id" : "2",
                     "description" : "I want to understand Physics.",
-                    "offersCount" : "0"
+                    "offersCount" : "0",
+                    "price" : "32"
                 },
                 {
                     "userId" : "2",
                     "username" : "Mansour",
                     "id" : "3",
                     "description" : "I want to learn how to play LOL.",
-                    "offersCount" : "1"
+                    "offersCount" : "1",
+                    "price" : "100"
                 }
             ]
         }
-
 
 ## USER RELATED TO TANGLE ENDPOINTS [/tangle/{tangleId}/user]
 ### Get list of users in tangle [GET]
