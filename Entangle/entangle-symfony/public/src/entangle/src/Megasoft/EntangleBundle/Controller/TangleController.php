@@ -435,7 +435,6 @@ class TangleController extends Controller
     private function removeRequests($tangleId, $userId) {
         $requestRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Request");
         
-        //to add in the criteria the status that it is open
         $requests = $requestRepo->findBy(array('tangleId' => $tangleId, 'userId' => $userId, 'deleted' => false));
         
         if($requests != null) {
@@ -469,7 +468,7 @@ class TangleController extends Controller
         $offers = $offerRepo->findBy(array('userId' => $userId, 'deleted' => false));
         if($offers != null) {
             $requestRepo = $doctrine->getRepository("MegasoftEntangleBundle:Request");
-            $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
+            $userRepo = $doctrine->getRepository("MegasoftEntangleBundle:User");
             $user = $userRepo->find($userId);
             
             foreach ($offers as $offer) {
@@ -479,16 +478,9 @@ class TangleController extends Controller
                     
                     if($request != null) {
                         $offerStatus = $offer->getStatus();
-                        if($offerStatus == $offer->ACCEPTED || $offerStatus == $offer->PENDING) {
-                            //to be changed to call the function of withdrawing an offer
-                            deleteOffer($user, $offer);
-                            $offer->setDeleted(true);
-                            
-                        }else if($offerStatus == $offer->REJECTED || $offerStatus == $offer->FAILED) {
-                            $offer->setDeleted(true);
-                            if($user != null) {
-                                $user->removeOffer($offer);
-                            }
+                        if($offerStatus != $offer->DONE ) {
+                            //may be it is going to be changed to call the function of withdrawing an offer
+                            deleteOfferMessages($user, $offer);
                         }
                     }
                 }
@@ -497,21 +489,20 @@ class TangleController extends Controller
         }
     }
     
-    private function deleteOffer($user, $offer) {
-        if($offer->getStatus() == $offer->PENDING) {
-            //to be done in the coming sprint
-            //send notification to the requester
-            if($user != null) {
-                $user->removerOffer($offer);
-            }
+    private function deleteOfferMessages($user, $offer) {
+        //to be done in the coming sprint
+        //send notification to the requester only in case of PENDING and ACCEPTED
+        $offer->setDeleted(true);
+        if($user != null) {
+            $user->removeOffer($offer);
+        }
             
-            $messages = $offer->getMessages();
-            foreach ($messages as $message) {
-                if($message != null) {
-                    $message->setDeleted(true);
-                    if($user != null) {
-                        $user->removeMessage($message);
-                    }
+        $messages = $offer->getMessages();
+        foreach ($messages as $message) {
+            if($message != null) {
+                $message->setDeleted(true);
+                if($user != null) {
+                    $user->removeMessage($message);
                 }
             }
         }
@@ -566,9 +557,7 @@ class TangleController extends Controller
         
         $sessionId = $request->headers->get("X-SESSION_ID");
         
-        $doctrine = $this->getDoctrine();
-        
-        $sessionRepo = $doctrine->getRepository("MegasoftEntangleBundle:Session");
+        $sessionRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Session");
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         $userId = $session->getUserId();
         
