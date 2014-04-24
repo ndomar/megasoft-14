@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Megasoft\EntangleBundle\Entity\Offer;
 
 /**
- * Description of CreateOfferController
+ * CreateOfferController responsible for creating offers
  *
  * @author Salma Khaled
  */
@@ -28,37 +28,30 @@ class CreateOfferController extends Controller {
         $response = new JsonResponse();
         $json_array = json_decode($json, true);
         $sessionId = $request->headers->get('X-SESSION-ID');
-        if ($sessionId == null) {
-            $response->setStatusCode(400);
-            return $response;
-        }
+
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
-        if ($session == null) {
-            $response->setStatusCode(401);
-            return $response;
-        }
+
         $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
         $userId = $session->getUserId();
         $user = $userTable->findOneBy(array('id' => $userId));
         $requestTable = $doctrine->getRepository('MegasoftEntangleBundle:Request');
         $theRequestId = (int) $requestId;
         $tangleRequest = $requestTable->findOneBy(array('id' => $theRequestId));
-        if ($tangleRequest == null) {
-            $response->setStatusCode(401);
-            return $response;
-        }
-        if ($tangleRequest->getDeleted() || $tangleRequest->getStatus() == 2 || $tangleRequest->getStatus() == 3) {
-            $response->setStatusCode(400);
-            return $response;
-        }
+        $tangleTable = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
+        $theTangleId = (int) $tangleId;
+        $tangle = $tangleTable->findOneBy(array('id' => $theTangleId));
+
         $description = $json_array['description'];
         $date = $json_array['date'];
         $dateFormated = new \DateTime($date);
         $deadLine = $json_array['deadLine'];
         $deadLineFormated = new \DateTime($deadLine);
         $requestedPrice = $json_array['requestedPrice'];
-
+        $valid = $this->validate($theRequestId, $tangle, $sessionId, $session, $deadLineFormated, $dateFormated, $requestedPrice, $tangleRequest, $description, $user, $date);
+        if ($valid != null) {
+            return $valid;
+        }
         $newOffer = new Offer();
         $newOffer->setRequestedPrice($requestedPrice);
         $newOffer->setDate($dateFormated);
@@ -66,7 +59,7 @@ class CreateOfferController extends Controller {
         $newOffer->setExpectedDeadline($deadLineFormated);
         $newOffer->setUser($user);
         $newOffer->setRequest($tangleRequest);
-        $newOffer->setStatus(1);
+        $newOffer->setStatus(0);
         //send notification
         $doctrine->getManager()->persist($newOffer);
         $doctrine->getManager()->flush();
@@ -74,6 +67,106 @@ class CreateOfferController extends Controller {
         $response->setData(array('sessionId' => $sessionId));
         $response->setStatusCode(201);
         return $response;
+    }
+
+    /**
+     * this method is used to validate data and return response accordingly
+     * @param int $theRequestId
+     * @param \Megasoft\EntangleBundle\Entity\Tangle $tangle
+     * @param String $sessionId
+     * @param \Megasoft\EntangleBundle\Entity\Session $session
+     * @param Date $deadLineFormated
+     * @param DateTime $dateFormated
+     * @param int $requestedPrice
+     * @param \Megasoft\EntangleBundle\Entity\Request $tangleRequest
+     * @param String $description
+     * @param \Megasoft\EntangleBundle\Entity\User $user
+     * @param String $date
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|null
+     * @author Salma Khaled
+     */
+    public function validate($theRequestId, $tangle, $sessionId, $session, $deadLineFormated, $dateFormated, $requestedPrice, $tangleRequest, $description, $user, $date) {
+        $response = new JsonResponse();
+        if ($sessionId == null) {
+            $response->setStatusCode(400);
+            return $response;
+        }
+        if ($session == null || $session->getExpired() == true) {
+            $response->setStatusCode(401);
+            return $response;
+        }
+        if ($tangleRequest == null) {
+            $response->setStatusCode(400);
+            $response->setContent("no such request");
+            return $response;
+        }
+
+        if ($tangle == null || $user == null) {
+            $response->setStatusCode(401);
+            return $response;
+        }
+        if ($tangle->getDeleted() == true) {
+            $response->setStatusCode(401);
+            $response->setContent("tangle is deleted");
+            return $response;
+        }
+        $tangleUsers = $tangle->getUsers();
+        $arrlength = count($tangleUsers);
+        $userIsMember = false;
+        $userId = $user->getId();
+        for ($i = 0; $i < $arrlength; $i++) {
+            if ($userId == $tangleUsers[$i]->getId()) {
+                $userIsMember = true;
+                break;
+            }
+        }
+        if (!$userIsMember) {
+            $response->setStatusCode(401);
+            $response->setContent("User is not a member in the tangle");
+            return $response;
+        }
+        $tangleRequests = $tangle->getRequests();
+        $tangleRequetslength = count($tangleRequests);
+        $requestBelongToTangle = false;
+        for ($i = 0; $i < $tangleRequetslength; $i++) {
+            if ($theRequestId == $tangleRequests[$i]->getId()) {
+                $requestBelongToTangle = true;
+                break;
+            }
+        }
+        if (!$requestBelongToTangle) {
+            $response->setStatusCode(401);
+            $response->setContent("Request doesn't belong to tangle");
+            return $response;
+        }
+        if ($tangleRequest->getDeleted()) {
+            $response->setStatusCode(400);
+            $response->setContent("request is deleted");
+            return $response;
+        }
+        if ($tangleRequest->getStatus() == 1 || $tangleRequest->getStatus() == 2) {
+            $response->setStatusCode(400);
+            $response->setContent("can not create offer on this request");
+            return $response;
+        }
+
+        if ($description == null || $date == null || $requestedPrice == null) {
+            $response->setStatusCode(400);
+            $response->setContent("some data are missing");
+            return $response;
+        }
+        if ($deadLineFormated->format("Y-m-d") < $dateFormated->format("Y-m-d")) {
+            $response->setStatusCode(400);
+            $response->setContent("deadline has passed!");
+            return $response;
+        }
+        if ($requestedPrice < 0) {
+            $response->setStatusCode(400);
+            $response->setContent("price must be a positive value!");
+            return $response;
+        }
+
+        return null;
     }
 
 }
