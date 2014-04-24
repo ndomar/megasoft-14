@@ -103,7 +103,7 @@ class OfferController extends Controller {
         if ($requesterBalance < $price) {
             return "Error: Not enough balance.";
         }
-        $request->setStatus(1);
+        $request->setStatus(2);
         $requester->setCredit($requesterBalance - $price);
         $offer->setStatus(1);
         $doctrine->getManager()->persist($request);
