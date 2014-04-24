@@ -137,25 +137,32 @@ Post request
                     "tags": ["guc", "farghal", "ay7aga"]
                 }
 
-    
-
 + Response 201
 
-## POST /tangle
-Create a tangle
+## POST /request/{requestId}/icon
+Post icon for a specific request
++ parameters
 
-+ Request (application/json)
+    + requestId (Int, required) ... request id
     
++ Request (application/json)
+
+    +Header
+            
+            X-SESSION-ID : '549048320948219058409580'
+            
+    + Body
+                
+                {
+                    "requestIcon" : "fjdlgjfkjlgk'jwlkf'wjadgl'h'rjhgWGJAEKGJKLSJGDFKGHSK;GRIG;EJ"
+                }
+                
++ Response 201(application/json)
+
         {
-            "tangleName" : "kokoTangle"
-            "tangleIcon" : "asdfcsdfsadfsdfaewrf"
+            "iconUrl" : "http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/icons/test.jpg"
         }
 
-        +Header
-            
-            X-SESSION-ID : asdasdasdsadasdasd
-            
-+ Response 201 
 
 ## GET /tangle/check/{tangleName}
 check tangle name availability
@@ -294,11 +301,7 @@ Get profile
                 "message" : "Hello , Join my tangle"
             }
              
-+ Response 201 (application/json)
-            
-            {
-                "pending" : 1
-            }
++ Response 201
 
 ## POST /tangle/{tangleId}/check-membership
 
@@ -325,6 +328,19 @@ Get profile
                 "invalid" : [ "test" ]
             }
             
+
+## DELETE /offer/{offerId}
+Withdraw offer
+
++ Parameters
+    + offerId ( String , required ) ... offer id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 204
 
 ## GET /claim/{claimID}/contact
 contact offerer and requester after claim
@@ -370,10 +386,22 @@ contact offerer and requester after claim
 
         { "message": "message was sent successfully" }
         
+        
+## Request Collection [/request/{requestId}]
+### Delete Request [DELETE]
+
++ Parameters
+    + requestId ( String , required ) ... request id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 204
 
 
-
-## GET /request/{requestId}
+### Retrieve Request [GET]
 
 + Parameters
     + requestId ( String , required ) ... request id
@@ -414,12 +442,7 @@ contact offerer and requester after claim
             "user" : "UserWithSessionId"
         }
         
-## POST /user/login/{username,password}
-
-+ Parameters
-    + username ( String , required ) ... username
-    + password (String , required ) ... password
-    
+## POST /login
 + Request (application/json)
     + Header
             
@@ -428,11 +451,17 @@ contact offerer and requester after claim
     + Body 
     
             {
-               "username" : [username]
-                "password" : [password]
+               "username" : "username"
+                "password" : "password"
             }
              
-+ Response 201
++ Response 201 (application/json)
+
+            {
+                "sessionId": "session",
+                "userId" : "1"
+            }
+
 
 
 ## POST /register
@@ -456,4 +485,34 @@ As a user, i can register
         
            
 + Response 201 
+
+## GET /tangle
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+
++ Response 200 (application/json)
+    
+        {
+            "tangles" : [
+                            {
+                                "id":"2",
+                                "tangleName" : "test"
+                            },
+                            
+                            {
+                                "id":"2",
+                                "tangleName" : "test"
+                            },
+                            
+                            {
+                                "id":"2",
+                                "tangleName" : "test"
+                            }
+                        ]
+        }
+
+
 
