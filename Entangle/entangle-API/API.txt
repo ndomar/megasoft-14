@@ -392,7 +392,8 @@ contact offerer and requester after claim
                     "Tags" :["tag1", "tag2","tag3"],
                     "Price": "3",
                     "Deadline":"1/2/1",
-                    "Status":"done"
+                    "Status":"done",
+		    "MyRequest":"0",
                     "Description" : "description of a request",
                     "Offers" : [
                                     {
