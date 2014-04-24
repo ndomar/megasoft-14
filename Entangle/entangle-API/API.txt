@@ -343,7 +343,7 @@ contact offerer and requester after claim
                     "Price": "3",
                     "Deadline":"1/2/1",
                     "Status":"0",
-		    "MyRequest": "1",
+                    "MyRequest":"0",
                     "Description" : "description of a request",
                     "Offers" : [
                                     {
@@ -352,7 +352,7 @@ contact offerer and requester after claim
                                     "date" : "1/1/1",
                                     "description": "Offer Description", 
                                     "offererId" : "10",
-                                    "status" : "Status"
+                                    "status" : "1"
                                      },
                                      {
                                     "id" : "1", 
@@ -360,7 +360,7 @@ contact offerer and requester after claim
                                     "date" : "1/1/1",
                                     "description": "Offer Description", 
                                     "offererId" : "10",
-                                    "status" : "Status"
+                                    "status" : "0"
                                      },
                                      {
                                     "id" : "1", 
@@ -368,10 +368,11 @@ contact offerer and requester after claim
                                     "date" : "1/1/1",
                                     "description": "Offer Description", 
                                     "offererId" : "10",
-                                    "status" : "Status"
+                                    "status" : "3"
                                      }
                                 ]
                 }
+
 ## POST /request/{requestId}/icon
 Post icon for a specific request
 + parameters
