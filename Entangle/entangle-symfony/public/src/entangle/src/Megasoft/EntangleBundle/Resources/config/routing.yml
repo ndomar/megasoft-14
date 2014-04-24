@@ -28,10 +28,15 @@ invite:
     methods: [POST]
 
 
+retrieve_data:
+    pattern: /user/retrieveData
+    defaults: { _controller: MegasoftEntangleBundle:User:edit }
+    methods: [GET]
+    
 edit:
     pattern: /user/edit
     defaults: { _controller: MegasoftEntangleBundle:User:edit }
-    methods: [PUT]
+    methods: [PUT]    
     
 delete_secondary_email:
     pattern: /user/delete-secondary-email
