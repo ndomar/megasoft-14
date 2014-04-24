@@ -48,7 +48,7 @@ megasoft_entangle_register:
 
 
 
-megasoft_entangle_about:
+about:
     pattern:  /about
     defaults: { _controller: MegasoftEntangleBundle:About:about }
 
