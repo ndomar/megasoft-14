@@ -112,8 +112,8 @@ public class EditProfileActivity extends Activity {
 	@SuppressLint("SimpleDateFormat")
 	public void saveAll(View view) {
 
-		PutRequest putRequest = new PutRequest(Config.API_BASE_URL
-				+ "/user/" + "edit") {
+		PutRequest putRequest = new PutRequest(Config.API_BASE_URL + "/user/"
+				+ "edit") {
 			protected void onPostExecute(String result) {
 				if (this.getStatusCode() == 200) {
 					getActivity();

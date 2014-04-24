@@ -1,4 +1,3 @@
-
 <?php
 
 namespace Megasoft\EntangleBundle\Controller;
@@ -14,9 +13,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Megasoft\EntangleBundle\Entity\UserEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Gets the required information to view a certain user's profile
@@ -31,37 +27,43 @@ class UserController extends Controller {
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $currentSession = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
         $user = $currentSession->getUser();
-        $newDescription = $jsonArray['description'];
-        if ($user->getUserBio() != $newDescription) {
-            $user->setUserBio($newDescription);
-        }
-        $newPassword = $jsonArray['new_password'];
-        $confirmNewPassword = $jsonArray['confirm_password'];
-        $givenCurrentPassword = $jsonArray['current_password'];
-        $currentPassword = $user->getPassword();
-        if (($givenCurrentPassword == $currentPassword) && ($newPassword == $confirmNewPassword)) {
-            $user->setPassword(md5($newPassword));
-        }
-        $newDateOfBirthString = $jsonArray['date_of_birth'];
-        $newDateOfBirth = strtotime($newDateOfBirthString);
-        $dateGiven = $user->getBirthDate();
+        if ($user != null) {
+            $newDescription = $jsonArray['description'];
+            if ($user->getUserBio() != $newDescription) {
+                $user->setUserBio($newDescription);
+            }
+            $newPassword = $jsonArray['new_password'];
+            $confirmNewPassword = $jsonArray['confirm_password'];
+            $givenCurrentPassword = $jsonArray['current_password'];
+            $currentPassword = $user->getPassword();
+            if (($givenCurrentPassword == $currentPassword) && ($newPassword == $confirmNewPassword)) {
+                $user->setPassword(md5($newPassword));
+            }
+            $newDateOfBirthString = $jsonArray['date_of_birth'];
 
-        if ($newDateOfBirth != $dateGiven) {
-            $user->setBirthDate($newDateOfBirth);
+            if ($newDateOfBirthString != null) {
+                $newDateOfBirth = strtotime($newDateOfBirthString);
+                $dateGiven = $user->getBirthDate();
+                if ($newDateOfBirth != $dateGiven) {
+                    $user->setBirthDate($newDateOfBirth);
+                }
+            }
+            $doctrineManger = $this->getDoctrine()->getManager();
+            if (filter_var($jsonArray['added_email'], FILTER_VALIDATE_EMAIL)) {
+                $newMail = new UserEmail();
+                $newMail->setEmail($jsonArray['added_email']);
+                $newMail->setUser($user);
+                if ($user->getId() != null) {
+                    $newMail->setUserId($user->getId());
+                    $user->addEmail($newMail);
+                    $doctrineManger->persist($newMail);
+                }
+            }
+            //  $user->setNotificationState($jsonArray('notification_state'));
+            $doctrineManger->persist($user);
+            $doctrineManger->flush();
+            return new Response('OK', 200);
         }
-        $doctrineManger = $this->getDoctrine()->getManager();
-
-        if (filter_var($jsonArray['added_email'], FILTER_VALIDATE_EMAIL)) {
-            $newMail = new UserEmail();
-            $newMail->setEmail($jsonArray['added_email']);
-            $newMail->setUser($user);
-            $newMail->setUserId($user->getId());
-            $user->addEmail($newMail);
-            $doctrineManger->persist($newMail);
-        }
-        $doctrineManger->persist($user);
-        $doctrineManger->flush();
-        return new Response('OK', 200);
     }
 
     public function deleteSecondaryEmailAction(Request $request) {
@@ -70,10 +72,12 @@ class UserController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $currentSession = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
-        $user = $currentSession->getUser();
-        $deletedMail = $jsonArray['deletedMail'];
-        $user->removeEmail($deletedMail);
-        $doctrineManger = $this->getDoctrine()->getManager();
+        if ($currentSession != null) {
+            $user = $currentSession->getUser();
+            $deletedMail = $jsonArray['deletedMail'];
+            $user->removeEmail($deletedMail);
+            $doctrineManger = $this->getDoctrine()->getManager();
+        }
         $doctrineManger->persist($user);
         $doctrineManger->flush();
         return new Response('OK', 200);
@@ -86,6 +90,9 @@ class UserController extends Controller {
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $currentSession = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
         $user = $currentSession->getUser();
+        $response = new JsonResponse();
+        $response->setData(array('description' => $user->getUserBio(), 'date_of_birth' => $user->getBirthDate()
+            , 'notification_state' => $user->getNotificationState()));
     }
 
     /**
