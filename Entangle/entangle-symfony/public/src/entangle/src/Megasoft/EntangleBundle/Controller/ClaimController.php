@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class Claim extends Controller {
+class ClaimController extends Controller {
 
     /**
      * This function gets the emails of both the claimer and the tangle owner from 
@@ -48,7 +48,7 @@ class Claim extends Controller {
         $userId = $session->getUserId();
         $userRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserEmail');
         $claimerMail = $userRepo->findOneBy(array('userId' => $userId))->getEmail();
-        $tangleOwnerId = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'tangleOwner' => 'true'));
+        $tangleOwnerId = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'tangleOwner' => true));
         $tangleOwnerMail = $userRepo->findOneBy(array('userId' => $tangleOwnerId))->getEmail();
         $response = new JsonResponse();
         $response->setJsonContent
