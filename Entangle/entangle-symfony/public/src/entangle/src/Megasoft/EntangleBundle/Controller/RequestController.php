@@ -40,16 +40,7 @@ class RequestController extends Controller {
             $response->setContent("Unauthorized");
             return $response;
         }
-        if ($deadLineFormated->format("Y-m-d") < $dateFormated->format("Y-m-d")) {
-            $response->setStatusCode(400);
-            $response->setContent("deadline has passed!");
-            return $response;
-        }
-        if ($requestedPrice < 0) {
-            $response->setStatusCode(400);
-            $response->setContent("price must be a positive value!");
-            return $response;
-        }
+        
         if ($tangle == null || $user == null) {
             $response->setStatusCode(401);
             return $response;
@@ -77,6 +68,16 @@ class RequestController extends Controller {
         if ($description == null || $date == null) {
             $response->setStatusCode(400);
             $response->setContent("some data are missing");
+            return $response;
+        }
+        if ($deadLineFormated->format("Y-m-d") < $dateFormated->format("Y-m-d")) {
+            $response->setStatusCode(400);
+            $response->setContent("deadline has passed!");
+            return $response;
+        }
+        if ($requestedPrice < 0) {
+            $response->setStatusCode(400);
+            $response->setContent("price must be a positive value!");
             return $response;
         }
         return null;
