@@ -48,6 +48,7 @@
     <string name="PREFERENCE_FILE_KEY">prefs</string>
     <string name="title_activity_gcmregistration">GCMRegistrationActivity</string>
     <string name="new_notification">new Notification</string>
+    <string name="preview_request">Preview Request</string>
     <string name="title_activity_create_offer">CreateOfferActivity</string>
     <string name="create_offer">Create Offer</string>
     <string name="offer_description">Offer\'s description</string>
