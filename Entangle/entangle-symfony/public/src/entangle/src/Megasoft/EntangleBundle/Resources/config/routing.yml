@@ -26,6 +26,10 @@ invite:
     pattern: /tangle/{tangleId}/invite
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
     methods: [POST]
+
+index:
+    pattern: /
+    defaults: { _controller: MegasoftEntangleBundle:Site:index }
     
 fetch_pending_invitations:
     pattern: /tangle/{tangleId}/pending-invitations
@@ -42,12 +46,10 @@ reject_pending_invitation:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:rejectPendingInvitation}
     methods: [DELETE]
 
-
 viewRequest:
     pattern: tangle/{tangleId}/request/{requestId}
     defaults: { _controller: MegasoftEntangleBundle:Request:viewRequest }
     methods: [GET]
-
 
 create:
     pattern: /tangle/{tangleId}/request

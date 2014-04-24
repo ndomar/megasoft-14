@@ -5,20 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 
-import com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationActivity;
-
 public class MainActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		startActivity(new Intent(getApplicationContext(),
-				GCMRegistrationActivity.class));
-		// setContentView(R.layout.activity_main);
-		// startActivity((new
-		// Intent(this,ManagePendingInvitationActivity.class)).putExtra("com.megasoft.entangle.tangleId",
-		// 2));
+		startActivity(new Intent(this, TangleActivity.class));
 	}
 
 	@Override
