@@ -151,7 +151,7 @@ public class GCMRegistrationActivity extends Activity {
 			protected void onPostExecute(String regid) {
 				sendRegisterationId(regid);
 				Log.i(TAG, regid);
-				// storeRegisteratinId(regid);
+				storeRegisteratinId(regid);
 			}
 		}.execute(null, null, null);
 	}
