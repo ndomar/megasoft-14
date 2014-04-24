@@ -157,6 +157,11 @@ class CreateOfferController extends Controller {
             $response->setContent("can not create offer on this request");
             return $response;
         }
+        if($tangleRequest->getUserId() == $userId) {
+            $response->setStatusCode(400);
+            $response->setContent("can not create offer on your request");
+            return $response;
+        }
 
         if ($description == null || $date == null || $requestedPrice == null) {
             $response->setStatusCode(400);
