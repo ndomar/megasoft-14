@@ -52,7 +52,7 @@ class UserController extends Controller {
         }
         $json_array = json_decode($json, true);
         $name = $json_array['name'];
-        $password = md5($json_array['password']);
+        $password = $json_array['password'];
 
         if (!$name) {
             return new JsonResponse("missing name", 400);
@@ -66,8 +66,10 @@ class UserController extends Controller {
         $sessionId = $this->generateSessionId(30);
 
         $repo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
-        $user = $repo->findOneBy(array('name' => $name, 'password' => $password));
-
+        $user = $repo->findOneBy(array('name' => $name, 'password' => md5($password)));
+        if (!$user) {
+            return new JsonResponse("Wrong credentials", 400);
+        }
         $session = new Session();
         $session->setSessionId($sessionId);
         $session->setUser($user);
@@ -232,6 +234,5 @@ class UserController extends Controller {
             'verified' => $verfied);
         return $info;
     }
-
 
 }
