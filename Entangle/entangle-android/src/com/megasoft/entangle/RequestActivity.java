@@ -23,6 +23,10 @@ import com.megasoft.requests.GetRequest;
 
 public class RequestActivity extends Activity {
 	/**
+	 * the tangle Id
+	 */
+	int tangleId;
+	/**
 	 * the request Id
 	 */
 	int requestId;
@@ -68,7 +72,7 @@ public class RequestActivity extends Activity {
 	/**
 	 * this is the endpoint string
 	 */
-	final String REQUEST = "/request/" + requestId;
+	final String REQUEST = "tangle" + tangleId + "/request/" + requestId;
 	/**
 	 * this is for checking if I have my own request open
 	 */
@@ -97,6 +101,7 @@ public class RequestActivity extends Activity {
 
 		Intent intent = getIntent();
 		requestId = intent.getIntExtra("RequestId", -1);
+		tangleId = intent.getIntExtra("TangleId", -1);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_request);
 		this.fillRequestDetails();
