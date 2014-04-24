@@ -130,7 +130,6 @@ public class RequestActivity extends Activity {
 		GetRequest request = new GetRequest(Config.API_BASE_URL + REQUEST) {
 			protected void onPostExecute(String response) {
 				try {
-					Log.e("zeft", response);
 					JSONObject json = new JSONObject(response);
 					addRequestFields(json);
 					addOffers(json);
