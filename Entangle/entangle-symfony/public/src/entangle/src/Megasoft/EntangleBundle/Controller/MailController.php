@@ -39,7 +39,7 @@ class MailController extends Controller {
                             ->addFrom('Notifications-noreply@entangle.io', 'Entangle')
                             ->setTo($mail->getEmail())
                             ->setBody($body);
-                    $this->get('mailer')->send($message);
+                     $this->get('mailer')->send($message);
                 }
             }
         }
