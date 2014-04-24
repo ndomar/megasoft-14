@@ -1,6 +1,8 @@
 package com.megasoft.entangle;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -55,6 +57,9 @@ public class DeleteButtonFragment extends Fragment {
 		
 		if(getResourceId() == -1 || getResourceType() == null || getSessionId() == null){
 			toasterShow("Sorry, there are problems in deleting. Please, try again later");
+			Intent intent = new Intent(getActivity().getBaseContext(), MainActivity.class);
+			startActivity(intent);
+			getActivity().finish();
 		}
 		
 		View view = inflater.inflate(R.layout.delete_button_fragment, container, false);
@@ -64,6 +69,12 @@ public class DeleteButtonFragment extends Fragment {
 			
 			@Override
 			public void onClick(View arg0) {
+				
+				final AlertDialog ad = new AlertDialog.Builder(getActivity()).create();
+        		ad.setCancelable(false);
+        		ad.setMessage("Deleting ...");
+        		ad.show();
+				
 				String url = Config.API_BASE_URL;
 				
 				if(getResourceType().equals(Config.REQUEST_TYPE)){
@@ -76,12 +87,17 @@ public class DeleteButtonFragment extends Fragment {
 				DeleteRequest deleteRequest = new DeleteRequest(url){
 					protected void onPostExecute(String res) {
 						String message = "Sorry, there are problems in the delete process. Please, try again later";
-						Log.e("test", this.getStatusCode() + "");
-						Log.e("test", this.getErrorMessage());
+						
 						if (!this.hasError() && res != null) {
 							message = "Deleted!";
 						}
+						
+						ad.dismiss();
 						toasterShow(message);
+						
+						Intent intent = new Intent(getActivity().getBaseContext(), MainActivity.class);
+						startActivity(intent);
+						getActivity().finish();
 					}
 				};
 				
