@@ -155,21 +155,6 @@ Post request
 
 + Response 201
 
-## POST /tangle
-Create a tangle
-
-+ Request (application/json)
-    
-        {
-            "tangleName" : "kokoTangle"
-            "tangleIcon" : "asdfcsdfsadfsdfaewrf"
-        }
-
-        +Header
-            
-            X-SESSION-ID : asdasdasdsadasdasd
-            
-+ Response 201 
 
 ## GET /tangle/check/{tangleName}
 check tangle name availability
@@ -847,3 +832,46 @@ Post offer
 
 + Response 201
 
+## Tangle Related endpoints [/tangle]
+### Get list of tangles[GET]
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+
++ Response 200 (application/json)
+    
+        {
+            "tangles" : [
+                            {
+                                "id":"1",
+                                "tangleName" : "test1"
+                            },
+                            
+                            {
+                                "id":"2",
+                                "tangleName" : "test2"
+                            },
+                            
+                            {
+                                "id":"3",
+                                "tangleName" : "test3"
+                            }
+                        ]
+        }
+
+### Creates a new Tangle [POST]
+        
++ Request (application/json)
+    
+        {
+            "tangleName" : "kokoTangle"
+            "tangleIcon" : "asdfcsdfsadfsdfaewrf"
+        }
+
+        +Header
+            
+            X-SESSION-ID : asdasdasdsadasdasd
+            
++ Response 201 
