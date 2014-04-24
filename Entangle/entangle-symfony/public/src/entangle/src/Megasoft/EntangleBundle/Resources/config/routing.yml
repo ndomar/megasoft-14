@@ -63,7 +63,7 @@ dummy:
 
 verification:
     pattern: /verify/{verificationCode}
-    defaults: { _controller:MegasoftEntangleBundle:Verficaiton:verifyUser}
+    defaults: { _controller:MegasoftEntangleBundle:Verification:verifyUser}
 
 
 create_Offer:
