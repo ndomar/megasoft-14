@@ -143,7 +143,7 @@ public class ProfileActivity extends Activity {
 	 * @author Almgohar
 	 */
 	public void viewInformation() {
-		String link = "http://entangle2.apiary-mock.com/tangle/" 
+		String link = Config.API_BASE_URL + "/tangle/" 
 	+ tangleId + "/user/" + userId + "/profile";
 		GetRequest request = new GetRequest(link) {
 			protected void onPostExecute(String response) {

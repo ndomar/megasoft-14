@@ -2,6 +2,7 @@ package com.megasoft.entangle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 
 /**
@@ -37,7 +39,7 @@ public class TangleActivity extends Activity {
 	/**
 	 * The domain to which the requests are sent
 	 */
-	private String rootResource = "http://entangle2.apiary.io/";
+	private String rootResource = Config.API_BASE_URL;
 
 	/**
 	 * The tangle id to which this stream belongs
