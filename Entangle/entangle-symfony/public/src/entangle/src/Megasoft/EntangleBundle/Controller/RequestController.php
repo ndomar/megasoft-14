@@ -91,9 +91,12 @@ class RequestController extends Controller {
                 $date = $offer->getDate();
                 $deadline = $offer->getExpectedDeadline();
                 $price = $offer->getRequestedPrice();
+                $deleted = $offer->getDeleted();
                 $details = array('description' => $description, 'status' => $status,
                     'date' => $date, 'deadline' => $deadline, 'price' => $price);
+                if($deleted==0){
                 array_push($offerArray, $details);
+                }
             }
         }
         return $offerArray;
