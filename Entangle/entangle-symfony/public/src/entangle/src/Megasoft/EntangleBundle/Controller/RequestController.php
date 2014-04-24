@@ -62,8 +62,9 @@ class RequestController extends Controller {
         $tangleUsers = $tangle->getUsers();
         $arrlength = count($tangleUsers);
         $userIsMember = false;
+        $userId = $user->getId();
         for ($i = 0; $i < $arrlength; $i++) {
-            if ($user == $tangleUsers[$i]) {
+            if ($userId == $tangleUsers[$i]->getId()) {
                 $userIsMember = true;
                 break;
             }
@@ -117,7 +118,7 @@ class RequestController extends Controller {
         $newRequest = new Request();
         $newRequest->setTangle($tangle);
         $newRequest->setDescription($description);
-        $newRequest->setStatus(1);
+        $newRequest->setStatus(0);
         $newRequest->setDate($dateFormated);
         $newRequest->setDeadLine($deadLineFormated);
         $newRequest->setUser($user);
