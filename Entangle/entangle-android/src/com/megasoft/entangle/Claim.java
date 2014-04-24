@@ -31,6 +31,10 @@ public class Claim extends Activity {
 	 * String holding the message of the sent claim it self
 	 */
 	String mssgBody;
+	/**
+	 * this boolean indicates whether the request was successful or not
+	 */
+	boolean connection = true;
 
 	/**
 	 * this sets the email of the tangle owner and the requester into a non
@@ -85,10 +89,14 @@ public class Claim extends Activity {
 
 				protected void onPostExecute(String response) {
 					try {
-
+						if (this.getStatusCode() == 200) {
 						JSONObject obj = new JSONObject(response);
 						int claimId = obj.getInt("X-CLAIM-ID");
 						intent.putExtra("claimId", claimId);
+						}
+						else {
+							connection = false;
+						}
 
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
@@ -102,6 +110,9 @@ public class Claim extends Activity {
 			postSubject.setBody(object);
 			postSubject.addHeader("X-SESSION-ID", sessionID);
 			postSubject.execute();
+			if (!connection) {
+				Toast.makeText(this, "Sorry lost connection", Toast.LENGTH_SHORT).show();
+				}
 			Toast.makeText(this, "Claim Sent", Toast.LENGTH_SHORT).show();
 			startActivity(intent);
 		}

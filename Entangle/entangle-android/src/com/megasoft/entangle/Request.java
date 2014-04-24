@@ -22,6 +22,10 @@ public class Request extends Activity {
 	 * string holding the receiver of the claim
 	 */
 	String tangleOwnerMail = "";
+	/**
+	 * this boolean indicates whether the request was successful or not
+	 */
+	boolean connection  = true;
 
 	/**
 	 * This method loads the request form
@@ -58,17 +62,25 @@ public class Request extends Activity {
 
 			protected void onPostExecute(String response) {
 				try {
-					JSONObject object = new JSONObject(response);
-					tangleOwnerMail += object.getString("X-TANGLEOWNER-MAIL");
-					claimerMail += object.getString("X-CLAIMER-MAIL");
+					if (this.getStatusCode() == 200) {
+						JSONObject object = new JSONObject(response);
+						tangleOwnerMail += object.getString("X-TANGLEOWNER-MAIL");
+						claimerMail += object.getString("X-CLAIMER-MAIL");
+					}
+					else {
+						connection = false;
+					}
+					
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}
 		};
-
 		requestTangleOwnerMail.addHeader("X-SESSION-ID", sessionID);
 		requestTangleOwnerMail.execute();
+		if (!connection) {
+		Toast.makeText(this, "Sorry lost connection", Toast.LENGTH_SHORT).show();
+		}
 		intent.putExtra("receiver", tangleOwnerMail);
 		intent.putExtra("sender", claimerMail);
 		intent.putExtra("requestID", requestID);
