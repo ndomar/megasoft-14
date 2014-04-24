@@ -573,7 +573,14 @@ class TangleController extends Controller
         $this->getDoctrine()->getManager()->flush();
         return new Response("Deleted",200);
     }
-    public function addUserAction($sessionId , $tangleId){
+    /**
+     * An endpoint for accepting tangle invitations sent to user
+     * @param type $userId
+     * @param type $tangleId
+     * @return Response
+     * @author MahmoudGamal
+     */
+    public function addUserAction($userId , $tangleId){
         $tangle = $this->getDoctrine()
                 ->getRepository('MegasoftEntangleBundle:Tangle')
                 ->findBy($tangleId);
@@ -582,12 +589,12 @@ class TangleController extends Controller
         }
         $user = $this->getDoctrine()
                 ->getRepository('MegasoftEntangleBundle:User')
-                ->findBy($sessionId);
+                ->findBy($userId);
         if(!$user){
             return new Response("User not found",404);
         }
         $tangle->addUserTangle($user);
         $this->getDoctrine()->getManager()->flush();
-        return new Respone("User added",201);
+        return new Response("User added",201);
     }
 }
