@@ -166,7 +166,6 @@ class NotificationCenter
 
     /**
      *
-     * 
      * data array ("title"=> notification title, "body" => notification body, "from"=>offerer,"newPrice" => new price,
      * "oldPrice" => price after changing)
      * @param $offerid
