@@ -75,7 +75,7 @@ class RegisterController extends Controller {
      * @author: Eslam
      * * */
     private function EmailIsUnique($email) {
-        $emailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
+        $emailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
         if ($emailRepo->findOneBy(array('email' =>$email))) {
             return false;
         } else {
