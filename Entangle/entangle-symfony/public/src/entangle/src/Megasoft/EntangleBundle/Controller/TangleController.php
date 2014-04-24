@@ -573,6 +573,12 @@ class TangleController extends Controller
         return new Response("Deleted",200);
     }
     
+    /**
+     * The endpoint resposible for fetching the tangles of a certain user from the database
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @author MohamedBassem
+     */
     public function getTanglesAction(Request $request){
         $sessionId = $request->headers->get('X-SESSION-ID');
         $doctrine = $this->getDoctrine();
