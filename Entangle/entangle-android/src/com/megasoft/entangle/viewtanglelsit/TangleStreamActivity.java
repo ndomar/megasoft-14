@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.megasoft.config.Config;
 import com.megasoft.entangle.CreateTangleActivity;
@@ -84,7 +85,7 @@ public class TangleStreamActivity extends Activity {
 				if(!this.hasError() && this.getStatusCode() == 200){
 					showData(response);
 				}else{
-					// TODO
+					showErrorMessage();
 				}
 			}
 		};
@@ -148,6 +149,14 @@ public class TangleStreamActivity extends Activity {
 	 */
 	public void goToCreateTangle(View view){
 		startActivity(new Intent(this,CreateTangleActivity.class));
+	}
+	
+	/**
+	 * A method to show an error toast.
+	 * @author MohamedBassem
+	 */
+	public void showErrorMessage(){
+		Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
 	}
 
 }
