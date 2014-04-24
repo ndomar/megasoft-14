@@ -19,7 +19,12 @@ use Megasoft\EntangleBundle\Entity\UserEmail;
  * @author almgohar
  */
 class UserController extends Controller {
-
+/**
+ * This Method edits all user information
+ * @param \Symfony\Component\HttpFoundation\Request $request
+ * @return \Symfony\Component\HttpFoundation\Response
+ * @author menna
+ */
     public function editAction(Request $request) {
         $requestContent = $request->getContent();
         $jsonArray = json_decode($requestContent, true);
@@ -65,7 +70,12 @@ class UserController extends Controller {
             return new Response('OK', 200);
         }
     }
-
+/**
+ * This Method Deletes Secondary Emails of the user 
+ * @param \Symfony\Component\HttpFoundation\Request $request
+ * @return \Symfony\Component\HttpFoundation\Response
+ * @author menna 
+ */
     public function deleteSecondaryEmailAction(Request $request) {
         $requestContent = $request->getContent();
         $jsonArray = json_decode($requestContent, true);
@@ -82,7 +92,12 @@ class UserController extends Controller {
         $doctrineManger->flush();
         return new Response('OK', 200);
     }
-
+/**
+ * This method gets all the user info to be displayed in the frontend 
+ * @param \Symfony\Component\HttpFoundation\Request $request
+ * @return \Symfony\Component\HttpFoundation\JsonResponse
+ * @author menna
+ */
     public function retrieveDataAction(Request $request) {
         $requestContent = $request->getContent();
         $jsonArray = json_decode($requestContent, true);
@@ -93,6 +108,8 @@ class UserController extends Controller {
         $response = new JsonResponse();
         $response->setData(array('description' => $user->getUserBio(), 'date_of_birth' => $user->getBirthDate()
             , 'notification_state' => $user->getNotificationState()));
+        $response->getStatusCode(200);
+        return $response;
     }
 
     /**
