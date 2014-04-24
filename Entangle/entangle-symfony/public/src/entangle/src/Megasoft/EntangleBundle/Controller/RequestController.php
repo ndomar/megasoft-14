@@ -202,6 +202,7 @@ class RequestController extends Controller {
         }
         
         $request->setDeleted(true);
+        $request->setStatus($request->CLOSE);
         $this->getDoctrine()->getManager()->persist($request);
         $this->getDoctrine()->getManager()->flush();
         
