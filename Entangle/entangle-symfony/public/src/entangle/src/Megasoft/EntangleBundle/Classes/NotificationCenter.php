@@ -16,7 +16,6 @@ use Megasoft\EntangleBundle\Entity\PriceChangeNotification;
 use Megasoft\EntangleBundle\Entity\RequestDeletedNotification;
 use Megasoft\EntangleBundle\Entity\TransactionNotification;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 class NotificationCenter
@@ -86,70 +85,83 @@ class NotificationCenter
 
     /**
      * this function is used to send notification for new message
+     * data array ("title"=> notification title, "body" => notification body, "from"=>message from, "to", Message to,
+     * "message" => message sent)
      * @param $messageId
-     * @param null $message
-     * @return bool|mixed|JsonResponse
+     * @param null $body
+     * @param null $title
+     * @return bool|mixed
      */
-    function newMessageNotification($messageId, $message = null)
+    function newMessageNotification($messageId, $body = null, $title = null)
     {
 
         $notification = new NewMessageNotification();
         $message = $this->em->getRepository('MegasoftEntangleBundle:Message')->find($messageId);
-        $from = $message->getSenderId();
-
-        if ($from == $message->getOffer()->getUserId()) {
-            $to = $message->getOffer()->getRequest()->getUserId();
-        } else {
-            $to = $message->getOffer()->getUserId();
-        }
-
+        $from = $message->getSender();
         $date = date('m/d/Y h:i:s a', time());
         $date = DateTime::createFromFormat('m/d/Y h:i:s a', $date);
+        if ($from->getId() == $message->getOffer()->getUserId())
+            $to = $message->getOffer()->getRequest()->getUser();
+        else
+            $to = $message->getOffer()->getUser();
 
-        $notification->setMessageId($messageId);
+
+        $notification->setMessage($message);
         $notification->setCreated($date);
         $notification->setSeen(false);
         $notification->setUser($this->em->getRepository('MegasoftEntangleBundle:User')->find($to));
-
         $this->em->persist($notification);
         $this->em->flush();
 
-        $fromName = $this->em->getRepository('MegasoftEntangleBundle:User')->find($from)->getName();
-        $toName = $this->em->getRepository('MegasoftEntangleBundle:User')->find($to)->getName();
 
-        $data = array('from' => $fromName, 'to' => $toName, 'message' => $message->getBody());
+        $fromName = $from->getName();
+        $toName = $to->getName();
+        if (!$title)
+            $title = "new Message from" . $fromName;
+        if (!$body)
+            $body = $this->formatMessage($body, $fromName, $toName);
+
+        $data = array('title' => $title, 'body' => $body, 'from' => $fromName, 'message' => $message->getBody());
         return $this->notificationCenter($to, $data);
 
     }
 
 
     /**
+     * this is fired when there is a requester accepts an offer
+     * data array ("title"=> notification title, "body" => notification body, "requester"=>requester from,
+     * "requestDesc" => Description of request, "finalPrice" => price of final offer)
      * @param $transactionid
-     * @param null $message
+     * @param null $body
+     * @param null $title
      * @return bool|mixed
      */
-    function transactionNotification($transactionid, $message = null)
+    function transactionNotification($transactionid, $body = null, $title = null)
     {
         $notification = new  TransactionNotification();
-        $transaction = $this->em->getRepository('MegasoftEntangleBundle:TransactionNotification')->find($transactionid);
-        $to = $transaction->getUser();
-
-        $from = $transaction->getTransaction()->getOffer()->getUser()->getName();
-
+        $transaction = $this->em->getRepository('MegasoftEntangleBundle:Transaction')->find($transactionid);
+        $to = $transaction->getOffer()->getUser();
+        $from = $transaction->getOffer()->getRequest()->getUser();
         $date = date('m/d/Y h:i:s a', time());
         $date = DateTime::createFromFormat('m/d/Y h:i:s a', $date);
+
+
         $notification->setCreated($date);
         $notification->setSeen(false);
         $notification->setUser($to);
-        $notification->setTransactionId($transactionid);
+        $notification->setTransaction($transaction);
         $this->em->persist($notification);
         $this->em->flush();
 
-        $amount = $transaction->getTransaction()->getFinalPrice();
-        $requestDesc = $transaction->getTransaction()->getOffer()->getRequest()->getDescription();
+        $finalPrice = $transaction->getFinalPrice();
+        $requestDesc = $transaction->getOffer()->getRequest()->getDescription();
+        $requester = $from->getName();
+        if (!$title)
+            $title = $requester . "accepted your offer";
+        if (!$body)
+            $body = $this->formatMessage($body, $requester, $to->getName());
 
-        $data = array('from' => $from, 'amount' => $amount, 'requestDesc' => $requestDesc);
-
+        $data = array('title' => $title, 'body' => $body, 'requester' => $requester, "finalPrice" => $finalPrice, "requestDesc" => $requestDesc);
         return $this->notificationCenter($to->getId(), $data);
     }
 
@@ -157,24 +169,22 @@ class NotificationCenter
      * @param $offerid
      * @param $oldPrice
      * @param $newPrice
-     * @param null $message
+     * * @param null $title
+     * @param null $body
      * @return bool|mixed
      */
-    function offerChangeNotification($offerid, $oldPrice, $newPrice, $message = null)
+    function offerChangeNotification($offerid, $oldPrice, $newPrice, $title = null, $body = null)
     {
 
+        $notification = new PriceChangeNotification();
         $offer = $this->em->getRepository('MegasoftEntangleBundle:Offer')->find($offerid);
         $request = $offer->getRequest();
-        $notification = new PriceChangeNotification();
-
-        $toName = $request->getUser()->getName();
-        $fromName = $offer->getUser()->getName();
-        $to = $request->getUserId();
+        $from = $offer->getUser();
+        $to = $request->getUser();
         $date = date('m/d/Y h:i:s a', time());
         $date = DateTime::createFromFormat('m/d/Y h:i:s a', $date);
-        $user = $this->em->getRepository('MegasoftEntangleBundle:User')->find($to);
 
-        $notification->setUser($user);
+        $notification->set
         $notification->setCreated($date);
         $notification->setSeen(false);
         $notification->setNewPrice($newPrice);
@@ -183,6 +193,11 @@ class NotificationCenter
         $this->em->persist($notification);
         $this->em->flush();
 
+
+        $toName = $request->getUser()->getName();
+        $fromName = $offer->getUser()->getName();
+        $to = $request->getUserId();
+        $user = $this->em->getRepository('MegasoftEntangleBundle:User')->find($to);
         $data = array('to' => $toName, 'from' => $fromName, 'newPrice' => $newPrice,);
 
         return $this->notificationCenter($to, $data);
@@ -216,7 +231,7 @@ class NotificationCenter
     }
 
 
-    // waiting for the next migrations
+// waiting for the next migrations
 
     function newOfferNotfication($offerid, $message = null)
     {
@@ -280,5 +295,19 @@ class NotificationCenter
             $data = array('');
             $this->notificationCenter($offer->getUserId(), $data);
         }
+    }
+
+    /**
+     * this should be used to format user messages
+     * @param $message
+     * @param $from
+     * @param $to
+     * @return mixed
+     */
+    function formatMessage($message, $from, $to)
+    {
+        $message = str_replace("{{from}}", $from, $message);
+        $message = str_replace("{{to}}", $to, $message);
+        return $message;
     }
 }
