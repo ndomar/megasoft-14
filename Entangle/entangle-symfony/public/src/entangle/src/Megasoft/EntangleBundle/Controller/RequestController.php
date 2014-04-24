@@ -6,11 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Megasoft\EntangleBundle\Entity\Request;
 use Megasoft\EntangleBundle\Entity\Tag;
-
 use Symfony\Component\HttpFoundation\Response;
 
-
 class RequestController extends Controller {
+
     /**
      * this returns a response depending on the size of the array it recieved from getRequestDetails 
      * @param  Int $requestId  Request id
@@ -31,23 +30,24 @@ class RequestController extends Controller {
         if ($session->getExpired() == 1) {
             return $response = new Response("Error: Session Expired.", 401);
         }
-        $sessionUserId =$session->getUserId(); 
+        $sessionUserId = $session->getUserId();
         $userTangle = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
         $viewer = $userTangle->findOneBy(array('tangleId' => $tangleId, 'userId' => $sessionUserId));
         if (count($viewer) <= 0) {
             return $response = new Response("Error: You do not belong to this tangle.", 401);
         }
-        $requestDetails = $this->getRequestDetails($requestId, $sessionUserId);
-        
+
+        $requestDetails = $this->getRequestDetails($requestId, $sessionUserId, $tangleId);
+
         if (count($requestDetails) == 0) {
             return new Response("No such request.", 404);
-        }     
+        }
+
         $response = new JsonResponse();
-            $response->setData(array($requestDetails));
-            $response->setStatusCode(200);
-            $response->headers->set('X-SESSION-ID', $sessionId);
-            return $response;
-        
+        $response->setData(array($requestDetails));
+        $response->setStatusCode(200);
+        $response->headers->set('X-SESSION-ID', $sessionId);
+        return $response;
     }
 
     /**
@@ -56,11 +56,14 @@ class RequestController extends Controller {
      * @return Array $requestDetails 
      * @author sak93
      */
-    public function getRequestDetails($requestId, $sessionUserId) {
+    public function getRequestDetails($requestId, $sessionUserId, $tangleId) {
         $repository = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Request');
         $request = $repository->findOneBy(array('id' => $requestId));
         $requestDetails = array();
         if (count($request) != 0) {
+            if ($request->getTangleId() != $tangleId) {
+                return $requestDetails;
+            }
             $requester = $request->getUserId();
             $description = $request->getDescription();
             $status = $request->getStatus();
@@ -71,12 +74,12 @@ class RequestController extends Controller {
             $tangle = $request->getTangleId();
             $tags = $request->getTags();
             $offers = $this->getOfferDetails($requestId);
-            $myRequest = 0; 
-            if($sessionUserId==$requester){
-                $myRequest =1; 
+            $myRequest = 0;
+            if ($sessionUserId == $requester) {
+                $myRequest = 1;
             }
             $requestDetails = array('requester' => $requester, 'description' => $description,
-                'status' => $status,'MyRequest'=> $myRequest,  'date' => $date, 'deadline' => $deadline, 'icon' => $icon,
+                'status' => $status, 'MyRequest' => $myRequest, 'date' => $date, 'deadline' => $deadline, 'icon' => $icon,
                 'price' => $price, 'tangle' => $tangle, 'tags' => $tags, 'offers' => $offers);
         }
         return $requestDetails;
@@ -105,13 +108,14 @@ class RequestController extends Controller {
                 $deleted = $offer->getDeleted();
                 $details = array('description' => $description, 'status' => $status,
                     'date' => $date, 'deadline' => $deadline, 'price' => $price);
-                if($deleted==0){
-                array_push($offerArray, $details);
+                if ($deleted == 0) {
+                    array_push($offerArray, $details);
                 }
             }
         }
         return $offerArray;
     }
+
     /**
      * this method is used to validate data and return response accordingly 
      * @param String $sessionId
@@ -263,7 +267,6 @@ class RequestController extends Controller {
             $doctrine->getManager()->persist($tag);
             $doctrine->getManager()->flush();
         }
-
     }
 
 }
