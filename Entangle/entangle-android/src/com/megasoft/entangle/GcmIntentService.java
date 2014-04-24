@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
-import com.megasoft.notifications.CreateNotificationActivity;
-
 public class GcmIntentService extends IntentService {
 	public static final int NOTIFICATION_ID = 1;
 	private NotificationManager mNotificationManager;
@@ -36,7 +34,7 @@ public class GcmIntentService extends IntentService {
 		String body = intent.getExtras().getString("body");
 
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-				new Intent(this, CreateNotificationActivity.class), 0);
+				new Intent(this, MainActivity.class), 0);
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				this).setSmallIcon(R.drawable.common_signin_btn_icon_dark)
