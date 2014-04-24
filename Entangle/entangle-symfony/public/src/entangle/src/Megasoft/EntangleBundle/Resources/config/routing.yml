@@ -42,9 +42,24 @@ reject_pending_invitation:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:rejectPendingInvitation}
     methods: [DELETE]
 
+
+
+create:
+    pattern: /tangle/{tangleId}/request
+    defaults: { _controller: MegasoftEntangleBundle:Request:create }
+    methods: [POST]
+    
+
+acceptOffer:
+    pattern: /accept/offer
+    defaults: {_controller: MegasoftEntangleBundle:Offer:acceptOffer }
+    methods: [POST]
+
+
 dummy:
     pattern: /dummy
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
+
 
 get_profile:
     pattern: tangle/{tangleId}/user/{userId}/profile
