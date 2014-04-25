@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="8"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -39,6 +39,18 @@
     
     </activity>
         <activity
+            android:name="com.megasoft.entangle.LoginActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.HomeActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.RegisterActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name="com.megasoft.entangle.TangleActivity"
             android:label="@string/title_activity_view_stream" >
         </activity>
@@ -49,10 +61,6 @@
         <activity
             android:name="com.megasoft.entangle.ProfileActivity"
             android:label="@string/title_activity_profile" >
-        </activity>
-        <activity
-            android:name="com.megasoft.entangle.CreateRequestActivity"
-            android:label="@string/title_activity_request_information" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.InviteUserActivity"
@@ -95,6 +103,10 @@
             android:label="@string/title_activity_offer" >
         </activity>
         <activity
+            android:name="com.megasoft.entangle.CreateRequestActivity"
+            android:label="@string/title_activity_request_information" >
+        </activity>
+        <activity
             android:name="com.megasoft.entangle.viewtanglelsit.TangleStreamActivity"
             android:label="@string/title_activity_tangle_stream" >
         </activity>
@@ -103,5 +115,4 @@
             android:label="@string/title_activity_change_offer_price" >
         </activity>
     </application>
-
 </manifest>
