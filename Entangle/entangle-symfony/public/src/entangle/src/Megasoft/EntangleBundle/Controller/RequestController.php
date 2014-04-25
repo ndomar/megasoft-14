@@ -3,12 +3,52 @@
 namespace Megasoft\EntangleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Megasoft\EntangleBundle\Entity\Request;
-use Megasoft\EntangleBundle\Entity\Tag;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Megasoft\EntangleBundle\Entity\Tag;
 
 class RequestController extends Controller {
+    /* Reopens a closed request
+     * @param Request $request
+     * @param int $requestId
+     * @author Mansour
+     */
+
+    public function reOpenRequestAction(Request $request, $requestId) {
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
+        if ($sessionId == null) {
+            return new Response("Bad Request", 400);
+        }
+        if ($session == null) {
+            return new Response("Unauthorized", 401);
+        }
+        $sessionExpired = $session->getExpired();
+        if ($sessionExpired) {
+            return new Response("Session expired", 440);
+        }
+        $requestRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Request');
+        $tangleRequest = $requestRepo->findOneBy(array('id' => $requestId));
+        if ($tangleRequest == null || $tangleRequest->getDeleted()) {
+            return new Response("Not Found", 404);
+        }
+
+        if ($tangleRequest->getStatus() == $tangleRequest->OPEN) {
+            return new Response("Request is already open", 400);
+        }
+        
+        if (($session->getUserId()) != ($tangleRequest->getUserId())) {
+            return new Response("Unauthorized", 401);
+        }
+        if ($tangleRequest->getStatus() == $tangleRequest->CLOSE) {
+            $tangleRequest->setStatus($tangleRequest->OPEN);
+            $this->getDoctrine()->getManager()->persist($tangleRequest);
+            $this->getDoctrine()->getManager()->flush();
+            return new Response('Reopened', 200);
+        }
+    }
 
     /**
      * this returns a response depending on the size of the array it recieved from getRequestDetails 
