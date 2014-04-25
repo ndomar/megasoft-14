@@ -595,8 +595,14 @@ class TangleController extends Controller
         if (!$user) {
             return new Response("User not found", 404);
         }
+        $criteria = array('user' => $user);
+        $search = current($this->getDoctrine()
+                        ->getRepository('MegasoftEntangleBundle:Tangle')
+                        ->findBy($criteria));
+        if ($search) {
+            return new Response("User already exists in tangle", 400);
+        }
         $em = $this->getDoctrine()->getManager();
-
         $tangleUser = new UserTangle();
         $tangleUser->setTangleOwner(FALSE);
         $tangleUser->setUser($user);
