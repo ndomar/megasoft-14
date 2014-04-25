@@ -58,7 +58,7 @@ create:
 
 retrieve_data:
     pattern: /user/retrieveData
-    defaults: { _controller: MegasoftEntangleBundle:User:edit }
+    defaults: { _controller: MegasoftEntangleBundle:User:retrieveData }
     methods: [GET]
     
 edit:

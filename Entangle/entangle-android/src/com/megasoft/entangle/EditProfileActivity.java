@@ -30,6 +30,8 @@ public class EditProfileActivity extends Activity {
 	SharedPreferences settings;
 	String sessionId;
 	String emails;
+	String oldDescription;
+	String oldDOB[];
 	String[] userEmails;
 	CheckBox emailNotification;
 	EditText currentDescription;
@@ -76,14 +78,14 @@ public class EditProfileActivity extends Activity {
 		getRequest.addHeader(Config.API_SESSION_ID, sessionId);
 		getRequest.execute();
 		try {
-
+			oldDescription = retrieveDataResponse.getString("description");
 			oldBirthDate = retrieveDataResponse.getString("date_of_birth");
 			splittedDate = oldBirthDate.split("-");
+			oldDOB = splittedDate;
 			newday.setSelection(Integer.parseInt(splittedDate[0]) - 1);
 			newmonth.setSelection(Integer.parseInt(splittedDate[1]) - 1);
 			newyear.setSelection(Integer.parseInt(splittedDate[2]) - 1951);
-			currentDescription.setText(retrieveDataResponse
-					.getString("description"));
+			currentDescription.setText(oldDescription);
 			notification = retrieveDataResponse
 					.getBoolean("notification_state");
 		} catch (JSONException e) {
@@ -123,6 +125,20 @@ public class EditProfileActivity extends Activity {
 	 */
 	@SuppressLint("SimpleDateFormat")
 	public void saveAll(View view) {
+		if((oldDescription.equals(currentDescription.getText().toString()))
+				&&(oldDOB[0].equals(newday.getSelectedItem()))
+				&&(oldDOB[1].equals(newmonth.getSelectedItem()))
+				&&(oldDOB[2].equals(newyear.getSelectedItem()))
+				&&(currentPassword.getText().toString().matches(""))
+				&&(newPassword.getText().toString().matches(""))
+				&&(currentPassword.getText().toString().matches(""))
+				&&(!emailNotification.isChecked())){
+			Context context = getApplicationContext();
+			CharSequence text = "Nothing has been changed";
+			int duration = Toast.LENGTH_SHORT;
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+		}else{
 
 		PutRequest putRequest = new PutRequest(Config.API_BASE_URL + "/user/"
 				+ "edit") {
@@ -193,7 +209,9 @@ public class EditProfileActivity extends Activity {
 		putRequest.addHeader(Config.API_SESSION_ID, sessionId);
 		putRequest.setBody(putReJsonObject);
 		putRequest.execute();
-
+		}
+		getActivity();
+		startActivity(viewEditedProfile);
 	}
 
 	/**

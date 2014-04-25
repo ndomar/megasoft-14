@@ -32,8 +32,8 @@ class UserController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $currentSession = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
-        if(!$currentSession){
-            return new Response("Invalid Session Id");
+        if (!$currentSession) {
+            return new Response("Invalid Session Id", 400);
         }
         if (!$currentSession->getExpired()) {
             $user = $currentSession->getUser();
@@ -91,11 +91,18 @@ class UserController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $currentSession = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
+
         if ($currentSession) {
-            $user = $currentSession->getUser();
-            $deletedMail = $jsonArray['deletedMail'];
-            $user->removeEmail($deletedMail);
-            $doctrineManger = $this->getDoctrine()->getManager();
+            if (!$currentSession->getExpired()) {
+                $user = $currentSession->getUser();
+                $deletedMail = $jsonArray['deletedMail'];
+                $user->removeEmail($deletedMail);
+                $doctrineManger = $this->getDoctrine()->getManager();
+            } else {
+                return new Response("Session Expired", 400);
+            }
+        } else {
+            return new Response("Invalid Session Id", 400);
         }
         $doctrineManger->persist($user);
         $doctrineManger->flush();
@@ -114,6 +121,12 @@ class UserController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $currentSession = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
+        if (!$currentSession) {
+            return new Response("Invalid Session Id", 400);
+        }
+        if ($currentSession->getExpired()) {
+            return new Response("Session Expired", 400);
+        }
         $user = $currentSession->getUser();
         $response = new JsonResponse();
         $response->setData(array('description' => $user->getUserBio(), 'date_of_birth' => $user->getBirthDate()
