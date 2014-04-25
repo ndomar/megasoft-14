@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.ImageRequest;
 
@@ -150,7 +151,7 @@ public class ProfileActivity extends FragmentActivity {
 	 * @author Almgohar
 	 */
 	public void viewInformation() {
-		String link = "http://entangle2.apiary-mock.com/tangle/" + tangleId
+		String link = Config.API_BASE_URL_SERVER+ "/tangle/" + tangleId
 				+ "/user/" + userId + "/profile";
 		GetRequest request = new GetRequest(link) {
 			protected void onPostExecute(String response) {

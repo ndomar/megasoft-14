@@ -172,7 +172,7 @@ public class FilteringFragment extends DialogFragment {
 				if (putQuestionMark) {
 					url = "?" + url;
 				}
-				url = rootResource + "tangle/"
+				url = rootResource + "/tangle/"
 						+ parent.getTangleId()
 						+ "/request" + url;
 				parent.sendFilteredRequest(url

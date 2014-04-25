@@ -1,15 +1,18 @@
 package com.megasoft.entangle;
 
 import java.util.Calendar;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -19,6 +22,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 
@@ -186,6 +190,7 @@ public class CreateRequestActivity extends Activity {
 							intent.putExtra("tab", PagerAdapter.STREAM);
 							startActivity(intent);
 						} else {
+							Log.e("test", this.getErrorMessage());
 							Toast.makeText(getApplicationContext(),
 									"Error, Can not create request",
 									Toast.LENGTH_SHORT).show();
