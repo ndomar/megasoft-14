@@ -46,16 +46,15 @@
             android:name="com.megasoft.entangle.CreateRequestActivity"
             android:label="@string/title_activity_request_information" >
         </activity>
-
         <activity
             android:name="com.megasoft.entangle.InviteUserActivity"
             android:label="@string/title_activity_invite_users" >
         </activity>
-         <activity
+        <activity
             android:name="com.megasoft.entangle.CreateOfferActivity"
             android:label="@string/title_activity_create_offer" >
         </activity>
-		<activity
+        <activity
             android:name="com.megasoft.entangle.RequestActivity"
             android:label="@string/title_activity_request" >
         </activity>
@@ -87,6 +86,10 @@
         <activity
             android:name="com.megasoft.entangle.OfferActivity"
             android:label="@string/title_activity_offer" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.ChangeOfferPriceActivity"
+            android:label="@string/title_activity_change_offer_price" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.viewtanglelsit.TangleStreamActivity"

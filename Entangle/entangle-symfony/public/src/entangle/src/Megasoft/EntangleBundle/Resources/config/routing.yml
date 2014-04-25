@@ -36,7 +36,7 @@ create_tangle:
     pattern: /tangle
     defaults: { _controller: MegasoftEntangleBundle:Tangle:createTangle }
     methods: [POST]
-    
+
 index:
     pattern: /
     defaults: { _controller: MegasoftEntangleBundle:Site:index }
@@ -83,7 +83,11 @@ dummy:
     pattern: /dummy
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
 
-
+change_offer_price:
+    pattern: /offers/{offerid}/changePrice
+    defaults: { _controller: MegasoftEntangleBundle:Offer:changeOfferPrice }
+    methods: [POST]
+    
 verification:
     pattern: /verify/{verificationCode}
     defaults: { _controller:MegasoftEntangleBundle:Verification:verifyUser}
@@ -108,7 +112,7 @@ get_tangles:
 get_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
- 
+
 change_offer_price:
      pattern: /offers/{offerid}/changePrice
      defaults: { _controller: MegasoftEntangleBundle:Offer:changeOfferPrice }
