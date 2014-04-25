@@ -153,7 +153,7 @@ class OfferController extends Controller {
             return new Response("Bad Request", 400);
         }
         if ($session == null) {
-            return new Response("Unauthorized", 403);
+            return new Response("Unauthorized", 401);
         }
         $sessionExpired = $session->getExpired();
         if ($sessionExpired) {

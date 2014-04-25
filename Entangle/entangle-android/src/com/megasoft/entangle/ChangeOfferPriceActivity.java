@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +21,8 @@ public class ChangeOfferPriceActivity extends Activity {
 
 	int requestId;
 	int offerId;
-	int sessionId;
+	String sessionId;
+	SharedPreferences settings;
 	public static final int BUTTON_POSITIVE = 0xffffffff;
 
 	@Override
@@ -30,7 +32,8 @@ public class ChangeOfferPriceActivity extends Activity {
 
 		this.requestId = getIntent().getIntExtra("requestId", -1);
 		this.offerId = getIntent().getIntExtra("offerId", -1);
-		this.sessionId = getIntent().getIntExtra(Config.API_SESSION_ID, -1);
+		this.settings = getSharedPreferences(Config.SETTING, 0);
+		this.sessionId = settings.getString(Config.SESSION_ID, "");
 
 	}
 
@@ -56,7 +59,7 @@ public class ChangeOfferPriceActivity extends Activity {
 		if ((newPrice.getText().toString()).equals("")) {
 			showMessage("PLEASE ENTER A NEW PRICE");
 		} else {
-			if (sessionId == -1) {
+			if (sessionId == "") {
 				showMessage("SESSION EXPIRED, PLEASE RELOGIN");
 				goToHomeHelper();
 			} else {
