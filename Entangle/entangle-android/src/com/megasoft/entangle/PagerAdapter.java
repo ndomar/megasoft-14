@@ -14,10 +14,12 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 	int tangleId;
 	int userId;
 	Context context;
+	private String tangleName;
 	final static String STREAM = "Stream";
-	public PagerAdapter(Context con, FragmentManager fm,int tangleId,int userId) {
+	public PagerAdapter(Context con, FragmentManager fm,int tangleId,int userId, String tangleName) {
 		super(fm);
 		this.context = con;
+		this.tangleName = tangleName;
 		this.tangleId = tangleId;
 		this.userId = userId;
 	}
@@ -27,6 +29,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
 		Bundle args = new Bundle();
 		args.putInt("tangleId", tangleId);
+		args.putString("tangleName", tangleName);
 		Fragment fragment = null;
 		switch (index) {
 		case 0:

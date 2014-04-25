@@ -4,6 +4,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fontSizeMedium">30sp</dimen>
+    <dimen name="fontSizeSmall">10sp</dimen>
     <dimen name="boxMargin">12dp</dimen>
     <!-- sidebar -->
     <dimen name="sidebarMenuItemHeight">40dp</dimen>

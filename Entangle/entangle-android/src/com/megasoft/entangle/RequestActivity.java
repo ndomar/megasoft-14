@@ -99,6 +99,7 @@ public class RequestActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_request);
 		
 		Intent intent = getIntent();
 		this.requestId = intent.getIntExtra("requestId", -1);
@@ -108,7 +109,7 @@ public class RequestActivity extends FragmentActivity {
 		requestLayout = (LinearLayout) this.findViewById(R.id.request_entry_layout);
 		offersLayout = (LinearLayout) this.findViewById(R.id.offer_entries_layout);
 		
-		setContentView(R.layout.activity_request);
+		
 		this.fillRequestDetails();
 	}
 
@@ -129,6 +130,8 @@ public class RequestActivity extends FragmentActivity {
 				try {
 					JSONObject json = new JSONObject(response);
 					if (this.getStatusCode() == 200) {
+						requestLayout.removeAllViewsInLayout();
+						offersLayout.removeAllViewsInLayout();
 						addRequestFields(json);
 						addOffers(json);
 					} else {

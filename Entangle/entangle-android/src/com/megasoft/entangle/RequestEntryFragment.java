@@ -22,9 +22,9 @@ public class RequestEntryFragment extends Fragment {
 
 	private void setAttributes() {
 		Bundle args = getArguments();
-		((TextView)view.findViewById(R.id.request_entry_description)).setText(args.getString("escription"));
+		((TextView)view.findViewById(R.id.request_entry_description)).setText(args.getString("description"));
 		((TextView)view.findViewById(R.id.request_entry_requester_name)).setText(args.getString("requesterName"));
-		((TextView)view.findViewById(R.id.request_entry_date)).setText(args.getString("date"));
+		((TextView)view.findViewById(R.id.request_entry_date)).setText("Created at" + args.getString("date"));
 		((TextView)view.findViewById(R.id.request_entry_tags)).setText(args.getString("tags"));
 		((TextView)view.findViewById(R.id.request_entry_price)).setText(args.getString("price"));
 		((TextView)view.findViewById(R.id.request_entry_deadline)).setText(args.getString("deadline"));
