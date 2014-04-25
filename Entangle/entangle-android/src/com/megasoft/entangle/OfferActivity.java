@@ -4,6 +4,7 @@ import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.PostRequest;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -105,7 +106,18 @@ public class OfferActivity extends Activity {
 	 * String for post offer endpoint
 	 */
 	final String ACCEPT = "/accept/offer";
-
+	/**
+	 * String for get and post offer details endpoint
+	 */
+	final String Request = "/request/";
+	/**
+	 * String for get offer details endpoint
+	 */
+	final String Offer= "/offers/";
+	/**
+	 * offer status
+	 */
+	final String done= "2";
 	/**
 	 * The id of the logged in user
 	 */
@@ -366,5 +378,73 @@ public class OfferActivity extends Activity {
 		});
 
 	}
+	/**
+	 * this checks if an offer is already marked as done or not accepted.if
+	 * neither it navigates to the actual marking method
+	 * @param  View view The checkbox clicked
+	 * @return None
+	 * @author mohamedzayan
+	 */
+	public void markCheck(View view) {
+		GetRequest initRequest = new GetRequest(Config.API_BASE_URL
+				+ "/request/" + 1 + "/offers/" + 1) {
+			protected void onPostExecute(String response) {
+				if (this.getStatusCode() == 200) {
+					JSONObject jresponse;
+					try {
+						jresponse = new JSONObject(response);
+						if (jresponse.getString("status").equals("0")
+								|| jresponse.getString("status").equals("2")) {
+							Toast error = Toast.makeText(
+									getApplicationContext(), R.string.error,
+									Toast.LENGTH_LONG);
+							error.show();
+						} else {
+							markAsDone(offerId);
+						}
 
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+		initRequest.addHeader(Config.API_SESSION_ID,sessionId);
+		initRequest.execute();
+
+	}
+
+	/**
+	 * this marks an accepted offer as done
+	 * @param  Int OfferId offer ID
+	 * @return None
+	 * @author mohamedzayan
+	 */
+	public void markAsDone(int Offerid) {
+
+		JSONObject json = new JSONObject();
+		try {
+			json.put("status", done);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		PostRequest request = new PostRequest(Config.API_BASE_URL + "/request/"
+				+ Offerid) {
+			protected void onPostExecute(String response) {
+				if (this.getStatusCode() == 201) {
+					Toast success = Toast.makeText(getApplicationContext(),
+							R.string.mark, Toast.LENGTH_LONG);
+					success.show();
+					CheckBox checkbox1 = (CheckBox) findViewById(R.id.checkBox1);
+					checkbox1.setEnabled(false);
+				}
+			}
+
+		};
+		request.addHeader(Config.API_SESSION_ID,sessionId);
+		request.setBody(json);
+		request.execute();
+
+	}
 }
