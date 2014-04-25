@@ -2,6 +2,17 @@
 
 namespace Megasoft\EntangleBundle\Controller;
 
+<<<<<<< HEAD
+use Megasoft\EntangleBundle\Entity\Tag;
+use Megasoft\EntangleBundle\Entity\Tangle;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\User\User;
+use Symfony\Component\Serializer\Exception\Exception;
+=======
 use DateTime as DateTime2;
 use Megasoft\EntangleBundle\Entity\Tag;
 use Megasoft\EntangleBundle\Entity\Tangle;
@@ -12,10 +23,96 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request as Request2;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+>>>>>>> d85e4439f3de9af4b5b55883bda8f67cb2e9d0a7
 use Symfony\Component\Translation\Tests\String;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
 
+<<<<<<< HEAD
+class RequestController extends Controller{
+    
+    /**
+      * A function to save an icon and return the url to it
+      * @param string $iconData
+      * @param integer $requestId
+      * @return string $url
+      * @author OmarElAzazy
+      */
+    private function saveIcon($iconData, $requestId){
+        $decodedIcon = base64_decode($iconData);
+        $icon = imagecreatefromstring($decodedIcon);
+        
+        $iconFileName = 'request' . "$requestId" . '.png';
+        $kernel = $this->get('kernel');
+        $path = $kernel->getRootDir() . '/../web/bundles/megasoftentangle/images/request/icons/';
+        
+        $outputFilePath = $path . $iconFileName;
+        imagepng($icon, $outputFilePath, 9);
+        imagedestroy($icon);
+        return 'http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/request/icons/' . $iconFileName;
+    }
+    
+    /**
+      * An endpoint to set the icon of a request
+      * @param Request $request
+      * @param integer $requestId
+      * @return Response | Symfony\Component\HttpFoundation\JsonResponse
+      * @author OmarElAzazy 
+     */
+    public function postIconAction(Request $request, $requestId){
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        
+        if($requestId == null || $sessionId == null){
+            return new Response('Bad Request', 400);
+        }
+        
+        $doctrine = $this->getDoctrine();
+        
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        if($session == null || $session->getExpired()){
+            return new Response('Bad Request', 400);
+        }
+        
+        $jsonString = $request->getContent();
+        
+        if($jsonString == null){
+            return new Response('Bad Request', 400);
+        }
+        
+        $json = json_decode($jsonString, true);
+        $iconData = $json['requestIcon'];
+        
+        if($iconData == null){
+            return new Response('Bad Request', 400);
+        }
+        
+        $requesterId = $session->getUserId();
+        
+        $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+        $request = $requestRepo->findOneBy(array('id' => $requestId));
+        if($request == null || $request->getUserId() != $requesterId){
+            return new Response('Unauthorized', 401);
+        }
+        
+        try{
+            $iconUrl = $this->saveIcon($iconData, $requestId);
+        }
+        catch (Exception $e){
+            return new Response('Internal Server Error', 500);
+        }
+        
+        $request->setIcon($iconUrl);
+        
+        $this->getDoctrine()->getManager()->persist($request);
+        $this->getDoctrine()->getManager()->flush();
+        
+        $response = new JsonResponse();
+        $response->setData(array('iconUrl' => $iconUrl));
+        return $response;
+    }
+    
+=======
 class RequestController extends Controller {
     /* Reopens a closed request
      * @param Request $request
@@ -58,6 +155,7 @@ class RequestController extends Controller {
         }
     }
 
+>>>>>>> d85e4439f3de9af4b5b55883bda8f67cb2e9d0a7
     /**
      * this returns a response depending on the size of the array it recieved from getRequestDetails 
      * @param  Int $requestId  Request id
@@ -247,12 +345,20 @@ class RequestController extends Controller {
     /**
      * take the json Object from the request then decode it and seprate 
      * the data and enter it in the Request Table
+<<<<<<< HEAD
+     * @param Request $request
+=======
      * @param Request2 $request
+>>>>>>> d85e4439f3de9af4b5b55883bda8f67cb2e9d0a7
      * @param String $tangleId
      * @return JsonResponse
      * @author Salma Khaled
      */
+<<<<<<< HEAD
+    public function createAction(Request $request, $tangleId) {
+=======
     public function createAction(Request2 $request, $tangleId) {
+>>>>>>> d85e4439f3de9af4b5b55883bda8f67cb2e9d0a7
         $doctrine = $this->getDoctrine();
         $json = $request->getContent();
         $response = new JsonResponse();
@@ -327,6 +433,8 @@ class RequestController extends Controller {
             $doctrine->getManager()->flush();
         }
     }
+<<<<<<< HEAD
+=======
     
     /**
       * An endpoint to delete a request.
@@ -366,4 +474,5 @@ class RequestController extends Controller {
         return new Response("Deleted", 204);
     }
     
+>>>>>>> d85e4439f3de9af4b5b55883bda8f67cb2e9d0a7
 }
