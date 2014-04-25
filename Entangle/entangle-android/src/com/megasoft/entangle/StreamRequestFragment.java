@@ -1,5 +1,7 @@
 package com.megasoft.entangle;
 
+import com.megasoft.entangle.views.RoundedImageView;
+
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * This class extends the fragment class and it corresponds to one entry in the
@@ -33,6 +36,11 @@ public class StreamRequestFragment extends Fragment {
 	 * The text of the request button
 	 */
 	private String requestString;
+	
+	/**
+	 * The view of the request 
+	 */
+	private View view;
 
 	/**
 	 * The text of the requester button
@@ -42,12 +50,27 @@ public class StreamRequestFragment extends Fragment {
 	/**
 	 * The request button
 	 */
-	private Button request;
+	private TextView request;
 
 	/**
 	 * The requester button
 	 */
-	private Button requester;
+	private TextView requester;
+	
+	/**
+	 * The requester avatar
+	 */
+	private RoundedImageView requesterAvatar;
+
+	/**
+	 * The price text
+	 */
+	private String price;
+
+	/**
+	 * The offers count text
+	 */
+	private String offersCount;
 
 	/**
 	 * This method is used to create an instance of the StreamRequestFragment
@@ -64,12 +87,14 @@ public class StreamRequestFragment extends Fragment {
 	 * @return an instance of the StreamRequestFragment
 	 */
 	public static StreamRequestFragment createInstance(int requestId,
-			int requesterId, String requestString, String requesterString) {
+			int requesterId, String requestString, String requesterString, String price, String offersCount) {
 		StreamRequestFragment fragment = new StreamRequestFragment();
 		fragment.setRequestId(requestId);
 		fragment.setRequesterId(requesterId);
 		fragment.setRequestButtonText(requestString);
 		fragment.setRequesterButtonText(requesterString);
+		fragment.setPrice(price);
+		fragment.setOffersCount(offersCount);
 		return fragment;
 	}
 
@@ -79,12 +104,18 @@ public class StreamRequestFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstancState) {
-		View view = inflater.inflate(R.layout.stream_request_fragment,
+		view = inflater.inflate(R.layout.fragment_stream_request,
 				container, false);
-		request = (Button) view.findViewById(R.id.requestButton);
+		request = (TextView) view.findViewById(R.id.requestDescription);
 		setRequestRedirection();
-		requester = (Button) view.findViewById(R.id.requesterButton);
+		requesterAvatar = (RoundedImageView) view.findViewById(R.id.requesterAvatar);
+		requester = (TextView) view.findViewById(R.id.requesterName);
 		setRequesterRedirection();
+		TextView priceView = (TextView) view.findViewById(R.id.requestPrice);
+		priceView.setText(price);
+		TextView offersCountView = (TextView) view.findViewById(R.id.requestOffersCount);
+		offersCountView.setText(offersCount);
+		
 		return view;
 	}
 
@@ -165,6 +196,26 @@ public class StreamRequestFragment extends Fragment {
 	private void setRequestButtonText(String text) {
 		requestString = text;
 	}
+	
+	/**
+	 * This method is used to set the text of the price
+	 * 
+	 * @param text
+	 *            , text to be written in the request button
+	 */
+	private void setPrice(String text) {
+		price = text;
+	}
+	
+	/**
+	 * This method is used to set the text of the offers count
+	 * 
+	 * @param text
+	 *            , text to be written in the request button
+	 */
+	private void setOffersCount(String text) {
+		offersCount = text;
+	}
 
 	/**
 	 * This method is used to set the action of the requester button, in which
@@ -174,9 +225,23 @@ public class StreamRequestFragment extends Fragment {
 	 *            , is the requester button
 	 */
 	private void setRequesterRedirection() {
-		requester.setTextSize(16);
 		requester.setText(getRequesterString());
 		requester.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity().getBaseContext(),
+						ProfileActivity.class);
+				intent.putExtra("tangleId",
+						((TangleActivity) getActivity()).getTangleId());
+				intent.putExtra("tangleName",
+						((TangleActivity) getActivity()).getTangleName());
+				intent.putExtra("sessionId",
+						((TangleActivity) getActivity()).getSessionId());
+				intent.putExtra("userId", getRequesterId());
+				startActivity(intent);
+			}
+		});
+		requesterAvatar.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity().getBaseContext(),
@@ -201,9 +266,8 @@ public class StreamRequestFragment extends Fragment {
 	 *            , is the request button
 	 */
 	private void setRequestRedirection() {
-		request.setTextSize(16);
 		request.setText(getRequestString());
-		request.setOnClickListener(new View.OnClickListener() {
+		view.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity().getBaseContext(),

@@ -6,13 +6,126 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Megasoft\EntangleBundle\Entity\Request;
 use Megasoft\EntangleBundle\Entity\Tag;
+use Symfony\Component\HttpFoundation\Response;
 
-/**
- * RequestController takes the json Object
- * and fill the Request and Tag tables with data given
- * @author Salma Khaled
- */
 class RequestController extends Controller {
+
+    /**
+     * this returns a response depending on the size of the array it recieved from getRequestDetails 
+     * @param  Int $requestId  Request id
+     * @return Response 
+     * @author sak93
+     */
+    public function viewRequestAction($tangleId, $requestId, \Symfony\Component\HttpFoundation\Request $request) {
+        $doctrine = $this->getDoctrine();
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        $response = new JsonResponse();
+        if ($sessionId == null) {
+            $response->setData(array('Error' => 'No session Id.'));
+            $response->setStatusCode(400);
+            return $response;
+        }
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        if ($session == null) {
+            $response->setData(array('Error' => 'Incorrect Session Id.'));
+            $response->setStatusCode(400);
+            return $response;
+        }
+        if ($session->getExpired() == 1) {
+            $response->setData(array('Error' => 'Session Expired.'));
+            $response->setStatusCode(400);
+            return $response;
+        }
+        $sessionUserId = $session->getUserId();
+        $userTangle = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $viewer = $userTangle->findOneBy(array('tangleId' => $tangleId, 'userId' => $sessionUserId));
+        if (count($viewer) <= 0) {
+            $response->setData(array('Error' => 'You do not belong to this tangle.'));
+            $response->setStatusCode(400);
+            return $response;
+        }
+
+        $requestDetails = $this->getRequestDetails($requestId, $sessionUserId, $tangleId);
+
+        if (count($requestDetails) == 0) {
+            $response->setData(array('Error' => 'No such request.'));
+            $response->setStatusCode(400);
+            return $response;
+        }
+
+        $response = new JsonResponse();
+        $response->setData(array($requestDetails));
+        $response->setStatusCode(200);
+        $response->headers->set('X-SESSION-ID', $sessionId);
+        return $response;
+    }
+
+    /**
+     * this method makes an array of all the request details
+     * @param  Int $requestId  Request id
+     * @return Array $requestDetails 
+     * @author sak93
+     */
+    public function getRequestDetails($requestId, $sessionUserId, $tangleId) {
+        $repository = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Request');
+        $request = $repository->findOneBy(array('id' => $requestId));
+        $requestDetails = array();
+        if (count($request) != 0) {
+            if ($request->getTangleId() != $tangleId) {
+                return $requestDetails;
+            }
+            $requester = $request->getUserId();
+            $description = $request->getDescription();
+            $status = $request->getStatus();
+            $date = $request->getDate();
+            $deadline = $request->getDeadline();
+            $icon = $request->getIcon();
+            $price = $request->getRequestedPrice();
+            $tangle = $request->getTangleId();
+            $tags = $request->getTags();
+            $offers = $this->getOfferDetails($requestId);
+            $myRequest = 0;
+            if ($sessionUserId == $requester) {
+                $myRequest = 1;
+            }
+            $requestDetails = array('requester' => $requester, 'description' => $description,
+                'status' => $status, 'MyRequest' => $myRequest, 'date' => $date, 'deadline' => $deadline, 'icon' => $icon,
+                'price' => $price, 'tangle' => $tangle, 'tags' => $tags, 'offers' => $offers);
+        }
+        return $requestDetails;
+    }
+
+    /**
+     * this returns an array of offers associated with the request
+     * @param  Int $requestId  Request id
+     * @return Array $offerArray
+     * @author sak93
+     */
+    public function getOfferDetails($requestId) {
+        $repository = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Offer');
+        $allOffers = $repository->findAll(array('id' => $requestId));
+        $offerArray = array();
+        $numOfOffers = count($allOffers);
+        for ($i = 0; $i < $numOfOffers; $i++) {
+            $offer = $repository->find($allOffers[$i]->getId());
+            $request = $offer->getRequestId();
+            if ($request == $requestId) {
+                $description = $offer->getDescription();
+                $status = $offer->getStatus();
+                $date = $offer->getDate();
+                $deadline = $offer->getExpectedDeadline();
+                $price = $offer->getRequestedPrice();
+                $deleted = $offer->getDeleted();
+                $details = array('description' => $description, 'status' => $status,
+                    'date' => $date, 'deadline' => $deadline, 'price' => $price);
+                if ($deleted == 0) {
+                    array_push($offerArray, $details);
+                }
+            }
+        }
+        return $offerArray;
+    }
 
     /**
      * this method is used to validate data and return response accordingly 
@@ -139,7 +252,7 @@ class RequestController extends Controller {
         $doctrine->getManager()->persist($newRequest);
         $doctrine->getManager()->flush();
         $response->setData(array('sessionId' => $sessionId));
-        $response->setStatusCode(201);
+        $response->setStatusCode(200);
         return $response;
     }
 

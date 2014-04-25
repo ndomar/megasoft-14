@@ -12,6 +12,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -107,8 +108,8 @@ public class TangleActivity extends Activity {
 			tangleId = getIntent().getIntExtra("tangleId", 0);
 			tangleName = getIntent().getStringExtra("tangleName");
 			sessionId = getIntent().getStringExtra("sessionId");
-			TextView tangle = (TextView) findViewById(R.id.tangleName);
-			tangle.setText(tangleName);
+//			TextView tangle = (TextView) findViewById(R.id.tangleName);
+//			tangle.setText(tangleName);
 		} else {
 			intent = new Intent(this, MainActivity.class);
 			// to be changed to login activity
@@ -164,14 +165,18 @@ public class TangleActivity extends Activity {
 			String requesterName = request.getString("username");
 			int requestId = request.getInt("id");
 			String requestBody = request.getString("description");
-			int requestOffersCount = request.getInt("offersCount");
-			String requesterButtonText = "Requester : " + requesterName;
-			String requestButtonText = "Request : " + requestBody
-					+ "\nNumber of offers : " + requestOffersCount;
+			String requestOffersCount = "" + request.getInt("offersCount");
+			String requesterButtonText = requesterName;
+			String requestButtonText = requestBody;
+			String requestPrice = "0";
+					
+			if(request.get("price") != null)
+				requestPrice = "" + request.getInt("price");
+			
 			transaction = getFragmentManager().beginTransaction();
 			StreamRequestFragment requestFragment = StreamRequestFragment
 					.createInstance(requestId, userId, requestButtonText,
-							requesterButtonText);
+							requesterButtonText, requestPrice, requestOffersCount);
 			transaction.add(R.id.streamLayout, requestFragment);
 			transaction.commit();
 		} catch (JSONException e) {
@@ -463,5 +468,24 @@ public class TangleActivity extends Activity {
 			return new ArrayList<String>(toId.keySet());
 		}
 		return new ArrayList<String>();
+	}
+	
+	
+	/**
+	 * This method is used to trigger the buttons in the action bar
+	 * 
+	 * @return MenuItem that has been clicked
+	 * @author Mohamed Farghal
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	        case R.id.action_filter:
+	            filterStream(null);
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
 	}
 }

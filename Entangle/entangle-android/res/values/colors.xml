@@ -4,5 +4,8 @@
     <color name="pagerBackground">#FFFFFF</color>
     <color name="darkGray">#222222</color>
     <color name="lightText">#FFFFFF</color>
-    <color name="lightGray">#555555</color>
+    <color name="lightGray">#888888</color>
+    <color name="darkWhite">#DDDDDD</color>
+    <color name="postBackground">#FFFFFF</color>
+    <color name="sucess">#63875F</color>
 </resources>
