@@ -60,13 +60,14 @@ public class HomeActivity extends FragmentActivity {
 		SampleFragment fragment = new SampleFragment();
 		Bundle args = new Bundle();
 		args.putInt("tangleId",tangleId);
+		args.putString("tangleName", TangleStreamActivity.tangleNames.get(position));
 		fragment.setArguments(args);
 		fragmentTransaction.replace(R.id.content_frame, fragment);
 		fragmentTransaction.commit();
 		
 		// Highlight the selected item, update the title, and close the drawer
 	    //drawerList.setItemChecked(position, true);
-	    setTitle(listTitles[position]);
+	    setTitle(TangleStreamActivity.tangleNames.get(position));
 	    drawer.closeDrawer(drawerLayout);
 	}
 	

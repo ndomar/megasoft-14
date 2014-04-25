@@ -42,7 +42,7 @@ public class TangleStreamActivity extends Fragment {
 	/**
 	 * An arraylist to map the list items to their name
 	 */
-	private ArrayList<String> tangleNames;
+	public static ArrayList<String> tangleNames;
 	
 	private View view;
 	
