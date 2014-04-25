@@ -371,7 +371,7 @@ class RequestController extends Controller{
         if ($valid != null) {
             return $valid;
         }
-        $newRequest = new Request3();
+        $newRequest = new Request();
         $newRequest->setTangle($tangle);
         $newRequest->setDescription($description);
         $newRequest->setStatus(0);
@@ -391,7 +391,7 @@ class RequestController extends Controller{
      * this function is responsible for filling the Tag Table it creates 
      * a new Tag if the tag didn't exist before
      * it also add the tag to the created Request realated to it
-     * @param Request3 $newRequest
+     * @param Request $newRequest
      * @param json_array $tags
      * @author Salma Khaled
      */
@@ -413,7 +413,7 @@ class RequestController extends Controller{
 
     /**
       * An endpoint to delete a request.
-      * @param Request3 $request
+      * @param Request2 $request
       * @param integer $requestId
       * @return Response
       * @author OmarElAzazy
