@@ -383,7 +383,7 @@ class RequestController extends Controller{
         $doctrine->getManager()->persist($newRequest);
         $doctrine->getManager()->flush();
         $response->setData(array('sessionId' => $sessionId));
-        $response->setStatusCode(200);
+        $response->setStatusCode(201);
         return $response;
     }
 
