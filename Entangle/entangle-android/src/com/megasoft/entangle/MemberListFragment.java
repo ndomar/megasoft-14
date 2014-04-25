@@ -155,5 +155,36 @@ public class MemberListFragment extends Fragment {
 		getRequest.execute();
 	}
 	
+	/*
+	 * It creates the fragments to be viewed in the list
+	 * @param String response, the body of the response of the request to get all members in a tangle
+	 * @return a boolean indicating if this was successful or not
+	 * @author Omar ElAzazy
+	 */
+	private boolean showData(String response){
+		if(!populateData(response)){
+			return false;
+		}
+		
+		FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+		
+        for(int i = 0; i < getNumberOfMembers(); i++) {
+        	MemberEntryFragment memberEntryFragment = new MemberEntryFragment();
+        	
+        	Bundle bundle = new Bundle();
+        	bundle.putInt(Config.USER_ID, getMemberIds()[i]);
+        	bundle.putInt(Config.TANGLE_ID, getTangleId());
+        	bundle.putString(Config.MEMBER_NAME, getMemberNames()[i]);
+        	bundle.putInt(Config.MEMBER_BALANCE, getMemberBalances()[i]);
+        	bundle.putString(Config.MEMBER_AVATAR_URL, getMemberAvatarURLs()[i]);
+            
+        	memberEntryFragment.setArguments(bundle);
+        	fragmentTransaction.add(R.id.view_member_list, memberEntryFragment);
+        }
+        
+        fragmentTransaction.commit();
+		return true;
+	}
+	
 	
 }
