@@ -185,7 +185,7 @@ public class CreateRequestActivity extends Activity {
 							intent.putExtra("tangleId", tangleID);
 							intent.putExtra("tab", PagerAdapter.STREAM);
 							startActivity(intent);
-						} else  {
+						} else {
 							Toast.makeText(getApplicationContext(),
 									"Error, Can not create request",
 									Toast.LENGTH_SHORT).show();
