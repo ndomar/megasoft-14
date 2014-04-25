@@ -10,8 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity
  */
-class Request {
 
+class Request
+{
+    
     /**
      * @var integer
      *
