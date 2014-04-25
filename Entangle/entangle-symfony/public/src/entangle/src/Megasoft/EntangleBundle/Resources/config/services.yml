@@ -5,3 +5,6 @@ services:
 #    megasoft_entangle.example:
 #        class: %megasoft_entangle.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+    
+#    getting_request_controller:
+#       class: Megasoft\EntangleBundle\Controller\RequestController

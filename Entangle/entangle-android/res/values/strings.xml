@@ -3,6 +3,10 @@
 
     <string name="app_name">Entangle</string>
     <string name="action_settings">Settings</string>
+    <string name="claim_button">Claim </string>
+    <string name="mssg">Body:</string>
+    <string name="claimName">Claim Form</string>
+    <string name="send">Send Claim </string>
     <string name="Requests">Create Request</string>
     <string name="name">Request\'s name</string>
     <string name="description">Request\'s description</string>
@@ -11,6 +15,12 @@
     <string name="tagHint">Only letters, digits, and , allowed</string>
     <string name="priceHint">enter a positive number</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_create_tangle">Create Tangle</string>
+    <string name="tangleNameHint">Specify a Tangle name</string>
+    <string name="iconButton">Choose an Icon</string>
+    <string name="tangleIcon">Tangle Icon</string>
+    <string name="createTangle">CREATE</string>
+    <string name="checkTangleName">Check</string>
     <string name="date">Date</string>
     <string name="ChooseDate">Choose DeadLine</string>
     <string name="deadLine">Expected deadline</string>
@@ -45,8 +55,10 @@
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
     <string name="icon">icon</string>
-    <string name="iconButton">Upload Icon</string>
     <string name="title_activity_upload_request_icon">Upload Request Icon</string>
+    <string name="title_activity_change_offer_price">ChangeOfferPriceActivity</string>
+    <string name="newOfferPrice">Enter the new price</string>
+    <string name="changePrice">CHANGE</string>
     <string name="preview_request">Preview Request</string>
     <string name="title_activity_create_offer">CreateOfferActivity</string>
     <string name="create_offer">Create Offer</string>
@@ -79,8 +91,13 @@
     </string-array>
 
     <string name="title_activity_stream_request_fragment">StreamRequestFragment</string>
+    <string name="delete_button_text">Delete</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
     <string name="title_activity_tangle_stream">TangleStreamActivity</string>
     <string name="create_tangle">Create Tangle</string>
-    <string name="title_activity_create_tangle">Create Tangle</string>
-
 </resources>
