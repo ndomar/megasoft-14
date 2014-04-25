@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.megasoft.requests.PostRequest;
+import com.megasoft.config.Config;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,7 +30,7 @@ public class ChangeOfferPriceActivity extends Activity {
 
 		this.requestId = getIntent().getIntExtra("requestId", -1);
 		this.offerId = getIntent().getIntExtra("offerId", -1);
-		this.sessionId = getIntent().getIntExtra("X-SESSION-ID", -1);
+		this.sessionId = getIntent().getIntExtra(Config.API_SESSION_ID, -1);
 
 	}
 
@@ -57,6 +58,7 @@ public class ChangeOfferPriceActivity extends Activity {
 		} else {
 			if (sessionId == -1) {
 				showMessage("SESSION EXPIRED, PLEASE RELOGIN");
+				goToHomeHelper();
 			} else {
 				if (requestId == -1 || offerId == -1) {
 					showMessage("INVALID OFFER, TRY AGAIN LATER");
@@ -69,7 +71,7 @@ public class ChangeOfferPriceActivity extends Activity {
 
 	public void sendPriceToServer() {
 		PostRequest imagePostRequest = new PostRequest(
-				"http://entangle2.apiary-mock.com/request/" + requestId
+				Config.API_BASE_URL + "/request/" + requestId
 						+ "/offers/" + offerId + "/changeprice") {
 			protected void onPostExecute(String response) {
 				if (!(this.getStatusCode() == 200)) {
@@ -88,7 +90,7 @@ public class ChangeOfferPriceActivity extends Activity {
 			e.printStackTrace();
 		}
 		imagePostRequest.setBody(priceJSON);
-		imagePostRequest.addHeader("X-SESSION-ID", "asdfc");
+		imagePostRequest.addHeader(Config.API_SESSION_ID, "asdfc");
 		imagePostRequest.execute();
 	}
 

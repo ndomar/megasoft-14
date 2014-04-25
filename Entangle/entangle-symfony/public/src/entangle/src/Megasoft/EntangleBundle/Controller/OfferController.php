@@ -153,7 +153,7 @@ class OfferController extends Controller {
             return new Response("Bad Request", 400);
         }
         if ($session == null) {
-            return new Response("Unauthorized", 401);
+            return new Response("Unauthorized", 403);
         }
         $sessionExpired = $session->getExpired();
         if ($sessionExpired) {
@@ -165,7 +165,7 @@ class OfferController extends Controller {
             return new Response("Not found", 404);
         }
         if (($session->getUserId()) != ($requestOffer->getUserId())) {
-            return new Response("Unauthorized", 401);
+            return new Response("Unauthorized", 403);
         }
         if (($requestOffer->getStatus()) == ($requestOffer->ACCEPTED)) {
             return new Response("Offer is already accepted", 401);
