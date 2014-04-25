@@ -46,10 +46,17 @@ reject_pending_invitation:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:rejectPendingInvitation}
     methods: [DELETE]
 
+
+accept_tangle_invitation:
+    pattern: /tangle-invitation/{tangleId}/{userId}/accept
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:addUser}
+    methods: [PUT]
+
 viewRequest:
     pattern: tangle/{tangleId}/request/{requestId}
     defaults: { _controller: MegasoftEntangleBundle:Request:viewRequest }
     methods: [GET]
+
 
 create:
     pattern: /tangle/{tangleId}/request
