@@ -10,7 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,7 +106,7 @@ public class TangleStreamActivity extends Fragment {
 				tangleNames.add(tangle.getString("tangleName"));
 			}
 
-			listView.setAdapter(new ArrayAdapter<String>(activity.getApplicationContext(), R.layout.tangle_entry_fragment, R.id.view_tangle_tangle_entry, arr));
+			listView.setAdapter(new ArrayAdapter<String>(activity.getApplicationContext(), R.layout.sidebar_list_item, R.id.textView1, arr));
 			listView.setOnItemClickListener(new ListView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View view, int position,
@@ -125,11 +125,7 @@ public class TangleStreamActivity extends Fragment {
 	 * @author MohamedBassem
 	 */
 	public void goToTangle(int position){
-		Intent intent = new Intent(activity,TangleActivity.class);
-		intent.putExtra("tangleId", tangleIds.get(position));
-		intent.putExtra("tangleName", tangleNames.get(position));
-		intent.putExtra("sessionId", sessionId);
-		startActivity(intent);		
+		activity.switchFragment(tangleIds.get(position), position);
 	}
 	
 	/**
