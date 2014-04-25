@@ -76,6 +76,11 @@
             android:name="com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationActivity"
             android:label="@string/title_activity_manage_pending_invitation" >
         </activity>
+        
+        <activity
+            android:name="com.megasoft.entangle.ProfileActivity"
+            android:label="@string/profileActivity" >
+        </activity>
 
         
 

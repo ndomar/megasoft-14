@@ -78,6 +78,7 @@
     <string name="offers">Offers</string>
     <string name="navigation_drawer_open">Entangle</string>
     <string name="navigation_drawer_close">Stream</string>
+    <string name="profileActivity">Profile</string>
 
     <string-array name="spinnerChoice">
         <item>None</item>
