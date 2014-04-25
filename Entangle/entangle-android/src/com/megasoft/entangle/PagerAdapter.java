@@ -25,6 +25,14 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 		this.userId = userId;
 	}
 	
+	
+	/**
+	 * Initialize the navigation drawer (sidebar menu)
+	 * 
+	 * @param 
+	 * @return 
+	 * @author Mohamed Farghal
+	 */
 	@Override
 	public Fragment getItem(int index) {
 
