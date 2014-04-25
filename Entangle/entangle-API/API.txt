@@ -218,10 +218,11 @@ Get profile
                              },
             "transactions" : [
                                  {
-                                     "offerId" : 3,
+                                     "requestId" : 3,
+                                     "requesterId" : 2,
                                      "requesterName"  : "Mohamed Bassem" ,
                                      "requestDescription" : "I want to learn how to study." ,
-                                     "amount" : "5"  
+                                     "amount" : 5  
                                  }
                              ]
         }
