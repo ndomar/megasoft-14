@@ -1,34 +1,102 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
-    <TextView 
-        android:id="@+id/offer_entry_requested_price"
-        android:layout_width="match_parent"
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:padding="@dimen/boxMargin"
+    android:background="@color/postBackground"
+    android:layout_marginBottom="@dimen/boxMargin"
+	 >
+
+    <com.megasoft.entangle.views.RoundedImageView
+        android:id="@+id/requesterAvatar_"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/avatar" />
+
+    <TextView
+        android:id="@+id/offer_entry_offerer"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
-    <TextView 
+        android:layout_alignBottom="@+id/requesterAvatar_"
+        android:layout_marginLeft="@dimen/boxMargin"
+        android:layout_alignTop="@+id/requesterAvatar_"
+        android:layout_marginTop="8dp"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="0dp"
+        android:layout_toRightOf="@+id/requesterAvatar_"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+         />
+    
+     <TextView 
         android:id="@+id/offer_entry_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
-    <TextView 
-        android:id="@+id/offer_entry_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-    <TextView 
-        android:id="@+id/offer_entry_offerer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-    <TextView 
-        android:id="@+id/offer_entry_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="@dimen/boxMargin"
+        android:layout_alignLeft="@+id/offer_entry_offerer"
+        android:layout_below="@+id/offer_entry_offerer"
+        android:textColor="@color/lightGray"
+        android:textSize="@dimen/fontSizeSmall"
         />
     
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/offer_entry_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       	android:layout_below="@+id/request_entry_tags"
+        android:layout_marginTop="24dp"
+        android:layout_alignLeft="@+id/request_entry_tags"
+        android:layout_alignRight="@+id/hr"
+        android:textColor="@color/darkGray"
+        />
+    
+    <View
+        android:id="@+id/hr"
+    	android:layout_width="fill_parent"
+    	android:layout_height="1dp"
+    	android:layout_marginTop="@dimen/boxMargin"
+    	android:background="@color/lightGray"
+        android:layout_below="@+id/offer_entry_date"
+ 		/>
+    
+    <TextView 
+        android:id="@+id/request_entry_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/hr"
+        android:layout_below="@+id/hr"
+        
+        />
+
+    <TextView
+        android:id="@+id/offer_entry_requested_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/hr"
+        android:layout_alignTop="@+id/offer_entry_offerer"
+        android:textColor="@color/error"
+        android:text="142"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView 
+        android:id="@+id/request_entry_deadline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/offer_entry_status"
+        android:layout_below="@+id/offer_entry_status"
+        android:textColor="@color/error"
+        />
+    
+    <TextView
+        android:id="@+id/offer_entry_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/offer_entry_description"
+        android:layout_alignBottom="@+id/offer_entry_description"
+        android:layout_alignRight="@+id/offer_entry_requested_price"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+</RelativeLayout>

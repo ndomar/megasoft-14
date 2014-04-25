@@ -3,6 +3,7 @@ package com.megasoft.entangle;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,12 +87,13 @@ public class TransactionsFragment extends Fragment {
 			Bundle savedInstancState) {
 		View view = inflater.inflate(R.layout.fragment_profile,
 				container, false);
-		requestView = (TextView) view.findViewById(R.id.request);
+		requestView = (TextView) view.findViewById(R.id.profile_request);
 		setRequestRedirection();
-		requesterView = (TextView) view.findViewById(R.id.requester);
+		requesterView = (TextView) view.findViewById(R.id.profile_requester);
 		setRequesterRedirection();
-		amountView = (TextView) view.findViewById(R.id.amount);
-		amountView.setText(amount);
+		amountView = (TextView) view.findViewById(R.id.profile_request_amount);
+		amountView.setText(""+amount);
+
 		return view;
 	}
 	/**
@@ -107,7 +109,7 @@ public class TransactionsFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Intent profile = new Intent(getActivity().getBaseContext(),
-						ProfileFragment.class);
+						ProfileActivity.class);
 				profile.putExtra("userId", getRequesterId());
 				profile.putExtra("tangleId", getTangleId());
 				startActivity(profile);

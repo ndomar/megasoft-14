@@ -148,6 +148,7 @@ public class TangleFragment extends Fragment {
 //			intent = new Intent(activity, LoginActivity.class);
 //			// to be changed to login activity
 //		}
+
 	}
 
 	/**
