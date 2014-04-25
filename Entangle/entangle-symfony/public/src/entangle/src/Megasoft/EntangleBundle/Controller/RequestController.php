@@ -46,7 +46,7 @@ class RequestController extends Controller{
       * @return Response | Symfony\Component\HttpFoundation\JsonResponse
       * @author OmarElAzazy 
      */
-    public function postIconAction(Request $request, $requestId){
+    public function postIconAction(Request2 $request, $requestId){
         $sessionId = $request->headers->get('X-SESSION-ID');
         
         if($requestId == null || $sessionId == null){
@@ -105,7 +105,7 @@ class RequestController extends Controller{
      * @author Mansour
      */
 
-    public function reOpenRequestAction(Request3 $request, $requestId) {
+    public function reOpenRequestAction(Request2 $request, $requestId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
