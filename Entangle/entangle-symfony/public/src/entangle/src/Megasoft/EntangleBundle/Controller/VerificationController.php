@@ -61,7 +61,7 @@ class VerificationController extends Controller {
                         ->getRepository('MegasoftEntangleBundle:VerificationCode')
                         ->findBy($criteria));
         $user = $search->getUser();
-        $expired = $search->getExpired;
+        $expired = $search->getExpired();
         if ($expired) {
             return new Response("Verification Link expired", 400);
         }
