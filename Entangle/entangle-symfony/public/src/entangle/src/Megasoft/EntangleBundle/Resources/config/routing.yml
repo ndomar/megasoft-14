@@ -75,6 +75,11 @@ dummy:
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
 
 
+verification:
+    pattern: /verify/{verificationCode}
+    defaults: { _controller:MegasoftEntangleBundle:Verification:verifyUser}
+
+
 create_Offer:
     pattern: /tangle/{tangleId}/request/{requestId}/offer
     defaults: { _controller: MegasoftEntangleBundle:CreateOffer:createOffer }
@@ -94,3 +99,5 @@ get_tangles:
 get_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
+
+    
