@@ -89,10 +89,29 @@ class ClaimController extends Controller {
         if ($requestId == null) {
             return new Response('No such request', 400);
         }
-        $sessionId = $request->headers->get('X-SESSION-ID');
         $doctrine = $this->getDoctrine();
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        
+        if ($sessionId == null || $session == null || $session->getExpired()) {
+            return new Response('session id is null', 400);
+        }
+        
+        $user = $session->getUser();
+        $userId = $user->getId();
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
         $claimerRequest = $requestRepo->findOneBy(array('id' => $requestId));
+        $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $offer = $offerRepo->findOneBy(array('requestId' => $requestId , 'deleted' => false, 'status' => 2));
+        
+        if (!($offer->getUserId() == $userId || $claimerRequest->getUserId() == $userId)) {
+            return new Response('Not authorized to claim', 400);
+        }
+        
+        if($offer == null) {
+            return new Response('No such offer', 400);
+        }
 
         if ($claimerRequest == null) {
             return new Response('No such request', 400);
@@ -103,16 +122,7 @@ class ClaimController extends Controller {
         if ($tangleId == null) {
             return new Response('Tangle id is null', 400);
         }
-        if ($sessionId == null) {
-            return new Response('session id is null', 400);
-        }
         
-        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
-        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
-        
-        if ($session == null || $session->getExpired()) {
-            return new Response('No such session', 400);
-        }
         $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
         $tangle = $tangleRepo->findOneBy(array('id' => $tangleId, 'deleted' => false));
         if ($tangle == null) {
@@ -121,8 +131,6 @@ class ClaimController extends Controller {
         $jsonString = $request->getContent();
         $json_array = json_decode($jsonString, true);
         $mssgBody = $json_array['X-MSSGBODY'];
-        $user = $session->getUser();
-        $userId = $user->getId();
         if ($mssgBody == null) {
             return new Response('Empty MssgBody', 400);
         }
