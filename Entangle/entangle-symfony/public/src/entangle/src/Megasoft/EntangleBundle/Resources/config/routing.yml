@@ -16,7 +16,7 @@ fetch_tags_in_tangle:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:allTags}
     methods: [GET]
     requirements:
-        tangleId:  \d+
+        tangleId: \d+
         
 check_membership:
     pattern: /tangle/{tangleId}/check-membership
@@ -56,6 +56,12 @@ acceptOffer:
     defaults: {_controller: MegasoftEntangleBundle:Offer:acceptOffer }
     methods: [POST]
 
+withdraw_offer:
+    pattern: /offer/{offerId}
+    defaults: { _controller: MegasoftEntangleBundle:Offer:withdraw }
+    methods: [DELETE]
+    requirements:
+        offerId: \d+
 
 getMails:
     pattern: /tangleOwnerAndClaimerMail/{requestId}/claim
@@ -82,6 +88,17 @@ get_profile:
     pattern: tangle/{tangleId}/user/{userId}/profile
     defaults: { _controller: MegasoftEntangleBundle:User:profile }
     methods: [GET]
+
+delete_request:
+    pattern: /request/{requestId}
+    defaults: { _controller: MegasoftEntangleBundle:Request:Delete }
+    methods: [DELETE]
+    requirements:
+        requestId: \d+
+    
+dummy:
+    pattern: /dummy
+    defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
     
 get_offer:
     pattern: /offer/{offerId}
@@ -111,14 +128,7 @@ check_membership:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:checkMembership }
     methods: [POST]
 
-invite:
-    pattern: /tangle/{tangleId}/invite
-    defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
-    methods: [POST]
 
-index:
-    pattern: /
-    defaults: { _controller: MegasoftEntangleBundle:Site:index }
     
 fetch_pending_invitations:
     pattern: /tangle/{tangleId}/pending-invitations
@@ -178,7 +188,7 @@ get_offer:
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
 
 megasoft_entangle_homepage:
-    pattern:  /hello/{hello}
+    pattern:  /hello/{name}
     defaults: { _controller: MegasoftEntangleBundle:Default:index }
     methods: [GET]
     
@@ -188,6 +198,7 @@ filter_requests_in_tangle:
     methods: [GET]
     requirements:
         tangleId:  \d+
+
 
 fetch_tags_in_tangle:
     pattern:  /tangle/{tangleId}/tag
@@ -243,16 +254,40 @@ create:
     methods: [POST]
     
 
+
+leave_tangle:
+    pattern: /tangle/{tangleId}/user
+    defaults: {_controller: MegasoftEntangleBundle:Tangle:leaveTangle }
+    methods: [DELETE]
+
 acceptOffer:
     pattern: /accept/offer
     defaults: {_controller: MegasoftEntangleBundle:Offer:acceptOffer }
     methods: [POST]
 
 
+index:
+    pattern: /
+    defaults: { _controller: MegasoftEntangleBundle:Site:index }
+
+
+
 dummy:
     pattern: /dummy
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
 
+
+
+
+megasoft_entangle_register:
+    pattern:  /register
+    defaults: { _controller: MegasoftEntangleBundle:Register:register }
+
+
+
+megasoft_entangle_about:
+    pattern:  /about
+    defaults: { _controller: MegasoftEntangleBundle:About:about }
 
 
 change_offer_price:
@@ -264,6 +299,7 @@ change_offer_price:
 verification:
     pattern: /verify/{verificationCode}
     defaults: { _controller:MegasoftEntangleBundle:Verification:verifyUser}
+
 
 
 create_Offer:
@@ -298,5 +334,3 @@ login:
     pattern:  /user/login
     defaults: { _controller: MegasoftEntangleBundle:User:login}
     methods: [POST]
-    
- 
