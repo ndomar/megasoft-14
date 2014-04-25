@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="postBackground">#FFFFFF</color>
+    <color name="lightGray">#888888</color>
+    <color name="success">#63875F</color>
+</resources>
