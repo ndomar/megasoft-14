@@ -97,10 +97,9 @@ public class LoginActivity extends Activity {
 					Config.SETTING, 0);
 			SharedPreferences.Editor prefsEditor = sessionIDPrefs.edit();
 			prefsEditor.putString(Config.SESSION_ID, json.getString("sessionId"));
-			prefsEditor.putString(Config.SESSION_ID, json.getString("userId"));
+			prefsEditor.putInt(Config.USER_ID, json.getInt("userId"));
 			prefsEditor.commit();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
