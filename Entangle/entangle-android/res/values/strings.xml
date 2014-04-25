@@ -10,21 +10,17 @@
     <string name="tag">Please Add comma separated tags</string>
     <string name="tagHint">Only letters, digits, and , allowed</string>
     <string name="priceHint">enter a positive number</string>
-    <string name="title_activity_request">RequestActivity</string>
     <string name="hello_world">Hello world!</string>
-
     <string name="date">Date</string>
     <string name="ChooseDate">Choose DeadLine</string>
     <string name="deadLine">Expected deadline</string>
     <string name="price">Requested price</string>
     <string name="check">please check when you are done</string>
-    
     <string name="title_activity_view_stream">ViewStream</string>
     <string name="viewStream">Stream</string>
     <string name="viewMembers">Members</string>
     <string name="viewProfile">Profile</string>
     <string name="title_activity_members">Members</string>
-    <string name="title_activity_profile">Profile</string>
     <string name="title_activity_invite">Invite</string>
     <string name="tangleName">Tangle Name</string>
     <string name="search_title">Filter Stream</string>
@@ -36,7 +32,6 @@
     <string name="requesterFilter">Write a requester name to filter with</string>
     <string name="fullTextFilter">Choose Full Text Search to be able to write :)</string>
     <string name="spinner">Filtering options</string>
-
     <string name="title_activity_invite_users">Invite Users</string>
     <string name="add_email">+</string>
     <string name="invite_continue">Continue</string>
@@ -52,6 +47,17 @@
     <string name="title_activity_change_offer_price">ChangeOfferPriceActivity</string>
     <string name="newOfferPrice">Enter the new price</string>
     <string name="changePrice">CHANGE</string>
+    <string name="preview_request">Preview Request</string>
+    <string name="title_activity_create_offer">CreateOfferActivity</string>
+    <string name="create_offer">Create Offer</string>
+    <string name="offer_description">Offer\'s description</string>
+    <string name="offer_requested_price">requested price</string>
+    <string name="requested_price_hint">enter a positive number</string>
+    <string name="expected_deadline">Choose expected Deadline</string>
+    <string name="post_offer">Post Offer</string>
+    <string name="offer_check">check when you\'re done</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_request">RequestActivity</string>
     <string name="title_activity_accept_pending_invitation">AcceptPendingInvitation</string>
     <string name="pending_invitation_approve">Approve</string>
     <string name="pending_invitation_reject">Reject</string>
@@ -73,5 +79,8 @@
     </string-array>
 
     <string name="title_activity_stream_request_fragment">StreamRequestFragment</string>
+    <string name="title_activity_tangle_stream">TangleStreamActivity</string>
+    <string name="create_tangle">Create Tangle</string>
+    <string name="title_activity_create_tangle">Create Tangle</string>
 
 </resources>
