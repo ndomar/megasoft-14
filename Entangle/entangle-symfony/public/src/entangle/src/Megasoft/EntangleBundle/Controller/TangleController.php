@@ -601,6 +601,7 @@ class TangleController extends Controller
         $tangleUser->setTangleOwner(FALSE);
         $tangleUser->setUser($user);
         $tangleUser->setTangle($tangle);
+        $tangleUser->setCredit(0);
         $tangle->addUserTangle($tangleUser);
         $this->getDoctrine()->getManager()->flush();
         return new Response("User added", 201);
