@@ -133,6 +133,11 @@ public class MemberEntryFragment extends Fragment {
 		return view;
 	}
 	
+	/*
+	 * It shows the given message in a toaster
+	 * @param String message, the message to be showed
+	 * @author Omar ElAzazy
+	 */
 	private void toasterShow(String message){
 		Toast.makeText(getActivity().getBaseContext(),
 				message,
