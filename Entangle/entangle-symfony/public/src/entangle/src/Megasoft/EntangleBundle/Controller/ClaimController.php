@@ -18,8 +18,10 @@ class ClaimController extends Controller {
      * @author Salma Amr
      */
     public function getMailsAction(\Symfony\Component\HttpFoundation\Request $request, $requestId) {
-        
-        $this->validate($request , $requestId);
+        $validation = $this->validate($request, $requestId);  
+        if($validation != null){
+            return $validation;
+        }
         $doctrine = $this->getDoctrine();
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
@@ -57,7 +59,10 @@ class ClaimController extends Controller {
      */
     public function createClaimAction(\Symfony\Component\HttpFoundation\Request $request, $requestId) {
         
-        $this->validate($request , $requestId);
+        $validation = $this->validate($request, $requestId);  
+        if($validation != null){
+            return $validation;
+        }
         $doctrine = $this->getDoctrine();
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
@@ -136,6 +141,8 @@ class ClaimController extends Controller {
         if ($tangleId == null || $tangle == null) {
             return new Response('No such tangle', 400);
         }
+        
+        return null;
     }
 
 }
