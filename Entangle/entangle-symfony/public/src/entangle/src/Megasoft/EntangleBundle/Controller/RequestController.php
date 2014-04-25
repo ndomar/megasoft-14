@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Megasoft\EntangleBundle\Entity\Request;
 use Megasoft\EntangleBundle\Entity\Tag;
 
 class RequestController extends Controller {
@@ -15,13 +14,13 @@ class RequestController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
-        $sessionExpired = $session->getExpired();
         if ($sessionId == null) {
             return new Response("Bad Request", 400);
         }
         if ($session == null) {
             return new Response("Unauthorized", 401);
         }
+        $sessionExpired = $session->getExpired();
         if ($sessionExpired) {
             return new Response("Session expired", 440);
         }
