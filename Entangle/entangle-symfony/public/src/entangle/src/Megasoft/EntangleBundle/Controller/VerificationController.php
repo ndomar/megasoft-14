@@ -60,11 +60,18 @@ class VerificationController extends Controller {
         $search = current($this->getDoctrine()
                 ->getRepository('MegasoftEntangleBundle:VerificationCode')
                 ->findBy($criteria));
-        
+        $user = $search->getUser();
+        $expired = $user->getExpired;
+        if($expired){
+            return new Response("Verification Link expired",400);
+        }
+        $verified = $user->getVerified();
+        if($verified){
+            return new Response("User Already Verified",400);
+        }
         if (!$search) {
             return new Response("User not found" , 404 );
         }
-        $user = $search->getUser();
         $user->setVerified(true);
         $this->getDoctrine()->getManager()->flush();
         return new Response("User verified",201);
