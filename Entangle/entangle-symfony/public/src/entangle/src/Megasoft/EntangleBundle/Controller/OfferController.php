@@ -5,6 +5,7 @@ namespace Megasoft\EntangleBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\Tests\String;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 
@@ -309,4 +310,68 @@ class OfferController extends Controller {
         return "Offer Accepted.";
     }
 
+    /**
+      * An endpoint to withdraw an offer.
+      * @param Request $request
+      * @param integer $offerId
+      * @return Response
+      * @author OmarElAzazy
+     */
+    public function withdrawAction(Request $request, $offerId){
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        
+        if($offerId == null || $sessionId == null){
+            return new Response('Bad Request', 400);
+        }
+        
+        $doctrine = $this->getDoctrine();
+        
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        if($session == null || $session->getExpired()){
+            return new Response('Bad Request', 400);
+        }
+        
+        $offererId = $session->getUserId();
+        
+        $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $offer = $offerRepo->findOneBy(array('id' => $offerId));
+        if($offer == null || $offer->getUserId() != $offererId || $offer->getDeleted()){
+            return new Response('Unauthorized', 401);
+        }
+        
+        if($offer->getStatus() == $offer->ACCEPTED){
+            $this->unfreezePoints($offer->getRequest(), $offer->getRequestedPrice());
+        }
+        
+        $offer->setDeleted(true);
+        $offer->setStatus($offer->FAILED);
+        $this->getDoctrine()->getManager()->persist($offer);
+        $this->getDoctrine()->getManager()->flush();
+        
+        return new Response("Deleted", 204);
+    }
+    
+    /**
+      * A function to unfreeze points for the requester for withdrawn offer.
+      * @param Request $request
+      * @param integer $points
+      * @return 
+      * @author OmarElAzazy
+     */
+    public function unfreezePoints($request, $points){
+        $requesterId = $request->getUser()->getId();
+        $tangleId = $request->getTangleId();
+        
+        $userTangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserTangle');
+        
+        $userTangle = $userTangleRepo->findOneBy(array('userId' => $requesterId, 'tangleId' => $tangleId));
+        
+        $newCredit = $userTangle->getCredit() + $points;
+        $userTangle->setCredit($newCredit);
+        
+        $this->getDoctrine()->getManager()->persist($userTangle);
+        $this->getDoctrine()->getManager()->flush();
+        return ;
+    }
 }
