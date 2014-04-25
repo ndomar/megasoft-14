@@ -573,6 +573,7 @@ class TangleController extends Controller
         $this->getDoctrine()->getManager()->flush();
         return new Response("Deleted",200);
     }
+
     /**
      * An endpoint for accepting tangle invitations sent to user
      * @param int $userId
@@ -596,6 +597,43 @@ class TangleController extends Controller
         $tangle->addUserTangle($user);
         $this->getDoctrine()->getManager()->flush();
         return new Response("User added", 201);
+    }
+    
+    /**
+     * The endpoint resposible for fetching the tangles of a certain user from the database
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @author MohamedBassem
+     */
+    public function getTanglesAction(Request $request){
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        $doctrine = $this->getDoctrine();
+        
+        if ($sessionId == null) {
+            return new Response("Bad Request", 400);
+        }
+
+        $sesionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+
+        $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
+
+        if ($session == null || $session->getExpired()) {
+            return new Response("Unauthorized", 401);
+        }
+        
+        
+        $userId = $session->getUserId();
+        $UserTanglerepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $tangles = $UserTanglerepo->findBy(array('userId' => $userId,'leavingDate'=>null));
+        $ret = array();
+        foreach($tangles as $tangle){
+            $ret[] = array("id"=>$tangle->getTangleId(),"name"=>$tangle->getTangle()->getName());
+        }
+        
+        $jsonResponse = new JsonResponse();
+        $jsonResponse->setData(array("tangles"=>$ret));
+        return $jsonResponse;
+
     }
 
 }
