@@ -3,8 +3,8 @@ package com.megasoft.entangle;
 import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
 
 import android.app.ActionBar;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -51,11 +51,11 @@ public class HomeActivity extends FragmentActivity {
 	}
 	
 	public void switchFragment(int tangleId, int position) {
-		FragmentManager fragmentManager = getFragmentManager(); 
+		FragmentManager fragmentManager = getSupportFragmentManager(); 
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		SampleFragment fragment = new SampleFragment();
 		Bundle args = new Bundle();
-		args.putString("key", ""+tangleId);
+		args.putInt("tangleId",tangleId);
 		fragment.setArguments(args);
 		fragmentTransaction.replace(R.id.content_frame, fragment);
 		fragmentTransaction.commit();
@@ -79,7 +79,7 @@ public class HomeActivity extends FragmentActivity {
 		drawer			= (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawerList 		= (LinearLayout) findViewById(R.id.tangleList);
 		drawerLayout 	= (LinearLayout) findViewById(R.id.left_drawer);
-		FragmentManager fragmentManager = getFragmentManager();
+		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		TangleStreamActivity tangleTitlesFragment = new TangleStreamActivity();
 		fragmentTransaction.replace(R.id.tangleList, tangleTitlesFragment);

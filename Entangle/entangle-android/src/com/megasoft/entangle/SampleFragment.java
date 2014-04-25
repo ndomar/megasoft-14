@@ -1,10 +1,13 @@
 package com.megasoft.entangle;
 
+import com.megasoft.config.Config;
+
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.app.ActionBar.Tab;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerTabStrip;
@@ -22,6 +25,9 @@ public class SampleFragment extends Fragment {
 	private View view;
 	private ViewPager pager;
 	private ActionBar actionBar;
+	private String sessionId;
+	private int tangleId;
+	private int userId;
 	
 	
 	@Override
@@ -32,7 +38,12 @@ public class SampleFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_pager, container, false);
 //        ((TextView) view.findViewById(R.id.sample)).setText(getArguments().getString("key"));
         
-        tab = new PagerAdapter(activity, activity.getSupportFragmentManager());
+        SharedPreferences settings = activity.getSharedPreferences(Config.SETTING, 0);
+		sessionId = settings.getString(Config.SESSION_ID, "");
+		userId = settings.getInt(Config.USER_ID, -1);
+		tangleId = getArguments().getInt("tangleId");
+		
+        tab = new PagerAdapter(activity, activity.getSupportFragmentManager(),tangleId,userId);
         pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(tab);
        

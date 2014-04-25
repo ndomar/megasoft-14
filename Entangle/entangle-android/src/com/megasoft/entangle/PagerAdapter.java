@@ -1,43 +1,64 @@
 package com.megasoft.entangle;
 
-import com.megasoft.requests.GetRequest;
-
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ScaleDrawable;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.ImageSpan;
 import android.util.Log;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
-
+	
+	int tangleId;
+	int userId;
 	Context context;
 	
-	public PagerAdapter(Context con, FragmentManager fm) {
+	public PagerAdapter(Context con, FragmentManager fm,int tangleId,int userId) {
 		super(fm);
 		this.context = con;
+		this.tangleId = tangleId;
+		this.userId = userId;
 	}
 
 	@Override
 	public Fragment getItem(int index) {
-		Fragment fragment = new SampleTab();
+		Bundle args = new Bundle();
+		args.putInt("tangleId", tangleId);
+		Fragment fragment = null;
+		switch (index) {
+		case 0:
+			fragment = new SampleTab();
+			break;
+		case 1:
+			fragment = new ProfileActivity();
+			args.putInt("userId", userId);
+			Log.e("test2", tangleId+"");
+			fragment.setArguments(args);
+			break;
+
+		default:
+			break;
+		}
         return fragment;
 	}
         
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return 2;
 	}
 	
 	@Override
 	public CharSequence getPageTitle(int position) {
-        return "Tab " + position;
+		switch (position) {
+		case 0:
+			return "Tangle Stream";
+		
+		case 1:
+			return "Profile";
+
+		default:
+			return "Tab " + position;
+		}
     }
 
 }

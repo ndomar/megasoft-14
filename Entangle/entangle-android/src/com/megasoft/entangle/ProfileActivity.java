@@ -4,26 +4,32 @@ package com.megasoft.entangle;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.megasoft.config.Config;
-import com.megasoft.requests.GetRequest;
-import com.megasoft.requests.ImageRequest;
+
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.megasoft.config.Config;
+import com.megasoft.requests.GetRequest;
+import com.megasoft.requests.ImageRequest;
+
 /**
  * Views a user's profile given his user Id and the tangle Id that redirected to the profile
  * @author Almgohar
  */
-public class ProfileActivity extends Activity {
+public class ProfileActivity extends Fragment {
 	
 	/**
 	 * The Button that redirects to the EditProfileActivity
@@ -94,45 +100,46 @@ public class ProfileActivity extends Activity {
 	 */
 	
 	private String sessionId;
+
+	private View view;
+
+	private HomeActivity activity;
 	
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_profile);
-		Intent intent = getIntent();
-		this.settings = getSharedPreferences(Config.SETTING, 0);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+		this.view = inflater.inflate(R.layout.activity_profile, container,false);
+		
+		this.settings = activity.getSharedPreferences(Config.SETTING, 0);
+		
 		
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		this.loggedInId = settings.getInt(Config.USER_ID, -1);
-		this.tangleId = intent.getIntExtra("tangle id", -1);
-		this.userId = intent.getIntExtra("user id", -1);		
+		
+		this.tangleId = getArguments().getInt("tangleId", -1);
+		this.userId = getArguments().getInt("userId", -1);		
 		
 		viewProfile();		
+		return view;
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-	
 	/**
 	 * Initialize all views to link them to the XML views
 	 * calls the ViewInformation() method
 	 * @author Almgohar
 	 */
 	public void viewProfile() {
-		edit = (Button) findViewById(R.id.EditProfile);
-		leave = (Button) findViewById(R.id.LeaveTangle);
-		name = (TextView) findViewById(R.id.nameView);
-		balance = (TextView) findViewById(R.id.balanceView);
-		birthDate = (TextView) findViewById(R.id.birthdateView);
-		description = (TextView) findViewById(R.id.descriptionView);
-		verifiedView = (ImageView) findViewById(R.id.verifiedView);
-		profilePictureView = (ImageView)findViewById(R.id.profileImage);
-		transactionsLayout = (LinearLayout) this.findViewById(R.id.transactions_layout);
+		edit = (Button) view.findViewById(R.id.EditProfile);
+		leave = (Button) view.findViewById(R.id.LeaveTangle);
+		name = (TextView) view.findViewById(R.id.nameView);
+		balance = (TextView) view.findViewById(R.id.balanceView);
+		birthDate = (TextView) view.findViewById(R.id.birthdateView);
+		description = (TextView) view.findViewById(R.id.descriptionView);
+		verifiedView = (ImageView) view.findViewById(R.id.verifiedView);
+		profilePictureView = (ImageView)view.findViewById(R.id.profileImage);
+		transactionsLayout = (LinearLayout) view.findViewById(R.id.transactions_layout);
 		
 		viewInformation();
 	}
@@ -185,7 +192,7 @@ public class ProfileActivity extends Activity {
 						e.printStackTrace();
 						}
 				} else {
-					Toast toast = Toast.makeText(getApplicationContext(),"Some error happened.",Toast.LENGTH_SHORT);
+					Toast toast = Toast.makeText(activity.getApplicationContext(),"Some error happened.",Toast.LENGTH_SHORT);
 					toast.show();
 					}
 				}
@@ -200,7 +207,7 @@ public class ProfileActivity extends Activity {
 	 * @author Almgohar
 	 */
 	public void viewTransactions(JSONArray transactions) {
-		TextView title = new TextView(this);
+		TextView title = new TextView(activity);
 		title.setText("Transactions: ");
 		title.setTextSize(20);
 		transactionsLayout.addView(title);
@@ -208,7 +215,7 @@ public class ProfileActivity extends Activity {
 			JSONObject object;
 			try {
 				object = transactions.getJSONObject(i);
-				TextView transaction = new TextView(this);
+				TextView transaction = new TextView(activity);
 				final int offerId = object.getInt("offerId");
 				String requester = object.getString("requesterName");
 				String request = object.getString("requestDescription");
@@ -220,7 +227,7 @@ public class ProfileActivity extends Activity {
 				transaction.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						goToOffer(offerId);
+							goToOffer(offerId);
 						}
 				});
 				
@@ -247,7 +254,7 @@ public class ProfileActivity extends Activity {
 	 * @author Almgohar
 	 */
 	public void goToEditProfile() {
-		Intent editProfile = new Intent(this, EditProfileActivity.class);
+		Intent editProfile = new Intent(activity, EditProfileActivity.class);
 		editProfile.putExtra("user id", loggedInId);
 		startActivity(editProfile);
 	}
@@ -265,8 +272,14 @@ public class ProfileActivity extends Activity {
 	 * @author Almgohar
 	 */
 	public void goToOffer(int offerId) {
-		Intent offer = new Intent(this,OfferActivity.class);
+		Intent offer = new Intent(activity,OfferActivity.class);
 		offer.putExtra("offer id", offerId);
 		startActivity(offer);
 	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+	    this.activity = (HomeActivity) activity;
+	    super.onAttach(this.activity);
 	}
+}
