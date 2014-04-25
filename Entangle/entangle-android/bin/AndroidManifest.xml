@@ -30,6 +30,14 @@
             android:name="com.megasoft.entangle.CreateTangleActivity"
             android:label="@string/title_activity_create_tangle" >
         </activity>
+          <activity
+        android:name="com.megasoft.entangle.Claim"
+        android:parentActivityName="com.megasoft.entangle.Request" >
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.megasoft.entangle.MainActivity" />
+    
+    </activity>
         <activity
             android:name="com.megasoft.entangle.TangleActivity"
             android:label="@string/title_activity_view_stream" >
@@ -50,11 +58,11 @@
             android:name="com.megasoft.entangle.InviteUserActivity"
             android:label="@string/title_activity_invite_users" >
         </activity>
-        <activity
+         <activity
             android:name="com.megasoft.entangle.CreateOfferActivity"
             android:label="@string/title_activity_create_offer" >
         </activity>
-        <activity
+		<activity
             android:name="com.megasoft.entangle.RequestActivity"
             android:label="@string/title_activity_request" >
         </activity>
@@ -65,7 +73,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.megasoft.entangle.InviteUsers" />
-                android:value="com.megasoft.entangle.InviteUserActivity" />
         </activity>
         <activity
             android:name="com.megasoft.entangle.acceptPendingInvitation.AcceptPendingInvitationActivity"
@@ -88,12 +95,12 @@
             android:label="@string/title_activity_offer" >
         </activity>
         <activity
-            android:name="com.megasoft.entangle.ChangeOfferPriceActivity"
-            android:label="@string/title_activity_change_offer_price" >
-        </activity>
-        <activity
             android:name="com.megasoft.entangle.viewtanglelsit.TangleStreamActivity"
             android:label="@string/title_activity_tangle_stream" >
+        </activity>
+		<activity
+            android:name="com.megasoft.entangle.ChangeOfferPriceActivity"
+            android:label="@string/title_activity_change_offer_price" >
         </activity>
     </application>
 
