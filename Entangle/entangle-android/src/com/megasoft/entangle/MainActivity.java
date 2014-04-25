@@ -1,5 +1,11 @@
 package com.megasoft.entangle;
 
+import org.apache.http.client.methods.HttpPost;
+
+import com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationActivity;
+import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
+import com.megasoft.requests.PostRequest;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,23 +21,6 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		login = (Button) findViewById(R.id.loginRedirectButton);
-
-	}
-
-	/*
-	 * this method will receive a UserName and a password from the text boxes in
-	 * the UI checks for valid credentials and calls go to profile
-	 * 
-	 * @param View
-	 * 
-	 * @author maisaraFarahat
-	 */
-
-	public void login(View view) {
-
-		Intent loginActivity = new Intent(this, LoginActivity.class);
-		startActivity(loginActivity);
 
 	}
 

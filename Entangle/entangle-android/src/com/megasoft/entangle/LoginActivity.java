@@ -88,7 +88,7 @@ public class LoginActivity extends Activity {
 	private void goToHome(String response) {
 
 		SharedPreferences sessionIDPrefs = this.getSharedPreferences(
-				"sessionIDPrefs", MODE_WORLD_READABLE);
+				Config.SETTING, MODE_WORLD_READABLE);
 		SharedPreferences.Editor prefsEditor = sessionIDPrefs.edit();
 		prefsEditor.putString(Config.SESSION_ID, response);
 		prefsEditor.commit();

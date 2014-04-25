@@ -48,6 +48,14 @@ class UserEmail {
      *
      * @var boolean
      * 
+     * @ORM\Column(name="verified", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
+     */
+    private $verified = false;
+
+    /**
+     *
+     * @var boolean
+     * 
      * @ORM\Column(name="deleted", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
      */
     private $deleted = false;
@@ -143,6 +151,27 @@ class UserEmail {
      */
     public function getDeleted() {
         return $this->deleted;
+    }
+
+    /**
+     * Set verified
+     *
+     * @param boolean $verified
+     * @return UserEmail
+     */
+    public function setVerified($verified) {
+        $this->verified = $verified;
+
+        return $this;
+    }
+
+    /**
+     * Get verified
+     *
+     * @return boolean 
+     */
+    public function getVerified() {
+        return $this->verified;
     }
 
 }
