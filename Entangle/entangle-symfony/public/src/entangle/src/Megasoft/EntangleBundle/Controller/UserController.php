@@ -134,7 +134,7 @@ class UserController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
      * @author Almgohar
      */
-    public function profileAction(Request $request, $userId, $tangleId) {
+    public function profileAction(\Symfony\Component\HttpFoundation\Request $request, $userId, $tangleId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($sessionId == null) {

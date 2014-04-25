@@ -80,16 +80,13 @@
     <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="title_activity_offer">OfferActivity</string>
     <string name="action_filter">Filter</string>
-    
-    <string name="navigation_drawer_open">Entangle</string>
-    <string name="navigation_drawer_close">Stream</string>
 
     <string-array name="spinnerChoice">
         <item>None</item>
         <item>Tag</item>
         <item>Requester Name</item>
         <item>Full Text Search</item>
-    </string-array>
+    </string-array> 
 
     <string name="title_activity_stream_request_fragment">StreamRequestFragment</string>
     <string name="title_section1">Section 1</string>

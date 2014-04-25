@@ -70,6 +70,9 @@ public class LoginActivity extends Activity {
 				} else if (this.getStatusCode() == 400) {
 					Toast.makeText(getApplicationContext(),
 							"Wrong Credentials", Toast.LENGTH_SHORT).show();
+				}else{
+					Toast.makeText(getApplicationContext(),
+							this.getErrorMessage(), Toast.LENGTH_SHORT).show();
 				}
 
 			}
