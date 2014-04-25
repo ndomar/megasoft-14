@@ -1,5 +1,6 @@
 package com.megasoft.entangle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -14,15 +15,10 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);  
-		
-		MemberListFragment memberListFragment = new MemberListFragment();
-    	
-    	Bundle bundle = new Bundle();
-    	bundle.putInt(Config.TANGLE_ID, 1);
-    	memberListFragment.setArguments(bundle);
-    	
-    	getSupportFragmentManager().beginTransaction().add(R.id.member_list_placeholder, memberListFragment).commit();
+
+		setContentView(R.layout.activity_main);
+		startActivity(new Intent(this, ProfileActivity.class));
+
 	}
  
 	@Override
