@@ -103,6 +103,7 @@ public class CreateOfferActivity extends Activity {
 	 */
 	final String date = currentDay + "/" + (currentMonth + 1) + "/"
 			+ currentYear;
+
 	/**
 	 * this activity
 	 */
