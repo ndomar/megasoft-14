@@ -3,6 +3,108 @@
 
     <string name="app_name">Entangle</string>
     <string name="action_settings">Settings</string>
+    <string name="claim_button">Claim </string>
+    <string name="mssg">Body:</string>
+    <string name="claimName">Claim Form</string>
+    <string name="send">Send Claim </string>
+    <string name="Requests">Create Request</string>
+    <string name="name">Request\'s name</string>
+    <string name="description">What do you need ?</string>
+    <string name="post">Create</string>
+    <string name="Tags">Tags</string>
+    <string name="tagHint">food, tech, living</string>
+    <string name="priceHint">5</string>
     <string name="hello_world">Hello world!</string>
+    <string name="date">Date</string>
+    <string name="ChooseDate">Pick deadline</string>
+    <string name="deadLine">Expected deadline</string>
+    <string name="price">Price</string>
+    <string name="check">Please confirm</string>
+    <string name="title_activity_view_stream">ViewStream</string>
+    <string name="viewStream">Stream</string>
+    <string name="viewMembers">Members</string>
+    <string name="viewProfile">Profile</string>
+    <string name="title_activity_members">Members</string>
+    <string name="title_activity_invite">Invite</string>
+    <string name="tangleName">Tangle Name</string>
+    <string name="search_title">Filter Stream</string>
+    <string name="search_hint">Enter a UserName to filter with</string>
+    <string name="title_activity_search">Filter Results</string>
+    <string name="title_activity_requester_profile">RequesterProfile</string>
+    <string name="title_activity_request_information">RequestInformation</string>
+    <string name="tagFilter">Write a tag to filter with</string>
+    <string name="requesterFilter">Write a requester name to filter with</string>
+    <string name="fullTextFilter">Choose Full Text Search to be able to write :)</string>
+    <string name="spinner">Filtering options</string>
+    <string name="title_activity_invite_users">Invite Users</string>
+    <string name="add_email">+</string>
+    <string name="invite_continue">Continue</string>
+    <string name="user_email">User Email</string>
+    <string name="title_activity_invite_users_confirmation">Invite Users</string>
+    <string name="title_activity_invite_users_confirmations">Invite Users</string>
+    <string name="not_members">Not Members</string>
+    <string name="entangle_members">Entangle Members</string>
+    <string name="already_in_the_tangle">Already in the Tangle</string>
+    <string name="wrong_emails">Not Valid Emails</string>
+    <string name="invite_write_the_invitation_message">Write the invitation message.</string>
+    <string name="invite">Invite</string>
+
+
+    <string name="title_activity_home">HomeActivity</string>
+    <string-array name="sidebar_list">
+        <item >Item A</item>
+        <item >Item B</item>
+    </string-array>
+
+    <string name="title_activity_change_offer_price">ChangeOfferPriceActivity</string>
+    <string name="newOfferPrice">Enter the new price</string>
+    <string name="changePrice">CHANGE</string>
+
+    
+    <string name="preview_request">Preview Request</string>
+    <string name="title_activity_create_offer">CreateOfferActivity</string>
+    <string name="create_offer">What\'s your offer?</string>
+    <string name="offer_description">Offer\'s description</string>
+    <string name="offer_requested_price">requested price</string>
+    <string name="requested_price_hint">enter a positive number</string>
+    <string name="expected_deadline">Choose expected Deadline</string>
+    <string name="post_offer">Post Offer</string>
+    <string name="offer_check">check when you\'re done</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_request">Create Request</string>
+    <string name="title_activity_accept_pending_invitation">AcceptPendingInvitation</string>
+    <string name="pending_invitation_approve">Approve</string>
+    <string name="pending_invitation_reject">Reject</string>
+    <string name="title_activity_manage_pending_invitation">ManagePendingInvitationActivity</string>
+    <string name="pending_invitation_no_pending">No Pending Invitations now !</string>
+    <string name="refresh">Refresh</string>
+    <string name="title_activity_date_picker_fragment">DatePickerFragment</string>
+    <string name="edit_info">Edit your information</string>
+    <string name="leave_tangle">Leave current tangle</string>
+    <string name="transactions">Transactions: </string>
+    <string name="title_activity_edit_profile">EditProfileActivity</string>
+    <string name="title_activity_offer">OfferActivity</string>
+    <string name="action_filter">Filter</string>
+    <string name="offers">Offers</string>
+   
+    <string name="profileActivity">Profile</string>
+
+    <string-array name="spinnerChoice">
+        <item>None</item>
+        <item>Tag</item>
+        <item>Requester Name</item>
+        <item>Full Text Search</item>
+    </string-array>
+
+    <string name="title_activity_stream_request_fragment">StreamRequestFragment</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="title_activity_tangle_stream">TangleStreamActivity</string>
+    <string name="create_tangle">+ Create Tangle</string>
+    <string name="title_activity_create_tangle">Create Tangle</string>
 
 </resources>
