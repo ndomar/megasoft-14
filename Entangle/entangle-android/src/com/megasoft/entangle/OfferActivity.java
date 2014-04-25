@@ -387,7 +387,7 @@ public class OfferActivity extends Activity {
 	 */
 	public void markCheck(View view) {
 		GetRequest initRequest = new GetRequest(Config.API_BASE_URL
-				+ "/request/" + 1 + "/offers/" + 1) {
+				+ Request + 1 + Offer + offerId) {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 200) {
 					JSONObject jresponse;
@@ -429,7 +429,7 @@ public class OfferActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		PostRequest request = new PostRequest(Config.API_BASE_URL + "/request/"
+		PostRequest request = new PostRequest(Config.API_BASE_URL + Request
 				+ Offerid) {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 201) {
