@@ -411,9 +411,15 @@ class TangleController extends Controller
         }
 
         $imageData = base64_decode($tangleIcon);
+        $f = finfo_open();
+        $mime_type = finfo_buffer($f, $imageData, FILEINFO_MIME_TYPE);
+        if($mime_type == false || $mime_type != 'image/png'){
+            return new Response("Bad image", 400);
+        }
         $icon = imagecreatefromstring($imageData);
         $iconName = $this->generateRandomString(50) . '.png';
-        $path = '/home/mansour/repos/megasoft-14/Entangle/entangle-symfony/public/src/entangle/src/Megasoft/EntangleBundle/Images/tangleIcons/' . $iconName;
+        $kernel = $this->get('kernel');
+        $path = $kernel->getRootDir() . '/../web/bundles/megasoftentangle/images/tangle/icons/' . $iconName;
         if($icon != null){
          imagepng($icon, $path, 9);
          imagedestroy($icon);
