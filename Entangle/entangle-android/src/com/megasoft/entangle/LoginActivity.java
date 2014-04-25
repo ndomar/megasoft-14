@@ -85,15 +85,20 @@ public class LoginActivity extends Activity {
 	 */
 	@SuppressWarnings("deprecation")
 	private void goToHome(String response) {
-
-		SharedPreferences sessionIDPrefs = this.getSharedPreferences(
-				Config.SETTING, MODE_WORLD_READABLE);
-		SharedPreferences.Editor prefsEditor = sessionIDPrefs.edit();
-		prefsEditor.putString(Config.SESSION_ID, response);
-		prefsEditor.commit();
+		
+		try {
+			JSONObject json = new JSONObject(response); 
+			SharedPreferences sessionIDPrefs = this.getSharedPreferences(
+					Config.SETTING, 0);
+			SharedPreferences.Editor prefsEditor = sessionIDPrefs.edit();
+			prefsEditor.putString(Config.SESSION_ID, json.getString("sessionId"));
+			prefsEditor.commit();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		Intent homeActivity = new Intent(this, HomeActivity.class);
-		homeActivity.putExtra("sessionId", response);
 		startActivity(homeActivity);
 	}
 

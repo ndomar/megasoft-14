@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,9 +101,9 @@ public class TangleStreamActivity extends Fragment {
 			String[] arr = new String[tangles.length()];
 			for(int i=0;i<tangles.length();i++){
 				JSONObject tangle = tangles.getJSONObject(i);
-				arr[i] = tangle.getString("tangleName"); 
+				arr[i] = tangle.getString("name"); 
 				tangleIds.add(tangle.getInt("id"));
-				tangleNames.add(tangle.getString("tangleName"));
+				tangleNames.add(tangle.getString("name"));
 			}
 
 			listView.setAdapter(new ArrayAdapter<String>(activity.getApplicationContext(), R.layout.sidebar_list_item, R.id.textView1, arr));
