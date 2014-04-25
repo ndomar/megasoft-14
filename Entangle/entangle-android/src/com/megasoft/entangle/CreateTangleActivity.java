@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -35,6 +36,8 @@ public class CreateTangleActivity extends Activity {
 	public static final int RED = 0xffff0000;
 	public static final int BLACK = 0xff000000;
 	String encodedImage;
+	String sessionId;
+	SharedPreferences settings;
 
 	@Override
 	/**
@@ -65,6 +68,8 @@ public class CreateTangleActivity extends Activity {
 			}
 		});
 
+		this.settings = getSharedPreferences(Config.SETTING, 0);
+		this.sessionId = settings.getString(Config.SESSION_ID, "");
 	}
 
 	@Override
@@ -97,7 +102,7 @@ public class CreateTangleActivity extends Activity {
 					}
 				}
 			};
-			getNameRequest.addHeader(Config.API_SESSION_ID, "fdgdf");
+			getNameRequest.addHeader(Config.API_SESSION_ID, sessionId);
 			getNameRequest.execute();
 		}
 	}
@@ -218,7 +223,7 @@ public class CreateTangleActivity extends Activity {
 			e.printStackTrace();
 		}
 		imagePostRequest.setBody(imageJSON);
-		imagePostRequest.addHeader(Config.API_SESSION_ID, "fgdzr");
+		imagePostRequest.addHeader(Config.API_SESSION_ID, sessionId);
 		imagePostRequest.execute();
 	}
 
