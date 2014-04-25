@@ -13,6 +13,7 @@ use Megasoft\EntangleBundle\Entity\NewMessageNotification;
 use Megasoft\EntangleBundle\Entity\OfferChosenNotification;
 use Megasoft\EntangleBundle\Entity\OfferDeletedNotification;
 use Megasoft\EntangleBundle\Entity\PriceChangeNotification;
+use Megasoft\EntangleBundle\Entity\ReopenRequestNotification;
 use Megasoft\EntangleBundle\Entity\RequestDeletedNotification;
 use Megasoft\EntangleBundle\Entity\TransactionNotification;
 use Symfony\Component\DependencyInjection\Container;
@@ -80,6 +81,12 @@ class NotificationCenter
     private $requestDeletedNotificationDefaultTitle = "request deleted notification";
 
     /**
+     * default request reopen notification
+     * @var string
+     */
+    private $reopenRequestNotificationDefaultTitle = "request reopened notification";
+
+    /**
      * new message notification ID
      * @var int
      */
@@ -120,6 +127,13 @@ class NotificationCenter
      * @var int
      */
     private $requestDeletedNotificationId = 6;
+
+    /**
+     * request reopen notification id
+     * @var int
+     */
+    private $reopenRequestNotificationId = 7;
+
 
     /**
      * @param EntityManager $em
@@ -174,8 +188,7 @@ class NotificationCenter
 
     /**
      * this function is used to send notification for new message
-     * data array ("title"=> notification title, "body" => notification body, "by"=>message from, "to", Message to,
-     * "message" => message sent)
+     * data array ("title"=> notification title, "body" => notification body,"offerId"=>offer id)
      * @param $messageId
      * @param null $body
      * @param null $title
@@ -194,14 +207,12 @@ class NotificationCenter
         else
             $to = $message->getOffer()->getUser();
 
-
         $notification->setMessage($message);
         $notification->setCreated($date);
         $notification->setSeen(false);
         $notification->setUser($this->em->getRepository('MegasoftEntangleBundle:User')->find($to));
         $this->em->persist($notification);
         $this->em->flush();
-
 
         $fromName = $from->getName();
         $toName = $to->getName();
@@ -212,8 +223,7 @@ class NotificationCenter
         else
             $body = "new Message from " . $fromName;
 
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->newMessageNotificationId, 'by' => $fromName,
-            'message' => $message->getBody(), "messageId" => $messageId);
+        $data = array('title' => $title, 'body' => $body, 'type' => $this->newMessageNotificationId, "offerId" => $message->getOffer()->getId());
         return $this->notificationCenter($to->getId(), $data);
 
     }
@@ -236,7 +246,6 @@ class NotificationCenter
         $from = $transaction->getOffer()->getRequest()->getUser();
         $date = date('m/d/Y h:i:s a', time());
         $date = DateTime::createFromFormat('m/d/Y h:i:s a', $date);
-
 
         $notification->setCreated($date);
         $notification->setSeen(false);
@@ -263,8 +272,7 @@ class NotificationCenter
 
     /**
      *  this notifies the requester that an offer changed
-     * data array ("title"=> notification title, "body" => notification body, "by"=>offerer,"newPrice" => new price,
-     * "oldPrice" => price after changing)
+     * data array ("title"=> notification title, "body" => notification body, "offerId"=>offer Id)
      * @param $offerId
      * @param $oldPrice
      * @param null $title
@@ -302,14 +310,13 @@ class NotificationCenter
             $body = $this->formatMessage($body, $fromName, $toName);
         else
             $body = $fromName . "changed his offer";
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerChangeNotificationId, 'by' => $fromName,
-            'newPrice' => $newPrice, 'oldPrice' => $oldPrice, 'offerId' => $offerId);
+        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerChangeNotificationId, 'offerId' => $offerId);
         return $this->notificationCenter($to->getId(), $data);
     }
 
     /**
      * this notifies the offerer that his offer was chosen
-     * data array ("title"=> notification title, "body" => notification body, "by"=>offerer ,)
+     * data array ("title"=> notification title, "body" => notification body, "offerId" =>offerId)
      * @param $offerId
      * @param null $title
      * @param null $body
@@ -342,7 +349,7 @@ class NotificationCenter
         else
             $body = $fromName . "deleted his offer";
 
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerChosenNotificationId, 'by' => $fromName,
+        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerChosenNotificationId,
             'offerId' => $offerId);
         return $this->notificationCenter($to->getId(), $data);
     }
@@ -358,7 +365,7 @@ class NotificationCenter
 
     /**
      *  this should be invoked when a user delete an offer
-     * data array ("title"=> notification title, "body" => notification body, "by"=>offerer,)
+     * data array ("title"=> notification title, "body" => notification body, "offerId"=>offerId,)
      * @param $offerId
      * @param null $title
      * @param null $body
@@ -392,7 +399,7 @@ class NotificationCenter
         else
             $body = $fromName . "deleted his offer";
 
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerDeletedNotificationId, 'by' => $fromName,
+        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerDeletedNotificationId,
             'offerId' => $offerId);
         return $this->notificationCenter($to->getId(), $data);
 
@@ -401,7 +408,7 @@ class NotificationCenter
 
     /**
      * this should be invoked when a user delete a request
-     * data array ("title"=> notification title, "body" => notification body, "by"=>requester,"requestId"=>requestId)
+     * data array ("title"=> notification title, "body" => notification body,"requestId"=>requestId)
      * @param $requestId
      * @param null $title
      * @param null $body
@@ -438,8 +445,42 @@ class NotificationCenter
                 $body = $fromName . "deleted his request";
 
             $data = array('title' => $title, 'body' => $body, 'type' => $this->requestDeletedNotificationId,
-                'by' => $fromName, 'offerId' => $requestId);
+                'requestId' => $requestId);
             $this->notificationCenter($offer->getUserId(), $data);
+        }
+    }
+
+    /**
+     * this notification should be used when a request is reopened
+     * @param $requestId
+     * @param null $title
+     * @param null $body
+     */
+    function reopenRequestNotification($requestId, $title = null, $body = null)
+    {
+        $request = $this->em->getRepository("MegasoftEntangleBundle:Request")->find($requestId);
+        $offers = $this->em->getRepository("MegasoftEntangleBundle:Offer")->findBy(array("requestId" => $requestId));
+
+        $date = date('m / d / Y h:i:s a', time());
+        $date = DateTime::createFromFormat('m / d / Y h:i:s a', $date);
+
+        $fromName = $request->getUser();
+        if (!$title)
+            $title = $this->reopenRequestNotificationDefaultTitle;
+        if ($body)
+            $body = $this->formatMessage($body, $fromName, null);
+        else
+            $body = $fromName . "reopened his request";
+
+        $data = array("title" => $title, "body" => $body, "type" => $this->reopenRequestNotificationId, "requestId" => $requestId);
+
+        foreach ($offers as $offer) {
+            $notification = new ReopenRequestNotification();
+            $notification->setSeen(false);
+            $notification->setRequest($request);
+            $notification->setCreated($date);
+            $notification->setUser($offer->getUser());
+            $this->notificationCenter($offer->getUser()->getId(), $data);
         }
     }
 
@@ -457,4 +498,6 @@ class NotificationCenter
         $message = str_replace("{{to}}", $to, $message);
         return $message;
     }
+
+
 }

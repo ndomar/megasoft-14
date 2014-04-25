@@ -61,4 +61,12 @@ class NotificationController extends Controller
         return $response;
     }
 
+    function notificationStreamAction($userId)
+    {
+        $nc = $this->get('notification_center.service');
+        $response = new JsonResponse();
+        $response->setData();
+        return $response;
+    }
+
 }
