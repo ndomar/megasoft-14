@@ -36,7 +36,7 @@ class Transaction
     private $offerId;
     
     /**
-     * @ORM\OneToOne(targetEntity="Offer")
+     * @ORM\OneToOne(targetEntity="Offer", inversedBy="transaction")
      * @ORM\JoinColumn(name="offerId", referencedColumnName="id")
      */
     private $offer;
@@ -48,6 +48,22 @@ class Transaction
      * @ORM\OneToMany(targetEntity="TransactionNotification", mappedBy="transaction", cascade={"persist"})
      */
     private $notifications;
+    
+    /**
+     *
+     * @var boolean
+     * 
+     * @ORM\Column(name="deleted", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
+     */
+    private $deleted = false;
+    
+    /**
+     *
+     * @var integer
+     * @ORM\Column(name="finalPrice", type="integer")
+     */
+    private $finalPrice;
+    
     
 
     /**
@@ -167,5 +183,51 @@ class Transaction
     public function getNotifications()
     {
         return $this->notifications;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Transaction
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Set finalPrice
+     *
+     * @param integer $finalPrice
+     * @return Transaction
+     */
+    public function setFinalPrice($finalPrice)
+    {
+        $this->finalPrice = $finalPrice;
+
+        return $this;
+    }
+
+    /**
+     * Get finalPrice
+     *
+     * @return integer 
+     */
+    public function getFinalPrice()
+    {
+        return $this->finalPrice;
     }
 }

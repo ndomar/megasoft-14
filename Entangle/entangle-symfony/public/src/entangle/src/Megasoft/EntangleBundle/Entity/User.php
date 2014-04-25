@@ -65,6 +65,13 @@ class User
     private $verified;
     
     /**
+     *
+     * @var boolean 
+     * @ORM\Column(name="acceptMailNotifications", type="boolean" , columnDefinition="tinyint(1) DEFAULT 1")
+     */
+    private $acceptMailNotifications = true;
+    
+    /**
      * @var Notification[]
      * 
      * @ORM\OneToMany(targetEntity="Notification", mappedBy="user", cascade={"persist"})
@@ -141,6 +148,27 @@ class User
      * @ORM\OneToOne(targetEntity="VerificationCode", mappedBy="user", cascade={"persist"})
      */
     private $verificationCode;
+    
+    /**
+     * @var PendingInvitation[]
+     * 
+     * @ORM\OneToMany(targetEntity="PendingInvitation", mappedBy="invitee", cascade={"persist"})
+     */
+    private $pendingInvitationInvitees;
+    
+    /**
+     * @var PendingInvitation[]
+     * 
+     * @ORM\OneToMany(targetEntity="PendingInvitation", mappedBy="inviter", cascade={"persist"})
+     */
+    private $pendingInvitationInviters;
+    
+    /**
+     * @var UnfreezeRequest[]
+     * 
+     * @ORM\OneToMany(targetEntity="UnfreezeRequest", mappedBy="user", cascade={"persist"})
+     */
+    private $unfreezeRequests;
     
     
     
@@ -668,5 +696,127 @@ class User
     public function getVerificationCode()
     {
         return $this->verificationCode;
+    }
+
+    /**
+     * Add pendingInvitationInvitees
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInvitees
+     * @return User
+     */
+    public function addPendingInvitationInvitee(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInvitees)
+    {
+        $this->pendingInvitationInvitees[] = $pendingInvitationInvitees;
+        $pendingInvitationInvitees-setUser($this);
+        return $this;
+    }
+
+    /**
+     * Remove pendingInvitationInvitees
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInvitees
+     */
+    public function removePendingInvitationInvitee(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInvitees)
+    {
+        $this->pendingInvitationInvitees->removeElement($pendingInvitationInvitees);
+    }
+
+    /**
+     * Get pendingInvitationInvitees
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPendingInvitationInvitees()
+    {
+        return $this->pendingInvitationInvitees;
+    }
+
+    /**
+     * Add pendingInvitationInviters
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInviters
+     * @return User
+     */
+    public function addPendingInvitationInviter(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInviters)
+    {
+        $this->pendingInvitationInviters[] = $pendingInvitationInviters;
+         $pendingInvitationInviters->setUser($this);
+        return $this;
+    }
+
+    /**
+     * Remove pendingInvitationInviters
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInviters
+     */
+    public function removePendingInvitationInviter(\Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInviters)
+    {
+        $this->pendingInvitationInviters->removeElement($pendingInvitationInviters);
+    }
+
+    /**
+     * Get pendingInvitationInviters
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPendingInvitationInviters()
+    {
+        return $this->pendingInvitationInviters;
+    }
+
+    /**
+     * Add unfreezeRequests
+     *
+     * @param \Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests
+     * @return User
+     */
+    public function addUnfreezeRequest(\Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests)
+    {
+        $this->unfreezeRequests[] = $unfreezeRequests;
+        $unfreezeRequests->setUser($this);
+        return $this;
+    }
+
+    /**
+     * Remove unfreezeRequests
+     *
+     * @param \Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests
+     */
+    public function removeUnfreezeRequest(\Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests)
+    {
+        $this->unfreezeRequests->removeElement($unfreezeRequests);
+    }
+
+    /**
+     * Get unfreezeRequests
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUnfreezeRequests()
+    {
+        return $this->unfreezeRequests;
+    }
+
+    /**
+     * Set acceptMailNotifications
+     *
+     * @param boolean $acceptMailNotifications
+     * @return User
+     */
+    public function setAcceptMailNotifications($acceptMailNotifications)
+    {
+        $this->acceptMailNotifications = $acceptMailNotifications;
+
+        return $this;
+    }
+
+    /**
+     * Get acceptMailNotifications
+     *
+     * @return boolean 
+     */
+    public function getAcceptMailNotifications()
+    {
+        return $this->acceptMailNotifications;
     }
 }
