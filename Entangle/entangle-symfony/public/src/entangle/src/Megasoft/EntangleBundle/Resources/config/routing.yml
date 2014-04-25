@@ -291,6 +291,12 @@ get_tangles:
 get_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
+    
+get_members:
+    pattern: /tangle/{tangleId}/user
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:allUsers }
+    requirements:
+        tangleId:  \d+
 
     
 

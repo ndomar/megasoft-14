@@ -3,27 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/Login"
+    <LinearLayout
+        android:id="@+id/member_list_placeholder"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="18dp"
-        android:text="Welcome To Entangle"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="25dp" />
-
-    <Button
-        android:id="@+id/loginRedirectButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/Login"
-        android:layout_marginBottom="45dp"
-        android:onClick="login"
-        android:text="Login"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="25dp" />
+        android:layout_height="wrap_content" 
+        android:orientation="vertical" />
 
 </RelativeLayout>
