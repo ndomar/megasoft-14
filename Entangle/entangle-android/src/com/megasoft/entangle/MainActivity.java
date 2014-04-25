@@ -1,17 +1,16 @@
 package com.megasoft.entangle;
 
-import org.apache.http.client.methods.HttpPost;
-
-import com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationActivity;
-import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
-import com.megasoft.requests.PostRequest;
-
-import android.app.Activity;
-import android.os.Bundle;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 
-public class MainActivity extends Activity {
+import com.megasoft.config.Config;
+
+
+
+public class MainActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,13 +20,24 @@ public class MainActivity extends Activity {
 		startActivity(new Intent(this, HomeActivity.class));
 		//startActivity((new Intent(this,InviteUserActivity.class)).putExtra("com.megasoft.entangle.tangleId", 2));
 
+
+	}
+ 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+
+		//getMenuInflater().inflate(R.menu.main, menu);
+		return true;
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 }

@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity
  */
-class Session
-{
+class Session {
+
     /**
      * @var integer
      *
@@ -48,14 +48,14 @@ class Session
      * @ORM\Column(name="expired", type="boolean")
      */
     private $expired;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="deviceType", type="string")
      */
     private $deviceType;
-    
+
     /**
      * @var string
      *
@@ -63,7 +63,6 @@ class Session
      */
     private $regId;
 
-    
     /**
      *
      * @var User
@@ -72,14 +71,13 @@ class Session
      * @ORM\JoinColumn(name="userId", referencedColumnName="id")
      */
     private $user;
-    
+
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -89,8 +87,7 @@ class Session
      * @param integer $userId
      * @return Session
      */
-    public function setUserId($usedId)
-    {
+    public function setUserId($usedId) {
         $this->userId = $usedId;
 
         return $this;
@@ -101,8 +98,7 @@ class Session
      *
      * @return integer 
      */
-    public function getUserId()
-    {
+    public function getUserId() {
         return $this->userId;
     }
 
@@ -112,8 +108,7 @@ class Session
      * @param string $sessionId
      * @return Sessio
      */
-    public function setSessionId($sessionId)
-    {
+    public function setSessionId($sessionId) {
         $this->sessionId = $sessionId;
 
         return $this;
@@ -124,8 +119,7 @@ class Session
      *
      * @return string 
      */
-    public function getSessionId()
-    {
+    public function getSessionId() {
         return $this->sessionId;
     }
 
@@ -135,8 +129,7 @@ class Session
      * @param \DateTime $created
      * @return Session
      */
-    public function setCreated($created)
-    {
+    public function setCreated($created) {
         $this->created = $created;
 
         return $this;
@@ -147,8 +140,7 @@ class Session
      *
      * @return \DateTime 
      */
-    public function getCreated()
-    {
+    public function getCreated() {
         return $this->created;
     }
 
@@ -158,8 +150,7 @@ class Session
      * @param boolean $expired
      * @return Session
      */
-    public function setExpired($expired)
-    {
+    public function setExpired($expired) {
         $this->expired = $expired;
 
         return $this;
@@ -170,8 +161,7 @@ class Session
      *
      * @return boolean 
      */
-    public function getExpired()
-    {
+    public function getExpired() {
         return $this->expired;
     }
 
@@ -181,8 +171,7 @@ class Session
      * @param \Megasoft\EntangleBundle\Entity\User $user
      * @return Session
      */
-    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null)
-    {
+    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null) {
         $this->user = $user;
 
         return $this;
@@ -193,8 +182,7 @@ class Session
      *
      * @return \Megasoft\EntangleBundle\Entity\User 
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->user;
     }
 
@@ -204,8 +192,7 @@ class Session
      * @param string $deviceType
      * @return Session
      */
-    public function setDeviceType($deviceType)
-    {
+    public function setDeviceType($deviceType) {
         $this->deviceType = $deviceType;
 
         return $this;
@@ -216,8 +203,7 @@ class Session
      *
      * @return string 
      */
-    public function getDeviceType()
-    {
+    public function getDeviceType() {
         return $this->deviceType;
     }
 
@@ -227,8 +213,7 @@ class Session
      * @param string $regId
      * @return Session
      */
-    public function setRegId($regId)
-    {
+    public function setRegId($regId) {
         $this->regId = $regId;
 
         return $this;
@@ -239,8 +224,8 @@ class Session
      *
      * @return string 
      */
-    public function getRegId()
-    {
+    public function getRegId() {
         return $this->regId;
     }
+
 }
