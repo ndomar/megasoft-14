@@ -2,8 +2,8 @@ package com.megasoft.entangle;
 
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 
 public class MainActivity extends Activity {
@@ -18,7 +18,6 @@ public class MainActivity extends Activity {
 		intent.putExtra("offerId", 5);
 		intent.putExtra("X-SESSION-ID", "5");
 		startActivity(intent);
-
 	}
 
 	@Override

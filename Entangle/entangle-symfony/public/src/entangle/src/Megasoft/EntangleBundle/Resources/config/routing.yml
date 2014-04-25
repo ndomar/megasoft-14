@@ -107,4 +107,17 @@ get_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
 
+getMails:
+    pattern: /tangleOwnerAndClaimerMail/{requestId}/claim
+    defaults: { _controller: MegasoftEntangleBundle:Claim:getMails }
+    methods: [GET]
     
+createClaim:
+    pattern: /claim/{requestId}/sendClaim
+    defaults: { _controller: MegasoftEntangleBundle:Claim:createClaim }
+    methods: [POST]
+
+re_open_request:
+    pattern: /request/{requestId}/reopen
+    defaults: { _controller: MegasoftEntangleBundle:Request:reOpenRequest }
+    methods: [POST]
