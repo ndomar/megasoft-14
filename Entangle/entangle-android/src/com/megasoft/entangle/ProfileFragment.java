@@ -10,16 +10,14 @@ import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v4.app.FragmentTransaction;
 
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
@@ -70,10 +68,6 @@ public class ProfileFragment extends Fragment {
 	 */
 	private ImageView profilePictureView;
 	
-	/**
-	 * The LinearLayout that holds the user's transactions
-	 */
-    private LinearLayout transactionsLayout;
     
     /**
      * The preferences instance
@@ -105,11 +99,15 @@ public class ProfileFragment extends Fragment {
 
 	private HomeActivity activity;
 	
+	/**
+	 * The FragmentTransaction that handles adding the fragments to the activity
+	 */
+	private android.support.v4.app.FragmentTransaction fragmentTransaction;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-		this.view = inflater.inflate(R.layout.activity_profile, container,false);
+		this.view = inflater.inflate(R.layout.fragment_profile, container,false);
 		
 		this.settings = activity.getSharedPreferences(Config.SETTING, 0);
 		
@@ -139,7 +137,6 @@ public class ProfileFragment extends Fragment {
 		description = (TextView) view.findViewById(R.id.descriptionView);
 		verifiedView = (ImageView) view.findViewById(R.id.verifiedView);
 		profilePictureView = (ImageView)view.findViewById(R.id.profileImage);
-		transactionsLayout = (LinearLayout) view.findViewById(R.id.transactions_layout);
 		
 		viewInformation();
 	}
@@ -207,37 +204,42 @@ public class ProfileFragment extends Fragment {
 	 * @author Almgohar
 	 */
 	public void viewTransactions(JSONArray transactions) {
-		TextView title = new TextView(activity);
-		title.setText("Transactions: ");
-		title.setTextSize(20);
-		transactionsLayout.addView(title);
 		for(int i = 0; i < transactions.length(); i++) {
-			JSONObject object;
 			try {
-				object = transactions.getJSONObject(i);
-				TextView transaction = new TextView(activity);
-				final int offerId = object.getInt("offerId");
-				String requester = object.getString("requesterName");
-				String request = object.getString("requestDescription");
-				String amount = object.getString("amount");
-				transaction.setText("Requester: " + requester 
-						+ '\n' + "Request: " + request
-						+ '\n' + "Amount: " + amount);
+				JSONObject transaction = transactions.getJSONObject(i);
+				if(transaction != null) {
+					addTransaction(transaction);
+				}
 				
-				transaction.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-							goToOffer(offerId);
-						}
-				});
-				
-				transactionsLayout.addView(transaction);
-			
 				} catch (JSONException e) {
 					e.printStackTrace();
 					}
 			}
 		}
+	
+	/**
+	 * Adds the transaction to the layout
+	 * @param JSONObject transaction
+	 * @author Almgohar
+	 */
+	private void addTransaction(JSONObject transaction) {
+		try {
+			String request = transaction.getString("requestDescription");
+			String requester = transaction.getString("requesterName");
+			int requesterId = transaction.getInt("requesterId");
+			int requestId = transaction.getInt("requestId");
+			int amount = transaction.getInt("amount");
+					
+			fragmentTransaction = getFragmentManager().beginTransaction();
+			TransactionsFragment transactionFragment = TransactionsFragment
+					.createInstance(requester, request, amount, requestId, requesterId, tangleId);
+			fragmentTransaction.add(R.id.transactions_layout, transactionFragment);
+			fragmentTransaction.commit();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+			
+	}
 	
 	/**
 	 * Views the user's profile picture
@@ -282,4 +284,7 @@ public class ProfileFragment extends Fragment {
 	    this.activity = (HomeActivity) activity;
 	    super.onAttach(this.activity);
 	}
+	
+
+
 }
