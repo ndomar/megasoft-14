@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Entangle</string>
     <string name="action_settings">Settings</string>
+    <string name="claim_button">Claim </string>
+    <string name="mssg">Body:</string>
+    <string name="claimName">Claim Form</string>
+    <string name="send">Send Claim </string>
     <string name="Requests">Create Request</string>
     <string name="name">Request\'s name</string>
     <string name="description">Request\'s description</string>
@@ -44,6 +47,9 @@
     <string name="wrong_emails">Not Valid Emails</string>
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
+    <string name="title_activity_change_offer_price">ChangeOfferPriceActivity</string>
+    <string name="newOfferPrice">Enter the new price</string>
+    <string name="changePrice">CHANGE</string>
     <string name="preview_request">Preview Request</string>
     <string name="title_activity_create_offer">CreateOfferActivity</string>
     <string name="create_offer">Create Offer</string>
@@ -77,4 +83,7 @@
 
     <string name="title_activity_stream_request_fragment">StreamRequestFragment</string>
 
+    <string name="title_activity_tangle_stream">TangleStreamActivity</string>
+    <string name="create_tangle">Create Tangle</string>
+    <string name="title_activity_create_tangle">Create Tangle</string>
 </resources>

@@ -11,6 +11,7 @@ use Megasoft\EntangleBundle\Entity\InvitationCode;
 use Megasoft\EntangleBundle\Entity\InvitationMessage;
 use Megasoft\EntangleBundle\Entity\PendingInvitation;
 use Megasoft\EntangleBundle\Entity\Session;
+use Megasoft\EntangleBundle\Entity\UserTangle;
 
 class TangleController extends Controller
 {
@@ -572,6 +573,81 @@ class TangleController extends Controller
         $this->getDoctrine()->getManager()->remove($pendingInvitation);
         $this->getDoctrine()->getManager()->flush();
         return new Response("Deleted",200);
+    }
+
+    /**
+     * An endpoint for accepting tangle invitations sent to user
+     * @param int $userId
+     * @param int $tangleId
+     * @return Response
+     * @author MahmoudGamal
+     */
+    public function addUserAction($userId, $tangleId) {
+        $tangle = $this->getDoctrine()
+                ->getRepository('MegasoftEntangleBundle:Tangle')
+                ->find($tangleId);
+        if (!$tangle) {
+            return new Response("Tangle not found", 404);
+        }
+        $user = $this->getDoctrine()
+                ->getRepository('MegasoftEntangleBundle:User')
+                ->find($userId);
+        if (!$user) {
+            return new Response("User not found", 404);
+        }
+        $criteria = array('user' => $user , 'tangle' =>$tangle );
+        $search = current($this->getDoctrine()
+                        ->getRepository('MegasoftEntangleBundle:UserTangle')
+                        ->findBy($criteria));
+        if ($search) {
+            return new Response("User already exists in tangle", 400);
+        }
+        $em = $this->getDoctrine()->getManager();
+        $tangleUser = new UserTangle();
+        $tangleUser->setTangleOwner(FALSE);
+        $tangleUser->setUser($user);
+        $tangleUser->setTangle($tangle);
+        $tangleUser->setCredit(0);
+        $tangle->addUserTangle($tangleUser);
+        $this->getDoctrine()->getManager()->flush();
+        return new Response("User added", 201);
+    }
+
+    /**
+     * The endpoint resposible for fetching the tangles of a certain user from the database
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @author MohamedBassem
+     */
+    public function getTanglesAction(Request $request){
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        $doctrine = $this->getDoctrine();
+        
+        if ($sessionId == null) {
+            return new Response("Bad Request", 400);
+        }
+
+        $sesionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+
+        $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
+
+        if ($session == null || $session->getExpired()) {
+            return new Response("Unauthorized", 401);
+        }
+        
+        
+        $userId = $session->getUserId();
+        $UserTanglerepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $tangles = $UserTanglerepo->findBy(array('userId' => $userId,'leavingDate'=>null));
+        $ret = array();
+        foreach($tangles as $tangle){
+            $ret[] = array("id"=>$tangle->getTangleId(),"name"=>$tangle->getTangle()->getName());
+        }
+        
+        $jsonResponse = new JsonResponse();
+        $jsonResponse->setData(array("tangles"=>$ret));
+        return $jsonResponse;
+
     }
 
 }
