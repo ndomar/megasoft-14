@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -150,6 +151,7 @@ public class ProfileFragment extends Fragment {
 	public void viewInformation() {
 		String link = Config.API_BASE_URL_SERVER + "/tangle/" 
 	+ tangleId + "/user/" + userId + "/profile";
+		
 		GetRequest request = new GetRequest(link) {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 200	) {
@@ -190,6 +192,8 @@ public class ProfileFragment extends Fragment {
 						e.printStackTrace();
 						}
 				} else {
+					Log.e("test", this.getErrorMessage());
+				
 					Toast toast = Toast.makeText(activity.getApplicationContext(),"Some error happened.",Toast.LENGTH_SHORT);
 					toast.show();
 					}

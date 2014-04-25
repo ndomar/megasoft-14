@@ -85,7 +85,7 @@ class UserController extends Controller {
         $this->getDoctrine()->getManager()->persist($session);
 
         $this->getDoctrine()->getManager()->flush();
-        $response->setData(array('sessionId' => $sessionId));
+        $response->setData(array('sessionId' => $sessionId,'userId'=>$user->getId()));
         $response->setStatusCode(201);
         return $response;
     }
