@@ -129,7 +129,6 @@ public class TangleFragment extends Fragment {
 	 * the previous activity
 	 */
 	private void setAttributes() {
-
 //		if (activity.getIntent() != null) {
 //			if (!activity.getIntent().hasExtra("sessionId")) {
 //				intent = new Intent(activity, LoginActivity.class);

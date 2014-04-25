@@ -28,6 +28,7 @@ import com.megasoft.requests.ImageRequest;
  * 
  * @author Almgohar
  */
+
 public class ProfileActivity extends FragmentActivity {
 
 	/**
@@ -111,7 +112,7 @@ public class ProfileActivity extends FragmentActivity {
 		profile.setArguments(bundle);
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.add(R.id.profile_layout, profile);
-		transaction.commit();	
+		transaction.commit();
 	}
 
 
@@ -289,4 +290,5 @@ public class ProfileActivity extends FragmentActivity {
 		offer.putExtra("offer id", offerId);
 		startActivity(offer);
 	}
+
 }

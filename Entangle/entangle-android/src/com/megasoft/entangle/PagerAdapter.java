@@ -1,5 +1,6 @@
 package com.megasoft.entangle;
 
+import com.megasoft.config.Config;
 import com.megasoft.entangle.megafragments.TangleFragment;
 
 import android.content.Context;
@@ -23,7 +24,15 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 		this.tangleId = tangleId;
 		this.userId = userId;
 	}
-
+	
+	
+	/**
+	 * Initialize the navigation drawer (sidebar menu)
+	 * 
+	 * @param 
+	 * @return 
+	 * @author Mohamed Farghal
+	 */
 	@Override
 	public Fragment getItem(int index) {
 
@@ -36,9 +45,12 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 			fragment = new TangleFragment();
 			break;
 		case 1:
+			fragment = new MemberListFragment();
+			args.putInt(Config.TANGLE_ID, tangleId);
+			break;
+		case 2:
 			fragment = new ProfileFragment();
 			args.putInt("userId", userId);
-			Log.e("test2", tangleId+"");
 			break;
 
 		default:
@@ -50,17 +62,19 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         
 	@Override
 	public int getCount() {
-		return 2;
+		return 3;
 	}
 	
 	@Override
 	public CharSequence getPageTitle(int position) {
 		switch (position) {
 		case 0:
-			return "Tangle Stream";
-		
+			return "Stream";
+			
 		case 1:
-			return "Profile";
+			return "Members";
+		case 2:
+			return "You";
 
 		default:
 			return "Tab " + position;

@@ -53,6 +53,13 @@ public class HomeActivity extends FragmentActivity {
 	
 	}
 	
+	/**
+	 * Switch fragment. switch views in the drawer layout navigation
+	 * 
+	 * @param tangleId, position of menu item
+	 * @return 
+	 * @author Mohamed Farghal
+	 */
 	public void switchFragment(int tangleId, int position) {
 		this.tangleId = tangleId;
 		FragmentManager fragmentManager = getSupportFragmentManager(); 

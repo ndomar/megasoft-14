@@ -197,11 +197,16 @@ class UserController extends Controller {
                 $requesterName = $offer->getRequest()->getUser()->getName();
                 $requestDescription = $offer->getRequest()->getDescription();
                 $amount = $offer->getTransaction()->getFinalPrice();
-                $transactions[] = array('offerId' => $offer->getId(),
-                    'requesterName' => $requesterName,
-                    'requestDescription' => $requestDescription,
-                    'amount' => $amount);
-            }
+                $requestId = $offer->getRequest().getId();
+                $requesterId = $offer->getRequest().getUserId();
+                $transactions[] = array('offerId'=>$offer->getId(),
+                    'requesterName'=> $requesterName,
+                    'requestDescription'=>$requestDescription,
+                    'amount'=>$amount, 'requestId'=>$requestId, 'requesterId'=>$requesterId);
+            }           
+
+               
+            
         }
         return $transactions;
     }
@@ -233,6 +238,48 @@ class UserController extends Controller {
             'credit' => $credit, 'photo' => $photo, 'birthdate' => $birthdate,
             'verified' => $verfied);
         return $info;
+    }
+
+    /**
+     * checks if a session id exists and removes it from the user sessions
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse $response
+     * 
+     * @author maisaraFarahat
+     */
+    public function logoutAction(\Symfony\Component\HttpFoundation\Request $request) {
+        $response = new JsonResponse();
+        $badReq = "bad request";
+        if (!$request) {
+            return new JsonResponse($badReq, 400);
+        }
+        $sessionId = $request->headers->get("X-SESSION-ID");
+
+        if (!$sessionId) {
+            return new JsonResponse($badReq, 400);
+        }
+        $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        if (!$session) {
+            return new JsonResponse("the sessionId does not exist", 404);
+        }
+        if ($session->getExpired()) {
+            return new JsonResponse("the sessionId is already expired", 400);
+        }
+        $user = $session->getUser();
+
+        $user->removeSession($session);
+
+        $session->setExpired(1);
+
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->persist($session);
+
+        $this->getDoctrine()->getManager()->flush();
+
+
+
+        return new Response(200);
     }
 
 }

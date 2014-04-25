@@ -103,6 +103,7 @@ public class CreateOfferActivity extends Activity {
 	 */
 	final String date = currentDay + "/" + (currentMonth + 1) + "/"
 			+ currentYear;
+
 	/**
 	 * this activity
 	 */
@@ -309,7 +310,6 @@ public class CreateOfferActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		// getMenuInflater().inflate(R.menu.create_offer, menu);
-
 		return true;
 	}
 
