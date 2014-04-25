@@ -34,5 +34,37 @@ public class MemberListFragment extends Fragment {
 	private int numberOfMembers;
 	private ViewGroup container;
 	
+	public ViewGroup getContainer() {
+		return container;
+	}
+
+	public void setContainer(ViewGroup container) {
+		this.container = container;
+	}
+
+	public int getNumberOfMembers() {
+		return numberOfMembers;
+	}
+
+	public void setNumberOfMembers(int numberOfMembers) {
+		this.numberOfMembers = numberOfMembers;
+	}
+
+	public LinearLayout getMemberListView() {
+		return memberListView;
+	}
+
+	public void setMemberListView(LinearLayout memberListView) {
+		this.memberListView = memberListView;
+	}
+
+	public String[] getMemberNames() {
+		return memberNames;
+	}
+
+	public void setMemberNames(String[] memberNames) {
+		this.memberNames = memberNames;
+	}
+
 	
 }
