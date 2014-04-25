@@ -113,11 +113,15 @@ public class OfferActivity extends Activity {
 	/**
 	 * String for get offer details endpoint
 	 */
-	final String Offer= "/offers/";
+	final String Offer = "/offers/";
 	/**
 	 * offer status
 	 */
-	final String done= "2";
+	final String Done = "1";
+	/**
+	 * offer status
+	 */
+	final String Pending = "0";
 	/**
 	 * The id of the logged in user
 	 */
@@ -393,8 +397,8 @@ public class OfferActivity extends Activity {
 					JSONObject jresponse;
 					try {
 						jresponse = new JSONObject(response);
-						if (jresponse.getString("status").equals("0")
-								|| jresponse.getString("status").equals("2")) {
+						if (jresponse.getString("status").equals(Pending)
+								|| jresponse.getString("status").equals(Done)) {
 							Toast error = Toast.makeText(
 									getApplicationContext(), R.string.error,
 									Toast.LENGTH_LONG);
@@ -425,7 +429,7 @@ public class OfferActivity extends Activity {
 
 		JSONObject json = new JSONObject();
 		try {
-			json.put("status", done);
+			json.put("status", Done);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
