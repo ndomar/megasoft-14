@@ -12,19 +12,11 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:height="40dip"
         android:text="@string/create_offer"
         android:textSize="@dimen/fontSizeMedium" />
-
-    <TextView
-        android:id="@+id/showMyDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/deadline"
-        android:layout_alignRight="@+id/Post"
-        android:layout_toRightOf="@+id/deadline" />
 
     <EditText
         android:id="@+id/description"
@@ -54,10 +46,12 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView3"
         android:layout_alignBottom="@+id/textView3"
+        android:layout_alignLeft="@+id/checkBox"
         android:layout_alignRight="@+id/textView2"
         android:ems="10"
         android:hint="@string/priceHint"
         android:inputType="number" >
+
     </EditText>
 
     <Button
@@ -68,15 +62,6 @@
         android:layout_centerVertical="true"
         android:text="@string/ChooseDate" />
 
-    <Button
-        android:id="@+id/Post"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/deadline"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="77dp"
-        android:text="@string/post_offer" />
-
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
@@ -85,5 +70,23 @@
         android:layout_toRightOf="@+id/deadline"
         android:onClick="itemClicked"
         android:text="@string/check" />
+
+    <Button
+        android:id="@+id/Post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/deadline"
+        android:layout_alignRight="@+id/deadline"
+        android:layout_below="@+id/deadline"
+        android:layout_marginTop="48dp"
+        android:text="@string/post_offer" />
+
+    <TextView
+        android:id="@+id/showMyDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/Post"
+        android:layout_alignRight="@+id/description"
+        android:layout_marginRight="19dp" />
 
 </RelativeLayout>
