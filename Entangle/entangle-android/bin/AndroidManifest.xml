@@ -14,23 +14,19 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/entangle_logo"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-
-            android:name="com.megasoft.entangle.HomeActivity"
-            android:label="@string/title_activity_home" android:logo="@drawable/entangle_logo">
-       		<intent-filter>
-
-
+            android:name="com.megasoft.entangle.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-
             android:name="com.megasoft.entangle.CreateTangleActivity"
             android:label="@string/title_activity_create_tangle" >
         </activity>
@@ -44,15 +40,16 @@
     </activity>
         <activity
             android:name="com.megasoft.entangle.LoginActivity"
-
             android:label="@string/app_name" >
         </activity>
-        
+        <activity
+            android:name="com.megasoft.entangle.HomeActivity"
+            android:label="@string/app_name" >
+        </activity>
         <activity
             android:name="com.megasoft.entangle.RegisterActivity"
             android:label="@string/app_name" >
         </activity>
-
         <activity
             android:name="com.megasoft.entangle.TangleActivity"
             android:label="@string/title_activity_view_stream" >
@@ -62,7 +59,7 @@
             android:label="@string/title_activity_members" >
         </activity>
         <activity
-            android:name="com.megasoft.entangle.ProfileFragment"
+            android:name="com.megasoft.entangle.ProfileActivity"
             android:label="@string/title_activity_profile" >
         </activity>
         <activity
@@ -93,17 +90,10 @@
             android:name="com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationActivity"
             android:label="@string/title_activity_manage_pending_invitation" >
         </activity>
-        
-        <activity
-            android:name="com.megasoft.entangle.ProfileActivity"
-            android:label="@string/profileActivity" >
-        </activity>
-
-       
         <activity
             android:name="com.megasoft.entangle.EditProfileActivity"
             android:label="@string/title_activity_edit_profile"
-            android:parentActivityName="com.megasoft.entangle.ProfileFragment" >
+            android:parentActivityName="com.megasoft.entangle.ProfileActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.megasoft.entangle.ProfileActivity" />
@@ -116,13 +106,13 @@
             android:name="com.megasoft.entangle.CreateRequestActivity"
             android:label="@string/title_activity_request_information" >
         </activity>
-        
         <activity
+            android:name="com.megasoft.entangle.viewtanglelsit.TangleStreamActivity"
+            android:label="@string/title_activity_tangle_stream" >
+        </activity>
+		<activity
             android:name="com.megasoft.entangle.ChangeOfferPriceActivity"
             android:label="@string/title_activity_change_offer_price" >
         </activity>
-       
-
-        
     </application>
 </manifest>

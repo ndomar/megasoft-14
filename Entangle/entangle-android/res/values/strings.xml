@@ -15,6 +15,12 @@
     <string name="tagHint">food, tech, living</string>
     <string name="priceHint">5</string>
     <string name="hello_world">Hello world!</string>
+    
+    <string name="tangleNameHint">Specify a Tangle name</string>
+    <string name="iconButton">Choose an Icon</string>
+    <string name="tangleIcon">Tangle Icon</string>
+    <string name="createTangle">CREATE</string>
+    <string name="checkTangleName">Check</string>
     <string name="date">Date</string>
     <string name="ChooseDate">Pick deadline</string>
     <string name="deadLine">Expected deadline</string>
@@ -105,7 +111,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="title_activity_tangle_stream">TangleStreamActivity</string>
-    <string name="create_tangle">+ Create Tangle</string>
+
     <string name="title_activity_create_tangle">Create Tangle</string>
+
+
+    <string name="create_tangle">Create Tangle</string>
 
 </resources>

@@ -2,16 +2,16 @@
 
 namespace Megasoft\EntangleBundle\Controller;
 
+use Megasoft\EntangleBundle\Entity\Tangle;
 use DateTime;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Megasoft\EntangleBundle\Entity\Offer;
 use Megasoft\EntangleBundle\Entity\InvitationCode;
 use Megasoft\EntangleBundle\Entity\InvitationMessage;
 use Megasoft\EntangleBundle\Entity\PendingInvitation;
-use Megasoft\EntangleBundle\Entity\Session;
 use Megasoft\EntangleBundle\Entity\UserTangle;
 
 
@@ -393,6 +393,7 @@ class TangleController extends Controller
                     $user = $userEmailRepo->findOneByEmail($email)->getUser();
                     $pendingInvitation->setInvitee($user);
                 }
+
                 $pendingInvitation->setInviter($session->getUser());
                 $pendingInvitation->setMessage($invitationMessage);
                 $pendingInvitation->setTangle($userTangle->getTangle());
@@ -430,6 +431,78 @@ class TangleController extends Controller
         return $ret;
     }
 
+
+    /**
+     * Parse the request and creates a new tangle
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author Mansour
+     */
+    public function createTangleAction(Request $request) {
+
+        $json = $request->getContent();
+        $json_array = json_decode($json, true);
+        $tangleName = $json_array['tangleName'];
+        $tangleIcon = $json_array['tangleIcon'];
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+
+        if ($sessionId == null || $tangleIcon == null || $tangleName == null) {
+            return new Response("Bad Request", 400);
+        }
+
+        if ($session == null) {
+            return new Response("Unauthorized", 401);
+        }
+
+        $imageData = base64_decode($tangleIcon);
+        $f = finfo_open();
+        $mime_type = finfo_buffer($f, $imageData, FILEINFO_MIME_TYPE);
+        if($mime_type == false || $mime_type != 'image/png'){
+            return new Response("Bad image", 400);
+        }
+        $icon = imagecreatefromstring($imageData);
+        $iconName = $this->generateRandomString(50) . '.png';
+        $kernel = $this->get('kernel');
+        $path = $kernel->getRootDir() . '/../web/bundles/megasoftentangle/images/tangle/icons/' . $iconName;
+        if($icon != null){
+         imagepng($icon, $path, 9);
+         imagedestroy($icon);
+        }
+
+        $tangle = new Tangle();
+        $tangle->setName($tangleName);
+        $tangle->setIcon($iconName);
+        $tangle->setDeleted(false);
+
+        $this->getDoctrine()->getManager()->persist($tangle);
+        $this->getDoctrine()->getManager()->flush();
+
+        $response = new Response();
+        $response->setStatusCode(201);
+        return $response;
+    }
+
+    /**
+     * parse the request and checks if the tangle is available or not
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author Mansour
+     */
+    public function checkAvailabilityAction(Request $request) {
+
+        $tangleName = $request->query->get('tangleName');
+        $doctrine = $this->getDoctrine();
+        $repo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
+        $tangle = $repo->findOneBy(array('name' => $tangleName));
+
+        if ($tangle == null) {
+            return new Response('Not Found', 404);
+        } else {
+            return new Response('Found', 200);
+        }
+    }
     
     /**
      * Validates whether the user with the session id $sessionId is the owner of the tangle with
