@@ -16,6 +16,10 @@ import android.widget.Toast;
 import com.megasoft.config.Config;
 import com.megasoft.requests.DeleteRequest;
 
+/*
+ * Fragment for a button to delete a request or an offer
+ * @author Omar ElAzazy
+ */
 public class DeleteButtonFragment extends Fragment {
 	
 	private String sessionId;
@@ -109,6 +113,10 @@ public class DeleteButtonFragment extends Fragment {
 		return view;
 	}
 	
+	/*
+	 * Function to view message on toaster
+	 * @author Omar ElAzazy
+	 */
 	public void toasterShow(String message){
 		Toast.makeText(getActivity().getBaseContext(),
 				message,
