@@ -75,6 +75,13 @@ dummy:
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
 
 
+
+change_offer_price:
+    pattern: /offers/{offerid}/changePrice
+    defaults: { _controller: MegasoftEntangleBundle:Offer:changeOfferPrice }
+    methods: [POST]
+    
+
 verification:
     pattern: /verify/{verificationCode}
     defaults: { _controller:MegasoftEntangleBundle:Verification:verifyUser}
@@ -96,11 +103,6 @@ get_tangles:
     methods: [GET]
 
 
-re_open_request:
-    pattern: /request/{requestId}/reopen
-    defaults: { _controller: MegasoftEntangleBundle:Request:reOpenRequest }
-    methods: [POST]
-    
 get_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
@@ -111,4 +113,17 @@ get_members:
     requirements:
         tangleId:  \d+
 
+getMails:
+    pattern: /tangleOwnerAndClaimerMail/{requestId}/claim
+    defaults: { _controller: MegasoftEntangleBundle:Claim:getMails }
+    methods: [GET]
     
+createClaim:
+    pattern: /claim/{requestId}/sendClaim
+    defaults: { _controller: MegasoftEntangleBundle:Claim:createClaim }
+    methods: [POST]
+
+re_open_request:
+    pattern: /request/{requestId}/reopen
+    defaults: { _controller: MegasoftEntangleBundle:Request:reOpenRequest }
+    methods: [POST]

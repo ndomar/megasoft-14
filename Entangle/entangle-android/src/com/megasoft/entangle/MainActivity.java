@@ -20,7 +20,6 @@ public class MainActivity extends FragmentActivity {
     	memberListFragment.setArguments(bundle);
     	
     	getSupportFragmentManager().beginTransaction().add(R.id.member_list_placeholder, memberListFragment).commit();
-  
 	}
  
 	@Override
