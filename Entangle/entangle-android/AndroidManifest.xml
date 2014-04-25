@@ -111,10 +111,6 @@
             android:label="@string/title_activity_offer" >
         </activity>
         <activity
-            android:name="com.megasoft.entangle.CreateRequestActivity"
-            android:label="@string/title_activity_request_information" >
-        </activity>
-        <activity
             android:name="com.megasoft.entangle.viewtanglelsit.TangleStreamActivity"
             android:label="@string/title_activity_tangle_stream" >
         </activity>
