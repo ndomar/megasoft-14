@@ -9,13 +9,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Megasoft\EntangleBundle\Entity\Tag;
 
 class RequestController extends Controller {
-
-    
-    /*Reopens a closed request
+    /* Reopens a closed request
      * @param Request $request
      * @param int $requestId
      * @author Mansour
      */
+
     public function reOpenRequestAction(Request $request, $requestId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
@@ -34,11 +33,12 @@ class RequestController extends Controller {
         $tangleRequest = $requestRepo->findOneBy(array('id' => $requestId));
         if ($tangleRequest == null || $tangleRequest->getDeleted()) {
             return new Response("Not Found", 404);
-        } else {
-            if ($tangleRequest->getStatus() == $tangleRequest->OPEN) {
-                return new Response("Request is already open", 400);
-            }
         }
+
+        if ($tangleRequest->getStatus() == $tangleRequest->OPEN) {
+            return new Response("Request is already open", 400);
+        }
+        
         if (($session->getUserId()) != ($tangleRequest->getUserId())) {
             return new Response("Unauthorized", 401);
         }
