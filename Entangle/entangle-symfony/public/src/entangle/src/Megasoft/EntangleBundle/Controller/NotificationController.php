@@ -29,7 +29,7 @@ class NotificationController extends Controller
     {
         $nc = $this->get('notification_center.service');
         $response = new JsonResponse();
-        $name = $nc->offerDeletedNotification(0);
+        $name = $nc->offerChangeNotification(0, 123);
         $response->setData($name);
         return $response;
     }
