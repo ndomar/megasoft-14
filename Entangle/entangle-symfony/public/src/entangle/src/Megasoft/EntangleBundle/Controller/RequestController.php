@@ -42,7 +42,7 @@ class RequestController extends Controller {
         if (($session->getUserId()) != ($tangleRequest->getUserId())) {
             return new Response("Unauthorized", 401);
         }
-        if ($tangleRequest->getStatus() == $tangleRequest->CLOSED) {
+        if ($tangleRequest->getStatus() == $tangleRequest->CLOSE) {
             $tangleRequest->setStatus($tangleRequest->OPEN);
             $this->getDoctrine()->getManager()->persist($tangleRequest);
             $this->getDoctrine()->getManager()->flush();
