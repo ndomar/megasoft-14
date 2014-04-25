@@ -77,5 +77,21 @@ public class MemberEntryFragment extends Fragment {
 		this.memberBalanceView = memberBalanceView;
 	}
 
+	public int getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(int memberId) {
+		this.memberId = memberId;
+	}
+
+	public int getTangleId() {
+		return tangleId;
+	}
+
+	public void setTangleId(int tangleId) {
+		this.tangleId = tangleId;
+	}
+
 	
 }
