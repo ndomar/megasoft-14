@@ -283,7 +283,7 @@ public class OfferActivity extends Activity {
 	 * @author Almgohar
 	 */
 	private void goToProfile(int userId) {
-		Intent profile = new Intent(this, ProfileActivity.class);
+		Intent profile = new Intent(this, ProfileFragment.class);
 		profile.putExtra("user id", userId);
 		profile.putExtra("tangle id", this.tangleId);
 		startActivity(profile);

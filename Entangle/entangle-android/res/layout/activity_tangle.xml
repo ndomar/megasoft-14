@@ -20,6 +20,13 @@
             android:text="@string/tangleName"
             android:textSize="20sp"
             android:textStyle="italic" />
+
+        <ImageView
+            android:id="@+id/filterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_search" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -30,11 +37,11 @@
         android:background="#ffffff"
         android:orientation="vertical" >
 
-        <Button
+        <!-- <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="filterStream"
-            android:text="Filter Stream" />
+            android:text="Filter Stream" /> -->
     </LinearLayout>
 
     <ScrollView
@@ -43,14 +50,17 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/footerLayout"
         android:layout_below="@+id/searchLayout"
-        android:background="#28C9B9" >
+        android:background="@color/darkWhite" >
+		
 
         <LinearLayout
             android:id="@+id/streamLayout"
-            android:layout_width="match_parent"
-            android:layout_height="92dp"
-            android:layout_gravity="center_vertical"
-            android:background="#28C9B9"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/boxMargin"
+            android:layout_marginRight="@dimen/boxMargin"
+            android:background="@color/darkWhite"
             android:orientation="vertical"
             android:paddingTop="15dp" >
         </LinearLayout>

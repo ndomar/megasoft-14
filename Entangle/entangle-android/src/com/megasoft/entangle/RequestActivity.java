@@ -4,25 +4,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 
-public class RequestActivity extends Activity {
+public class RequestActivity extends FragmentActivity {
 	/**
 	 * the tangle Id
 	 */
@@ -69,7 +63,11 @@ public class RequestActivity extends Activity {
 	/**
 	 * this layout
 	 */
-	LinearLayout layout;
+	LinearLayout requestLayout;
+	/**
+	 * this layout
+	 */
+	LinearLayout offersLayout;
 	/**
 	 * this is the endpoint string
 	 */
@@ -100,12 +98,18 @@ public class RequestActivity extends Activity {
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
-		Intent intent = getIntent();
-		this.requestId = intent.getIntExtra("RequestId", -1);
-		this.tangleId = intent.getIntExtra("TangleId", -1);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_request);
+		
+		Intent intent = getIntent();
+		this.requestId = intent.getIntExtra("requestId", -1);
+		this.tangleId = intent.getIntExtra("tangleId", -1);
+		
+		
+		requestLayout = (LinearLayout) this.findViewById(R.id.request_entry_layout);
+		offersLayout = (LinearLayout) this.findViewById(R.id.offer_entries_layout);
+		
+		
 		this.fillRequestDetails();
 	}
 
@@ -118,13 +122,7 @@ public class RequestActivity extends Activity {
 	 * @author sak93
 	 */
 	public void fillRequestDetails() {
-		layout = (LinearLayout) this.findViewById(R.id.request_activity);
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		params.gravity = Gravity.RIGHT;
-		ImageView icon = new ImageView(this);
-		icon.setLayoutParams(params);
-		layout.addView(icon);
+
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		GetRequest request = new GetRequest(Config.API_BASE_URL + REQUEST) {
@@ -132,15 +130,19 @@ public class RequestActivity extends Activity {
 				try {
 					JSONObject json = new JSONObject(response);
 					if (this.getStatusCode() == 200) {
+						requestLayout.removeAllViewsInLayout();
+						offersLayout.removeAllViewsInLayout();
 						addRequestFields(json);
 						addOffers(json);
 					} else {
-						TextView errorMessage = new TextView(self);
-						errorMessage.setText(json.getString("Error"));
-						errorMessage.setTextSize(25);
-						errorMessage.setTypeface(null, Typeface.BOLD_ITALIC);
-						errorMessage.setTextColor(Color.WHITE);
-						layout.addView(errorMessage);
+						//showErrorMessage();
+						// TODO
+//						TextView errorMessage = new TextView(self);
+//						errorMessage.setText(json.getString("Error"));
+//						errorMessage.setTextSize(25);
+//						errorMessage.setTypeface(null, Typeface.BOLD_ITALIC);
+//						errorMessage.setTextColor(Color.WHITE);
+//						layout.addView(errorMessage);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -162,38 +164,19 @@ public class RequestActivity extends Activity {
 	 * @author sak93
 	 */
 	public void addRequestFields(JSONObject json) throws JSONException {
-		TextView title = new TextView(self);
-		title.setText("\n Request " + requestId + ":" + "\n");
-		title.setTextSize(25);
-		title.setTypeface(null, Typeface.BOLD_ITALIC);
-		title.setTextColor(Color.WHITE);
-		layout.addView(title);
-		for (int i = 0; i < requestDetailNames.length; i++) {
-			TextView detail = new TextView(self);
-			String fieldDetails = " ";
-			if (i == 3) {
-				JSONArray tagArray = (JSONArray) json.get("Tags");
-				fieldDetails = getTags(tagArray);
-			} else {
-				if (i == 6) {
-					String status = (String) json.get(requestDetailNames[i]);
-					fieldDetails += requestDetailNames[i] + ": "
-							+ requestStatusCodes[Integer.parseInt(status)];
-				} else {
-					fieldDetails += requestDetailNames[i] + ": "
-							+ json.get(requestDetailNames[i]);
-				}
-			}
-			detail.setTypeface(null, Typeface.BOLD_ITALIC);
-			detail.setTextSize(20);
-			detail.setText(fieldDetails);
-			detail.setTextColor(Color.WHITE);
-			layout.addView(detail);
-		}
-		String myRequestString = json.getString("MyRequest");
-		if (myRequestString.equals("1")) {
-			myRequest = true;
-		}
+		
+		RequestEntryFragment requestFragmet = new RequestEntryFragment();
+		Bundle args = new Bundle();
+		args.putString("description",json.getString("Description"));
+		args.putString("requesterName",json.getString("Requester"));
+		args.putString("date",json.getString("Date"));
+		args.putString("tags",getTags(json.getJSONArray("Tags")));
+		args.putString("price",json.getString("Price"));
+		args.putString("deadline",json.getString("Deadline"));
+		args.putString("status",json.getString("Status"));
+		requestFragmet.setArguments(args);
+		
+		getSupportFragmentManager().beginTransaction().add(R.id.request_entry_layout,requestFragmet).commit();
 	}
 
 	/**
@@ -208,37 +191,27 @@ public class RequestActivity extends Activity {
 
 	public void addOffers(JSONObject json) throws JSONException {
 		JSONArray offers = (JSONArray) json.get("Offers");
-		TextView title = new TextView(self);
-		title.setText("\n Offers:");
-		title.setTextSize(25);
-		title.setTypeface(null, Typeface.BOLD_ITALIC);
-		title.setTextColor(Color.WHITE);
-		layout.addView(title);
+		
 		for (int i = 0; i < offers.length(); i++) {
-			JSONObject offer = offers.getJSONObject(i);
-			TextView details = new TextView(self);
-			String add = "\n Offer " + (i + 1) + ": ";
-			for (int j = 0; j < apiOfferNames.length; j++) {
-				if (j == 4) {
-					String field = (String) offer.get(apiOfferNames[j]);
-					add += "\n" + offerFieldNames[j]
-							+ offerStatusCodes[Integer.parseInt(field)];
-				} else {
-					String field = (String) offer.get(apiOfferNames[j]);
-					add += "\n " + offerFieldNames[j] + field;
-				}
-			}
-			details.setTextSize(20);
-			details.setTypeface(null, Typeface.BOLD_ITALIC);
-			details.setText(add);
-			details.setTextColor(Color.WHITE);
-			layout.addView(details);
+			JSONObject offer = offers.getJSONObject(i); 
+			OfferEntryFragment offerFragmet = new OfferEntryFragment();
+			Bundle args = new Bundle();
+			args.putInt("offerId", Integer.parseInt(offer.getString("id"))); 
+			args.putString("requestedPrice",offer.getString("requestedPrice"));
+			args.putString("date",offer.getString("date"));
+			args.putString("description",offer.getString("description"));
+			args.putString("offerer",offer.getString("offererId"));
+			args.putString("status",offer.getString("status"));
+			offerFragmet.setArguments(args);
+			
+			getSupportFragmentManager().beginTransaction().add(R.id.offer_entries_layout,offerFragmet).commit();
 		}
-		if (myRequest == true) {
-			Button deleteRequest = new Button(this);
-			deleteRequest.setText("Delete");
-			layout.addView(deleteRequest);
-		}
+		
+//		if (myRequest == true) {
+//			Button deleteRequest = new Button(this);
+//			deleteRequest.setText("Delete");
+//			layout.addView(deleteRequest);
+//		}
 	}
 
 	/**
