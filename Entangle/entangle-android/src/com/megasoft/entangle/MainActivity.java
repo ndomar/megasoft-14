@@ -1,8 +1,11 @@
 package com.megasoft.entangle;
 
 import org.apache.http.client.methods.HttpPost;
+
 import com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationActivity;
+import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
 import com.megasoft.requests.PostRequest;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -16,6 +19,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		startActivity((new Intent(this, ManagePendingInvitationActivity.class))
 				.putExtra("com.megasoft.entangle.tangleId", 2));
+
 	}
 
 	@Override

@@ -125,90 +125,90 @@ public class EditProfileActivity extends Activity {
 	 */
 	@SuppressLint("SimpleDateFormat")
 	public void saveAll(View view) {
-		if((oldDescription.equals(currentDescription.getText().toString()))
-				&&(oldDOB[0].equals(newday.getSelectedItem()))
-				&&(oldDOB[1].equals(newmonth.getSelectedItem()))
-				&&(oldDOB[2].equals(newyear.getSelectedItem()))
-				&&(currentPassword.getText().toString().matches(""))
-				&&(newPassword.getText().toString().matches(""))
-				&&(currentPassword.getText().toString().matches(""))
-				&&(!emailNotification.isChecked())){
+		if ((oldDescription.equals(currentDescription.getText().toString()))
+				&& (oldDOB[0].equals(newday.getSelectedItem()))
+				&& (oldDOB[1].equals(newmonth.getSelectedItem()))
+				&& (oldDOB[2].equals(newyear.getSelectedItem()))
+				&& (currentPassword.getText().toString().matches(""))
+				&& (newPassword.getText().toString().matches(""))
+				&& (currentPassword.getText().toString().matches(""))
+				&& (!emailNotification.isChecked())) {
 			Context context = getApplicationContext();
 			CharSequence text = "Nothing has been changed";
 			int duration = Toast.LENGTH_SHORT;
 			Toast toast = Toast.makeText(context, text, duration);
 			toast.show();
-		}else{
+		} else {
 
-		PutRequest putRequest = new PutRequest(Config.API_BASE_URL + "/user/"
-				+ "edit") {
-			protected void onPostExecute(String result) {
-				if (this.getStatusCode() == 200) {
-					getActivity();
-					startActivity(viewEditedProfile);
-				} else {
-					Context context = getApplicationContext();
-					CharSequence text = "An Internal Error please try again";
-					int duration = Toast.LENGTH_SHORT;
-					Toast toast = Toast.makeText(context, text, duration);
-					toast.show();
+			PutRequest putRequest = new PutRequest(Config.API_BASE_URL
+					+ "/user/" + "edit") {
+				protected void onPostExecute(String result) {
+					if (this.getStatusCode() == 200) {
+						getActivity();
+						startActivity(viewEditedProfile);
+					} else {
+						Context context = getApplicationContext();
+						CharSequence text = "An Internal Error please try again";
+						int duration = Toast.LENGTH_SHORT;
+						Toast toast = Toast.makeText(context, text, duration);
+						toast.show();
+					}
 				}
-			}
-		};
-		putRequest.addHeader(Config.API_SESSION_ID, sessionId);
-		try {
+			};
+			putRequest.addHeader(Config.API_SESSION_ID, sessionId);
+			try {
 
-			String notificationState = emailNotification.getText().toString();
-			if (notificationState.equals("Turn off notification")) {
-				if ((notification && emailNotification.isChecked())
-						|| (! notification && !emailNotification
-								.isChecked())) {
-					putReJsonObject.put("notification_state", false);
-				} else {
-					putReJsonObject.put("notification_state", true);
+				String notificationState = emailNotification.getText()
+						.toString();
+				if (notificationState.equals("Turn off notification")) {
+					if ((notification && emailNotification.isChecked())
+							|| (!notification && !emailNotification.isChecked())) {
+						putReJsonObject.put("notification_state", false);
+					} else {
+						putReJsonObject.put("notification_state", true);
+					}
 				}
-			}
-			String date = newday.getSelectedItem().toString() + "-"
-					+ getMonthNumber(newmonth.getSelectedItem().toString())
-					+ "-" + newyear.getSelectedItem().toString();
+				String date = newday.getSelectedItem().toString() + "-"
+						+ getMonthNumber(newmonth.getSelectedItem().toString())
+						+ "-" + newyear.getSelectedItem().toString();
 
-			putReJsonObject.put("description", currentDescription.getText()
-					.toString());
-			putReJsonObject.put("new_date_of_birth", date);
-			if (!(TextUtils.isEmpty(currentPassword.getText().toString())
-					&& TextUtils.isEmpty(newPassword.getText().toString()) && TextUtils
-						.isEmpty(confirmPassword.getText().toString()))) {
-				if (newPassword.getText().toString().length() < 8) {
-					newPassword
-							.setError("Your Password must contain at least 8 characters");
+				putReJsonObject.put("description", currentDescription.getText()
+						.toString());
+				putReJsonObject.put("new_date_of_birth", date);
+				if (!(TextUtils.isEmpty(currentPassword.getText().toString())
+						&& TextUtils.isEmpty(newPassword.getText().toString()) && TextUtils
+							.isEmpty(confirmPassword.getText().toString()))) {
+					if (newPassword.getText().toString().length() < 8) {
+						newPassword
+								.setError("Your Password must contain at least 8 characters");
+						return;
+					}
+					if (!confirmPassword.getText().toString()
+							.equals(newPassword.getText().toString())) {
+						newPassword.setError("Your Password doesn't match");
+					}
+				}
+				addedEmail = addedMail.getText().toString();
+
+				if (!(emailValidator(addedEmail))) {
+					addedMail.setError("This is not a valid Email");
 					return;
 				}
-				if (!confirmPassword.getText().toString()
-						.equals(newPassword.getText().toString())) {
-					newPassword.setError("Your Password doesn't match");
-				}
+
+				putReJsonObject.put("current_password", currentPassword
+						.getText().toString());
+				putReJsonObject.put("new_password", newPassword.getText()
+						.toString());
+				putReJsonObject.put("confirm_password", confirmPassword
+						.getText().toString());
+
+				putReJsonObject.put("email", addedMail.getText().toString());
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
-			addedEmail = addedMail.getText().toString();
-
-			if (!(emailValidator(addedEmail))) {
-				addedMail.setError("This is not a valid Email");
-				return;
-			}
-
-			putReJsonObject.put("current_password", currentPassword.getText()
-					.toString());
-			putReJsonObject.put("new_password", newPassword.getText()
-					.toString());
-			putReJsonObject.put("confirm_password", confirmPassword.getText()
-					.toString());
-
-			putReJsonObject.put("email", addedMail.getText().toString());
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		putRequest.addHeader(Config.API_SESSION_ID, sessionId);
-		putRequest.setBody(putReJsonObject);
-		putRequest.execute();
+			putRequest.addHeader(Config.API_SESSION_ID, sessionId);
+			putRequest.setBody(putReJsonObject);
+			putRequest.execute();
 		}
 		getActivity();
 		startActivity(viewEditedProfile);
@@ -294,8 +294,8 @@ public class EditProfileActivity extends Activity {
 			monthNumber = "00";
 			break;
 		}
-
 		return monthNumber;
+
 	}
 
 }
