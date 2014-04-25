@@ -1,14 +1,11 @@
 package com.megasoft.entangle;
 
-import org.apache.http.client.methods.HttpPost;
 
-import com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationActivity;
-import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
-import com.megasoft.requests.PostRequest;
+import com.megasoft.config.Config;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 
 public class MainActivity extends Activity {
@@ -16,8 +13,12 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);  
-		startActivity((new Intent(this,TangleStreamActivity.class)));
+		setContentView(R.layout.activity_main);
+		Intent intent = new Intent(this, ChangeOfferPriceActivity.class);
+		intent.putExtra("requestId", 5);
+		intent.putExtra("offerId", 5);
+		intent.putExtra(Config.API_SESSION_ID, "5");
+		startActivity(intent);
 	}
 
 	@Override
