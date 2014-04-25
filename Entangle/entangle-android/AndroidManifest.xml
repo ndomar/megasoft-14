@@ -27,7 +27,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.megasoft.entangle.MainActivity"
+            android:name="com.megasoft.entangle.Request"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,6 +35,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+          <activity
+        android:name="com.megasoft.entangle.Claim"
+        android:parentActivityName="com.megasoft.entangle.Request" >
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.megasoft.entangle.MainActivity" />
+    
+    </activity>
         <activity
             android:name="com.megasoft.notifications.NotificationOne"
             android:label="@string/new_notification" >
@@ -127,6 +135,14 @@
         <activity
             android:name="com.megasoft.entangle.OfferActivity"
             android:label="@string/title_activity_offer" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.viewtanglelsit.TangleStreamActivity"
+            android:label="@string/title_activity_tangle_stream" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.CreateTangleActivity"
+            android:label="@string/title_activity_create_tangle" >
         </activity>
     </application>
 
