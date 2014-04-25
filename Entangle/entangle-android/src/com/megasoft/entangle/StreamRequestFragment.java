@@ -4,9 +4,11 @@ import com.megasoft.entangle.megafragments.TangleFragment;
 import com.megasoft.entangle.views.RoundedImageView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,6 +77,8 @@ public class StreamRequestFragment extends Fragment {
 	
 	private TangleFragment parent;
 
+	private Activity activity;
+
 	/**
 	 * This method is used to create an instance of the StreamRequestFragment
 	 * and sets its fields
@@ -90,9 +94,10 @@ public class StreamRequestFragment extends Fragment {
 	 * @return an instance of the StreamRequestFragment
 	 */
 	public static StreamRequestFragment createInstance(int requestId,
-			int requesterId, String requestString, String requesterString, String price, String offersCount) {
+			int requesterId, String requestString, String requesterString, String price, String offersCount, TangleFragment parent) {
 		StreamRequestFragment fragment = new StreamRequestFragment();
 		fragment.setRequestId(requestId);
+		fragment.setParent(parent);
 		fragment.setRequesterId(requesterId);
 		fragment.setRequestButtonText(requestString);
 		fragment.setRequesterButtonText(requesterString);
@@ -110,9 +115,9 @@ public class StreamRequestFragment extends Fragment {
 		view = inflater.inflate(R.layout.fragment_stream_request,
 				container, false);
 		request = (TextView) view.findViewById(R.id.requestDescription);
-		setRequestRedirection();
 		requesterAvatar = (RoundedImageView) view.findViewById(R.id.requesterAvatar);
 		requester = (TextView) view.findViewById(R.id.requesterName);
+		setRequestRedirection();
 		setRequesterRedirection();
 		TextView priceView = (TextView) view.findViewById(R.id.requestPrice);
 		priceView.setText(price);
@@ -234,7 +239,7 @@ public class StreamRequestFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity().getBaseContext(),
-						ProfileActivity.class);
+						ProfileFragment.class);
 				intent.putExtra("tangleId",
 						parent.getTangleId());
 				intent.putExtra("tangleName",
@@ -249,7 +254,7 @@ public class StreamRequestFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity().getBaseContext(),
-						ProfileActivity.class);
+						ProfileFragment.class);
 				intent.putExtra("tangleId",
 						parent.getTangleId());
 				intent.putExtra("tangleName",
@@ -270,7 +275,7 @@ public class StreamRequestFragment extends Fragment {
 	 *            , is the request button
 	 */
 	private void setRequestRedirection() {
-		request.setText(getRequestString());
+
 		view.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -292,4 +297,6 @@ public class StreamRequestFragment extends Fragment {
 		this.parent = parent;
 	}
 
+	
+	
 }

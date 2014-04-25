@@ -79,7 +79,7 @@ public class FilteringFragment extends DialogFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		View view = inflater.inflate(R.layout.filtering_fragment, container,
+		View view = inflater.inflate(R.layout.fragment_filtering, container,
 				false);
 		setTagSuggestions(view);
 		setUserSuggestions(view);

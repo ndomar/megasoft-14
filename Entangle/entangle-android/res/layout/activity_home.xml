@@ -55,11 +55,11 @@
         
         <LinearLayout 
             android:id="@+id/tangleList"
-	        android:layout_width="240dp"
+	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:layout_gravity="start"
 	        android:choiceMode="singleChoice"
-	        android:divider="@color/lightGray"
+	        android:divider="@drawable/divider"
 	        android:dividerHeight="1dp"
 	        android:orientation="vertical">
         

@@ -203,7 +203,7 @@ public class TangleFragment extends Fragment {
 			transaction = getFragmentManager().beginTransaction();
 			StreamRequestFragment requestFragment = StreamRequestFragment
 					.createInstance(requestId, userId, requestButtonText,
-							requesterButtonText, requestPrice, requestOffersCount);
+							requesterButtonText, requestPrice, requestOffersCount, this);
 			transaction.add(R.id.streamLayout, requestFragment);
 			transaction.commit();
 		} catch (JSONException e) {
