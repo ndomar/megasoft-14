@@ -106,7 +106,7 @@ class ClaimController extends Controller {
         $tangleId = $claimerRequest->getTangleId();
         $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
         $tangle = $tangleRepo->findOneBy(array('id' => $tangleId, 'deleted' => false));
-        
+
         if ($tangleId == null || $tangle == null) {
             return new Response('No such tangle', 400);
         }
