@@ -123,5 +123,37 @@ public class MemberListFragment extends Fragment {
 		return view;
 	}
 	
+	/*
+	 * It makes a request getting members and creating the fragments for member entries to be viewed
+	 * @author Omar ElAzazy
+	 */
+	private void fetchMembers(){
+		
+		final AlertDialog ad = new AlertDialog.Builder(getActivity()).create();
+		ad.setCancelable(false);
+		ad.setMessage("Loading ...");
+		ad.show();       
+
+		
+		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
+				+ "/tangle/" + getTangleId() + "/user") {
+			public void onPostExecute(String response) {
+				ad.dismiss();
+				Log.e("test", this.getStatusCode() + ""); /////////////////////////////////
+				
+				if(!this.hasError() && this.getStatusCode() == 200){
+					if(!showData(response)){
+						toasterShow("Something went wrong, please try again later");
+					}
+				}else{
+					toasterShow("Something went wrong, please try again later");
+				}
+			}
+		};
+
+		getRequest.addHeader(Config.API_SESSION_ID, sessionId);
+		getRequest.execute();
+	}
+	
 	
 }
