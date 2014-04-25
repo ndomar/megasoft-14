@@ -11,6 +11,7 @@ use Megasoft\EntangleBundle\Entity\InvitationCode;
 use Megasoft\EntangleBundle\Entity\InvitationMessage;
 use Megasoft\EntangleBundle\Entity\PendingInvitation;
 use Megasoft\EntangleBundle\Entity\Session;
+use Megasoft\EntangleBundle\Entity\UserTangle;
 
 class TangleController extends Controller
 {
@@ -597,8 +598,9 @@ class TangleController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $tangleUser = new UserTangle();
-        $tangleUser->setUserId($userId);
-        $tangleUser->setTangleId($tangleId);
+        $tangleUser->setTangleOwner(FALSE);
+        $tangleUser->setUser($user);
+        $tangleUser->setTangle($tangle);
         $tangle->addUserTangle($tangleUser);
         $this->getDoctrine()->getManager()->flush();
         return new Response("User added", 201);
