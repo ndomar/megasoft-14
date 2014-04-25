@@ -7,13 +7,12 @@ use Megasoft\EntangleBundle\Entity\PendingInvitation;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
-class DefaultController extends Controller
-{
-    public function indexAction($name)
-    {
+class DefaultController extends Controller {
+
+    public function indexAction($name) {
         return $this->render('MegasoftEntangleBundle:Default:index.html.twig', array('name' => $name));
     }
-    
+
 //    public function testAction(){
 //        $doctrineManger = $this->getDoctrine()->getManager();
 //        
@@ -41,7 +40,7 @@ class DefaultController extends Controller
 //        $request->setTangle($tangle);
 //        $request->setStatus(1);
 //        $request->setDescription("test");
-//        $request->setDate(new \DateTime("NOW"));
+//        $request->setDate(new DateTime("NOW"));
 //        $request->setUser($user);
 //        
 //        $tag1 = new Tag();
@@ -101,16 +100,13 @@ class DefaultController extends Controller
 //        $session->setExpired(0);
 //        $session->setUser($user);
 //        $session->setSessionId("sdakjasdfhlkajsdfhasdf");
-          
 //        $invitationMessage = new InvitationMessage();
 //        $invitationMessage->setBody("test");
-          
 //        $pendingInvitation = new PendingInvitation();
 //        $pendingInvitation->setInvitee($doctrineManger->getReference('MegasoftEntangleBundle:User',1));
 //        $pendingInvitation->setInviter($doctrineManger->getReference('MegasoftEntangleBundle:User',2));
 //        $pendingInvitation->setTangle($doctrineManger->getReference('MegasoftEntangleBundle:Tangle',1));
 //        $pendingInvitation->setMessage($doctrineManger->getReference('MegasoftEntangleBundle:InvitationMessage',2));
-          
 //        $doctrineManger->persist($user);
 //        $doctrineManger->persist($userEmail);
 //        $doctrineManger->persist($tangle);
@@ -132,20 +128,19 @@ class DefaultController extends Controller
 //          
 //          return new Response("Created" , 201);
 //    }
-   
-    
+
     /**
      * Dummy endpoints that echos whatever it receives
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @author MohamedBassem
      */
-    public function dummyAction(\Symfony\Component\HttpFoundation\Request $request){
+    public function dummyAction(\Symfony\Component\HttpFoundation\Request $request) {
         $content = $request->getContent();
-        
+
         $content = $content == null ? "" : $content;
-        
-        return new Response($content,200);
+
+        return new Response($content, 200);
     }
-   
+
 }
