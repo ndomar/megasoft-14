@@ -6,6 +6,9 @@
         {% block stylesheets %}
              {% stylesheets '@MegasoftEntangleBundle/Resources/public/css/*' filter='cssrewrite' %}
                 <link rel="stylesheet" href="{{ asset_url }}" />
+            <link href="{{ asset('bundles/megasoftentangle/css/bootstrap.css') }}" rel="stylesheet" >
+            <link href="{{ asset('bundles/megasoftentangle/css/bootstrap-responsive.css') }}" rel="stylesheet" >
+            <link href="{{ asset('bundles/megasoftentangle/css/parsley/parsley.css') }}" rel="stylesheet" >
             {% endstylesheets %}
         {% endblock %}
     </head>
@@ -16,14 +19,21 @@
          {{ include(
             '::footer.html.twig'
         ) }}
-        
+
         {% block javascripts %}
-                
+
+
             {% javascripts '@MegasoftEntangleBundle/Resources/public/js/*' %}
-                <script type="text/javascript" src="{{ asset_url }}"></script>  
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+
             {% endjavascripts %}
 
 
+
         {% endblock %}
+
+
     </body>
+
+
 </html>
