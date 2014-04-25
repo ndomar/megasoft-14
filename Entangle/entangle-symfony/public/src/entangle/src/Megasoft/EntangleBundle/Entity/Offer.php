@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity
  */
-class Offer
-{
+class Offer {
+
     /**
      * @var integer
      *
@@ -55,7 +55,7 @@ class Offer
      * @ORM\Column(name="status", type="integer")
      */
     private $status;
-    
+
     /**
      *
      * @var integer
@@ -63,7 +63,7 @@ class Offer
      * @ORM\Column(name="userId", type="integer")
      */
     private $userId;
-    
+
     /**
      *
      * @var User
@@ -72,7 +72,7 @@ class Offer
      * @ORM\JoinColumn(name="userId", referencedColumnName="id")
      */
     private $user;
-    
+
     /**
      *
      * @var integer
@@ -80,7 +80,7 @@ class Offer
      * @ORM\Column(name="requestId", type="integer")
      */
     private $requestId;
-    
+
     /**
      *
      * @var Request
@@ -89,14 +89,14 @@ class Offer
      * @ORM\JoinColumn(name="requestId", referencedColumnName="id")
      */
     private $request;
-    
+
     /**
      * @var Message[]
      * 
      * @ORM\OneToMany(targetEntity="Message", mappedBy="offer", cascade={"persist"})
      */
     private $messages;
-    
+
     /**
      *
      * @var boolean
@@ -104,15 +104,69 @@ class Offer
      * @ORM\Column(name="deleted", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
      */
     private $deleted = false;
-    
+
+    /**
+     * @ORM\OneToOne(targetEntity="Transaction", mappedBy="offer")
+     */
+    private $transaction;
+
+    /**
+     * @var PriceChangeNotification[]
+     * 
+     * @ORM\OneToMany(targetEntity="PriceChangeNotification", mappedBy="offer", cascade={"persist"})
+     */
+    private $priceChangeNotifications;
+
+    /**
+     * @var OfferChosenNotification[]
+     * 
+     * @ORM\OneToMany(targetEntity="OfferChosenNotification", mappedBy="offer", cascade={"persist"})
+     */
+    private $offerChosenNotifications;
+
+    /**
+     * @var OfferDeletedNotification[]
+     * 
+     * @ORM\OneToMany(targetEntity="OfferDeletedNotification", mappedBy="offer", cascade={"persist"})
+     */
+    private $offerDeletedNotifications;
+
+    /**
+     *
+     * @var integer 
+     */
+    public $PENDING = 0;
+
+    /**
+     *
+     * @var integer 
+     */
+    public $DONE = 1;
+
+    /**
+     *
+     * @var integer 
+     */
+    public $ACCEPTED = 2;
+
+    /**
+     *
+     * @var integer 
+     */
+    public $FAILED = 3;
+
+    /**
+     *
+     * @var integer 
+     */
+    public $REJECTED = 4;
 
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -122,8 +176,7 @@ class Offer
      * @param integer $requestedPrice
      * @return Offer
      */
-    public function setRequestedPrice($requestedPrice)
-    {
+    public function setRequestedPrice($requestedPrice) {
         $this->requestedPrice = $requestedPrice;
 
         return $this;
@@ -134,8 +187,7 @@ class Offer
      *
      * @return integer 
      */
-    public function getRequestedPrice()
-    {
+    public function getRequestedPrice() {
         return $this->requestedPrice;
     }
 
@@ -145,8 +197,7 @@ class Offer
      * @param \DateTime $date
      * @return Offer
      */
-    public function setDate($date)
-    {
+    public function setDate($date) {
         $this->date = $date;
 
         return $this;
@@ -157,8 +208,7 @@ class Offer
      *
      * @return \DateTime 
      */
-    public function getDate()
-    {
+    public function getDate() {
         return $this->date;
     }
 
@@ -168,8 +218,7 @@ class Offer
      * @param string $description
      * @return Offer
      */
-    public function setDescription($description)
-    {
+    public function setDescription($description) {
         $this->description = $description;
 
         return $this;
@@ -180,8 +229,7 @@ class Offer
      *
      * @return string 
      */
-    public function getDescription()
-    {
+    public function getDescription() {
         return $this->description;
     }
 
@@ -191,8 +239,7 @@ class Offer
      * @param \DateTime $expectedDeadline
      * @return Offer
      */
-    public function setExpectedDeadline($expectedDeadline)
-    {
+    public function setExpectedDeadline($expectedDeadline) {
         $this->expectedDeadline = $expectedDeadline;
 
         return $this;
@@ -203,8 +250,7 @@ class Offer
      *
      * @return \DateTime 
      */
-    public function getExpectedDeadline()
-    {
+    public function getExpectedDeadline() {
         return $this->expectedDeadline;
     }
 
@@ -214,8 +260,7 @@ class Offer
      * @param integer $status
      * @return Offer
      */
-    public function setStatus($status)
-    {
+    public function setStatus($status) {
         $this->status = $status;
 
         return $this;
@@ -226,15 +271,14 @@ class Offer
      *
      * @return integer 
      */
-    public function getStatus()
-    {
+    public function getStatus() {
         return $this->status;
     }
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->messages = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -244,8 +288,7 @@ class Offer
      * @param integer $requestId
      * @return Offer
      */
-    public function setRequestId($requestId)
-    {
+    public function setRequestId($requestId) {
         $this->requestId = $requestId;
 
         return $this;
@@ -256,8 +299,7 @@ class Offer
      *
      * @return integer 
      */
-    public function getRequestId()
-    {
+    public function getRequestId() {
         return $this->requestId;
     }
 
@@ -267,8 +309,7 @@ class Offer
      * @param \Megasoft\EntangleBundle\Entity\Request $request
      * @return Offer
      */
-    public function setRequest(\Megasoft\EntangleBundle\Entity\Request $request = null)
-    {
+    public function setRequest(\Megasoft\EntangleBundle\Entity\Request $request = null) {
         $this->request = $request;
 
         return $this;
@@ -279,8 +320,7 @@ class Offer
      *
      * @return \Megasoft\EntangleBundle\Entity\Request 
      */
-    public function getRequest()
-    {
+    public function getRequest() {
         return $this->request;
     }
 
@@ -290,8 +330,7 @@ class Offer
      * @param \Megasoft\EntangleBundle\Entity\Message $messages
      * @return Offer
      */
-    public function addMessage(\Megasoft\EntangleBundle\Entity\Message $messages)
-    {
+    public function addMessage(\Megasoft\EntangleBundle\Entity\Message $messages) {
         $this->messages[] = $messages;
         $messages->setOffer($this);
         return $this;
@@ -302,8 +341,7 @@ class Offer
      *
      * @param \Megasoft\EntangleBundle\Entity\Message $messages
      */
-    public function removeMessage(\Megasoft\EntangleBundle\Entity\Message $messages)
-    {
+    public function removeMessage(\Megasoft\EntangleBundle\Entity\Message $messages) {
         $this->messages->removeElement($messages);
     }
 
@@ -312,8 +350,7 @@ class Offer
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getMessages()
-    {
+    public function getMessages() {
         return $this->messages;
     }
 
@@ -323,8 +360,7 @@ class Offer
      * @param integer $userId
      * @return Offer
      */
-    public function setUserId($userId)
-    {
+    public function setUserId($userId) {
         $this->userId = $userId;
 
         return $this;
@@ -335,8 +371,7 @@ class Offer
      *
      * @return integer 
      */
-    public function getUserId()
-    {
+    public function getUserId() {
         return $this->userId;
     }
 
@@ -346,8 +381,7 @@ class Offer
      * @param \Megasoft\EntangleBundle\Entity\User $user
      * @return Offer
      */
-    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null)
-    {
+    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null) {
         $this->user = $user;
 
         return $this;
@@ -358,8 +392,7 @@ class Offer
      *
      * @return \Megasoft\EntangleBundle\Entity\User 
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->user;
     }
 
@@ -369,8 +402,7 @@ class Offer
      * @param boolean $deleted
      * @return Offer
      */
-    public function setDeleted($deleted)
-    {
+    public function setDeleted($deleted) {
         $this->deleted = $deleted;
 
         return $this;
@@ -381,8 +413,119 @@ class Offer
      *
      * @return boolean 
      */
-    public function getDeleted()
-    {
+    public function getDeleted() {
         return $this->deleted;
     }
+
+    /**
+     * Set transaction
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Transaction $transaction
+     * @return Offer
+     */
+    public function setTransaction(\Megasoft\EntangleBundle\Entity\Transaction $transaction = null) {
+        $this->transaction = $transaction;
+
+        return $this;
+    }
+
+    /**
+     * Get transaction
+     *
+     * @return \Megasoft\EntangleBundle\Entity\Transaction 
+     */
+    public function getTransaction() {
+        return $this->transaction;
+    }
+
+    /**
+     * Add priceChangeNotifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PriceChangeNotification $priceChangeNotifications
+     * @return Offer
+     */
+    public function addPriceChangeNotification(\Megasoft\EntangleBundle\Entity\PriceChangeNotification $priceChangeNotifications) {
+        $this->priceChangeNotifications[] = $priceChangeNotifications;
+        $priceChangeNotifications->setOffer($offer);
+        return $this;
+    }
+
+    /**
+     * Remove priceChangeNotifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\PriceChangeNotification $priceChangeNotifications
+     */
+    public function removePriceChangeNotification(\Megasoft\EntangleBundle\Entity\PriceChangeNotification $priceChangeNotifications) {
+        $this->priceChangeNotifications->removeElement($priceChangeNotifications);
+    }
+
+    /**
+     * Get priceChangeNotifications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPriceChangeNotifications() {
+        return $this->priceChangeNotifications;
+    }
+
+    /**
+     * Add offerChosenNotifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\OfferChosenNotification $offerChosenNotifications
+     * @return Offer
+     */
+    public function addOfferChosenNotification(\Megasoft\EntangleBundle\Entity\OfferChosenNotification $offerChosenNotifications) {
+        $this->offerChosenNotifications[] = $offerChosenNotifications;
+        $offerChosenNotifications->setOffer($this);
+        return $this;
+    }
+
+    /**
+     * Remove offerChosenNotifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\OfferChosenNotification $offerChosenNotifications
+     */
+    public function removeOfferChosenNotification(\Megasoft\EntangleBundle\Entity\OfferChosenNotification $offerChosenNotifications) {
+        $this->offerChosenNotifications->removeElement($offerChosenNotifications);
+    }
+
+    /**
+     * Get offerChosenNotifications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOfferChosenNotifications() {
+        return $this->offerChosenNotifications;
+    }
+
+    /**
+     * Add offerDeletedNotifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\OfferDeletedNotification $offerDeletedNotifications
+     * @return Offer
+     */
+    public function addOfferDeletedNotification(\Megasoft\EntangleBundle\Entity\OfferDeletedNotification $offerDeletedNotifications) {
+        $this->offerDeletedNotifications[] = $offerDeletedNotifications;
+        $offerDeletedNotifications->setOffer($this);
+        return $this;
+    }
+
+    /**
+     * Remove offerDeletedNotifications
+     *
+     * @param \Megasoft\EntangleBundle\Entity\OfferDeletedNotification $offerDeletedNotifications
+     */
+    public function removeOfferDeletedNotification(\Megasoft\EntangleBundle\Entity\OfferDeletedNotification $offerDeletedNotifications) {
+        $this->offerDeletedNotifications->removeElement($offerDeletedNotifications);
+    }
+
+    /**
+     * Get offerDeletedNotifications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOfferDeletedNotifications() {
+        return $this->offerDeletedNotifications;
+    }
+
 }
