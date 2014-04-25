@@ -96,6 +96,11 @@ get_tangles:
     methods: [GET]
 
 
+re_open_request:
+    pattern: /request/{requestId}/reopen
+    defaults: { _controller: MegasoftEntangleBundle:Request:reOpenRequest }
+    methods: [POST]
+    
 get_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
