@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -20,11 +20,6 @@
         <activity
             android:name="com.megasoft.entangle.MainActivity"
             android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.megasoft.entangle.LoginActivity"
@@ -37,6 +32,14 @@
         <activity
             android:name="com.megasoft.entangle.RegisterActivity"
             android:label="@string/app_name" >
+        </activity>
+=======
+        <activity
+            android:name="com.megasoft.entangle.Claim"
+            android:parentActivityName="com.megasoft.entangle.Request" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.megasoft.entangle.MainActivity" />
         </activity>
         <activity
             android:name="com.megasoft.entangle.TangleActivity"
@@ -51,20 +54,20 @@
             android:label="@string/title_activity_profile" >
         </activity>
         <activity
-            android:name="com.megasoft.entangle.RequestActivity"
-            android:label="@string/title_activity_request_information" >
-        </activity>
-        <activity
             android:name="com.megasoft.entangle.InviteUserActivity"
             android:label="@string/title_activity_invite_users" >
         </activity>
         <activity
-            android:name="com.megasoft.entangle.ConfirmInviteUserActivity"
-            android:label="@string/title_activity_invite_users_confirmations"
-            android:parentActivityName="com.megasoft.entangle.InviteUserActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.megasoft.entangle.InviteUsers" />
+            android:name="com.megasoft.entangle.RequestActivity"
+            android:label="@string/title_activity_request" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.acceptPendingInvitation.AcceptPendingInvitationActivity"
+            android:label="@string/title_activity_accept_pending_invitation" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationActivity"
+            android:label="@string/title_activity_manage_pending_invitation" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.EditProfileActivity"
@@ -90,10 +93,6 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.megasoft.entangle.Claim"
-            android:parentActivityName="com.megasoft.entangle.Request" >
-        </activity>
-        <activity
             android:name="com.megasoft.entangle.CreateRequestActivity"
             android:label="@string/title_activity_request_information" >
         </activity>
@@ -102,12 +101,8 @@
             android:label="@string/title_activity_create_offer" >
         </activity>
         <activity
-            android:name="com.megasoft.entangle.acceptPendingInvitation.AcceptPendingInvitationActivity"
-            android:label="@string/title_activity_accept_pending_invitation" >
-        </activity>
-        <activity
-            android:name="com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationActivity"
-            android:label="@string/title_activity_manage_pending_invitation" >
+            android:name="com.megasoft.entangle.ChangeOfferPriceActivity"
+            android:label="@string/title_activity_change_offer_price" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.viewtanglelsit.TangleStreamActivity"
