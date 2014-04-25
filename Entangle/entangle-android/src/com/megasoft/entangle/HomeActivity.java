@@ -187,5 +187,10 @@ public class HomeActivity extends FragmentActivity {
 	 	    default:
 	 	        return super.onOptionsItemSelected(item);
 	 	 }
+
+	}
+	
+	public void redirectToCreateTangle(View v) {
+		startActivity(new Intent(this, CreateTangleActivity.class));
 	}
 }
