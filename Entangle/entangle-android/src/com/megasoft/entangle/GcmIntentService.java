@@ -8,6 +8,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
+/**
+ * this classes are here just for testing purposes. this will be called whenever
+ * a message arrives to gcm broadcast receiver
+ * 
+ * @author Shaban
+ */
 public class GcmIntentService extends IntentService {
 	public static final int NOTIFICATION_ID = 1;
 	private NotificationManager mNotificationManager;
@@ -27,6 +33,12 @@ public class GcmIntentService extends IntentService {
 		GcmBroadcastReceiver.completeWakefulIntent(intent);
 	}
 
+	/**
+	 * this will be called after handling the notification
+	 * 
+	 * @param intent
+	 * @author Shaban
+	 */
 	private void sendNotification(Intent intent) {
 		mNotificationManager = (NotificationManager) this
 				.getSystemService(Context.NOTIFICATION_SERVICE);

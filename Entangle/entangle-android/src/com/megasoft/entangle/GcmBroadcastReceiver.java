@@ -6,6 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
+/**
+ * this class is here for testing purposes. this is gcm receiver it's main role
+ * is to notify gcm intent service
+ * 
+ * @author Shaban
+ * 
+ */
 public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {

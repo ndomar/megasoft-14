@@ -12,10 +12,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ *
+ * Class NotificationController
+ * @package Megasoft\EntangleBundle\Controller
+ */
 class NotificationController extends Controller
 {
 
     /**
+     * this action is here just for testing purposes
      * this is a test action just to test notification center function
      * @return \Symfony\Component\HttpFoundation\Response
      */

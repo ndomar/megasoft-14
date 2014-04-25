@@ -18,6 +18,11 @@ use Megasoft\EntangleBundle\Entity\TransactionNotification;
 use Symfony\Component\DependencyInjection\Container;
 
 
+/**
+ * this is the main part of notification system
+ * Class NotificationCenter
+ * @package Megasoft\EntangleBundle\Classes
+ */
 class NotificationCenter
 {
     /**
@@ -207,7 +212,8 @@ class NotificationCenter
         else
             $body = "new Message from " . $fromName;
 
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->newMessageNotificationId, 'by' => $fromName, 'message' => $message->getBody(), "messageId" => $messageId);
+        $data = array('title' => $title, 'body' => $body, 'type' => $this->newMessageNotificationId, 'by' => $fromName,
+            'message' => $message->getBody(), "messageId" => $messageId);
         return $this->notificationCenter($to->getId(), $data);
 
     }
@@ -250,8 +256,8 @@ class NotificationCenter
         else
             $body = $fromName . "accepted your offer";
 
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->transactionNotificationId, 'by' => $fromName, 'finalPrice' => $finalPrice,
-            'requestDesc' => $requestDesc, 'transactionId' => $transactionId);
+        $data = array('title' => $title, 'body' => $body, 'type' => $this->transactionNotificationId, 'by' => $fromName,
+            'finalPrice' => $finalPrice, 'requestDesc' => $requestDesc, 'transactionId' => $transactionId);
         return $this->notificationCenter($to->getId(), $data);
     }
 
@@ -296,7 +302,8 @@ class NotificationCenter
             $body = $this->formatMessage($body, $fromName, $toName);
         else
             $body = $fromName . "changed his offer";
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerChangeNotificationId, 'by' => $fromName, 'newPrice' => $newPrice, 'oldPrice' => $oldPrice, 'offerId' => $offerId);
+        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerChangeNotificationId, 'by' => $fromName,
+            'newPrice' => $newPrice, 'oldPrice' => $oldPrice, 'offerId' => $offerId);
         return $this->notificationCenter($to->getId(), $data);
     }
 
@@ -335,7 +342,8 @@ class NotificationCenter
         else
             $body = $fromName . "deleted his offer";
 
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerChosenNotificationId, 'by' => $fromName, 'offerId' => $offerId);
+        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerChosenNotificationId, 'by' => $fromName,
+            'offerId' => $offerId);
         return $this->notificationCenter($to->getId(), $data);
     }
 
@@ -384,7 +392,8 @@ class NotificationCenter
         else
             $body = $fromName . "deleted his offer";
 
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerDeletedNotificationId, 'by' => $fromName, 'offerId' => $offerId);
+        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerDeletedNotificationId, 'by' => $fromName,
+            'offerId' => $offerId);
         return $this->notificationCenter($to->getId(), $data);
 
     }
@@ -428,7 +437,8 @@ class NotificationCenter
             else
                 $body = $fromName . "deleted his request";
 
-            $data = array('title' => $title, 'body' => $body, 'type' => $this->requestDeletedNotificationId, 'by' => $fromName, 'offerId' => $requestId);
+            $data = array('title' => $title, 'body' => $body, 'type' => $this->requestDeletedNotificationId,
+                'by' => $fromName, 'offerId' => $requestId);
             $this->notificationCenter($offer->getUserId(), $data);
         }
     }

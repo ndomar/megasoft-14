@@ -17,10 +17,17 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 import com.megasoft.utils.UI;
-import com.megasoft.utils.Util;
 
+/**
+ * this activity is responsible for registering to gcm or fetching gcm key from
+ * shared prefs
+ * 
+ * @author Shaban
+ * 
+ */
 public class GCMRegistrationActivity extends Activity {
 
 	/**
@@ -67,7 +74,7 @@ public class GCMRegistrationActivity extends Activity {
 	 * 
 	 * @param None
 	 * @return None
-	 * @author shaban
+	 * @author Shaban
 	 */
 	public void register() {
 		if (checkPlayServices()) {
@@ -111,7 +118,7 @@ public class GCMRegistrationActivity extends Activity {
 	 * 
 	 * @param context
 	 * @return registration ID String
-	 * @author shaban
+	 * @author Shaban
 	 */
 	private String getRegistrationId(Context context) {
 		SharedPreferences prefs = getSharedPreferences(
@@ -132,7 +139,7 @@ public class GCMRegistrationActivity extends Activity {
 	 * 
 	 * @param None
 	 * @return None
-	 * @author shaban
+	 * @author Shaban
 	 */
 	private void registerInBackground() {
 		new AsyncTask<Void, Void, String>() {
@@ -160,11 +167,12 @@ public class GCMRegistrationActivity extends Activity {
 	}
 
 	/**
-	 * this sends a post request to server registration uri
+	 * this sends a post request to server registration uri to attach this key
+	 * to the session id
 	 * 
 	 * @return None
 	 * @param regid
-	 * @author shaban
+	 * @author Shaban
 	 */
 	protected void sendRegisterationId(String regid) {
 
@@ -204,13 +212,13 @@ public class GCMRegistrationActivity extends Activity {
 	 * 
 	 * @param None
 	 * @return session IDString
-	 * @author shaban
+	 * @author Shaban
 	 */
 	protected String getSessionId() {
 		SharedPreferences prefs = getSharedPreferences("sessionIDPrefs",
 				MODE_PRIVATE);
-		return "5";
-		// return prefs.getString(Config.SESSION_ID, "");
+		// return "5";
+		return prefs.getString(Config.SESSION_ID, "");
 	}
 
 	/**
@@ -218,7 +226,7 @@ public class GCMRegistrationActivity extends Activity {
 	 * 
 	 * @param regid
 	 * @return None
-	 * @author shaban
+	 * @author Shaban
 	 */
 	protected void storeRegisteratinId(String regid) {
 		SharedPreferences prefs = getSharedPreferences(
