@@ -52,15 +52,10 @@ class ClaimController extends Controller {
             return new Response('No such tangle', 400);
         }
         $userId = $session->getUserId();
-        $tangleUsers[] = $tangle->getUserTangles();
-        $arrlength = count($tangleUsers);
-
-        for ($i = 0; $i < $arrlength; $i++) {
-            if (($tangleUsers[$i]->getTangleId() == $tangleId) && ($tangleUsers[$i]->getTangleOwner() == TRUE)) {
-                $tangleOwnerId = $tangleUsers[$i]->getUserId();
-                break;
-            }
-        }
+        $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId , 'tangleOwner' => 1));
+        $tangleOwnerId = $userTangle->getUserId();
+                
         if ($tangleOwnerId == null) {
             return new Response('No such tangle owner', 400);
         }
@@ -95,34 +90,27 @@ class ClaimController extends Controller {
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         
         if ($sessionId == null || $session == null || $session->getExpired()) {
-            return new Response('session id is null', 400);
+            return new Response('Unauthorized', 400);
         }
-        
         $user = $session->getUser();
         $userId = $user->getId();
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
         $claimerRequest = $requestRepo->findOneBy(array('id' => $requestId));
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $offer = $offerRepo->findOneBy(array('requestId' => $requestId , 'deleted' => false, 'status' => 2));
-        
         if (!($offer->getUserId() == $userId || $claimerRequest->getUserId() == $userId)) {
             return new Response('Not authorized to claim', 400);
         }
-        
         if($offer == null) {
             return new Response('No such offer', 400);
         }
-
         if ($claimerRequest == null) {
             return new Response('No such request', 400);
         }
-        
         $tangleId = $claimerRequest->getTangleId();
-
         if ($tangleId == null) {
             return new Response('Tangle id is null', 400);
         }
-        
         $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
         $tangle = $tangleRepo->findOneBy(array('id' => $tangleId, 'deleted' => false));
         if ($tangle == null) {
