@@ -155,17 +155,17 @@ public class CreateOfferActivity extends Activity {
 				}
 
 				PostRequest request = new PostRequest(Config.API_BASE_URL
-						+ "/tangle/" + tangleID + "/request" + requestID
+						+ "/tangle/" + tangleID + "/request/" + requestID
 						+ "/offer") {
 					protected void onPostExecute(String response) {
 						if (this.getStatusCode() == 201) {
 							Intent intent = new Intent(self,
 									RequestActivity.class);
-							intent.putExtra("tangleID", tangleID);
-							intent.putExtra("requestID", tangleID);
+							intent.putExtra("tangleId", tangleID);
+							intent.putExtra("requestId", requestID);
 							startActivity(intent);
 							// send notification
-						} else if (this.getStatusCode() == 400) {
+						} else {
 							Toast.makeText(getApplicationContext(),
 									"Error, Can not create offer",
 									Toast.LENGTH_SHORT).show();
