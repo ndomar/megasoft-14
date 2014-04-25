@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="active">#52A0D1</color>
+    <color name="pagerBackground">#FFFFFF</color>
+    <color name="darkGray">#222222</color>
+    <color name="lightText">#FFFFFF</color>
+    <color name="lightGray">#888888</color>
+    <color name="darkWhite">#DDDDDD</color>
+    <color name="postBackground">#FFFFFF</color>
+    <color name="sucess">#00FF00</color>
+    <color name="error">#FF0000</color>
+</resources>
