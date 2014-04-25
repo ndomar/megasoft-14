@@ -1,9 +1,10 @@
 package com.megasoft.entangle;
 
+import com.megasoft.entangle.megafragments.TangleFragment;
 import com.megasoft.entangle.views.RoundedImageView;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -71,6 +72,8 @@ public class StreamRequestFragment extends Fragment {
 	 * The offers count text
 	 */
 	private String offersCount;
+	
+	private TangleFragment parent;
 
 	/**
 	 * This method is used to create an instance of the StreamRequestFragment
@@ -225,6 +228,7 @@ public class StreamRequestFragment extends Fragment {
 	 *            , is the requester button
 	 */
 	private void setRequesterRedirection() {
+		requester.setTextSize(16);
 		requester.setText(getRequesterString());
 		requester.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -232,11 +236,11 @@ public class StreamRequestFragment extends Fragment {
 				Intent intent = new Intent(getActivity().getBaseContext(),
 						ProfileActivity.class);
 				intent.putExtra("tangleId",
-						((TangleActivity) getActivity()).getTangleId());
+						parent.getTangleId());
 				intent.putExtra("tangleName",
-						((TangleActivity) getActivity()).getTangleName());
+						parent.getTangleName());
 				intent.putExtra("sessionId",
-						((TangleActivity) getActivity()).getSessionId());
+						parent.getSessionId());
 				intent.putExtra("userId", getRequesterId());
 				startActivity(intent);
 			}
@@ -247,11 +251,11 @@ public class StreamRequestFragment extends Fragment {
 				Intent intent = new Intent(getActivity().getBaseContext(),
 						ProfileActivity.class);
 				intent.putExtra("tangleId",
-						((TangleActivity) getActivity()).getTangleId());
+						parent.getTangleId());
 				intent.putExtra("tangleName",
-						((TangleActivity) getActivity()).getTangleName());
+						parent.getTangleName());
 				intent.putExtra("sessionId",
-						((TangleActivity) getActivity()).getSessionId());
+						parent.getSessionId());
 				intent.putExtra("userId", getRequesterId());
 				startActivity(intent);
 			}
@@ -273,15 +277,19 @@ public class StreamRequestFragment extends Fragment {
 				Intent intent = new Intent(getActivity().getBaseContext(),
 						RequestActivity.class);
 				intent.putExtra("tangleId",
-						((TangleActivity) getActivity()).getTangleId());
+						parent.getTangleId());
 				intent.putExtra("tangleName",
-						((TangleActivity) getActivity()).getTangleName());
+						parent.getTangleName());
 				intent.putExtra("sessionId",
-						((TangleActivity) getActivity()).getSessionId());
+						parent.getSessionId());
 				intent.putExtra("requestId", getRequestId());
 				startActivity(intent);
 			}
 		});
+	}
+	
+	public void setParent(TangleFragment parent) {
+		this.parent = parent;
 	}
 
 }

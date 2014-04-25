@@ -1,5 +1,6 @@
 package com.megasoft.entangle;
 
+import com.megasoft.entangle.megafragments.TangleFragment;
 import com.megasoft.requests.GetRequest;
 
 import android.content.Context;
@@ -25,7 +26,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public Fragment getItem(int index) {
-		Fragment fragment = new SampleTab();
+		TangleFragment fragment = new TangleFragment();
         return fragment;
 	}
         

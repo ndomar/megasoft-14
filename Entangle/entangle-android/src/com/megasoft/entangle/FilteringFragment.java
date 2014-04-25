@@ -2,6 +2,8 @@ package com.megasoft.entangle;
 
 import java.util.HashMap;
 
+import com.megasoft.entangle.megafragments.TangleFragment;
+
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -52,6 +54,8 @@ public class FilteringFragment extends DialogFragment {
 	 * The view where the user writes a full text search to filter with
 	 */
 	private EditText fullText;
+	
+	private TangleFragment parent;
 
 	/**
 	 * This is method is used to create an instance of the FilteringFragment
@@ -63,8 +67,9 @@ public class FilteringFragment extends DialogFragment {
 	 * @return an instance of the FilteringFragment class
 	 */
 	public static FilteringFragment createInstance(
-			HashMap<String, Integer> tagToId, HashMap<String, Integer> userToId) {
+			HashMap<String, Integer> tagToId, HashMap<String, Integer> userToId, TangleFragment parent) {
 		FilteringFragment fragment = new FilteringFragment();
+		fragment.parent = parent;
 		fragment.tagToId = tagToId;
 		fragment.userToId = userToId;
 		return fragment;
@@ -105,7 +110,7 @@ public class FilteringFragment extends DialogFragment {
 		tagText = (AutoCompleteTextView) view.findViewById(R.id.tagValue);
 		tagText.setAdapter(new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_list_item_1,
-				((TangleActivity) getActivity()).getTagsSuggestions()));
+				parent.getTagsSuggestions()));
 	}
 
 	/**
@@ -119,7 +124,7 @@ public class FilteringFragment extends DialogFragment {
 		userText = (AutoCompleteTextView) view.findViewById(R.id.userValue);
 		userText.setAdapter(new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_list_item_1,
-				((TangleActivity) getActivity()).getUsersSuggestions()));
+				parent.getUsersSuggestions()));
 	}
 
 	/**
@@ -166,9 +171,9 @@ public class FilteringFragment extends DialogFragment {
 					url = "?" + url;
 				}
 				url = rootResource + "tangle/"
-						+ ((TangleActivity) getActivity()).getTangleId()
+						+ parent.getTangleId()
 						+ "/request" + url;
-				((TangleActivity) getActivity()).sendFilteredRequest(url
+				parent.sendFilteredRequest(url
 						.replace(" ", "+"));
 				getDialog().dismiss();
 			}
