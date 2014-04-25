@@ -53,20 +53,16 @@ public class LoginActivity extends Activity {
 
 		JSONObject json = new JSONObject();
 		try {
-			json.put("username", username);
-			json.put("password", password);
+			json.put("name", username.getText().toString());
+			json.put("password", password.getText().toString());
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		PostRequest request = new PostRequest(Config.API_BASE_URL + LOGIN) {
+		PostRequest request = new PostRequest(Config.API_BASE_URL_SERVER + LOGIN) {
 			protected void onPostExecute(String response) {
 
 				if (this.getStatusCode() == 201) {
-					Toast.makeText(getApplicationContext(), "Redirecting...",
-							Toast.LENGTH_SHORT).show();
-
 					goToHome(response);
-
 				} else if (this.getStatusCode() == 400) {
 					Toast.makeText(getApplicationContext(),
 							"Wrong Credentials", Toast.LENGTH_SHORT).show();
