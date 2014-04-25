@@ -7,6 +7,10 @@ import org.json.JSONObject;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Intent;
+
+import android.view.Menu;
+import android.view.View;
+
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -21,6 +25,7 @@ import android.widget.TextView;
 
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
+
 
 public class RequestActivity extends Activity {
 	/**
@@ -268,5 +273,6 @@ public class RequestActivity extends Activity {
 		getMenuInflater().inflate(R.menu.request_information, menu);
 		return true;
 	}
+	
 
 }

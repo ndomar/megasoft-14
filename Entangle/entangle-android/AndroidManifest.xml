@@ -73,7 +73,14 @@
             android:label="@string/title_activity_manage_pending_invitation" >
         </activity>
 
-        
+
+	<activity
+            android:name="com.megasoft.entangle.Offer"
+            android:label="@string/app_name" 
+            android:parentActivityName="com.megasoft.entangle.RequestActivity">
+        </activity>
+
+
 
         <activity
             android:name="com.megasoft.entangle.EditProfileActivity"
@@ -87,6 +94,7 @@
             android:name="com.megasoft.entangle.OfferActivity"
             android:label="@string/title_activity_offer" >
         </activity>
+
         <activity
             android:name="com.megasoft.entangle.viewtanglelsit.TangleStreamActivity"
             android:label="@string/title_activity_tangle_stream" >
@@ -95,6 +103,7 @@
             android:name="com.megasoft.entangle.CreateTangleActivity"
             android:label="@string/title_activity_create_tangle" >
         </activity>
+a
     </application>
 
 </manifest>

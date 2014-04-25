@@ -1,6 +1,12 @@
 megasoft_entangle:
     resource: "@MegasoftEntangleBundle/Resources/config/routing.yml"
     prefix:   /
+    
+update:
+    path:      /request/{offerid}
+    defaults:  { _controller: MegasoftEntangleBundle:Offer:update }
+    methods: [POST]
+    
 
 profile:
     pattern: tangle/{tangleId}/user/{userId}/profile
