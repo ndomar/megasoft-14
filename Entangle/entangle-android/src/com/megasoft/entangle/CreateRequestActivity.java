@@ -118,6 +118,10 @@ public class CreateRequestActivity extends Activity {
 	 * preference instance
 	 */
 	SharedPreferences settings;
+	/**
+	 * this activity
+	 */
+	final Activity self = this;
 
 	/**
 	 * on creation of the activity it takes data from the fields and send it as
@@ -177,9 +181,14 @@ public class CreateRequestActivity extends Activity {
 						+ "/tangle/" + tangleID + "/request") {
 					protected void onPostExecute(String response) {
 						if (this.getStatusCode() == 201) {
-							// redirection
-						} else if (this.getStatusCode() == 400) {
-							// showErrorMessage();
+							Intent intent = new Intent(self, HomeActivity.class);
+							intent.putExtra("tangleId", tangleID);
+							intent.putExtra("tab", PagerAdapter.STREAM);
+							startActivity(intent);
+						} else {
+							Toast.makeText(getApplicationContext(),
+									"Error, Can not create request",
+									Toast.LENGTH_SHORT).show();
 						}
 					}
 				};

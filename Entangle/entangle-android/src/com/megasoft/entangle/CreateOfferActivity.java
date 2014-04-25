@@ -56,8 +56,8 @@ public class CreateOfferActivity extends Activity {
 	 */
 	int deadLineYear;
 	/**
-	 * the chosen deadLine month , in case user didn't choose a value it will
-	 * be set to current month
+	 * the chosen deadLine month , in case user didn't choose a value it will be
+	 * set to current month
 	 */
 	int deadLineMonth;
 	/**
@@ -104,8 +104,14 @@ public class CreateOfferActivity extends Activity {
 	final String date = currentDay + "/" + (currentMonth + 1) + "/"
 			+ currentYear;
 	/**
+	 * this activity
+	 */
+	final Activity self = this;
+
+	/**
 	 * on creation of the activity it takes data from the fields and send it as
 	 * json object on clicking the Post Button
+	 * 
 	 * @param savedInstanceState
 	 * @return none
 	 * @author Salma Khaled
@@ -149,14 +155,20 @@ public class CreateOfferActivity extends Activity {
 				}
 
 				PostRequest request = new PostRequest(Config.API_BASE_URL
-						+ "/tangle/" + tangleID + "/request" + requestID
+						+ "/tangle/" + tangleID + "/request/" + requestID
 						+ "/offer") {
 					protected void onPostExecute(String response) {
 						if (this.getStatusCode() == 201) {
-							// redirection
+							Intent intent = new Intent(self,
+									RequestActivity.class);
+							intent.putExtra("tangleId", tangleID);
+							intent.putExtra("requestId", requestID);
+							startActivity(intent);
 							// send notification
-						} else if (this.getStatusCode() == 400) {
-							// showErrorMessage();
+						} else {
+							Toast.makeText(getApplicationContext(),
+									"Error, Can not create offer",
+									Toast.LENGTH_SHORT).show();
 						}
 					}
 				};
@@ -173,8 +185,10 @@ public class CreateOfferActivity extends Activity {
 		});
 		updateDisplay();
 	}
+
 	/**
 	 * this method update the display of the chosen deadLine
+	 * 
 	 * @param none
 	 * @return none
 	 * @author Salma Khaled
@@ -204,6 +218,7 @@ public class CreateOfferActivity extends Activity {
 			updateDisplay();
 		}
 	};
+
 	/**
 	 * this method creates the dialog that u can choose the deadLine from
 	 * 
@@ -221,8 +236,10 @@ public class CreateOfferActivity extends Activity {
 		return null;
 
 	}
+
 	/**
 	 * check if the deadLine is valid and not in the past
+	 * 
 	 * @param none
 	 * @return true if it is valid , false otherwise
 	 * @author Salma Khaled
@@ -248,12 +265,14 @@ public class CreateOfferActivity extends Activity {
 			}
 		}
 	};
-	
+
 	/**
-	 * this method is called on clicking on the checkbox 
-	 * it checks whether the fields are empty or not and then accordingly 
-	 * either error messages will be set or Post button will be enabled
-	 * @param View view which will be the checkbox
+	 * this method is called on clicking on the checkbox it checks whether the
+	 * fields are empty or not and then accordingly either error messages will
+	 * be set or Post button will be enabled
+	 * 
+	 * @param View
+	 *            view which will be the checkbox
 	 * @return none
 	 * @author Salma Khaled
 	 */
@@ -268,6 +287,7 @@ public class CreateOfferActivity extends Activity {
 			Post.setEnabled(true);
 		}
 	}
+
 	/**
 	 * check if an editText is Empty
 	 * 
@@ -288,7 +308,6 @@ public class CreateOfferActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-	//	getMenuInflater().inflate(R.menu.create_offer, menu);
 		return true;
 	}
 
