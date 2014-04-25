@@ -56,6 +56,12 @@ acceptOffer:
     defaults: {_controller: MegasoftEntangleBundle:Offer:acceptOffer }
     methods: [POST]
 
+withdraw_offer:
+    pattern: /offer/{offerId}
+    defaults: { _controller: MegasoftEntangleBundle:Offer:withdraw }
+    methods: [DELETE]
+    requirements:
+        offerId: \d+
 
 getMails:
     pattern: /tangleOwnerAndClaimerMail/{requestId}/claim
