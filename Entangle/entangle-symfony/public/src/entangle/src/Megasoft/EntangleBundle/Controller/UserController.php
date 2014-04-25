@@ -187,6 +187,9 @@ class UserController extends Controller {
         if (!$session) {
             return new JsonResponse("the sessionId does not exist", 404);
         }
+        if ($session->getExpired()) {
+            return new JsonResponse("the sessionId is already expired", 400);
+        }
         $user = $session->getUser();
 
         $user->removeSession($session);
@@ -197,11 +200,10 @@ class UserController extends Controller {
         $this->getDoctrine()->getManager()->persist($session);
 
         $this->getDoctrine()->getManager()->flush();
-//        $response->setData(array('sessionId' => $sessionId));
 
-        $response->setStatusCode(200);
 
-        return $response;
+
+        return new Response(200);
     }
 
 }
