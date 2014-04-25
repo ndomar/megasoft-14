@@ -2,22 +2,93 @@
 
 namespace Megasoft\EntangleBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Megasoft\EntangleBundle\Entity\Transaction;
 use Megasoft\EntangleBundle\Entity\UserTangle;
 use Megasoft\EntangleBundle\Entity\Session;
 use Megasoft\EntangleBundle\Entity\Tangle;
 use Megasoft\EntangleBundle\Entity\Offer;
 use Megasoft\EntangleBundle\Entity\User;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\Constraints\DateTime;
 
-/**
- * Gets the required information to view a certain user's profile
- * @author almgohar
- */
 class UserController extends Controller {
+
+    /**
+     * Validates the username and password from request and returns sessionID
+     * @param  Integer $len length for the generated sessionID
+     * @return String $generatedSessionID the session id that will be used
+     * 
+     * @author maisaraFarahat
+     */
+    private function generateSessionId($len) {
+        $generatedSessionID = '';
+        $seed = "abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for ($i = 0; $i < $len; $i++) {
+            $generatedSessionID .= $seed[rand(0, strlen($seed) - 1)];
+        }
+        return $generatedSessionID;
+    }
+
+    /**
+     * Validates the username and password from request and returns sessionID
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse $response
+     * 
+     * @author maisaraFarahat
+     */
+    public function loginAction(\Symfony\Component\HttpFoundation\Request $request) {
+        $response = new JsonResponse();
+        $badReq = "bad request";
+        if (!$request) {
+            return new JsonResponse($badReq, 400);
+        }
+        $json = $request->getContent();
+        if (!$json) {
+            $response->setStatusCode(400, $badReq);
+            return $response;
+        }
+        $json_array = json_decode($json, true);
+        $name = $json_array['name'];
+        $password = $json_array['password'];
+
+        if (!$name) {
+            return new JsonResponse("missing name", 400);
+        }
+        if (!$password) {
+            return new JsonResponse("missing password", 400);
+        }
+        if (strstr("\"", $name) || strstr("'", $name)) {
+            return new JsonResponse("the name has special characters", 400);
+        }
+        $sessionId = $this->generateSessionId(30);
+
+        $repo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
+        $user = $repo->findOneBy(array('name' => $name, 'password' => md5($password)));
+        if (!$user) {
+            return new JsonResponse("Wrong credentials", 400);
+        }
+        $session = new Session();
+        $session->setSessionId($sessionId);
+        $session->setUser($user);
+        $session->setUserId($user->getId());
+        $session->setCreated(new \DateTime('tomorrow'));
+        $session->setExpired(0);
+        $session->setRegId("ToAvoidNull");
+        $session->setDeviceType("Galaxy S3");
+
+        $user->addSession($session);
+
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->persist($session);
+
+        $this->getDoctrine()->getManager()->flush();
+        $response->setData(array('sessionId' => $sessionId));
+        $response->setStatusCode(201);
+        return $response;
+    }
 
     /**
      * Validates that a given user is a member of a given tangle
