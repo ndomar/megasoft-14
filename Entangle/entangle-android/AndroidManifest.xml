@@ -35,6 +35,10 @@
             android:label="@string/title_activity_view_stream" >
         </activity>
         <activity
+            android:name="com.megasoft.entangle.ActivitiesListActivity"
+            android:label="@string/title_activity_view_stream" >
+        </activity>
+        <activity
             android:name="com.megasoft.entangle.Members"
             android:label="@string/title_activity_members" >
         </activity>
