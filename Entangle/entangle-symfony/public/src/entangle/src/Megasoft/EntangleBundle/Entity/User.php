@@ -81,7 +81,7 @@ class User
     /**
      *
      * @var Claim[]
-     * @ORM\OneToMany(targetEntity="Claim", mappedBy="user", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Claim", mappedBy="claimer", cascade={"persist"})
      */
     private $claims;
     

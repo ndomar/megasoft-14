@@ -294,7 +294,11 @@ Get profile
                 "message" : "Hello , Join my tangle"
             }
              
-+ Response 201
++ Response 201 (application/json)
+            
+            {
+                "pending" : 1
+            }
 
 ## POST /tangle/{tangleId}/check-membership
 
@@ -381,18 +385,66 @@ contact offerer and requester after claim
              
 + Response 200 (application/json)
 
+                { 
+                    "Requester" : "name",
+                    "Description":"request desc",  
+                    "Date" : "1/1/1",
+                    "Tags" :["tag1", "tag2","tag3"],
+                    "Price": "3",
+                    "Deadline":"1/2/1",
+                    "Status":"done"
+                    "Description" : "description of a request",
+                    "Offers" : [
+                                    {
+                                    "id" : "1", 
+                                    "requestedPrice" : "5",
+                                    "date" : "1/1/1"
+                                    "description": "Offer Description", 
+                                    "offererId" : "10",
+                                    "status" : "Status"
+                                     }
+                                     {
+                                    "id" : "1", 
+                                    "requestedPrice" : "3",
+                                    "date" : "2/1/1"
+                                    "description": "Offer Description", 
+                                    "offererId" : "11",
+                                    "status" : "Status"
+                                     }
+                                     {
+                                    "id" : "1", 
+                                    "requestedPrice" : "4",
+                                    "date" : "1/1/1"
+                                    "description": "Offer Description", 
+                                    "offererId" : "12",
+                                    "status" : "Status"
+                                     }
+                                ]
+                }
+
+## POST /request/{requestId}/icon
+Post icon for a specific request
++ parameters
+
+    + requestId (Int, required) ... request id
+    
++ Request (application/json)
+
+    +Header
+            
+            X-SESSION-ID : '549048320948219058409580'
+            
+    + Body
+                
+                {
+                    "requestIcon" : "fjdlgjfkjlgk'jwlkf'wjadgl'h'rjhgWGJAEKGJKLSJGDFKGHSK;GRIG;EJ"
+                }
+                
++ Response 201(application/json)
+
         {
-             "requester" : "name",
-             "description":"request desc",  
-             "date" : "1/1/1",
-             "tags" :" tag tag", 
-             "price": "3",
-             "deadline":"1/2/1",
-             "status":"done"
-
-                                 
+            "iconUrl" : "http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/icons/test.jpg"
         }
-
 
 ## GET /user/whoami/{sessionId}
 
@@ -452,4 +504,63 @@ As a user, i can register
         
            
 + Response 201 
+
+## GET /tangle/{tangleId}/pending-invitations
+
++ Parameters
+    + tangleId ( integer , required ) ... tangle id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 200 (application/json)
+
+        {
+             "pending-invitations" : [
+                                        {
+                                            "id":1,
+                                            "invitee":"Elprince",
+                                            "inviter":"3m el kol",
+                                            "email":"prince@prince.com"
+                                        },
+                                        {
+                                            "id":1,
+                                            "invitee":"Elprince",
+                                            "inviter":"3m el kol",
+                                            "email":"prince@prince.com"
+                                        },
+                                        {
+                                            "id":1,
+                                            "invitee":"Elprince",
+                                            "inviter":"3m el kol",
+                                            "email":"prince@prince.com"
+                                        }
+                                    ]
+        }
+
+## PUT /pending-invitation/{pendingInvitationId}/accept
+
++ Parameters
+    + pendingInvitationId ( integer , required ) ... Pending Invitation Id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 200
+
+## DELETE /pending-invitation/{pendingInvitationId}/reject
+
++ Parameters
+    + pendingInvitationId ( integer , required ) ... Pending Invitation Id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 200
 
