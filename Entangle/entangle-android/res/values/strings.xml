@@ -15,6 +15,12 @@
     <string name="tagHint">Only letters, digits, and , allowed</string>
     <string name="priceHint">enter a positive number</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_create_tangle">Create Tangle</string>
+    <string name="tangleNameHint">Specify a Tangle name</string>
+    <string name="iconButton">Choose an Icon</string>
+    <string name="tangleIcon">Tangle Icon</string>
+    <string name="createTangle">CREATE</string>
+    <string name="checkTangleName">Check</string>
     <string name="date">Date</string>
     <string name="ChooseDate">Choose DeadLine</string>
     <string name="deadLine">Expected deadline</string>
@@ -92,6 +98,4 @@
     <string name="action_example">Example action</string>
     <string name="title_activity_tangle_stream">TangleStreamActivity</string>
     <string name="create_tangle">Create Tangle</string>
-    <string name="title_activity_create_tangle">Create Tangle</string>
-
 </resources>
