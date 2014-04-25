@@ -33,5 +33,49 @@ public class MemberEntryFragment extends Fragment {
 		return memberAvatarView;
 	}
 
+	public void setMemberAvatarView(ImageView memberAvatarView) {
+		this.memberAvatarView = memberAvatarView;
+	}
+	
+	public String getMemberAvatarURL() {
+		return memberAvatarURL;
+	}
+
+	public void setMemberAvatarURL(String memberAvatarURL) {
+		this.memberAvatarURL = memberAvatarURL;
+	}
+
+	public String getMemberName() {
+		return memberName;
+	}
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+
+	public int getMemberBalance() {
+		return memberBalance;
+	}
+
+	public void setMemberBalance(int memberBalance) {
+		this.memberBalance = memberBalance;
+	}
+
+	public TextView getMemberNameView() {
+		return memberNameView;
+	}
+
+	public void setMemberNameView(TextView memberNameView) {
+		this.memberNameView = memberNameView;
+	}
+
+	public TextView getMemberBalanceView() {
+		return memberBalanceView;
+	}
+
+	public void setMemberBalanceView(TextView memberBalanceView) {
+		this.memberBalanceView = memberBalanceView;
+	}
+
 	
 }
