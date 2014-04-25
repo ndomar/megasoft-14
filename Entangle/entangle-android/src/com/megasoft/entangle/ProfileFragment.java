@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -97,7 +98,7 @@ public class ProfileFragment extends Fragment {
 
 	private View view;
 
-	private HomeActivity activity;
+	private FragmentActivity activity;
 	
 	/**
 	 * The FragmentTransaction that handles adding the fragments to the activity
@@ -281,8 +282,10 @@ public class ProfileFragment extends Fragment {
 	
 	@Override
 	public void onAttach(Activity activity) {
-	    this.activity = (HomeActivity) activity;
+		
+	    this.activity = (FragmentActivity) activity;
 	    super.onAttach(this.activity);
+		
 	}
 	
 

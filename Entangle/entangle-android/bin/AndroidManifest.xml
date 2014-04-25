@@ -19,8 +19,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.megasoft.entangle.HomeActivity"
-            android:label="@string/title_activity_home"
-            android:logo="@drawable/entangle_logo" >
+            android:label="@string/title_activity_home" android:logo="@drawable/entangle_logo">
         </activity>
         <activity
             android:name="com.megasoft.entangle.MainActivity"
@@ -40,22 +39,23 @@
             android:label="@string/title_activity_members" >
         </activity>
         <activity
-            android:name="com.megasoft.entangle.ProfileFragment"
+            android:name="com.megasoft.entangle.ProfileActivity"
             android:label="@string/title_activity_profile" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.CreateRequestActivity"
             android:label="@string/title_activity_request_information" >
         </activity>
+
         <activity
             android:name="com.megasoft.entangle.InviteUserActivity"
             android:label="@string/title_activity_invite_users" >
         </activity>
-        <activity
+         <activity
             android:name="com.megasoft.entangle.CreateOfferActivity"
             android:label="@string/title_activity_create_offer" >
         </activity>
-        <activity
+		<activity
             android:name="com.megasoft.entangle.RequestActivity"
             android:label="@string/title_activity_request" >
         </activity>
@@ -65,7 +65,6 @@
             android:parentActivityName="com.megasoft.entangle.InviteUserActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.megasoft.entangle.InviteUsers" />
                 android:value="com.megasoft.entangle.InviteUserActivity" />
         </activity>
         <activity
@@ -76,6 +75,9 @@
             android:name="com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationActivity"
             android:label="@string/title_activity_manage_pending_invitation" >
         </activity>
+
+        
+
         <activity
             android:name="com.megasoft.entangle.EditProfileActivity"
             android:label="@string/title_activity_edit_profile"
@@ -95,10 +97,6 @@
         <activity
             android:name="com.megasoft.entangle.CreateTangleActivity"
             android:label="@string/title_activity_create_tangle" >
-        </activity>
-        <activity
-            android:name="com.megasoft.entangle.ProfileActivity"
-            android:label="@string/title_activity_profile" >
         </activity>
     </application>
 
