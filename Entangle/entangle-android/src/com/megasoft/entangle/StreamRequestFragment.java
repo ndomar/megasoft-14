@@ -275,7 +275,7 @@ public class StreamRequestFragment extends Fragment {
 	 *            , is the request button
 	 */
 	private void setRequestRedirection() {
-
+		request.setText(getRequestString());
 		view.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
