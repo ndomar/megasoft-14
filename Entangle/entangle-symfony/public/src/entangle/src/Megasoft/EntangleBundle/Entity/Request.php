@@ -13,8 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 class Request
 {
-    const OPEN = 0;
-    const CLOSED = 1;
     
     /**
      * @var integer

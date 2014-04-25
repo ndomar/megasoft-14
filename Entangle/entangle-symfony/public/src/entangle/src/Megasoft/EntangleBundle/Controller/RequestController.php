@@ -35,15 +35,15 @@ class RequestController extends Controller {
         if ($tangleRequest == null || $tangleRequest->getDeleted()) {
             return new Response("Not Found", 404);
         } else {
-            if ($tangleRequest->getStatus() == \Megasoft\EntangleBundle\Entity\Request::OPEN) {
+            if ($tangleRequest->getStatus() == $tangleRequest->OPEN) {
                 return new Response("Request is already open", 400);
             }
         }
         if (($session->getUserId()) != ($tangleRequest->getUserId())) {
             return new Response("Unauthorized", 401);
         }
-        if ($tangleRequest->getStatus() == \Megasoft\EntangleBundle\Entity\Request::CLOSED) {
-            $tangleRequest->setStatus(\Megasoft\EntangleBundle\Entity\Request::OPEN);
+        if ($tangleRequest->getStatus() == $tangleRequest->CLOSED) {
+            $tangleRequest->setStatus($tangleRequest->OPEN);
             $this->getDoctrine()->getManager()->persist($tangleRequest);
             $this->getDoctrine()->getManager()->flush();
             return new Response('Reopened', 200);
