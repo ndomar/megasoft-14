@@ -149,7 +149,7 @@ public class CreateOfferActivity extends Activity {
 				}
 
 				PostRequest request = new PostRequest(Config.API_BASE_URL
-						+ "/tangle/" + tangleID + "/request" + requestID
+						+ "/tangle/" + tangleID + "/request/" + requestID
 						+ "/offer") {
 					protected void onPostExecute(String response) {
 						if (this.getStatusCode() == 201) {
