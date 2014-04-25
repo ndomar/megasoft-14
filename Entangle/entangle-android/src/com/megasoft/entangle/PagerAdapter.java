@@ -14,7 +14,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 	int tangleId;
 	int userId;
 	Context context;
-	
+	final static String STREAM = "Stream";
 	public PagerAdapter(Context con, FragmentManager fm,int tangleId,int userId) {
 		super(fm);
 		this.context = con;
