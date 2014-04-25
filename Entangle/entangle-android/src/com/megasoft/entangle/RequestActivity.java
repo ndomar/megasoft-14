@@ -79,7 +79,7 @@ public class RequestActivity extends Activity {
 	 * this is the endpoint string
 	 */
 	final String REQUEST = "/tangle/" + tangleId + "/request/" + requestId;
-	
+
 	/**
 	 * this is for checking if I have my own request open
 	 */
@@ -135,10 +135,18 @@ public class RequestActivity extends Activity {
 		GetRequest request = new GetRequest(Config.API_BASE_URL + REQUEST) {
 			protected void onPostExecute(String response) {
 				try {
-					Log.e("zeft", response);
 					JSONObject json = new JSONObject(response);
-					addRequestFields(json);
-					addOffers(json);
+					if (this.getStatusCode() == 200) {
+						addRequestFields(json);
+						addOffers(json);
+					} else {
+						TextView errorMessage = new TextView(self);
+						errorMessage.setText(json.getString("Error"));
+						errorMessage.setTextSize(25);
+						errorMessage.setTypeface(null, Typeface.BOLD_ITALIC);
+						errorMessage.setTextColor(Color.WHITE);
+						layout.addView(errorMessage);
+					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

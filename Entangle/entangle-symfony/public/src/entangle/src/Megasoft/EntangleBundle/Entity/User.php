@@ -67,7 +67,7 @@ class User
     /**
      *
      * @var boolean 
-     * @ORM\Column(name="accpetMailNotifications", type="boolean" , columnDefinition="tinyint(1) DEFAULT 1")
+     * @ORM\Column(name="acceptMailNotifications", type="boolean" , columnDefinition="tinyint(1) DEFAULT 1")
      */
     private $acceptMailNotifications = true;
     

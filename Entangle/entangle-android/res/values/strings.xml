@@ -88,10 +88,15 @@
     </string-array>
 
     <string name="title_activity_stream_request_fragment">StreamRequestFragment</string>
+    <string name="title_activity_tangle_stream">TangleStreamActivity</string>
+    <string name="create_tangle">Create Tangle</string>
+    <string name="title_activity_create_tangle">Create Tangle</string>
+
 
 
 
 </resources>
+
 
 
 
