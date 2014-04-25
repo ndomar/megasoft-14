@@ -106,5 +106,22 @@ public class MemberListFragment extends Fragment {
 		this.tangleId = tangleId;
 	}
 	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		setSessionId(getActivity().getSharedPreferences(Config.SETTING, 0).getString(Config.SESSION_ID, ""));
+		setTangleId(getArguments().getInt(Config.TANGLE_ID));
+		
+		View view = inflater.inflate(R.layout.fragment_member_list,
+				container, false);
+		
+		setContainer(container);
+		setMemberListView((LinearLayout) view.findViewById(R.id.view_member_list));
+		
+		fetchMembers();
+		
+		return view;
+	}
+	
 	
 }
