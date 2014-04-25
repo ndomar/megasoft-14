@@ -256,12 +256,12 @@ public class OfferActivity extends Activity {
 
 			if (userId == loggedInId) {
 				transaction = getFragmentManager().beginTransaction();
-				DeleteButtonFragment deleteFragment = new DeleteButtonFragment();
+			//	DeleteButtonFragment deleteFragment = new DeleteButtonFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("resourceType", "offer");
 				bundle.putInt("offerId", offerId);
-				deleteFragment.setArguments(bundle);
-				transaction.add(R.id.delete_offer_layout, deleteFragment);
+			//	deleteFragment.setArguments(bundle);
+			//	transaction.add(R.id.delete_offer_layout, deleteFragment);
 				transaction.commit();
 			}
 			offererName.setOnClickListener(new View.OnClickListener() {

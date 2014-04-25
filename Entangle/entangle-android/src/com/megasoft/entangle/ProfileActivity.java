@@ -1,5 +1,6 @@
 package com.megasoft.entangle;
 
+
 import com.megasoft.requests.DeleteRequest;
 
 import android.app.Activity;
@@ -105,6 +106,7 @@ public class ProfileActivity extends Activity {
 	 */
 
 	private String sessionId;
+
 
 	/**
 	 * This is method is invoked by the button of leave tangle when it is
