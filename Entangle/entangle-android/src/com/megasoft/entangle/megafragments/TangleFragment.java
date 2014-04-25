@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.megasoft.entangle.FilteringFragment;
@@ -32,6 +33,7 @@ public class TangleFragment extends Fragment {
 
 	private FragmentActivity activity;
 	private View view;
+	private TextView tangle;
 	
 	/**
 	 * The Intent used to redirect to other activities
@@ -107,11 +109,15 @@ public class TangleFragment extends Fragment {
 		});
          
          int tangleId = getArguments().getInt("tangleId");
+         tangleName = getArguments().getString("tangleName");
+         tangle = (TextView) view.findViewById(R.id.tangleName);
          
+
          sendFilteredRequest(rootResource + "tangle/" + tangleId
  				+ "/request");
         setAttributes();
  		setRedirections();
+ 		tangle.setText(tangleName);
         return view;
     }
 	

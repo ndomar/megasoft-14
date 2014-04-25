@@ -28,6 +28,7 @@ public class SampleFragment extends Fragment {
 	private String sessionId;
 	private int tangleId;
 	private int userId;
+	private String tangleName;
 	
 	
 	@Override
@@ -42,8 +43,9 @@ public class SampleFragment extends Fragment {
 		sessionId = settings.getString(Config.SESSION_ID, "");
 		userId = settings.getInt(Config.USER_ID, -1);
 		tangleId = getArguments().getInt("tangleId");
+		tangleName = getArguments().getString("tangleName");
 		
-        tab = new PagerAdapter(activity, activity.getSupportFragmentManager(),tangleId,userId);
+        tab = new PagerAdapter(activity, activity.getSupportFragmentManager(),tangleId,userId, tangleName);
         pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(tab);
        
