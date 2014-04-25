@@ -1,17 +1,28 @@
 package com.megasoft.entangle;
 
+
+import com.megasoft.requests.DeleteRequest;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.view.View;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.megasoft.config.Config;
+import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.ImageRequest;
-import android.app.Activity;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -96,6 +107,97 @@ public class ProfileActivity extends Activity {
 
 	private String sessionId;
 
+
+	/**
+	 * This is method is invoked by the button of leave tangle when it is
+	 * clicked
+	 * 
+	 * @author Almgohar, HebaAamer
+	 */
+	@SuppressWarnings("deprecation")
+	private void leaveTangle() {
+		this.showDialog(0);
+	}
+
+	/**
+	 * This method is called when showDialog(int) method is called and it is
+	 * responsible for creating a dialog to make sure that the user wants to
+	 * leave the tangle
+	 * 
+	 * @param dialodId
+	 *            , is an int that corresponds to the id of the dialog being
+	 *            created but it is not used in this situation
+	 * 
+	 * @author HebaAamer
+	 */
+	@Override
+	protected Dialog onCreateDialog(int dialogId) {
+		Builder dialogBuilder = new AlertDialog.Builder(this);
+		dialogBuilder.setTitle("Leaving the tangle");
+		dialogBuilder
+				.setMessage("Are you sure you want to leave this tangle ?");
+		dialogBuilder.setPositiveButton("Yes",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						sendLeaveRequest();
+						dialog.dismiss();
+					}
+				});
+		dialogBuilder.setNegativeButton("NO",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+		return dialogBuilder.create();
+	}
+
+	/**
+	 * This method is used to send the request of leaving the tangle and handles
+	 * different responses, if the user left the tangle it will be redirected to
+	 * the list of tangles activity
+	 * 
+	 * @author HebaAamer
+	 */
+	private void sendLeaveRequest() {
+		DeleteRequest leaveRequest = new DeleteRequest(Config.API_BASE_URL
+				+ "/tangle/" + tangleId + "/user") {
+			public void onPostExecute(String response) {
+				if (getStatusCode() == 204) {
+					Toast.makeText(getBaseContext(),
+							"You left the tangle successfully",
+							Toast.LENGTH_LONG).show();
+					Intent newIntent = new Intent(getBaseContext(),
+							TangleStreamActivity.class);
+					newIntent.putExtra("userId", userId);
+					// it will either remove the whole history or we just finish
+					// the activity
+					// newIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+					startActivity(newIntent);
+					finish();
+
+				} else if (getStatusCode() == 403) {
+					Toast.makeText(getBaseContext(),
+							"Sorry, you are not allowed to leave the tangle",
+							Toast.LENGTH_LONG).show();
+				} else {
+					Toast.makeText(
+							getBaseContext(),
+							"Sorry, problem happened while leaving the tangle. Try again later",
+							Toast.LENGTH_LONG).show();
+				}
+			}
+
+		};
+		leaveRequest.addHeader(Config.API_SESSION_ID, sessionId);
+		leaveRequest.execute();
+	}
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -114,7 +216,7 @@ public class ProfileActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.profile, menu);
 		return true;
 	}
 
@@ -263,15 +365,6 @@ public class ProfileActivity extends Activity {
 		Intent editProfile = new Intent(this, EditProfileActivity.class);
 		editProfile.putExtra("user id", loggedInId);
 		startActivity(editProfile);
-	}
-
-	/**
-	 * Let the user leave the current tangle
-	 * 
-	 * @author Almgohar
-	 */
-	public void leaveTangle() {
-
 	}
 
 	/**

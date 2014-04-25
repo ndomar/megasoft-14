@@ -171,7 +171,7 @@ get_offer:
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
 
 megasoft_entangle_homepage:
-    pattern:  /hello/{hello}
+    pattern:  /hello/{name}
     defaults: { _controller: MegasoftEntangleBundle:Default:index }
     methods: [GET]
     
@@ -236,6 +236,12 @@ create:
     defaults: { _controller: MegasoftEntangleBundle:Request:create }
     methods: [POST]
     
+
+
+leave_tangle:
+    pattern: /tangle/{tangleId}/user
+    defaults: {_controller: MegasoftEntangleBundle:Tangle:leaveTangle }
+    methods: [DELETE]
 
 acceptOffer:
     pattern: /accept/offer
