@@ -105,6 +105,14 @@ public class OfferActivity extends Activity {
 	 * String for post offer endpoint
 	 */
 	final String ACCEPT = "/accept/offer";
+	/**
+	 * String for post offer endpoint
+	 */
+	final String Request = "/request/";
+	/**
+	 * String for post offer endpoint
+	 */
+	final String Offer = "/offers/";
 
 	/**
 	 * The id of the logged in user
@@ -375,7 +383,7 @@ public class OfferActivity extends Activity {
 	 */
 	public void notifyCheck(View view) {
 		GetRequest initRequest = new GetRequest(
-				Config.API_BASE_URL+"/request/" + 1 + "/offers/" + offerId) {
+				Config.API_BASE_URL+Request + 1 + Offer + offerId) {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 200) {
 					JSONObject x;
@@ -409,7 +417,7 @@ public class OfferActivity extends Activity {
 	 */
 	public void sendNotification(int Offerid) {
 		PostRequest request = new PostRequest(
-				Config.API_BASE_URL+"/request/" + Offerid) {
+				Config.API_BASE_URL+Request + Offerid) {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 201) {
 					Toast success = Toast.makeText(getApplicationContext(),
