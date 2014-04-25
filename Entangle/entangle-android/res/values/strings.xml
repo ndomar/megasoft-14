@@ -55,7 +55,8 @@
     <string name="transactions">Transactions: </string>
     <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="title_activity_offer">OfferActivity</string>
-
+	<string name="Switch">Switch!</string>
+    
     <string-array name="spinnerChoice">
         <item>None</item>
         <item>Tag</item>

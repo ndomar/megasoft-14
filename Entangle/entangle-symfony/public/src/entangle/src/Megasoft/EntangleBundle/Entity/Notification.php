@@ -41,6 +41,14 @@ class Notification
     
     /**
      *
+     * @var type string
+     * 
+     * @ORM\Column(name="type" , type="String")
+     */
+    //private $type;
+
+    /**
+     *
      * @var integer
      * 
      * @ORM\Column(name="userId" , type="integer")
@@ -112,7 +120,16 @@ class Notification
     {
         return $this->created;
     }
-
+    
+    /**
+     * Get type
+     * 
+     * @return type \String
+     
+    public function getType()
+    {
+        return $this->type;
+    }
 
     /**
      * Set userId
