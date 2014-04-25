@@ -278,10 +278,13 @@ class OfferController extends Controller {
         $status = $json_array['status'];
         $offerId = $offerid;
         $offer = $repo->find($offerId);
+        if($offer==null) {
+            return new Response('Offer does not exist', 401);
+        }
         $request = $offer->getRequest();
         $requesterId = $request->getUserId();
         if ($requesterId != $userOfSession) {
-            return $response = new Response("Error: You are unauthorized to accept this offer.", 409);
+            return new Response("Error: You are unauthorized to accept this offer.", 409);
         }
         $backendstatus = $offer->getStatus();
         if ($backendstatus == $offer->DONE) {
