@@ -29,7 +29,16 @@ class RequestController extends Controller{
         $icon = imagecreatefromstring($decodedIcon);
         
         $iconFileName = 'request' . "$requestId" . '.png';
+        
+        
+        $kernel = $this->get('kernel');
+        $path = $kernel->getRootDir();
+        
+        return new Response($path);
+        
         $outputFilePath = '/vagrant/public/src/entangle/web/bundles/megasoftentangle/images/icons/' . $iconFileName;
+        
+        
         imagepng($icon, $outputFilePath, 9);
         imagedestroy($icon);
         return 'http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/icons/' . $iconFileName;
@@ -79,7 +88,7 @@ class RequestController extends Controller{
         }
         
         try{
-            $iconUrl = $this->saveIcon($iconData, $requestId);
+            return $iconUrl = $this->saveIcon($iconData, $requestId);
         }
         catch (Exception $e){
             return new Response('Internal Server Error', 500);
