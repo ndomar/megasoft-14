@@ -3,6 +3,13 @@
 
     <string name="app_name">Entangle</string>
     <string name="action_settings">Settings</string>
+    <string name="Requests">Create Request</string>
+    <string name="name">Request\'s name</string>
+    <string name="description">Request\'s description</string>
+    <string name="post">Post</string>
+    <string name="tag">Please Add comma separated tags</string>
+    <string name="tagHint">Only letters, digits, and , allowed</string>
+    <string name="priceHint">enter a positive number</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_create_tangle">Create Tangle</string>
     <string name="tangleNameHint">Specify a Tangle name</string>
@@ -10,12 +17,16 @@
     <string name="tangleIcon">Tangle Icon</string>
     <string name="createTangle">CREATE</string>
     <string name="checkTangleName">Check</string>
+    <string name="date">Date</string>
+    <string name="ChooseDate">Choose DeadLine</string>
+    <string name="deadLine">Expected deadline</string>
+    <string name="price">Requested price</string>
+    <string name="check">please check when you are done</string>
     <string name="title_activity_view_stream">ViewStream</string>
     <string name="viewStream">Stream</string>
     <string name="viewMembers">Members</string>
     <string name="viewProfile">Profile</string>
     <string name="title_activity_members">Members</string>
-    <string name="title_activity_profile">Profile</string>
     <string name="title_activity_invite">Invite</string>
     <string name="tangleName">Tangle Name</string>
     <string name="search_title">Filter Stream</string>
@@ -39,6 +50,24 @@
     <string name="wrong_emails">Not Valid Emails</string>
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
+    <string name="preview_request">Preview Request</string>
+    <string name="title_activity_create_offer">CreateOfferActivity</string>
+    <string name="create_offer">Create Offer</string>
+    <string name="offer_description">Offer\'s description</string>
+    <string name="offer_requested_price">requested price</string>
+    <string name="requested_price_hint">enter a positive number</string>
+    <string name="expected_deadline">Choose expected Deadline</string>
+    <string name="post_offer">Post Offer</string>
+    <string name="offer_check">check when you\'re done</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_request">RequestActivity</string>
+    <string name="title_activity_accept_pending_invitation">AcceptPendingInvitation</string>
+    <string name="pending_invitation_approve">Approve</string>
+    <string name="pending_invitation_reject">Reject</string>
+    <string name="title_activity_manage_pending_invitation">ManagePendingInvitationActivity</string>
+    <string name="pending_invitation_no_pending">No Pending Invitations now !</string>
+    <string name="refresh">Refresh</string>
+    <string name="title_activity_date_picker_fragment">DatePickerFragment</string>
     <string name="edit_info">Edit your information</string>
     <string name="leave_tangle">Leave current tangle</string>
     <string name="transactions">Transactions: </string>
@@ -53,5 +82,7 @@
     </string-array>
 
     <string name="title_activity_stream_request_fragment">StreamRequestFragment</string>
+    <string name="title_activity_tangle_stream">TangleStreamActivity</string>
+    <string name="create_tangle">Create Tangle</string>
 
 </resources>

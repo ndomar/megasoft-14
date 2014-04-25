@@ -1,5 +1,6 @@
 package com.megasoft.entangle;
 
+
 import java.io.ByteArrayOutputStream;
 
 import org.json.JSONException;
@@ -63,6 +64,7 @@ public class CreateTangleActivity extends Activity {
 					int count) {
 			}
 		});
+
 	}
 
 	@Override

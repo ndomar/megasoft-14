@@ -1,22 +1,26 @@
 <?php
 
 namespace Megasoft\EntangleBundle\Controller;
+
 use DateTime;
-use Megasoft\EntangleBundle\Entity\InvitationCode;
 use Megasoft\EntangleBundle\Entity\Tangle;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use Megasoft\EntangleBundle\Entity\InvitationCode;
+use Megasoft\EntangleBundle\Entity\InvitationMessage;
+use Megasoft\EntangleBundle\Entity\PendingInvitation;
+use Megasoft\EntangleBundle\Entity\UserTangle;
 
 class TangleController extends Controller
 {
     /**
       * Validates that the request has correct format, session Id is active and of a user and that the user is in the tangle
-      * @param \Symfony\Component\HttpFoundation\Request $request
+      * @param Request $request
       * @param integer $tangleId
-      * @return \Symfony\Component\HttpFoundation\Response | null
+      * @return Response | null
       * @author OmarElAzazy
       */
     private function verifyUser($request, $tangleId){
@@ -47,12 +51,12 @@ class TangleController extends Controller
     
     /**
       * An endpoint to filter requests of a specific tangle by requester, tag, prefix of requester's name or description
-      * @param \Symfony\Component\HttpFoundation\Request $request
+      * @param Request $request
       * @param integer $tangleId
-      * @return \Symfony\Component\HttpFoundation\Response | Symfony\Component\HttpFoundation\JsonResponse
+      * @return Response | Symfony\Component\HttpFoundation\JsonResponse
       * @author OmarElAzazy
       */
-    public function filterRequestsAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId)
+    public function filterRequestsAction(Request $request, $tangleId)
     { 
         $verification = $this->verifyUser($request, $tangleId);
         
@@ -115,7 +119,8 @@ class TangleController extends Controller
                                         'username' => $tangleRequest->getUser()->getName(),
                                         'userId' => $tangleRequest->getUserId(),
                                         'description' => $tangleRequest->getDescription(),
-                                        'offersCount' => sizeof($tangleRequest->getOffers())
+                                        'offersCount' => sizeof($tangleRequest->getOffers()),
+                                        'price' => $tangleRequest->getRequestedPrice()
                                     );
         }
         
@@ -127,12 +132,12 @@ class TangleController extends Controller
     
     /**
       * An endpoint to return the list of tags in a specific tangle
-      * @param \Symfony\Component\HttpFoundation\Request $request
+      * @param Request $request
       * @param integer $tangleId
-      * @return \Symfony\Component\HttpFoundation\Response | Symfony\Component\HttpFoundation\JsonResponse
+      * @return Response | Symfony\Component\HttpFoundation\JsonResponse
       * @author OmarElAzazy
       */
-    public function allTagsAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId){
+    public function allTagsAction(Request $request, $tangleId){
         $verification = $this->verifyUser($request, $tangleId);
         
         if($verification != null){
@@ -200,7 +205,7 @@ class TangleController extends Controller
      */
     private function isNewMember($email) {
         $userEmailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
-        $mail = $userEmailRepo->findOneByEmail($email);
+        $mail = $userEmailRepo->findOneBy(array('email'=>$email,'deleted'=>false));
         return ($mail == null);
     }
 
@@ -228,7 +233,7 @@ class TangleController extends Controller
      * @return Response|JsonResponse
      * @author MohamedBassem
      */
-    public function checkMembershipAction(Request $request, $tangleId) {
+    public function checkMembershipAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($sessionId == null) {
@@ -239,7 +244,7 @@ class TangleController extends Controller
 
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
 
-        if ($session == null) {
+        if ($session == null || $session->getExpired()) {
             return new Response("Unauthorized", 401);
         }
 
@@ -257,7 +262,7 @@ class TangleController extends Controller
         $jsonString = $request->getContent();
         $json = json_decode($jsonString, true);
 
-        if (!isset($json['emails'])) {
+        if (!isset($json['emails']) || !is_array($json['emails'])) {
             return new Response("Bad Request", 400);
         }
 
@@ -285,7 +290,43 @@ class TangleController extends Controller
         $jsonResponse->setData($response);
         return $jsonResponse;
     }
+    
+    /**
+     * This function is used to send the invitation mail to $email with the message $message and
+     * creates the invitation code and send it to the user
+     * @param string $email
+     * @param integer $inviterId
+     * @param string $message
+     * @author MohamedBassem
+     */
+    public function inviteUser($email,$inviterId,$message){
+        $randomString = $this->generateRandomString(30);
+        $newInvitationCode = new InvitationCode();
+        $newInvitationCode->setCode($randomString);
+        if ($this->isNewMember($email)) {
+            $newInvitationCode->setUserId(null);
+        } else {
 
+            $userEmailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
+            $user = $userEmailRepo->findOneByEmail($email)->getUser();
+            $newInvitationCode->setUser($user);
+        }
+
+        $newInvitationCode->setInviterId($inviterId);
+        $newInvitationCode->setExpired(false);
+        $newInvitationCode->setCreated(new DateTime("NOW"));
+        $newInvitationCode->setEmail($email);
+
+        $this->getDoctrine()->getManager()->persist($newInvitationCode);
+        $this->getDoctrine()->getManager()->flush();
+
+        $message = 'Hi , ' . $message . ' , to accept the request'
+                . ' open this link http://entangle.io/invitation/'
+                . $randomString . ' Best Regards .. BLA BLA BLA';
+
+        // Mailer::sendEmail($email , $message ); // TO BE IMPLEMENTED
+    }
+    
     /**
      * An endpoint to invite a list of emails to join a certain tangle
      * it creates the invitation code and send it to the user
@@ -306,7 +347,7 @@ class TangleController extends Controller
 
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
 
-        if ($session == null) {
+        if ($session == null || $session->getExpired()) {
             return new Response("Unauthorized", 401);
         }
 
@@ -323,12 +364,13 @@ class TangleController extends Controller
         $jsonString = $request->getContent();
         $json = json_decode($jsonString, true);
 
-        if (!isset($json['emails']) || !isset($json['message'])) {
+        if (!isset($json['emails']) || !isset($json['message']) || !is_array($json['emails'])) {
             return new Response("Bad Request", 400);
         }
 
         $isOwner = $userTangle->getTangleOwner();
-
+        
+        
         foreach ($json['emails'] as $email) {
 
             if (!$this->isValidEmail($email) || (!$this->isNewMember($email) && $this->isTangleMember($email, $tangleId) )) {
@@ -336,39 +378,43 @@ class TangleController extends Controller
             }
 
             if ($isOwner) {
-
-                $randomString = $this->generateRandomString(30);
-
-                $newInvitationCode = new InvitationCode();
-                $newInvitationCode->setCode($randomString);
+                $this->inviteuser($email,$session->getUserId(),$json['message']);
+            } else {
+                $em = $this->getDoctrine()->getManager();
+                
+                $invitationMessage = new InvitationMessage();
+                $invitationMessage->setBody($json['message']);
+                
+                $pendingInvitation = new PendingInvitation();
                 if ($this->isNewMember($email)) {
-                    $newInvitationCode->setUserId(null);
+                    $pendingInvitation->setInvitee(null);
                 } else {
 
                     $userEmailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
                     $user = $userEmailRepo->findOneByEmail($email)->getUser();
-                    $newInvitationCode->setUser($user);
+                    $pendingInvitation->setInvitee($user);
                 }
 
-                $newInvitationCode->setInviterId($session->getUserId());
-                $newInvitationCode->setExpired(false);
-                $newInvitationCode->setCreated(new DateTime("NOW"));
-                $newInvitationCode->setEmail($email);
-
-                $this->getDoctrine()->getManager()->persist($newInvitationCode);
-                $this->getDoctrine()->getManager()->flush();
-
-                $message = 'Hi , ' . $json['message'] . ' , to accept the request'
-                        . ' open this link http://entangle.io/invitation/'
-                        . $randomString . ' Best Regards .. BLA BLA BLA';
-
-                // Mailer::sendEmail($email , $message ); // TO BE IMPLEMENTED
-            } else {
-                // TODO not this userstory
+                $pendingInvitation->setInviter($session->getUser());
+                $pendingInvitation->setMessage($invitationMessage);
+                $pendingInvitation->setTangle($userTangle->getTangle());
+                $pendingInvitation->setEmail($email);
+                
+                $em->persist($invitationMessage);
+                $em->persist($pendingInvitation);
+                $em->flush();
             }
         }
-
-        return new Response("Invitation Sent", 200);
+        
+        $jsonResponse = new JsonResponse();
+        $jsonResponse->setStatusCode(201);
+        
+        if($isOwner){
+            $jsonResponse->setData(array('pending'=>0));
+        }else{
+            $jsonResponse->setData(array('pending'=>1));
+        }
+        return $jsonResponse;
     }
 
     /**
@@ -385,6 +431,7 @@ class TangleController extends Controller
         }
         return $ret;
     }
+
 
     /**
      * Parse the request and creates a new tangle
@@ -456,6 +503,226 @@ class TangleController extends Controller
         } else {
             return new Response('Found', 200);
         }
+    }
+    
+    /**
+     * Validates whether the user with the session id $sessionId is the owner of the tangle with
+     * tangle id $tangleId , If yes the function returns null, returns the appropriate exception otherwise 
+     * @param integer $sessionId
+     * @param integer $tangleId
+     * @return Response|null
+     * @author MohamedBassem
+     */
+    public function validateIsOwner($sessionId,$tangleId){
+        if ($sessionId == null) {
+            return new Response("Bad Request", 400);
+        }
+
+        $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
+
+        $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
+
+        if ($session == null || $session->getExpired()) {
+            return new Response("Unauthorized", 401);
+        }
+        
+        $userTangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserTangle');
+
+        if (($userTangle = $userTangleRepo->findOneBy(array('userId' => $session->getUserId(), 'tangleId' => $tangleId))) == null || !$userTangle->getTangleOwner() ) {
+            return new Response("Unauthorized", 401);
+        }
+        
+        return null;
+    }
+    
+    /**
+     * The endpoint responsable for fetching the pending invitations for the tangle with id $tangleId
+     * @param Request $request
+     * @param integer $tangleId
+     * @return JsonResponse
+     * @author MohamedBassem
+     */
+    public function pendingInvitationsAction(Request $request,$tangleId){
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        
+        $validation = $this->validateIsOwner($sessionId,$tangleId);
+        if($validation != null){
+            return $validation;
+        }
+        
+        $pendingInvitationTable = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:PendingInvitation');
+        $pendingInvitations = $pendingInvitationTable->findBy(array('tangleId'=>$tangleId,'approved'=>false));
+        $responseArray = array();
+        foreach($pendingInvitations as $pendingInvitation){
+            $pending = array();
+            $pending['id'] = $pendingInvitation->getId();
+            if($pendingInvitation->getInvitee() == null){
+                $pending['invitee'] = null;
+            }else{
+                $pending['invitee'] = $pendingInvitation->getInvitee()->getName();
+            }
+            $pending['inviter'] = $pendingInvitation->getInviter()->getName();
+            $pending['email'] = $pendingInvitation->getEmail();
+            $responseArray[] = $pending;
+        }
+        
+        $jsonResponse = new JsonResponse();
+        $jsonResponse->setData(array('pending-invitations'=>$responseArray));
+        return $jsonResponse;
+    }
+    
+    /**
+     * An endpoint to accept the pending invitation with id $pendingInvitationId and sends the
+     * invitation email to the user
+     * @param Request $request
+     * @param integer $pendingInvitationId
+     * @return Response
+     * @author MohamedBassem
+     */
+    public function acceptPendingInvitationAction(Request $request,$pendingInvitationId){
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        
+        $pendingInvitationTable = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:PendingInvitation');
+        $pendingInvitation = $pendingInvitationTable->findOneBy(array('id'=>$pendingInvitationId));
+        
+        if($pendingInvitation == null){
+            return new Response("Pending Invitation Not Found", 404);
+        }
+        
+        if($pendingInvitation->getApproved()){
+            return new Response("Bad Request", 400);
+        }
+            
+        $validation = $this->validateIsOwner($sessionId,$pendingInvitation->getTangleId());
+        
+        if($validation != null){
+            return $validation;
+        }
+        
+        
+        $message = $pendingInvitation->getMessage()->getBody();
+        $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
+        $email = $pendingInvitation->getEmail();
+        if ($this->isNewMember($email) || !$this->isTangleMember($email, $pendingInvitation->getTangleId()) ) {
+            $this->inviteuser($email,$pendingInvitation->getInviterId(),$message);
+            $pendingInvitation->setApproved(true);
+            $this->getDoctrine()->getManager()->flush();
+            return new Response("Approved",200);
+        }else{
+            $pendingInvitation->setApproved(true);
+            $this->getDoctrine()->getManager()->flush();
+            return new Response("Already in the tangle",200);
+        }
+        
+        
+    }
+    
+    /**
+     * An endpoint to reject the pending invitation with id $pendingInvitationId
+     * @param Request $request
+     * @param integer $pendingInvitationId
+     * @return Response
+     * @author MohamedBassem
+     */
+    public function rejectPendingInvitationAction(Request $request,$pendingInvitationId){
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        
+        $pendingInvitationTable = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:PendingInvitation');
+        $pendingInvitation = $pendingInvitationTable->findOneBy(array('id'=>$pendingInvitationId));
+        
+        if($pendingInvitation == null){
+            return new Response("Pending Invitation Not Found", 404);
+        }
+        
+        if($pendingInvitation->getApproved()){
+            return new Response("Bad Request", 400);
+        }
+            
+        $validation = $this->validateIsOwner($sessionId,$pendingInvitation->getTangleId());
+        
+        if($validation != null){
+            return $validation;
+        }
+        
+        $this->getDoctrine()->getManager()->remove($pendingInvitation);
+        $this->getDoctrine()->getManager()->flush();
+        return new Response("Deleted",200);
+    }
+
+    /**
+     * An endpoint for accepting tangle invitations sent to user
+     * @param int $userId
+     * @param int $tangleId
+     * @return Response
+     * @author MahmoudGamal
+     */
+    public function addUserAction($userId, $tangleId) {
+        $tangle = $this->getDoctrine()
+                ->getRepository('MegasoftEntangleBundle:Tangle')
+                ->find($tangleId);
+        if (!$tangle) {
+            return new Response("Tangle not found", 404);
+        }
+        $user = $this->getDoctrine()
+                ->getRepository('MegasoftEntangleBundle:User')
+                ->find($userId);
+        if (!$user) {
+            return new Response("User not found", 404);
+        }
+        $criteria = array('user' => $user , 'tangle' =>$tangle );
+        $search = current($this->getDoctrine()
+                        ->getRepository('MegasoftEntangleBundle:UserTangle')
+                        ->findBy($criteria));
+        if ($search) {
+            return new Response("User already exists in tangle", 400);
+        }
+        $em = $this->getDoctrine()->getManager();
+        $tangleUser = new UserTangle();
+        $tangleUser->setTangleOwner(FALSE);
+        $tangleUser->setUser($user);
+        $tangleUser->setTangle($tangle);
+        $tangleUser->setCredit(0);
+        $tangle->addUserTangle($tangleUser);
+        $this->getDoctrine()->getManager()->flush();
+        return new Response("User added", 201);
+    }
+
+    /**
+     * The endpoint resposible for fetching the tangles of a certain user from the database
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @author MohamedBassem
+     */
+    public function getTanglesAction(Request $request){
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        $doctrine = $this->getDoctrine();
+        
+        if ($sessionId == null) {
+            return new Response("Bad Request", 400);
+        }
+
+        $sesionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+
+        $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
+
+        if ($session == null || $session->getExpired()) {
+            return new Response("Unauthorized", 401);
+        }
+        
+        
+        $userId = $session->getUserId();
+        $UserTanglerepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $tangles = $UserTanglerepo->findBy(array('userId' => $userId,'leavingDate'=>null));
+        $ret = array();
+        foreach($tangles as $tangle){
+            $ret[] = array("id"=>$tangle->getTangleId(),"name"=>$tangle->getTangle()->getName());
+        }
+        
+        $jsonResponse = new JsonResponse();
+        $jsonResponse->setData(array("tangles"=>$ret));
+        return $jsonResponse;
+
     }
 
 }
