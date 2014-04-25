@@ -51,7 +51,7 @@ public class Request extends Activity {
 		final Intent intent = new Intent(this, Claim.class);
 		String sessionID = (String) getIntent().getCharSequenceExtra(
 				"sessionID");
-		int requestId = (int) getIntent().getIntExtra("RequestId", -1);
+		int requestId = (int) getIntent().getIntExtra("requestId", -1);
 		GetRequest requestTangleOwnerMail = new GetRequest(Config.API_BASE_URL
 				+ "/tangleOwnerAndClaimerMail/" + requestId + "/claim") {
 
