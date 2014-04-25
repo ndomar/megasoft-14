@@ -54,6 +54,11 @@ public class ChangeOfferPriceActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Changes the price of an offer
+	 * @param View view
+	 * @author Mansour
+	 */
 	public void changePrice(View view) {
 		EditText newPrice = (EditText) findViewById(R.id.newOfferPrice);
 		if ((newPrice.getText().toString()).equals("")) {
@@ -72,6 +77,10 @@ public class ChangeOfferPriceActivity extends Activity {
 		}
 	}
 
+	/**
+	 * sends the new price to the server in order to be changed
+	 * @author Mansour
+	 */
 	public void sendPriceToServer() {
 		PostRequest imagePostRequest = new PostRequest(
 				Config.API_BASE_URL + "/request/" + requestId
@@ -97,6 +106,11 @@ public class ChangeOfferPriceActivity extends Activity {
 		imagePostRequest.execute();
 	}
 
+	/**
+	 * Shows a customizable error message dialgue to the user
+	 * @param String message
+	 * @author Mansour
+	 */
 	public void showMessage(String message) {
 		AlertDialog ad = new AlertDialog.Builder(this).create();
 		ad.setCancelable(false);
@@ -111,6 +125,10 @@ public class ChangeOfferPriceActivity extends Activity {
 		ad.show();
 	}
 
+	/**
+	 * Redirects to the home page
+	 * @author Mansour
+	 */
 	public void goToHomePage() {
 		AlertDialog ad = new AlertDialog.Builder(this).create();
 		ad.setCancelable(false);

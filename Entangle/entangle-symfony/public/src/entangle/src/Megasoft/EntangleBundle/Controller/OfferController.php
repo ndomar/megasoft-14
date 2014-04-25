@@ -145,6 +145,13 @@ class OfferController extends Controller {
         return $offerInformation;
     }
 
+    /**
+     * Changes the price of an offer
+     * @param \Megasoft\EntangleBundle\Entity\Request $request
+     * @param type $offerid
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author Mansour
+     */
     public function changeOfferPriceAction(Request $request, $offerid) {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
