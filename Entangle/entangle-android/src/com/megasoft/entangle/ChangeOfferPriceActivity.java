@@ -93,7 +93,7 @@ public class ChangeOfferPriceActivity extends Activity {
 			e.printStackTrace();
 		}
 		imagePostRequest.setBody(priceJSON);
-		imagePostRequest.addHeader(Config.API_SESSION_ID, "asdfc");
+		imagePostRequest.addHeader(Config.API_SESSION_ID, sessionId);
 		imagePostRequest.execute();
 	}
 
