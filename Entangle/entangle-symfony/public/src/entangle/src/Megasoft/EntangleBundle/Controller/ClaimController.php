@@ -30,6 +30,12 @@ class ClaimController extends Controller {
         if ($claimerRequest == null) {
             return new Response('No such claimer', 400);
         }
+        $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $offer = $offerRepo->findOneBy(array('requestId' => $requestId , 'deleted' => false, 'status' => 2));
+        
+        if($offer == null) {
+            return new Response('No such offer', 400);
+        }
         $tangleId = $claimerRequest->getTangleId();
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
@@ -55,8 +61,7 @@ class ClaimController extends Controller {
                 break;
             }
         }
-
-        if ($tangleOwnerId) {
+        if ($tangleOwnerId == null) {
             return new Response('No such tangle owner', 400);
         }
         if ($userId == null) {
@@ -81,7 +86,6 @@ class ClaimController extends Controller {
      * @author Salma Amr
      */
     public function createClaimAction(\Symfony\Component\HttpFoundation\Request $request, $requestId) {
-
         if ($requestId == null) {
             return new Response('No such request', 400);
         }
@@ -91,8 +95,9 @@ class ClaimController extends Controller {
         $claimerRequest = $requestRepo->findOneBy(array('id' => $requestId));
 
         if ($claimerRequest == null) {
-            return new Response('No such claim', 400);
+            return new Response('No such request', 400);
         }
+        
         $tangleId = $claimerRequest->getTangleId();
 
         if ($tangleId == null) {
@@ -101,16 +106,15 @@ class ClaimController extends Controller {
         if ($sessionId == null) {
             return new Response('session id is null', 400);
         }
-
+        
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
-
+        
         if ($session == null || $session->getExpired()) {
             return new Response('No such session', 400);
         }
         $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
         $tangle = $tangleRepo->findOneBy(array('id' => $tangleId, 'deleted' => false));
-
         if ($tangle == null) {
             return new Response('No such tangle', 400);
         }
