@@ -23,11 +23,6 @@ public class Request extends Activity {
 	 */
 	String tangleOwnerMail = "";
 	/**
-	 * this boolean indicates whether the request was successful or not
-	 */
-	boolean connection = true;
-
-	/**
 	 * This method loads the request form
 	 * 
 	 * @param Bundle
@@ -68,7 +63,7 @@ public class Request extends Activity {
 								.getString("X-TANGLEOWNER-MAIL");
 						claimerMail += object.getString("X-CLAIMER-MAIL");
 					} else {
-						connection = false;
+						Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
 					}
 
 				} catch (JSONException e) {
@@ -78,18 +73,12 @@ public class Request extends Activity {
 		};
 		requestTangleOwnerMail.addHeader("X-SESSION-ID", sessionID);
 		requestTangleOwnerMail.execute();
-		if (!connection) {
-			Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT)
-					.show();
-		} else {
 			intent.putExtra("receiver", tangleOwnerMail);
 			intent.putExtra("sender", claimerMail);
 			intent.putExtra("requestId", requestId);
 			intent.putExtra("sessionID", sessionID);
-			Toast.makeText(this, "Loading Claim Form", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(this, "Loading Claim Form", Toast.LENGTH_SHORT).show();
 			startActivity(intent);
-		}
 
 	}
 

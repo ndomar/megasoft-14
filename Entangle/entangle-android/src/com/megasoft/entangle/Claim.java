@@ -31,10 +31,6 @@ public class Claim extends Activity {
 	 * String holding the message of the sent claim it self
 	 */
 	String mssgBody;
-	/**
-	 * this boolean indicates whether the request was successful or not
-	 */
-	boolean connection = true;
 
 	/**
 	 * this sets the email of the tangle owner and the requester into a non
@@ -94,7 +90,8 @@ public class Claim extends Activity {
 							int claimId = obj.getInt("X-CLAIM-ID");
 							intent.putExtra("claimId", claimId);
 						} else {
-							connection = false;
+							Toast.makeText(getBaseContext(), "Something went wrong",
+									Toast.LENGTH_SHORT).show();
 						}
 
 					} catch (JSONException e) {
@@ -109,14 +106,9 @@ public class Claim extends Activity {
 			postSubject.setBody(object);
 			postSubject.addHeader("X-SESSION-ID", sessionID);
 			postSubject.execute();
-			if (!connection) {
-				Toast.makeText(this, "Something went wrong",
-						Toast.LENGTH_SHORT).show();
-			} else {
-				Toast.makeText(this, "Claim Sent", Toast.LENGTH_SHORT).show();
-				startActivity(intent);
-			}
-
+			Toast.makeText(this, "Claim Sent", Toast.LENGTH_SHORT).show();
+			intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
 		}
 
 	}
