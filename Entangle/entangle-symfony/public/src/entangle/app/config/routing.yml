@@ -3,15 +3,10 @@ megasoft_entangle:
     prefix:   /
     
 update:
-    path:      /update/{offerid}
+    path:      /request/{offerid}
     defaults:  { _controller: MegasoftEntangleBundle:Offer:update }
     methods: [POST]
     
-    
-search:
-    path:      /search/{offerid}
-    defaults:  { _controller: MegasoftEntangleBundle:Offer:search }
-    methods: [GET]
 
 profile:
     pattern: tangle/{tangleId}/user/{userId}/profile
