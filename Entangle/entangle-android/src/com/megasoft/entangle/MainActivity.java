@@ -1,24 +1,33 @@
 package com.megasoft.entangle;
 
-import android.content.Intent;
+
+import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.megasoft.config.Config;
 
-
-
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main); 
+		
+		Bundle bundle = new Bundle();
+		bundle.putInt(Config.REQUEST_ID, 1);
+		bundle.putString(Config.RESOURCE_TYPE, Config.REQUEST_TYPE);
 
-		setContentView(R.layout.activity_main);
-		startActivity(new Intent(this, ProfileActivity.class));
+		FragmentManager manager = getFragmentManager();
+		FragmentTransaction transaction = manager.beginTransaction();
 
+		DeleteButtonFragment fragment = new DeleteButtonFragment();
+		fragment.setArguments(bundle);
+
+		transaction.add(R.id.deleteButtonPlaceHolder, fragment).commit();
 	}
  
 	@Override
