@@ -146,7 +146,7 @@ class RequestController extends Controller{
      * @return Response 
      * @author sak93
      */
-    public function viewRequestAction($tangleId, $requestId, Request $request) {
+    public function viewRequestAction($tangleId, $requestId, Request2 $request) {
         $doctrine = $this->getDoctrine();
         $sessionId = $request->headers->get('X-SESSION-ID');
         $response = new JsonResponse();
