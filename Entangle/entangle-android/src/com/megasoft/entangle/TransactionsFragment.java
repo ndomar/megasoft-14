@@ -93,6 +93,7 @@ public class TransactionsFragment extends Fragment {
 		setRequesterRedirection();
 		amountView = (TextView) view.findViewById(R.id.profile_request_amount);
 		amountView.setText(""+amount);
+
 		return view;
 	}
 	/**
