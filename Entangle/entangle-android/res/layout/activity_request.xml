@@ -1,7 +1,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#6699FF" >
+    android:background="@color/darkWhite" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,6 +21,21 @@
             android:orientation="vertical" >
         </LinearLayout>
 
+        <View
+    	android:layout_width="fill_parent"
+    	android:layout_height="1dp"
+    	android:layout_marginTop="10dp"
+    	android:background="@color/lightGray" />
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/fontSizeMedium"
+            android:text="@string/offers"
+            android:layout_marginLeft="@dimen/boxMargin"
+         />
+        
+        
         <LinearLayout
             android:id="@+id/offer_entries_layout"
             android:layout_width="match_parent"
