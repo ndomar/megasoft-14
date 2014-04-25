@@ -59,14 +59,17 @@
             android:name="com.megasoft.entangle.CreateOfferActivity"
             android:label="@string/title_activity_create_offer" >
         </activity>
-
-
+		<activity
+            android:name="com.megasoft.entangle.RequestActivity"
+            android:label="@string/title_activity_request" >
+        </activity>
         <activity
             android:name="com.megasoft.entangle.ConfirmInviteUserActivity"
             android:label="@string/title_activity_invite_users_confirmations"
             android:parentActivityName="com.megasoft.entangle.InviteUserActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.megasoft.entangle.InviteUsers" />
                 android:value="com.megasoft.entangle.InviteUserActivity" />
         </activity>
         <activity
@@ -91,6 +94,14 @@
         <activity
             android:name="com.megasoft.entangle.OfferActivity"
             android:label="@string/title_activity_offer" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.viewtanglelsit.TangleStreamActivity"
+            android:label="@string/title_activity_tangle_stream" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.CreateTangleActivity"
+            android:label="@string/title_activity_create_tangle" >
         </activity>
     </application>
 

@@ -46,7 +46,7 @@ class ClaimController extends Controller {
             return new Response('No such tangle', 400);
         }
         $userId = $session->getUserId();
-        $tangleUsers = $tangle->getUserTangles();
+        $tangleUsers[] = $tangle->getUserTangles();
         $arrlength = count($tangleUsers);
 
         for ($i = 0; $i < $arrlength; $i++) {
