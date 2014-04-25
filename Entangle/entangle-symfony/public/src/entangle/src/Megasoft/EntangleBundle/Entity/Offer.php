@@ -12,9 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Offer {
 
-    const PENDING = 0;
-    const ACCEPTED = 1;
-
     /**
      * @var integer
      *

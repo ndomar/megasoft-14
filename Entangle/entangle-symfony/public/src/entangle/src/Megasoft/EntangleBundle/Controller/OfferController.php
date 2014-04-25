@@ -30,8 +30,17 @@ class OfferController extends Controller {
         if (($session->getUserId()) != ($requestOffer->getUserId())) {
             return new Response("Unauthorized", 401);
         }
-        if (($requestOffer->getStatus()) == (\Megasoft\EntangleBundle\Entity\Offer::ACCEPTED)) {
+        if (($requestOffer->getStatus()) == ($requestOffer->ACCEPTED)) {
             return new Response("Offer is already accepted", 401);
+        }
+        if (($requestOffer->getStatus()) == ($requestOffer->DONE)) {
+            return new Response("Offer is already done", 401);
+        }
+        if (($requestOffer->getStatus()) == ($requestOffer->FAILED)) {
+            return new Response("Offer is already failed", 401);
+        }
+        if (($requestOffer->getStatus()) == ($requestOffer->REJECTED)) {
+            return new Response("Offer is already rejected", 401);
         }
         $tangleRequest = $requestOffer->getRequest();
         $json = $request->getContent();
