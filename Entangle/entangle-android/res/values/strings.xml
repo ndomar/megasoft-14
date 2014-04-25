@@ -7,14 +7,14 @@
     <string name="name">Request\'s name</string>
     <string name="description">What do you need ?</string>
     <string name="post">Create</string>
-    <string name="tag">Please Add comma separated tags</string>
+    <string name="Tags">Tags</string>
     <string name="tagHint">food, tech, living</string>
-    <string name="priceHint">enter a positive number</string>
+    <string name="priceHint">5</string>
     <string name="hello_world">Hello world!</string>
     <string name="date">Date</string>
     <string name="ChooseDate">Pick deadline</string>
     <string name="deadLine">Expected deadline</string>
-    <string name="price">Requested price</string>
+    <string name="price">Price</string>
     <string name="check">Please confirm</string>
     <string name="title_activity_view_stream">ViewStream</string>
     <string name="viewStream">Stream</string>
@@ -53,7 +53,7 @@
 
     <string name="preview_request">Preview Request</string>
     <string name="title_activity_create_offer">CreateOfferActivity</string>
-    <string name="create_offer">Create Offer</string>
+    <string name="create_offer">What\'s your offer?</string>
     <string name="offer_description">Offer\'s description</string>
     <string name="offer_requested_price">requested price</string>
     <string name="requested_price_hint">enter a positive number</string>

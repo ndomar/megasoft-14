@@ -12,28 +12,29 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/create_offer" />
+        android:height="40dip"
+        android:text="@string/create_offer"
+        android:textSize="@dimen/fontSizeMedium" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/showMyDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/textView2"
-        android:layout_marginTop="18dp"
-        android:text="@string/offer_description" />
+        android:layout_alignBottom="@+id/deadline"
+        android:layout_alignRight="@+id/Post"
+        android:layout_toRightOf="@+id/deadline" />
 
     <EditText
         android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="24dp"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_below="@+id/textView2"
         android:ems="10"
         android:inputType="textMultiLine" >
+
         
     </EditText>
 
@@ -42,55 +43,47 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/description"
-        android:layout_alignRight="@+id/textView1"
         android:layout_below="@+id/description"
-        android:layout_marginTop="19dp"
-        android:text="@string/offer_requested_price" />
+        android:layout_marginTop="38dp"
+        android:text="@string/price"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
         android:id="@+id/requestedPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_below="@+id/textView3"
-        android:layout_marginTop="16dp"
+        android:layout_alignBaseline="@+id/textView3"
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_alignRight="@+id/textView2"
         android:ems="10"
-        android:inputType="number" 
-        android:hint="@string/requested_price_hint" />
+        android:hint="@string/priceHint"
+        android:inputType="number" >
+    </EditText>
 
     <Button
         android:id="@+id/deadline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/requestedPrice"
-        android:layout_below="@+id/requestedPrice"
-        android:layout_marginTop="16dp"
-        android:text="@string/expected_deadline" />
-
-    <TextView
-        android:id="@+id/showMyDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/deadline"
-        android:layout_alignRight="@+id/Post"
-        android:layout_below="@+id/deadline" />
-
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/showMyDate"
-        android:layout_below="@+id/showMyDate"
-        android:text="@string/offer_check"
-        android:onClick="itemClicked" />
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_centerVertical="true"
+        android:text="@string/ChooseDate" />
 
     <Button
         android:id="@+id/Post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/checkBox"
-        android:layout_marginLeft="34dp"
-        android:layout_toRightOf="@+id/textView3"
+        android:layout_alignLeft="@+id/deadline"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="77dp"
         android:text="@string/post_offer" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/Post"
+        android:layout_toRightOf="@+id/deadline"
+        android:onClick="itemClicked"
+        android:text="@string/check" />
 
 </RelativeLayout>
