@@ -655,6 +655,7 @@ class TangleController extends Controller
       * @param \Symfony\Component\HttpFoundation\Request $request
       * @param integer $tangleId
       * @return \Symfony\Component\HttpFoundation\Response
+      * @author Omar ElAzazy
       */
     public function allUsersAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId){
         $verification = $this->verifyUser($request, $tangleId);
