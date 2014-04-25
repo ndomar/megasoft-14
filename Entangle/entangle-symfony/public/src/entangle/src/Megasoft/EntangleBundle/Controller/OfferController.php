@@ -12,13 +12,13 @@ class OfferController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
-        $sessionExpired = $session->getExpired();
         if ($sessionId == null) {
             return new Response("Bad Request", 400);
         }
         if ($session == null) {
             return new Response("Unauthorized", 401);
         }
+        $sessionExpired = $session->getExpired();
         if ($sessionExpired) {
             return new Response("Session expired", 440);
         }
@@ -34,12 +34,6 @@ class OfferController extends Controller {
             return new Response("Offer is already accepted", 401);
         }
         $tangleRequest = $requestOffer->getRequest();
-        if ($tangleRequest == null) {
-            return new Response("Bad Request", 400);
-        }
-        if (($tangleRequest->getId()) != ($requestOffer->getRequestId())) {
-            return new Response("Bad Request", 400);
-        }
         $json = $request->getContent();
         $json_array = json_decode($json, true);
         $newOfferPrice = $json_array['newPrice'];
