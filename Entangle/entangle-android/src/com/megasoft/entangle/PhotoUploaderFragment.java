@@ -214,7 +214,7 @@ public class PhotoUploaderFragment extends Fragment{
 			e.printStackTrace();
 		}
 		iconDataRequest.setBody(jsonBody);
-		iconDataRequest.addHeader(Config.API_SESSION_ID, "session1");
+		iconDataRequest.addHeader(Config.API_SESSION_ID, getSessionId());
 		iconDataRequest.execute();
 	}
 	
