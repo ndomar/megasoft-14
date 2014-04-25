@@ -3,20 +3,22 @@
 namespace Megasoft\EntangleBundle\Controller;
 
 use DateTime;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Megasoft\EntangleBundle\Entity\Offer;
 use Megasoft\EntangleBundle\Entity\InvitationCode;
 use Megasoft\EntangleBundle\Entity\InvitationMessage;
 use Megasoft\EntangleBundle\Entity\PendingInvitation;
 use Megasoft\EntangleBundle\Entity\Session;
 use Megasoft\EntangleBundle\Entity\UserTangle;
 
+
 class TangleController extends Controller
 {
     /**
-      * Validates that the request has correct format, session Id is active and of a user and that the user is in the tangle
+      * Validates that the request has correct format,  session Id is active and of a user and that the user is in the tangle
       * @param Request $request
       * @param integer $tangleId
       * @return Response | null
@@ -27,9 +29,9 @@ class TangleController extends Controller
         
         if($tangleId == null || $sessionId == null){
             return new Response('Bad Request', 400);
-        }
+         }
         
-        $doctrine = $this->getDoctrine();
+        $dcotrine = $this->getDoctrine();
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
@@ -271,8 +273,6 @@ class TangleController extends Controller
         $response['alreadyInTheTangle'] = array();
         $response['invalid'] = array();
 
-
-
         foreach ($json['emails'] as $email) {
             if (!$this->isValidEmail($email)) {
                 $response['invalid'][] = $email;
@@ -429,6 +429,7 @@ class TangleController extends Controller
         }
         return $ret;
     }
+
     
     /**
      * Validates whether the user with the session id $sessionId is the owner of the tangle with
@@ -454,11 +455,251 @@ class TangleController extends Controller
         $userTangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserTangle');
 
         if (($userTangle = $userTangleRepo->findOneBy(array('userId' => $session->getUserId(), 'tangleId' => $tangleId))) == null || !$userTangle->getTangleOwner() ) {
+
             return new Response("Unauthorized", 401);
         }
         
         return null;
     }
+    
+
+    
+    /**
+     * A function that is responsible of verifing the request from 
+     * a user leaving a tangle
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param integer $tangleId
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @author HebaAamer
+     */
+    private function leaveTangleVerification($request, $tangleId) {
+        $verification = $this->verifyUser($request, $tangleId);
+        
+        if($verification != null){
+            return $verification;
+        }
+                
+        $sessionId = $request->headers->get("X-SESSION-ID");
+        
+        $doctrine = $this->getDoctrine();
+        
+        $sessionRepo = $doctrine->getRepository("MegasoftEntangleBundle:Session");
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        $userId = $session->getUserId();
+        
+        $userTangleRepo = $doctrine->getRepository("MegasoftEntangleBundle:UserTangle");
+        if (($userTangle = $userTangleRepo
+                ->findOneBy(array('userId' => $userId, 
+                    'tangleId' => $tangleId, 'tangleOwner' => true))) != null) {
+            return new Response("Forbidden", 403);
+        }
+        $userTangle = $userTangleRepo
+                ->findOneBy(array('userId' => $userId, 
+                    'tangleId' => $tangleId)); 
+        if ($userTangle->getLeavingDate() != null) {
+            return new Response("Unauthorized", 401);
+        }
+        
+        return null;
+    }
+    
+    /**
+     * A function that is reponsible for deleting the requests 
+     * of a user that left the tangle
+     * 
+     * @param integer $tangleId
+     * @param integer $userId
+     * @author HebaAamer
+     */
+    private function removeRequests($tangleId, $userId) {
+        $requestRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Request");
+        
+        $requests = $requestRepo->findBy(array('tangleId' => $tangleId, 
+            'userId' => $userId));
+        $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
+        $user = $userRepo->find($userId);
+        
+        if($requests != null) {
+            foreach ($requests as $request) {
+                if($request != null) {
+                    if($request->getStatus() != $request->CLOSE) {
+                        //we need to add DONE requests
+                        $request->setStatus($request->CLOSE);
+                        $request->setDeleted(true);
+                        //to add a notification in the next sprint
+                    } else {
+                        $request->setDeleted(true);
+                    }
+                    if($user != null) {
+                        $user->removeRequest($request);
+                    }
+                    $offers = $request->getOffers();
+                    if($offers != null) {
+                        foreach($offers as $offer) {
+                            $this->deleteOfferMessages($user, $offer);
+                        }
+                    }    
+                }
+            }
+            $this->getDoctrine()->getManager()->flush();
+        }
+    }
+    
+    
+    /**
+     * A function that is responsible for deleting the offers 
+     * of a user that left the tangle
+     * 
+     * @param integer $tangleId
+     * @param integer $userId
+     * @author HebaAamer
+     */
+    private function removeOffers($tangleId, $userId) {
+        $doctrine = $this->getDoctrine();
+        $offerRepo = $doctrine->getRepository("MegasoftEntangleBundle:Offer");
+        
+        $offers = $offerRepo->findBy(array('userId' => $userId));
+        if($offers != null) {
+            $requestRepo = $doctrine->getRepository("MegasoftEntangleBundle:Request");
+            $userRepo = $doctrine->getRepository("MegasoftEntangleBundle:User");
+            $user = $userRepo->find($userId);
+            
+            foreach ($offers as $offer) {
+                if($offer != null) {
+                    $requestId = $offer->getRequestId();
+                    $request = $requestRepo->findOneBy(array(
+                        'id' => $requestId, 'tangleId' => $tangleId));
+                    
+                    if($request != null) {
+                        $offerStatus = $offer->getStatus();
+                        if($offerStatus != $offer->DONE ) {
+                            $this->deleteOfferMessages($user, $offer);
+                            $offer->setDeleted(true);
+                            $user->removeOffer($offer);
+                        }
+                    }
+                    //to be done in the coming sprint
+                    //send notification to the requester only in 
+                    //case of PENDING and ACCEPTED
+                }
+            }
+            $this->getDoctrine()->getManager()->flush();
+        }
+    }
+    
+    /**
+     * This function is responsible for handling the deletion of the messages 
+     * related to an offer
+     * 
+     * @param integer $user
+     * @param Offer $offer
+     * @author HebaAamer
+     */
+    private function deleteOfferMessages($user, $offer) {
+        if($user != null) {
+            $messages = $offer->getMessages();
+            foreach ($messages as $message) {
+                if($message != null && $message->getSenderId() == $user->getId()) {
+                    $message->setDeleted(true);
+                    $user->removeMessage($message);
+                }
+            }
+        }
+    }
+   
+    /**
+     * A function that is responsible for removing a user from 
+     * a tangle and updating the deletedBalance of the tangle 
+     * and setting the leavingDate of that user.
+     * 
+     * @param integer $tangleId
+     * @param integer $userId
+     * @author HebaAamer
+     */
+    private function removeUser($tangleId, $userId) {
+        $doctrine = $this->getDoctrine();
+        $userTangleRepo = $doctrine->getRepository("MegasoftEntangleBundle:UserTangle");
+        
+        $userTangle = $userTangleRepo->findOneBy(array('userId' => $userId, 
+            'tangleId' => $tangleId));
+        if($userTangle != null){
+            
+            $tangleRepo = $doctrine->getRepository("MegasoftEntangleBundle:Tangle");
+            $tangle = $tangleRepo->find($tangleId);
+            
+            $userTangle->setLeavingDate(new DateTime('NOW'));
+            
+            if($tangle != null) {
+                
+                $deletedBalance = $tangle->getDeletedBalance();
+                $updatedDeletedBalance = $deletedBalance + ($userTangle->getCredit());
+                $tangle->setDeletedBalance($updatedDeletedBalance);
+            }
+            $doctrine->getManager()->flush();
+        }
+    }
+    
+    /**
+     * This function is used to remove all the claims related to specific 
+     * 
+     * @param integer $tangleId
+     * @param integer $userId
+     * @author HebaAamer
+     */
+    private function removeClaims ($tangleId, $userId) {
+        $claimRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Claim");
+        $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
+        $user = $userRepo->find($userId);
+        
+        //to be changed to userId
+        $claims = $claimRepo->findBy(array('tangleId' => $tangleId, 'usedId' => $userId));
+        if($claims != null) {
+            foreach($claims as $claim) {
+                if($claim != null) {
+                    //assuming 1 resolved
+                    if($claim->getStatus() == 1) {
+                        $claim->setDeleted(true);
+                    }
+                    if($user != null){
+                        $user->removeClaim($claim);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * An endpoint to be used when a user leaves a tangle
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param integer $tangleId
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author HebaAamer
+     */
+    public function leaveTangleAction(Request $request, $tangleId) {
+        
+        $verified = $this->leaveTangleVerification($request, $tangleId);
+        if($verified != null){
+            return $verified;
+        }
+        
+        $sessionId = $request->headers->get("X-SESSION-ID");
+        
+        $sessionRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Session");
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        $userId = $session->getUserId();
+        
+        $this->removeUser($tangleId, $userId);
+        $this->removeOffers($tangleId, $userId);
+        $this->removeRequests($tangleId, $userId);
+        $this->removeClaims($tangleId, $userId);
+        
+        //removing notifications to be added in the coming sprint
+        
+        return new Response("You have left successfully", 204);
+    }
+
     
     /**
      * The endpoint responsable for fetching the pending invitations for the tangle with id $tangleId

@@ -1,5 +1,6 @@
 package com.megasoft.entangle;
 
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.app.Fragment;
@@ -15,6 +16,7 @@ import android.view.Menu;
  */
 
 public class ProfileActivity extends FragmentActivity {
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,4 +39,5 @@ public class ProfileActivity extends FragmentActivity {
 		getMenuInflater().inflate(R.menu.profile, menu);
 		return true;
 	}	
+
 }

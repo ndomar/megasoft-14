@@ -1,16 +1,15 @@
 package com.megasoft.entangle;
 
+import android.app.Activity;
 import android.content.Intent;
+
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.megasoft.config.Config;
 
-
-
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +18,7 @@ public class MainActivity extends FragmentActivity {
 		setContentView(R.layout.activity_main);
 		startActivity(new Intent(this, HomeActivity.class));
 		//startActivity((new Intent(this,InviteUserActivity.class)).putExtra("com.megasoft.entangle.tangleId", 2));
+
 
 
 	}
