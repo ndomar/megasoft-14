@@ -89,6 +89,9 @@ public class Claim extends Activity {
 							JSONObject obj = new JSONObject(response);
 							int claimId = obj.getInt("X-CLAIM-ID");
 							intent.putExtra("claimId", claimId);
+							Toast.makeText(getBaseContext(), "Claim Sent", Toast.LENGTH_SHORT).show();
+							intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+							startActivity(intent);
 						} else {
 							Toast.makeText(getBaseContext(), "Something went wrong",
 									Toast.LENGTH_SHORT).show();
@@ -106,9 +109,6 @@ public class Claim extends Activity {
 			postSubject.setBody(object);
 			postSubject.addHeader("X-SESSION-ID", sessionID);
 			postSubject.execute();
-			Toast.makeText(this, "Claim Sent", Toast.LENGTH_SHORT).show();
-			intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
 		}
 
 	}

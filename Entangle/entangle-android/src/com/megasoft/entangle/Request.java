@@ -62,6 +62,8 @@ public class Request extends Activity {
 						tangleOwnerMail += object
 								.getString("X-TANGLEOWNER-MAIL");
 						claimerMail += object.getString("X-CLAIMER-MAIL");
+						Toast.makeText(getBaseContext(), "Loading Claim Form", Toast.LENGTH_SHORT).show();
+						startActivity(intent);
 					} else {
 						Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
 					}
@@ -77,9 +79,6 @@ public class Request extends Activity {
 			intent.putExtra("sender", claimerMail);
 			intent.putExtra("requestId", requestId);
 			intent.putExtra("sessionID", sessionID);
-			Toast.makeText(this, "Loading Claim Form", Toast.LENGTH_SHORT).show();
-			startActivity(intent);
-
 	}
 
 	@Override
