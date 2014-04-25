@@ -581,17 +581,15 @@ class TangleController extends Controller
      * @author MahmoudGamal
      */
     public function addUserAction($userId, $tangleId) {
-        $criteria1 = array('tangleId' => $tangleId);
-        $tangle = current($this->getDoctrine()
+        $tangle = $this->getDoctrine()
                         ->getRepository('MegasoftEntangleBundle:Tangle')
-                        ->findBy($criteria1));
+                        ->find($tangleId);
         if (!$tangle) {
             return new Response("Tangle not found", 404);
         }
-        $criteria2 = array('userId' => $userId);
-        $user = current($this->getDoctrine()
+        $user = $this->getDoctrine()
                         ->getRepository('MegasoftEntangleBundle:User')
-                        ->findBy($criteria2));
+                        ->find($userId);
         if (!$user) {
             return new Response("User not found", 404);
         }
