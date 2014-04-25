@@ -30,7 +30,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 			fragment = new SampleTab();
 			break;
 		case 1:
-			fragment = new ProfileActivity();
+			fragment = new ProfileFragment();
 			args.putInt("userId", userId);
 			Log.e("test2", tangleId+"");
 			fragment.setArguments(args);
