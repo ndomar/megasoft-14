@@ -168,6 +168,10 @@ public class TangleActivity extends Activity {
 			String requesterButtonText = "Requester : " + requesterName;
 			String requestButtonText = "Request : " + requestBody
 					+ "\nNumber of offers : " + requestOffersCount;
+			if(request.get("price") != null)
+				requestButtonText += "\nRequested Price : "  + request.getInt("price");
+			else
+				requestButtonText += "\nRequested Price : not determined yet" ;
 			transaction = getFragmentManager().beginTransaction();
 			StreamRequestFragment requestFragment = StreamRequestFragment
 					.createInstance(requestId, userId, requestButtonText,
