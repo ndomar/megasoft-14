@@ -31,17 +31,9 @@ class ClaimController extends Controller {
             return new Response('No such claimer', 400);
         }
         $tangleId = $claimerRequest->getTangleId();
-
-        if ($sessionId == null) {
-            return new Response('No such session', 400);
-        }
-
-        if ($tangleId == null) {
-            return new Response('No such tangle', 400);
-        }
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
-        if ($session == null) {
+        if ($session == null || $sessionId == null) {
             return new Response('No such session', 400);
         }
         if ($session->getExpired()) {
@@ -50,20 +42,19 @@ class ClaimController extends Controller {
         $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
         $tangle = $tangleRepo->findOneBy(array('id' => $tangleId, 'deleted' => false));
 
-        if ($tangle == null) {
+        if ($tangleId == null || $tangle == null) {
             return new Response('No such tangle', 400);
         }
         $userId = $session->getUserId();
         $tangleUsers = $tangle->getUserTangles();
         $arrlength = count($tangleUsers);
-        
-         for ($i = 0; $i < $arrlength; $i++) {
-             if (($tangleUsers[$i]->getTangleId() == $tangleId)
-                     && ($tangleUsers[$i]->getTangleOwner() == TRUE)) {
-                 $tangleOwnerId = $tangleUsers[$i]->getUserId();
-                 break;
-             }
-         }
+
+        for ($i = 0; $i < $arrlength; $i++) {
+            if (($tangleUsers[$i]->getTangleId() == $tangleId) && ($tangleUsers[$i]->getTangleOwner() == TRUE)) {
+                $tangleOwnerId = $tangleUsers[$i]->getUserId();
+                break;
+            }
+        }
 
         if ($tangleOwnerId) {
             return new Response('No such tangle owner', 400);
