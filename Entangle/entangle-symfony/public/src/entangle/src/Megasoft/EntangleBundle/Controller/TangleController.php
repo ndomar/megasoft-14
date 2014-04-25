@@ -649,5 +649,38 @@ class TangleController extends Controller
         return $jsonResponse;
 
     }
-
+    
+    /**
+      * An endpoint to return the list of users in a specific tangle
+      * @param \Symfony\Component\HttpFoundation\Request $request
+      * @param integer $tangleId
+      * @return \Symfony\Component\HttpFoundation\Response
+      */
+    public function allUsersAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId){
+        $verification = $this->verifyUser($request, $tangleId);
+        
+        if($verification != null){
+            return $verification;
+        }
+        
+        $doctrine = $this->getDoctrine();
+        $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $userTangles = $userTangleRepo->findBy(array('tangleId' => $tangleId));
+        
+        $usersJsonArray = array();
+        
+        foreach($userTangles as $userTangle){
+            $usersJsonArray[] = array(
+                                    'id' => $userTangle->getUserId(),
+                                    'username' => $userTangle->getUser()->getName(),
+                                    'balance' => $userTangle->getCredit(),
+                                    'iconUrl' => $userTangle->getUser()->getPhoto()
+                                );
+        }
+        
+        $response = new JsonResponse();
+        $response->setData(array('count' => sizeof($usersJsonArray), 'users' => $usersJsonArray));
+        
+        return $response;
+    }
 }
