@@ -1,11 +1,11 @@
 package com.megasoft.entangle;
 
-
 import java.io.ByteArrayOutputStream;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.PostRequest;
 
@@ -87,9 +87,8 @@ public class CreateTangleActivity extends Activity {
 		if ((tangleNameText.split(" ")).length > 1) {
 			showMessage("TANGLE NAME SHOULD BE ONE WORD");
 		} else {
-			GetRequest getNameRequest = new GetRequest(
-					"http://entangle2.apiary-mock.com/tangle/check/"
-							+ tangleNameText) {
+			GetRequest getNameRequest = new GetRequest(Config.API_BASE_URL
+					+ "/tangle/check/" + tangleNameText) {
 				protected void onPostExecute(String response) {
 					if (!(this.getStatusCode() == 404)) {
 						insertAvailability(false, R.id.tangleName);
@@ -98,7 +97,7 @@ public class CreateTangleActivity extends Activity {
 					}
 				}
 			};
-			getNameRequest.addHeader("X-SESSION-ID", "fdgdf");
+			getNameRequest.addHeader(Config.API_SESSION_ID, "fdgdf");
 			getNameRequest.execute();
 		}
 	}
@@ -127,7 +126,8 @@ public class CreateTangleActivity extends Activity {
 	 * 
 	 * @param int requestCode
 	 * @param int resultCode
-	 * @param Intent data
+	 * @param Intent
+	 *            data
 	 * @author Mansour
 	 */
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -194,11 +194,12 @@ public class CreateTangleActivity extends Activity {
 
 	/**
 	 * Sends the tangle info to the server
+	 * 
 	 * @author Mansour
 	 */
 	public void sendTangleToServer() {
-		PostRequest imagePostRequest = new PostRequest(
-				"http://entangle2.apiary-mock.com/tangle") {
+		PostRequest imagePostRequest = new PostRequest(Config.API_BASE_URL
+				+ "/tangle") {
 			protected void onPostExecute(String response) {
 				if (!(this.getStatusCode() == 201)) {
 					showMessage("ERROR, TRY AGAIN LATER");
@@ -217,7 +218,7 @@ public class CreateTangleActivity extends Activity {
 			e.printStackTrace();
 		}
 		imagePostRequest.setBody(imageJSON);
-		imagePostRequest.addHeader("X-SESSION-ID", "fgdzr");
+		imagePostRequest.addHeader(Config.API_SESSION_ID, "fgdzr");
 		imagePostRequest.execute();
 	}
 
@@ -274,6 +275,7 @@ public class CreateTangleActivity extends Activity {
 	/**
 	 * Shows a dialogue informing that the tangle is created and redirecting to
 	 * homepage when pressing OK
+	 * 
 	 * @author Mansour
 	 */
 	public void goToHomePage() {
@@ -293,6 +295,7 @@ public class CreateTangleActivity extends Activity {
 
 	/**
 	 * Redirects the user to the home page
+	 * 
 	 * @author Mansour
 	 */
 	public void goToHomeHelper() {
