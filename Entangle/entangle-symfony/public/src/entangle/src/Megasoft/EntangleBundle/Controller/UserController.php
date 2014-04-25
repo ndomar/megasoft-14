@@ -91,22 +91,21 @@ class UserController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $currentSession = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
-
         if ($currentSession) {
             if (!$currentSession->getExpired()) {
                 $user = $currentSession->getUser();
-                $deletedMail = $jsonArray['deletedMail'];
+                $deletedMail = $jsonArray['deleted_mail'];
                 $user->removeEmail($deletedMail);
                 $doctrineManger = $this->getDoctrine()->getManager();
+                $doctrineManger->persist($user);
+                $doctrineManger->flush();
+                return new Response('OK', 200);
             } else {
                 return new Response("Session Expired", 400);
             }
         } else {
             return new Response("Invalid Session Id", 400);
         }
-        $doctrineManger->persist($user);
-        $doctrineManger->flush();
-        return new Response('OK', 200);
     }
 
     /**
