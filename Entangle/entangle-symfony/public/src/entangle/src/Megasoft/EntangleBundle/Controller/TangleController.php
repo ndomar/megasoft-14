@@ -117,7 +117,8 @@ class TangleController extends Controller
                                         'username' => $tangleRequest->getUser()->getName(),
                                         'userId' => $tangleRequest->getUserId(),
                                         'description' => $tangleRequest->getDescription(),
-                                        'offersCount' => sizeof($tangleRequest->getOffers())
+                                        'offersCount' => sizeof($tangleRequest->getOffers()),
+                                        'price' => $tangleRequest->getRequestedPrice()
                                     );
         }
         
