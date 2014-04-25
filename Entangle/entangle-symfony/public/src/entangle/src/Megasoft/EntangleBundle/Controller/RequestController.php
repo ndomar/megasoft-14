@@ -11,6 +11,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RequestController extends Controller {
 
+    
+    /*Reopens a closed request
+     * @param Request $request
+     * @param int $requestId
+     * @author Mansour
+     */
     public function reOpenRequestAction(Request $request, $requestId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
