@@ -106,14 +106,21 @@ public class OfferActivity extends Activity {
 	 */
 	final String ACCEPT = "/accept/offer";
 	/**
-	 * String for post offer endpoint
+	 * String for post and get offer endpoint
 	 */
 	final String Request = "/request/";
 	/**
 	 * String for post offer endpoint
 	 */
 	final String Offer = "/offers/";
-
+	/**
+	 * String for offer status
+	 */
+	final String Pending = "0";
+	/**
+	 * String for offer status
+	 */
+	final String Done = "1";
 	/**
 	 * The id of the logged in user
 	 */
@@ -386,11 +393,11 @@ public class OfferActivity extends Activity {
 				Config.API_BASE_URL+Request + 1 + Offer + offerId) {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 200) {
-					JSONObject x;
+					JSONObject jresponse;
 					try {
-						x = new JSONObject(response);
-						if (x.getString("status").equals("0")
-								|| x.getString("status").equals("2")) {
+						jresponse = new JSONObject(response);
+						if (jresponse.getString("status").equals(Pending)
+								|| jresponse.getString("status").equals(Done)) {
 							Toast error = Toast.makeText(
 									getApplicationContext(), R.string.error,
 									Toast.LENGTH_LONG);
@@ -406,7 +413,7 @@ public class OfferActivity extends Activity {
 				}
 			}
 		};
-		initRequest.addHeader(Config.API_SESSION_ID, "second");
+		initRequest.addHeader(Config.API_SESSION_ID, sessionId);
 		initRequest.execute();
 	}
 	/**
@@ -427,7 +434,7 @@ public class OfferActivity extends Activity {
 			}
 
 		};
-		request.addHeader(Config.API_SESSION_ID, "asdasdasdsadasdasd");
+		request.addHeader(Config.API_SESSION_ID, sessionId);
 		request.execute();
 	}
 

@@ -253,14 +253,34 @@ class OfferController extends Controller {
         $doctrine->getManager()->flush();
         return "Offer Accepted.";
     }
-
-    public function notifyAction($offerid) {
+    /**
+     * this recieves an offerId,verifies the session and sends a notification if 
+     * it is accepted and not already marked as done.
+     * @param  Int $offerid
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @author mohamedzayan19
+     */
+    public function notifyAction($offerid, \Symfony\Component\HttpFoundation\Request $request) {
         $doctrine = $this->getDoctrine();
+        $sessionId = $request->headers->get('X-SESSION-ID');
+         if ($sessionId == null) {
+            return new Response('Unauthorized', 401);
+        }
+            $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+            $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
+         if ($session == null) {
+            return new Response('Unauthorized', 401);
+        }            
+        if ($session->getExpired()) {
+            return $response = new Response("Error: Session Expired.", 401);
+        }
         $repo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $offer = $repo->find($offerid);
         if ($offer == NULL) {
             return new JsonResponse("Offer does not exist", 401);
         } else {
+
             $date = $offer->getDate();
             $notifier = $offer->getUser();
             $request = $offer->getRequest();
@@ -269,13 +289,17 @@ class OfferController extends Controller {
             $notified = $request->getUser();
             $notifiedId = $notified->getId();
             $backendstatus = $offer->getStatus();
+            $userOfSession=$session->getUserId();
+            if($userOfSession!=$notifierId) {
+                return new JsonResponse("You are not authorized to send this notification", 401);
+            }
             if ($backendstatus == $offer->DONE) {
                 return new JsonResponse("Offer already marked as done", 401);
             } else if ($backendstatus == $offer->PENDING) {
                 return new JsonResponse("Offer is not accepted", 401);
             } else {
                 return new JsonResponse("Done", 201);
-                markOfferNotification($notifierId, $notifiedId, $offerid, "mark", $date);
+                //markOfferNotification($notifierId, $notifiedId, $offerid, "mark", $date);
                 $response = new JsonResponse();
                 $response->setStatusCode(201);
                 return $response;
