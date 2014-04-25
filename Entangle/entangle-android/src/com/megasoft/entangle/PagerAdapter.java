@@ -1,5 +1,7 @@
 package com.megasoft.entangle;
 
+import com.megasoft.entangle.megafragments.TangleFragment;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,23 +24,24 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public Fragment getItem(int index) {
+
 		Bundle args = new Bundle();
 		args.putInt("tangleId", tangleId);
 		Fragment fragment = null;
 		switch (index) {
 		case 0:
-			fragment = new SampleTab();
+			fragment = new TangleFragment();
 			break;
 		case 1:
-			fragment = new ProfileActivity();
+			fragment = new ProfileFragment();
 			args.putInt("userId", userId);
 			Log.e("test2", tangleId+"");
-			fragment.setArguments(args);
 			break;
 
 		default:
 			break;
 		}
+		fragment.setArguments(args);
         return fragment;
 	}
         
