@@ -29,6 +29,10 @@ import android.widget.Toast;
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 
+/*
+ * Fragment of uploading an icon for a request
+ * @author Omar ElAzazy
+ */
 public class PhotoUploaderFragment extends Fragment{
 	
 	private static final int REQUEST_CODE = 2;
@@ -159,12 +163,20 @@ public class PhotoUploaderFragment extends Fragment{
 	}
 	
 
+	/*
+	 * Function to choose an icon from the device
+	 * @author Omar ElAzazy
+	 */
 	public void chooseIcon(){
 		startActivityForResult(new Intent(Intent.ACTION_PICK,
 				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
 				REQUEST_CODE);
 	}
 	
+	/*
+	 * A function to handle the image fetched from device
+	 * @author Omar ElAzazy
+	 */
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE
@@ -185,6 +197,10 @@ public class PhotoUploaderFragment extends Fragment{
 		}
 	}
 	
+	/*
+	 * Get photo information
+	 * @author Omar ElAzazy
+	 */
 	public Bitmap getPhotoBitmap(Uri uri) {
 		String[] projection = { android.provider.MediaStore.Images.Media.DATA };
 		Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null,
@@ -218,6 +234,10 @@ public class PhotoUploaderFragment extends Fragment{
 		iconDataRequest.execute();
 	}
 	
+	/*
+	 * Shows a message in a toaster
+	 * @author Omar ElAzazy
+	 */
 	public void toasterShow(String message){
 		Toast.makeText(getActivity().getBaseContext(),
 				message,
