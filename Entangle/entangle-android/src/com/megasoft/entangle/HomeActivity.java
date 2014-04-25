@@ -40,17 +40,20 @@ public class HomeActivity extends FragmentActivity {
 	private ActionBar actionBar;
 	private ActionBarDrawerToggle mDrawerToggle;
 
+	private int tangleId;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-
+		
 		initNavigationDrawer();
 		initializeDrawerToggle();
 	
 	}
 	
 	public void switchFragment(int tangleId, int position) {
+		this.tangleId = tangleId;
 		FragmentManager fragmentManager = getSupportFragmentManager(); 
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		SampleFragment fragment = new SampleFragment();
