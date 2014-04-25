@@ -64,8 +64,7 @@
             android:parentActivityName="com.megasoft.entangle.InviteUserActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.megasoft.entangle.InviteUsers" />
-                android:value="com.megasoft.entangle.InviteUserActivity" />
+                android:value="com.megasoft.entangle.InviteUserActivity" />
         </activity>
         <activity
             android:name="com.megasoft.entangle.acceptPendingInvitation.AcceptPendingInvitationActivity"
