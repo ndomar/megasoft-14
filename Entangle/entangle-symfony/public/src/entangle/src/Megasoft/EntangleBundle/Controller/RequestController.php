@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpKernel\Tests\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Serializer\Exception\Exception;
 use Symfony\Component\Translation\Tests\String;
@@ -29,19 +29,13 @@ class RequestController extends Controller{
         $icon = imagecreatefromstring($decodedIcon);
         
         $iconFileName = 'request' . "$requestId" . '.png';
-        
-        
         $kernel = $this->get('kernel');
-        $path = $kernel->getRootDir();
+        $path = $kernel->getRootDir() . '/../web/bundles/megasoftentangle/images/request/icons/';
         
-        return new Response($path);
-        
-        $outputFilePath = '/vagrant/public/src/entangle/web/bundles/megasoftentangle/images/icons/' . $iconFileName;
-        
-        
+        $outputFilePath = $path . $iconFileName;
         imagepng($icon, $outputFilePath, 9);
         imagedestroy($icon);
-        return 'http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/icons/' . $iconFileName;
+        return 'http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/request/icons/' . $iconFileName;
     }
     
     /**
@@ -88,7 +82,7 @@ class RequestController extends Controller{
         }
         
         try{
-            return $iconUrl = $this->saveIcon($iconData, $requestId);
+            $iconUrl = $this->saveIcon($iconData, $requestId);
         }
         catch (Exception $e){
             return new Response('Internal Server Error', 500);
