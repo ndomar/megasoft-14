@@ -186,5 +186,47 @@ public class MemberListFragment extends Fragment {
 		return true;
 	}
 	
+	/*
+	 * It takes the response and populates the variables of this fragment
+	 * @return a boolean indicating if this was successful or not
+	 * @author Omar ElAzazy
+	 */
+	private boolean populateData(String response){
+		
+		try {
+			JSONObject json = new JSONObject(response);
+			JSONArray members = json.getJSONArray("users");
+			
+			setNumberOfMembers(members.length());
+			
+			memberIds = new int[numberOfMembers];
+			memberBalances = new int[numberOfMembers];
+			memberNames = new String[numberOfMembers];
+			memberAvatarURLs = new String[numberOfMembers];
+			
+			for(int i = 0; i < numberOfMembers; i++){
+				JSONObject member = members.getJSONObject(i);
+				
+				memberIds[i] = member.getInt("id");
+				memberNames[i] = member.getString("username");
+				memberBalances[i] = member.getInt("balance");
+				memberAvatarURLs[i] = member.getString("iconUrl");
+			}
+		} catch (JSONException e) {
+			return false;
+		}
+		
+		return true;
+	}
 	
+	/*
+	 * It shows the given message in a toaster
+	 * @param String message, the message to be showed
+	 * @author Omar ElAzazy
+	 */
+	private void toasterShow(String message){
+		Toast.makeText(getActivity().getBaseContext(),
+				message,
+				Toast.LENGTH_LONG).show();
+	}
 }
