@@ -3,11 +3,10 @@
 namespace Megasoft\EntangleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
+
 use Symfony\Component\HttpFoundation\Response;
-use Megasoft\EntangleBundle\Entity\UserTangle;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Megasoft\EntangleBundle\Entity\Request;
-use Megasoft\EntangleBundle\Entity\Offer;
 
 /**
  * Gets the required information to view a certain offer
@@ -145,6 +144,63 @@ class OfferController extends Controller {
 
         return $offerInformation;
     }
+
+    /**
+     * Changes the price of an offer
+     * @param \Megasoft\EntangleBundle\Entity\Request $request
+     * @param type $offerid
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author Mansour
+     */
+    public function changeOfferPriceAction(Request $request, $offerid) {
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
+        if ($sessionId == null) {
+            return new Response("Bad Request", 400);
+        }
+        if ($session == null) {
+            return new Response("Unauthorized", 401);
+        }
+        $sessionExpired = $session->getExpired();
+        if ($sessionExpired) {
+            return new Response("Session expired", 440);
+        }
+        $offerRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Offer');
+        $requestOffer = $offerRepo->findOneBy(array('id' => $offerid));
+        if ($requestOffer == null) {
+            return new Response("Not found", 404);
+        }
+        if (($session->getUserId()) != ($requestOffer->getUserId())) {
+            return new Response("Unauthorized", 401);
+        }
+        if (($requestOffer->getStatus()) == ($requestOffer->ACCEPTED)) {
+            return new Response("Offer is already accepted", 403);
+        }
+        if (($requestOffer->getStatus()) == ($requestOffer->DONE)) {
+            return new Response("Offer is already done", 403);
+        }
+        if (($requestOffer->getStatus()) == ($requestOffer->FAILED)) {
+            return new Response("Offer is already failed", 403);
+        }
+        if (($requestOffer->getStatus()) == ($requestOffer->REJECTED)) {
+            return new Response("Offer is already rejected", 403);
+        }
+        $json = $request->getContent();
+        $json_array = json_decode($json, true);
+        $newOfferPrice = $json_array['newPrice'];
+        if ($newOfferPrice == null) {
+            return new Response("Bad Request", 400);
+        }
+        if (($requestOffer->getRequestedPrice()) == $newOfferPrice) {
+            return new Response("Same price, enter a new one", 400);
+        }
+        $requestOffer->setRequestedPrice($newOfferPrice);
+        $this->getDoctrine()->getManager()->persist($requestOffer);
+        $this->getDoctrine()->getManager()->flush();
+        return new Response('Price changed', 200);
+    }
+
 
     /**
      * this recieves a request and calls verify to check if it can accept the offer  
@@ -298,7 +354,6 @@ class OfferController extends Controller {
             } else if ($backendstatus == $offer->PENDING) {
                 return new JsonResponse("Offer is not accepted", 401);
             } else {
-                return new JsonResponse("Done", 201);
                 //markOfferNotification($notifierId, $notifiedId, $offerid, "mark", $date);
                 $response = new JsonResponse();
                 $response->setStatusCode(201);
