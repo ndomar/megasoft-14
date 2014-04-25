@@ -58,23 +58,23 @@ class VerificationController extends Controller {
     public function verifyUserAction($verificationCode) {
         $criteria = array('verificationCode' => $verificationCode);
         $search = current($this->getDoctrine()
-                ->getRepository('MegasoftEntangleBundle:VerificationCode')
-                ->findBy($criteria));
+                        ->getRepository('MegasoftEntangleBundle:VerificationCode')
+                        ->findBy($criteria));
         $user = $search->getUser();
-        $expired = $user->getExpired;
-        if($expired){
-            return new Response("Verification Link expired",400);
+        $expired = $search->getExpired;
+        if ($expired) {
+            return new Response("Verification Link expired", 400);
         }
         $verified = $user->getVerified();
-        if($verified){
-            return new Response("User Already Verified",400);
+        if ($verified) {
+            return new Response("User Already Verified", 400);
         }
         if (!$search) {
-            return new Response("User not found" , 404 );
+            return new Response("User not found", 404);
         }
         $user->setVerified(true);
         $this->getDoctrine()->getManager()->flush();
-        return new Response("User verified",201);
+        return new Response("User verified", 201);
     }
 
 }
