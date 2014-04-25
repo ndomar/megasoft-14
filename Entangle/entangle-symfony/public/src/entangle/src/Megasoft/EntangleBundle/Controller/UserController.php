@@ -197,11 +197,16 @@ class UserController extends Controller {
                 $requesterName = $offer->getRequest()->getUser()->getName();
                 $requestDescription = $offer->getRequest()->getDescription();
                 $amount = $offer->getTransaction()->getFinalPrice();
-                $transactions[] = array('offerId' => $offer->getId(),
-                    'requesterName' => $requesterName,
-                    'requestDescription' => $requestDescription,
-                    'amount' => $amount);
-            }
+                $requestId = $offer->getRequest().getId();
+                $requesterId = $offer->getRequest().getUserId();
+                $transactions[] = array('offerId'=>$offer->getId(),
+                    'requesterName'=> $requesterName,
+                    'requestDescription'=>$requestDescription,
+                    'amount'=>$amount, 'requestId'=>$requestId, 'requesterId'=>$requesterId);
+            }           
+
+               
+            
         }
         return $transactions;
     }
