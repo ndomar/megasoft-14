@@ -583,22 +583,27 @@ class TangleController extends Controller
      */
     public function addUserAction($userId, $tangleId) {
         $tangle = $this->getDoctrine()
-                        ->getRepository('MegasoftEntangleBundle:Tangle')
-                        ->find($tangleId);
+                ->getRepository('MegasoftEntangleBundle:Tangle')
+                ->find($tangleId);
         if (!$tangle) {
             return new Response("Tangle not found", 404);
         }
         $user = $this->getDoctrine()
-                        ->getRepository('MegasoftEntangleBundle:User')
-                        ->find($userId);
+                ->getRepository('MegasoftEntangleBundle:User')
+                ->find($userId);
         if (!$user) {
             return new Response("User not found", 404);
         }
-        $tangle->addUserTangle($user);
+        $em = $this->getDoctrine()->getManager();
+
+        $tangleUser = new UserTangle();
+        $tangleUser->setUserId($userId);
+        $tangleUser->setTangleId($tangleId);
+        $tangle->addUserTangle($tangleUser);
         $this->getDoctrine()->getManager()->flush();
         return new Response("User added", 201);
     }
-    
+
     /**
      * The endpoint resposible for fetching the tangles of a certain user from the database
      * @param \Symfony\Component\HttpFoundation\Request $request
