@@ -44,10 +44,8 @@
     <string name="wrong_emails">Not Valid Emails</string>
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
-<<<<<<< HEAD
     <string name="title_activity_offer_notify">OfferNotify</string>
     <string name="notify">Ask requester to mark offer as done</string>
-=======
     <string name="preview_request">Preview Request</string>
     <string name="title_activity_create_offer">CreateOfferActivity</string>
     <string name="create_offer">Create Offer</string>
@@ -71,6 +69,8 @@
     <string name="transactions">Transactions: </string>
     <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="title_activity_offer">OfferActivity</string>
+    <string name="note">Requester Has been notified</string>
+    <string name="error">Error</string>
 
     <string-array name="spinnerChoice">
         <item>None</item>
@@ -84,5 +84,4 @@
     <string name="create_tangle">Create Tangle</string>
     <string name="title_activity_create_tangle">Create Tangle</string>
 
->>>>>>> 6ad054301d90f9bfda907c33e2150ae6c6ad173a
 </resources>
