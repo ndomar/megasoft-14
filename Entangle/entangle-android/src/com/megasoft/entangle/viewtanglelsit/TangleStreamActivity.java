@@ -23,7 +23,6 @@ import com.megasoft.config.Config;
 import com.megasoft.entangle.CreateTangleActivity;
 import com.megasoft.entangle.HomeActivity;
 import com.megasoft.entangle.R;
-import com.megasoft.entangle.TangleActivity;
 import com.megasoft.requests.GetRequest;
 
 /**

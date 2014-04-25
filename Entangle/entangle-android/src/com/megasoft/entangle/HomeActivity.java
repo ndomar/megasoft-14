@@ -5,6 +5,7 @@ import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
 import android.app.ActionBar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -40,17 +41,20 @@ public class HomeActivity extends FragmentActivity {
 	private ActionBar actionBar;
 	private ActionBarDrawerToggle mDrawerToggle;
 
+	private int tangleId;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-
+		
 		initNavigationDrawer();
 		initializeDrawerToggle();
 	
 	}
 	
 	public void switchFragment(int tangleId, int position) {
+		this.tangleId = tangleId;
 		FragmentManager fragmentManager = getSupportFragmentManager(); 
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		SampleFragment fragment = new SampleFragment();
@@ -166,7 +170,14 @@ public class HomeActivity extends FragmentActivity {
 	     if (mDrawerToggle.onOptionsItemSelected(item)) {
 	         return true;
 	     }
-	     return super.onOptionsItemSelected(item);
+	 	 switch (item.getItemId()) {
+	 	 	case R.id.createRequest:
+	 	 		Intent intent = new Intent(this, CreateRequestActivity.class);
+	 	        intent.putExtra("tangleID", this.tangleId);
+	 	        startActivity(intent);
+	 	        return true;
+	 	    default:
+	 	        return super.onOptionsItemSelected(item);
+	 	 }
 	}
-	
 }

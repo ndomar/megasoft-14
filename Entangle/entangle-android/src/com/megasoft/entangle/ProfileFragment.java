@@ -284,4 +284,7 @@ public class ProfileFragment extends Fragment {
 	    this.activity = (HomeActivity) activity;
 	    super.onAttach(this.activity);
 	}
+	
+
+
 }
