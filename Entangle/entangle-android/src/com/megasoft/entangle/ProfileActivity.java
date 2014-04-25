@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.megasoft.config.Config;
+import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.ImageRequest;
 
@@ -168,9 +169,8 @@ public class ProfileActivity extends Activity {
 					Toast.makeText(getBaseContext(),
 							"You left the tangle successfully",
 							Toast.LENGTH_LONG).show();
-					// redirect to the tangles list Activity
 					Intent newIntent = new Intent(getBaseContext(),
-							MainActivity.class);
+							TangleStreamActivity.class);
 					newIntent.putExtra("userId", userId);
 					// it will either remove the whole history or we just finish
 					// the activity

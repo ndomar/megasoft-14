@@ -46,10 +46,17 @@ reject_pending_invitation:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:rejectPendingInvitation}
     methods: [DELETE]
 
+
+accept_tangle_invitation:
+    pattern: /tangle-invitation/{tangleId}/{userId}/accept
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:addUser}
+    methods: [PUT]
+
 viewRequest:
     pattern: tangle/{tangleId}/request/{requestId}
     defaults: { _controller: MegasoftEntangleBundle:Request:viewRequest }
     methods: [GET]
+
 
 create:
     pattern: /tangle/{tangleId}/request
@@ -69,10 +76,14 @@ acceptOffer:
     methods: [POST]
 
 
-
 dummy:
     pattern: /dummy
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
+
+
+verification:
+    pattern: /verify/{verificationCode}
+    defaults: { _controller:MegasoftEntangleBundle:Verification:verifyUser}
 
 
 create_Offer:
@@ -80,13 +91,19 @@ create_Offer:
     defaults: { _controller: MegasoftEntangleBundle:CreateOffer:createOffer }
     methods: [POST]
 
-
 get_profile:
-    pattern: tangle/{tangleId}/user/{userId}/profile
+    pattern: /tangle/{tangleId}/user/{userId}/profile
     defaults: { _controller: MegasoftEntangleBundle:User:profile }
+    methods: [GET]
+ 
+get_tangles:
+    pattern: /tangle
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:getTangles }
     methods: [GET]
 
 
 get_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
+
+    
