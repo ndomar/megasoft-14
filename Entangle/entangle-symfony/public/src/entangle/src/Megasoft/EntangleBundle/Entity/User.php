@@ -65,6 +65,13 @@ class User
     private $verified;
     
     /**
+     *
+     * @var boolean 
+     * @ORM\Column(name="acceptMailNotifications", type="boolean" , columnDefinition="tinyint(1) DEFAULT 1")
+     */
+    private $acceptMailNotifications = true;
+    
+    /**
      * @var Notification[]
      * 
      * @ORM\OneToMany(targetEntity="Notification", mappedBy="user", cascade={"persist"})
@@ -74,7 +81,7 @@ class User
     /**
      *
      * @var Claim[]
-     * @ORM\OneToMany(targetEntity="Claim", mappedBy="user", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Claim", mappedBy="claimer", cascade={"persist"})
      */
     private $claims;
     
@@ -788,5 +795,28 @@ class User
     public function getUnfreezeRequests()
     {
         return $this->unfreezeRequests;
+    }
+
+    /**
+     * Set acceptMailNotifications
+     *
+     * @param boolean $acceptMailNotifications
+     * @return User
+     */
+    public function setAcceptMailNotifications($acceptMailNotifications)
+    {
+        $this->acceptMailNotifications = $acceptMailNotifications;
+
+        return $this;
+    }
+
+    /**
+     * Get acceptMailNotifications
+     *
+     * @return boolean 
+     */
+    public function getAcceptMailNotifications()
+    {
+        return $this->acceptMailNotifications;
     }
 }
