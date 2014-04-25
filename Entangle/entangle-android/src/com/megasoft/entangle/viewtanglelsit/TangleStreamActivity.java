@@ -68,7 +68,7 @@ public class TangleStreamActivity extends Fragment {
 	 * @author MohamedBassem
 	 */
 	private void fetchTangles() {
-		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
+		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
 				+ "/tangle") {
 			public void onPostExecute(String response) {
 				if(!this.hasError() && this.getStatusCode() == 200){
