@@ -95,6 +95,7 @@ public class PhotoUploaderFragment extends Fragment{
         
 		SharedPreferences settings = getActivity().getSharedPreferences(Config.SETTING, 0);
 		setSessionId(settings.getString(Config.SESSION_ID, ""));
+		setRequestId(getArguments().getInt(Config.REQUEST_ID));
 		
 		View view = inflater.inflate(R.layout.upload_photo_fragement, container, false);
         
