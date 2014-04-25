@@ -32,7 +32,7 @@ class RequestController extends Controller {
         }
         $requestRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Request');
         $tangleRequest = $requestRepo->findOneBy(array('id' => $requestId));
-        if ($tangleRequest == null) {
+        if ($tangleRequest == null || $tangleRequest->getDeleted()) {
             return new Response("Not Found", 404);
         } else {
             if ($tangleRequest->getStatus() == \Megasoft\EntangleBundle\Entity\Request::OPEN) {
