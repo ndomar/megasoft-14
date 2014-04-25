@@ -66,7 +66,7 @@ class UserController extends Controller {
         $sessionId = $this->generateSessionId(30);
 
         $repo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
-        $user = $repo->findOneBy(array('name' => $name, 'password' => md5($password)));
+        $user = $repo->findOneBy(array('name' => $name, 'password' => $password));
         if (!$user) {
             return new JsonResponse("Wrong credentials", 400);
         }
