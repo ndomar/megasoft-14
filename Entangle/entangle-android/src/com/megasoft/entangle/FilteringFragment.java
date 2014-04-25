@@ -29,8 +29,8 @@ public class FilteringFragment extends DialogFragment {
 	/**
 	 * The domain to which the requests are sent
 	 */
-	private String rootResource = Config.API_BASE_URL;
-
+	private String rootResource = Config.API_BASE_URL_SERVER;
+ 
 	/**
 	 * The HashMap that contains the mapping of the user to its id
 	 */

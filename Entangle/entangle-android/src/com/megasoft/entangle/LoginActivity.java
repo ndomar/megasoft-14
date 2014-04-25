@@ -34,7 +34,7 @@ public class LoginActivity extends Activity {
 		password = (EditText) findViewById(R.id.passwordBox);
 		login = (Button) findViewById(R.id.loginButton);
 		register = (Button) findViewById(R.id.registerButton);
-		
+		 
 		if(getSharedPreferences(Config.SETTING, 0).getString(Config.SESSION_ID, null) != null){
 			Intent registerActivity = new Intent(this, HomeActivity.class);
 			startActivity(registerActivity);

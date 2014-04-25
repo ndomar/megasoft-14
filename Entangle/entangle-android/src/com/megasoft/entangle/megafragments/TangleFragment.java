@@ -112,11 +112,13 @@ public class TangleFragment extends Fragment {
          int tangleId = getArguments().getInt("tangleId");
          tangleName = getArguments().getString("tangleName");
          tangle = (TextView) view.findViewById(R.id.tangleName);
-         
-
-         sendFilteredRequest(rootResource + "tangle/" + tangleId
+        
+         sendFilteredRequest(rootResource + "/tangle/" + tangleId
  				+ "/request");
         setAttributes();
+        
+        Log.e("test", tangleId+"");
+        Log.e("test", sessionId+"");
  		setRedirections();
  		tangle.setText(tangleName);
         return view;
@@ -309,7 +311,8 @@ public class TangleFragment extends Fragment {
 	 * @param url
 	 *            , is the URL to which the request is going to be sent
 	 */
-	public void sendFilteredRequest(String url) {
+	public void sendFilteredRequest(final String url) {
+		sessionId = activity.getSharedPreferences(Config.SETTING, 0).getString(Config.SESSION_ID, "");
 		GetRequest getStream = new GetRequest(url) {
 			protected void onPostExecute(String res) {
 				if (!this.hasError() && res != null) {
@@ -317,6 +320,8 @@ public class TangleFragment extends Fragment {
 					layout.removeAllViews();
 					setTheLayout(res);
 				} else {
+					Log.e("test",this.getErrorMessage());
+					Log.e("test",url);
 					Toast.makeText(activity.getBaseContext(),
 							"Sorry, There is a problem in loading the stream",
 							Toast.LENGTH_LONG).show();
@@ -354,11 +359,7 @@ public class TangleFragment extends Fragment {
 				}
 			}
 		};
-		if (type == 0) {
-			getStream.addHeader("x-session-id", getSessionId());
-		} else {
-			getStream.addHeader("sessionid", getSessionId());
-		}
+		getStream.addHeader("x-session-id", getSessionId());
 		getStream.execute();
 	}
 
@@ -444,9 +445,9 @@ public class TangleFragment extends Fragment {
 	 *            , in this case it is the filtering button
 	 */
 	public void filterStream(View view) {
-		String url = rootResource + "tangle/" + getTangleId() + "/tag";
+		String url = rootResource + "/tangle/" + getTangleId() + "/tag";
 		sendGetAllRequest(url, 0);
-		url = rootResource + "tangle/" + getTangleId() + "/user";
+		url = rootResource + "/tangle/" + getTangleId() + "/user";
 		sendGetAllRequest(url, 1);
 	}
 
