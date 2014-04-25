@@ -28,7 +28,7 @@ class ClaimController extends Controller {
         $claimerRequest = $requestRepo->findOneBy(array('id' => $requestId));
 
         if ($claimerRequest == null) {
-            return new Response('No such claimer', 400);
+            return new Response('No such request', 400);
         }
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $offer = $offerRepo->findOneBy(array('requestId' => $requestId, 'deleted' => false, 'status' => 2));
