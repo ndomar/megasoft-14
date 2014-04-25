@@ -16,7 +16,7 @@ public class MainActivity extends Activity {
 		Intent intent = new Intent(this, ChangeOfferPriceActivity.class);
 		intent.putExtra("requestId", 5);
 		intent.putExtra("offerId", 5);
-		intent.putExtra("X-SESSION-ID", 5);
+		intent.putExtra("X-SESSION-ID", "5");
 		startActivity(intent);
 
 	}

@@ -75,7 +75,7 @@ public class ChangeOfferPriceActivity extends Activity {
 	public void sendPriceToServer() {
 		PostRequest imagePostRequest = new PostRequest(
 				Config.API_BASE_URL + "/request/" + requestId
-						+ "/offers/" + offerId + "/changeprice") {
+						+ "/offers/" + offerId + "/changePrice") {
 			protected void onPostExecute(String response) {
 				if (!(this.getStatusCode() == 200)) {
 					showMessage("ERROR, TRY AGAIN LATER");

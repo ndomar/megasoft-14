@@ -165,19 +165,19 @@ class OfferController extends Controller {
             return new Response("Not found", 404);
         }
         if (($session->getUserId()) != ($requestOffer->getUserId())) {
-            return new Response("Unauthorized", 403);
+            return new Response("Unauthorized", 401);
         }
         if (($requestOffer->getStatus()) == ($requestOffer->ACCEPTED)) {
-            return new Response("Offer is already accepted", 401);
+            return new Response("Offer is already accepted", 403);
         }
         if (($requestOffer->getStatus()) == ($requestOffer->DONE)) {
-            return new Response("Offer is already done", 401);
+            return new Response("Offer is already done", 403);
         }
         if (($requestOffer->getStatus()) == ($requestOffer->FAILED)) {
-            return new Response("Offer is already failed", 401);
+            return new Response("Offer is already failed", 403);
         }
         if (($requestOffer->getStatus()) == ($requestOffer->REJECTED)) {
-            return new Response("Offer is already rejected", 401);
+            return new Response("Offer is already rejected", 403);
         }
         $json = $request->getContent();
         $json_array = json_decode($json, true);

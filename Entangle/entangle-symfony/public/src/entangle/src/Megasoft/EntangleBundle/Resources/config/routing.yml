@@ -77,7 +77,7 @@ dummy:
 
 
 change_offer_price:
-    pattern: /offers/{offerid}/changeprice
+    pattern: /offers/{offerid}/changePrice
     defaults: { _controller: MegasoftEntangleBundle:Offer:changeOfferPrice }
     methods: [POST]
     
