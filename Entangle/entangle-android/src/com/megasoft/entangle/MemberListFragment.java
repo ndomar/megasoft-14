@@ -66,5 +66,45 @@ public class MemberListFragment extends Fragment {
 		this.memberNames = memberNames;
 	}
 
+	public int[] getMemberBalances() {
+		return memberBalances;
+	}
+
+	public void setMemberBalances(int[] memberBalances) {
+		this.memberBalances = memberBalances;
+	}
+
+	public String[] getMemberAvatarURLs() {
+		return memberAvatarURLs;
+	}
+
+	public void setMemberAvatarURLs(String[] memberAvatarURLs) {
+		this.memberAvatarURLs = memberAvatarURLs;
+	}
+
+	public int[] getMemberIds() {
+		return memberIds;
+	}
+
+	public void setMemberIds(int[] memberIds) {
+		this.memberIds = memberIds;
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+	
+	public int getTangleId() {
+		return tangleId;
+	}
+	
+	public void setTangleId(int tangleId) {
+		this.tangleId = tangleId;
+	}
+	
 	
 }
