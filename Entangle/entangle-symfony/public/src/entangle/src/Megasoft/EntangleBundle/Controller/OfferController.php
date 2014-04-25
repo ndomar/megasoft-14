@@ -308,5 +308,54 @@ class OfferController extends Controller {
         $doctrine->getManager()->flush();
         return "Offer Accepted.";
     }
+    /**
+     * this marks an offer as done if it accepted and not already marked
+     * @param  Int $offerid  offer ID
+     * @param  \Symfony\Component\HttpFoundation\Request
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @author mohamedzayan
+     */
+    public function updateAction($offerid, \Symfony\Component\HttpFoundation\Request $request) {
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        if ($sessionId == null) {
+           return new Response('Unauthorized', 401);
+        }
 
+        $doctrine = $this->getDoctrine();
+        $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
+        if ($session == null || $session->getExpired()) {
+            return new Response('Unauthorized', 401);
+        }
+        $userOfSession = $session->getUserId();
+        $repo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $json = $request->getContent();
+        $json_array = json_decode($json, true);
+        $status = $json_array['status'];
+        $offerId = $offerid;
+        $offer = $repo->find($offerId);
+        if($offer==null) {
+            return new Response('Offer does not exist', 401);
+        }
+        $request = $offer->getRequest();
+        $requesterId = $request->getUserId();
+        if ($requesterId != $userOfSession) {
+            return new Response("Error: You are unauthorized to accept this offer.", 409);
+        }
+        $backendstatus = $offer->getStatus();
+        if ($backendstatus == $offer->DONE) {
+            return new JsonResponse("Offer already marked as done", 401);
+        } else if ($backendstatus == $offer->PENDING) {
+            return new JsonResponse("Offer is not accepted", 401);
+        } else if ($status != $offer->DONE) {
+            return new JsonResponse("Not Allowed", 401);
+        } else {
+            $offer->setStatus($status);
+            $this->getDoctrine()->getManager()->persist($offer);
+            $this->getDoctrine()->getManager()->flush();
+            $response = new JsonResponse();
+            $response->setStatusCode(201);
+            return $response;
+        }
+    }
 }

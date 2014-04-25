@@ -1,6 +1,5 @@
 package com.megasoft.entangle;
 
-
 import com.megasoft.config.Config;
 
 import android.app.Activity;
