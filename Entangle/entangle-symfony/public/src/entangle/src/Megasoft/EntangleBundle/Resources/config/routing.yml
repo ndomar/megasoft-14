@@ -53,6 +53,12 @@ acceptOffer:
     defaults: {_controller: MegasoftEntangleBundle:Offer:acceptOffer }
     methods: [POST]
 
+withdraw_offer:
+    pattern: /offer/{offerId}
+    defaults: { _controller: MegasoftEntangleBundle:Offer:withdraw }
+    methods: [DELETE]
+    requirements:
+        offerId: \d+
 
 getMails:
     pattern: /tangleOwnerAndClaimerMail/{requestId}/claim
@@ -98,6 +104,7 @@ get_tangles:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:getTangles }
     methods: [GET]
 
+
 check_availability:
     pattern: /tangle/check
     defaults: { _controller: MegasoftEntangleBundle:Tangle:checkAvailability }
@@ -117,7 +124,15 @@ leave_tangle:
     pattern: /tangle/{tangleId}/user
     defaults: {_controller: MegasoftEntangleBundle:Tangle:leaveTangle }
     methods: [DELETE]
-    
+
+megasoft_entangle_register:
+    pattern:  /register
+    defaults: { _controller: MegasoftEntangleBundle:Register:register }
+
+megasoft_entangle_about:
+    pattern:  /about
+    defaults: { _controller: MegasoftEntangleBundle:About:about }
+
 change_offer_price:
     pattern: /offers/{offerid}/changePrice
     defaults: { _controller: MegasoftEntangleBundle:Offer:changeOfferPrice }
