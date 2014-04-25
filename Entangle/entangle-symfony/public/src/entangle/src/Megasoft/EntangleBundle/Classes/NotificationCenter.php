@@ -9,7 +9,9 @@ namespace Megasoft\EntangleBundle\Classes;
 
 use DateTime;
 use Doctrine\ORM\EntityManager;
+use Megasoft\EntangleBundle\Entity\NewClaimNotification;
 use Megasoft\EntangleBundle\Entity\NewMessageNotification;
+use Megasoft\EntangleBundle\Entity\NewOfferNotification;
 use Megasoft\EntangleBundle\Entity\OfferChosenNotification;
 use Megasoft\EntangleBundle\Entity\OfferDeletedNotification;
 use Megasoft\EntangleBundle\Entity\PriceChangeNotification;
@@ -66,7 +68,7 @@ class NotificationCenter
      * default new offer notification title
      * @var string
      */
-    private $newOfferNotifcationTitle = "new offer Notification";
+    private $newOfferNotificationTitle = "new offer Notification";
 
     /**
      * default offer deleted notification title
@@ -85,6 +87,12 @@ class NotificationCenter
      * @var string
      */
     private $reopenRequestNotificationDefaultTitle = "request reopened notification";
+
+    /**
+     * default new claim notification title
+     * @var string
+     */
+    private $newClaimNotificationDefaultTitle = "new claim notification";
 
     /**
      * new message notification ID
@@ -128,6 +136,11 @@ class NotificationCenter
      */
     private $requestDeletedNotificationId = 6;
 
+    /**
+     * new claim notification id
+     * @var int
+     */
+    private $newClaimNotificationId = 7;
     /**
      * request reopen notification id
      * @var int
@@ -355,10 +368,41 @@ class NotificationCenter
     }
 
 
-    // waiting for the next migrations
+    /**
+     * data array ("title"=> notification title, "body" => notification body,"type"=>new offer notification id "offerId"=>offerId,)
+     * @param $offerid
+     * @param null $title
+     * @param null $body
+     * @return bool|mixed
+     */
 
-    function newOfferNotfication($offerid, $title = null, $body = null)
+    function newOfferNotification($offerid, $title = null, $body = null)
     {
+        $offer = $this->em->getRepository('MegasoftEntangleBundle:Offer')->find($offerid);
+        $request = $offer->getRequest();
+        $notification = new NewOfferNotification();
+        $from = $offer->getUser();
+
+        $date = date('m/d/Y h:i:s a', time());
+        $date = DateTime::createFromFormat('m/d/Y h:i:s a', $date);
+
+        $notification->setSeen(false);
+        $notification->setOffer($offer);
+        $notification->setUser($request->getUser());
+        $notification->setCreated($date);
+
+        $this->em->persist($notification);
+        $this->em->flush();
+
+        if (!$title)
+            $title = $this->newOfferNotificationTitle;
+        if ($body)
+            $body = $this->formatMessage($body, $from, null);
+        else
+            $body = $from->getName() . "made a new offer";
+
+        $data = array("title" => $title, "body" => $body, "type" => $this->newOfferNotficationId, "offerId" => $offerid);
+        return $this->notificationCenter($from->getId(), $data);
 
     }
 
@@ -452,6 +496,7 @@ class NotificationCenter
 
     /**
      * this notification should be used when a request is reopened
+     * data array ("title" =>title, "body"=>notification body, "request id" => request id)
      * @param $requestId
      * @param null $title
      * @param null $body
@@ -464,7 +509,7 @@ class NotificationCenter
         $date = date('m / d / Y h:i:s a', time());
         $date = DateTime::createFromFormat('m / d / Y h:i:s a', $date);
 
-        $fromName = $request->getUser();
+        $fromName = $request->getUser()->getName();
         if (!$title)
             $title = $this->reopenRequestNotificationDefaultTitle;
         if ($body)
@@ -484,6 +529,46 @@ class NotificationCenter
         }
     }
 
+
+    /**
+     *
+     * @param $claimId
+     * @param null $title
+     * @param null $body
+     */
+    function newClaimNotification($claimId, $title = null, $body = null)
+    {
+        $claim = $this->em->getRepository("MegasoftEntangleBundle:Claim")->find($claimId);
+        $notification = new NewClaimNotification();
+        $claimer = $claim->getClaimer();
+        $tangle = $claim->getTangle();
+        $tangleOwner = $this->em->getRepository("MegasoftEntangleBundle:UserTangle")->findOneBy(array("tangleId" => $tangle->getId(), "tangleOwner" => true));
+
+        if ($claimer->getId() == $claim->getOffer()->getUser()->getId())
+            $claimed = $claim->getOffer()->getRequest()->getUser();
+        else
+            $claimed = $claim->getOffer()->getUser();
+
+        $date = date('m / d / Y h:i:s a', time());
+        $date = DateTime::createFromFormat('m / d / Y h:i:s a', $date);
+
+        $notification->setCreated($date);
+        $notification->setClaim($claim);
+        $notification->setCreated($date);
+        $notification->setUser($claimed);
+
+        if (!$title)
+            $title = $this->newClaimNotificationDefaultTitle;
+        if ($body)
+            $body = $this->formatMessage($body, $claimer->getName(), null);
+        else
+            $body = $claimer->getName() . "claimed you ";
+
+        $data = array("title" => $title, "body" => $body, "type" => $this->newClaimNotificationId, "claimId" => $claimId);
+        $this->notificationCenter($claim->getId(), $data);
+        $this->notificationCenter($tangleOwner->getUser()->getId(), $data);
+    }
+
     /**
      * this should be used to format user messages
      * currently it's for to and from only
@@ -494,8 +579,10 @@ class NotificationCenter
      */
     function formatMessage($message, $from, $to)
     {
-        $message = str_replace("{{from}} ", $from, $message);
-        $message = str_replace("{{to}}", $to, $message);
+        if ($from)
+            $message = str_replace("{{from}} ", $from, $message);
+        if ($to)
+            $message = str_replace("{{to}}", $to, $message);
         return $message;
     }
 
