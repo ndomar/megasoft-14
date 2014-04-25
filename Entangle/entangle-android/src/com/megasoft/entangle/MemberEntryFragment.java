@@ -93,5 +93,49 @@ public class MemberEntryFragment extends Fragment {
 		this.tangleId = tangleId;
 	}
 
+	@Override 
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstancState) {
+		
+		setMemberId(getArguments().getInt(Config.USER_ID, -1));
+		setTangleId(getArguments().getInt(Config.TANGLE_ID, -1));
+		setMemberName(getArguments().getString(Config.MEMBER_NAME));
+		setMemberBalance(getArguments().getInt(Config.MEMBER_BALANCE, 0));
+		setMemberAvatarURL(getArguments().getString(Config.MEMBER_AVATAR_URL));
+		
+		View view = inflater.inflate(R.layout.fragment_memeber_entry,
+				container, false);
+		
+		view.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View view) {
+				Intent profileIntent = new Intent(getActivity().getBaseContext(), ProfileActivity.class);
+				profileIntent.putExtra("tangle id", getTangleId());
+				profileIntent.putExtra("user id", getMemberId());
+				
+				startActivity(profileIntent);
+			}
+		});
+		
+		setMemberNameView((TextView) view.findViewById(R.id.memberName));
+		setMemberBalanceView((TextView) view.findViewById(R.id.memberBalance));
+		setMemberAvatarView((ImageView) view.findViewById(R.id.memberAvatar));
+
+		getMemberNameView().setText(getMemberName());
+		getMemberBalanceView().setText(getMemberBalance() + "");
+		try{ 
+			ImageRequest imageRequest = new ImageRequest(getMemberAvatarView());
+			imageRequest.execute(getMemberAvatarURL());
+		} catch(Exception e){
+			toasterShow("Fetching photo is not working ...");
+		}
+		return view;
+	}
 	
+	private void toasterShow(String message){
+		Toast.makeText(getActivity().getBaseContext(),
+				message,
+				Toast.LENGTH_LONG).show();
+	}
 }
