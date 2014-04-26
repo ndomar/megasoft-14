@@ -219,10 +219,11 @@ Get profile
                              },
             "transactions" : [
                                  {
-                                     "offerId" : 3,
+                                     "requestId" : 3,
+                                     "requesterId" : 2,
                                      "requesterName"  : "Mohamed Bassem" ,
                                      "requestDescription" : "I want to learn how to study." ,
-                                     "amount" : "5"  
+                                     "amount" : 5  
                                  }
                              ]
         }
@@ -743,7 +744,6 @@ get the details of an offer
             }
 
 
-<<<<<<< HEAD
 
 ## GET /entangle/user/retrieveData
 
@@ -761,7 +761,6 @@ get the details of an offer
                 "notification_state":"true"
             }    
 
-=======
 ## POST /user/login
 
 
@@ -779,7 +778,6 @@ get the details of an offer
         {
              "session_id" : "abcdefghijklmnopqrstuvwxyz1234"                                 
         }
->>>>>>> 8bc3008f76f57e6b59e675354efcee878f40bbea
 
 ##POST /accept/offer
 accept an offer
@@ -896,4 +894,28 @@ Delete a request
              X-SESSION-ID : asdasdasdsadasdasd
                  
 + Response 204
+
+## DELETE /offer/{offerId}
+Withdraw offer
+
++ Parameters
+    + offerId ( String , required ) ... offer id
+
++ Request
+    + Header
+            
+             X-SESSION-ID : "asdasdasdsadasdasd"
+             
++ Response 204
+
+## POST /user/logout
+
+
++ Request 
+    
+   
+               X-SESSION_ID = "qyAzBShe7XMBrWhjyi1q8qi4jBtYLt"
+            
+             
++ Response 200
 
