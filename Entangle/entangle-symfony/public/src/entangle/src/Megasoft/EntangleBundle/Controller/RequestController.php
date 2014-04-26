@@ -252,7 +252,7 @@ class RequestController extends Controller{
                 $price = $offer->getRequestedPrice();
                 $deleted = $offer->getDeleted();
                 $details = array('description' => $description, 'status' => $status,
-                    'date' => $date, 'deadline' => $deadline, 'price' => $price);
+                    'date' => $date, 'deadline' => $deadline, 'price' => $price,'offererName'=>$offer->getUser()->getName(),'id'=>$offer->getId());
                 if ($deleted == 0) {
                     array_push($offerArray, $details);
                 }
