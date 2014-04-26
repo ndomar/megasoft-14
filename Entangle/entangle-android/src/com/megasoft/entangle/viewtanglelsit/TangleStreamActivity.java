@@ -11,12 +11,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -55,6 +55,13 @@ public class TangleStreamActivity extends Fragment {
 		
 		view = inflater.inflate(R.layout.activity_tangle_stream, container, false);
 		
+		((Button)view.findViewById(R.id.create_tangle_button)).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				goToCreateTangle();
+			}
+		});
         this.settings = activity.getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		tangleIds = new ArrayList<Integer>();
@@ -133,7 +140,7 @@ public class TangleStreamActivity extends Fragment {
 	 * @param view
 	 * @author MohamedBassem
 	 */
-	public void goToCreateTangle(View view){
+	public void goToCreateTangle(){
 		startActivity(new Intent(activity,CreateTangleActivity.class));
 	}
 	

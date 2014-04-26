@@ -15,9 +15,9 @@
     </ListView>
 
     <Button
+        android:id="@+id/create_tangle_button"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:onClick="goToCreateTangle"
         android:text="@string/create_tangle"
        	style="?android:attr/borderlessButtonStyle"
        	android:textColor="@color/darkGray"
