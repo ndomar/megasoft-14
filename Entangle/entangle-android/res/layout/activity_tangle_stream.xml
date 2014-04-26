@@ -15,6 +15,7 @@
     </ListView>
 
     <Button
+        android:id="@+id/create_tangle_button"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:text="@string/create_tangle"

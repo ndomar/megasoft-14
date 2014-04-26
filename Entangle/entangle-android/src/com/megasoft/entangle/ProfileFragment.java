@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -148,8 +149,9 @@ public class ProfileFragment extends Fragment {
 	 * @author Almgohar
 	 */
 	public void viewInformation() {
-		String link = "http://entangle2.apiary-mock.com/tangle/" 
+		String link = Config.API_BASE_URL_SERVER + "/tangle/" 
 	+ tangleId + "/user/" + userId + "/profile";
+		
 		GetRequest request = new GetRequest(link) {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 200	) {
@@ -160,10 +162,10 @@ public class ProfileFragment extends Fragment {
 					JSONObject information =  jSon.getJSONObject("information");
 					viewTransactions(transactions);
 					name.setText(information.getString("name"));
-					description.setText("Description: " + information.getString("Description"));
-					balance.setText("Credit: " + information.getString("balance") + " points");
-					birthDate.setText("Birthdate: " + information.getString("birthdate"));
-					viewProfilePicture(information.getString("picture URL"));
+					description.setText("Description: " + information.getString("description"));
+					balance.setText("Credit: " + information.getString("credit") + " points");
+					birthDate.setText("Birthdate: " + information.getJSONObject("birthdate").getString("date"));
+					viewProfilePicture(information.getString("photo"));
 					boolean verified = information.getBoolean("verified");
 					if (verified) {
 							verifiedView.setVisibility(View.VISIBLE);
@@ -190,6 +192,8 @@ public class ProfileFragment extends Fragment {
 						e.printStackTrace();
 						}
 				} else {
+					Log.e("test", this.getErrorMessage());
+				
 					Toast toast = Toast.makeText(activity.getApplicationContext(),"Some error happened.",Toast.LENGTH_SHORT);
 					toast.show();
 					}
@@ -246,7 +250,7 @@ public class ProfileFragment extends Fragment {
 	 * Views the user's profile picture
 	 * @param String imageURL
 	 * @author Almgohar
-	 */
+	 */ 
 	public void viewProfilePicture(String imageURL) {
             ImageRequest image = new ImageRequest(profilePictureView);
             image.execute(imageURL);

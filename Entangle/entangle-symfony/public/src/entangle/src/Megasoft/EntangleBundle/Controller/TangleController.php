@@ -31,7 +31,7 @@ class TangleController extends Controller
             return new Response('Bad Request', 400);
          }
         
-        $dcotrine = $this->getDoctrine();
+        $doctrine = $this->getDoctrine();
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
@@ -989,7 +989,7 @@ class TangleController extends Controller
                                     'id' => $userTangle->getUserId(),
                                     'username' => $userTangle->getUser()->getName(),
                                     'balance' => $userTangle->getCredit(),
-                                    'iconUrl' => $userTangle->getUser()->getPhoto()
+                                    'iconUrl' => 'http://entangle.io/images/profilePictures/'.$userTangle->getUser()->getPhoto()
                                 );
         }
         

@@ -26,7 +26,7 @@ public class ChangeOfferPriceActivity extends Activity {
 	public static final int BUTTON_POSITIVE = 0xffffffff;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) { 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_change_offer_price);
 

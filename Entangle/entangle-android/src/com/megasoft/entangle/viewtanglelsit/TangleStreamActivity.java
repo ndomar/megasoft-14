@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -54,6 +55,13 @@ public class TangleStreamActivity extends Fragment {
 		
 		view = inflater.inflate(R.layout.activity_tangle_stream, container, false);
 		
+		((Button)view.findViewById(R.id.create_tangle_button)).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				goToCreateTangle();
+			}
+		});
         this.settings = activity.getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		tangleIds = new ArrayList<Integer>();
@@ -68,7 +76,7 @@ public class TangleStreamActivity extends Fragment {
 	 * @author MohamedBassem
 	 */
 	private void fetchTangles() {
-		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
+		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
 				+ "/tangle") {
 			public void onPostExecute(String response) {
 				if(!this.hasError() && this.getStatusCode() == 200){
@@ -100,9 +108,9 @@ public class TangleStreamActivity extends Fragment {
 			String[] arr = new String[tangles.length()];
 			for(int i=0;i<tangles.length();i++){
 				JSONObject tangle = tangles.getJSONObject(i);
-				arr[i] = tangle.getString("tangleName"); 
+				arr[i] = tangle.getString("name"); 
 				tangleIds.add(tangle.getInt("id"));
-				tangleNames.add(tangle.getString("tangleName"));
+				tangleNames.add(tangle.getString("name"));
 			}
 
 			listView.setAdapter(new ArrayAdapter<String>(activity.getApplicationContext(), R.layout.sidebar_list_item, R.id.textView1, arr));
@@ -132,7 +140,7 @@ public class TangleStreamActivity extends Fragment {
 	 * @param view
 	 * @author MohamedBassem
 	 */
-	public void goToCreateTangle(View view){
+	public void goToCreateTangle(){
 		startActivity(new Intent(activity,CreateTangleActivity.class));
 	}
 	

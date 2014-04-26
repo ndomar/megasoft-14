@@ -66,7 +66,7 @@ class UserController extends Controller {
         $sessionId = $this->generateSessionId(30);
 
         $repo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
-        $user = $repo->findOneBy(array('name' => $name, 'password' => md5($password)));
+        $user = $repo->findOneBy(array('name' => $name, 'password' => $password));
         if (!$user) {
             return new JsonResponse("Wrong credentials", 400);
         }
@@ -85,7 +85,13 @@ class UserController extends Controller {
         $this->getDoctrine()->getManager()->persist($session);
 
         $this->getDoctrine()->getManager()->flush();
-        $response->setData(array('sessionId' => $sessionId));
+        
+        $kernel = $this->get('kernel');
+        $filepath = 'http://entangle.io/images/profilePictures/';
+                            
+        $response->setData(array('sessionId' => $sessionId,'userId'=>$user->getId()
+                ,'profileImage'=>$filepath.$user->getPhoto(),
+            'username'=>$user->getName()));
         $response->setStatusCode(201);
         return $response;
     }
@@ -134,7 +140,7 @@ class UserController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
      * @author Almgohar
      */
-    public function profileAction(Request $request, $userId, $tangleId) {
+    public function profileAction(\Symfony\Component\HttpFoundation\Request $request, $userId, $tangleId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($sessionId == null) {
@@ -235,7 +241,7 @@ class UserController extends Controller {
         $birthdate = $user->getBirthDate();
         $verfied = $user->getVerified();
         $info = array('name' => $name, 'description' => $description,
-            'credit' => $credit, 'photo' => $photo, 'birthdate' => $birthdate,
+            'credit' => $credit, 'photo' => 'http://entangle.io/images/profilePictures/'.$photo, 'birthdate' => $birthdate,
             'verified' => $verfied);
         return $info;
     }

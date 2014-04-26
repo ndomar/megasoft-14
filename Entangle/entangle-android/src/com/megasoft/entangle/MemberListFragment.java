@@ -135,7 +135,7 @@ public class MemberListFragment extends Fragment {
 		ad.show();       
 
 		
-		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
+		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
 				+ "/tangle/" + getTangleId() + "/user") {
 			public void onPostExecute(String response) {
 				ad.dismiss();

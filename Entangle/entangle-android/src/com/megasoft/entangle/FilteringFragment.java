@@ -2,6 +2,7 @@ package com.megasoft.entangle;
 
 import java.util.HashMap;
 
+import com.megasoft.config.Config;
 import com.megasoft.entangle.megafragments.TangleFragment;
 
 import android.annotation.SuppressLint;
@@ -28,8 +29,8 @@ public class FilteringFragment extends DialogFragment {
 	/**
 	 * The domain to which the requests are sent
 	 */
-	private String rootResource = "http://entangle2.apiary.io/";
-
+	private String rootResource = Config.API_BASE_URL_SERVER;
+ 
 	/**
 	 * The HashMap that contains the mapping of the user to its id
 	 */
@@ -81,6 +82,7 @@ public class FilteringFragment extends DialogFragment {
 		super.onCreate(savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_filtering, container,
 				false);
+		
 		setTagSuggestions(view);
 		setUserSuggestions(view);
 		setFullText(view);
@@ -170,7 +172,7 @@ public class FilteringFragment extends DialogFragment {
 				if (putQuestionMark) {
 					url = "?" + url;
 				}
-				url = rootResource + "tangle/"
+				url = rootResource + "/tangle/"
 						+ parent.getTangleId()
 						+ "/request" + url;
 				parent.sendFilteredRequest(url

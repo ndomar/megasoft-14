@@ -1,21 +1,27 @@
 package com.megasoft.entangle;
 
+import com.megasoft.config.Config;
 import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
+import com.megasoft.requests.ImageRequest;
 
 import android.app.ActionBar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -91,6 +97,14 @@ public class HomeActivity extends FragmentActivity {
 		drawer			= (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawerList 		= (LinearLayout) findViewById(R.id.tangleList);
 		drawerLayout 	= (LinearLayout) findViewById(R.id.left_drawer);
+		
+		SharedPreferences pref = getSharedPreferences(Config.SETTING, 0);
+		((TextView)findViewById(R.id.sidebar_username)).setText(pref.getString(Config.USERNAME, "User"));
+		ImageView image = (ImageView)findViewById(R.id.sidebar_avatar);
+		ImageRequest request = new ImageRequest(image);
+		request.execute(pref.getString(Config.PROFILE_IMAGE, ""));
+		Log.e("test",pref.getString(Config.PROFILE_IMAGE, "") );
+		
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		TangleStreamActivity tangleTitlesFragment = new TangleStreamActivity();
@@ -193,4 +207,5 @@ public class HomeActivity extends FragmentActivity {
 	public void redirectToCreateTangle(View v) {
 		startActivity(new Intent(this, CreateTangleActivity.class));
 	}
+
 }
