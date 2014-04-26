@@ -39,9 +39,27 @@ class Claim
      *
      * @var integer
      * 
-     * @ORM\Column(name="usedId", type="integer")
+     * @ORM\Column(name="claimerId", type="integer")
      */
-    private $usedId;
+    private $claimerId;
+    
+    /**
+     *
+     * @var integer
+     * 
+     * @ORM\Column(name="offerId", type="integer")
+     */
+    private $offerId;
+    
+    /**
+     *
+     * @var Offer
+     * 
+     * @ORM\ManyToOne(targetEntity="Offer")
+     * @ORM\JoinColumn(name="offerId", referencedColumnName="id")
+     */
+    private $offer;
+    
     
     /**
      *
@@ -56,9 +74,9 @@ class Claim
      * @var User
      * 
      * @ORM\ManyToOne(targetEntity="User", inversedBy="claims")
-     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+     * @ORM\JoinColumn(name="claimerId", referencedColumnName="id")
      */
-    private $user;
+    private $claimer;
     
     /**
      *
@@ -68,6 +86,14 @@ class Claim
      * @ORM\JoinColumn(name="tangleId", referencedColumnName="id")
      */
     private $tangle;
+    
+    /**
+     *
+     * @var boolean
+     * 
+     * @ORM\Column(name="deleted", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
+     */
+    private $deleted = false;
     
     
     
@@ -129,29 +155,6 @@ class Claim
     }
 
     /**
-     * Set usedId
-     *
-     * @param integer $usedId
-     * @return Claim
-     */
-    public function setUsedId($usedId)
-    {
-        $this->usedId = $usedId;
-
-        return $this;
-    }
-
-    /**
-     * Get usedId
-     *
-     * @return integer 
-     */
-    public function getUsedId()
-    {
-        return $this->usedId;
-    }
-
-    /**
      * Set tangleId
      *
      * @param integer $tangleId
@@ -175,29 +178,6 @@ class Claim
     }
 
     /**
-     * Set user
-     *
-     * @param \Megasoft\EntangleBundle\Entity\User $user
-     * @return Claim
-     */
-    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \Megasoft\EntangleBundle\Entity\User 
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
      * Set tangle
      *
      * @param \Megasoft\EntangleBundle\Entity\Tangle $tangle
@@ -218,5 +198,120 @@ class Claim
     public function getTangle()
     {
         return $this->tangle;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Claim
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Set claimerId
+     *
+     * @param integer $claimerId
+     * @return Claim
+     */
+    public function setClaimerId($claimerId)
+    {
+        $this->claimerId = $claimerId;
+
+        return $this;
+    }
+
+    /**
+     * Get claimerId
+     *
+     * @return integer 
+     */
+    public function getClaimerId()
+    {
+        return $this->claimerId;
+    }
+
+    /**
+     * Set offerId
+     *
+     * @param integer $offerId
+     * @return Claim
+     */
+    public function setOfferId($offerId)
+    {
+        $this->offerId = $offerId;
+
+        return $this;
+    }
+
+    /**
+     * Get offerId
+     *
+     * @return integer 
+     */
+    public function getOfferId()
+    {
+        return $this->offerId;
+    }
+
+    /**
+     * Set offer
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Offer $offer
+     * @return Claim
+     */
+    public function setOffer(\Megasoft\EntangleBundle\Entity\Offer $offer = null)
+    {
+        $this->offer = $offer;
+
+        return $this;
+    }
+
+    /**
+     * Get offer
+     *
+     * @return \Megasoft\EntangleBundle\Entity\Offer 
+     */
+    public function getOffer()
+    {
+        return $this->offer;
+    }
+
+    /**
+     * Set claimer
+     *
+     * @param \Megasoft\EntangleBundle\Entity\User $claimer
+     * @return Claim
+     */
+    public function setClaimer(\Megasoft\EntangleBundle\Entity\User $claimer = null)
+    {
+        $this->claimer = $claimer;
+
+        return $this;
+    }
+
+    /**
+     * Get claimer
+     *
+     * @return \Megasoft\EntangleBundle\Entity\User 
+     */
+    public function getClaimer()
+    {
+        return $this->claimer;
     }
 }

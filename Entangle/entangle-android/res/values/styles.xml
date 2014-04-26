@@ -1,15 +1,16 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Fonts -->
+    <style name="fontSizeMedium">
+        <item name="android:textSize">@dimen/fontSizeMedium</item>
+    </style>
+    
     <!--
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
+        <item name="android:typeface">serif</item>
     </style>
 
     <!-- Application theme. -->
@@ -17,4 +18,27 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+    	<item name="android:layout_height">1dp</item>
+    	<item name="android:background">?android:attr/listDivider</item>
+    </style>
+    
+    <!-- Sidebar -->
+    
+    <style name="sidebarMenuItemText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <!-- <item name="android:textSize">@style/fontSizeMedium</item> -->       
+    </style>
+    
+    <style name="sidebarMenuItem" parent="@style/fontSizeMedium">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/sidebarMenuItemHeight</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    
+    
+    
 </resources>

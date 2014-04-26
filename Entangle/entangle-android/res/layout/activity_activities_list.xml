@@ -1,0 +1,58 @@
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".ActivitiesListActivity" >
+
+    <Button android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="demo"/>
+    
+    <Button android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="previewRequest"/>
+
+    <Button android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="listOfTangles"/>
+ 
+    
+    <Button android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="changeOfferPrice"/>
+ 
+    
+    <Button android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="acceptTangleInvitation"/>
+ 
+    
+    <Button android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="createOfferActivity"/>
+ 
+    
+    <Button android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="createRequestActivity"/>
+ 
+    
+    <Button android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="createTangleActivity"/>
+ 
+    <Button android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="inviteUserActivity"/>
+ 
+    <Button android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="requestActivity"/>
+    
+    <Button android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="offerActivity"/>
+ 
+ 
+</LinearLayout>
