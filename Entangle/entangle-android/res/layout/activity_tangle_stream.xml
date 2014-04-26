@@ -21,6 +21,7 @@
         android:text="@string/create_tangle"
        	style="?android:attr/borderlessButtonStyle"
        	android:textColor="@color/darkGray"
-        android:background="@color/active"/>
+        android:background="@color/active"
+        android:onClick="redirectToCreateTangle"/>
 
 </LinearLayout>
