@@ -989,7 +989,7 @@ class TangleController extends Controller
                                     'id' => $userTangle->getUserId(),
                                     'username' => $userTangle->getUser()->getName(),
                                     'balance' => $userTangle->getCredit(),
-                                    'iconUrl' => $userTangle->getUser()->getPhoto()
+                                    'iconUrl' => 'http://entangle.io/images/profilePictures/'.$userTangle->getUser()->getPhoto()
                                 );
         }
         

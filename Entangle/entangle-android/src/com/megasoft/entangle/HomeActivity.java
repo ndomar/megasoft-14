@@ -2,6 +2,7 @@ package com.megasoft.entangle;
 
 import com.megasoft.config.Config;
 import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
+import com.megasoft.requests.ImageRequest;
 
 import android.app.ActionBar;
 import android.support.v4.app.FragmentManager;
@@ -13,9 +14,11 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -97,6 +100,10 @@ public class HomeActivity extends FragmentActivity {
 		
 		SharedPreferences pref = getSharedPreferences(Config.SETTING, 0);
 		((TextView)findViewById(R.id.sidebar_username)).setText(pref.getString(Config.USERNAME, "User"));
+		ImageView image = (ImageView)findViewById(R.id.sidebar_avatar);
+		ImageRequest request = new ImageRequest(image);
+		request.execute(pref.getString(Config.PROFILE_IMAGE, ""));
+		Log.e("test",pref.getString(Config.PROFILE_IMAGE, "") );
 		
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
