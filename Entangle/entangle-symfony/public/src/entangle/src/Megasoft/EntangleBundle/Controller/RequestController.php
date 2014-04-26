@@ -185,7 +185,7 @@ class RequestController extends Controller{
         }
 
         $response = new JsonResponse();
-        $response->setData(array($requestDetails));
+        $response->setData($requestDetails);
         $response->setStatusCode(200);
         $response->headers->set('X-SESSION-ID', $sessionId);
         return $response;
