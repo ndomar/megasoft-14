@@ -213,7 +213,11 @@ class RequestController extends Controller{
             $icon = $request->getIcon();
             $price = $request->getRequestedPrice();
             $tangle = $request->getTangleId();
-            $tags = $request->getTags();
+            $tempTags = $request->getTags();
+            $tags = array();
+            for($i=0;$i<count($tempTags);$i++){
+                $tags[] = $tempTags[$i]->getName();
+            }
             $offers = $this->getOfferDetails($requestId);
             $myRequest = 0;
             if ($sessionUserId == $requester) {
