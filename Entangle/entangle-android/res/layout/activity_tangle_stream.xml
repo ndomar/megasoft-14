@@ -17,10 +17,10 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:onClick="goToCreateTangle"
         android:text="@string/create_tangle"
        	style="?android:attr/borderlessButtonStyle"
        	android:textColor="@color/darkGray"
-        android:background="@color/active"/>
+        android:background="@color/active"
+        android:onClick="redirectToCreateTangle"/>
 
 </LinearLayout>
