@@ -1,11 +1,13 @@
 package com.megasoft.entangle;
 
+import com.megasoft.config.Config;
 import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
 
 import android.app.ActionBar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -16,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -91,6 +94,10 @@ public class HomeActivity extends FragmentActivity {
 		drawer			= (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawerList 		= (LinearLayout) findViewById(R.id.tangleList);
 		drawerLayout 	= (LinearLayout) findViewById(R.id.left_drawer);
+		
+		SharedPreferences pref = getSharedPreferences(Config.SETTING, 0);
+		((TextView)findViewById(R.id.sidebar_username)).setText(pref.getString(Config.USERNAME, "User"));
+		
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		TangleStreamActivity tangleTitlesFragment = new TangleStreamActivity();

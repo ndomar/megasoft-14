@@ -98,6 +98,9 @@ public class LoginActivity extends Activity {
 			SharedPreferences.Editor prefsEditor = sessionIDPrefs.edit();
 			prefsEditor.putString(Config.SESSION_ID, json.getString("sessionId"));
 			prefsEditor.putInt(Config.USER_ID, json.getInt("userId"));
+			prefsEditor.putString(Config.PROFILE_IMAGE, json.getString("profileImage"));
+			prefsEditor.putString(Config.USERNAME, json.getString("username"));
+			
 			prefsEditor.commit();
 		} catch (JSONException e) {
 			e.printStackTrace();

@@ -71,7 +71,7 @@ public class RequestActivity extends FragmentActivity {
 	/**
 	 * this is the endpoint string
 	 */
-	final String REQUEST = "/tangle/" + tangleId + "/request/" + requestId;
+	String REQUEST;
 
 	/**
 	 * this is for checking if I have my own request open
@@ -104,7 +104,7 @@ public class RequestActivity extends FragmentActivity {
 		Intent intent = getIntent();
 		this.requestId = intent.getIntExtra("requestId", -1);
 		this.tangleId = intent.getIntExtra("tangleId", -1);
-		
+		 REQUEST = "/tangle/" + tangleId + "/request/" + requestId;
 		
 		requestLayout = (LinearLayout) this.findViewById(R.id.request_entry_layout);
 		offersLayout = (LinearLayout) this.findViewById(R.id.offer_entries_layout);
@@ -125,16 +125,19 @@ public class RequestActivity extends FragmentActivity {
 
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
-		GetRequest request = new GetRequest(Config.API_BASE_URL + REQUEST) {
+		GetRequest request = new GetRequest(Config.API_BASE_URL_SERVER + REQUEST) {
 			protected void onPostExecute(String response) {
 				try {
-					JSONObject json = new JSONObject(response);
+					
 					if (this.getStatusCode() == 200) {
+						JSONObject json = new JSONObject(response);
 						requestLayout.removeAllViewsInLayout();
 						offersLayout.removeAllViewsInLayout();
 						addRequestFields(json);
 						addOffers(json);
 					} else {
+						Log.e("test", this.getErrorMessage());
+						Log.e("test", REQUEST);
 						//showErrorMessage();
 						// TODO
 //						TextView errorMessage = new TextView(self);
@@ -167,13 +170,13 @@ public class RequestActivity extends FragmentActivity {
 		
 		RequestEntryFragment requestFragmet = new RequestEntryFragment();
 		Bundle args = new Bundle();
-		args.putString("description",json.getString("Description"));
-		args.putString("requesterName",json.getString("Requester"));
-		args.putString("date",json.getString("Date"));
-		args.putString("tags",getTags(json.getJSONArray("Tags")));
-		args.putString("price",json.getString("Price"));
-		args.putString("deadline",json.getString("Deadline"));
-		args.putString("status",json.getString("Status"));
+		args.putString("description",json.getString("description"));
+		args.putString("requesterName",json.getString("requester"));
+		args.putString("date",json.getJSONObject("date").getString("date"));
+		args.putString("tags",getTags(json.getJSONArray("tags")));
+		args.putString("price",json.getString("price"));
+		args.putString("deadline",json.getJSONObject("deadline").getString("date"));
+		args.putString("status",json.getString("status"));
 		requestFragmet.setArguments(args);
 		
 		getSupportFragmentManager().beginTransaction().add(R.id.request_entry_layout,requestFragmet).commit();
@@ -190,17 +193,17 @@ public class RequestActivity extends FragmentActivity {
 	 */
 
 	public void addOffers(JSONObject json) throws JSONException {
-		JSONArray offers = (JSONArray) json.get("Offers");
+		JSONArray offers = (JSONArray) json.get("offers");
 		
 		for (int i = 0; i < offers.length(); i++) {
 			JSONObject offer = offers.getJSONObject(i); 
 			OfferEntryFragment offerFragmet = new OfferEntryFragment();
 			Bundle args = new Bundle();
 			args.putInt("offerId", Integer.parseInt(offer.getString("id"))); 
-			args.putString("requestedPrice",offer.getString("requestedPrice"));
-			args.putString("date",offer.getString("date"));
+			args.putString("requestedPrice",offer.getString("price"));
+			args.putString("date",offer.getJSONObject("date").getString("date"));
 			args.putString("description",offer.getString("description"));
-			args.putString("offerer",offer.getString("offererId"));
+			args.putString("offerer",offer.getString("offererName"));
 			args.putString("status",offer.getString("status"));
 			offerFragmet.setArguments(args);
 			

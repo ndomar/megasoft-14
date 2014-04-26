@@ -85,7 +85,13 @@ class UserController extends Controller {
         $this->getDoctrine()->getManager()->persist($session);
 
         $this->getDoctrine()->getManager()->flush();
-        $response->setData(array('sessionId' => $sessionId,'userId'=>$user->getId()));
+        
+        $kernel = $this->get('kernel');
+        $filepath = $kernel->getRootDir() . '/../web/images/profilePictures/';
+                            
+        $response->setData(array('sessionId' => $sessionId,'userId'=>$user->getId()
+                ,'profileImage'=>$filepath.$user->getPhoto(),
+            'username'=>$user->getName()));
         $response->setStatusCode(201);
         return $response;
     }

@@ -125,7 +125,7 @@ class RegisterController extends Controller {
                             $filename = substr(md5(time()), 0, 10) . $this->generate(5);
                             $filepath = $kernel->getRootDir() . '/../web/images/profilePictures/' . $filename . '.' . $fileType;
                             move_uploaded_file($image, $filepath);
-                            $user->setPhoto($filename . $fileType);
+                            $user->setPhoto($filename . '.' .$fileType);
                         }
                     }
                 }

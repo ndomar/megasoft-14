@@ -109,7 +109,7 @@ public class TangleFragment extends Fragment {
 			}
 		});
          
-         int tangleId = getArguments().getInt("tangleId");
+         tangleId = getArguments().getInt("tangleId");
          tangleName = getArguments().getString("tangleName");
          tangle = (TextView) view.findViewById(R.id.tangleName);
         
