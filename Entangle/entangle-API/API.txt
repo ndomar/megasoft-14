@@ -744,6 +744,23 @@ get the details of an offer
             }
 
 
+
+## GET /entangle/user/retrieveData
+
++ Request
+
+    + Header 
+            
+            X-SESSION-ID : SESSION
+
++ Response 200 
+        
+        +Body   {
+                "description":"current description",
+                "date_of_birth":"29/4/1993",
+                "notification_state":"true"
+            }    
+
 ## POST /user/login
 
 
