@@ -87,7 +87,7 @@ class UserController extends Controller {
         $this->getDoctrine()->getManager()->flush();
         
         $kernel = $this->get('kernel');
-        $filepath = $kernel->getRootDir() . '/../web/images/profilePictures/';
+        $filepath = 'http://entangle.io/images/profilePictures/';
                             
         $response->setData(array('sessionId' => $sessionId,'userId'=>$user->getId()
                 ,'profileImage'=>$filepath.$user->getPhoto(),
