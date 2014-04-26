@@ -162,10 +162,10 @@ public class ProfileFragment extends Fragment {
 					JSONObject information =  jSon.getJSONObject("information");
 					viewTransactions(transactions);
 					name.setText(information.getString("name"));
-					description.setText("Description: " + information.getString("Description"));
-					balance.setText("Credit: " + information.getString("balance") + " points");
-					birthDate.setText("Birthdate: " + information.getString("birthdate"));
-					viewProfilePicture(information.getString("picture URL"));
+					description.setText("Description: " + information.getString("description"));
+					balance.setText("Credit: " + information.getString("credit") + " points");
+					birthDate.setText("Birthdate: " + information.getJSONObject("birthdate").getString("date"));
+					viewProfilePicture(information.getString("photo"));
 					boolean verified = information.getBoolean("verified");
 					if (verified) {
 							verifiedView.setVisibility(View.VISIBLE);

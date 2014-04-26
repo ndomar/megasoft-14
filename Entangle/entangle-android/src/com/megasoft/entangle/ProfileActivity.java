@@ -152,7 +152,7 @@ public class ProfileActivity extends FragmentActivity {
 	 * @author Almgohar
 	 */
 	public void viewInformation() {
-		String link = Config.API_BASE_URL_SERVER+ "/tangle/" + tangleId
+		String link = Config.API_BASE_URL+ "/tangle/" + tangleId
 				+ "/user/" + userId + "/profile";
 		GetRequest request = new GetRequest(link) {
 			protected void onPostExecute(String response) {
@@ -167,7 +167,7 @@ public class ProfileActivity extends FragmentActivity {
 						viewTransactions(transactions);
 						name.setText(information.getString("name"));
 						description.setText("Description: "
-								+ information.getString("Description"));
+								+ information.getString("description"));
 						balance.setText("Credit: "
 								+ information.getString("balance") + " points");
 						birthDate.setText("Birthdate: "

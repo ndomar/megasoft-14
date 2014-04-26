@@ -241,7 +241,7 @@ class UserController extends Controller {
         $birthdate = $user->getBirthDate();
         $verfied = $user->getVerified();
         $info = array('name' => $name, 'description' => $description,
-            'credit' => $credit, 'photo' => $photo, 'birthdate' => $birthdate,
+            'credit' => $credit, 'photo' => 'http://entangle.io/images/profilePictures/'.$photo, 'birthdate' => $birthdate,
             'verified' => $verfied);
         return $info;
     }
