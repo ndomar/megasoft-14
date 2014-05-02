@@ -1,92 +1,158 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".CreateOfferActivity"
-    android:focusable="true" 
-    android:focusableInTouchMode="true" >
+    tools:context=".CreateOfferActivity" >
 
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginTop="@dimen/marginMedium"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/cancelRequest"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0px"
+            android:layout_height="@dimen/buttonHeight"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_action_remove"
+            android:text="Cancel"
+            android:textColor="@color/darkGray" />
+
+        <Button
+            android:id="@+id/post"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0px"
+            android:layout_height="@dimen/buttonHeight"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ic_action_forward_green"
+            android:text="Create"
+            android:textColor="@color/green" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBox"
+            android:layout_weight="1"
+            android:background="@color/blue" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBox"
+            android:layout_weight="1"
+            android:background="@color/orange" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBox"
+            android:layout_weight="1"
+            android:background="@color/cyan" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBox"
+            android:layout_weight="1"
+            android:background="@color/megenta" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBox"
+            android:layout_weight="1"
+            android:background="@color/lightGreen" />
+    </LinearLayout>
+
+    <!--
+         <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:height="40dip"
         android:text="@string/create_offer"
         android:textSize="@dimen/fontSizeMedium" />
+    -->
 
-    <EditText
+   <EditText
         android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:ems="10"
-        android:inputType="textMultiLine" >
+        android:height="65dp"
+        android:hint="Offer Description : I have a used car"
+        android:inputType="textMultiLine" />
 
-        
-    </EditText>
-
-    <TextView
+    <!--
+         <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/description"
-        android:layout_below="@+id/description"
-        android:layout_marginTop="38dp"
-        android:text="@string/price"
+       	android:text="@string/price"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+    -->
 
     <EditText
         android:id="@+id/requestedPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView3"
-        android:layout_alignBottom="@+id/textView3"
-        android:layout_alignLeft="@+id/checkBox"
-        android:layout_alignRight="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/marginMedium"
         android:ems="10"
-        android:hint="@string/priceHint"
+        android:hint="Price : ex. 35"
         android:inputType="number" >
-
     </EditText>
+
 
     <Button
         android:id="@+id/deadline"
-        android:layout_width="wrap_content"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_centerVertical="true"
-        android:text="@string/ChooseDate" />
+        android:layout_marginTop="@dimen/marginMedium"
+        android:background="@drawable/border_gray"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_action_go_to_today"
+        android:spinnerMode="dialog"
+        android:text="Due date"
+        android:textColor="@color/darkGray" />
 
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/Post"
-        android:layout_toRightOf="@+id/deadline"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/marginMedium"
         android:onClick="itemClicked"
         android:text="@string/check" />
 
-    <Button
+    <!--
+         <Button
         android:id="@+id/Post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/deadline"
-        android:layout_alignRight="@+id/deadline"
-        android:layout_below="@+id/deadline"
         android:layout_marginTop="48dp"
-        android:text="@string/post_offer" />
-
-    <TextView
+        android:text="Create" />
+    -->
+    <!--
+         <TextView
         android:id="@+id/showMyDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/Post"
-        android:layout_alignRight="@+id/description"
         android:layout_marginRight="19dp" />
+    -->
 
-</RelativeLayout>
+</LinearLayout>

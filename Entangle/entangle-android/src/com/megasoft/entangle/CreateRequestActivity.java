@@ -77,7 +77,7 @@ public class CreateRequestActivity extends Activity {
 	 * Textview to display the deadLine date , in case user didn't choose a
 	 * value it will display today's date
 	 */
-	TextView dateDisplay;
+	//TextView dateDisplay;
 	/**
 	 * Button clicked to pick deadLine date
 	 */
@@ -150,7 +150,7 @@ public class CreateRequestActivity extends Activity {
 		checkBox = (CheckBox) findViewById(R.id.checkBox);
 		//Post.setEnabled(false);
 		description.setOnFocusChangeListener(focusListener);
-		dateDisplay = (TextView) findViewById(R.id.showMyDate);
+		//dateDisplay = (TextView) findViewById(R.id.showMyDate);
 		pickDate = (Button
 				) findViewById(R.id.myDatePickerButton);
 		deadLineYear = calendar.get(Calendar.YEAR);
@@ -177,7 +177,7 @@ public class CreateRequestActivity extends Activity {
 					json.put("requestedPrice", requestedPrice.getText()
 							.toString());
 					json.put("date", currentDateTime);
-					json.put("deadLine", dateDisplay.getText().toString());
+					//json.put("deadLine", dateDisplay.getText().toString());
 					json.put("tags", jsonTagsArray);
 				} catch (JSONException e) {
 					e.printStackTrace();
