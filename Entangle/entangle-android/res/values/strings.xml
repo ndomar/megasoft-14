@@ -113,5 +113,10 @@
 
 
     <string name="create_tangle">Create Tangle</string>
+    
+    <string name="login">Login</string>
+    <string name="cancel">Cancel</string>
+    <string name="email">email: user@entangle.io</string>
+    <string name="password">password</string>
 
 </resources>
