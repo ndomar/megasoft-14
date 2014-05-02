@@ -50,7 +50,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/buttonHeight"
                 android:layout_weight="1"
-                android:textColor="@color/darkGray"
+                android:textColor="@color/gray"
                 android:text="@string/cancel" />
         </LinearLayout>
     </LinearLayout>
