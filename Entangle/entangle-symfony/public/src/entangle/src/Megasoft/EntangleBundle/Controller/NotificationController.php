@@ -30,7 +30,7 @@ class NotificationController extends Controller
             
         if($notification == null)
         {
-            return new Response("Notification is not found" ,404);
+            return new Response("Notific ation is not found" ,404);
         }
         
         
