@@ -42,7 +42,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/buttonHeight"
                 android:layout_weight="1"
-                 android:drawableLeft="@drawable/ic_action_remove"
                 android:textColor="@color/green"
                 android:text="@string/login" />
 
@@ -51,7 +50,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/buttonHeight"
                 android:layout_weight="1"
-                android:drawableLeft="@drawable/ic_action_remove"
                 android:textColor="@color/darkGray"
                 android:text="@string/cancel" />
         </LinearLayout>
