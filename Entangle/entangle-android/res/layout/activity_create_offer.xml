@@ -86,7 +86,7 @@
         android:textSize="@dimen/fontSizeMedium" />
     -->
 
-   <EditText
+    <EditText
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="120dp"
@@ -116,14 +116,12 @@
         android:inputType="number" >
     </EditText>
 
-
     <Button
         android:id="@+id/deadline"
         style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/marginMedium"
-        android:background="@drawable/border_gray"
         android:clickable="true"
         android:drawableLeft="@drawable/ic_action_go_to_today"
         android:spinnerMode="dialog"

@@ -34,9 +34,9 @@
             android:layout_width="0px"
             android:layout_height="@dimen/buttonHeight"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawableLeft="@drawable/ic_action_forward_green"
             android:text="Create"
-            android:clickable="true"
             android:textColor="@color/green" />
     </LinearLayout>
 
@@ -127,17 +127,16 @@
     -->
 
     <Button
-        android:background="@drawable/border_gray"
-        style="?android:attr/buttonBarButtonStyle"
         android:id="@+id/myDatePickerButton"
-        android:layout_width="match_parent"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/marginMedium"
         android:clickable="true"
         android:drawableLeft="@drawable/ic_action_go_to_today"
+        android:spinnerMode="dialog"
         android:text="Due date"
-        android:textColor="@color/darkGray"
-        android:spinnerMode="dialog" />
+        android:textColor="@color/darkGray" />
 
     <CheckBox
         android:id="@+id/checkBox"
