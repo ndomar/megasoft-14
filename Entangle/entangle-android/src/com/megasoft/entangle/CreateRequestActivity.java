@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -147,10 +148,11 @@ public class CreateRequestActivity extends Activity {
 		tags = (EditText) findViewById(R.id.tags);
 		Post = (Button) findViewById(R.id.post);
 		checkBox = (CheckBox) findViewById(R.id.checkBox);
-		Post.setEnabled(false);
+		//Post.setEnabled(false);
 		description.setOnFocusChangeListener(focusListener);
 		dateDisplay = (TextView) findViewById(R.id.showMyDate);
-		pickDate = (Button) findViewById(R.id.myDatePickerButton);
+		pickDate = (Button
+				) findViewById(R.id.myDatePickerButton);
 		deadLineYear = calendar.get(Calendar.YEAR);
 		deadLineMonth = calendar.get(Calendar.MONTH);
 		deadLineDay = calendar.get(Calendar.DAY_OF_MONTH);
@@ -226,10 +228,10 @@ public class CreateRequestActivity extends Activity {
 	 */
 
 	private void updateDisplay() {
-		dateDisplay.setError(null);
-		this.dateDisplay.setText(new StringBuilder().append(deadLineDay)
-				.append("-").append(deadLineMonth + 1).append("-")
-				.append(deadLineYear).append(" "));
+//		dateDisplay.setError(null);
+//		this.dateDisplay.setText(new StringBuilder().append(deadLineDay)
+//				.append("-").append(deadLineMonth + 1).append("-")
+//				.append(deadLineYear).append(" "));
 	}
 
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
