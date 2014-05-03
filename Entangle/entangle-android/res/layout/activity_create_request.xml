@@ -114,6 +114,6 @@
         android:layout_alignLeft="@+id/myDatePickerButton"
         android:ems="20"
         android:height="30dp"
-        android:text="@string/tag" />
+        android:text="@string/tags" />
 
 </RelativeLayout>
