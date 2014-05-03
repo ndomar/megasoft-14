@@ -233,8 +233,12 @@ class TangleController extends Controller
      * @param string $message
      * @author MohamedBassem
      */
-    public function inviteUser($email,$inviterId,$message){
+    public function inviteUser($email,$tangleId,$inviterId,$message){
         $randomString = $this->generateRandomString(30);
+        
+        $tangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Tangle');
+        $tangle = $tangleRepo->findOneById($tangleId);
+        
         $newInvitationCode = new InvitationCode();
         $newInvitationCode->setCode($randomString);
         if ($this->isNewMember($email)) {
@@ -244,7 +248,8 @@ class TangleController extends Controller
             $user = $userEmailRepo->findOneByEmail($email)->getUser();
             $newInvitationCode->setUser($user);
         }
-
+        
+        $newInvitationCode->setTangle($tangle);
         $newInvitationCode->setInviterId($inviterId);
         $newInvitationCode->setExpired(false);
         $newInvitationCode->setCreated(new DateTime("NOW"));
@@ -310,7 +315,7 @@ class TangleController extends Controller
             }
 
             if ($isOwner) {
-                $this->inviteuser($email,$session->getUserId(),$json['message']);
+                $this->inviteuser($email,$tangleId,$session->getUserId(),$json['message']);
             } else {
                 $em = $this->getDoctrine()->getManager();
                 
@@ -775,7 +780,7 @@ class TangleController extends Controller
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
         $email = $pendingInvitation->getEmail();
         if ($this->isNewMember($email) || !$this->isTangleMember($email, $pendingInvitation->getTangleId()) ) {
-            $this->inviteuser($email,$pendingInvitation->getInviterId(),$message);
+            $this->inviteuser($email,$pendingInvitation->getTangleId(),$pendingInvitation->getInviterId(),$message);
             $pendingInvitation->setApproved(true);
             $this->getDoctrine()->getManager()->flush();
             return new Response("Approved",200);
