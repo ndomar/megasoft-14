@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+	
+    <!-- Margins -->
+    <dimen name="marginSmall">5dp</dimen>
+    <dimen name="marginMedium">10dp</dimen>
+    <dimen name="marginLarge">40dp</dimen>
+    
+    <!-- Paddings -->
+    <dimen name="paddingSmall">5dp</dimen>
+    <dimen name="paddingMedium">20dp</dimen>
+    <dimen name="paddingLargs">50dp</dimen>
+    
+    <!-- login_template -->
+    <dimen name="colorBox">15dp</dimen>
+    <dimen name="colorBorder">5dp</dimen>
+    
+    <!-- Text -->
+    <dimen name="textSmall">7sp</dimen>
+    <dimen name="textMedium">10sp</dimen>
+    <dimen name="textLarge">25sp</dimen>
+    
+    <!-- Buttons -->
+    <dimen name="buttonHeight">45dp</dimen>
+    
+    
+    <!-- Edit text -->
+    <dimen name="textFieldHeight">50dp</dimen>
+    <dimen name="textAreaHeight">120dp</dimen>
+    
+    <dimen name="logo_big">110dp</dimen>
+    
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="add">Add</string>
+    
     <string name="app_name">Entangle</string>
     <string name="action_settings">Settings</string>
     <string name="claim_button">Claim </string>
@@ -15,6 +17,14 @@
     <string name="tagHint">food, tech, living</string>
     <string name="priceHint">5</string>
     <string name="hello_world">Hello world!</string>
+
+    <string name="requestDescription">I want someone to help me change the world\.\.\.</string>
+    <string name="tags">food, society, games</string>
+    <string name="priceDescription">Price\: 125</string>
+    <string name="dueDate">Due date</string>
+    <string name="pts">Pts</string>
+    <string name="create">Create</string>
+
     <string name="tangleNameHint">Specify a Tangle name</string>
     <string name="iconButton">Choose an Icon</string>
     <string name="tangleIcon">Tangle Icon</string>
@@ -95,7 +105,9 @@
     <string name="action_filter">Filter</string>
     <string name="offers">Offers</string>
     <string name="profileActivity">Profile</string>
-
+	<string name="requiredField">This field is required</string>
+    <string name="dateChoice">4/May/2014</string>
+        
     <string-array name="spinnerChoice">
         <item>None</item>
         <item>Tag</item>
@@ -103,6 +115,8 @@
         <item>Full Text Search</item>
     </string-array>
 
+    
+    
     <string name="title_activity_stream_request_fragment">StreamRequestFragment</string>
     <string name="delete_button_text">Delete</string>
     <string name="title_section1">Section 1</string>
@@ -114,5 +128,9 @@
     <string name="title_activity_tangle_stream">TangleStreamActivity</string>
     <string name="title_activity_create_tangle">Create Tangle</string>
     <string name="create_tangle">Create Tangle</string>
+    <string name="login">Login</string>
+    <string name="cancel">Cancel</string>
+    <string name="email">email: user@entangle.io</string>
+    <string name="password">password</string>
 
 </resources>
