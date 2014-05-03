@@ -224,71 +224,6 @@ class TangleController extends Controller
         $userId = $mail->getUserId();
         return ($userTangleRepo->findOneBy(array('userId' => $userId, 'tangleId' => $tangleId)) != null);
     }
-
-    /**
-     * An endpoint that gets a list of emails and classify them to
-     * newMember , Entangle Member not in the tangle , already in the tangle
-     * and invalid emails
-     * @param Request $request
-     * @param integer $tangleId
-     * @return Response|JsonResponse
-     * @author MohamedBassem
-     */
-    public function checkMembershipAction(\Symfony\Component\HttpFoundation\Request $request, $tangleId) {
-        $sessionId = $request->headers->get('X-SESSION-ID');
-
-        if ($sessionId == null) {
-            return new Response("Bad Request", 400);
-        }
-
-        $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
-
-        $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
-
-        if ($session == null || $session->getExpired()) {
-            return new Response("Unauthorized", 401);
-        }
-
-        if (!$this->validateTangleId($tangleId)) {
-            return new Response("Tangle Not Found", 404);
-        }
-
-
-        $userTangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserTangle');
-
-        if ($userTangleRepo->findOneBy(array('userId' => $session->getUserId(), 'tangleId' => $tangleId)) == null) {
-            return new Response("You are not a tangle member to invite other members", 401);
-        }
-
-        $jsonString = $request->getContent();
-        $json = json_decode($jsonString, true);
-
-        if (!isset($json['emails']) || !is_array($json['emails'])) {
-            return new Response("Bad Request", 400);
-        }
-
-        $response = array();
-        $response['notMembers'] = array();
-        $response['entangleMembers'] = array();
-        $response['alreadyInTheTangle'] = array();
-        $response['invalid'] = array();
-
-        foreach ($json['emails'] as $email) {
-            if (!$this->isValidEmail($email)) {
-                $response['invalid'][] = $email;
-            } else if ($this->isNewMember($email)) {
-                $response['notMembers'][] = $email;
-            } else if ($this->isTangleMember($email, $tangleId)) {
-                $response['alreadyInTheTangle'][] = $email;
-            } else {
-                $response['entangleMembers'][] = $email;
-            }
-        }
-
-        $jsonResponse = new JsonResponse();
-        $jsonResponse->setData($response);
-        return $jsonResponse;
-    }
     
     /**
      * This function is used to send the invitation mail to $email with the message $message and
@@ -305,7 +240,6 @@ class TangleController extends Controller
         if ($this->isNewMember($email)) {
             $newInvitationCode->setUserId(null);
         } else {
-
             $userEmailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
             $user = $userEmailRepo->findOneByEmail($email)->getUser();
             $newInvitationCode->setUser($user);
@@ -369,10 +303,9 @@ class TangleController extends Controller
 
         $isOwner = $userTangle->getTangleOwner();
         
-        
         foreach ($json['emails'] as $email) {
-
-            if (!$this->isValidEmail($email) || (!$this->isNewMember($email) && $this->isTangleMember($email, $tangleId) )) {
+            
+            if ( !$this->isValidEmail($email) || (!$this->isNewMember($email) && $this->isTangleMember($email, $tangleId)) ) {
                 continue;
             }
 
@@ -404,10 +337,8 @@ class TangleController extends Controller
                 $em->flush();
             }
         }
-        
         $jsonResponse = new JsonResponse();
         $jsonResponse->setStatusCode(201);
-        
         if($isOwner){
             $jsonResponse->setData(array('pending'=>0));
         }else{
