@@ -115,7 +115,8 @@ public class CreateOfferActivity extends Activity {
 	 * on creation of the activity it takes data from the fields and send it as
 	 * json object on clicking the Post Button
 	 * 
-	 * @param Bundle savedInstanceState
+	 * @param Bundle
+	 *            savedInstanceState
 	 * @return none
 	 * @author Salma Khaled
 	 */
@@ -158,7 +159,8 @@ public class CreateOfferActivity extends Activity {
 				if (isEmpty(description) | isEmpty(requestedPrice)) {
 					return;
 				}
-				if (pickDate.getText().equals("Due date")) {
+
+				if (pickDate.getText().toString().equals("Due Date")) {
 					deadlineError.setText("This field is required");
 					deadlineError.setVisibility(View.VISIBLE);
 					return;
@@ -186,6 +188,7 @@ public class CreateOfferActivity extends Activity {
 							startActivity(intent);
 							// send notification
 						} else {
+
 							Toast.makeText(getApplicationContext(),
 									"Error, Can not create offer",
 									Toast.LENGTH_SHORT).show();

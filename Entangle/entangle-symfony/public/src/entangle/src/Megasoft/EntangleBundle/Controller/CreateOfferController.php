@@ -3,6 +3,7 @@
 namespace Megasoft\EntangleBundle\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Megasoft\EntangleBundle\Entity\Offer;
@@ -19,13 +20,13 @@ class CreateOfferController extends Controller {
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param String $tangleId
      * @param String $requestId
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      * @author Salma Khaled
      */
     public function createOfferAction(Request $request, $tangleId, $requestId) {
         $doctrine = $this->getDoctrine();
         $json = $request->getContent();
-        $response = new JsonResponse();
+        $response = new Response();
         $json_array = json_decode($json, true);
         $sessionId = $request->headers->get('X-SESSION-ID');
         if ($sessionId == null) {
@@ -77,8 +78,6 @@ class CreateOfferController extends Controller {
         //send notification
         $doctrine->getManager()->persist($newOffer);
         $doctrine->getManager()->flush();
-
-        $response->setData(array('sessionId' => $sessionId));
         $response->setStatusCode(201);
 
         return $response;
