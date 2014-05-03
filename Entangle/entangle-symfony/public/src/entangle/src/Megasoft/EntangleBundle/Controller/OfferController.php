@@ -111,12 +111,13 @@ class OfferController extends Controller {
         $user = $offer->getUser();
         $userId = $user->getId();
         $userName = $user->getName();
-        $offerDate = $offer->getDate();
+        $offerDate = $offer->getDate()->format('d/m/Y');
+        $userPhoto = $user->getPhoto();
         $offerStatus = $offer->getStatus();
         $offerPrice = $offer->getRequestedPrice();
         $offerDescription = $offer->getDescription();
-        $offerDeadline = $offer->getExpectedDeadline();
-        $offerInformation = array('offererName' => $userName,
+        $offerDeadline =  $offer->getExpectedDeadline()->format('d/m/Y');
+        $offerInformation = array('offererAvatar' => $userPhoto ,'offererName' => $userName,
             'offerDescription' => $offerDescription,
             'offerDeadline' => $offerDeadline,
             'offerStatus' => $offerStatus,
