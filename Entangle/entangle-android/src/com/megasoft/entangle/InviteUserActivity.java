@@ -61,8 +61,7 @@ public class InviteUserActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_invite_users);
 
-		this.tangleId = getIntent().getIntExtra(
-				"com.megasoft.entangle.tangleId", -1);
+		this.tangleId = getIntent().getIntExtra("tangleId", -1);
 
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
@@ -73,16 +72,6 @@ public class InviteUserActivity extends Activity {
 
 		this.addEmailField(null);
 
-	}
-	/**
-	 * This method is used to close the activity once the invitation is sent. It's triggered from the success of the
-	 * other activity.
-	 */
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == INVITATION_SUCCESS) {
-           finish();
-        }
 	}
 
 	@Override
@@ -125,16 +114,26 @@ public class InviteUserActivity extends Activity {
 			showErrorToast();
 			return;
 		}
+		
+		boolean hasErrors = false;
+		
 		view.setEnabled(false);
 		
 		JSONArray emails = new JSONArray();
 		for (EditText emailEditText : editTexts) {
 			String val = emailEditText.getText().toString();
-			if (val.equals("")) {
+			if ( checkValidEmail(val) ) {
+				emailEditText.setError("Invalid Email");
+				hasErrors = true;
 				continue;
 			} else {
 				emails.put(val);
 			}
+		}
+		
+		if(hasErrors){
+			Toast.makeText(this, "Please Fix Invalid Emails", Toast.LENGTH_SHORT).show();
+			return;
 		}
 
 		JSONObject request = new JSONObject();
@@ -145,10 +144,10 @@ public class InviteUserActivity extends Activity {
 		}
 
 		PostRequest postRequest = new PostRequest(Config.API_BASE_URL
-				+ "/tangle/" + tangleId + "/check-membership") {
+				+ "/tangle/" + tangleId + "/invite") {
 			public void onPostExecute(String response) {
 				if(this.getStatusCode() == 200){ 
-					goToConfirmation(response);
+					onSuccess(response);
 					view.setEnabled(true);
 				}else{
 					showErrorToast();
@@ -162,22 +161,25 @@ public class InviteUserActivity extends Activity {
 		postRequest.execute();
 	}
 
-	/**
-	 * The callback of the request , opens the new activity and passes the JSON
-	 * response to it
-	 * 
-	 * @param response
-	 *            The JSON response from the previous activity
-	 * @author MohamedBassem
-	 */
-	public void goToConfirmation(String response) {
-		Intent confirmInviteUser = new Intent(this,
-				ConfirmInviteUserActivity.class);
-		confirmInviteUser.putExtra("com.megasoft.entangle.emails",
-				response);
-		confirmInviteUser.putExtra("com.megasoft.entangle.tangleId",
-				tangleId);
-		startActivityForResult(confirmInviteUser, 0);
+	private boolean checkValidEmail(String val) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	public void onSuccess(String response){
+		try {
+			JSONObject jsonReponse = new JSONObject(response);
+			if(jsonReponse.getInt("pending") == 0){
+				Toast.makeText(getApplicationContext(), "Invited !",
+						Toast.LENGTH_LONG).show();
+			}else{
+				Toast.makeText(getApplicationContext(), "Waiting For Tangle Owner Approval !",
+						Toast.LENGTH_LONG).show();
+			}
+			finish();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
