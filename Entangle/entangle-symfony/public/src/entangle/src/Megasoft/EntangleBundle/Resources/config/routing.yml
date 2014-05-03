@@ -134,11 +134,6 @@ get_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
 
-check_availability:
-    pattern: /tangle/check
-    defaults: { _controller: MegasoftEntangleBundle:Tangle:checkAvailability }
-    methods: [GET]
-
 create_tangle:
     pattern: /tangle
     defaults: { _controller: MegasoftEntangleBundle:Tangle:createTangle }

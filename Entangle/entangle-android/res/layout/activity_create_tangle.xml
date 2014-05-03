@@ -99,26 +99,37 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_marginLeft="@dimen/marginSmall"
+            android:layout_marginRight="@dimen/marginLarge"
             android:layout_marginTop="@dimen/marginSmall"
-            android:layout_marginRight="@dimen/marginSmall"
-            android:layout_marginLeft="@dimen/marginMedium"
+            android:background="@drawable/entangle_logo"
             android:clickable="true"
             android:ems="10"
             android:gravity="center"
             android:onClick="chooseIcon"
             android:textAlignment="center"
-            android:textColor="@color/gray"
-            android:background="@drawable/entangle_logo" />
+            android:textColor="@color/gray" />
+
     </LinearLayout>
 
     <EditText
         android:id="@+id/tangleDescription"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:layout_marginTop="@dimen/marginSmall"
+        android:layout_marginTop="@dimen/marginMedium"
+        android:layout_marginRight="75dp"
         android:ems="10"
         android:height="@dimen/textFieldHeight"
         android:hint="@string/tangleDescriptionHint"
         android:inputType="textMultiLine" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="75dp"
+        android:layout_marginLeft="@dimen/marginSmall"
+        android:layout_marginTop="@dimen/marginMedium"
+        android:text="@string/createTangleAgreement"
+        android:textSize="@dimen/textMedium" />
 
 </LinearLayout>
