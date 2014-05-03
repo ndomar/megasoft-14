@@ -1,13 +1,17 @@
 package com.megasoft.entangle;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import com.megasoft.config.Config;
 
 /**
  * this classes are here just for testing purposes. this will be called whenever
@@ -20,6 +24,7 @@ public class GcmIntentService extends IntentService {
 	private NotificationManager mNotificationManager;
 	NotificationCompat.Builder builder;
 	String TAG = "Notification";
+	static int NotificationCounter = 0;
 
 	public GcmIntentService() {
 		super("GcmIntentService");
@@ -46,11 +51,21 @@ public class GcmIntentService extends IntentService {
 		String title = intent.getExtras().getString("title");
 		String body = intent.getExtras().getString("body");
 		int type = -1;
+		int notificationId = -1;
 		if (intent.getExtras().getString("type") != null)
 			type = Integer.parseInt(intent.getExtras().getString("type"));
-		// int type = 2;
+		if (intent.getExtras().getString("notificationId") != null)
+			notificationId = Integer.parseInt(intent.getExtras().getString(
+					"notificationId"));
 		PendingIntent contentIntent;
 		Intent dest = new Intent(this, MainActivity.class);
+		SharedPreferences settings = getSharedPreferences(Config.SETTING, 0);
+		String sessionId = settings.getString(Config.SESSION_ID, "");
+
+		int requestId = -1;
+		int tangleId = -1;
+		String tangleName = "";
+
 		switch (type) {
 		case 0:
 			dest = new Intent(this, MainActivity.class);
@@ -64,34 +79,73 @@ public class GcmIntentService extends IntentService {
 				offerId = Integer.parseInt(intent.getExtras().getString(
 						"offerId"));
 			}
-			Log.i("notification", "" + offerId);
-			dest.putExtra("offerID", offerId);
+			dest.putExtra("offerId", offerId);
 			break;
 		case 3:
-			// dest = new Intent (this, RequestActivity)
+			if (intent.getExtras().getString("requestId") != null)
+				requestId = Integer.parseInt(intent.getExtras().getString(
+						"requestId"));
+			Log.i("GCM", "request:" + requestId);
+			if (intent.getExtras().getString("tangleId") != null)
+				tangleId = Integer.parseInt(intent.getExtras().getString(
+						"tangleId"));
+			if (intent.getExtras().getString("tangleName") != null)
+				tangleName = intent.getExtras().getString("tangleName");
+			dest = new Intent(getApplicationContext(), RequestActivity.class);
+			dest.putExtra("tangleId", tangleId);
+			dest.putExtra("tangleName", tangleName);
+			dest.putExtra("sessionId", sessionId);
+			dest.putExtra("requestId", requestId);
 			break;
 		case 4:
+			dest = new Intent(this, OfferActivity.class);
+			offerId = -1;
+			if (intent.getExtras().getString("offerId") != null) {
+				offerId = Integer.parseInt(intent.getExtras().getString(
+						"offerId"));
+			}
+			dest.putExtra("offerId", offerId);
 			break;
 		case 5:
 			break;
-
 		case 6:
+			dest = new Intent(this, HomeActivity.class);
+			tangleId = -1;
+			if (intent.getExtras().getString("tangleId") != null)
+				tangleId = Integer.parseInt(intent.getExtras().getString(
+						"tangleId"));
+			dest.putExtra("tangleId", tangleId);
+			dest.putExtra("tab", "stream");
 			break;
 		case 7:
+			if (intent.getExtras().getString("requestId") != null)
+				requestId = Integer.parseInt(intent.getExtras().getString(
+						"requestId"));
+			Log.i("GCM", "request:" + requestId);
+			if (intent.getExtras().getString("tangleId") != null)
+				tangleId = Integer.parseInt(intent.getExtras().getString(
+						"tangleId"));
+			if (intent.getExtras().getString("tangleName") != null)
+				tangleName = intent.getExtras().getString("tangleName");
+			dest = new Intent(getApplicationContext(), RequestActivity.class);
+			dest.putExtra("tangleId", tangleId);
+			dest.putExtra("tangleName", tangleName);
+			dest.putExtra("sessionId", sessionId);
+			dest.putExtra("requestId", requestId);
 			break;
 		}
 
 		if (type != -1) {
 			contentIntent = PendingIntent.getActivity(this, 0, dest, 0);
-			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-					this)
-					.setSmallIcon(R.drawable.common_signin_btn_icon_dark)
-					.setContentTitle("GCM Notification")
-					.setStyle(
-							new NotificationCompat.BigTextStyle().bigText(type
-									+ "")).setContentText(body);
-			mBuilder.setContentIntent(contentIntent);
-			mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+
+			Notification notification = new Notification.Builder(
+					getApplicationContext()).setContentTitle(title)
+					.setContentText(body)
+					.setSmallIcon(R.drawable.entangle_logo)
+					.setContentIntent(contentIntent).setAutoCancel(true)
+					.build();
+			NotificationManager notManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+			notManager.notify(NotificationCounter++, notification);
 		}
 	}
 }

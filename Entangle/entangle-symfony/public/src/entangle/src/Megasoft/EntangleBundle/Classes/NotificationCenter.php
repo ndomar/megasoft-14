@@ -122,7 +122,7 @@ class NotificationCenter
      * new offer notification ID
      * @var int
      */
-    private $newOfferNotficationId = 4;
+    private $newOfferNotificationId = 4;
 
     /**
      * offer deleted notification ID
@@ -236,7 +236,7 @@ class NotificationCenter
         else
             $body = "new Message from " . $fromName;
 
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->newMessageNotificationId, "offerId" => $message->getOffer()->getId());
+        $data = array('notificationId' => $notification->getId(), 'title' => $title, 'body' => $body, 'type' => $this->newMessageNotificationId, "offerId" => $message->getOffer()->getId());
         return $this->notificationCenter($to->getId(), $data);
 
     }
@@ -278,7 +278,7 @@ class NotificationCenter
         else
             $body = $fromName . "accepted your offer";
 
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->transactionNotificationId, 'by' => $fromName,
+        $data = array('notificationId' => $notification->getId(), 'title' => $title, 'body' => $body, 'type' => $this->transactionNotificationId, 'by' => $fromName,
             'finalPrice' => $finalPrice, 'requestDesc' => $requestDesc, 'transactionId' => $transactionId);
         return $this->notificationCenter($to->getId(), $data);
     }
@@ -323,7 +323,7 @@ class NotificationCenter
             $body = $this->formatMessage($body, $fromName, $toName);
         else
             $body = $fromName . "changed his offer";
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerChangeNotificationId, 'offerId' => $offerId);
+        $data = array('notificationId' => $notification->getId(), 'title' => $title, 'body' => $body, 'type' => $this->offerChangeNotificationId, 'offerId' => $offerId);
         return $this->notificationCenter($to->getId(), $data);
     }
 
@@ -352,6 +352,7 @@ class NotificationCenter
         $this->em->persist($notification);
         $this->em->flush();
 
+        $tangleId = $request->getTangle()->getId();
 
         $fromName = $from->getName();
         $toName = $to->getName();
@@ -360,10 +361,10 @@ class NotificationCenter
         if ($body)
             $body = $this->formatMessage($body, $fromName, $toName);
         else
-            $body = $fromName . "deleted his offer";
+            $body = $fromName . " chose your offer";
 
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerChosenNotificationId,
-            'offerId' => $offerId);
+        $data = array('notificationId' => $notification->getId(), 'tangleName' => $request->getTangle()->getName(), 'tangleId' => $tangleId, 'title' => $title, 'body' => $body, 'type' => $this->offerChosenNotificationId,
+            'requestId' => $request->getId());
         return $this->notificationCenter($to->getId(), $data);
     }
 
@@ -401,7 +402,7 @@ class NotificationCenter
         else
             $body = $from->getName() . "made a new offer";
 
-        $data = array("title" => $title, "body" => $body, "type" => $this->newOfferNotficationId, "offerId" => $offerid);
+        $data = array('notificationId' => $notification->getId(), "title" => $title, "body" => $body, "type" => $this->newOfferNotificationId, "offerId" => $offerid);
         return $this->notificationCenter($from->getId(), $data);
 
     }
@@ -443,7 +444,7 @@ class NotificationCenter
         else
             $body = $fromName . "deleted his offer";
 
-        $data = array('title' => $title, 'body' => $body, 'type' => $this->offerDeletedNotificationId,
+        $data = array('notificationId' => $notification->getId(), 'title' => $title, 'body' => $body, 'type' => $this->offerDeletedNotificationId,
             'offerId' => $offerId);
         return $this->notificationCenter($to->getId(), $data);
 
@@ -488,8 +489,8 @@ class NotificationCenter
             else
                 $body = $fromName . "deleted his request";
 
-            $data = array('title' => $title, 'body' => $body, 'type' => $this->requestDeletedNotificationId,
-                'requestId' => $requestId);
+            $data = array('notificationId' => $notification->getId(), 'title' => $title, 'body' => $body, 'type' => $this->requestDeletedNotificationId,
+                'requestId' => $requestId, 'tangleId' => $request->getTangle()->getId());
             $this->notificationCenter($offer->getUserId(), $data);
         }
     }
@@ -521,6 +522,7 @@ class NotificationCenter
 
         foreach ($offers as $offer) {
             $notification = new ReopenRequestNotification();
+            $data['notificationId'] = $notification->getId();
             $notification->setSeen(false);
             $notification->setRequest($request);
             $notification->setCreated($date);
@@ -564,9 +566,15 @@ class NotificationCenter
         else
             $body = $claimer->getName() . "claimed you ";
 
-        $data = array("title" => $title, "body" => $body, "type" => $this->newClaimNotificationId, "claimId" => $claimId);
+        $data = array('notificationId' => $notification->getId(), "title" => $title, "body" => $body, "type" => $this->newClaimNotificationId, "claimId" => $claimId);
         $this->notificationCenter($claim->getId(), $data);
         $this->notificationCenter($tangleOwner->getUser()->getId(), $data);
+    }
+
+    // waiting for new migrations
+    function markOfferDoneNotification($offerId)
+    {
+
     }
 
     /**
@@ -585,6 +593,5 @@ class NotificationCenter
             $message = str_replace("{{to}}", $to, $message);
         return $message;
     }
-
 
 }

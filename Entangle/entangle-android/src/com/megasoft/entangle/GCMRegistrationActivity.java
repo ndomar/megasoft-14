@@ -58,7 +58,8 @@ public class GCMRegistrationActivity extends Activity {
 	/**
 	 * URI for registration
 	 */
-	public static final String uri = "http://192.168.1.5/entangle/app_dev.php/register";
+
+	public static final String uri = "http://192.168.43.60/entangle/app_dev.php/notification/register";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

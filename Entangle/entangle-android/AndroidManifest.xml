@@ -150,11 +150,6 @@
         </activity>
 
         <!-- this is GCM manifest -->
-        <service
-            android:name="com.megasoft.entangle.notifications.GCMRegistration"
-            android:exported="false" >
-        </service>
-
         <activity
             android:name="com.megasoft.entangle.notifications.GCMRegistrationActivity"
             android:label="@string/title_activity_gcmregistration" >

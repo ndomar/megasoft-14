@@ -1,10 +1,8 @@
 package com.megasoft.entangle;
 
-import com.megasoft.entangle.notifications.GCMRegistrationActivity;
-
+import android.R;
 import android.app.Activity;
 import android.content.Intent;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -14,7 +12,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_list_item);
 		Intent intent = new Intent(getApplicationContext(),
 				GCMRegistrationActivity.class);
 		startActivity(intent);
