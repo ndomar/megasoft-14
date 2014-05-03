@@ -28,6 +28,13 @@ class InvitationCode
      */
     private $inviterId;
     
+     /**
+     * @var integer
+     *
+     * @ORM\Column(name="tangleId", type="integer")
+     */
+    private $tangleId;
+    
     /**
      *
      * @var User
@@ -80,8 +87,16 @@ class InvitationCode
      * @ORM\Column(name="email", type="string", length=255)
      */
     private $email;
-
-
+    
+    /**
+     *
+     * @var User
+     * 
+     * @ORM\ManyToOne(targetEntity="Tangle")
+     * @ORM\JoinColumn(name="tangleId", referencedColumnName="id")
+     */
+    private $tangle;
+    
     /**
      * Get id
      *
@@ -274,5 +289,51 @@ class InvitationCode
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set tangleId
+     *
+     * @param integer $tangleId
+     * @return InvitationCode
+     */
+    public function setTangleId($tangleId)
+    {
+        $this->tangleId = $tangleId;
+
+        return $this;
+    }
+
+    /**
+     * Get tangleId
+     *
+     * @return integer 
+     */
+    public function getTangleId()
+    {
+        return $this->tangleId;
+    }
+
+    /**
+     * Set tangle
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Tangle $tangle
+     * @return InvitationCode
+     */
+    public function setTangle(\Megasoft\EntangleBundle\Entity\Tangle $tangle = null)
+    {
+        $this->tangle = $tangle;
+
+        return $this;
+    }
+
+    /**
+     * Get tangle
+     *
+     * @return \Megasoft\EntangleBundle\Entity\Tangle 
+     */
+    public function getTangle()
+    {
+        return $this->tangle;
     }
 }

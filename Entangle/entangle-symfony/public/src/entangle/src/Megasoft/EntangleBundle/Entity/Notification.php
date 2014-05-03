@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * 
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({"transaction" = "TransactionNotification", "price-change" = "PriceChangeNotification", "new-message" = "NewMessageNotification" })
+ * @ORM\DiscriminatorMap({"transaction" = "TransactionNotification", "price-change" = "PriceChangeNotification", "new-message" = "NewMessageNotification", "offer-deleted" = "OfferDeletedNotification" , "request-deleted" = "RequestDeletedNotification" , "offer-chosen" = "OfferChosenNotification" , "new-offer" = "NewOfferNotification" , "new-claim" = "NewClaimNotification" , "reopen-request" = "ReopenRequestNotification"  })
  */
 class Notification
 {

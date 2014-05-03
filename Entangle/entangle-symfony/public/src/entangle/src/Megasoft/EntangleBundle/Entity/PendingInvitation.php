@@ -24,11 +24,7 @@ class PendingInvitation
     /**
      * @var integer
      *
-<<<<<<< HEAD
-     * @ORM\Column(name="inviteeId", type="integer")
-=======
      * @ORM\Column(name="inviteeId", type="integer",nullable=true)
->>>>>>> 2c8cd4c5f0722d060d32e116e4f96c495b7d500c
      */
     private $inviteeId;
 
@@ -90,8 +86,6 @@ class PendingInvitation
     private $message;
     
     /**
-<<<<<<< HEAD
-=======
      * @var string
      *
      * @ORM\Column(name="email", type="string")
@@ -99,9 +93,6 @@ class PendingInvitation
     private $email;
     
     /**
-<<<<<<< HEAD
->>>>>>> 2c8cd4c5f0722d060d32e116e4f96c495b7d500c
-=======
      *
      * @var boolean
      * 
@@ -110,7 +101,6 @@ class PendingInvitation
     private $approved = false;
     
     /**
->>>>>>> af9f6529863dec7edce9d62b716dbc44c954fd22
      * Get id
      *
      * @return integer 
@@ -303,8 +293,6 @@ class PendingInvitation
     {
         return $this->message;
     }
-<<<<<<< HEAD
-=======
 
     /**
      * Set email
@@ -328,9 +316,7 @@ class PendingInvitation
     {
         return $this->email;
     }
-<<<<<<< HEAD
->>>>>>> 2c8cd4c5f0722d060d32e116e4f96c495b7d500c
-=======
+
 
     /**
      * Set approved
@@ -354,5 +340,4 @@ class PendingInvitation
     {
         return $this->approved;
     }
->>>>>>> af9f6529863dec7edce9d62b716dbc44c954fd22
 }
