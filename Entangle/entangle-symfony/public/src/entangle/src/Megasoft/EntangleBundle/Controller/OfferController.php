@@ -110,7 +110,7 @@ class OfferController extends Controller {
         $requestStatus = $request->getStatus();
         $requestDescription = $request->getDescription();
 
-        $requestInformation [] = array('requesterName' => $userName,
+        $requestInformation= array('requesterName' => $userName,
             'requestDescription' => $requestDescription, 'requesterID' => $userId,
             'requestID' => $requestId, 'requestStatus' => $requestStatus);
 
@@ -134,7 +134,7 @@ class OfferController extends Controller {
         $offerDescription = $offer->getDescription();
         $offerDeadline = $offer->getExpectedDeadline();
 
-        $offerInformation [] = array('offererName' => $userName,
+        $offerInformation = array('offererName' => $userName,
             'offerDescription' => $offerDescription,
             'offerDeadline' => $offerDeadline,
             'offerStatus' => $offerStatus,
@@ -207,7 +207,7 @@ class OfferController extends Controller {
      * @return Response $response returns 201 or 409 status code and message depending on verification
      * @author sak9
      */
-    public function acceptOfferAction(Symfony\Component\HttpFoundation\Request $request) {
+    public function acceptOfferAction(\Symfony\Component\HttpFoundation\Request $request) {
         $doctrine = $this->getDoctrine();
         $json = $request->getContent();
         $sessionId = $request->headers->get('X-SESSION-ID');

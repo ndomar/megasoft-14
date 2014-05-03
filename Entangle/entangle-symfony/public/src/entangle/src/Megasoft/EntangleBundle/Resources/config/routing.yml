@@ -115,6 +115,7 @@ dummy:
 get_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
+    methods: [GET]
 
 index:
     pattern: /
@@ -129,10 +130,6 @@ get_tangles:
     pattern: /tangle
     defaults: { _controller: MegasoftEntangleBundle:Tangle:getTangles }
     methods: [GET]
-
-get_offer:
-    pattern: /offer/{offerId}
-    defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
 
 check_availability:
     pattern: /tangle/check
@@ -212,11 +209,6 @@ get_tangles:
     pattern: /tangle
     defaults: { _controller: MegasoftEntangleBundle:Tangle:getTangles }
     methods: [GET]
-
-
-get_offer:
-    pattern: /offer/{offerId}
-    defaults: { _controller: MegasoftEntangleBundle:Offer:offer }    
 
 megasoft_entangle_about:
     pattern:  /about

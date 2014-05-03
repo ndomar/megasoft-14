@@ -93,14 +93,12 @@ public class OfferActivity extends Activity {
 	 * JSON object to be received from Get request
 	 */
 	JSONObject returnedResponse = null;
+
 	/**
 	 * The layout containing the DeleteOffer button
 	 */
 	LinearLayout deleteOfferLayout;
-	/**
-	 * String for get offer details endpoint
-	 */
-	final String OFFER = "/offer/" + offerId;
+
 	/**
 	 * String for post offer endpoint
 	 */
@@ -110,7 +108,7 @@ public class OfferActivity extends Activity {
 	 * The id of the logged in user
 	 */
 	private int loggedInId;
-	
+
 	/**
 	 * The FragmentTransaction that handles adding the fragments to the activity
 	 */
@@ -124,7 +122,7 @@ public class OfferActivity extends Activity {
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		this.loggedInId = settings.getInt(Config.USER_ID, 1);
-		this.offerId = intent.getIntExtra("offerID", 3);
+		this.offerId = intent.getIntExtra("offerID", 9990);
 		viewOffer();
 	}
 
@@ -150,11 +148,10 @@ public class OfferActivity extends Activity {
 		offerStatus = (TextView) findViewById(R.id.offer_status);
 		offerPrice = (TextView) findViewById(R.id.offer_price);
 		offerDate = (TextView) findViewById(R.id.offer_date);
-		
 		deleteOfferLayout = (LinearLayout) findViewById(R.id.delete_offer_layout);
 		acceptOffer = (Button) findViewById(R.id.accept_offer);
 
-		String link = Config.API_BASE_URL + "/offer/" + offerId + "/";
+		String link = Config.API_BASE_URL + "/offer/" + offerId;
 
 		GetRequest request = new GetRequest(link) {
 			protected void onPostExecute(String response) {
@@ -204,9 +201,7 @@ public class OfferActivity extends Activity {
 			final int requestId = requestInformation.getInt("requestID");
 
 			if (userId == loggedInId) {
-				acceptOffer.setVisibility(View.VISIBLE);
 				validate();
-
 			}
 			requesterName.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -256,12 +251,13 @@ public class OfferActivity extends Activity {
 
 			if (userId == loggedInId) {
 				transaction = getFragmentManager().beginTransaction();
-			//	DeleteButtonFragment deleteFragment = new DeleteButtonFragment();
+				// DeleteButtonFragment deleteFragment = new
+				// DeleteButtonFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("resourceType", "offer");
 				bundle.putInt("offerId", offerId);
-			//	deleteFragment.setArguments(bundle);
-			//	transaction.add(R.id.delete_offer_layout, deleteFragment);
+				// deleteFragment.setArguments(bundle);
+				// transaction.add(R.id.delete_offer_layout, deleteFragment);
 				transaction.commit();
 			}
 			offererName.setOnClickListener(new View.OnClickListener() {
@@ -310,32 +306,42 @@ public class OfferActivity extends Activity {
 	 * @author sak93
 	 */
 	public void validate() {
-		GetRequest request = new GetRequest(Config.API_BASE_URL + OFFER) {
+		GetRequest request = new GetRequest(Config.API_BASE_URL + "/offer/"
+				+ offerId) {
 
 			protected void onPostExecute(String response) {
-				try {
 
-					JSONObject jsonResponse = new JSONObject(response);
-					JSONObject offerDetails = (JSONObject) jsonResponse
-							.get("offerInformation");
-					JSONObject requestDetails = (JSONObject) jsonResponse
-							.get("requestInformation");
-					int requestStatus = (Integer) requestDetails
-							.get("requestStatus");
-					if (requestStatus != 0) {
-						return;
-					} else {
-						int offerStatus = (Integer) offerDetails
-								.get("offerStatus");
-						if (offerStatus == 0) {
-							addAcceptButton();
+				try {
+					// Log.e("status", ""+ this.getStatusCode());
+					if (this.getStatusCode() == 200) {
+						JSONObject jsonResponse = new JSONObject(response);
+						JSONObject offerDetails = (JSONObject) jsonResponse
+								.get("offerInformation");
+						JSONObject requestDetails = (JSONObject) jsonResponse
+								.get("requestInformation");
+						int requestStatus = (Integer) requestDetails
+								.get("requestStatus");
+						if (requestStatus != 0) {
+							return;
+						} else {
+							int offerStatus = (Integer) offerDetails
+									.get("offerStatus");
+							if (offerStatus == 0) {
+								addAcceptButton();
+							}
 						}
+					} else {
+						Toast toast = Toast.makeText(getApplicationContext(),
+								"An error has occured", Toast.LENGTH_SHORT);
+						toast.show();
 					}
-				} catch (JSONException e) {
+				}
+
+				catch (JSONException e) {
 					e.printStackTrace();
 				}
-			}
 
+			}
 		};
 		request.addHeader(Config.API_SESSION_ID, sessionId);
 		request.execute();
@@ -356,10 +362,13 @@ public class OfferActivity extends Activity {
 		returnedResponse.put("offerId", "" + offerId);
 		acceptOffer.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				PostRequest r = new PostRequest(Config.API_BASE_URL + ACCEPT);
-				r.setBody(returnedResponse);
-				r.addHeader("x-session-id", Config.SESSION_ID);
-				r.execute();
+				PostRequest request = new PostRequest(Config.API_BASE_URL
+						+ ACCEPT);
+				request.setBody(returnedResponse);
+				settings = getSharedPreferences(Config.SETTING, 0);
+				String sessionId = settings.getString(Config.SESSION_ID, "");
+				request.addHeader("X-SESSION-ID", sessionId);
+				request.execute();
 				acceptOffer.setVisibility(View.GONE);
 
 			}
