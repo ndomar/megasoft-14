@@ -65,6 +65,13 @@ class User
     private $verified;
     
     /**
+     *
+     * @var boolean 
+     * @ORM\Column(name="acceptMailNotifications", type="boolean" , columnDefinition="tinyint(1) DEFAULT 1")
+     */
+    private $acceptMailNotifications = true;
+    
+    /**
      * @var Notification[]
      * 
      * @ORM\OneToMany(targetEntity="Notification", mappedBy="user", cascade={"persist"})
@@ -74,7 +81,7 @@ class User
     /**
      *
      * @var Claim[]
-     * @ORM\OneToMany(targetEntity="Claim", mappedBy="user", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Claim", mappedBy="claimer", cascade={"persist"})
      */
     private $claims;
     
@@ -155,6 +162,13 @@ class User
      * @ORM\OneToMany(targetEntity="PendingInvitation", mappedBy="inviter", cascade={"persist"})
      */
     private $pendingInvitationInviters;
+    
+    /**
+     * @var UnfreezeRequest[]
+     * 
+     * @ORM\OneToMany(targetEntity="UnfreezeRequest", mappedBy="user", cascade={"persist"})
+     */
+    private $unfreezeRequests;
     
     
     
@@ -748,5 +762,61 @@ class User
     public function getPendingInvitationInviters()
     {
         return $this->pendingInvitationInviters;
+    }
+
+    /**
+     * Add unfreezeRequests
+     *
+     * @param \Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests
+     * @return User
+     */
+    public function addUnfreezeRequest(\Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests)
+    {
+        $this->unfreezeRequests[] = $unfreezeRequests;
+        $unfreezeRequests->setUser($this);
+        return $this;
+    }
+
+    /**
+     * Remove unfreezeRequests
+     *
+     * @param \Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests
+     */
+    public function removeUnfreezeRequest(\Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests)
+    {
+        $this->unfreezeRequests->removeElement($unfreezeRequests);
+    }
+
+    /**
+     * Get unfreezeRequests
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUnfreezeRequests()
+    {
+        return $this->unfreezeRequests;
+    }
+
+    /**
+     * Set acceptMailNotifications
+     *
+     * @param boolean $acceptMailNotifications
+     * @return User
+     */
+    public function setAcceptMailNotifications($acceptMailNotifications)
+    {
+        $this->acceptMailNotifications = $acceptMailNotifications;
+
+        return $this;
+    }
+
+    /**
+     * Get acceptMailNotifications
+     *
+     * @return boolean 
+     */
+    public function getAcceptMailNotifications()
+    {
+        return $this->acceptMailNotifications;
     }
 }
