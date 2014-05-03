@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 import com.megasoft.utils.UI;
 
@@ -59,7 +58,7 @@ public class GCMRegistrationActivity extends Activity {
 	/**
 	 * URI for registration
 	 */
-	public static final String uri = "http://192.168.1.4/entangle/app_dev.php/register";
+	public static final String uri = "http://192.168.1.5/entangle/app_dev.php/register";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -161,7 +160,7 @@ public class GCMRegistrationActivity extends Activity {
 			protected void onPostExecute(String regid) {
 				sendRegisterationId(regid);
 				Log.i(TAG, regid);
-				storeRegisteratinId(regid);
+				// storeRegisteratinId(regid);
 			}
 		}.execute(null, null, null);
 	}
@@ -199,7 +198,6 @@ public class GCMRegistrationActivity extends Activity {
 					e.printStackTrace();
 				}
 			}
-
 		};
 		req.setBody(json);
 		req.addHeader("X-SESSION-ID", "" + getSessionId());
@@ -217,8 +215,8 @@ public class GCMRegistrationActivity extends Activity {
 	protected String getSessionId() {
 		SharedPreferences prefs = getSharedPreferences("sessionIDPrefs",
 				MODE_PRIVATE);
-		// return "5";
-		return prefs.getString(Config.SESSION_ID, "");
+		return "5";
+		// return prefs.getString(Config.SESSION_ID, "");
 	}
 
 	/**
