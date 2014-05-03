@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="postBackground">#FFFFFF</color>
+
+    <color name="active">#FAAB00</color>
+    <color name="pagerBackground">#FFFFFF</color>
+    <color name="darkGray">#222222</color>
+    <color name="lightText">#FFFFFF</color>
     <color name="lightGray">#888888</color>
-    <color name="success">#63875F</color>
+    <color name="darkWhite">#DDDDDD</color>
+    <color name="sucess">#00FF00</color>
+    <color name="success">#00FF00</color>
+    <color name="error">#FF0000</color>
+    <color name="postBackground">#FFFFFF</color>
 </resources>
+

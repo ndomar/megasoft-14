@@ -34,6 +34,11 @@ public class LoginActivity extends Activity {
 		password = (EditText) findViewById(R.id.passwordBox);
 		login = (Button) findViewById(R.id.loginButton);
 		register = (Button) findViewById(R.id.registerButton);
+		 
+		if(getSharedPreferences(Config.SETTING, 0).getString(Config.SESSION_ID, null) != null){
+			Intent registerActivity = new Intent(this, HomeActivity.class);
+			startActivity(registerActivity);
+		}
 
 	}
 
@@ -53,23 +58,22 @@ public class LoginActivity extends Activity {
 
 		JSONObject json = new JSONObject();
 		try {
-			json.put("username", username);
-			json.put("password", password);
+			json.put("name", username.getText().toString());
+			json.put("password", password.getText().toString());
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		PostRequest request = new PostRequest(Config.API_BASE_URL + LOGIN) {
+		PostRequest request = new PostRequest(Config.API_BASE_URL_SERVER + LOGIN) {
 			protected void onPostExecute(String response) {
 
 				if (this.getStatusCode() == 201) {
-					Toast.makeText(getApplicationContext(), "Redirecting...",
-							Toast.LENGTH_SHORT).show();
-
 					goToHome(response);
-
 				} else if (this.getStatusCode() == 400) {
 					Toast.makeText(getApplicationContext(),
 							"Wrong Credentials", Toast.LENGTH_SHORT).show();
+				}else{
+					Toast.makeText(getApplicationContext(),
+							this.getErrorMessage(), Toast.LENGTH_SHORT).show();
 				}
 
 			}
@@ -86,15 +90,23 @@ public class LoginActivity extends Activity {
 	 */
 	@SuppressWarnings("deprecation")
 	private void goToHome(String response) {
-
-		SharedPreferences sessionIDPrefs = this.getSharedPreferences(
-				Config.SETTING, MODE_WORLD_READABLE);
-		SharedPreferences.Editor prefsEditor = sessionIDPrefs.edit();
-		prefsEditor.putString(Config.SESSION_ID, response);
-		prefsEditor.commit();
+		
+		try {
+			JSONObject json = new JSONObject(response); 
+			SharedPreferences sessionIDPrefs = this.getSharedPreferences(
+					Config.SETTING, 0);
+			SharedPreferences.Editor prefsEditor = sessionIDPrefs.edit();
+			prefsEditor.putString(Config.SESSION_ID, json.getString("sessionId"));
+			prefsEditor.putInt(Config.USER_ID, json.getInt("userId"));
+			prefsEditor.putString(Config.PROFILE_IMAGE, json.getString("profileImage"));
+			prefsEditor.putString(Config.USERNAME, json.getString("username"));
+			
+			prefsEditor.commit();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 
 		Intent homeActivity = new Intent(this, HomeActivity.class);
-		homeActivity.putExtra("sessionId", response);
 		startActivity(homeActivity);
 	}
 

@@ -16,14 +16,96 @@ use Symfony\Component\Translation\Tests\String;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
 
-class RequestController extends Controller {
+class RequestController extends Controller{
+    
+    /**
+      * A function to save an icon and return the url to it
+      * @param string $iconData
+      * @param integer $requestId
+      * @return string $url
+      * @author OmarElAzazy
+      */
+    private function saveIcon($iconData, $requestId){
+        $decodedIcon = base64_decode($iconData);
+        $icon = imagecreatefromstring($decodedIcon);
+        
+        $iconFileName = 'request' . "$requestId" . '.png';
+        $kernel = $this->get('kernel');
+        $path = $kernel->getRootDir() . '/../web/bundles/megasoftentangle/images/request/icons/';
+        
+        $outputFilePath = $path . $iconFileName;
+        imagepng($icon, $outputFilePath, 9);
+        imagedestroy($icon);
+        return 'http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/request/icons/' . $iconFileName;
+    }
+    
+    /**
+      * An endpoint to set the icon of a request
+      * @param Request $request
+      * @param integer $requestId
+      * @return Response | Symfony\Component\HttpFoundation\JsonResponse
+      * @author OmarElAzazy 
+     */
+    public function postIconAction(Request2 $request, $requestId){
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        
+        if($requestId == null || $sessionId == null){
+            return new Response('Bad Request', 400);
+        }
+        
+        $doctrine = $this->getDoctrine();
+        
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        if($session == null || $session->getExpired()){
+            return new Response('Bad Request', 400);
+        }
+        
+        $jsonString = $request->getContent();
+        
+        if($jsonString == null){
+            return new Response('Bad Request', 400);
+        }
+        
+        $json = json_decode($jsonString, true);
+        $iconData = $json['requestIcon'];
+        
+        if($iconData == null){
+            return new Response('Bad Request', 400);
+        }
+        
+        $requesterId = $session->getUserId();
+        
+        $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+        $request = $requestRepo->findOneBy(array('id' => $requestId));
+        if($request == null || $request->getUserId() != $requesterId){
+            return new Response('Unauthorized', 401);
+        }
+        
+        try{
+            $iconUrl = $this->saveIcon($iconData, $requestId);
+        }
+        catch (Exception $e){
+            return new Response('Internal Server Error', 500);
+        }
+        
+        $request->setIcon($iconUrl);
+        
+        $this->getDoctrine()->getManager()->persist($request);
+        $this->getDoctrine()->getManager()->flush();
+        
+        $response = new JsonResponse();
+        $response->setData(array('iconUrl' => $iconUrl));
+        return $response;
+    }
+    
     /* Reopens a closed request
      * @param Request $request
      * @param int $requestId
      * @author Mansour
      */
 
-    public function reOpenRequestAction(Request3 $request, $requestId) {
+    public function reOpenRequestAction(Request2 $request, $requestId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
@@ -64,7 +146,7 @@ class RequestController extends Controller {
      * @return Response 
      * @author sak93
      */
-    public function viewRequestAction($tangleId, $requestId, Request $request) {
+    public function viewRequestAction($tangleId, $requestId, Request2 $request) {
         $doctrine = $this->getDoctrine();
         $sessionId = $request->headers->get('X-SESSION-ID');
         $response = new JsonResponse();
@@ -103,7 +185,7 @@ class RequestController extends Controller {
         }
 
         $response = new JsonResponse();
-        $response->setData(array($requestDetails));
+        $response->setData($requestDetails);
         $response->setStatusCode(200);
         $response->headers->set('X-SESSION-ID', $sessionId);
         return $response;
@@ -131,7 +213,11 @@ class RequestController extends Controller {
             $icon = $request->getIcon();
             $price = $request->getRequestedPrice();
             $tangle = $request->getTangleId();
-            $tags = $request->getTags();
+            $tempTags = $request->getTags();
+            $tags = array();
+            for($i=0;$i<count($tempTags);$i++){
+                $tags[] = $tempTags[$i]->getName();
+            }
             $offers = $this->getOfferDetails($requestId);
             $myRequest = 0;
             if ($sessionUserId == $requester) {
@@ -166,7 +252,7 @@ class RequestController extends Controller {
                 $price = $offer->getRequestedPrice();
                 $deleted = $offer->getDeleted();
                 $details = array('description' => $description, 'status' => $status,
-                    'date' => $date, 'deadline' => $deadline, 'price' => $price);
+                    'date' => $date, 'deadline' => $deadline, 'price' => $price,'offererName'=>$offer->getUser()->getName(),'id'=>$offer->getId());
                 if ($deleted == 0) {
                     array_push($offerArray, $details);
                 }
@@ -252,6 +338,7 @@ class RequestController extends Controller {
      * @return JsonResponse
      * @author Salma Khaled
      */
+
     public function createAction(Request2 $request, $tangleId) {
         $doctrine = $this->getDoctrine();
         $json = $request->getContent();
@@ -288,7 +375,7 @@ class RequestController extends Controller {
         if ($valid != null) {
             return $valid;
         }
-        $newRequest = new Request3();
+        $newRequest = new Request();
         $newRequest->setTangle($tangle);
         $newRequest->setDescription($description);
         $newRequest->setStatus(0);
@@ -300,7 +387,7 @@ class RequestController extends Controller {
         $doctrine->getManager()->persist($newRequest);
         $doctrine->getManager()->flush();
         $response->setData(array('sessionId' => $sessionId));
-        $response->setStatusCode(200);
+        $response->setStatusCode(201);
         return $response;
     }
 
@@ -308,7 +395,7 @@ class RequestController extends Controller {
      * this function is responsible for filling the Tag Table it creates 
      * a new Tag if the tag didn't exist before
      * it also add the tag to the created Request realated to it
-     * @param Request3 $newRequest
+     * @param Request $newRequest
      * @param json_array $tags
      * @author Salma Khaled
      */
@@ -327,10 +414,10 @@ class RequestController extends Controller {
             $doctrine->getManager()->flush();
         }
     }
-    
+
     /**
       * An endpoint to delete a request.
-      * @param Request3 $request
+      * @param Request2 $request
       * @param integer $requestId
       * @return Response
       * @author OmarElAzazy

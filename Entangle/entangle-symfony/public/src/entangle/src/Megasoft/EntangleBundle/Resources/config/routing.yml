@@ -4,12 +4,6 @@ megasoft_entangle_homepage:
     defaults: { _controller: MegasoftEntangleBundle:Default:index }
     methods: [GET]
     
-filter_requests_in_tangle:
-    pattern:  /tangle/{tangleId}/request
-    defaults: { _controller: MegasoftEntangleBundle:Tangle:filterRequests }
-    methods: [GET]
-    requirements:
-        tangleId:  \d+
 
 fetch_tags_in_tangle:
     pattern:  /tangle/{tangleId}/tag
@@ -42,6 +36,18 @@ reject_pending_invitation:
     pattern: /pending-invitation/{pendingInvitationId}/reject
     defaults: { _controller: MegasoftEntangleBundle:Tangle:rejectPendingInvitation}
     methods: [DELETE]
+    
+post_request_icon:
+    pattern: /request/{requestId}/icon
+    defaults: { _controller: MegasoftEntangleBundle:Request:postIcon }
+    methods: [POST]
+    requirements:
+        requestId:  \d+
+        
+viewRequest:
+    pattern: tangle/{tangleId}/request/{requestId}
+    defaults: { _controller: MegasoftEntangleBundle:Request:viewRequest }
+    methods: [GET]
 
 create:
     pattern: /tangle/{tangleId}/request
@@ -53,6 +59,11 @@ acceptOffer:
     defaults: {_controller: MegasoftEntangleBundle:Offer:acceptOffer }
     methods: [POST]
 
+get_profile:
+    pattern: tangle/{tangleId}/user/{userId}/profile
+    defaults: { _controller: MegasoftEntangleBundle:User:profile }
+    methods: [GET]
+    
 withdraw_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:withdraw }
@@ -86,6 +97,10 @@ get_profile:
     defaults: { _controller: MegasoftEntangleBundle:User:profile }
     methods: [GET]
 
+dummy:
+    pattern: /dummy
+    defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
+ 
 delete_request:
     pattern: /request/{requestId}
     defaults: { _controller: MegasoftEntangleBundle:Request:Delete }
@@ -115,6 +130,9 @@ get_tangles:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:getTangles }
     methods: [GET]
 
+get_offer:
+    pattern: /offer/{offerId}
+    defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
 
 check_availability:
     pattern: /tangle/check
@@ -125,6 +143,46 @@ create_tangle:
     pattern: /tangle
     defaults: { _controller: MegasoftEntangleBundle:Tangle:createTangle }
     methods: [POST]
+
+index:
+    pattern: /
+    defaults: { _controller: MegasoftEntangleBundle:Site:index }
+    
+fetch_pending_invitations:
+    pattern: /tangle/{tangleId}/pending-invitations
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:pendingInvitations}
+    methods: [GET]
+
+accept_pending_invitation:
+    pattern: /pending-invitation/{pendingInvitationId}/accept
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:acceptPendingInvitation}
+    methods: [PUT]
+
+reject_pending_invitation:
+    pattern: /pending-invitation/{pendingInvitationId}/reject
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:rejectPendingInvitation}
+    methods: [DELETE]
+
+viewRequest:
+    pattern: tangle/{tangleId}/request/{requestId}
+    defaults: { _controller: MegasoftEntangleBundle:Request:viewRequest }
+    methods: [GET]
+
+create:
+    pattern: /tangle/{tangleId}/request
+    defaults: { _controller: MegasoftEntangleBundle:Request:create }
+    methods: [POST]
+    
+
+acceptOffer:
+    pattern: /accept/offer
+    defaults: {_controller: MegasoftEntangleBundle:Offer:acceptOffer }
+    methods: [POST]
+
+
+dummy:
+    pattern: /dummy
+    defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
 
 accept_tangle_invitation:
     pattern: /tangle-invitation/{tangleId}/{userId}/accept
@@ -139,6 +197,26 @@ leave_tangle:
 megasoft_entangle_register:
     pattern:  /register
     defaults: { _controller: MegasoftEntangleBundle:Register:register }
+
+create_Offer:
+    pattern: /tangle/{tangleId}/request/{requestId}/offer
+    defaults: { _controller: MegasoftEntangleBundle:CreateOffer:createOffer }
+    methods: [POST]
+
+get_profile:
+    pattern: /tangle/{tangleId}/user/{userId}/profile
+    defaults: { _controller: MegasoftEntangleBundle:User:profile }
+    methods: [GET]
+ 
+get_tangles:
+    pattern: /tangle
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:getTangles }
+    methods: [GET]
+
+
+get_offer:
+    pattern: /offer/{offerId}
+    defaults: { _controller: MegasoftEntangleBundle:Offer:offer }    
 
 megasoft_entangle_about:
     pattern:  /about
@@ -168,3 +246,15 @@ login:
     pattern:  /user/login
     defaults: { _controller: MegasoftEntangleBundle:User:login}
     methods: [POST]
+    
+logout:
+    pattern:  /user/logout
+    defaults: { _controller: MegasoftEntangleBundle:User:logout}
+    methods: [POST]
+ 
+filter_requests_in_tangle:
+    pattern:  /tangle/{tangleId}/request
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:filterRequests }
+    methods: [GET]
+    requirements:
+        tangleId:  \d+

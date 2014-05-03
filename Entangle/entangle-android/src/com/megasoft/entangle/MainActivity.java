@@ -1,9 +1,10 @@
 package com.megasoft.entangle;
 
 
-
 import android.app.Activity;
 import android.content.Intent;
+
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -15,6 +16,9 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		startActivity(new Intent(this, HomeActivity.class));
+		//startActivity((new Intent(this,InviteUserActivity.class)).putExtra("com.megasoft.entangle.tangleId", 2));
+
 	}
  
 	@Override
