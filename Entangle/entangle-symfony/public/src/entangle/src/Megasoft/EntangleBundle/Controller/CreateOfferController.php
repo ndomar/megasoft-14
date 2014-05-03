@@ -44,12 +44,18 @@ class CreateOfferController extends Controller {
         $userId = $session->getUserId();
         $user = $userTable->findOneBy(array('id' => $userId));
         $requestTable = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+        $offerTable = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $theRequestId = (int) $requestId;
         $tangleRequest = $requestTable->findOneBy(array('id' => $theRequestId));
         $tangleTable = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
         $theTangleId = (int) $tangleId;
         $tangle = $tangleTable->findOneBy(array('id' => $theTangleId));
-
+        $previousOffer = $offerTable->findOneBy(array('userId' => $userId, 'requestId' => $theRequestId));
+        if ($previousOffer != null) {
+            $response->setStatusCode(401);
+            $response->setContent("Unauthorized");
+            return $response;
+        }
         $description = $json_array['description'];
         $date = $json_array['date'];
         $dateFormated = new \DateTime($date);
@@ -74,6 +80,7 @@ class CreateOfferController extends Controller {
 
         $response->setData(array('sessionId' => $sessionId));
         $response->setStatusCode(201);
+
         return $response;
     }
 
