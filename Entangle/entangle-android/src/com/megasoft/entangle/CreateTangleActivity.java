@@ -93,7 +93,7 @@ public class CreateTangleActivity extends Activity {
 			showMessage("TANGLE NAME SHOULD BE ONE WORD");
 		} else {
 			GetRequest getNameRequest = new GetRequest(Config.API_BASE_URL
-					+ "/tangle/check/" + tangleNameText) {
+					+ "/tangle/check?tangleName=" + tangleNameText) {
 				protected void onPostExecute(String response) {
 					if (!(this.getStatusCode() == 404)) {
 						insertAvailability(false, R.id.tangleName);
