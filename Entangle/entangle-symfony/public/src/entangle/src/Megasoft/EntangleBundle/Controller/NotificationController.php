@@ -41,5 +41,36 @@ class NotificationController extends Controller
         return $response;
     }
     
+    /**
+     * Backend to set the notification as seen
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param integer $notificationId
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author Mohamed Ayman
+     */
+    public function setSeenAction(Request $request , $notificationId)
+    { 
+	$sessionId = $request->headers->get('X-SESSION-ID');
+        if( $sessionId == null )
+        {
+            return new Response("Unauthorized",401);
+        }
+        $notificationRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Notification');
+        $notification = $notificationRepo->findOneById($notificationId);
+
+        
+        if($notification == null)
+        {
+            return new Response("Notification is not found" ,404);
+        }
+        
+        $notification->setSeen(true);
+        
+        $this->getDoctrine()->getManager()->persist($notification);
+        $this->getDoctrine()->getManager()->flush();
+        
+        return new Response(200);
+        
+    }
     
 }
