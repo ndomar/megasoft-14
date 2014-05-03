@@ -1,4 +1,5 @@
-package com.megasoft.entangle;
+package com.megasoft.notifications;
+
 
 import android.app.Activity;
 import android.content.ComponentName;

@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.megasoft.config.Config;
+import com.megasoft.notifications.GCMRegistrationActivity;
 import com.megasoft.requests.PostRequest;
 
 @SuppressLint({ "NewApi", "WorldReadableFiles" })

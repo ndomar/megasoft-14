@@ -1,4 +1,4 @@
-package com.megasoft.entangle;
+package com.megasoft.notifications;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -10,6 +10,12 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.megasoft.config.Config;
+import com.megasoft.entangle.HomeActivity;
+import com.megasoft.entangle.MainActivity;
+import com.megasoft.entangle.OfferActivity;
+import com.megasoft.entangle.R;
+import com.megasoft.entangle.RequestActivity;
+import com.megasoft.entangle.R.drawable;
 
 /**
  * this classes are here just for testing purposes. this will be called whenever

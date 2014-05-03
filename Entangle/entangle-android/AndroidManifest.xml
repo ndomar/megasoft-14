@@ -150,12 +150,12 @@
 
         <!-- this is GCM manifest -->
         <activity
-            android:name="com.megasoft.entangle.GCMRegistrationActivity"
+            android:name="com.megasoft.notifications.GCMRegistrationActivity"
             android:label="@string/title_activity_gcmregistration" >
         </activity>
 
         <receiver
-            android:name="com.megasoft.entangle.GcmBroadcastReceiver"
+            android:name="com.megasoft.notifications.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -165,7 +165,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="com.megasoft.entangle.GcmIntentService" />
+        <service android:name="com.megasoft.notifications.GcmIntentService" />
         <!-- end of GCM manifest -->
     </application>
 

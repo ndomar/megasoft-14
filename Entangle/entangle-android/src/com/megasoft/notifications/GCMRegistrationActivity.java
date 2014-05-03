@@ -1,4 +1,4 @@
-package com.megasoft.entangle;
+package com.megasoft.notifications;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -18,6 +18,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.megasoft.config.Config;
+import com.megasoft.entangle.MainActivity;
+import com.megasoft.entangle.R;
+import com.megasoft.entangle.R.layout;
 import com.megasoft.requests.PostRequest;
 import com.megasoft.utils.UI;
 
