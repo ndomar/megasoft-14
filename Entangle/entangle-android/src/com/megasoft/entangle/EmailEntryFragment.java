@@ -11,13 +11,38 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+/**
+ * The fragment that adds a new email field with it's remove button
+ * @author MohamedBassem
+ *
+ */
 public class EmailEntryFragment extends Fragment {
+	/**
+	 * The edit text in this entry.
+	 */
 	private EditText editText;
+	
+	/**
+	 * The button that removes the mail field
+	 */
 	private Button removeButton;
+	
+	/**
+	 * The inflated view of the fragment
+	 */
 	public View view;
+	
+	/**
+	 * The parent activity
+	 */
 	private InviteUserActivity activity;
 	
-
+	/**
+	 * The event listener to the email field change to add a new field whenever someone
+	 * types in the last field.
+	 * 
+	 * @author MohamedBassem
+	 */
 	TextWatcher watcher = new TextWatcher() {
 		
 		@Override
@@ -36,7 +61,7 @@ public class EmailEntryFragment extends Fragment {
 			}
 		}
 	};
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -48,10 +73,16 @@ public class EmailEntryFragment extends Fragment {
 		return view;
 	}
 	
+	/**
+	 * Sets the text change listener for the edit text.
+	 */
 	public void setTextChangeListener() {
 		editText.addTextChangedListener(watcher);
 	}
-
+	
+	/**
+	 * Sets the remove button onClick listener
+	 */
 	private void setlisteners() {
 		
 		removeButton.setOnClickListener(new View.OnClickListener() {
@@ -62,15 +93,24 @@ public class EmailEntryFragment extends Fragment {
 		});
 
 	}
-
+	
+	/**
+	 * @return the email written in the edit text.
+	 */
 	public String getEmail(){
 		return this.editText.getText().toString();
 	}
 	
+	/**
+	 * @return The edit text in this layout
+	 */
 	public EditText getEditText(){
 		return this.editText;
 	}
 	
+	/**
+	 * Sets the parent activity
+	 */
 	public void setActivity(InviteUserActivity activity){
 		this.activity = activity;
 	}

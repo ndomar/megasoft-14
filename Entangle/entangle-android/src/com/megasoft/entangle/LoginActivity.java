@@ -36,7 +36,7 @@ public class LoginActivity extends Activity {
 		register = (Button) findViewById(R.id.registerButton);
 		 
 		if(getSharedPreferences(Config.SETTING, 0).getString(Config.SESSION_ID, null) != null){
-			Intent registerActivity = new Intent(this, HomeActivity.class);
+			Intent registerActivity = new Intent(this, InviteUserActivity.class);
 			startActivity(registerActivity);
 		}
 
@@ -128,7 +128,7 @@ public class LoginActivity extends Activity {
 	}
 
 	public void register(View view) {
-		Intent registerActivity = new Intent(this, HomeActivity.class);
+		Intent registerActivity = new Intent(this, InviteUserActivity.class);
 		startActivity(registerActivity);
 	}
 }

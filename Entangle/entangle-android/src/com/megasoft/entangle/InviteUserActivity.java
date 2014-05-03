@@ -40,10 +40,19 @@ public class InviteUserActivity extends FragmentActivity {
 	 */
 	private SharedPreferences settings;
 	
+	/**
+	 * An arraylist of the email fields in the activity
+	 */
 	private ArrayList<EmailEntryFragment> emails;
-
+	
+	/**
+	 * The number of fields in the activity
+	 */
 	private int emailsCount = 0;
 	
+	/**
+	 * The layout that contains the email fields
+	 */
 	LinearLayout layout;
 	
 	
@@ -77,6 +86,11 @@ public class InviteUserActivity extends FragmentActivity {
 	}
 	
 	
+	/**
+	 * Removing a field when the remove button is pressed.
+	 * @param emailEntryFragment
+	 * @author MohamedBassem
+	 */
 	public void removeEmailField(EmailEntryFragment emailEntryFragment) {
 		if(emailsCount == 1){
 			emailEntryFragment.getEditText().setText("");
@@ -157,12 +171,22 @@ public class InviteUserActivity extends FragmentActivity {
 		postRequest.setBody(request);
 		postRequest.execute();
 	}
-
-	private boolean isValidEmail(String val) {
+	
+	
+	/**
+	 * Validates that a certain email is in a correct format
+	 * @param the email to be validated
+	 * @return true if the email is in a valid format.
+	 */
+	private boolean isValidEmail(String email) {
 		String regex = "^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$";
-		return val.matches(regex);
+		return email.matches(regex);
 	}
 	
+	/**
+	 * The success callback of the invitation process , which closes this activity
+	 * @param response
+	 */
 	public void onSuccess(String response){
 	
 		try {
@@ -198,6 +222,10 @@ public class InviteUserActivity extends FragmentActivity {
 		Toast.makeText(getApplicationContext(), "Sorry , Something went wrong.", Toast.LENGTH_SHORT).show();
 	}
 	
+	/**
+	 * Closes the current activity
+	 * @param view
+	 */
 	public void closeActivity(View view){
 		finish();
 	}

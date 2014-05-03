@@ -20,11 +20,11 @@
             android:layout_height="@dimen/buttonHeight"
             android:layout_weight="1"
             android:drawableLeft="@drawable/ic_action_remove"
+            android:onClick="closeActivity"
             android:text="@string/cancel"
             android:textAlignment="center"
             android:textColor="@color/gray"
-            android:textSize="@dimen/textLarge"
-            android:onClick="closeActivity" />
+            android:textSize="@dimen/textLarge" />
 
         <View style="@style/dividerVertical" />
 
@@ -35,11 +35,11 @@
             android:layout_weight="1"
             android:clickable="true"
             android:drawableLeft="@drawable/ic_action_forward_green"
+            android:onClick="invite"
             android:text="@string/invite"
             android:textAlignment="center"
             android:textColor="@color/green"
-            android:textSize="@dimen/textLarge"
-            android:onClick="invite" />
+            android:textSize="@dimen/textLarge" />
     </LinearLayout>
 
     <LinearLayout
@@ -82,12 +82,12 @@
         android:id="@+id/invite_message"
         android:layout_width="match_parent"
         android:layout_height="120dp"
+        android:layout_marginRight="75dp"
         android:layout_marginTop="@dimen/marginSmall"
         android:ems="10"
         android:height="@dimen/textFieldHeight"
         android:hint="@string/invitation_message_placeholder"
-        android:inputType="textMultiLine"
-        android:layout_marginRight="75dp" />
+        android:inputType="textMultiLine" />
 
     <LinearLayout
         android:id="@+id/invite_emails"
@@ -95,9 +95,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:orientation="vertical" >
-        
-
-        
     </LinearLayout>
 
 </LinearLayout>
