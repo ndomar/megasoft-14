@@ -1,6 +1,7 @@
 package com.megasoft.entangle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +18,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -45,33 +47,23 @@ public class InviteUserActivity extends Activity {
 	 * The Layout that contain the emails edit texts
 	 */
 	LinearLayout layout;
-
-	/**
-	 * Arraylist of all edit texts in the layout
-	 */
-	ArrayList<EditText> editTexts;
 	
-	/**
-	 * An Integer to be returned as the success value for the invitation
-	 */
-	final static int INVITATION_SUCCESS = 100;
+	HashMap<Button, LinearLayout> removeLayoutButtons;
+	
+	HashMap<Button, EditText> editTexts;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_invite_users);
-
 		this.tangleId = getIntent().getIntExtra("tangleId", -1);
-
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
-
 		this.layout = (LinearLayout) findViewById(R.id.invite_emails);
-
-		this.editTexts = new ArrayList<EditText>();
-
+		this.editTexts = new HashMap<Button, EditText>();
+		this.removeLayoutButtons = new HashMap<Button, LinearLayout>();
 		this.addEmailField(null);
-
 	}
 
 	@Override
@@ -93,9 +85,32 @@ public class InviteUserActivity extends Activity {
 		EditText newEditText = new EditText(this);
 		newEditText.setHint(R.string.user_email);
 		newEditText.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-		editTexts.add(newEditText);
-		layout.addView(newEditText, new LinearLayout.LayoutParams(
+		
+		Button removeEmail = new Button(getApplicationContext());
+		removeEmail.setText("R");
+		
+		LinearLayout emailLayout = new LinearLayout(getApplicationContext());
+		emailLayout.setOrientation(LinearLayout.HORIZONTAL);
+		emailLayout.addView(newEditText);
+		emailLayout.addView(removeEmail);
+		
+		editTexts.put(removeEmail, newEditText);
+		removeLayoutButtons.put(removeEmail, emailLayout);
+		
+		removeEmail.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				layout.removeView(removeLayoutButtons.get(v));
+				removeLayoutButtons.remove(v);
+				editTexts.remove(v);
+				
+			}
+		});
+		
+		layout.addView(emailLayout, new LinearLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		
 		newEditText.requestFocus();
 		newEditText.setCursorVisible(true);
 	}
@@ -108,7 +123,7 @@ public class InviteUserActivity extends Activity {
 	 *            The go to confirmation button
 	 * @author MohamedBassem
 	 */
-	public void goToConfirmationActivity(final View view) {
+	public void invite(final View view) {
 		
 		if(!isNetworkAvailable()){
 			showErrorToast();
@@ -120,9 +135,10 @@ public class InviteUserActivity extends Activity {
 		view.setEnabled(false);
 		
 		JSONArray emails = new JSONArray();
-		for (EditText emailEditText : editTexts) {
+		for (Button removeButton : editTexts.keySet()) {
+			EditText emailEditText = editTexts.get(removeButton);
 			String val = emailEditText.getText().toString();
-			if ( checkValidEmail(val) ) {
+			if ( isValidEmail(val) ) {
 				emailEditText.setError("Invalid Email");
 				hasErrors = true;
 				continue;
@@ -161,9 +177,9 @@ public class InviteUserActivity extends Activity {
 		postRequest.execute();
 	}
 
-	private boolean checkValidEmail(String val) {
-		// TODO Auto-generated method stub
-		return false;
+	private boolean isValidEmail(String val) {
+		String regex = "^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$";
+		return val.matches(regex);
 	}
 	
 	public void onSuccess(String response){
