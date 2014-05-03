@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
@@ -10,7 +10,7 @@
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="500dp" >
+        android:layout_height="400dp" >
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -25,71 +25,78 @@
                 android:padding="@dimen/boxMargin" >
 
                 <com.megasoft.entangle.views.RoundedImageView
-                    android:id="@+id/offerer_avatar"
+                    android:id="@+id/offererAvatar"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_alignParentLeft="true" />
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/avatar" />
 
                 <TextView
-                    android:id="@+id/offerer_name"
+                    android:id="@+id/offerer"
                     android:layout_width="190dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/offerer_avatar"
-                    android:layout_alignTop="@id/offerer_avatar"
-                    android:layout_marginTop="5dp"
-                    android:layout_toRightOf="@id/offerer_avatar"
+                    android:layout_alignTop="@id/offererAvatar"
+                    android:layout_marginTop="8dp"
+                    android:layout_toRightOf="@id/offererAvatar"
                     android:paddingLeft="@dimen/paddingSmall"
-                    android:textSize="@dimen/textLarge" />
+                    android:text="@string/offers"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <TextView
-                    android:id="@+id/offer_price"
+                    android:id="@+id/offerPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/offerer_name"
-                    android:layout_marginLeft="50dp"
-                    android:layout_toRightOf="@id/offerer_name"
+                    android:layout_alignTop="@id/offerer"
+                    android:layout_marginLeft="@dimen/boxMargin"
+                    android:layout_toRightOf="@id/offerer"
+                    android:paddingLeft="40dp"
+                    android:text="@string/priceHint"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/red" />
 
                 <TextView
-                    android:id="@+id/offer_date"
+                    android:id="@+id/offerDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/offerer_name"
-                    android:layout_below="@id/offerer_name"
+                    android:layout_alignLeft="@id/offerer"
+                    android:layout_below="@id/offerer"
                     android:paddingLeft="@dimen/paddingSmall"
-                    android:textSize="@dimen/textMedium" />
+                    android:text="25/05/2014"
+                    android:textSize="@dimen/textSmall" />
 
                 <TextView
-                    android:id="@+id/offer_description"
+                    android:id="@+id/offerDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/offer_date"
+                    android:layout_below="@id/offerDate"
                     android:layout_marginRight="@dimen/marginMedium"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:text="@string/requestDescription" />
 
                 <TextView
-                    android:id="@+id/offer_deadline"
+                    android:id="@+id/offerDeadline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/offer_description"
-                    android:layout_below="@id/offer_description"
+                    android:layout_alignLeft="@id/offerDescription"
+                    android:layout_below="@id/offerDescription"
                     android:layout_marginTop="15dp"
+                    android:text="25/05/2014"
                     android:textColor="@color/red"
-                    android:textSize="@dimen/textMedium" />
+                    android:textSize="@dimen/textSmall" />
 
                 <TextView
-                    android:id="@+id/offer_status"
+                    android:id="@+id/offerStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/offer_deadline"
-                    android:layout_alignRight="@id/offer_price"
-                    android:layout_alignTop="@id/offer_deadline"
-                    android:layout_below="@id/offer_description"
-                    android:layout_marginLeft="190dp"
-                    android:layout_toRightOf="@id/offer_deadline"
+                    android:layout_alignBottom="@id/offerDeadline"
+                    android:layout_alignRight="@id/offerPrice"
+                    android:layout_alignTop="@id/offerDeadline"
+                    android:layout_below="@id/offerDescription"
+                    android:layout_toRightOf="@id/offerDeadline"
+                    android:paddingLeft="225dp"
+                    android:text="pending"
                     android:textColor="@color/red"
-                    android:textSize="@dimen/textMedium" />
+                    android:textSize="@dimen/textSmall" />
             </RelativeLayout>
 
             <TextView
@@ -100,7 +107,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="700dp"
+                android:layout_height="300dp"
                 android:layout_gravity="top"
                 android:background="@color/darkWhite"
                 android:orientation="vertical" >
@@ -110,27 +117,21 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:orientation="horizontal" >
 
         <EditText
-            android:id="@+id/add_comment"
-            android:layout_width="320dp"
+            android:id="@+id/postComment"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/marginSmall"
+            android:drawableRight="@drawable/send"
+            android:ems="10"
             android:height="@dimen/textFieldHeight"
             android:hint="@string/comment_description"
             android:inputType="textMultiLine"
             android:textSize="@dimen/textMedium" />
-
-        <ImageView 
-            android:id="@+id/add"
-            android:src="@drawable/send"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="20dp"
-            android:contentDescription="fafafa" />
     </LinearLayout>
 
 </LinearLayout>
