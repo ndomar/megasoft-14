@@ -42,17 +42,18 @@
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/buttonHeight"
                 android:layout_weight="1"
-                android:onClick="login"
-                android:text="@string/login"
-                android:textColor="@color/green" />
+                android:onClick="cancel"
+                android:text="@string/cancel"
+                android:textColor="@color/gray" />
 
             <Button
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/buttonHeight"
                 android:layout_weight="1"
-                android:text="@string/cancel"
-                android:textColor="@color/gray" />
+                android:onClick="login"
+                android:text="@string/login"
+                android:textColor="@color/green" />
         </LinearLayout>
     </LinearLayout>
 

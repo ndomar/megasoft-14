@@ -9,13 +9,16 @@ import com.megasoft.requests.PostRequest;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -34,6 +37,31 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 		username = (EditText) findViewById(R.id.login_username);
 		password = (EditText) findViewById(R.id.login_password);
+
+		getActionBar().hide();
+
+		final EditText onTouch = (EditText) findViewById(R.id.login_username);
+		username.setOnTouchListener(new View.OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				TextView showError = (TextView) findViewById(R.id.InvalidUserNameOrPassword);
+				showError.setVisibility(View.INVISIBLE);
+				username.requestFocus();
+				return true;
+			}
+		});
+		final EditText onTouch2 = (EditText) findViewById(R.id.login_username);
+		password.setOnTouchListener(new View.OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				TextView showError = (TextView) findViewById(R.id.InvalidUserNameOrPassword);
+				showError.setVisibility(View.INVISIBLE);
+				password.requestFocus();
+				return true;
+			}
+		});
 
 		if (getSharedPreferences(Config.SETTING, 0).getString(
 				Config.SESSION_ID, null) != null) {
@@ -67,22 +95,31 @@ public class LoginActivity extends Activity {
 		PostRequest request = new PostRequest(Config.API_BASE_URL_SERVER
 				+ LOGIN) {
 			protected void onPostExecute(String response) {
-				Log.i("hamada",
-						"response : " + response + ", error : "
-								+ this.getErrorMessage() + ", status code : "
-								+ this.getStatusCode());
+				password.setText("");
 				if (this.getStatusCode() == 201) {
 					goToHome(response);
 				} else {
 
 					TextView showError = (TextView) findViewById(R.id.InvalidUserNameOrPassword);
-					showError.setVisibility(1);
+					showError.setVisibility(View.VISIBLE);
 				}
 
 			}
 		};
 		request.setBody(json);
 		request.execute();
+
+	}
+
+	public void cancel(View view) {
+		Intent intent = new Intent(this, SplashActivity.class);
+		startActivity(intent);
+		this.finish();
+	}
+
+	public void clearError(View view) {
+		TextView hideError = (TextView) findViewById(R.id.InvalidUserNameOrPassword);
+		hideError.setVisibility(View.INVISIBLE);
 
 	}
 

@@ -63,7 +63,7 @@
     <string name="icon">icon</string>
     <string name="title_activity_upload_request_icon">Upload Request Icon</string>
     <string name="title_activity_home">HomeActivity</string>
-    <string name="wrongCredentials">        Invalid Username or Password</string>
+    <string name="wrongCredentials">Invalid Username or Password</string>
 
     <string-array name="sidebar_list">
         <item>Item A</item>
