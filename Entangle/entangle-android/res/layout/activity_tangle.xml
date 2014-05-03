@@ -5,7 +5,7 @@
     android:orientation="vertical"
     tools:context=".TangleActivity" >
 
-    <!-- <LinearLayout
+     <LinearLayout
         android:id="@+id/tangleNameLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_search" />
 
-    </LinearLayout> -->
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/searchLayout"

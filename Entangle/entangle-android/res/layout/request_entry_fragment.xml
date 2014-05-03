@@ -129,8 +129,7 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/hr"
         android:layout_alignTop="@+id/request_entry_requester_name"
-        android:textColor="@color/sucess"
-        android:text="142"
+        android:textColor="@color/green"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView 
@@ -139,7 +138,7 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/request_entry_status"
         android:layout_below="@+id/request_entry_status"
-        android:textColor="@color/error"
+        android:textColor="@color/red"
         />
     
     <TextView

@@ -15,9 +15,8 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.template_login);
+		setContentView(R.layout.template_create_request);
 		getActionBar().hide();
-		startActivity(new Intent(this, HomeActivity.class));
 		
 	}
 

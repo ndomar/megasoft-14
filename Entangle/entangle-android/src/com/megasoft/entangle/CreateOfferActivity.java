@@ -69,7 +69,7 @@ public class CreateOfferActivity extends Activity {
 	 * Textview to display the deadLine date , in case user didn't choose a
 	 * value it will display today's date
 	 */
-	TextView dateDisplay;
+	//TextView dateDisplay;
 	/**
 	 * Button clicked to pick deadLine date
 	 */
@@ -130,9 +130,9 @@ public class CreateOfferActivity extends Activity {
 		requestedPrice = (EditText) findViewById(R.id.requestedPrice);
 		description.setOnFocusChangeListener(focusListener);
 		requestedPrice.setOnFocusChangeListener(focusListener);
-		Post = (Button) findViewById(R.id.Post);
-		Post.setEnabled(false);
-		dateDisplay = (TextView) findViewById(R.id.showMyDate);
+		Post = (Button) findViewById(R.id.post);
+		//Post.setEnabled(false);
+		//dateDisplay = (TextView) findViewById(R.id.showMyDate);
 		pickDate = (Button) findViewById(R.id.deadline);
 		deadLineYear = calendar.get(Calendar.YEAR);
 		deadLineMonth = calendar.get(Calendar.MONTH);
@@ -150,7 +150,7 @@ public class CreateOfferActivity extends Activity {
 					json.put("requestedPrice", requestedPrice.getText()
 							.toString());
 					json.put("date", currentDateTime);
-					json.put("deadLine", dateDisplay.getText().toString());
+					//json.put("deadLine", dateDisplay.getText().toString());
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -196,10 +196,10 @@ public class CreateOfferActivity extends Activity {
 	 */
 
 	private void updateDisplay() {
-		dateDisplay.setError(null);
+		/*//dateDisplay.setError(null);
 		this.dateDisplay.setText(new StringBuilder().append(deadLineDay)
 				.append("/").append(deadLineMonth + 1).append("/")
-				.append(deadLineYear).append(" "));
+		*/	//	.append(deadLineYear).append(" "));
 	}
 
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -216,7 +216,7 @@ public class CreateOfferActivity extends Activity {
 				checkBox.setChecked(false);
 				return;
 			}
-			updateDisplay();
+			//updateDisplay();
 		}
 	};
 
