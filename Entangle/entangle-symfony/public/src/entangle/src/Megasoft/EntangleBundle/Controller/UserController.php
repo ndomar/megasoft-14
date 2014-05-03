@@ -74,7 +74,7 @@ class UserController extends Controller {
         $session->setSessionId($sessionId);
         $session->setUser($user);
         $session->setUserId($user->getId());
-        $session->setCreated(new \DateTime('tomorrow'));
+        $session->setCreated(new \DateTime('now'));
         $session->setExpired(0);
         $session->setRegId("ToAvoidNull");
         $session->setDeviceType("Galaxy S3");
@@ -85,14 +85,15 @@ class UserController extends Controller {
         $this->getDoctrine()->getManager()->persist($session);
 
         $this->getDoctrine()->getManager()->flush();
-        
+
         $kernel = $this->get('kernel');
         $filepath = 'http://entangle.io/images/profilePictures/';
-                            
-        $response->setData(array('sessionId' => $sessionId,'userId'=>$user->getId()
-                ,'profileImage'=>$filepath.$user->getPhoto(),
-            'username'=>$user->getName()));
+
+        $response->setData(array('sessionId' => $sessionId, 'userId' => $user->getId()
+            , 'profileImage' => $filepath . $user->getPhoto(),
+            'username' => $user->getName()));
         $response->setStatusCode(201);
+
         return $response;
     }
 
@@ -182,6 +183,7 @@ class UserController extends Controller {
         $response->setData(array('information' => $info,
             'transactions' => $transactions));
         $response->setStatusCode(200);
+
         return $response;
     }
 
@@ -203,17 +205,15 @@ class UserController extends Controller {
                 $requesterName = $offer->getRequest()->getUser()->getName();
                 $requestDescription = $offer->getRequest()->getDescription();
                 $amount = $offer->getTransaction()->getFinalPrice();
-                $requestId = $offer->getRequest().getId();
-                $requesterId = $offer->getRequest().getUserId();
-                $transactions[] = array('offerId'=>$offer->getId(),
-                    'requesterName'=> $requesterName,
-                    'requestDescription'=>$requestDescription,
-                    'amount'=>$amount, 'requestId'=>$requestId, 'requesterId'=>$requesterId);
-            }           
-
-               
-            
+                $requestId = $offer->getRequest() . getId();
+                $requesterId = $offer->getRequest() . getUserId();
+                $transactions[] = array('offerId' => $offer->getId(),
+                    'requesterName' => $requesterName,
+                    'requestDescription' => $requestDescription,
+                    'amount' => $amount, 'requestId' => $requestId, 'requesterId' => $requesterId);
+            }
         }
+
         return $transactions;
     }
 
@@ -241,8 +241,9 @@ class UserController extends Controller {
         $birthdate = $user->getBirthDate();
         $verfied = $user->getVerified();
         $info = array('name' => $name, 'description' => $description,
-            'credit' => $credit, 'photo' => 'http://entangle.io/images/profilePictures/'.$photo, 'birthdate' => $birthdate,
+            'credit' => $credit, 'photo' => 'http://entangle.io/images/profilePictures/' . $photo, 'birthdate' => $birthdate,
             'verified' => $verfied);
+
         return $info;
     }
 
