@@ -3,9 +3,6 @@ package com.megasoft.entangle;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.megasoft.config.Config;
-import com.megasoft.requests.PostRequest;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -17,6 +14,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.megasoft.config.Config;
+import com.megasoft.notifications.GCMRegistrationActivity;
+import com.megasoft.requests.PostRequest;
 
 @SuppressLint({ "NewApi", "WorldReadableFiles" })
 public class LoginActivity extends Activity {
@@ -34,8 +35,12 @@ public class LoginActivity extends Activity {
 		password = (EditText) findViewById(R.id.passwordBox);
 		login = (Button) findViewById(R.id.loginButton);
 		register = (Button) findViewById(R.id.registerButton);
-		 
-		if(getSharedPreferences(Config.SETTING, 0).getString(Config.SESSION_ID, null) != null){
+		Intent intent = new Intent(getApplicationContext(),
+				GCMRegistrationActivity.class);
+		startActivity(intent);
+
+		if (getSharedPreferences(Config.SETTING, 0).getString(
+				Config.SESSION_ID, null) != null) {
 			Intent registerActivity = new Intent(this, HomeActivity.class);
 			startActivity(registerActivity);
 		}
@@ -63,7 +68,8 @@ public class LoginActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		PostRequest request = new PostRequest(Config.API_BASE_URL_SERVER + LOGIN) {
+		PostRequest request = new PostRequest(Config.API_BASE_URL_SERVER
+				+ LOGIN) {
 			protected void onPostExecute(String response) {
 
 				if (this.getStatusCode() == 201) {
@@ -71,7 +77,7 @@ public class LoginActivity extends Activity {
 				} else if (this.getStatusCode() == 400) {
 					Toast.makeText(getApplicationContext(),
 							"Wrong Credentials", Toast.LENGTH_SHORT).show();
-				}else{
+				} else {
 					Toast.makeText(getApplicationContext(),
 							this.getErrorMessage(), Toast.LENGTH_SHORT).show();
 				}
@@ -90,17 +96,19 @@ public class LoginActivity extends Activity {
 	 */
 	@SuppressWarnings("deprecation")
 	private void goToHome(String response) {
-		
+
 		try {
-			JSONObject json = new JSONObject(response); 
+			JSONObject json = new JSONObject(response);
 			SharedPreferences sessionIDPrefs = this.getSharedPreferences(
 					Config.SETTING, 0);
 			SharedPreferences.Editor prefsEditor = sessionIDPrefs.edit();
-			prefsEditor.putString(Config.SESSION_ID, json.getString("sessionId"));
+			prefsEditor.putString(Config.SESSION_ID,
+					json.getString("sessionId"));
 			prefsEditor.putInt(Config.USER_ID, json.getInt("userId"));
-			prefsEditor.putString(Config.PROFILE_IMAGE, json.getString("profileImage"));
+			prefsEditor.putString(Config.PROFILE_IMAGE,
+					json.getString("profileImage"));
 			prefsEditor.putString(Config.USERNAME, json.getString("username"));
-			
+
 			prefsEditor.commit();
 		} catch (JSONException e) {
 			e.printStackTrace();

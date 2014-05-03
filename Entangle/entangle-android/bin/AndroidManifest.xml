@@ -35,18 +35,15 @@
         <activity
             android:name="com.megasoft.entangle.MainActivity"
             android:label="@string/app_name" >
-            
         </activity>
         <activity
             android:name="com.megasoft.entangle.LoginActivity"
             android:label="@string/app_name" >
-            
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            
         </activity>
         <activity
             android:name="com.megasoft.entangle.InviteUserActivity"
@@ -62,6 +59,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.megasoft.entangle.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.megasoft.notifications.NotificationOne"
+            android:label="@string/new_notification" >
         </activity>
         <activity
             android:name="com.megasoft.notifications.CreateNotificationActivity"
@@ -150,12 +151,12 @@
 
         <!-- this is GCM manifest -->
         <activity
-            android:name="com.megasoft.notifications.GCMRegistrationActivity"
+            android:name="com.megasoft.entangle.notifications.GCMRegistrationActivity"
             android:label="@string/title_activity_gcmregistration" >
         </activity>
 
         <receiver
-            android:name="com.megasoft.notifications.GcmBroadcastReceiver"
+            android:name="com.megasoft.entangle.notifications.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -165,7 +166,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="com.megasoft.notifications.GcmIntentService" />
+        <service android:name="com.megasoft.entangle.notifications.GcmIntentService" />
         <!-- end of GCM manifest -->
     </application>
 
