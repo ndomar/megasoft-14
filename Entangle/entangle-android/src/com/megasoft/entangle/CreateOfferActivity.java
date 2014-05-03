@@ -115,7 +115,7 @@ public class CreateOfferActivity extends Activity {
 	 * on creation of the activity it takes data from the fields and send it as
 	 * json object on clicking the Post Button
 	 * 
-	 * @param savedInstanceState
+	 * @param Bundle savedInstanceState
 	 * @return none
 	 * @author Salma Khaled
 	 */
