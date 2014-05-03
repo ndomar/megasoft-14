@@ -148,9 +148,7 @@ public class CreateOfferActivity extends Activity {
 
 			public void onClick(View arg0) {
 				finish();
-
 			}
-
 		});
 
 		post.setOnClickListener(new View.OnClickListener() {
