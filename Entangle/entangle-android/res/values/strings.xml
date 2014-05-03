@@ -9,7 +9,7 @@
     <string name="mssg">Body:</string>
     <string name="claimName">Claim Form</string>
     <string name="send">Send</string>
-     <string name="enterClaim">I am claiming about \.\.\.</string>
+    <string name="enterClaim">I am claiming about \.\.\.</string>
     <string name="Requests">Create Request</string>
     <string name="name">Request\'s name</string>
     <string name="description">What do you need ?</string>
