@@ -10,7 +10,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:hint="@string/sample_user_main"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:layout_marginRight="@dimen/marginSmall"
+         />
     
     <Button
         android:id="@+id/invite_user_remove_edit_text"
@@ -18,6 +20,7 @@
         android:layout_width="@dimen/iconSmall"
         android:layout_height="@dimen/iconSmall"
         android:gravity="center"
-        android:background="@drawable/ic_action_remove" />
+        android:background="@drawable/ic_action_remove"
+        android:layout_marginRight="@dimen/marginLarge" />
 
 </LinearLayout>

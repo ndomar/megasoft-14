@@ -86,7 +86,8 @@
         android:ems="10"
         android:height="@dimen/textFieldHeight"
         android:hint="@string/invitation_message_placeholder"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        android:layout_marginRight="75dp" />
 
     <LinearLayout
         android:id="@+id/invite_emails"
