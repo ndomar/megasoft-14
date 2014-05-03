@@ -2,7 +2,7 @@ package com.megasoft.config;
 
 public class Config {
 	public static final String API_BASE_URL = "http://entangle2.apiary-mock.com";
-	public static final String API_BASE_URL_SERVER = "http://50.0.31.150:9001";
+	public static final String API_BASE_URL_SERVER = "http://entangle.io/app_dev.php";
 	public static final String API_SESSION_ID = "X-SESSION-ID";
 
 	public static final String SETTING = "SETTINGS";
