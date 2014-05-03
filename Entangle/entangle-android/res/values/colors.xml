@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    
+    <!-- template_login -->
+    <color name="login_background">#FFFFFF</color>
+    
+    <!-- Entangle colors -->
+    <color name="megenta">#A35295</color>
+    <color name="orange">#D89034</color>
+    <color name="cyan">#7CBDB5</color>
+    <color name="blue">#4B4E94</color>
+    <color name="red">#CD2528</color>
+    <color name="green">#65A958</color>
+    <color name="lightGreen">#A7CB2C</color>
+     <color name="gray">#666666</color>
+
+    
+    <color name="active">#FAAB00</color>
+    <color name="pagerBackground">#FFFFFF</color>
+    <color name="darkGray">#222222</color>
+   
+    <color name="lightText">#FFFFFF</color>
+    <color name="lightGray">#AAAAAA</color>
+    <color name="darkWhite">#DDDDDD</color>
+    <color name="sucess">#00FF00</color>
+    <color name="success">#00FF00</color>
+    <color name="error">#FF0000</color>
+    <color name="postBackground">#FFFFFF</color>
+</resources>
+
