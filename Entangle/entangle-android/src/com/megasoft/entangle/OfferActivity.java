@@ -142,10 +142,8 @@ public class OfferActivity extends Activity {
 	 * @author Almgohar
 	 */
 	public void viewOffer() {
-		requestDescription = (TextView) findViewById(R.id.request_description);
 		offerDescription = (TextView) findViewById(R.id.offer_description);
 		offerDeadline = (TextView) findViewById(R.id.offer_deadline);
-		requesterName = (TextView) findViewById(R.id.requester_name);
 		offererName = (TextView) findViewById(R.id.offerer_name);
 		offerStatus = (TextView) findViewById(R.id.offer_status);
 		offerPrice = (TextView) findViewById(R.id.offer_price);
@@ -154,9 +152,10 @@ public class OfferActivity extends Activity {
 		deleteOfferLayout = (LinearLayout) findViewById(R.id.delete_offer_layout);
 		acceptOffer = (Button) findViewById(R.id.accept_offer);
 
-		String link = Config.API_BASE_URL + "/offer/" + offerId + "/";
+		String link = Config.API_BASE_URL + "/offer/" + offerId;
 
 		GetRequest request = new GetRequest(link) {
+			@Override
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 200) {
 					try {
@@ -166,7 +165,7 @@ public class OfferActivity extends Activity {
 								.getJSONObject("requestInformation");
 						JSONObject offerInformation = jSon
 								.getJSONObject("offerInformation");
-						viewRequestInfo(requestInformation);
+			//			viewRequestInfo(requestInformation);
 						viewOfferInfo(offerInformation);
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -175,7 +174,7 @@ public class OfferActivity extends Activity {
 					Toast toast = Toast
 							.makeText(
 									getApplicationContext(),
-									"There seemed to be an error in viewing this offer",
+									this.getErrorMessage() + " " + response + " " + this.getStatusCode(),
 									Toast.LENGTH_SHORT);
 					toast.show();
 				}
@@ -193,7 +192,7 @@ public class OfferActivity extends Activity {
 	 *            requestInformation
 	 * @author Almgohar
 	 */
-	private void viewRequestInfo(JSONObject requestInformation) {
+	/*private void viewRequestInfo(JSONObject requestInformation) {
 		try {
 			requesterName
 					.setText(requestInformation.getString("requesterName"));
@@ -225,7 +224,7 @@ public class OfferActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-	}
+	} */
 
 	/**
 	 * Retrieves the required offer information from the JSonObject Views the
@@ -312,6 +311,7 @@ public class OfferActivity extends Activity {
 	public void validate() {
 		GetRequest request = new GetRequest(Config.API_BASE_URL + OFFER) {
 
+			@Override
 			protected void onPostExecute(String response) {
 				try {
 
@@ -355,6 +355,7 @@ public class OfferActivity extends Activity {
 		returnedResponse = new JSONObject();
 		returnedResponse.put("offerId", "" + offerId);
 		acceptOffer.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				PostRequest r = new PostRequest(Config.API_BASE_URL + ACCEPT);
 				r.setBody(returnedResponse);
