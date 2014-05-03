@@ -16,6 +16,8 @@
     <string name="priceHint">5</string>
     <string name="hello_world">Hello world!</string>
     
+    <string name="pts">Pts</string>
+    
     <string name="tangleNameHint">Specify a Tangle name</string>
     <string name="iconButton">Choose an Icon</string>
     <string name="tangleIcon">Tangle Icon</string>
