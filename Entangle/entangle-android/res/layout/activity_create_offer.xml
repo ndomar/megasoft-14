@@ -1,92 +1,157 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".CreateOfferActivity"
-    android:focusable="true" 
-    android:focusableInTouchMode="true" >
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/paddingSmall"
+    tools:context=".CreateOfferActivity" >
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+    
+        
+    
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:height="40dip"
-        android:text="@string/create_offer"
-        android:textSize="@dimen/fontSizeMedium" />
+        android:layout_gravity="top"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/cancelRequest"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0px"
+            android:layout_height="@dimen/buttonHeight"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_action_remove"
+            android:text="@string/cancel"
+            android:textAlignment="center"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/textLarge"
+            />
+
+        <View 
+            style="@style/dividerVertical"
+        />
+        
+        
+        <Button
+            android:id="@+id/post"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0px"
+            android:layout_height="@dimen/buttonHeight"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:textAlignment="center"
+            android:drawableLeft="@drawable/ic_action_forward_green"
+            android:text="@string/create"
+            android:textColor="@color/green"
+            android:textSize="@dimen/textLarge" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/blue" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/orange" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/cyan" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/megenta" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/lightGreen" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginTop="@dimen/marginSmall"
         android:ems="10"
-        android:inputType="textMultiLine" >
+        android:height="@dimen/textFieldHeight"
+        android:hint="@string/requestDescription"
+        android:inputType="textMultiLine" />
 
-        
-    </EditText>
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/description"
-        android:layout_below="@+id/description"
-        android:layout_marginTop="38dp"
-        android:text="@string/price"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
 
     <EditText
-        android:id="@+id/requestedPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView3"
-        android:layout_alignBottom="@+id/textView3"
-        android:layout_alignLeft="@+id/checkBox"
-        android:layout_alignRight="@+id/textView2"
+        android:id="@+id/price"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/marginSmall"
         android:ems="10"
-        android:hint="@string/priceHint"
+        android:hint="@string/priceDescription"
         android:inputType="number" >
-
     </EditText>
 
+    <!--
     <Button
-        android:id="@+id/deadline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_centerVertical="true"
-        android:text="@string/ChooseDate" />
-
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/Post"
-        android:layout_toRightOf="@+id/deadline"
-        android:onClick="itemClicked"
-        android:text="@string/check" />
-
-    <Button
-        android:id="@+id/Post"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/deadline"
-        android:layout_alignRight="@+id/deadline"
-        android:layout_below="@+id/deadline"
-        android:layout_marginTop="48dp"
-        android:text="@string/post_offer" />
-
+        android:id="@+id/myDatePickerButton"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/cyan"
+        android:text="@string/ChooseDate"
+        android:textSize="15sp" />
+    -->
+    <!--
     <TextView
         android:id="@+id/showMyDate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp" />
+    -->
+
+    <Button
+        android:id="@+id/myDatePickerButton"
+        style="?android:attr/buttonBarButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/Post"
-        android:layout_alignRight="@+id/description"
-        android:layout_marginRight="19dp" />
+        android:layout_marginTop="@dimen/marginSmall"
+        android:layout_marginRight="@dimen/marginSmall"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_action_go_to_today"
+        android:spinnerMode="dialog"
+        android:text="@string/dueDate"
+        android:textColor="@color/darkGray"
+        android:layout_gravity="right" />
+    
+    <TextView
+        android:id="@+id/deadlineError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/requiredField"
+        android:textColor="@color/red"
+        android:layout_gravity="right"
+        android:layout_marginRight="@dimen/marginSmall" >
 
-</RelativeLayout>
+    </TextView>
+
+    
+
+</LinearLayout>
