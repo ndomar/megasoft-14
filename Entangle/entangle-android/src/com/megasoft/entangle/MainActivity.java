@@ -1,5 +1,7 @@
 package com.megasoft.entangle;
 
+import com.megasoft.entangle.notifications.GCMRegistrationActivity;
+
 import android.app.Activity;
 import android.content.Intent;
 
