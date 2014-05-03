@@ -105,6 +105,11 @@ public class CreateOfferActivity extends Activity {
 			+ currentYear;
 
 	/**
+	 * this activity
+	 */
+	final Activity self = this;
+
+	/**
 	 * on creation of the activity it takes data from the fields and send it as
 	 * json object on clicking the Post Button
 	 * 
@@ -151,14 +156,20 @@ public class CreateOfferActivity extends Activity {
 				}
 
 				PostRequest request = new PostRequest(Config.API_BASE_URL
-						+ "/tangle/" + tangleID + "/request" + requestID
+						+ "/tangle/" + tangleID + "/request/" + requestID
 						+ "/offer") {
 					protected void onPostExecute(String response) {
 						if (this.getStatusCode() == 201) {
-							// redirection
+							Intent intent = new Intent(self,
+									RequestActivity.class);
+							intent.putExtra("tangleId", tangleID);
+							intent.putExtra("requestId", requestID);
+							startActivity(intent);
 							// send notification
-						} else if (this.getStatusCode() == 400) {
-							// showErrorMessage();
+						} else {
+							Toast.makeText(getApplicationContext(),
+									"Error, Can not create offer",
+									Toast.LENGTH_SHORT).show();
 						}
 					}
 				};
@@ -298,7 +309,7 @@ public class CreateOfferActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-	//	getMenuInflater().inflate(R.menu.create_offer, menu);
+		// getMenuInflater().inflate(R.menu.create_offer, menu);
 		return true;
 	}
 

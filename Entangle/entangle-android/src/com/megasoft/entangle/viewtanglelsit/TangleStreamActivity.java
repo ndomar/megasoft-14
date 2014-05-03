@@ -10,18 +10,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.megasoft.config.Config;
 import com.megasoft.entangle.CreateTangleActivity;
+import com.megasoft.entangle.HomeActivity;
 import com.megasoft.entangle.R;
-import com.megasoft.entangle.TangleActivity;
 import com.megasoft.requests.GetRequest;
 
 /**
@@ -29,7 +31,7 @@ import com.megasoft.requests.GetRequest;
  * @author MohamedBassem
  *
  */
-public class TangleStreamActivity extends Activity {
+public class TangleStreamActivity extends Fragment {
 	
 	private SharedPreferences settings;
 	private String sessionId;
@@ -41,45 +43,40 @@ public class TangleStreamActivity extends Activity {
 	/**
 	 * An arraylist to map the list items to their name
 	 */
-	private ArrayList<String> tangleNames;
+	public static ArrayList<String> tangleNames;
+	
+	private View view;
+	
+	private HomeActivity activity;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tangle_stream);
-        this.settings = getSharedPreferences(Config.SETTING, 0);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+		
+		view = inflater.inflate(R.layout.activity_tangle_stream, container, false);
+		
+		((Button)view.findViewById(R.id.create_tangle_button)).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				goToCreateTangle();
+			}
+		});
+        this.settings = activity.getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		tangleIds = new ArrayList<Integer>();
 		tangleNames = new ArrayList<String>();
 		fetchTangles();
+		
+		return view;
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.tangle_stream, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	
 	/**
 	 * The method responsible for fetching the tangles from the api
 	 * @author MohamedBassem
 	 */
 	private void fetchTangles() {
-		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
+		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
 				+ "/tangle") {
 			public void onPostExecute(String response) {
 				if(!this.hasError() && this.getStatusCode() == 200){
@@ -101,7 +98,7 @@ public class TangleStreamActivity extends Activity {
 	 * @author MohamedBassem
 	 */
 	private void showData(String response) {
-		ListView listView = (ListView) findViewById(R.id.view_tangle_tangle_titles);
+		ListView listView = (ListView) view.findViewById(R.id.view_tangle_tangle_titles);
 		listView.removeViews(0, listView.getCount());
 		tangleIds.clear();
 		tangleNames.clear();
@@ -111,12 +108,12 @@ public class TangleStreamActivity extends Activity {
 			String[] arr = new String[tangles.length()];
 			for(int i=0;i<tangles.length();i++){
 				JSONObject tangle = tangles.getJSONObject(i);
-				arr[i] = tangle.getString("tangleName"); 
+				arr[i] = tangle.getString("name"); 
 				tangleIds.add(tangle.getInt("id"));
-				tangleNames.add(tangle.getString("tangleName"));
+				tangleNames.add(tangle.getString("name"));
 			}
 
-			listView.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.tangle_entry_fragment, R.id.view_tangle_tangle_entry, arr));
+			listView.setAdapter(new ArrayAdapter<String>(activity.getApplicationContext(), R.layout.sidebar_list_item, R.id.textView1, arr));
 			listView.setOnItemClickListener(new ListView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View view, int position,
@@ -135,11 +132,7 @@ public class TangleStreamActivity extends Activity {
 	 * @author MohamedBassem
 	 */
 	public void goToTangle(int position){
-		Intent intent = new Intent(this,TangleActivity.class);
-		intent.putExtra("tangleId", tangleIds.get(position));
-		intent.putExtra("tangleName", tangleNames.get(position));
-		intent.putExtra("sessionId", sessionId);
-		startActivity(intent);		
+		activity.switchFragment(tangleIds.get(position), position);
 	}
 	
 	/**
@@ -147,8 +140,8 @@ public class TangleStreamActivity extends Activity {
 	 * @param view
 	 * @author MohamedBassem
 	 */
-	public void goToCreateTangle(View view){
-		startActivity(new Intent(this,CreateTangleActivity.class));
+	public void goToCreateTangle(){
+		startActivity(new Intent(activity,CreateTangleActivity.class));
 	}
 	
 	/**
@@ -156,7 +149,13 @@ public class TangleStreamActivity extends Activity {
 	 * @author MohamedBassem
 	 */
 	public void showErrorMessage(){
-		Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+		Toast.makeText(activity, "Something went wrong", Toast.LENGTH_LONG).show();
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		this.activity = (HomeActivity) activity;
+		super.onAttach(activity);
 	}
 
 }

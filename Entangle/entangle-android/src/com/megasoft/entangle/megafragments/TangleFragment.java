@@ -1,34 +1,41 @@
-package com.megasoft.entangle;
+package com.megasoft.entangle.megafragments;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.megasoft.config.Config;
+import com.megasoft.entangle.FilteringFragment;
+import com.megasoft.entangle.R;
+import com.megasoft.entangle.StreamRequestFragment;
 import com.megasoft.requests.GetRequest;
 
-/**
- * This class/activity is the one responsible for viewing the requests stream of
- * a certain tangle
- * 
- * @author HebaAamer
- * 
- */
-public class TangleActivity extends Activity {
+public class TangleFragment extends Fragment {
 
+	private FragmentActivity activity;
+	private View view;
+	private TextView tangle;
+	
 	/**
 	 * The Intent used to redirect to other activities
 	 */
@@ -37,7 +44,7 @@ public class TangleActivity extends Activity {
 	/**
 	 * The domain to which the requests are sent
 	 */
-	private String rootResource = "http://entangle2.apiary.io/";
+	private String rootResource = Config.API_BASE_URL_SERVER;
 
 	/**
 	 * The tangle id to which this stream belongs
@@ -76,43 +83,74 @@ public class TangleActivity extends Activity {
 	 * @param savedInstanceState
 	 *            , is the passed bundle from the previous activity
 	 */
+	
+	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tangle);
-		setAttributes();
-		sendFilteredRequest(rootResource + "tangle/" + getTangleId()
-				+ "/request");
-		setRedirections();
+		
 	}
-
+	
+	@Override
+    public View onCreateView(LayoutInflater inflater,
+            ViewGroup container, Bundle savedInstanceState) {
+        // The last two arguments ensure LayoutParams are inflated
+        // properly.
+         view = inflater.inflate(
+        		 R.layout.activity_tangle, container, false);
+         
+         ImageView filterButton = (ImageView) view.findViewById(R.id.filterButton);
+         filterButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				filterStream(arg0);
+				
+			}
+		});
+         
+         tangleId = getArguments().getInt("tangleId");
+         tangleName = getArguments().getString("tangleName");
+         tangle = (TextView) view.findViewById(R.id.tangleName);
+        
+         sendFilteredRequest(rootResource + "/tangle/" + tangleId
+ 				+ "/request");
+        setAttributes();
+        
+        Log.e("test", tangleId+"");
+        Log.e("test", sessionId+"");
+ 		setRedirections();
+ 		tangle.setText(tangleName);
+        return view;
+    }
+	
 	/**
 	 * This method is called to set the attributes of the activity passed from
 	 * the previous activity
 	 */
 	private void setAttributes() {
-		if (getIntent() != null) {
-			if (!getIntent().hasExtra("sessionId")) {
-				intent = new Intent(this, MainActivity.class);
-				// to be changed to login activity
-			}
-			if (!getIntent().hasExtra("tangleId")) {
-				intent = new Intent(this, MainActivity.class);
-				// to be changed to tangles' list activity
-			}
-			if (!getIntent().hasExtra("tangleName")) {
-				intent = new Intent(this, MainActivity.class);
-				// to be changed to tangles' list activity
-			}
-			tangleId = getIntent().getIntExtra("tangleId", 0);
-			tangleName = getIntent().getStringExtra("tangleName");
-			sessionId = getIntent().getStringExtra("sessionId");
-			TextView tangle = (TextView) findViewById(R.id.tangleName);
-			tangle.setText(tangleName);
-		} else {
-			intent = new Intent(this, MainActivity.class);
-			// to be changed to login activity
-		}
+//		if (activity.getIntent() != null) {
+//			if (!activity.getIntent().hasExtra("sessionId")) {
+//				intent = new Intent(activity, LoginActivity.class);
+//				// to be changed to login activity
+//			}
+//			if (!activity.getIntent().hasExtra("tangleId")) {
+//				intent = new Intent(activity, LoginActivity.class);
+//				// to be changed to tangles' list activity
+//			}
+//			if (!activity.getIntent().hasExtra("tangleName")) {
+//				intent = new Intent(activity, LoginActivity.class);
+//				// to be changed to tangles' list activity
+//			}
+//			tangleId = activity.getIntent().getIntExtra("tangleId", 0);
+//			tangleName = activity.getIntent().getStringExtra("tangleName");
+//			sessionId = activity.getIntent().getStringExtra("sessionId");
+//			TextView tangle = (TextView) activity.findViewById(R.id.tangleName);
+//			tangle.setText(tangleName);
+//		} else {
+//			intent = new Intent(activity, LoginActivity.class);
+//			// to be changed to login activity
+//		}
 	}
 
 	/**
@@ -122,7 +160,6 @@ public class TangleActivity extends Activity {
 	 * @param res
 	 *            , is the response string of the stream request
 	 */
-	@SuppressLint("NewApi")
 	private void setTheLayout(String res) {
 		try {
 			JSONObject response = new JSONObject(res);
@@ -130,7 +167,7 @@ public class TangleActivity extends Activity {
 				int count = response.getInt("count");
 				JSONArray requestArray = response.getJSONArray("requests");
 				if (count > 0 && requestArray != null) {
-					LinearLayout layout = (LinearLayout) findViewById(R.id.streamLayout);
+					LinearLayout layout = (LinearLayout) activity.findViewById(R.id.streamLayout);
 					layout.removeAllViews();
 					for (int i = 0; i < count && i < requestArray.length(); i++) {
 						JSONObject request = requestArray.getJSONObject(i);
@@ -140,7 +177,7 @@ public class TangleActivity extends Activity {
 					}
 				} else {
 					Toast.makeText(
-							getBaseContext(),
+							activity.getBaseContext(),
 							"Sorry, There is no requests with the specified options",
 							Toast.LENGTH_LONG).show();
 				}
@@ -164,18 +201,18 @@ public class TangleActivity extends Activity {
 			String requesterName = request.getString("username");
 			int requestId = request.getInt("id");
 			String requestBody = request.getString("description");
-			int requestOffersCount = request.getInt("offersCount");
-			String requesterButtonText = "Requester : " + requesterName;
-			String requestButtonText = "Request : " + requestBody
-					+ "\nNumber of offers : " + requestOffersCount;
+			String requestOffersCount = "" + request.getInt("offersCount");
+			String requesterButtonText = requesterName;
+			String requestButtonText = requestBody;
+			String requestPrice = "0";
+					
 			if(request.get("price") != null)
-				requestButtonText += "\nRequested Price : "  + request.getInt("price");
-			else
-				requestButtonText += "\nRequested Price : not determined yet" ;
+				requestPrice = "" + request.getInt("price");
+			
 			transaction = getFragmentManager().beginTransaction();
 			StreamRequestFragment requestFragment = StreamRequestFragment
 					.createInstance(requestId, userId, requestButtonText,
-							requesterButtonText);
+							requesterButtonText, requestPrice, requestOffersCount, this);
 			transaction.add(R.id.streamLayout, requestFragment);
 			transaction.commit();
 		} catch (JSONException e) {
@@ -188,16 +225,16 @@ public class TangleActivity extends Activity {
 	 * (stream, members, profile, invite) buttons
 	 */
 	private void setRedirections() {
-		Button stream = (Button) findViewById(R.id.stream);
+		Button stream = (Button) view.findViewById(R.id.stream);
 		setButtonRedirection(stream, "TangleActivity");
 
-		Button members = (Button) findViewById(R.id.members);
+		Button members = (Button) view.findViewById(R.id.members);
 		setButtonRedirection(members, "Members");
 
-		Button profile = (Button) findViewById(R.id.profile);
+		Button profile = (Button) view.findViewById(R.id.profile);
 		setButtonRedirection(profile, "ProfileActivity");
 
-		Button invite = (Button) findViewById(R.id.invite);
+		Button invite = (Button) view.findViewById(R.id.invite);
 		setButtonRedirection(invite, "InviteUserActivity");
 	}
 
@@ -217,7 +254,7 @@ public class TangleActivity extends Activity {
 			public void onClick(View v) {
 				try {
 					if (activityName != null) {
-						intent = new Intent(getBaseContext(), Class
+						intent = new Intent(activity.getBaseContext(), Class
 								.forName("com.megasoft.entangle."
 										+ activityName));
 						intent.putExtra("tangleId", getTangleId());
@@ -245,24 +282,7 @@ public class TangleActivity extends Activity {
 		return tangleId;
 	}
 
-	/**
-	 * This is a getter method used to get the tangle name
-	 * 
-	 * @return tangle name
-	 */
-	public String getTangleName() {
-		return tangleName;
-	}
-
-	/**
-	 * This is a getter method used to get the session id of the user
-	 * 
-	 * @return session id
-	 */
-	public String getSessionId() {
-		return sessionId;
-	}
-
+	
 	/**
 	 * This is a getter method used to get the hashMap that maps a tag to its id
 	 * 
@@ -282,15 +302,7 @@ public class TangleActivity extends Activity {
 		return userToId;
 	}
 
-	/**
-	 * This method is used to set the options menu of the activity
-	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.view_stream, menu);
-		return true;
-	}
+	
 
 	/**
 	 * This method is used to send a get request to get the stream filtered/not
@@ -298,15 +310,18 @@ public class TangleActivity extends Activity {
 	 * @param url
 	 *            , is the URL to which the request is going to be sent
 	 */
-	public void sendFilteredRequest(String url) {
+	public void sendFilteredRequest(final String url) {
+		sessionId = activity.getSharedPreferences(Config.SETTING, 0).getString(Config.SESSION_ID, "");
 		GetRequest getStream = new GetRequest(url) {
 			protected void onPostExecute(String res) {
 				if (!this.hasError() && res != null) {
-					LinearLayout layout = (LinearLayout) findViewById(R.id.streamLayout);
+					LinearLayout layout = (LinearLayout) activity.findViewById(R.id.streamLayout);
 					layout.removeAllViews();
 					setTheLayout(res);
 				} else {
-					Toast.makeText(getBaseContext(),
+					Log.e("test",this.getErrorMessage());
+					Log.e("test",url);
+					Toast.makeText(activity.getBaseContext(),
 							"Sorry, There is a problem in loading the stream",
 							Toast.LENGTH_LONG).show();
 				}
@@ -337,17 +352,13 @@ public class TangleActivity extends Activity {
 						setUsersSuggestions(res);
 				} else {
 					Toast.makeText(
-							getBaseContext(),
+							activity.getBaseContext(),
 							"Sorry, There is a problem in filtering the stream",
 							Toast.LENGTH_LONG).show();
 				}
 			}
 		};
-		if (type == 0) {
-			getStream.addHeader("x-session-id", getSessionId());
-		} else {
-			getStream.addHeader("sessionid", getSessionId());
-		}
+		getStream.addHeader("x-session-id", getSessionId());
 		getStream.execute();
 	}
 
@@ -376,7 +387,7 @@ public class TangleActivity extends Activity {
 					}
 
 				} else {
-					Toast.makeText(getBaseContext(),
+					Toast.makeText(activity.getBaseContext(),
 							"Sorry, There are no tags in this tangle",
 							Toast.LENGTH_LONG).show();
 				}
@@ -412,10 +423,10 @@ public class TangleActivity extends Activity {
 					}
 					FilteringFragment filter = FilteringFragment
 							.createInstance(getTagToIdHashMap(),
-									getUserToIdHashMap());
-					filter.show(getFragmentManager(), "filter_dialog");
+									getUserToIdHashMap(), this);
+					filter.show(activity.getFragmentManager(), "filter_dialog");
 				} else {
-					Toast.makeText(getBaseContext(),
+					Toast.makeText(activity.getBaseContext(),
 							"Sorry, There are no users in this tangle",
 							Toast.LENGTH_LONG).show();
 				}
@@ -433,9 +444,9 @@ public class TangleActivity extends Activity {
 	 *            , in this case it is the filtering button
 	 */
 	public void filterStream(View view) {
-		String url = rootResource + "tangle/" + getTangleId() + "/tag";
+		String url = rootResource + "/tangle/" + getTangleId() + "/tag";
 		sendGetAllRequest(url, 0);
-		url = rootResource + "tangle/" + getTangleId() + "/user";
+		url = rootResource + "/tangle/" + getTangleId() + "/user";
 		sendGetAllRequest(url, 1);
 	}
 
@@ -468,4 +479,25 @@ public class TangleActivity extends Activity {
 		}
 		return new ArrayList<String>();
 	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		
+		this.activity = (FragmentActivity) activity;
+		super.onAttach(activity);
+	}
+	
+	public String getTangleName() {
+		return tangleName;
+	}
+
+	/**
+	 * This is a getter method used to get the session id of the user
+	 * 
+	 * @return session id
+	 */
+	public String getSessionId() {
+		return sessionId;
+	}
+	
 }

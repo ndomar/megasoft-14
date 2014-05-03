@@ -10,17 +10,27 @@
         {% endblock %}
     </head>
     <body>
+
         {% block body %}{% endblock %}
 
          {{ include(
             '::footer.html.twig'
         ) }}
-        
+
         {% block javascripts %}
-                
+
+
             {% javascripts '@MegasoftEntangleBundle/Resources/public/js/*' %}
-                <script type="text/javascript" src="{{ asset_url }}"></script>  
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+
             {% endjavascripts %}
+
+
+
         {% endblock %}
+
+
     </body>
+
+
 </html>

@@ -154,7 +154,7 @@ public class OfferActivity extends Activity {
 		deleteOfferLayout = (LinearLayout) findViewById(R.id.delete_offer_layout);
 		acceptOffer = (Button) findViewById(R.id.accept_offer);
 
-		String link = "http://entangle2.apiary-mock.com/offer/" + offerId + "/";
+		String link = Config.API_BASE_URL + "/offer/" + offerId + "/";
 
 		GetRequest request = new GetRequest(link) {
 			protected void onPostExecute(String response) {
@@ -283,7 +283,7 @@ public class OfferActivity extends Activity {
 	 * @author Almgohar
 	 */
 	private void goToProfile(int userId) {
-		Intent profile = new Intent(this, ProfileActivity.class);
+		Intent profile = new Intent(this, ProfileFragment.class);
 		profile.putExtra("user id", userId);
 		profile.putExtra("tangle id", this.tangleId);
 		startActivity(profile);

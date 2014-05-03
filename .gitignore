@@ -85,3 +85,4 @@ Entangle/entangle-android/gradle/
 Entangle/entangle-android/gradlew
 Entangle/entangle-android/gradlew.bat
 /Entangle/entangle-symfony/public/src/nbproject/private/
+/Entangle\entangle-android\bin\AndroidManifest.xml
