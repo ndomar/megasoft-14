@@ -120,8 +120,8 @@ public class CreateOfferActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent previousIntent = getIntent();
-		final int tangleID = previousIntent.getIntExtra("tangleID", 0);
-		final int requestID = previousIntent.getIntExtra("requestID", 0);
+		final int tangleId = previousIntent.getIntExtra("tangleId", 0);
+		final int requestId = previousIntent.getIntExtra("requestId", 0);
 		settings = getSharedPreferences(Config.SETTING, 0);
 		sessionId = settings.getString(Config.SESSION_ID, "");
 		setContentView(R.layout.activity_create_offer);
@@ -156,14 +156,14 @@ public class CreateOfferActivity extends Activity {
 				}
 
 				PostRequest request = new PostRequest(Config.API_BASE_URL
-						+ "/tangle/" + tangleID + "/request/" + requestID
+						+ "/tangle/" + tangleId + "/request/" + requestId
 						+ "/offer") {
 					protected void onPostExecute(String response) {
 						if (this.getStatusCode() == 201) {
 							Intent intent = new Intent(self,
 									RequestActivity.class);
-							intent.putExtra("tangleId", tangleID);
-							intent.putExtra("requestId", requestID);
+							intent.putExtra("tangleId", tangleId);
+							intent.putExtra("requestId", requestId);
 							startActivity(intent);
 							// send notification
 						} else {
