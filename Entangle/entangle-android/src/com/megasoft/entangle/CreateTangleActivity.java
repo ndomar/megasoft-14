@@ -1,17 +1,15 @@
 package com.megasoft.entangle;
 
 import java.io.ByteArrayOutputStream;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.PostRequest;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -20,10 +18,12 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -135,13 +135,14 @@ public class CreateTangleActivity extends Activity {
 	 *            data
 	 * @author Mansour
 	 */
+	@SuppressLint("NewApi")
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE
 				&& null != data) {
 			Bitmap bitmap = getPhotoPath(data.getData());
-			ImageView imageView = (ImageView) findViewById(R.id.icon);
-			imageView.setImageBitmap(bitmap);
+			Button tangleIcon = (Button) findViewById(R.id.tangleIcon);
+			tangleIcon.setBackground(new BitmapDrawable(getResources(),bitmap));
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
 			byte[] byteArray = baos.toByteArray();
@@ -178,20 +179,17 @@ public class CreateTangleActivity extends Activity {
 	public void create(View view) {
 		EditText tangleName = (EditText) findViewById(R.id.tangleName);
 		ImageView tangleIcon = (ImageView) findViewById(R.id.icon);
+		checkTangleName(view);
 		if ((tangleName.getText().toString()).equals("")) {
 			showMessage("PLEASE ENTER A TANGLE NAME");
 		} else {
-			if (tangleName.getCurrentTextColor() == BLACK) {
-				showMessage("PLEASE CHECK IF THE TANGLE NAME IS AVAILABLE FIRST");
+			if (tangleName.getCurrentTextColor() == RED) {
+				showMessage("TANGLE NAME UNAVAILABLE, PLEASE CHOOSE ANOTHER NAME");
 			} else {
-				if (tangleName.getCurrentTextColor() == RED) {
-					showMessage("TANGLE NAME UNAVAILABLE, PLEASE CHOOSE ANOTHER NAME");
+				if (tangleIcon.getDrawable() == null) {
+					showMessage("PLEASE CHOOSE A TANGLE ICON FIRST");
 				} else {
-					if (tangleIcon.getDrawable() == null) {
-						showMessage("PLEASE CHOOSE A TANGLE ICON FIRST");
-					} else {
-						sendTangleToServer();
-					}
+					sendTangleToServer();
 				}
 			}
 		}
@@ -305,5 +303,11 @@ public class CreateTangleActivity extends Activity {
 	 */
 	public void goToHomeHelper() {
 		startActivity(new Intent(this, MainActivity.class));
+		this.finish();
+	}
+	
+	public void cancelRedirect(View view){
+		startActivity(new Intent(this, MainActivity.class));
+		this.finish();
 	}
 }

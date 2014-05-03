@@ -25,8 +25,8 @@
     <string name="pts">Pts</string>
     <string name="create">Create</string>
 
-    <string name="tangleNameHint">Specify a Tangle name</string>
-    <string name="iconButton">Choose an Icon</string>
+    <string name="tangleNameHint">Title (Megasoft..)</string>
+    <string name="iconButton">Icon</string>
     <string name="tangleIcon">Tangle Icon</string>
     <string name="createTangle">CREATE</string>
     <string name="checkTangleName">Check</string>
@@ -66,6 +66,7 @@
     <string name="icon">icon</string>
     <string name="title_activity_upload_request_icon">Upload Request Icon</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="tangleDescriptionHint">Description (This tangle aims to....etc)</string>
 
     <string-array name="sidebar_list">
         <item>Item A</item>
