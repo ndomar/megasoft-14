@@ -317,6 +317,7 @@ class PendingInvitation
         return $this->email;
     }
 
+
     /**
      * Set approved
      *

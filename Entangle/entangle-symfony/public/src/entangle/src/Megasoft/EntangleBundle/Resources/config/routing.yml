@@ -21,6 +21,16 @@ invite:
     pattern: /tangle/{tangleId}/invite
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
     methods: [POST]
+
+set_seen:
+    pattern: /notification/{notificationId}/set-seen
+    defaults: { _controller :MegasoftEntangleBundle:Notification:setSeen }
+    methods : [PUT]
+    
+get_seen:
+    pattern: /notification/{notificationId}/get-seen
+    defaults: { _controller : MegasoftEntangleBundle:Notification:getSeen }
+    methods : [GET]
     
 fetch_pending_invitations:
     pattern: /tangle/{tangleId}/pending-invitations

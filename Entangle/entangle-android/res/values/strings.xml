@@ -93,6 +93,9 @@
     <string name="pending_invitation_no_pending">No Pending Invitations now !</string>
     <string name="refresh">Refresh</string>
     <string name="title_activity_date_picker_fragment">DatePickerFragment</string>
+    
+    <string name="Notification">Notification!</string>
+
     <string name="edit_info">Edit your information</string>
     <string name="leave_tangle">Leave current tangle</string>
     <string name="transactions">Transactions: </string>

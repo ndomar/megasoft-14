@@ -26,18 +26,18 @@ class PriceChangeNotification extends Notification
     /**
      * @var integer
      *
-     * @ORM\Column(name="priceChangeOfferId", type="integer")
+     * @ORM\Column(name="requestId", type="integer")
      */
-    private $offerId;
+    private $requestId;
     
     /**
      *
-     * @var Offer
+     * @var Request
      * 
-     * @ORM\ManyToOne(targetEntity="Offer", inversedBy="priceChangeNotifications")
-     * @ORM\JoinColumn(name="priceChangeOfferId", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Request", inversedBy="notifications")
+     * @ORM\JoinColumn(name="requestId", referencedColumnName="id")
      */
-    private $offer;
+    private $request;
 
     /**
      * Set oldPrice
@@ -86,48 +86,48 @@ class PriceChangeNotification extends Notification
     }
 
     /**
-     * Set offerId
+     * Set requestId
      *
-     * @param integer $offerId
+     * @param integer $requestId
      * @return PriceChangeNotification
      */
-    public function setOfferId($offerId)
+    public function setRequestId($requestId)
     {
-        $this->offerId = $offerId;
+        $this->requestId = $requestId;
 
         return $this;
     }
 
     /**
-     * Get offerId
+     * Get requestId
      *
      * @return integer 
      */
-    public function getOfferId()
+    public function getRequestId()
     {
-        return $this->offerId;
+        return $this->requestId;
     }
 
     /**
-     * Set offer
+     * Set request
      *
-     * @param \Megasoft\EntangleBundle\Entity\Offer $offer
+     * @param \Megasoft\EntangleBundle\Entity\Request $request
      * @return PriceChangeNotification
      */
-    public function setOffer(\Megasoft\EntangleBundle\Entity\Offer $offer = null)
+    public function setRequest(\Megasoft\EntangleBundle\Entity\Request $request = null)
     {
-        $this->offer = $offer;
+        $this->request = $request;
 
         return $this;
     }
 
     /**
-     * Get offer
+     * Get request
      *
-     * @return \Megasoft\EntangleBundle\Entity\Offer 
+     * @return \Megasoft\EntangleBundle\Entity\Request 
      */
-    public function getOffer()
+    public function getRequest()
     {
-        return $this->offer;
+        return $this->request;
     }
 }

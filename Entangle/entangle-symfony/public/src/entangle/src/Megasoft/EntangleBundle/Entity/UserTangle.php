@@ -41,13 +41,6 @@ class UserTangle
      * @ORM\Column(name="credit", type="integer")
      */
     private $credit;
-    
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="leavingDate", type="datetime" , nullable=true)
-     */
-    private $leavingDate;
 
     /**
      * @var boolean
@@ -221,28 +214,5 @@ class UserTangle
     public function getTangle()
     {
         return $this->tangle;
-    }
-
-    /**
-     * Set leavingDate
-     *
-     * @param \DateTime $leavingDate
-     * @return UserTangle
-     */
-    public function setLeavingDate($leavingDate)
-    {
-        $this->leavingDate = $leavingDate;
-
-        return $this;
-    }
-
-    /**
-     * Get leavingDate
-     *
-     * @return \DateTime 
-     */
-    public function getLeavingDate()
-    {
-        return $this->leavingDate;
     }
 }

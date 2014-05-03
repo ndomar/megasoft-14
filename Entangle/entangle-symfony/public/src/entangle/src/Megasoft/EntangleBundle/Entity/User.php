@@ -161,6 +161,7 @@ class User {
      */
     private $pendingInvitationInviters;
 
+
     /**
      * @var UnfreezeRequest[]
      * 
