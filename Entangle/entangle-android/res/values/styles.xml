@@ -39,6 +39,12 @@
         <item name="android:gravity">center_vertical</item>
     </style>
     
+    <style name="borderGray">
+        <item name="android:background">@drawable/border_gray</item>
+    </style>
+    
+  
+    
     
     
 </resources>
