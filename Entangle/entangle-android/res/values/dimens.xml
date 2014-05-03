@@ -13,9 +13,19 @@
     
     <!-- login_template -->
     <dimen name="colorBox">15dp</dimen>
+    <dimen name="colorBorder">5dp</dimen>
+    
+    <!-- Text -->
+    <dimen name="textSmall">7sp</dimen>
+    <dimen name="textMedium">10sp</dimen>
+    <dimen name="textLarge">25sp</dimen>
     
     <!-- Buttons -->
-    <dimen name="buttonHeight">35dp</dimen>
+    <dimen name="buttonHeight">45dp</dimen>
+    
+    
+    <!-- Edit text -->
+    <dimen name="textFieldHeight">50dp</dimen>
     
     <dimen name="logo_big">110dp</dimen>
     

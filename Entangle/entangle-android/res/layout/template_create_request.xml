@@ -44,7 +44,7 @@
             android:clickable="true"
             android:textAlignment="center"
             android:drawableLeft="@drawable/ic_action_forward_green"
-            android:text="@string/create"
+            android:text="@string/add"
             android:textColor="@color/green"
             android:textSize="@dimen/textLarge" />
     </LinearLayout>
