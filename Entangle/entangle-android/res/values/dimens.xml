@@ -39,5 +39,8 @@
     <!-- sidebar -->
     <dimen name="sidebarMenuItemHeight">40dp</dimen>
     <dimen name="navigation_drawer_width">240dp</dimen>
+    
+     <!-- Icon dimen -->
+    <dimen name="iconSmall">30dp</dimen>
 
 </resources>

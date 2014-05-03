@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+    
+    <EditText
+        android:id="@+id/invite_user_edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="@string/sample_user_main"
+        android:inputType="textEmailAddress" />
+    
+    <Button
+        android:id="@+id/invite_user_remove_edit_text"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="@dimen/iconSmall"
+        android:layout_height="@dimen/iconSmall"
+        android:gravity="center"
+        android:background="@drawable/ic_action_remove" />
+
+</LinearLayout>
