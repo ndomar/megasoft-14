@@ -99,6 +99,7 @@
     <string name="action_filter">Filter</string>
     <string name="offers">Offers</string>
     <string name="profileActivity">Profile</string>
+    <string name="requiredField">This field is required</string>
     <string name="dateChoice">4/May/2014</string>
 
     <string-array name="spinnerChoice">
