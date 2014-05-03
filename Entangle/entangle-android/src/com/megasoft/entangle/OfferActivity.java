@@ -312,7 +312,6 @@ public class OfferActivity extends Activity {
 			protected void onPostExecute(String response) {
 
 				try {
-					// Log.e("status", ""+ this.getStatusCode());
 					if (this.getStatusCode() == 200) {
 						JSONObject jsonResponse = new JSONObject(response);
 						JSONObject offerDetails = (JSONObject) jsonResponse
