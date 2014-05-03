@@ -48,7 +48,7 @@ public class Request extends Activity {
 	 * @author Salma Amr
 	 */
 	public void startClaimForm(View view) {
-		final Intent intent = new Intent(this, Claim.class);
+		final Intent intent = new Intent(this, ClaimActivity.class);
 		String sessionID = (String) getIntent().getCharSequenceExtra(
 				"sessionID");
 		int requestId = (int) getIntent().getIntExtra("requestId", -1);
