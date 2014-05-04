@@ -17,11 +17,12 @@
     <string name="priceHint">5</string>
     <string name="hello_world">Hello world!</string>
     <string name="requestDescription">I want someone to help me change the world\.\.\.</string>
-    <string name="tags">food, society, games</string>
+    <string name="tags">Tags: food, society, games</string>
     <string name="priceDescription">Price\: 125</string>
     <string name="dueDate">Due date</string>
     <string name="pts">Pts</string>
     <string name="create">Create</string>
+    <string name="createRequest">Request</string>
     <string name="tangleNameHint">Specify a Tangle name</string>
     <string name="iconButton">Choose an Icon</string>
     <string name="tangleIcon">Tangle Icon</string>
