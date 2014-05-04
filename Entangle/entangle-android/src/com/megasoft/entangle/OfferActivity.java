@@ -162,7 +162,7 @@ public class OfferActivity extends Activity {
 		addComment = (ImageView) findViewById(R.id.add);
 		
 		//deleteOfferLayout = (LinearLayout) findViewById(R.id.delete_offer_layout);
-		//acceptOffer = (Button) findViewById(R.id.accept_offer);
+		acceptOffer = (Button) findViewById(R.id.accept_offer);
 
 		String link = Config.API_BASE_URL + "/offer/" + offerId;
 
@@ -209,14 +209,8 @@ public class OfferActivity extends Activity {
 			offerDate.setText(offerInformation.getString("offerDate"));
 			offerPrice.setText(Integer.toString(offerInformation
 					.getInt("offerPrice")));
-			final int userId = offerInformation.getInt("offererID");
-			/**
-			 *     public $PENDING = 0;
-			 *     public $DONE = 1;
-			 *     public $ACCEPTED = 2;
-			 *     public $FAILED = 3;
-			 *     public $REJECTED = 4;
-			 */
+			final int offererId = offerInformation.getInt("offererId");
+			final int requesterId = offerInformation.getInt("requesterId");
 			int status = offerInformation.getInt("offerStatus");
 			if (status == 0) {
 				offerStatus.setText("Pending");
@@ -230,15 +224,10 @@ public class OfferActivity extends Activity {
 					}
 				}
 					
-			if (userId == loggedInId) {
-				transaction = getFragmentManager().beginTransaction();
-			//	DeleteButtonFragment deleteFragment = new DeleteButtonFragment();
-				Bundle bundle = new Bundle();
-				bundle.putString("resourceType", "offer");
-				bundle.putInt("offerId", offerId);
-			//	deleteFragment.setArguments(bundle);
-			//	transaction.add(R.id.delete_offer_layout, deleteFragment);
-				transaction.commit();
+			
+			
+			if (requesterId == loggedInId) {
+				validate();
 			}
 			addComment.setOnClickListener(new View.OnClickListener() {	
 				@Override
@@ -246,7 +235,7 @@ public class OfferActivity extends Activity {
 					if(comment.getText().toString().matches("")) {
 									
 				} else {
-					addComment(userId, comment.getText().toString());
+					addComment(offererId, comment.getText().toString());
 				}
 				}
 			});
@@ -254,7 +243,7 @@ public class OfferActivity extends Activity {
 			offererName.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					goToProfile(userId);
+					goToProfile(offererId);
 				}
 			});
 		} catch (JSONException e) {

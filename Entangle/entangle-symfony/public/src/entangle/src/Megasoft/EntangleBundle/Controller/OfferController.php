@@ -6,6 +6,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\Tests\String;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Megasoft\EntangleBundle\Entity\Offer;
+use Megasoft\EntangleBundle\Entity\Message;
+use Megasoft\EntangleBundle\Entity\Request;
+use Megasoft\EntangleBundle\Entity\user;
+use Megasoft\EntangleBundle\Entity\Tangle;
+use Megasoft\EntangleBundle\Entity\UserTangle;
+
+
+
+
+
+
 
 
 /**
@@ -73,32 +85,40 @@ class OfferController extends Controller {
         if (!$this->validateUser($request, $sessionId)) {
             return new Response('Unauthorized', 401);
         }
-        $requestInformation = $this->getRequestInformation($request);
+        $messageTable = $doctrine->getRepository('MegasoftEntangleBundle:Message');
+        $comments = $this->getComments($messageTable, $offerId);
         $offerInformation = $this->getOfferInformation($offer);
+        
         $response = new JsonResponse(null, 200);
         $response->setData(array('tangleId' => $tangleId,
-            'requestInformation' => $requestInformation,
-            'offerInformation' => $offerInformation));
+            'offerInformation' => $offerInformation,
+            'comments' => $comments,));
         return $response;
     }
 
     /**
-     * Gets the request information
+     * Gets the comments of a certain offer
      * @param \Megasoft\EntangleBundle\Entity\Request $request $request
-     * @return array $requestInformation
+     * @return array $comments
      * @author Almgohar
      */
-    private function getRequestInformation($request) {
-        $user = $request->getUser();
-        $userId = $user->getId();
-        $userName = $user->getName();
-        $requestId = $request->getId();
-        $requestStatus = $request->getStatus();
-        $requestDescription = $request->getDescription();
-        $requestInformation = array('requesterName' => $userName,
-            'requestDescription' => $requestDescription, 'requesterID' => $userId,
-            'requestID' => $requestId, 'requestStatus' => $requestStatus);
-        return $requestInformation;
+    private function getComments($messageTable, $offerId) {
+        $comments = array();
+        $messages = $messageTable->findBy(array('offerId' => $offerId));
+        for($i=0;$i<count($messages);$i++) {
+            $message = $messages[$i];
+            if ($message == null) {
+                continue;
+            }
+            $commenter = $message->getSender()->getName();
+            $commentDate = $message->getDate()->format('d/m/Y');
+            $comment = $message->getBody();
+            $comments[] = array('commenter' => $commenter, 
+                'comment' => $comment,
+                'commentDate' => $commentDate,);
+        }
+        
+        return $comments;
     }
 
     /**
@@ -109,7 +129,8 @@ class OfferController extends Controller {
      */
     private function getOfferInformation($offer) {
         $user = $offer->getUser();
-        $userId = $user->getId();
+        $offererId = $user->getId();
+        $requesterId = $offer->getRequest()->getUserId();
         $userName = $user->getName();
         $offerDate = $offer->getDate()->format('d/m/Y');
         $userPhoto = $user->getPhoto();
@@ -121,9 +142,11 @@ class OfferController extends Controller {
             'offerDescription' => $offerDescription,
             'offerDeadline' => $offerDeadline,
             'offerStatus' => $offerStatus,
+            'requesterId' => $requesterId,
             'offerPrice' => $offerPrice,
+            'offererId' => $offererId,
             'offerDate' => $offerDate,
-            'offererID' => $userId);
+            );
 
         return $offerInformation;
     }

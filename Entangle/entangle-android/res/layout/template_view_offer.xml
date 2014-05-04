@@ -43,28 +43,6 @@
                     android:textSize="@dimen/textLarge" />
 
                 <TextView
-                    android:id="@+id/offerPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/offerer"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@id/offerer"
-                    android:text="149"
-                    android:textColor="@color/green"
-                    android:textSize="@dimen/textLarge" />
-
-                <TextView
-                    android:id="@+id/pts"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@id/offerPrice"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@id/offerPrice"
-                    android:text="@string/pts"
-                    android:textColor="@color/lightGray"
-                    android:textSize="@dimen/textMedium" />
-
-                <TextView
                     android:id="@+id/offerDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -72,6 +50,7 @@
                     android:layout_below="@id/offerer"
                     android:paddingLeft="@dimen/paddingSmall"
                     android:text="25/05/2014"
+                    android:textColor="@color/darkGray"
                     android:textSize="@dimen/textSmall" />
 
                 <TextView
@@ -82,30 +61,56 @@
                     android:layout_below="@id/offerDate"
                     android:layout_marginRight="@dimen/marginMedium"
                     android:layout_marginTop="10dp"
-                    android:text="@string/requestDescription"
-                    android:textColor="@color/lightGray" />
+                    android:text="@string/requestDescription" />
 
                 <TextView
-                    android:id="@+id/offerDeadline"
+                    android:id="@+id/due"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/offerDescription"
                     android:layout_below="@id/offerDescription"
                     android:layout_marginTop="15dp"
-                    android:text="25/05/2014"
-                    android:textColor="@color/red"
+                    android:text="@string/due"
                     android:textSize="@dimen/textMedium" />
+
+                <TextView
+                    android:id="@+id/offerDeadline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/due"
+                    android:layout_below="@id/offerDescription"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="25/05/2014"
+                    android:textSize="@dimen/textMedium" />
+
+                <TextView
+                    android:id="@+id/pts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/offerPrice"
+                    android:layout_alignBottom="@+id/offerPrice"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/pts"
+                    android:textColor="@color/lightGray"
+                    android:textSize="@dimen/textMedium" />
+
+                <TextView
+                    android:id="@+id/offerPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/offerDate"
+                    android:layout_toLeftOf="@+id/pts"
+                    android:text="149"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/textLarge" />
 
                 <TextView
                     android:id="@+id/offerStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/offerDeadline"
-                    android:layout_alignRight="@id/pts"
-                    android:layout_alignTop="@id/offerDeadline"
-                    android:layout_below="@id/offerDescription"
-                    android:layout_toRightOf="@id/offerDeadline"
-                    android:paddingLeft="170dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/offerDeadline"
                     android:text="pending"
                     android:textSize="@dimen/textMedium" />
             </RelativeLayout>
@@ -126,13 +131,14 @@
                     android:id="@+id/vertical"
                     style="@style/dividerVertical"
                     android:layout_width="3dp"
+                    android:layout_height="80dp"
                     android:layout_marginLeft="20dp"
                     android:background="@color/lightText" />
 
                 <View
                     android:id="@+id/horizental"
                     style="@style/Divider"
-                    android:layout_width="10dp"
+                    android:layout_width="@dimen/marginMedium"
                     android:layout_marginTop="20dp"
                     android:layout_toRightOf="@id/vertical"
                     android:background="@color/lightText" />
@@ -142,8 +148,8 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="28dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="8dp"
                     android:layout_toRightOf="@id/horizental"
                     android:src="@drawable/avatar" />
 
@@ -170,34 +176,39 @@
 
                 <TextView
                     android:id="@+id/commentContent"
-                    android:layout_width="wrap_content"
+                    android:layout_width="230dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/commentDate"
+                    android:layout_alignLeft="@id/commenterAvatar"
                     android:layout_below="@id/commentDate"
-                    android:layout_marginLeft="@dimen/marginMedium"
                     android:text="@string/requestDescription" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
-        android:id="@+id/postCommentLayout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:orientation="horizontal" >
+        android:layout_height="@dimen/marginLarge"
+        android:layout_gravity="top" >
 
         <EditText
-            android:id="@+id/postComment"
-            android:layout_width="match_parent"
+            android:id="@+id/add_comment"
+            android:layout_width="280dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/marginSmall"
-            android:drawableRight="@drawable/send"
-            android:ems="10"
+            android:layout_alignParentBottom="true"
             android:height="@dimen/textFieldHeight"
             android:hint="@string/comment_description"
             android:inputType="textMultiLine"
             android:textSize="@dimen/textMedium" />
-    </LinearLayout>
+
+        <ImageView
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="6dp"
+            android:contentDescription="@string/icon"
+            android:src="@drawable/send" />
+    </RelativeLayout>
 
 </LinearLayout>

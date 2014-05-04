@@ -23,6 +23,7 @@
     <string name="priceDescription">Price\: 125</string>
     <string name="dueDate">Due date</string>
     <string name="pts">Pts</string>
+    <string name="due">Due</string>
     <string name="create">Create</string>
 
     <string name="tangleNameHint">Specify a Tangle name</string>
@@ -67,6 +68,7 @@
     <string name="title_activity_upload_request_icon">Upload Request Icon</string>
     <string name="title_activity_home">HomeActivity</string>
 	<string name="comment_description">Write a comment\.\.\.</string>
+	<string name="accept_offer">accept</string>
     <string-array name="sidebar_list">
         <item>Item A</item>
         <item>Item B</item>
