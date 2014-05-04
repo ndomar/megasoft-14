@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: gcm.ini }
 
 framework:
     #esi:             ~
@@ -63,7 +64,16 @@ doctrine:
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
+    encryption: ssl
     host:      "%mailer_host%"
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+
+services:
+  notification_center.service:
+   class: Megasoft\EntangleBundle\Classes\NotificationCenter
+   arguments:
+        em: "@doctrine.orm.entity_manager"
+        container: "@service_container"

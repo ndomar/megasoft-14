@@ -15,9 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -31,7 +29,12 @@ public class CreateRequestActivity extends Activity {
 	 * the Post Button that will send the server the postrequest to Post the
 	 * Request to the stream
 	 */
-	Button Post;
+	Button post;
+	/**
+	 * 
+	 * cancel button cancel request
+	 */
+	Button cancel;
 	/**
 	 * EditText that will contain the Request's description
 	 */
@@ -45,38 +48,21 @@ public class CreateRequestActivity extends Activity {
 	 */
 	EditText tags;
 	/**
-	 * CheckBox that the user should check after filling the fields
-	 */
-	CheckBox checkBox;
-	/**
-	 * flag that will indicate if the checkbox was checked but the user went
-	 * back to change or fill another field
-	 */
-	boolean flag;
-	/**
 	 * the json object to be sent in the postrequest
 	 */
 	JSONObject json = new JSONObject();
 	/**
-	 * the chosen deadLine year , in case user didn't choose a value it will be
-	 * set to current year
+	 * the chosen deadLine year
 	 */
 	int deadLineYear;
 	/**
-	 * the chosen deadLine month , in case user didn't choose a value it will be
-	 * set to current month
+	 * the chosen deadLine month
 	 */
 	int deadLineMonth;
 	/**
-	 * the chosen deadLine day , in case user didn't choose a value it will be
-	 * set to current day
+	 * the chosen deadLine day
 	 */
 	int deadLineDay;
-	/**
-	 * Textview to display the deadLine date , in case user didn't choose a
-	 * value it will display today's date
-	 */
-	TextView dateDisplay;
 	/**
 	 * Button clicked to pick deadLine date
 	 */
@@ -126,47 +112,69 @@ public class CreateRequestActivity extends Activity {
 	 * this activity
 	 */
 	final Activity self = this;
+	/**
+	 * a flag to indicate whether the user chose a date or not
+	 */
+	boolean dateIsSet;
+	/**
+	 * a TextView to tell the user there is some error with the deadline
+	 */
+	TextView deadlineError;
 
 	/**
 	 * on creation of the activity it takes data from the fields and send it as
 	 * json object on clicking the Post Button
 	 * 
-	 * @param savedInstanceState
+	 * @param Bundle
+	 *            savedInstanceState
 	 * @return none
 	 * @author Salma Khaled
 	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getActionBar().hide();
 		Intent previousIntent = getIntent();
-		final int tangleID = previousIntent.getIntExtra("tangleID", 0);
+		final int tangleId = previousIntent.getIntExtra("tangleId", 0);
 		settings = getSharedPreferences(Config.SETTING, 0);
 		sessionId = settings.getString(Config.SESSION_ID, "");
 		setContentView(R.layout.activity_create_request);
 		description = (EditText) findViewById(R.id.description);
 		requestedPrice = (EditText) findViewById(R.id.price);
 		tags = (EditText) findViewById(R.id.tags);
-		Post = (Button) findViewById(R.id.post);
-		checkBox = (CheckBox) findViewById(R.id.checkBox);
-		Post.setEnabled(false);
-		description.setOnFocusChangeListener(focusListener);
-		dateDisplay = (TextView) findViewById(R.id.showMyDate);
+		post = (Button) findViewById(R.id.post);
+		cancel = (Button) findViewById(R.id.cancelRequest);
 		pickDate = (Button) findViewById(R.id.myDatePickerButton);
 		deadLineYear = calendar.get(Calendar.YEAR);
 		deadLineMonth = calendar.get(Calendar.MONTH);
 		deadLineDay = calendar.get(Calendar.DAY_OF_MONTH);
 		jsonTagsArray = new JSONArray();
+		dateIsSet = false;
+		deadlineError = (TextView) findViewById(R.id.deadlineError);
+		deadlineError.setVisibility(View.GONE);
 		final String currentDateTime = date + " " + calendar.get(Calendar.HOUR)
 				+ ":" + calendar.get(Calendar.MINUTE) + ":"
 				+ calendar.get(Calendar.SECOND);
-		Post.setOnClickListener(new View.OnClickListener() {
+
+		cancel.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View arg0) {
-				tagsArray = tags.getText().toString().split(",");
-				for (int i = 0; i < tagsArray.length; i++) {
-					try {
-						jsonTagsArray.put(i, tagsArray[i]);
-					} catch (JSONException e) {
-						e.printStackTrace();
+				finish();
+			}
+		});
+		post.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View arg0) {
+				if (isEmpty(description)) {
+					return;
+				}
+				if (!tags.getText().toString().equals("")) {
+					tagsArray = tags.getText().toString().split(",");
+					for (int i = 0; i < tagsArray.length; i++) {
+						try {
+							jsonTagsArray.put(i, tagsArray[i]);
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 
@@ -175,17 +183,22 @@ public class CreateRequestActivity extends Activity {
 					json.put("requestedPrice", requestedPrice.getText()
 							.toString());
 					json.put("date", currentDateTime);
-					json.put("deadLine", dateDisplay.getText().toString());
+					String deadLineData = pickDate.getText().toString();
+					if (deadLineData.equals("Due Date")) {
+						deadLineData = "";
+					}
+					json.put("deadLine", deadLineData);
 					json.put("tags", jsonTagsArray);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 
-				PostRequest request = new PostRequest(Config.API_BASE_URL_SERVER
-						+ "/tangle/" + tangleID + "/request") {
+				PostRequest request = new PostRequest(
+						Config.API_BASE_URL_SERVER + "/tangle/" + tangleId
+								+ "/request") {
 					protected void onPostExecute(String response) {
 						if (this.getStatusCode() == 201) {
-							goToTangle(tangleID);
+							finish();
 						} else {
 							Toast.makeText(getApplicationContext(),
 									"Error, Can not create request",
@@ -202,19 +215,12 @@ public class CreateRequestActivity extends Activity {
 
 		pickDate.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				dateIsSet = true;
 				showDialog(DATE_DIALOG_ID);
 			}
 		});
 		updateDisplay();
 
-	}
-	
-	public void goToTangle(int tangleID){
-		Intent intent = new Intent(this, HomeActivity.class);
-		intent.putExtra("tangleId", tangleID);
-		intent.putExtra("tab", PagerAdapter.STREAM);
-		startActivity(intent);
-		finish();
 	}
 
 	/**
@@ -226,10 +232,13 @@ public class CreateRequestActivity extends Activity {
 	 */
 
 	private void updateDisplay() {
-		dateDisplay.setError(null);
-		this.dateDisplay.setText(new StringBuilder().append(deadLineDay)
-				.append("-").append(deadLineMonth + 1).append("-")
-				.append(deadLineYear).append(" "));
+		if (!dateIsSet) {
+			this.pickDate.setText("Due Date");
+		} else {
+			this.pickDate.setText(new StringBuilder().append(deadLineDay)
+					.append("-").append(deadLineMonth + 1).append("-")
+					.append(deadLineYear).append(" "));
+		}
 	}
 
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -240,12 +249,11 @@ public class CreateRequestActivity extends Activity {
 			deadLineDay = dayOfMonth;
 			boolean valid = isValidDeadLine();
 			if (!valid) {
-				Toast.makeText(getApplicationContext(),
-						"The DeadLine can NOT be over already!!",
-						Toast.LENGTH_SHORT).show();
-				checkBox.setChecked(false);
+				deadlineError.setText("Ops! deadline has passed");
+				deadlineError.setVisibility(View.VISIBLE);
 				return;
 			}
+			deadlineError.setVisibility(View.GONE);
 			updateDisplay();
 		}
 	};
@@ -268,22 +276,6 @@ public class CreateRequestActivity extends Activity {
 
 	}
 
-	OnFocusChangeListener focusListener = new OnFocusChangeListener() {
-		public void onFocusChange(View view, boolean hasFocus) {
-			EditText editText = (EditText) view;
-			if (!hasFocus) {
-				if (isEmpty(editText)) {
-					Post.setEnabled(false);
-				}
-			} else {
-				if (!flag) {
-					flag = true;
-					checkBox.setChecked(false);
-				}
-			}
-		}
-	};
-
 	/**
 	 * check if an editText is Empty
 	 * 
@@ -299,44 +291,6 @@ public class CreateRequestActivity extends Activity {
 		}
 		editText.setError(null);
 		return false;
-	}
-
-	/**
-	 * this method checks if there is no error messages set, and if the checkbox
-	 * is checked and only then it enables the Post button
-	 * 
-	 * @param none
-	 * @return none
-	 * @author Salma Khaled
-	 */
-	private void enablePostButton() {
-		if (description.getError() == null && checkBox.isChecked()) {
-			Post.setEnabled(true);
-		}
-	}
-
-	/**
-	 * this method takes a view which will be the checkbox then clear focus from
-	 * other views if the required field is empty it unchecks the checkedbox it
-	 * calls enablePostButton() to check if we can enable the post button and
-	 * then take the action of enabling it or setting error messages
-	 * 
-	 * @param view
-	 *            which will be the checkbox
-	 * @return none
-	 * @author Salma Khaled
-	 */
-	public void itemClicked(View view) {
-		View focusedView = getCurrentFocus();
-		focusedView.clearFocus();
-		CheckBox checkBox = (CheckBox) view;
-		if (checkBox.isChecked()) {
-			if (isEmpty(description)) {
-				checkBox.setChecked(false);
-			}
-			flag = false;
-			enablePostButton();
-		}
 	}
 
 	/**
