@@ -21,7 +21,6 @@
         android:layout_marginLeft="@dimen/marginSmall"
         android:layout_marginTop="@dimen/marginAvatar"
         android:layout_toRightOf="@+id/invitation_avatar"
-        android:text="Mohamed Farghal"
         android:textSize="@dimen/textMedium" />
 
     <Button
