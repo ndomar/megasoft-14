@@ -6,7 +6,7 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical"
     android:paddingBottom="@dimen/paddingSmall"
-    tools:context=".CreateOfferActivity" >
+    tools:context=".RequestsActivity" >
 
     
         
@@ -44,7 +44,7 @@
             android:clickable="true"
             android:textAlignment="center"
             android:drawableLeft="@drawable/ic_action_forward_green"
-            android:text="@string/create"
+            android:text="@string/add"
             android:textColor="@color/green"
             android:textSize="@dimen/textLarge" />
     </LinearLayout>
@@ -88,19 +88,27 @@
     <EditText
         android:id="@+id/description"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/textAreaHeight"
+        android:layout_height="120dp"
         android:layout_marginTop="@dimen/marginSmall"
         android:ems="10"
         android:height="@dimen/textFieldHeight"
         android:hint="@string/requestDescription"
         android:inputType="textMultiLine" />
 
-    
+    <EditText
+        android:id="@+id/tags"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginTop="@dimen/marginSmall"
+        android:digits="0,1,2,3,4,5,6,7,8,9,qwertzuiopasdfghjklyxcvbnm,,,"
+        android:ems="10"
+        android:hint="@string/tags"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/price"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/textFieldHeight"
+        android:layout_height="35dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/marginSmall"
         android:ems="10"
@@ -108,7 +116,24 @@
         android:inputType="number" >
     </EditText>
 
-    
+    <!--
+    <Button
+        android:id="@+id/myDatePickerButton"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/cyan"
+        android:text="@string/ChooseDate"
+        android:textSize="15sp" />
+    -->
+    <!--
+    <TextView
+        android:id="@+id/showMyDate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp" />
+    -->
 
     <Button
         android:id="@+id/myDatePickerButton"
@@ -123,18 +148,7 @@
         android:text="@string/dueDate"
         android:textColor="@color/darkGray"
         android:layout_gravity="right" />
-    
-    <TextView
-        android:id="@+id/deadlineError"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/requiredField"
-        android:textColor="@color/red"
-        android:layout_gravity="right"
-        android:layout_marginRight="@dimen/marginSmall" >
 
-    </TextView>
-
-    
+  
 
 </LinearLayout>
