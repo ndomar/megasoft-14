@@ -103,7 +103,7 @@ public class MemberEntryFragment extends Fragment {
 		setMemberBalance(getArguments().getInt(Config.MEMBER_BALANCE, 0));
 		setMemberAvatarURL(getArguments().getString(Config.MEMBER_AVATAR_URL));
 		
-		View view = inflater.inflate(R.layout.fragment_memeber_entry,
+		View view = inflater.inflate(R.layout.fragment_member_entry,
 				container, false);
 		
 		view.setOnClickListener(new OnClickListener() {

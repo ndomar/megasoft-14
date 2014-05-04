@@ -9,9 +9,11 @@ import com.megasoft.requests.PostRequest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Claim extends Activity {
@@ -45,9 +47,16 @@ public class Claim extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.claimform);
+		setContentView(R.layout.activity_claimform);
+		TextView link = (TextView) findViewById(R.id.link);
+		link.setMovementMethod(LinkMovementMethod.getInstance());
+		getActionBar().hide();
 		claimerMail = this.getIntent().getStringExtra("sender");
 		tangleOwenerMail = this.getIntent().getStringExtra("receiver");
+	}
+	
+	public void cancel() { 
+		this.finish();
 	}
 
 	/**
@@ -80,7 +89,7 @@ public class Claim extends Activity {
 			}
 
 			int requestId = (int) getIntent().getIntExtra("requestId", -1);
-			PostRequest postSubject = new PostRequest(Config.API_BASE_URL
+			PostRequest postSubject = new PostRequest(Config.API_BASE_URL_SERVER
 					+ "/claim/" + requestId + "/sendClaim") {
 
 				protected void onPostExecute(String response) {

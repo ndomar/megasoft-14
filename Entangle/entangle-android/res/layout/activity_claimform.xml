@@ -6,16 +6,17 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical"
     android:paddingBottom="@dimen/paddingSmall"
-    tools:context=".CreateTangleActivity" >
+    tools:context=".RequestsActivity" >
+
 
     <LinearLayout
-        android:layout_width="match_parent"
+       android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:orientation="horizontal" >
-
+        
         <Button
-            android:id="@+id/cancelTangle"
+            android:id="@+id/cancelRequest"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0px"
             android:layout_height="@dimen/buttonHeight"
@@ -25,26 +26,30 @@
             android:textAlignment="center"
             android:textColor="@color/gray"
             android:textSize="@dimen/textLarge"
-            android:onClick="cancelRedirect" />
-
-        <View style="@style/dividerVertical" />
-
+            android:onClick="finish"
+            />
+		<View 
+            style="@style/dividerVertical"
+        />
         <Button
-            android:id="@+id/createTangle"
+            android:id="@+id/post"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0px"
             android:layout_height="@dimen/buttonHeight"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_action_new_green"
-            android:text="@string/create"
+            android:clickable="true"
             android:textAlignment="center"
+            android:drawableLeft="@drawable/ic_action_email_green"
+            android:text="@string/send"
+            android:onClick="sendClaimForm"
             android:textColor="@color/green"
-            android:textSize="@dimen/textLarge" 
-            android:onClick="create"/>
+            android:textSize="@dimen/textLarge" />
+        
     </LinearLayout>
 
+    
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="5" >
 
@@ -79,57 +84,40 @@
             android:background="@color/lightGreen" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <EditText
-            android:id="@+id/tangleName"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="@dimen/marginSmall"
-            android:layout_weight="4"
-            android:ems="10"
-            android:hint="@string/tangleNameHint"
-            android:inputType="text" />
-
-        <Button
-            android:id="@+id/tangleIcon"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="@dimen/marginSmall"
-            android:layout_marginRight="@dimen/marginLarge"
-            android:layout_marginTop="@dimen/marginSmall"
-            android:background="@drawable/entangle_logo"
-            android:clickable="true"
-            android:ems="10"
-            android:gravity="center"
-            android:onClick="chooseIcon"
-            android:textAlignment="center"
-            android:textColor="@color/gray" />
-
-    </LinearLayout>
-
     <EditText
-        android:id="@+id/tangleDescription"
+        android:id="@+id/mssgText"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginTop="@dimen/marginMedium"
-        android:layout_marginRight="75dp"
+        android:layout_height="@dimen/textAreaHeight"
+        android:layout_gravity="bottom"
         android:ems="10"
-        android:height="@dimen/textFieldHeight"
-        android:hint="@string/tangleDescriptionHint"
+        android:textAppearance="?android:attr/textAppearanceMedium"       
+        android:hint="@string/enterClaim"
         android:inputType="textMultiLine" />
 
-    <TextView
-        android:layout_width="match_parent"
+       <!--   android:layout_gravity="center_horizontal"-->
+  
+  <LinearLayout
+       android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="75dp"
-        android:layout_marginLeft="@dimen/marginSmall"
+        android:orientation="horizontal" >
+       
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/termsOfUse"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginTop="@dimen/marginMedium" />
+
+    <TextView
+        android:id="@+id/link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/link" 
         android:layout_marginTop="@dimen/marginMedium"
-        android:text="@string/createTangleAgreement"
-        android:textSize="@dimen/textMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+   		android:linksClickable="true"/>
+
+    </LinearLayout>
 
 </LinearLayout>
