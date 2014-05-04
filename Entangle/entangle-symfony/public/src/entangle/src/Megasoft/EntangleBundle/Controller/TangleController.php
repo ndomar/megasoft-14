@@ -834,12 +834,24 @@ class TangleController extends Controller {
 
     /**
      * An endpoint for accepting tangle invitations sent to user
-     * @param int $userId
-     * @param int $tangleId
+     * @param int invitationID
      * @return Response
      * @author MahmoudGamal
      */
-    public function addUserAction($userId, $tangleId) {
+    public function acceptInvitationAction($invitationCode) {
+        $criteria1 = array('Code' => $invitationCode);
+        $invitation = $this->getDoctrine()
+                ->getRepository('MegasoftEntangleBundle:InvitationCode')
+                ->findBy($criteria1);
+        if (!$invitation) {
+            return new Response("Invitation not found", 404);
+        }
+        $expired = $invitation->getExpired();
+        if ($expired) {
+            return new Response("Invitation expired", 400);
+        }
+        $tangleId = $invitation->getTangleId();
+        $userId = $invitation->getUserId();
         $tangle = $this->getDoctrine()
                 ->getRepository('MegasoftEntangleBundle:Tangle')
                 ->find($tangleId);
@@ -852,20 +864,19 @@ class TangleController extends Controller {
         if (!$user) {
             return new Response("User not found", 404);
         }
-        $criteria = array('user' => $user, 'tangle' => $tangle);
+        $criteria2 = array('userId' => $userId, 'tangleId' => $tangleId);
+
         $search = current($this->getDoctrine()
                         ->getRepository('MegasoftEntangleBundle:UserTangle')
-                        ->findBy($criteria));
+                        ->findBy($criteria2));
         if ($search) {
             return new Response("User already exists in tangle", 400);
         }
-        $em = $this->getDoctrine()->getManager();
         $tangleUser = new UserTangle();
         $tangleUser->setTangleOwner(FALSE);
         $tangleUser->setUser($user);
         $tangleUser->setTangle($tangle);
         $tangleUser->setCredit(0);
-        $tangle->addUserTangle($tangleUser);
         $this->getDoctrine()->getManager()->flush();
         return new Response("User added", 201);
     }
