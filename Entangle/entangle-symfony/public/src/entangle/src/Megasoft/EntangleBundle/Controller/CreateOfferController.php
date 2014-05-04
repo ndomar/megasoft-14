@@ -79,15 +79,15 @@ class CreateOfferController extends Controller
         $newOffer->setStatus(0);
 
 
+        $doctrine->getManager()->persist($newOffer);
+        $doctrine->getManager()->flush();
+        $response->setStatusCode(201);
+
         //send notification
         $notificationCenter = $this->get('notification_center.service');
         $title = "new offer";
         $body = "{{from}} made a new offer to your request";
         $notificationCenter->newOfferNotification($newOffer->getId(), $title, $body);
-
-        $doctrine->getManager()->persist($newOffer);
-        $doctrine->getManager()->flush();
-        $response->setStatusCode(201);
 
         return $response;
     }

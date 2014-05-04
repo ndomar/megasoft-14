@@ -3,8 +3,10 @@
 namespace Megasoft\EntangleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Translation\Tests\String;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 /**
@@ -156,7 +158,7 @@ class OfferController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @author Mansour
      */
-    public function changeOfferPriceAction(Symfony\Component\HttpFoundation\Request $request, $offerid)
+    public function changeOfferPriceAction(Request $request, $offerid)
     {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
@@ -173,6 +175,7 @@ class OfferController extends Controller
         }
         $offerRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Offer');
         $requestOffer = $offerRepo->findOneBy(array('id' => $offerid));
+        $oldPrice = $requestOffer->getRequestedPrice();
         if ($requestOffer == null) {
             return new Response("Not found", 404);
         }
@@ -207,7 +210,7 @@ class OfferController extends Controller
         $notificationCenter = $this->get('notification_center.service');
         $title = "offer changed";
         $body = "{{from}} changed his offer";
-        $notificationCenter->offerChangeNotification($requestOffer, $title, $body);
+        $notificationCenter->offerChangeNotification($requestOffer->getId(), $oldPrice, $title, $body);
 
         $this->getDoctrine()->getManager()->persist($requestOffer);
         $this->getDoctrine()->getManager()->flush();
@@ -220,7 +223,7 @@ class OfferController extends Controller
      * @return Response $response returns 201 or 409 status code and message depending on verification
      * @author sak9
      */
-    public function acceptOfferAction(Symfony\Component\HttpFoundation\Request $request)
+    public function acceptOfferAction(\Symfony\Component\HttpFoundation\Request $request)
     {
         $doctrine = $this->getDoctrine();
         $json = $request->getContent();

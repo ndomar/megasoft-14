@@ -63,7 +63,7 @@ public class GCMRegistrationActivity extends Activity {
 	 * URI for registration
 	 */
 
-	public static final String uri = "http://192.168.1.2/entangle/app_dev.php/notification/register";
+	public static final String uri = "http://192.168.43.60/entangle/app_dev.php/notification/register";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -165,7 +165,7 @@ public class GCMRegistrationActivity extends Activity {
 			protected void onPostExecute(String regid) {
 				sendRegisterationId(regid);
 				Log.i(TAG, regid);
-				storeRegisteratinId(regid);
+//				storeRegisteratinId(regid);
 			}
 		}.execute(null, null, null);
 	}
@@ -220,8 +220,8 @@ public class GCMRegistrationActivity extends Activity {
 	protected String getSessionId() {
 		SharedPreferences prefs = getSharedPreferences("sessionIDPrefs",
 				MODE_PRIVATE);
-		// return "5";
-		return prefs.getString(Config.SESSION_ID, "");
+		return "5";
+		// return prefs.getString(Config.SESSION_ID, "");
 	}
 
 	/**

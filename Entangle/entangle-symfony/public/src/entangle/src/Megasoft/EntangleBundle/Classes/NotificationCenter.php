@@ -398,7 +398,7 @@ class NotificationCenter
         if (!$title)
             $title = $this->newOfferNotificationTitle;
         if ($body)
-            $body = $this->formatMessage($body, $from, null);
+            $body = $this->formatMessage($body, $from->getName(), null);
         else
             $body = $from->getName() . "made a new offer";
 
@@ -518,7 +518,9 @@ class NotificationCenter
         else
             $body = $fromName . "reopened his request";
 
-        $data = array("title" => $title, "body" => $body, "type" => $this->reopenRequestNotificationId, "requestId" => $requestId);
+        $tangleId = $request->getTangle()->getId();
+
+        $data = array("title" => $title, "body" => $body, "type" => $this->reopenRequestNotificationId, "requestId" => $requestId, "tangleId" => $tangleId);
 
         foreach ($offers as $offer) {
             $notification = new ReopenRequestNotification();

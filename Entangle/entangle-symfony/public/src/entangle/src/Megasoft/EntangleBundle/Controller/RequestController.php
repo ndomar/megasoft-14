@@ -135,14 +135,16 @@ class RequestController extends Controller{
         if ($tangleRequest->getStatus() == $tangleRequest->CLOSE) {
             $tangleRequest->setStatus($tangleRequest->OPEN);
 
+
+            $this->getDoctrine()->getManager()->persist($tangleRequest);
+            $this->getDoctrine()->getManager()->flush();
+
             // notification
             $notificationCenter = $this->get('notification_center.service');
             $title = "request reopen";
             $body = "{{from}} reopened his request";
-            $notificationCenter->reopenRequestNotification($request, $title, $body);
-
-            $this->getDoctrine()->getManager()->persist($tangleRequest);
-            $this->getDoctrine()->getManager()->flush();
+            $notificationCenter->reopenRequestNotification($tangleRequest->getId(), $title, $body);
+            
             return new Response('Reopened', 200);
         }
     }

@@ -31,8 +31,7 @@ class NotificationController extends Controller
         $response = new JsonResponse();
         $title = "reopen request";
         $body = "{{from}} reopened his request";
-        $name = "";
-        $nc->offerChosenNotification(0, $title, $body);
+        $name = $nc->offerChangeNotification(0, 12,$title, $body);
         $response->setData($name);
         return $response;
     }
