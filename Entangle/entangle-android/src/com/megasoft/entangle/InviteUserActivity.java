@@ -12,10 +12,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -152,7 +148,7 @@ public class InviteUserActivity extends FragmentActivity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		Log.e("test", request.toString());
+		
 		PostRequest postRequest = new PostRequest(Config.API_BASE_URL
 				+ "/tangle/" + tangleId + "/invite") {
 			public void onPostExecute(String response) {
@@ -160,7 +156,6 @@ public class InviteUserActivity extends FragmentActivity {
 					onSuccess(response);
 					view.setEnabled(true);
 				}else{
-					Log.e("test",this.getErrorMessage());
 					showErrorToast();
 					view.setEnabled(true);
 				}
