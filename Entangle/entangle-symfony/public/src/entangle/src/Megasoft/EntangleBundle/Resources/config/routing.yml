@@ -1,3 +1,4 @@
+
 megasoft_entangle_homepage:
     pattern:  /hello/{hello}
     defaults: { _controller: MegasoftEntangleBundle:Default:index }
@@ -262,4 +263,9 @@ _register:
 _test:
   pattern: /notification/test
   defaults: {_controller: MegasoftEntangleBundle:Notification:test}
+  methods: [GET]
+
+_mail:
+  pattern: /notification/mail
+  defaults: {_controller:MegasoftEntangleBundle:Notification:SendEmail}
   methods: [GET]

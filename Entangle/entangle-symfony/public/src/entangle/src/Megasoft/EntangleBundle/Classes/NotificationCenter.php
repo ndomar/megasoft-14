@@ -594,4 +594,33 @@ class NotificationCenter
         return $message;
     }
 
+    /**
+     * this function sends an email notification to user with userID
+     * @param $userID
+     * @param $subject
+     * @param $body
+     * @author amrelZanaty
+     */
+    public function sendMail($userID, $subject, $body)
+    {
+
+        $repo = $this->em->getRepository('MegasoftEntangleBundle:User');
+        $user = $repo->find($userID);
+        $mailrepo = $this->em->getRepository("MegasoftEntangleBundle:UserEmail");
+        $useremail = $mailrepo->findBy(array('userId' => $user->getId(), 'deleted' => 0));
+
+
+        if ($user->getAcceptMailNotifications() == true) {
+            foreach ($useremail as $mail) {
+
+                $message = \Swift_Message::newInstance()
+                    ->setSubject($subject)
+                    ->addFrom('Notifications-noreply@entangle.io', 'Entangle')
+                    ->setTo($mail->getEmail())
+                    ->setBody($body)
+                    ->setContentType("text/html");
+                $this->container->get('mailer')->send($message);
+            }
+        }
+    }
 }

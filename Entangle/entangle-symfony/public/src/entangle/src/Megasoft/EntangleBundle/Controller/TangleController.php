@@ -68,6 +68,7 @@ class TangleController extends Controller {
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
 
         $query = $requestRepo->createQueryBuilder('request')
+
                 ->where('request.tangleId = :tangleId')
                 ->setParameter('tangleId', $tangleId)
                 ->andWhere('request.deleted = :false')
@@ -76,27 +77,28 @@ class TangleController extends Controller {
         $userId = $request->query->get('userid', null);
         if ($userId != null) {
             $query = $query->andWhere('request.userId = :userId')
-                    ->setParameter('userId', $userId);
+                ->setParameter('userId', $userId);
         }
 
         $fullText = $request->query->get('fulltext', null);
         if ($fullText != null) {
             $query = $query->andWhere('request.description LIKE :fullTextFormat')
-                    ->setParameter('fullTextFormat', '%' . $fullText . '%');
+                ->setParameter('fullTextFormat', '%' . $fullText . '%');
         }
 
 
         $usernamePrefix = $request->query->get('usernameprefix', null);
         if ($usernamePrefix != null) {
             $query = $query->innerJoin('MegasoftEntangleBundle:User', 'user', 'WITH', 'request.userId = user.id')
-                    ->andWhere('user.name LIKE :usernamePrefixFormat')
-                    ->setParameter('usernamePrefixFormat', $usernamePrefix . '%');
+                ->andWhere('user.name LIKE :usernamePrefixFormat')
+                ->setParameter('usernamePrefixFormat', $usernamePrefix . '%');
         }
 
         $requests = $query->getQuery()->getResult();
 
         $tagId = $request->query->get('tagid', null);
         $requestsJsonArray = array();
+
 
         foreach ($requests as $tangleRequest) {
 
@@ -108,6 +110,7 @@ class TangleController extends Controller {
                         break;
                     }
                 }
+
 
                 if (!$foundTag) {
                     continue;
@@ -137,6 +140,7 @@ class TangleController extends Controller {
      * @return Response | Symfony\Component\HttpFoundation\JsonResponse
      * @author OmarElAzazy
      */
+
     public function allTagsAction(Request $request, $tangleId) {
         $verification = $this->verifyUser($request, $tangleId);
 
@@ -157,6 +161,7 @@ class TangleController extends Controller {
         $tags = array_unique($tags);
 
         $tagsJsonArray = array();
+
 
         foreach ($tags as $tag) {
             $tagsJsonArray[] = array(
@@ -235,10 +240,10 @@ class TangleController extends Controller {
     
     public function inviteUser($email,$tangleId,$inviterId,$message){
         $randomString = $this->generateRandomString(30);
-        
+
         $tangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Tangle');
         $tangle = $tangleRepo->findOneById($tangleId);
-        
+
         $newInvitationCode = new InvitationCode();
         $newInvitationCode->setCode($randomString);
         if ($this->isNewMember($email)) {
@@ -248,7 +253,7 @@ class TangleController extends Controller {
             $user = $userEmailRepo->findOneByEmail($email)->getUser();
             $newInvitationCode->setUser($user);
         }
-        
+
         $newInvitationCode->setTangle($tangle);
         $newInvitationCode->setInviterId($inviterId);
         $newInvitationCode->setExpired(false);
@@ -258,11 +263,25 @@ class TangleController extends Controller {
         $this->getDoctrine()->getManager()->persist($newInvitationCode);
         $this->getDoctrine()->getManager()->flush();
 
-        $message = 'Hi , ' . $message . ' , to accept the request'
-                . ' open this link http://entangle.io/invitation/'
-                . $randomString . ' Best Regards .. BLA BLA BLA';
+        $title = "you are invited to bla";
+        $body = "<!DOCTYPE html>
+                <html lang=\"en\">
+                    <head>
+                    </head>
+                    <body>
+                           <h3>
+                                Hello
+                           </h3>
+                           <p>" . $message . "</p>
+                           <a href=\"http://entangle.io/invitation/" . $randomString . "\">link</a>
+                           <p>Cheers<br>Entangle Team</p>
+                    </body>
+                </html>";
 
-        // Mailer::sendEmail($email , $message ); // TO BE IMPLEMENTED
+
+        $user = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail')->findOneBy(array("email" => $email))->getUser();
+        $notificationCenter = $this->get('notification_center.service');
+        $notificationCenter->sendMail($user->getId(), $title, $body);
     }
 
     /**
@@ -309,7 +328,7 @@ class TangleController extends Controller {
         $isOwner = $userTangle->getTangleOwner();
 
         foreach ($json['emails'] as $email) {
-            
+
             if ( !$this->isValidEmail($email) || (!$this->isNewMember($email) && $this->isTangleMember($email, $tangleId)) ) {
                 continue;
             }
@@ -406,6 +425,7 @@ class TangleController extends Controller {
         $iconName = $this->generateRandomString(50) . '.png';
         $kernel = $this->get('kernel');
         $path = $kernel->getRootDir() . '/../web/bundles/megasoftentangle/images/tangle/icons/' . $iconName;
+
         if ($icon != null) {
             imagepng($icon, $path, 9);
             imagedestroy($icon);
@@ -454,7 +474,7 @@ class TangleController extends Controller {
 
     /**
      * Validates whether the user with the session id $sessionId is the owner of the tangle with
-     * tangle id $tangleId , If yes the function returns null, returns the appropriate exception otherwise 
+     * tangle id $tangleId , If yes the function returns null, returns the appropriate exception otherwise
      * @param integer $sessionId
      * @param integer $tangleId
      * @return Response|null
@@ -484,9 +504,9 @@ class TangleController extends Controller {
     }
 
     /**
-     * A function that is responsible of verifing the request from 
+     * A function that is responsible of verifing the request from
      * a user leaving a tangle
-     * 
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param integer $tangleId
      * @return \Symfony\Component\HttpFoundation\Response|null
@@ -494,6 +514,7 @@ class TangleController extends Controller {
      */
     private function leaveTangleVerification($request, $tangleId) {
         $verification = $this->verifyUser($request, $tangleId);
+
 
         if ($verification != null) {
             return $verification;
@@ -524,9 +545,9 @@ class TangleController extends Controller {
     }
 
     /**
-     * A function that is reponsible for deleting the requests 
+     * A function that is reponsible for deleting the requests
      * of a user that left the tangle
-     * 
+     *
      * @param integer $tangleId
      * @param integer $userId
      * @author HebaAamer
@@ -566,9 +587,9 @@ class TangleController extends Controller {
     }
 
     /**
-     * A function that is responsible for deleting the offers 
+     * A function that is responsible for deleting the offers
      * of a user that left the tangle
-     * 
+     *
      * @param integer $tangleId
      * @param integer $userId
      * @author HebaAamer
@@ -607,9 +628,9 @@ class TangleController extends Controller {
     }
 
     /**
-     * This function is responsible for handling the deletion of the messages 
+     * This function is responsible for handling the deletion of the messages
      * related to an offer
-     * 
+     *
      * @param integer $user
      * @param Offer $offer
      * @author HebaAamer
@@ -627,10 +648,10 @@ class TangleController extends Controller {
     }
 
     /**
-     * A function that is responsible for removing a user from 
-     * a tangle and updating the deletedBalance of the tangle 
+     * A function that is responsible for removing a user from
+     * a tangle and updating the deletedBalance of the tangle
      * and setting the leavingDate of that user.
-     * 
+     *
      * @param integer $tangleId
      * @param integer $userId
      * @author HebaAamer
@@ -659,8 +680,8 @@ class TangleController extends Controller {
     }
 
     /**
-     * This function is used to remove all the claims related to specific 
-     * 
+     * This function is used to remove all the claims related to specific
+     *
      * @param integer $tangleId
      * @param integer $userId
      * @author HebaAamer
@@ -689,7 +710,7 @@ class TangleController extends Controller {
 
     /**
      * An endpoint to be used when a user leaves a tangle
-     * 
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param integer $tangleId
      * @return \Symfony\Component\HttpFoundation\Response
@@ -853,14 +874,14 @@ class TangleController extends Controller {
         $tangleId = $invitation->getTangleId();
         $userId = $invitation->getUserId();
         $tangle = $this->getDoctrine()
-                ->getRepository('MegasoftEntangleBundle:Tangle')
-                ->find($tangleId);
+            ->getRepository('MegasoftEntangleBundle:Tangle')
+            ->find($tangleId);
         if (!$tangle) {
             return new Response("Tangle not found", 404);
         }
         $user = $this->getDoctrine()
-                ->getRepository('MegasoftEntangleBundle:User')
-                ->find($userId);
+            ->getRepository('MegasoftEntangleBundle:User')
+            ->find($userId);
         if (!$user) {
             return new Response("User not found", 404);
         }
