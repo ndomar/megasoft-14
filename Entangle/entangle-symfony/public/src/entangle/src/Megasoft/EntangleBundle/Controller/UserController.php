@@ -140,47 +140,64 @@ class UserController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
      * @author Almgohar
      */
-    public function profileAction(\Symfony\Component\HttpFoundation\Request $request, $userId, $tangleId) {
+    public function ownProfileAction(\Symfony\Component\HttpFoundation\Request $request, $userId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
-
         if ($sessionId == null) {
             return new Response('Unauthorized', 401);
         }
-
         $doctrine = $this->getDoctrine();
         $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
-        $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
-        $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
         $user = $userTable->findOneBy(array('id' => $userId));
-
-        if ($session == null || $session->getExpired()) {
-            return new Response('Unauthorized', 401);
-        }
-
         if ($user == null) {
             return new Response('User not found', 404);
         }
-
-        $loggedInUser = $session->getUserId();
-
+        $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
+        if ($session == null || $session->getExpired()) {
+            return new Response('Unauthorized', 401);
+        }
+        $loggedInUser = $session->getUser();
+        if ($loggedInUser == $user) {
+            $this->viewProfile($user);
+        } else {
+            return new Response('Unauthorized', 401);
+        }
+    }
+    
+    public function userProfileAction(\Symfony\Component\HttpFoundation\Request $request, $userId, $tangleId) {
+      $sessionId = $request->headers->get('X-SESSION-ID');
+        if ($sessionId == null) {
+            return new Response('Unauthorized', 401);
+        }
+        $doctrine = $this->getDoctrine();
+        $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
+        $user = $userTable->findOneBy(array('id' => $userId));
+        $loggedInUser = $session->getUser();
+        $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
+        if ($session == null || $session->getExpired()) {
+            return new Response('Unauthorized', 401);
+        }
+        if ($user == null) {
+            return new Response('User not found', 404);
+        }
         if (!$this->validateTangle($tangleId)) {
             return new Response('Tangle not found', 404);
         }
-
-        if (!$this->validateUser($loggedInUser, $tangleId)) {
+        if (!$this->validateUser($loggedInUser->getId(), $tangleId)) {
             return new Response('You are not a member of this tangle', 401);
         }
-
         if (!$this->validateUser($userId, $tangleId)) {
             return new Response('The requested user is not a member of this tangle', 401);
         }
+         $this->viewProfile($user);
+        
+    }
 
-        $offers = $user->getOffers();
-        $info = $this->getUserInfo($user, $tangleId);
-        $transactions = $this->getTransactions($offers, $tangleId);
+    private function viewProfile($user) {
+        $information = $this->getUserInfo($user);
         $response = new JsonResponse();
-        $response->setData(array('information' => $info,
-            'transactions' => $transactions));
+        $response->setData(array('information' => $information));
         $response->setStatusCode(200);
         return $response;
     }
@@ -192,13 +209,12 @@ class UserController extends Controller {
      * @return array of arrays $transactions
      * @author Almgohar
      */
-    private function getTransactions($offers, $tangleId) {
+    private function transactionsAction($user, $tangleId) {
+        
         $transactions = array();
+        $offers = $user->getOffers();
         for ($i = 0; $i < count($offers); $i++) {
             $offer = $offers[$i];
-            if ($offer == null) {
-                continue;
-            }
             if (($offer->getRequest()->getTangleId() == $tangleId) && ($offer->getTransaction() != null)) {
                 $requesterName = $offer->getRequest()->getUser()->getName();
                 $requestDescription = $offer->getRequest()->getDescription();
@@ -209,6 +225,11 @@ class UserController extends Controller {
                     'requesterName'=> $requesterName,
                     'requestDescription'=>$requestDescription,
                     'amount'=>$amount, 'requestId'=>$requestId, 'requesterId'=>$requesterId);
+            
+                $response = new JsonResponse();
+                $response->setData(array('transactions' => $transactions));
+                $response->setStatusCode(200);
+                return $response;
             }           
 
                
@@ -224,7 +245,7 @@ class UserController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response | array #info
      * @author Almgohar
      */
-    private function getUserInfo($user, $tangleId) {
+    private function getUserInfo($user) {
         if ($user == null) {
             return new Response('Bad Request', 400);
         }
@@ -232,16 +253,16 @@ class UserController extends Controller {
         $userId = $user->getId();
         $userTangleTable = $doctrine->
                 getRepository('MegasoftEntangleBundle:UserTangle');
-        $userTangle = $userTangleTable->
+       // $userTangle = $userTangleTable->
                 findOneBy(array('userId' => $userId, 'tangleId' => $tangleId));
         $name = $user->getName();
         $description = $user->getUserBio();
-        $credit = $userTangle->getCredit();
+       // $credit = $userTangle->getCredit();
         $photo = $user->getPhoto();
         $birthdate = $user->getBirthDate();
         $verfied = $user->getVerified();
         $info = array('name' => $name, 'description' => $description,
-            'credit' => $credit, 'photo' => 'http://entangle.io/images/profilePictures/'.$photo, 'birthdate' => $birthdate,
+           'photo' => 'http://entangle.io/images/profilePictures/'.$photo, 'birthdate' => $birthdate,
             'verified' => $verfied);
         return $info;
     }
