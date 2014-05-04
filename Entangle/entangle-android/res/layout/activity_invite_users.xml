@@ -81,7 +81,7 @@
     <EditText
         android:id="@+id/invite_message"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="@dimen/textAreaHeight"
         android:layout_marginRight="75dp"
         android:layout_marginTop="@dimen/marginSmall"
         android:ems="10"
