@@ -109,8 +109,8 @@ public class ManagePendingInvitationFragment extends Fragment {
 				JSONObject pendingInvitation = jsonArray.getJSONObject(i);
 				
 				String text = pendingInvitation.getString("inviter") + " invited ";
-				if(pendingInvitation.get("invitee") == null){
-					text += "the new member " + pendingInvitation.getString("email");
+				if(pendingInvitation.getString("invitee").equals("null")){
+					text += "the new member ( " +  pendingInvitation.getString("email") + " )";
 				}else{
 					text +=  pendingInvitation.getString("invitee") + " ( " + pendingInvitation.getString("email") + " )";
 				}
