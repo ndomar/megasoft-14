@@ -114,6 +114,11 @@ public class OfferActivity extends Activity {
 	 */
 	private FragmentTransaction transaction;
 
+	/**
+	 * Default value for OfferId
+	 */
+	private int defaultOfferId = -1;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -122,7 +127,7 @@ public class OfferActivity extends Activity {
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		this.loggedInId = settings.getInt(Config.USER_ID, 1);
-		this.offerId = intent.getIntExtra("offerID", 9990);
+		this.offerId = intent.getIntExtra("offerID", defaultOfferId);
 		viewOffer();
 	}
 
@@ -251,13 +256,9 @@ public class OfferActivity extends Activity {
 
 			if (userId == loggedInId) {
 				transaction = getFragmentManager().beginTransaction();
-				// DeleteButtonFragment deleteFragment = new
-				// DeleteButtonFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("resourceType", "offer");
 				bundle.putInt("offerId", offerId);
-				// deleteFragment.setArguments(bundle);
-				// transaction.add(R.id.delete_offer_layout, deleteFragment);
 				transaction.commit();
 			}
 			offererName.setOnClickListener(new View.OnClickListener() {
@@ -331,12 +332,11 @@ public class OfferActivity extends Activity {
 						}
 					} else {
 						Toast toast = Toast.makeText(getApplicationContext(),
-								"An error has occured", Toast.LENGTH_SHORT);
+								getString(R.string.toastError),
+								Toast.LENGTH_SHORT);
 						toast.show();
 					}
-				}
-
-				catch (JSONException e) {
+				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 
@@ -366,7 +366,7 @@ public class OfferActivity extends Activity {
 				request.setBody(returnedResponse);
 				settings = getSharedPreferences(Config.SETTING, 0);
 				String sessionId = settings.getString(Config.SESSION_ID, "");
-				request.addHeader("X-SESSION-ID", sessionId);
+				request.addHeader(Config.SESSION_ID, sessionId);
 				request.execute();
 				acceptOffer.setVisibility(View.GONE);
 

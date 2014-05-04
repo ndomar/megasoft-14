@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\Tests\String;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-
 /**
  * Gets the required information to view a certain offer
  * @author Almgohar
@@ -110,7 +109,7 @@ class OfferController extends Controller {
         $requestStatus = $request->getStatus();
         $requestDescription = $request->getDescription();
 
-        $requestInformation= array('requesterName' => $userName,
+        $requestInformation = array('requesterName' => $userName,
             'requestDescription' => $requestDescription, 'requesterID' => $userId,
             'requestID' => $requestId, 'requestStatus' => $requestStatus);
 
@@ -235,7 +234,7 @@ class OfferController extends Controller {
         }
         $requestId = $offer->getRequestId();
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
-        $request = $requestRepo->findOneBy(array('id' => $requestId));
+        $request = $requestRepo->findOneBy(array('id' => $requestId,));
         $requesterId = $request->getUserId();
         $tangle = $request->getTangleId();
         if ($requesterId != $userOfSession) {
@@ -247,6 +246,7 @@ class OfferController extends Controller {
         } else {
             $response = new Response($verificationMessage, 401);
         }
+
         return $response;
     }
 
@@ -259,17 +259,17 @@ class OfferController extends Controller {
     public function verify($offerId) {
         $doctrine = $this->getDoctrine();
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
-        $offer = $offerRepo->findOneBy(array('id' => $offerId));
+        $offer = $offerRepo->findOneBy(array('id' => $offerId,));
         if (count($offer) <= 0) {
             return "Error: No such offer.";
         }
         $requestId = $offer->getRequestId();
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
-        $request = $requestRepo->findOneBy(array('id' => $requestId));
+        $request = $requestRepo->findOneBy(array('id' => $requestId,));
         $requesterId = $request->getUserId();
         $tangleId = $request->getTangleId();
         $userTangle = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
-        $requester = $userTangle->findOneBy(array('tangleId' => $tangleId, 'userId' => $requesterId));
+        $requester = $userTangle->findOneBy(array('tangleId' => $tangleId, 'userId' => $requesterId,));
         if (count($requester) <= 0) {
             return "Error: You don't belong to this tangle.";
         }
@@ -291,10 +291,7 @@ class OfferController extends Controller {
         if ($offer->getStatus() == $offer->FAILED || $offer->getStatus() == $offer->REJECTED) {
             return "Error: Offer closed.";
         }
-
-
         $price = $offer->getRequestedPrice();
-
         $requesterBalance = $requester->getCredit();
         if ($requesterBalance < $price) {
             return "Error: Not enough balance.";
@@ -306,71 +303,73 @@ class OfferController extends Controller {
         $doctrine->getManager()->persist($requester);
         $doctrine->getManager()->persist($offer);
         $doctrine->getManager()->flush();
+
         return "Offer Accepted.";
     }
 
     /**
-      * An endpoint to withdraw an offer.
-      * @param Request $request
-      * @param integer $offerId
-      * @return Response
-      * @author OmarElAzazy
+     * An endpoint to withdraw an offer.
+     * @param Request $request
+     * @param integer $offerId
+     * @return Response
+     * @author OmarElAzazy
      */
-    public function withdrawAction(Request $request, $offerId){
+    public function withdrawAction(Request $request, $offerId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
-        
-        if($offerId == null || $sessionId == null){
+
+        if ($offerId == null || $sessionId == null) {
             return new Response('Bad Request', 400);
         }
-        
+
         $doctrine = $this->getDoctrine();
-        
+
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
-        if($session == null || $session->getExpired()){
+        if ($session == null || $session->getExpired()) {
             return new Response('Bad Request', 400);
         }
-        
+
         $offererId = $session->getUserId();
-        
+
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $offer = $offerRepo->findOneBy(array('id' => $offerId));
-        if($offer == null || $offer->getUserId() != $offererId || $offer->getDeleted()){
+        if ($offer == null || $offer->getUserId() != $offererId || $offer->getDeleted()) {
             return new Response('Unauthorized', 401);
         }
-        
-        if($offer->getStatus() == $offer->ACCEPTED){
+
+        if ($offer->getStatus() == $offer->ACCEPTED) {
             $this->unfreezePoints($offer->getRequest(), $offer->getRequestedPrice());
         }
-        
+
         $offer->setDeleted(true);
         $offer->setStatus($offer->FAILED);
         $this->getDoctrine()->getManager()->persist($offer);
         $this->getDoctrine()->getManager()->flush();
-        
+
         return new Response("Deleted", 204);
     }
-    
+
     /**
-      * A function to unfreeze points for the requester for withdrawn offer.
-      * @param Request $request
-      * @param integer $points
-      * @return 
-      * @author OmarElAzazy
+     * A function to unfreeze points for the requester for withdrawn offer.
+     * @param Request $request
+     * @param integer $points
+     * @return 
+     * @author OmarElAzazy
      */
-    public function unfreezePoints($request, $points){
+    public function unfreezePoints($request, $points) {
         $requesterId = $request->getUser()->getId();
         $tangleId = $request->getTangleId();
-        
+
         $userTangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserTangle');
-        
+
         $userTangle = $userTangleRepo->findOneBy(array('userId' => $requesterId, 'tangleId' => $tangleId));
-        
+
         $newCredit = $userTangle->getCredit() + $points;
         $userTangle->setCredit($newCredit);
-        
+
         $this->getDoctrine()->getManager()->persist($userTangle);
         $this->getDoctrine()->getManager()->flush();
-        return ;
+        return;
     }
+
 }

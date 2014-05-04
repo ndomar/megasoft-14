@@ -128,5 +128,6 @@
     <string name="cancel">Cancel</string>
     <string name="email">email: user@entangle.io</string>
     <string name="password">password</string>
+    <string name= "toastError">An error has occurred.</string>
 
 </resources>
