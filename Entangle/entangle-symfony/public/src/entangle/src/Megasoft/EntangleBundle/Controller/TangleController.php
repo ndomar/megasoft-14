@@ -831,14 +831,16 @@ class TangleController extends Controller
      * @return Response
      * @author MahmoudGamal
      */
-    public function addUserAction($invitationId) {
+    public function acceptInvitationAction($invitationId) {
+        $criteria1 = array('invitationId' => $invitationId);
         $invitation = $this->getDoctrine()
-                ->getRepository('MegasoftEntangleBundle:Tangle')
-                ->find($invitationId);
+                ->getRepository('MegasoftEntangleBundle:InvitationCode')
+                ->findBy($criteria1);
         if (!$invitation){
             return new Response("Invitation not found", 404);
         }
-        if ($invitation->expired){
+        $expired = $invitation ->getExpired();
+        if ($expired){
             return new Response("Invitation expired", 400);
         }
         $tangleId = $invitation->getTangleId();
@@ -855,10 +857,10 @@ class TangleController extends Controller
         if (!$user) {
             return new Response("User not found", 404);
         }
-        $criteria = array('user' => $user , 'tangle' =>$tangle );
+        $criteria2 = array('user' => $user , 'tangle' =>$tangle );
         $search = current($this->getDoctrine()
                         ->getRepository('MegasoftEntangleBundle:UserTangle')
-                        ->findBy($criteria));
+                        ->findBy($criteria2));
         if ($search) {
             return new Response("User already exists in tangle", 400);
         }
@@ -868,7 +870,6 @@ class TangleController extends Controller
         $tangleUser->setUser($user);
         $tangleUser->setTangle($tangle);
         $tangleUser->setCredit(0);
-        $tangle->addUserTangle($tangleUser);
         $this->getDoctrine()->getManager()->flush();
         return new Response("User added", 201);
     }
