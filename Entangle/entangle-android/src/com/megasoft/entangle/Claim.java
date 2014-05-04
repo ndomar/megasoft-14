@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ClaimActivity extends Activity {
+public class Claim extends Activity {
 	/**
 	 * String holding the mail of the claim sender
 	 */
