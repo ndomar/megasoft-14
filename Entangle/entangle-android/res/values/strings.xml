@@ -7,21 +7,25 @@
     <string name="claim_button">Claim </string>
     <string name="mssg">Body:</string>
     <string name="claimName">Claim Form</string>
-    <string name="send">Send Claim </string>
+    <string name="send">Send</string>
+    <string name="enterClaim">I am claiming about \.\.\.</string>
     <string name="Requests">Create Request</string>
     <string name="name">Request\'s name</string>
     <string name="description">What do you need ?</string>
     <string name="post">Create</string>
+    <string name="termsOfUse">\tPlease read the terms of use in this  \t</string>
     <string name="Tags">Tags</string>
     <string name="tagHint">food, tech, living</string>
     <string name="priceHint">5</string>
     <string name="hello_world">Hello world!</string>
+    <string name="link"><a href="https://www.google.com/">link</a></string>
     <string name="requestDescription">I want someone to help me change the world\.\.\.</string>
-    <string name="tags">food, society, games</string>
+    <string name="tags">Tags: food, society, games</string>
     <string name="priceDescription">Price\: 125</string>
     <string name="dueDate">Due date</string>
     <string name="pts">Pts</string>
     <string name="create">Create</string>
+    <string name="createRequest">Request</string>
     <string name="tangleNameHint">Specify a Tangle name</string>
     <string name="iconButton">Choose an Icon</string>
     <string name="tangleIcon">Tangle Icon</string>
