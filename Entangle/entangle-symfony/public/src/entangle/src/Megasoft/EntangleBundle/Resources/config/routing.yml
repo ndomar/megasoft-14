@@ -263,3 +263,8 @@ _test:
   pattern: /notification/test
   defaults: {_controller: MegasoftEntangleBundle:Notification:test}
   methods: [GET]
+
+get_my_requests:
+    pattern:  /tangle/{tangleId}/allRequests
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:allRequests}
+    methods: [GET]

@@ -17,6 +17,14 @@ use Megasoft\EntangleBundle\Entity\UserTangle;
 
 class TangleController extends Controller
 {
+    public function allRequestsAction(Request $request, $tangleId) {
+        $verification = $this->verifyUser($request, $tangleId);
+        
+        if($verification != null){
+            return $verification;
+        }
+    }
+    
     /**
       * Validates that the request has correct format,  session Id is active and of a user and that the user is in the tangle
       * @param Request $request
