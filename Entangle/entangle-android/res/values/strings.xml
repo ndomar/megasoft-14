@@ -135,6 +135,7 @@
     
     <string name="sample_user_main">user@entangle.io</string>
     <string name="invitation_message_placeholder">Write an invitation message ..</string>
+    <string name="logoutActivity">TODO</string>
     
 
 </resources>
