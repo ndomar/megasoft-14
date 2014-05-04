@@ -319,7 +319,7 @@ class RequestController extends Controller {
         if ($deadLineFormated != null) {
             if ($deadLineFormated->format("Y-m-d") < $dateFormated->format("Y-m-d")) {
                 $response->setStatusCode(400);
-                $response->setContent("deadline has passed!");
+                $response->setContent($deadLineFormated->format("Y-m-d"));
                 return $response;
             }
         }

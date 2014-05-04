@@ -236,7 +236,7 @@ public class CreateRequestActivity extends Activity {
 			this.pickDate.setText("Due Date");
 		} else {
 			this.pickDate.setText(new StringBuilder().append(deadLineDay)
-					.append("/").append(deadLineMonth + 1).append("/")
+					.append("-").append(deadLineMonth + 1).append("-")
 					.append(deadLineYear).append(" "));
 		}
 	}
