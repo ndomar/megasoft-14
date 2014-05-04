@@ -25,6 +25,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.megasoft.config.Config;
+import com.megasoft.notifications.GCMRegistrationActivity;
+import com.megasoft.requests.PostRequest;
+
 @SuppressLint({ "NewApi", "WorldReadableFiles" })
 public class LoginActivity extends Activity {
 	private EditText username;

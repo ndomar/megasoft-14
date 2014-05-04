@@ -91,7 +91,7 @@ class UserController extends Controller {
 
         $response->setData(array('sessionId' => $sessionId, 'userId' => $user->getId()
             , 'profileImage' => $filepath . $user->getPhoto(),
-            'username' => $user->getName()));
+            'username' => $user->getName() , ));
         $response->setStatusCode(201);
 
         return $response;
