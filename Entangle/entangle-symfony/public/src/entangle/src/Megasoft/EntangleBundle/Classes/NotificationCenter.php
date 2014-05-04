@@ -623,4 +623,23 @@ class NotificationCenter
             }
         }
     }
+    
+    /**
+     * this function sends an email notification to user with userID
+     * @param $email
+     * @param $subject
+     * @param $body
+     * @author amrelZanaty
+     */
+    public function sendMailToEmail($email, $subject, $body)
+    {
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject($subject)
+            ->addFrom('Notifications-noreply@entangle.io', 'Entangle')
+            ->setTo($email)
+            ->setBody($body)
+            ->setContentType("text/html");
+        $this->container->get('mailer')->send($message);
+    }
 }
