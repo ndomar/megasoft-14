@@ -52,7 +52,7 @@ public class Request extends Activity {
 		String sessionID = (String) getIntent().getCharSequenceExtra(
 				"sessionID");
 		int requestId = (int) getIntent().getIntExtra("requestId", -1);
-		GetRequest requestTangleOwnerMail = new GetRequest(Config.API_BASE_URL
+		GetRequest requestTangleOwnerMail = new GetRequest(Config.API_BASE_URL_SERVER
 				+ "/tangleOwnerAndClaimerMail/" + requestId + "/claim") {
 
 			protected void onPostExecute(String response) {

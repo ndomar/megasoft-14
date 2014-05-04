@@ -89,7 +89,7 @@ public class ClaimActivity extends Activity {
 			}
 
 			int requestId = (int) getIntent().getIntExtra("requestId", -1);
-			PostRequest postSubject = new PostRequest(Config.API_BASE_URL
+			PostRequest postSubject = new PostRequest(Config.API_BASE_URL_SERVER
 					+ "/claim/" + requestId + "/sendClaim") {
 
 				protected void onPostExecute(String response) {
