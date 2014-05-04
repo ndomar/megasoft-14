@@ -76,3 +76,13 @@ services:
    arguments:
         em: "@doctrine.orm.entity_manager"
         container: "@service_container"
+
+
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: smtp
+    encryption: ssl
+    host: smtp.mandrillapp.com
+    username: amrelzanati@gmail.com
+    password: WMRxbjf3dCXojTd-1rOoJg
