@@ -11,26 +11,27 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
-	
+
 	int tangleId;
 	int userId;
 	Context context;
 	private String tangleName;
 	final static String STREAM = "Stream";
-	public PagerAdapter(Context con, FragmentManager fm,int tangleId,int userId, String tangleName) {
+
+	public PagerAdapter(Context con, FragmentManager fm, int tangleId,
+			int userId, String tangleName) {
 		super(fm);
 		this.context = con;
 		this.tangleName = tangleName;
 		this.tangleId = tangleId;
 		this.userId = userId;
 	}
-	
-	
+
 	/**
 	 * Initialize the navigation drawer (sidebar menu)
 	 * 
-	 * @param 
-	 * @return 
+	 * @param
+	 * @return
 	 * @author Mohamed Farghal
 	 */
 	@Override
@@ -53,32 +54,39 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 			args.putInt("userId", userId);
 			break;
 
+		case 3:
+			fragment = new MyRequestsFragment();
+			break;
+
 		default:
 			break;
 		}
 		fragment.setArguments(args);
-        return fragment;
+		return fragment;
 	}
-        
+
 	@Override
 	public int getCount() {
-		return 3;
+		return 4;
 	}
-	
+
 	@Override
 	public CharSequence getPageTitle(int position) {
 		switch (position) {
 		case 0:
 			return "Stream";
-			
+
 		case 1:
 			return "Members";
 		case 2:
 			return "You";
 
+		case 3:
+			return "MyRequests";
+
 		default:
 			return "Tab " + position;
 		}
-    }
+	}
 
 }
