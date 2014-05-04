@@ -173,8 +173,7 @@ public class CreateTangleActivity extends Activity {
 				} else {
 					if (!(this.getStatusCode() == 201)) {
 						Toast.makeText(getApplicationContext(),
-								"Try Again Later" + this.getStatusCode(),
-								Toast.LENGTH_LONG).show();
+								"Try Again Later", Toast.LENGTH_LONG).show();
 					} else {
 						goToHomePage();
 					}
