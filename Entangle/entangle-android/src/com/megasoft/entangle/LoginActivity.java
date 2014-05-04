@@ -42,6 +42,9 @@ public class LoginActivity extends Activity {
 		username = (EditText) findViewById(R.id.login_username);
 		password = (EditText) findViewById(R.id.login_password);
 
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(username, InputMethodManager.SHOW_IMPLICIT);
+
 		getActionBar().hide();
 
 		final EditText onTouch = (EditText) findViewById(R.id.login_username);
