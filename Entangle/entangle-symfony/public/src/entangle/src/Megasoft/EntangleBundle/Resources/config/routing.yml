@@ -179,7 +179,7 @@ dummy:
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
 
 accept_tangle_invitation:
-    pattern: /invitation/{invitationId}
+    pattern: /invitation/{invitationCode}
     defaults: { _controller: MegasoftEntangleBundle:Tangle:acceptInvitation}
     methods: [PUT]
 
