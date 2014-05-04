@@ -1,0 +1,220 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/darkWhite"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    tools:context=".OfferActivity" >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/login_background"
+                android:padding="@dimen/boxMargin" >
+
+                <com.megasoft.entangle.views.RoundedImageView
+                    android:id="@+id/offererAvatar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/avatar" />
+
+                <TextView
+                    android:id="@+id/offerer"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/offererAvatar"
+                    android:paddingLeft="@dimen/paddingSmall"
+                    android:text="@string/offers"
+                    android:textSize="@dimen/textLarge" />
+
+                <TextView
+                    android:id="@+id/offerDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/offerer"
+                    android:layout_below="@id/offerer"
+                    android:paddingLeft="@dimen/paddingSmall"
+                    android:text="25/05/2014"
+                    android:textSize="@dimen/textSmall" />
+
+                <TextView
+                    android:id="@+id/offerDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/offererAvatar"
+                    android:layout_below="@id/offerDate"
+                    android:layout_marginRight="@dimen/marginMedium"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/requestDescription" />
+
+                <TextView
+                    android:id="@+id/offerDeadline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/offerDescription"
+                    android:layout_below="@id/offerDescription"
+                    android:text="25/05/2014"
+                    android:textSize="@dimen/textMedium" />
+
+                <TextView
+                    android:id="@+id/offerPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="149"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/textLarge" />
+
+                <TextView
+                    android:id="@+id/offerStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/offerDeadline"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignRight="@+id/pts"
+                    android:layout_below="@+id/offerDeadline"
+                    android:text="pending"
+                    android:textColor="@color/lightGray"
+                    android:textSize="@dimen/textMedium" />
+
+                <TextView
+                    android:id="@+id/pts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/offerPrice"
+                    android:layout_alignBottom="@+id/offerPrice"
+                    android:layout_toRightOf="@+id/offerPrice"
+                    android:text="@string/pts"
+                    android:textColor="@color/lightGray"
+                    android:textSize="@dimen/textMedium" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/darkWhite" >
+
+                <TextView
+                    android:id="@+id/offers"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="1 offer was made on this request"
+                    android:textSize="@dimen/textMedium" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/offers"
+                    android:background="@color/lightGray" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/darkWhite"
+                android:padding="@dimen/boxMargin" >
+
+                <com.megasoft.entangle.views.RoundedImageView
+                    android:id="@+id/offererAvatar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/avatar" />
+
+                <TextView
+                    android:id="@+id/offerer"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/offererAvatar"
+                    android:layout_marginTop="4dp"
+                    android:layout_toRightOf="@id/offererAvatar"
+                    android:paddingLeft="@dimen/paddingSmall"
+                    android:text="@string/offers"
+                    android:textSize="@dimen/textMedium" />
+
+                <TextView
+                    android:id="@+id/offerDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/offerer"
+                    android:layout_below="@id/offerer"
+                    android:paddingLeft="@dimen/paddingSmall"
+                    android:text="25/05/2014"
+                    android:textSize="@dimen/textSmall" />
+
+                <TextView
+                    android:id="@+id/offerDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/offererAvatar"
+                    android:layout_below="@id/offerDate"
+                    android:layout_marginRight="@dimen/marginMedium"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/requestDescription" />
+
+                <TextView
+                    android:id="@+id/offerDeadline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/offerDescription"
+                    android:layout_below="@id/offerDescription"
+                    android:layout_marginTop="7dp"
+                    android:text="25/05/2014"
+                    android:textSize="@dimen/textMedium" />
+
+                <TextView
+                    android:id="@+id/offerPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/offererAvatar"
+                    android:layout_alignParentRight="true"
+                    android:text="149"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/textMedium" />
+
+                <TextView
+                    android:id="@+id/pts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/offerPrice"
+                    android:layout_alignBottom="@+id/offerPrice"
+                    android:layout_alignRight="@+id/offerDescription"
+                    android:layout_toRightOf="@+id/offerPrice"
+                    android:text="@string/pts"
+                    android:textColor="@color/lightGray"
+                    android:textSize="@dimen/textSmall" />
+
+                <TextView
+                    android:id="@+id/offerStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_below="@+id/offerDeadline"
+                    android:text="pending"
+                    android:textColor="@color/lightGray"
+                    android:textSize="@dimen/textMedium" />
+
+            </RelativeLayout>
+            <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/lightGray" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
