@@ -23,6 +23,37 @@ class TangleController extends Controller
         if($verification != null){
             return $verification;
         }
+        
+        $doctrine = $this->getDoctrine();
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+                
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        $userId = $session->getUserId();
+        
+        $query = $requestRepo->createQueryBuilder('request')
+                ->where('request.tangleId = :tangleId')
+                ->setParameter('tangleId', $tangleId)
+                ->andWhere('request.deleted = :false')
+                ->setParameter('false', false)
+                ->andWhere('request.userId = :userId')
+                ->setParameter('userId', $userId);
+        
+        $requests = $query->getQuery()->getResult();
+        $requestsJsonArray = array();
+        
+        foreach($requests as $request) {
+             
+            $requestsJsonArray[] = array(
+                                        'id' => $request->getId(),
+                                        'description' => $request->getDescription(),
+                                        'offersCount' => sizeof($request->getOffers()),
+                                        'price' => $request->getRequestedPrice(),
+                                        'status' => $request->getStatus(),
+                                    );
+        }
+        
+        
     }
     
     /**
