@@ -268,3 +268,9 @@ _test:
   pattern: /notification/test
   defaults: {_controller: MegasoftEntangleBundle:Notification:test}
   methods: [GET]
+  
+comment_on_offer:
+    pattern:  /offer/{offerId}/comment
+    defaults: { _controller: MegasoftEntangleBundle:Offer:comment}
+    methods: [POST]
+  
