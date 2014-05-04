@@ -258,25 +258,11 @@ class TangleController extends Controller
         $this->getDoctrine()->getManager()->persist($newInvitationCode);
         $this->getDoctrine()->getManager()->flush();
 
-        $title = "you are invited to bla";
-        $body = "<!DOCTYPE html>
-                <html lang=\"en\">
-                    <head>
-                    </head>
-                    <body>
-                           <h3>
-                                Hello
-                           </h3>
-                           <p>" . $message . "</p>
-                           <a href=\"http://entangle.io/invitation/" . $randomString . "\">link</a>
-                           <p>Cheers<br>Entangle Team</p>
-                    </body>
-                </html>";
+        $message = 'Hi , ' . $message . ' , to accept the request'
+            . ' open this link http://entangle.io/invitation/'
+            . $randomString . ' Best Regards .. BLA BLA BLA';
 
-
-        $user = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail')->findOneBy(array("email" => $email))->getUser();
-        $notificationCenter = $this->get('notification_center.service');
-        $notificationCenter->sendMail($user->getId(), $title, $body);
+        // Mailer::sendEmail($email , $message ); // TO BE IMPLEMENTED
     }
 
     /**
