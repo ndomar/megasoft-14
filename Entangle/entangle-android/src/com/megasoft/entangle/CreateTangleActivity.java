@@ -140,21 +140,26 @@ public class CreateTangleActivity extends Activity {
 	public void create(View view) {
 		EditText tangleName = (EditText) findViewById(R.id.tangleName);
 		EditText tangleDescription = (EditText) findViewById(R.id.tangleDescription);
-		if (tangleName.getCurrentTextColor() == RED) {
-			Toast.makeText(getApplicationContext(), "Tangle Name Unavailable",
+		if (tangleName.getText().toString().equals("")) {
+			Toast.makeText(getApplicationContext(), "Tangle Name Is Empty",
 					Toast.LENGTH_LONG).show();
 		} else {
-			if (tangleDescription.getText().toString().equals("")) {
-				Toast.makeText(getApplicationContext(), "Descritpion Is Empty",
-						Toast.LENGTH_LONG).show();
+			if (tangleName.getCurrentTextColor() == RED) {
+				Toast.makeText(getApplicationContext(),
+						"Tangle Name Unavailable", Toast.LENGTH_LONG).show();
 			} else {
-				if (defaultIcon) {
-					Bitmap bitmap = BitmapFactory.decodeResource(
-							getResources(), R.drawable.entangle_logo);
-					encodeToBase64(bitmap);
-					sendTangleToServer();
+				if (tangleDescription.getText().toString().equals("")) {
+					Toast.makeText(getApplicationContext(),
+							"Descritpion Is Empty", Toast.LENGTH_LONG).show();
 				} else {
-					sendTangleToServer();
+					if (defaultIcon) {
+						Bitmap bitmap = BitmapFactory.decodeResource(
+								getResources(), R.drawable.entangle_logo);
+						encodeToBase64(bitmap);
+						sendTangleToServer();
+					} else {
+						sendTangleToServer();
+					}
 				}
 			}
 		}
@@ -175,7 +180,7 @@ public class CreateTangleActivity extends Activity {
 				} else {
 					if (!(this.getStatusCode() == 201)) {
 						Toast.makeText(getApplicationContext(),
-								"Try Again Later", Toast.LENGTH_LONG).show();
+								"Try Again Later"+this.getStatusCode(), Toast.LENGTH_LONG).show();
 					} else {
 						goToHomePage();
 					}
