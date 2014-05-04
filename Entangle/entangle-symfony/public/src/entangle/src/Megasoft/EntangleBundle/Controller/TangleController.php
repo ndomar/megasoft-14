@@ -24,7 +24,7 @@ class TangleController extends Controller
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @author HebaAamer
      */
-    public function allRequestsAction(Request $request, $tangleId) {
+    public function userRequestsAction(Request $request, $tangleId) {
         $verification = $this->verifyUser($request, $tangleId);
 
         if ($verification != null) {

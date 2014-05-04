@@ -265,6 +265,6 @@ _test:
   methods: [GET]
 
 get_my_requests:
-    pattern:  /tangle/{tangleId}/allRequests
-    defaults: { _controller: MegasoftEntangleBundle:Tangle:allRequests}
+    pattern:  /tangle/{tangleId}/userRequests
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:userRequests}
     methods: [GET]
