@@ -65,7 +65,7 @@ public class EditProfileActivity extends Activity {
 		// this.settings = getSharedPreferences(Config.SETTING, 0);
 		// this.sessionId = settings.getString(Config.SESSION_ID, "");
 		Log.i("Message", "Menna");
-		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
+		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
 				+ RETRIEVEDATA) {
 			public void onPostExecute(String response) {
 				try {
@@ -147,7 +147,7 @@ public class EditProfileActivity extends Activity {
 		} else {
 
 			PutRequest putRequest = new PutRequest(
-					Config.API_BASE_URL+ EDITPROFILE) {
+					Config.API_BASE_URL_SERVER+ EDITPROFILE) {
 				protected void onPostExecute(String result) {
 					Log.i("Message",
 							this.getErrorMessage() + this.getStatusCode()
