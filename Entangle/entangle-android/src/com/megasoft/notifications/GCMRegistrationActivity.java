@@ -165,7 +165,7 @@ public class GCMRegistrationActivity extends Activity {
 			protected void onPostExecute(String regid) {
 				sendRegisterationId(regid);
 				Log.i(TAG, regid);
-//				storeRegisteratinId(regid);
+				storeRegisteratinId(regid);
 			}
 		}.execute(null, null, null);
 	}
@@ -220,8 +220,8 @@ public class GCMRegistrationActivity extends Activity {
 	protected String getSessionId() {
 		SharedPreferences prefs = getSharedPreferences("sessionIDPrefs",
 				MODE_PRIVATE);
-		return "5";
-		// return prefs.getString(Config.SESSION_ID, "");
+//		return "5";
+		 return prefs.getString(Config.SESSION_ID, "");
 	}
 
 	/**
