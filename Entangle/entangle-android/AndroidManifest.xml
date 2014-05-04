@@ -9,9 +9,19 @@
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <!-- this is also related to GCM -->
+    <permission
+        android:name="com.megasoft.entangle.pushnotifications.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.megasoft.entangle.pushnotifications.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- end of GCM permissions -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/entangle_logo"
@@ -25,15 +35,17 @@
         <activity
             android:name="com.megasoft.entangle.MainActivity"
             android:label="@string/app_name" >
+            
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.LoginActivity"
+            android:label="@string/app_name" >
+            
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="com.megasoft.entangle.LoginActivity"
-            android:label="@string/app_name" >
             
         </activity>
         <activity
@@ -50,6 +62,13 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.megasoft.entangle.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.megasoft.notifications.CreateNotificationActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.megasoft.entangle.RegisterActivity"
@@ -99,6 +118,11 @@
             android:name="com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationActivity"
             android:label="@string/title_activity_manage_pending_invitation" >
         </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+     
         <activity
             android:name="com.megasoft.entangle.ProfileActivity"
             android:label="@string/profileActivity" >
@@ -123,6 +147,26 @@
             android:name="com.megasoft.entangle.viewtanglelsit.TangleStreamActivity"
             android:label="@string/title_activity_tangle_stream" >
         </activity>
+
+        <!-- this is GCM manifest -->
+        <activity
+            android:name="com.megasoft.notifications.GCMRegistrationActivity"
+            android:label="@string/title_activity_gcmregistration" >
+        </activity>
+
+        <receiver
+            android:name="com.megasoft.notifications.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="com.megasoft" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.megasoft.notifications.GcmIntentService" />
+        <!-- end of GCM manifest -->
     </application>
 
 </manifest>

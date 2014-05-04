@@ -253,3 +253,14 @@ filter_requests_in_tangle:
     methods: [GET]
     requirements:
         tangleId:  \d+
+
+_register:
+  pattern: /notification/register
+  defaults: {_controller: MegasoftEntangleBundle:Notification:register }
+  methods: [POST]
+
+
+_test:
+  pattern: /notification/test
+  defaults: {_controller: MegasoftEntangleBundle:Notification:test}
+  methods: [GET]
