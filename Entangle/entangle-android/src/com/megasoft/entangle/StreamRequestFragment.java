@@ -75,7 +75,7 @@ public class StreamRequestFragment extends Fragment {
 	 */
 	private String offersCount;
 	
-	private TangleFragment parent;
+	//private TangleFragment parent;
 
 	private Activity activity;
 
@@ -97,7 +97,7 @@ public class StreamRequestFragment extends Fragment {
 			int requesterId, String requestString, String requesterString, String price, String offersCount, TangleFragment parent) {
 		StreamRequestFragment fragment = new StreamRequestFragment();
 		fragment.setRequestId(requestId);
-		fragment.setParent(parent);
+		//fragment.setParent(parent);
 		fragment.setRequesterId(requesterId);
 		fragment.setRequestButtonText(requestString);
 		fragment.setRequesterButtonText(requesterString);
@@ -292,10 +292,10 @@ public class StreamRequestFragment extends Fragment {
 			}
 		});
 	}
-	
-	public void setParent(TangleFragment parent) {
-		this.parent = parent;
-	}
+//	
+//	public void setParent(TangleFragment parent) {
+//		this.parent = parent;
+//	}
 
 	
 	
