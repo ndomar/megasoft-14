@@ -127,7 +127,7 @@ public class OfferActivity extends Activity {
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		this.loggedInId = settings.getInt(Config.USER_ID, 1);
-		this.offerId = intent.getIntExtra("offerID", defaultOfferId);
+		this.offerId = intent.getIntExtra("offerId", defaultOfferId);
 		viewOffer();
 	}
 
