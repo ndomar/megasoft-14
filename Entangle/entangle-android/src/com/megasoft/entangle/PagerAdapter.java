@@ -1,6 +1,7 @@
 package com.megasoft.entangle;
 
 import com.megasoft.config.Config;
+import com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationFragment;
 import com.megasoft.entangle.megafragments.TangleFragment;
 
 import android.content.Context;
@@ -16,13 +17,15 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 	int userId;
 	Context context;
 	private String tangleName;
+	private boolean isTangleOwner;
 	final static String STREAM = "Stream";
-	public PagerAdapter(Context con, FragmentManager fm,int tangleId,int userId, String tangleName) {
+	public PagerAdapter(Context con, FragmentManager fm,int tangleId,int userId, String tangleName, boolean isTangleOwner) {
 		super(fm);
 		this.context = con;
 		this.tangleName = tangleName;
 		this.tangleId = tangleId;
 		this.userId = userId;
+		this.isTangleOwner = isTangleOwner;
 	}
 	
 	
@@ -52,6 +55,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 			fragment = new ProfileFragment();
 			args.putInt("userId", userId);
 			break;
+			
+		case 3:
+			fragment = new ManagePendingInvitationFragment();
+			break;
 
 		default:
 			break;
@@ -62,7 +69,11 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         
 	@Override
 	public int getCount() {
-		return 3;
+		if(isTangleOwner){
+			return 4;
+		}else{
+			return 3;
+		}
 	}
 	
 	@Override
@@ -75,6 +86,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 			return "Members";
 		case 2:
 			return "You";
+			
+		case 3:
+			return "Tangle Managment";
 
 		default:
 			return "Tab " + position;
