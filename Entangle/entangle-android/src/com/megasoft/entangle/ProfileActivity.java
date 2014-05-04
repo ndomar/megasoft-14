@@ -3,13 +3,13 @@ package com.megasoft.entangle;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.megasoft.config.Config;
-import com.megasoft.requests.GetRequest;
-import com.megasoft.requests.ImageRequest;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -18,13 +18,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.megasoft.config.Config;
+import com.megasoft.requests.GetRequest;
+import com.megasoft.requests.ImageRequest;
+
 /**
  * Views a user's profile given his user Id and the tangle Id that redirected to
  * the profile
  * 
  * @author Almgohar
  */
-public class ProfileActivity extends Activity {
+
+
+public class ProfileActivity extends FragmentActivity {
 
 	/**
 	 * The Button that redirects to the EditProfileActivity
@@ -100,21 +106,22 @@ public class ProfileActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
-		Intent intent = getIntent();
-		this.settings = getSharedPreferences(Config.SETTING, 0);
 
-		this.sessionId = settings.getString(Config.SESSION_ID, "");
-		this.loggedInId = settings.getInt(Config.USER_ID, -1);
-		this.tangleId = intent.getIntExtra("tangle id", -1);
-		this.userId = intent.getIntExtra("user id", -1);
-
-		viewProfile();
-
+		ProfileFragment profile = new ProfileFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt("tangleId", getIntent().getIntExtra("tangleId", 0));
+		bundle.putInt("userId", getIntent().getIntExtra("userId", 0));
+		profile.setArguments(bundle);
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.add(R.id.profile_layout, profile);
+		transaction.commit();
 	}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.profile, menu);
 		return true;
 	}
 
@@ -146,7 +153,8 @@ public class ProfileActivity extends Activity {
 	 * @author Almgohar
 	 */
 	public void viewInformation() {
-		String link = "http://entangle2.apiary-mock.com/tangle/" + tangleId
+
+		String link = Config.API_BASE_URL+ "/tangle/" + tangleId
 				+ "/user/" + userId + "/profile";
 		GetRequest request = new GetRequest(link) {
 			protected void onPostExecute(String response) {
@@ -161,7 +169,7 @@ public class ProfileActivity extends Activity {
 						viewTransactions(transactions);
 						name.setText(information.getString("name"));
 						description.setText("Description: "
-								+ information.getString("Description"));
+								+ information.getString("description"));
 						balance.setText("Credit: "
 								+ information.getString("balance") + " points");
 						birthDate.setText("Birthdate: "
@@ -284,4 +292,5 @@ public class ProfileActivity extends Activity {
 		offer.putExtra("offer id", offerId);
 		startActivity(offer);
 	}
+
 }

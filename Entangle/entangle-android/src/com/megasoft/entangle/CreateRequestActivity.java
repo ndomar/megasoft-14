@@ -1,15 +1,18 @@
 package com.megasoft.entangle;
 
 import java.util.Calendar;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -19,6 +22,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 
@@ -96,7 +100,7 @@ public class CreateRequestActivity extends Activity {
 	/**
 	 * String of the current date
 	 */
-	final String date = currentDay + "/" + (currentMonth + 1) + "/"
+	final String date = currentDay + "-" + (currentMonth + 1) + "-"
 			+ currentYear;
 	/**
 	 * the date dialog Id
@@ -118,6 +122,10 @@ public class CreateRequestActivity extends Activity {
 	 * preference instance
 	 */
 	SharedPreferences settings;
+	/**
+	 * this activity
+	 */
+	final Activity self = this;
 
 	/**
 	 * on creation of the activity it takes data from the fields and send it as
@@ -173,13 +181,15 @@ public class CreateRequestActivity extends Activity {
 					e.printStackTrace();
 				}
 
-				PostRequest request = new PostRequest(Config.API_BASE_URL
+				PostRequest request = new PostRequest(Config.API_BASE_URL_SERVER
 						+ "/tangle/" + tangleID + "/request") {
 					protected void onPostExecute(String response) {
 						if (this.getStatusCode() == 201) {
-							// redirection
-						} else if (this.getStatusCode() == 400) {
-							// showErrorMessage();
+							goToTangle(tangleID);
+						} else {
+							Toast.makeText(getApplicationContext(),
+									"Error, Can not create request",
+									Toast.LENGTH_SHORT).show();
 						}
 					}
 				};
@@ -198,6 +208,14 @@ public class CreateRequestActivity extends Activity {
 		updateDisplay();
 
 	}
+	
+	public void goToTangle(int tangleID){
+		Intent intent = new Intent(this, HomeActivity.class);
+		intent.putExtra("tangleId", tangleID);
+		intent.putExtra("tab", PagerAdapter.STREAM);
+		startActivity(intent);
+		finish();
+	}
 
 	/**
 	 * this method update the display of the chosen deadLine
@@ -210,7 +228,7 @@ public class CreateRequestActivity extends Activity {
 	private void updateDisplay() {
 		dateDisplay.setError(null);
 		this.dateDisplay.setText(new StringBuilder().append(deadLineDay)
-				.append("/").append(deadLineMonth + 1).append("/")
+				.append("-").append(deadLineMonth + 1).append("-")
 				.append(deadLineYear).append(" "));
 	}
 
