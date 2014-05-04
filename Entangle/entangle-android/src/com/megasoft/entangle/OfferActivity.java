@@ -15,6 +15,7 @@ import android.app.FragmentTransaction;
 
 import org.json.JSONObject;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -360,17 +361,41 @@ public class OfferActivity extends Activity {
 		returnedResponse = new JSONObject();
 		returnedResponse.put("offerId", "" + offerId);
 		acceptOffer.setOnClickListener(new View.OnClickListener() {
+			int status;
+
 			public void onClick(View v) {
 				PostRequest request = new PostRequest(Config.API_BASE_URL
-						+ ACCEPT);
+						+ ACCEPT) {
+					protected void onPostExecute(String response) {
+						status = this.getStatusCode();
+						if (status == 201) {
+							acceptOffer.setVisibility(View.GONE);
+						} else {
+							if (status == 405) {
+								Toast toast = Toast
+										.makeText(
+												getApplicationContext(),
+												getString(R.string.balanceInsufficient),
+												Toast.LENGTH_SHORT);
+								toast.show();
+							} else {
+								Toast toast = Toast.makeText(
+										getApplicationContext(),
+										getString(R.string.toastError),
+										Toast.LENGTH_SHORT);
+								toast.show();
+							}
+						}
+					}
+				};
 				request.setBody(returnedResponse);
 				settings = getSharedPreferences(Config.SETTING, 0);
 				String sessionId = settings.getString(Config.SESSION_ID, "");
-				request.addHeader(Config.SESSION_ID, sessionId);
+				request.addHeader(Config.API_SESSION_ID, sessionId);
 				request.execute();
-				acceptOffer.setVisibility(View.GONE);
 
 			}
+
 		});
 
 	}

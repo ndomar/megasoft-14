@@ -244,8 +244,14 @@ class OfferController extends Controller {
         if ($verificationMessage == "Offer Accepted.") {
             $response = new Response($verificationMessage, 201);
         } else {
+           if($verificationMessage=="Error: Not enough balance."){
+                           $response = new Response($verificationMessage, 405);
+
+           }else{
             $response = new Response($verificationMessage, 401);
         }
+        
+           }
 
         return $response;
     }
