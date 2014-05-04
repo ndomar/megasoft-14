@@ -52,7 +52,7 @@ class TangleController extends Controller
             $requestsJsonArray[] = array(
                 'id' => $request->getId(), 'description' => $request->getDescription(),
                 'offersCount' => sizeof($request->getOffers()), 'price' => $request->getRequestedPrice(),
-                'status' => $request->getStatus(),
+                'status' => $request->getStatus(), 'icon' => $request->getIcon(),
             );
         }
 
