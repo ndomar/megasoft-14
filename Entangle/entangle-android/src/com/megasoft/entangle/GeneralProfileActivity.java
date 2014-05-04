@@ -79,7 +79,7 @@ public class GeneralProfileActivity extends Activity {
 		prefsEditor.commit();
 
 		Intent intent = new Intent(getApplicationContext(),
-				SplashActivity.class);
+				LoginActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		intent.putExtra("EXIT", true);
 		startActivity(intent);
