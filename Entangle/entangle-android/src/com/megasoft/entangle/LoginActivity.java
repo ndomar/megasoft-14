@@ -45,7 +45,7 @@ public class LoginActivity extends Activity {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				TextView showError = (TextView) findViewById(R.id.InvalidUserNameOrPassword);
+				TextView showError = (TextView) findViewById(R.id.invalidUserNameOrPassword);
 				showError.setVisibility(View.INVISIBLE);
 				username.requestFocus();
 				return true;
@@ -56,7 +56,7 @@ public class LoginActivity extends Activity {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				TextView showError = (TextView) findViewById(R.id.InvalidUserNameOrPassword);
+				TextView showError = (TextView) findViewById(R.id.invalidUserNameOrPassword);
 				showError.setVisibility(View.INVISIBLE);
 				password.requestFocus();
 				return true;
@@ -100,7 +100,7 @@ public class LoginActivity extends Activity {
 					goToHome(response);
 				} else {
 
-					TextView showError = (TextView) findViewById(R.id.InvalidUserNameOrPassword);
+					TextView showError = (TextView) findViewById(R.id.invalidUserNameOrPassword);
 					showError.setVisibility(View.VISIBLE);
 				}
 
@@ -118,7 +118,7 @@ public class LoginActivity extends Activity {
 	}
 
 	public void clearError(View view) {
-		TextView hideError = (TextView) findViewById(R.id.InvalidUserNameOrPassword);
+		TextView hideError = (TextView) findViewById(R.id.invalidUserNameOrPassword);
 		hideError.setVisibility(View.INVISIBLE);
 
 	}
@@ -137,11 +137,12 @@ public class LoginActivity extends Activity {
 					Config.SETTING, 0);
 			SharedPreferences.Editor prefsEditor = sessionIDPrefs.edit();
 			prefsEditor.putString(Config.SESSION_ID,
-					json.getString("sessionId"));
+					json.getString(Config.SESSION_ID));
 			prefsEditor.putInt(Config.USER_ID, json.getInt("userId"));
 			prefsEditor.putString(Config.PROFILE_IMAGE,
 					json.getString("profileImage"));
-			prefsEditor.putString(Config.USERNAME, json.getString("username"));
+			prefsEditor.putString(Config.USERNAME,
+					json.getString(Config.USERNAME));
 
 			prefsEditor.commit();
 		} catch (JSONException e) {

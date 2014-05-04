@@ -106,7 +106,7 @@
     <requestFocus />
 
     <TextView
-        android:id="@+id/InvalidUserNameOrPassword"
+        android:id="@+id/invalidUserNameOrPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView1"
