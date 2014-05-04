@@ -14,12 +14,9 @@
     <color name="green">#65A958</color>
     <color name="lightGreen">#A7CB2C</color>
      <color name="gray">#666666</color>
-
-    
     <color name="active">#FAAB00</color>
     <color name="pagerBackground">#FFFFFF</color>
     <color name="darkGray">#222222</color>
-   
     <color name="lightText">#FFFFFF</color>
     <color name="lightGray">#AAAAAA</color>
     <color name="darkWhite">#DDDDDD</color>
@@ -28,4 +25,3 @@
     <color name="error">#FF0000</color>
     <color name="postBackground">#FFFFFF</color>
 </resources>
-

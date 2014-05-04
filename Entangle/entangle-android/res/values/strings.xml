@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    
-    
+    <string name="add">Add</string>
     <string name="app_name">Entangle</string>
     <string name="action_settings">Settings</string>
     <string name="claim_button">Claim </string>
@@ -65,6 +64,10 @@
     <string name="wrong_emails">Not Valid Emails</string>
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
+    <string name="title_activity_notification_test">NotificationTest</string>
+    <string name="PREFERENCE_FILE_KEY">prefs</string>
+    <string name="title_activity_gcmregistration">GCMRegistrationActivity</string>
+    <string name="new_notification">new Notification</string>
     <string name="icon">icon</string>
     <string name="title_activity_upload_request_icon">Upload Request Icon</string>
     <string name="title_activity_home">HomeActivity</string>
@@ -103,7 +106,7 @@
     <string name="action_filter">Filter</string>
     <string name="offers">Offers</string>
     <string name="profileActivity">Profile</string>
-
+	<string name="requiredField">This field is required</string>
     <string name="dateChoice">4/May/2014</string>
         
     <string-array name="spinnerChoice">
@@ -130,5 +133,4 @@
     <string name="cancel">Cancel</string>
     <string name="email">email: user@entangle.io</string>
     <string name="password">password</string>
-
 </resources>
