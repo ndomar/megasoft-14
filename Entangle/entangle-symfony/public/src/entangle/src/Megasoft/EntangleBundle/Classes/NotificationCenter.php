@@ -137,15 +137,16 @@ class NotificationCenter
     private $requestDeletedNotificationId = 6;
 
     /**
-     * new claim notification id
-     * @var int
-     */
-    private $newClaimNotificationId = 7;
-    /**
      * request reopen notification id
      * @var int
      */
     private $reopenRequestNotificationId = 7;
+
+    /**
+     * new claim notification id
+     * @var int
+     */
+    private $newClaimNotificationId = 8;
 
 
     /**
@@ -187,7 +188,6 @@ class NotificationCenter
         $body = array("registration_ids" => $regIdArray,
             "data" => $notification,
         );
-
 
         $request = curl_init($serverUrl);
         curl_setopt($request, CURLOPT_HTTPHEADER, $header);
@@ -445,7 +445,7 @@ class NotificationCenter
             $body = $fromName . "deleted his offer";
 
         $data = array('notificationId' => $notification->getId(), 'title' => $title, 'body' => $body, 'type' => $this->offerDeletedNotificationId,
-            'offerId' => $offerId);
+            'offerId' => $offerId, 'requestId' => $request->getId());
         return $this->notificationCenter($to->getId(), $data);
 
     }
@@ -588,7 +588,7 @@ class NotificationCenter
     function formatMessage($message, $from, $to)
     {
         if ($from)
-            $message = str_replace("{{from}} ", $from, $message);
+            $message = str_replace("{{from}}", $from, $message);
         if ($to)
             $message = str_replace("{{to}}", $to, $message);
         return $message;

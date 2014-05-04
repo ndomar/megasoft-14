@@ -15,7 +15,6 @@ import com.megasoft.entangle.MainActivity;
 import com.megasoft.entangle.OfferActivity;
 import com.megasoft.entangle.R;
 import com.megasoft.entangle.RequestActivity;
-import com.megasoft.entangle.R.drawable;
 
 /**
  * this classes are here just for testing purposes. this will be called whenever
@@ -26,7 +25,7 @@ import com.megasoft.entangle.R.drawable;
 public class GcmIntentService extends IntentService {
 	static int NotificationCounter = 0;
 	PendingIntent contentIntent;
-	
+
 	public GcmIntentService() {
 		super("GcmIntentService");
 	}
@@ -41,30 +40,27 @@ public class GcmIntentService extends IntentService {
 	}
 
 	/**
-	 * this will be called after handling the notification
+	 * this will be called after handling the notification, it's main role is to
+	 * decide which activity to call
 	 * 
 	 * @param intent
 	 * @author Shaban
 	 */
 	private void sendNotification(Intent intent) {
-		String title = intent.getExtras().getString("title");
-		String body = intent.getExtras().getString("body");
-		int type = -1;
-		int notificationId = -1;
+		Bundle bundle = intent.getExtras();
+
+		String title = bundle.getString("title"), body = bundle
+				.getString("body");
+
+		int type = -1, notificationId = -1;
 		if (intent.getExtras().getString("type") != null)
-			type = Integer.parseInt(intent.getExtras().getString("type"));
+			type = Integer.parseInt(bundle.getString("type"));
+
 		if (intent.getExtras().getString("notificationId") != null)
-			notificationId = Integer.parseInt(intent.getExtras().getString(
-					"notificationId"));
+			notificationId = Integer.parseInt(bundle
+					.getString("notificationId"));
 
-		Intent dest = new Intent(this, MainActivity.class);
-		SharedPreferences settings = getSharedPreferences(Config.SETTING, 0);
-		String sessionId = settings.getString(Config.SESSION_ID, "");
-
-		int requestId = -1;
-		int tangleId = -1;
-		String tangleName = "";
-
+		Intent dest = null;
 		switch (type) {
 		case 0:
 			dest = new Intent(this, MainActivity.class);
@@ -72,65 +68,26 @@ public class GcmIntentService extends IntentService {
 		case 1:
 			break;
 		case 2:
-			dest = new Intent(this, OfferActivity.class);
-			int offerId = -1;
-			if (intent.getExtras().getString("offerId") != null) {
-				offerId = Integer.parseInt(intent.getExtras().getString(
-						"offerId"));
-			}
-			dest.putExtra("offerId", offerId);
+			dest = fetchOfferData(bundle);
 			break;
 		case 3:
-			if (intent.getExtras().getString("requestId") != null)
-				requestId = Integer.parseInt(intent.getExtras().getString(
-						"requestId"));
-			Log.i("GCM", "request:" + requestId);
-			if (intent.getExtras().getString("tangleId") != null)
-				tangleId = Integer.parseInt(intent.getExtras().getString(
-						"tangleId"));
-			if (intent.getExtras().getString("tangleName") != null)
-				tangleName = intent.getExtras().getString("tangleName");
-			dest = new Intent(getApplicationContext(), RequestActivity.class);
-			dest.putExtra("tangleId", tangleId);
-			dest.putExtra("tangleName", tangleName);
-			dest.putExtra("sessionId", sessionId);
-			dest.putExtra("requestId", requestId);
+			dest = fetchRequestData(bundle);
 			break;
 		case 4:
-			dest = new Intent(this, OfferActivity.class);
-			offerId = -1;
-			if (intent.getExtras().getString("offerId") != null) {
-				offerId = Integer.parseInt(intent.getExtras().getString(
-						"offerId"));
-			}
-			dest.putExtra("offerId", offerId);
+			dest = fetchOfferData(bundle);
 			break;
 		case 5:
+			dest = fetchRequestData(bundle);
 			break;
 		case 6:
-			dest = new Intent(this, HomeActivity.class);
-			tangleId = -1;
-			if (intent.getExtras().getString("tangleId") != null)
-				tangleId = Integer.parseInt(intent.getExtras().getString(
-						"tangleId"));
-			dest.putExtra("tangleId", tangleId);
-			dest.putExtra("tab", "stream");
+			dest = fetchHomeActivity(bundle);
 			break;
 		case 7:
-			if (intent.getExtras().getString("requestId") != null)
-				requestId = Integer.parseInt(intent.getExtras().getString(
-						"requestId"));
-			Log.i("GCM", "request:" + requestId);
-			if (intent.getExtras().getString("tangleId") != null)
-				tangleId = Integer.parseInt(intent.getExtras().getString(
-						"tangleId"));
-			if (intent.getExtras().getString("tangleName") != null)
-				tangleName = intent.getExtras().getString("tangleName");
-			dest = new Intent(getApplicationContext(), RequestActivity.class);
-			dest.putExtra("tangleId", tangleId);
-			dest.putExtra("tangleName", tangleName);
-			dest.putExtra("sessionId", sessionId);
-			dest.putExtra("requestId", requestId);
+			dest = fetchRequestData(bundle);
+			break;
+		case 8:
+			//ask salma
+			dest = null;
 			break;
 		}
 
@@ -145,5 +102,46 @@ public class GcmIntentService extends IntentService {
 			NotificationManager notManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 			notManager.notify(NotificationCounter++, notification);
 		}
+	}
+
+	public Intent fetchRequestData(Bundle bundle) {
+		SharedPreferences settings = getSharedPreferences(Config.SETTING, 0);
+		String sessionId = settings.getString(Config.SESSION_ID, "");
+
+		int requestId = -1, tangleId = -1;
+		String tangleName = "";
+		if (bundle.getString("requestId") != null)
+			requestId = Integer.parseInt(bundle.getString("requestId"));
+		Log.i("GCM", "request:" + requestId);
+		if (bundle.getString("tangleId") != null)
+			tangleId = Integer.parseInt(bundle.getString("tangleId"));
+		if (bundle.getString("tangleName") != null)
+			tangleName = bundle.getString("tangleName");
+		Intent dest = new Intent(getApplicationContext(), RequestActivity.class);
+		dest.putExtra("tangleId", tangleId);
+		dest.putExtra("tangleName", tangleName);
+		dest.putExtra("sessionId", sessionId);
+		dest.putExtra("requestId", requestId);
+		return dest;
+	}
+
+	public Intent fetchOfferData(Bundle bundle) {
+		Intent dest = new Intent(this, OfferActivity.class);
+		int offerId = -1;
+		if (bundle.getString("offerId") != null) {
+			offerId = Integer.parseInt(bundle.getString("offerId"));
+		}
+		dest.putExtra("offerId", offerId);
+		return dest;
+	}
+
+	public Intent fetchHomeActivity(Bundle bundle) {
+		Intent dest = new Intent(this, HomeActivity.class);
+		int tangleId = -1;
+		if (bundle.getString("tangleId") != null)
+			tangleId = Integer.parseInt(bundle.getString("tangleId"));
+		dest.putExtra("tangleId", tangleId);
+		dest.putExtra("tab", "stream");
+		return dest;
 	}
 }

@@ -3,9 +3,8 @@
 namespace Megasoft\EntangleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Translation\Tests\String;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 
 /**
@@ -202,6 +201,14 @@ class OfferController extends Controller
             return new Response("Same price, enter a new one", 400);
         }
         $requestOffer->setRequestedPrice($newOfferPrice);
+
+        //notification
+
+        $notificationCenter = $this->get('notification_center.service');
+        $title = "offer changed";
+        $body = "{{from}} changed his offer";
+        $notificationCenter->offerChangeNotification($requestOffer, $title, $body);
+
         $this->getDoctrine()->getManager()->persist($requestOffer);
         $this->getDoctrine()->getManager()->flush();
         return new Response('Price changed', 200);
@@ -310,6 +317,13 @@ class OfferController extends Controller
         $request->setStatus($request->FROZEN);
         $requester->setCredit($requesterBalance - $price);
         $offer->setStatus(1);
+
+        //notification
+        $notificationCenter = $this->get('notification_center.service');
+        $title = "accept offer";
+        $body = "{{from}} accepted your offer";
+        $notificationCenter->offerChosenNotification($offer->getId(), $title, $body);
+
         $doctrine->getManager()->persist($request);
         $doctrine->getManager()->persist($requester);
         $doctrine->getManager()->persist($offer);
@@ -351,6 +365,13 @@ class OfferController extends Controller
         if ($offer->getStatus() == $offer->ACCEPTED) {
             $this->unfreezePoints($offer->getRequest(), $offer->getRequestedPrice());
         }
+
+        // notification
+        $notificationCenter = $this->get('notification_center.service');
+        $title = "offer deleted";
+        $body = "{{from}} deleted his offer";
+        $notificationCenter->offerDeletedNotification($offer->getId(), $title, $body);
+
 
         $offer->setDeleted(true);
         $offer->setStatus($offer->FAILED);
