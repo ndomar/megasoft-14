@@ -51,7 +51,7 @@ public class ManagePendingInvitationActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_manage_pending_invitation);
-		tangleId = getIntent().getIntExtra("tangleId", -1);		
+		tangleId = getIntent().getIntExtra("tangleId", 1);
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		
@@ -74,7 +74,11 @@ public class ManagePendingInvitationActivity extends Activity {
 		}
 		GetRequest request = new GetRequest(Config.API_BASE_URL + "/tangle/"+tangleId+"/pending-invitations"){
 			public void onPostExecute(String response) {
-				showData(response);
+				if(this.getStatusCode() == 200){
+					showData(response);
+				}else{
+					showErrorToast();
+				}
 			}
 		};
 		request.addHeader("X-SESSION-ID", sessionId);
