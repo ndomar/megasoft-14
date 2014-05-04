@@ -298,7 +298,7 @@ class OfferController extends Controller {
         }
         $request->setStatus($request->FROZEN);
         $requester->setCredit($requesterBalance - $price);
-        $offer->setStatus(1);
+        $offer->setStatus($offer->ACCEPTED);
         $doctrine->getManager()->persist($request);
         $doctrine->getManager()->persist($requester);
         $doctrine->getManager()->persist($offer);
