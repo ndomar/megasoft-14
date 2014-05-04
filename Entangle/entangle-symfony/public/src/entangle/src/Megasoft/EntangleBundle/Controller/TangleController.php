@@ -458,8 +458,8 @@ class TangleController extends Controller {
         }
         $imageData = base64_decode($tangleIcon);
         $f = finfo_open();
-        $mime_type = finfo_buffer($f, $imageData, FILEINFO_MIME_TYPE);
-        if ($mime_type == false || $mime_type != 'image/png') {
+        $mimeType = finfo_buffer($f, $imageData, FILEINFO_MIME_TYPE);
+        if ($mimeType == false || $mimeType != 'image/png') {
             return new Response("Bad image", 400);
         }
         $icon = imagecreatefromstring($imageData);
