@@ -16,21 +16,28 @@ use Megasoft\EntangleBundle\Entity\UserTangle;
 
 
 class TangleController extends Controller
-{
+{   
+    /**
+     * An endpoint to get all the requests of certain user in specific tangle
+     * @param type $request
+     * @param type $tangleId
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @author HebaAamer
+     */
     public function allRequestsAction(Request $request, $tangleId) {
         $verification = $this->verifyUser($request, $tangleId);
-        
-        if($verification != null){
+
+        if ($verification != null) {
             return $verification;
         }
-        
         $doctrine = $this->getDoctrine();
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
-                
+        
+        $sessionId = $request->headers->get('X-SESSION-ID');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         $userId = $session->getUserId();
-        
+
         $query = $requestRepo->createQueryBuilder('request')
                 ->where('request.tangleId = :tangleId')
                 ->setParameter('tangleId', $tangleId)
@@ -38,22 +45,21 @@ class TangleController extends Controller
                 ->setParameter('false', false)
                 ->andWhere('request.userId = :userId')
                 ->setParameter('userId', $userId);
-        
+
         $requests = $query->getQuery()->getResult();
         $requestsJsonArray = array();
-        
-        foreach($requests as $request) {
-             
+        foreach ($requests as $request) {
             $requestsJsonArray[] = array(
-                                        'id' => $request->getId(),
-                                        'description' => $request->getDescription(),
-                                        'offersCount' => sizeof($request->getOffers()),
-                                        'price' => $request->getRequestedPrice(),
-                                        'status' => $request->getStatus(),
-                                    );
+                'id' => $request->getId(), 'description' => $request->getDescription(),
+                'offersCount' => sizeof($request->getOffers()), 'price' => $request->getRequestedPrice(),
+                'status' => $request->getStatus(),
+            );
         }
-        
-        
+
+        $response = new JsonResponse();
+        $response->setData(array('count' => sizeof($requestsJsonArray), 'requests' => $requestsJsonArray));
+
+        return $response;
     }
     
     /**
