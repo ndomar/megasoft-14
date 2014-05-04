@@ -28,7 +28,7 @@ import android.widget.Toast;
 @SuppressLint("DefaultLocale")
 public class EditProfileActivity extends Activity {
 	SharedPreferences settings;
-	String sessionId;
+	String sessionId = "123456";
 	String emails;
 	String oldDescription;
 	String oldDOB[];
@@ -52,6 +52,8 @@ public class EditProfileActivity extends Activity {
 	private Matcher matcher;
 	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	private static final String EDITPROFILE = "/user/edit";
+	private static final String RETRIEVEDATA = "/user/retrieveData";
 	JSONObject putReJsonObject = new JSONObject();
 	Boolean notification = true;
 
@@ -60,38 +62,42 @@ public class EditProfileActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_profile);
-		this.settings = getSharedPreferences(Config.SETTING, 0);
-		this.sessionId = settings.getString(Config.SESSION_ID, "");
-
-		GetRequest getRequest = new GetRequest(Config.API_BASE_URL + "/user/"
-				+ "/retrieveData") {
+		// this.settings = getSharedPreferences(Config.SETTING, 0);
+		// this.sessionId = settings.getString(Config.SESSION_ID, "");
+		Log.i("Message", "Menna");
+		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
+				+ RETRIEVEDATA) {
 			public void onPostExecute(String response) {
 				try {
+					Log.i("Message",
+							this.getErrorMessage() + this.getStatusCode()
+									+ response);
 					retrieveDataResponse = new JSONObject(response);
+					try {
+						oldDescription = retrieveDataResponse
+								.getString("description");
+						oldBirthDate = retrieveDataResponse
+								.getString("date_of_birth");
+						splittedDate = oldBirthDate.split("/");
+						oldDOB = splittedDate;
+						newday.setSelection(Integer.parseInt(splittedDate[0]) - 1);
+						newmonth.setSelection(Integer.parseInt(splittedDate[1]));
+						newyear.setSelection(Integer.parseInt(splittedDate[2]) - 1951);
+						currentDescription.setText(oldDescription);
+						notification = retrieveDataResponse
+								.getBoolean("notification_state");
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				finish();
+				// finish();
 			}
 		};
-
-		getRequest.addHeader(Config.API_SESSION_ID, sessionId);
+		getRequest.addHeader("X-SESSION-ID", sessionId);
 		getRequest.execute();
-		try {
-			oldDescription = retrieveDataResponse.getString("description");
-			oldBirthDate = retrieveDataResponse.getString("date_of_birth");
-			splittedDate = oldBirthDate.split("-");
-			oldDOB = splittedDate;
-			newday.setSelection(Integer.parseInt(splittedDate[0]) - 1);
-			newmonth.setSelection(Integer.parseInt(splittedDate[1]) - 1);
-			newyear.setSelection(Integer.parseInt(splittedDate[2]) - 1951);
-			currentDescription.setText(oldDescription);
-			notification = retrieveDataResponse
-					.getBoolean("notification_state");
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
 		initializeView();
 	}
 
@@ -105,7 +111,6 @@ public class EditProfileActivity extends Activity {
 		if (!notification) {
 			emailNotification.setText("Turn on notification");
 		}
-
 		currentDescription = (EditText) findViewById(R.id.CurrentDescription);
 		newday = (Spinner) findViewById(R.id.days);
 		newmonth = (Spinner) findViewById(R.id.months);
@@ -132,7 +137,8 @@ public class EditProfileActivity extends Activity {
 				&& (currentPassword.getText().toString().matches(""))
 				&& (newPassword.getText().toString().matches(""))
 				&& (currentPassword.getText().toString().matches(""))
-				&& (!emailNotification.isChecked())) {
+				&& (!emailNotification.isChecked())
+				&& (addedMail).getText().toString().matches("")) {
 			Context context = getApplicationContext();
 			CharSequence text = "Nothing has been changed";
 			int duration = Toast.LENGTH_SHORT;
@@ -140,9 +146,12 @@ public class EditProfileActivity extends Activity {
 			toast.show();
 		} else {
 
-			PutRequest putRequest = new PutRequest(Config.API_BASE_URL
-					+ "/user/" + "edit") {
+			PutRequest putRequest = new PutRequest(
+					Config.API_BASE_URL+ EDITPROFILE) {
 				protected void onPostExecute(String result) {
+					Log.i("Message",
+							this.getErrorMessage() + this.getStatusCode()
+									+ result);
 					if (this.getStatusCode() == 200) {
 						getActivity();
 						startActivity(viewEditedProfile);
@@ -155,9 +164,8 @@ public class EditProfileActivity extends Activity {
 					}
 				}
 			};
-			putRequest.addHeader(Config.API_SESSION_ID, sessionId);
-			try {
 
+			try {
 				String notificationState = emailNotification.getText()
 						.toString();
 				if (notificationState.equals("Turn off notification")) {
@@ -189,12 +197,11 @@ public class EditProfileActivity extends Activity {
 					}
 				}
 				addedEmail = addedMail.getText().toString();
-
-				if (!(emailValidator(addedEmail))) {
+				if ((!(emailValidator(addedEmail)))
+						&& (!(addedEmail.matches("")))) {
 					addedMail.setError("This is not a valid Email");
 					return;
 				}
-
 				putReJsonObject.put("current_password", currentPassword
 						.getText().toString());
 				putReJsonObject.put("new_password", newPassword.getText()
@@ -210,8 +217,9 @@ public class EditProfileActivity extends Activity {
 			putRequest.setBody(putReJsonObject);
 			putRequest.execute();
 		}
-		getActivity();
-		startActivity(viewEditedProfile);
+		Log.i("Message", "wasalt");
+		// getActivity();
+		// startActivity(viewEditedProfile);
 	}
 
 	/**
@@ -221,6 +229,7 @@ public class EditProfileActivity extends Activity {
 	 */
 	private void getActivity() {
 		viewEditedProfile = new Intent(this, ProfileActivity.class);
+
 	}
 
 	/**
