@@ -279,9 +279,9 @@ class TangleController extends Controller {
                 </html>";
 
 
-        $user = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail')->findOneBy(array("email" => $email))->getUser();
+        
         $notificationCenter = $this->get('notification_center.service');
-        $notificationCenter->sendMail($user->getId(), $title, $body);
+        $notificationCenter->sendMailToEmail($email, $title, $body);
     }
 
     /**
