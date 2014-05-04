@@ -827,12 +827,22 @@ class TangleController extends Controller
 
     /**
      * An endpoint for accepting tangle invitations sent to user
-     * @param int $userId
-     * @param int $tangleId
+     * @param int invitationID
      * @return Response
      * @author MahmoudGamal
      */
-    public function addUserAction($userId, $tangleId) {
+    public function addUserAction($invitationId) {
+        $invitation = $this->getDoctrine()
+                ->getRepository('MegasoftEntangleBundle:Tangle')
+                ->find($invitationId);
+        if (!$invitation){
+            return new Response("Invitation not found", 404);
+        }
+        if ($invitation->expired){
+            return new Response("Invitation expired", 400);
+        }
+        $tangleId = $invitation->getTangleId();
+        $userId = $invitation->getUserId();
         $tangle = $this->getDoctrine()
                 ->getRepository('MegasoftEntangleBundle:Tangle')
                 ->find($tangleId);
@@ -852,7 +862,7 @@ class TangleController extends Controller
         if ($search) {
             return new Response("User already exists in tangle", 400);
         }
-        $em = $this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager();
         $tangleUser = new UserTangle();
         $tangleUser->setTangleOwner(FALSE);
         $tangleUser->setUser($user);
