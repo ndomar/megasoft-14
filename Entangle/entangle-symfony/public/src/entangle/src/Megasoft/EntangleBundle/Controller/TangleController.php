@@ -891,7 +891,7 @@ class TangleController extends Controller
         $tangles = $UserTanglerepo->findBy(array('userId' => $userId,'leavingDate'=>null));
         $ret = array();
         foreach($tangles as $tangle){
-            $ret[] = array("id"=>$tangle->getTangleId(),"name"=>$tangle->getTangle()->getName());
+            $ret[] = array("id"=>$tangle->getTangleId(),"name"=>$tangle->getTangle()->getName(),"isOwner"=>$tangle->getTangleOwner());
         }
         
         $jsonResponse = new JsonResponse();
