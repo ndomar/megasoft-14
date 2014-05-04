@@ -16,6 +16,10 @@
     <color name="gray">#666666</color>
 
     
+    <!-- Sidebar -->
+    <color name="sideBarBackground">#222222</color>
+    
+    
     <color name="active">#FAAB00</color>
     <color name="pagerBackground">#FFFFFF</color>
     <color name="darkGray">#666666</color>
