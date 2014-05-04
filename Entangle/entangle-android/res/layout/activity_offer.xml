@@ -46,10 +46,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@id/offerer_name"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/offerer_name"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/red" />
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/textLarge" />
+
+                <TextView
+                    android:id="@+id/pts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/offer_price"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/offer_price"
+                    android:text="@string/pts"
+                    android:textColor="@color/lightGray"
+                    android:textSize="@dimen/textMedium" />
 
                 <TextView
                     android:id="@+id/offer_date"
@@ -66,7 +77,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/offer_date"
                     android:layout_marginRight="@dimen/marginMedium"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/lightGray" />
 
                 <TextView
                     android:id="@+id/offer_deadline"
@@ -83,12 +95,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@id/offer_deadline"
-                    android:layout_alignRight="@id/offer_price"
+                    android:layout_alignRight="@id/pts"
                     android:layout_alignTop="@id/offer_deadline"
                     android:layout_below="@id/offer_description"
-                    android:layout_marginLeft="190dp"
                     android:layout_toRightOf="@id/offer_deadline"
-                    android:textColor="@color/red"
+                    android:paddingLeft="170dp"
                     android:textSize="@dimen/textMedium" />
             </RelativeLayout>
 
@@ -98,13 +109,62 @@
                 android:layout_marginLeft="280dp"
                 android:drawableTop="@drawable/play" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="700dp"
+                android:layout_height="300dp"
                 android:layout_gravity="top"
-                android:background="@color/darkWhite"
-                android:orientation="vertical" >
-            </LinearLayout>
+                android:background="@color/darkWhite" >
+
+                <View
+                    android:id="@+id/vertical"
+                    style="@style/dividerVertical"
+                    android:layout_width="3dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/lightText" />
+
+                <View
+                    android:id="@+id/horizental"
+                    style="@style/Divider"
+                    android:layout_width="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_toRightOf="@id/vertical" />
+
+                <com.megasoft.entangle.views.RoundedImageView
+                    android:id="@+id/commenterAvatar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_toRightOf="@id/horizental" />
+
+                <TextView
+                    android:id="@+id/commenter"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/commenterAvatar"
+                    android:layout_marginTop="8dp"
+                    android:layout_toRightOf="@id/commenterAvatar"
+                    android:paddingLeft="@dimen/paddingSmall"
+                    android:textSize="@dimen/textMedium" />
+
+                <TextView
+                    android:id="@+id/commentDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/commenter"
+                    android:layout_below="@id/commenter"
+                    android:paddingLeft="@dimen/paddingSmall"
+                    android:textSize="@dimen/textSmall" />
+
+                <TextView
+                    android:id="@+id/commentContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/commentDate"
+                    android:layout_below="@id/commentDate"
+                    android:layout_marginLeft="@dimen/marginMedium" />
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 
@@ -124,13 +184,13 @@
             android:inputType="textMultiLine"
             android:textSize="@dimen/textMedium" />
 
-        <ImageView 
+        <ImageView
             android:id="@+id/add"
-            android:src="@drawable/send"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:contentDescription="fafafa" />
+            android:contentDescription="@string/icon"
+            android:src="@drawable/send" />
     </LinearLayout>
 
 </LinearLayout>

@@ -210,13 +210,26 @@ public class OfferActivity extends Activity {
 			offerPrice.setText(Integer.toString(offerInformation
 					.getInt("offerPrice")));
 			final int userId = offerInformation.getInt("offererID");
+			/**
+			 *     public $PENDING = 0;
+			 *     public $DONE = 1;
+			 *     public $ACCEPTED = 2;
+			 *     public $FAILED = 3;
+			 *     public $REJECTED = 4;
+			 */
 			int status = offerInformation.getInt("offerStatus");
-			if (status == 0)
-				offerStatus.setText("New");
-			else if (status == 1)
+			if (status == 0) {
 				offerStatus.setText("Pending");
-			else if (status == 2)
-				offerStatus.setText("Accepted");
+				offerStatus.setTextColor(getResources().getColor(R.color.red));
+			} else {
+				if (status == 1) {
+					offerStatus.setText("Done");
+					} else {
+						offerStatus.setText("Accepted");
+						offerStatus.setTextColor(getResources().getColor(R.color.green));					
+					}
+				}
+					
 			if (userId == loggedInId) {
 				transaction = getFragmentManager().beginTransaction();
 			//	DeleteButtonFragment deleteFragment = new DeleteButtonFragment();
@@ -231,12 +244,6 @@ public class OfferActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					if(comment.getText().toString().matches("")) {
-						Toast toast = Toast
-								.makeText(
-										getApplicationContext(),
-										"The comment cannot be empty.",
-										Toast.LENGTH_SHORT);
-						toast.show();
 									
 				} else {
 					addComment(userId, comment.getText().toString());
