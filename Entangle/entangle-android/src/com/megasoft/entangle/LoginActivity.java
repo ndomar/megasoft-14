@@ -42,6 +42,9 @@ public class LoginActivity extends Activity {
 		username = (EditText) findViewById(R.id.login_username);
 		password = (EditText) findViewById(R.id.login_password);
 
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(username, InputMethodManager.SHOW_IMPLICIT);
+
 		getActionBar().hide();
 
 		final EditText onTouch = (EditText) findViewById(R.id.login_username);
@@ -52,6 +55,8 @@ public class LoginActivity extends Activity {
 				TextView showError = (TextView) findViewById(R.id.invalidUserNameOrPassword);
 				showError.setVisibility(View.INVISIBLE);
 				username.requestFocus();
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.showSoftInput(username, InputMethodManager.SHOW_IMPLICIT);
 				return true;
 			}
 		});
@@ -63,6 +68,8 @@ public class LoginActivity extends Activity {
 				TextView showError = (TextView) findViewById(R.id.invalidUserNameOrPassword);
 				showError.setVisibility(View.INVISIBLE);
 				password.requestFocus();
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.showSoftInput(password, InputMethodManager.SHOW_IMPLICIT);
 				return true;
 			}
 		});
