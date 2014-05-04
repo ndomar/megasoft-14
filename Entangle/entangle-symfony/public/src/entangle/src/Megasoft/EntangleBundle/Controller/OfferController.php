@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class OfferController extends Controller {
 
     /**
-     * 
+     *
      * @param \Megasoft\EntangleBundle\Entity\Request $request
      * @param integer $sessionId
      * @return boolean true if the user can view this request and false otherwise
@@ -117,7 +117,7 @@ class OfferController extends Controller {
     }
 
     /**
-     * 
+     *
      * @param \Megasoft\EntangleBundle\Entity\Offer $offer
      * @return array $offerInformation
      * @author Almgohar
@@ -201,7 +201,7 @@ class OfferController extends Controller {
     }
 
     /**
-     * this recieves a request and calls verify to check if it can accept the offer  
+     * this recieves a request and calls verify to check if it can accept the offer
      * @param  Request $request
      * @return Response $response returns 201 or 409 status code and message depending on verification
      * @author sak9
@@ -252,7 +252,7 @@ class OfferController extends Controller {
 
     /**
      * this recieves an offerId and checks if it can be accepted, if it can it accepts it and updates all fields in tables
-     * @param  Int $offerId 
+     * @param  Int $offerId
      * @return String either a success or error message
      * @author sak9
      */
@@ -353,10 +353,12 @@ class OfferController extends Controller {
      * A function to unfreeze points for the requester for withdrawn offer.
      * @param Request $request
      * @param integer $points
+
      * @return 
      * @author OmarElAzazy
      */
     public function unfreezePoints($request, $points) {
+
         $requesterId = $request->getUser()->getId();
         $tangleId = $request->getTangleId();
 
