@@ -87,9 +87,75 @@ public class MyRequestsFragment extends Fragment {
 		super.onAttach(activity);
 	}
 	
+	/**
+	 * This method is used to set the layout of the stream dynamically according
+	 * to response of the request of getting all the requests
+	 * 
+	 * @param res
+	 *            , is the response string of the stream request
+	 */
 	private void setTheLayout(String res) {
-		
+		try {
+			JSONObject response = new JSONObject(res);
+			if (response != null) {
+				int count = response.getInt("count");
+				JSONArray requestArray = response.getJSONArray("requests");
+				if (count > 0 && requestArray != null) {
+					LinearLayout layout = (LinearLayout) activity
+							.findViewById(R.id.streamLayout);
+					layout.removeAllViews();
+					for (int i = 0; i < count && i < requestArray.length(); i++) {
+						JSONObject request = requestArray.getJSONObject(i);
+						if (request != null) {
+							addRequest(request);
+						}
+					}
+				} else {
+					Toast.makeText(
+							activity.getBaseContext(),
+							"Sorry, There is no requests with the specified options",
+							Toast.LENGTH_LONG).show();
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
+
+	/**
+	 * This method is used to add specific request which is
+	 * StreamRequestFragment to the layout of the stream
+	 * 
+	 * @param request
+	 *            , is the request to be added in the layout
+	 */
+	@SuppressLint("NewApi")
+	private void addRequest(JSONObject request) {
+		try {
+			int userId = request.getInt("userId");
+			String requesterName = request.getString("username");
+			int requestId = request.getInt("id");
+			String requestBody = request.getString("description");
+			String requestOffersCount = "" + request.getInt("offersCount");
+			String requesterButtonText = requesterName;
+			String requestButtonText = requestBody;
+			String requestPrice = "0";
+
+			if (request.get("price") != null)
+				requestPrice = "" + request.getInt("price");
+
+			transaction = getFragmentManager().beginTransaction();
+			StreamRequestFragment requestFragment = StreamRequestFragment
+					.createInstance(requestId, userId, requestButtonText,
+							requesterButtonText, requestPrice,
+							requestOffersCount, getTangleId(), getTangleName());
+			transaction.add(R.id.streamLayout, requestFragment);
+			transaction.commit();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
 	
 	/**
 	 * This method is used to send a get request to get requests of certain user
