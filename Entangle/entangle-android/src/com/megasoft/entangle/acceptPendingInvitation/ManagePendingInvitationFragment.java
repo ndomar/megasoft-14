@@ -4,16 +4,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -25,7 +26,7 @@ import com.megasoft.requests.GetRequest;
  * @author MohamedBassem
  *
  */
-public class ManagePendingInvitationActivity extends Activity {
+public class ManagePendingInvitationFragment extends Fragment {
 	
 	/**
 	 * The id of the current tangle
@@ -46,21 +47,26 @@ public class ManagePendingInvitationActivity extends Activity {
 	 * The number of pending invitations
 	 */
 	int pendingInvitationCount;
+
+	private View view;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_manage_pending_invitation);
-		tangleId = getIntent().getIntExtra("tangleId", 1);
-		this.settings = getSharedPreferences(Config.SETTING, 0);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+		this.view = inflater.inflate(R.layout.fragment_manage_pending_invitation, container, false);
+		tangleId = getArguments().getInt("tangleId", 1);
+		this.settings = getActivity().getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
-		
-	}
-	
-	@Override
-	protected void onStart() {
-		super.onStart();
+		Button button = (Button) view.findViewById(R.id.manage_pending_invitation_refresh);
+		button.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				fetchData();
+			}
+		});
 		fetchData();
+		return view;
 	}
 	
 	/**
@@ -92,13 +98,13 @@ public class ManagePendingInvitationActivity extends Activity {
 	 * @author MohamedBassem
 	 */
 	public void showData(String response){
-		((LinearLayout)findViewById(R.id.pending_invitation_layout)).removeAllViews();
+		((LinearLayout)view.findViewById(R.id.pending_invitation_layout)).removeAllViews();
 		JSONObject json = null;
 
 		try {
 			json = new JSONObject(response);
 			JSONArray jsonArray = json.getJSONArray("pending-invitations");
-			FragmentTransaction transaction = getFragmentManager().beginTransaction();
+			FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 			for(int i=0;i<jsonArray.length();i++){
 				JSONObject pendingInvitation = jsonArray.getJSONObject(i);
 				
@@ -141,43 +147,20 @@ public class ManagePendingInvitationActivity extends Activity {
 	 */
 	private void checkEmptyPendingInvitations() {
 		if(pendingInvitationCount == 0){
-			findViewById(R.id.pending_invitation_no_pending).setVisibility(View.VISIBLE);
+			view.findViewById(R.id.pending_invitation_no_pending).setVisibility(View.VISIBLE);
 		}else{
-			findViewById(R.id.pending_invitation_no_pending).setVisibility(View.GONE);
+			view.findViewById(R.id.pending_invitation_no_pending).setVisibility(View.GONE);
 		}
 	}
 	
-	public void refresh(View view){
-		fetchData();
-	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.manage_pending_invitation, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	
 	/**
 	 * Checks the Internet connectivity.
 	 * @return true if there is an Internet connection , false otherwise
 	 */
 	private boolean isNetworkAvailable() {
 	    ConnectivityManager connectivityManager 
-	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	          = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
@@ -186,7 +169,7 @@ public class ManagePendingInvitationActivity extends Activity {
 	 * Shows a something went wrong toast
 	 */
 	private void showErrorToast(){
-		Toast.makeText(getApplicationContext(), "Sorry , Something went wrong.", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), "Sorry , Something went wrong.", Toast.LENGTH_SHORT).show();
 	}
 
 }

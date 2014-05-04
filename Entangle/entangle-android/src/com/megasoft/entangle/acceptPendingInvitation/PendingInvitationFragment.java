@@ -1,6 +1,6 @@
 package com.megasoft.entangle.acceptPendingInvitation;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -34,7 +34,7 @@ public class PendingInvitationFragment extends Fragment {
 	
 	String sessionId;
 	
-	ManagePendingInvitationActivity parent;
+	ManagePendingInvitationFragment parent;
 	
 	Button approveButton;
 	
@@ -121,7 +121,7 @@ public class PendingInvitationFragment extends Fragment {
 		parent.removeFragment(this);
 	}
 	
-	public static PendingInvitationFragment createInstance(int pendingInvitationId,String text, ManagePendingInvitationActivity parent) {
+	public static PendingInvitationFragment createInstance(int pendingInvitationId,String text, ManagePendingInvitationFragment parent) {
 		PendingInvitationFragment fragment = new PendingInvitationFragment();
 		fragment.setPendingInvitationId(pendingInvitationId);
 		fragment.setText(text);
@@ -155,7 +155,7 @@ public class PendingInvitationFragment extends Fragment {
 		this.text = text;
 	}
 	
-	public void setParent(ManagePendingInvitationActivity parent){
+	public void setParent(ManagePendingInvitationFragment parent){
 		this.parent = parent;
 	}
 
