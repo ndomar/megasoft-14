@@ -26,6 +26,7 @@
     
     <!-- Edit text -->
     <dimen name="textFieldHeight">50dp</dimen>
+    <dimen name="textAreaHeight">120dp</dimen>
     
     <dimen name="logo_big">110dp</dimen>
     
@@ -39,5 +40,8 @@
     <!-- sidebar -->
     <dimen name="sidebarMenuItemHeight">40dp</dimen>
     <dimen name="navigation_drawer_width">240dp</dimen>
+    
+     <!-- Icon dimen -->
+    <dimen name="iconSmall">30dp</dimen>
 
 </resources>
