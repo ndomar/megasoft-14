@@ -160,7 +160,7 @@ public class ProfileFragment extends Fragment {
 					jSon = new JSONObject(response);
 					JSONArray transactions = jSon.getJSONArray("transactions");
 					JSONObject information =  jSon.getJSONObject("information");
-					viewTransactions(transactions);
+				//	viewTransactions(transactions);
 					name.setText(information.getString("name"));
 					description.setText("Description: " + information.getString("description"));
 					//balance.setText("Credit: " + information.getString("credit") + " points");
@@ -208,43 +208,43 @@ public class ProfileFragment extends Fragment {
 	 * @param JSONArray transactions
 	 * @author Almgohar
 	 */
-	public void viewTransactions(JSONArray transactions) {
-		for(int i = 0; i < transactions.length(); i++) {
-			try {
-				JSONObject transaction = transactions.getJSONObject(i);
-				if(transaction != null) {
-					addTransaction(transaction);
-				}
-				
-				} catch (JSONException e) {
-					e.printStackTrace();
-					}
-			}
-		}
-	
+//	public void viewTransactions(JSONArray transactions) {
+//		for(int i = 0; i < transactions.length(); i++) {
+//			try {
+//				JSONObject transaction = transactions.getJSONObject(i);
+//				if(transaction != null) {
+//					addTransaction(transaction);
+//				}
+//				
+//				} catch (JSONException e) {
+//					e.printStackTrace();
+//					}
+//			}
+//		}
+//	
 	/**
 	 * Adds the transaction to the layout
 	 * @param JSONObject transaction
 	 * @author Almgohar
 	 */
-	private void addTransaction(JSONObject transaction) {
-//		try {
-//			String request = transaction.getString("requestDescription");
-//			String requester = transaction.getString("requesterName");
-//			int requesterId = transaction.getInt("requesterId");
-//			int requestId = transaction.getInt("requestId");
-//			int amount = transaction.getInt("amount");
-//					
-//			fragmentTransaction = getFragmentManager().beginTransaction();
-//			TransactionsFragment transactionFragment = TransactionsFragment
-//					.createInstance(requester, request, amount, requestId, requesterId, tangleId);
-//			fragmentTransaction.add(R.id.transactions_layout, transactionFragment);
-//			fragmentTransaction.commit();
-//		} catch (JSONException e) {
-//			e.printStackTrace();
-//		}
-			
-	}
+//	private void addTransaction(JSONObject transaction) {
+////		try {
+////			String request = transaction.getString("requestDescription");
+////			String requester = transaction.getString("requesterName");
+////			int requesterId = transaction.getInt("requesterId");
+////			int requestId = transaction.getInt("requestId");
+////			int amount = transaction.getInt("amount");
+////					
+////			fragmentTransaction = getFragmentManager().beginTransaction();
+////			TransactionsFragment transactionFragment = TransactionsFragment
+////					.createInstance(requester, request, amount, requestId, requesterId, tangleId);
+////			fragmentTransaction.add(R.id.transactions_layout, transactionFragment);
+////			fragmentTransaction.commit();
+////		} catch (JSONException e) {
+////			e.printStackTrace();
+////		}
+//			
+//	}
 	
 	/**
 	 * Views the user's profile picture
