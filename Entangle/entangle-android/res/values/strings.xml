@@ -29,8 +29,6 @@
     <string name="createRequest">Request</string>
     <string name="tangleNameHint">Specify a Tangle name</string>
     <string name="iconButton">Choose an Icon</string>
-    <string name="tangleNameHint">Title (Megasoft..)</string>
-    <string name="iconButton">Icon</string>
     <string name="tangleIcon">Tangle Icon</string>
     <string name="createTangle">CREATE</string>
     <string name="checkTangleName">Check</string>

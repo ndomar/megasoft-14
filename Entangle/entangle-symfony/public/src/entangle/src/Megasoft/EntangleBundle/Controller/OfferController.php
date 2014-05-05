@@ -155,12 +155,10 @@ class OfferController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response
      * @author Mansour
      */
-<<<<<<< HEAD
-    public function changeOfferPriceAction(Symfony\Component\HttpFoundation\Request $request, $offerid) {
-=======
+
     public function changeOfferPriceAction(Request $request, $offerid)
     {
->>>>>>> 54d8dda7ad4da9fbc3a15f0f90e6e9b312e22415
+
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
@@ -208,10 +206,10 @@ class OfferController extends Controller {
 
         //notification
 
-        $notificationCenter = $this->get('notification_center.service');
-        $title = "offer changed";
-        $body = "{{from}} changed his offer";
-        $notificationCenter->offerChangeNotification($requestOffer->getId(), $oldPrice, $title, $body);
+//        $notificationCenter = $this->get('notification_center.service');
+//        $title = "offer changed";
+//        $body = "{{from}} changed his offer";
+//        $notificationCenter->offerChangeNotification($requestOffer->getId(), $oldPrice, $title, $body);
 
         $this->getDoctrine()->getManager()->persist($requestOffer);
         $this->getDoctrine()->getManager()->flush();
@@ -224,12 +222,14 @@ class OfferController extends Controller {
      * @return Response $response returns 201 or 409 status code and message depending on verification
      * @author sak9
      */
-<<<<<<< HEAD
+
+     /**
+     * this recieves a request and calls verify to check if it can accept the offer
+     * @param  Request $request
+     * @return Response $response returns 201 or 409 status code and message depending on verification
+     * @author sak9
+     */
     public function acceptOfferAction(\Symfony\Component\HttpFoundation\Request $request) {
-=======
-    public function acceptOfferAction(\Symfony\Component\HttpFoundation\Request $request)
-    {
->>>>>>> 54d8dda7ad4da9fbc3a15f0f90e6e9b312e22415
         $doctrine = $this->getDoctrine();
         $json = $request->getContent();
         $sessionId = $request->headers->get('X-SESSION-ID');
@@ -257,7 +257,7 @@ class OfferController extends Controller {
         }
         $requestId = $offer->getRequestId();
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
-        $request = $requestRepo->findOneBy(array('id' => $requestId));
+        $request = $requestRepo->findOneBy(array('id' => $requestId,));
         $requesterId = $request->getUserId();
         $tangle = $request->getTangleId();
         if ($requesterId != $userOfSession) {
@@ -267,16 +267,18 @@ class OfferController extends Controller {
         if ($verificationMessage == "Offer Accepted.") {
             $response = new Response($verificationMessage, 201);
         } else {
-            if ($verificationMessage == "Error: Not enough balance.") {
-                $response = new Response($verificationMessage, 405);
-            } else {
-                $response = new Response($verificationMessage, 401);
-            }
+           if($verificationMessage=="Error: Not enough balance."){
+                           $response = new Response($verificationMessage, 405);
+
+           }else{
+            $response = new Response($verificationMessage, 401);
         }
+        
+           }
 
         return $response;
     }
-
+    
     /**
      * this recieves an offerId and checks if it can be accepted, if it can it accepts it and updates all fields in tables
      * @param  Int $offerId
@@ -286,17 +288,17 @@ class OfferController extends Controller {
     public function verify($offerId) {
         $doctrine = $this->getDoctrine();
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
-        $offer = $offerRepo->findOneBy(array('id' => $offerId));
+        $offer = $offerRepo->findOneBy(array('id' => $offerId,));
         if (count($offer) <= 0) {
             return "Error: No such offer.";
         }
         $requestId = $offer->getRequestId();
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
-        $request = $requestRepo->findOneBy(array('id' => $requestId));
+        $request = $requestRepo->findOneBy(array('id' => $requestId,));
         $requesterId = $request->getUserId();
         $tangleId = $request->getTangleId();
         $userTangle = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
-        $requester = $userTangle->findOneBy(array('tangleId' => $tangleId, 'userId' => $requesterId));
+        $requester = $userTangle->findOneBy(array('tangleId' => $tangleId, 'userId' => $requesterId,));
         if (count($requester) <= 0) {
             return "Error: You don't belong to this tangle.";
         }
@@ -318,28 +320,19 @@ class OfferController extends Controller {
         if ($offer->getStatus() == $offer->FAILED || $offer->getStatus() == $offer->REJECTED) {
             return "Error: Offer closed.";
         }
-
-
         $price = $offer->getRequestedPrice();
-
         $requesterBalance = $requester->getCredit();
         if ($requesterBalance < $price) {
             return "Error: Not enough balance.";
         }
         $request->setStatus($request->FROZEN);
         $requester->setCredit($requesterBalance - $price);
-        $offer->setStatus(1);
-
-        //notification
-        $notificationCenter = $this->get('notification_center.service');
-        $title = "accept offer";
-        $body = "{{from}} accepted your offer";
-        $notificationCenter->offerChosenNotification($offer->getId(), $title, $body);
-
+        $offer->setStatus($offer->ACCEPTED);
         $doctrine->getManager()->persist($request);
         $doctrine->getManager()->persist($requester);
         $doctrine->getManager()->persist($offer);
         $doctrine->getManager()->flush();
+
         return "Offer Accepted.";
     }
 
@@ -414,9 +407,7 @@ class OfferController extends Controller {
         $this->getDoctrine()->getManager()->flush();
         return;
     }
-<<<<<<< HEAD
 
-=======
     
     /**
       * Validates the authority of the user
@@ -502,5 +493,5 @@ class OfferController extends Controller {
         
         return new Response('Ok',201);
     }
->>>>>>> 54d8dda7ad4da9fbc3a15f0f90e6e9b312e22415
+
 }
