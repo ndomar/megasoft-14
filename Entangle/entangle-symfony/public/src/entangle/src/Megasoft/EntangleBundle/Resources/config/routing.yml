@@ -1,3 +1,4 @@
+
 megasoft_entangle_homepage:
     pattern:  /hello/{hello}
     defaults: { _controller: MegasoftEntangleBundle:Default:index }
@@ -132,6 +133,7 @@ get_tangles:
 get_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
+    method: [GET]
 
 create_tangle:
     pattern: /tangle
@@ -262,4 +264,9 @@ _register:
 _test:
   pattern: /notification/test
   defaults: {_controller: MegasoftEntangleBundle:Notification:test}
+  methods: [GET]
+
+_mail:
+  pattern: /notification/mail
+  defaults: {_controller:MegasoftEntangleBundle:Notification:SendEmail}
   methods: [GET]
