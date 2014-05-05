@@ -55,6 +55,12 @@
     <string name="requested_price_hint">enter a positive number</string>
     <string name="expected_deadline">Choose expected Deadline</string>
     <string name="post_offer">Post Offer</string>
+    
+	<string name="toEntangle">to Entangle\.\.\.</string>
+	<string name="welcome">Welcome \ </string>
+    <string name="hurryUp">Hurry up \ </string>
+    <string name="andCreate">and create a\ </string>
+	<string name="aTangle">Tangle !!!</string>
     <string name="offer_check">check when you\'re done</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_request">RequestActivity</string>
