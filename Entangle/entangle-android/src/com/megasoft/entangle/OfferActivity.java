@@ -362,7 +362,6 @@ public class OfferActivity extends FragmentActivity {
 		request.execute();
 	}
 
-
 	/**
 	 * this adds a button which if clicked sends a POST method to update the
 	 * offer as accepted
@@ -419,5 +418,42 @@ public class OfferActivity extends FragmentActivity {
 		});
 
 	}
+
+/**
+ * The callback for the add comment button which adds the comment and re-renders the layout 
+ * @param view
+ * @author mohamedbassem
+ */
+public void addComment(View view){
+
+	PostRequest request = new PostRequest(Config.API_BASE_URL + "/offer/" + offerId + "/comment") {
+
+		@Override
+		protected void onPostExecute(String response) {
+			if(this.getStatusCode() == 201){
+				comment.setText("");
+				viewOffer();
+			}else{
+				Toast.makeText(getApplicationContext(), this.getErrorMessage(), Toast.LENGTH_LONG).show();
+			}
+		}
+
+	};
+
+	String commentMessage = comment.getText().toString();
+	if(commentMessage.equals("")){
+		return;
+	}
+	JSONObject body = new JSONObject();
+	try {
+		body.put("body", commentMessage);
+	} catch (JSONException e) {
+		e.printStackTrace();
+	}
+
+	request.addHeader(Config.API_SESSION_ID, sessionId);
+	request.setBody(body);
+	request.execute();
+}
 
 }
