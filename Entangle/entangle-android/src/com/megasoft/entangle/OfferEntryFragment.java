@@ -1,5 +1,6 @@
 package com.megasoft.entangle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,7 +18,16 @@ public class OfferEntryFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState){
 		this.view = inflater.inflate(R.layout.offer_entry_fragment, container,false);
-		
+		view.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), OfferActivity.class);
+				intent.putExtra("offerID", offerId);
+				startActivity(intent);
+				
+			}
+		});
 		setAttributes();
 		
 		return this.view;

@@ -24,6 +24,14 @@
     	<item name="android:background">?android:attr/listDivider</item>
     </style>
     
+    
+    
+    <style name="dividerVertical">
+        <item name="android:layout_width">1dp</item>
+    	<item name="android:layout_height">match_parent</item>
+    	<item name="android:background">@color/lightGray</item>
+    </style>
+    
     <!-- Sidebar -->
     
     <style name="sidebarMenuItemText">
@@ -39,6 +47,8 @@
         <item name="android:gravity">center_vertical</item>
     </style>
     
-    
+    <style name="borderGray">
+        <item name="android:background">@drawable/border_gray</item>
+    </style>
     
 </resources>
