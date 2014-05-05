@@ -423,7 +423,13 @@ class OfferController extends Controller
         
         return null;
     }
-    
+
+    /**
+     * The endpoint responsible for adding comments on offers
+     * @param Request $request
+     * @param $offerId
+     * @return null|Response
+     */
     public function commentAction(Request $request,$offerId){
         $verification = $this->verifyUser($request, $offerId);
         

@@ -248,6 +248,11 @@ public class OfferActivity extends FragmentActivity {
 		}
 	}
 	
+	/**
+	 * Renders the comments in the layout
+	 * @param comments the JSON array of comments
+	 * @author mohamedbassem
+	 */
 	private void viewComments(JSONArray comments){
 		LinearLayout commentsArea = ((LinearLayout)findViewById(R.id.offer_comments_area));
 		commentsArea.removeAllViews();
@@ -367,6 +372,11 @@ public class OfferActivity extends FragmentActivity {
 
 	}
 	
+	/**
+	 * The callback for the add comment button which adds the comment and re-renders the layout 
+	 * @param view
+	 * @author mohamedbassem
+	 */
 	public void addComment(View view){
 		
 		PostRequest request = new PostRequest(Config.API_BASE_URL + "/offer/" + offerId + "/comment") {
