@@ -273,7 +273,7 @@ class TangleController extends Controller {
                                 Hello
                            </h3>
                            <p>" . $message . "</p>
-                           <a href=\"http://entangle.io/invitation/" . $randomString . "\">link</a>
+                           <a href=\"http://localhost:9001/invitation/" . $randomString . "\">link</a>
                            <p>Cheers<br>Entangle Team</p>
                     </body>
                 </html>";

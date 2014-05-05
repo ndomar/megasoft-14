@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.megasoft.config.Config;
@@ -176,8 +178,10 @@ public class RequestActivity extends FragmentActivity {
 		args.putString("date",json.getJSONObject("date").getString("date"));
 		args.putString("tags",getTags(json.getJSONArray("tags")));
 		args.putString("price",json.getString("price"));
-		args.putString("deadline",json.getJSONObject("deadline").getString("date"));
-		args.putString("status",json.getString("status"));
+		if(json.get("deadline") == null){
+			args.putString("deadline",json.getJSONObject("deadline").getString("date"));
+		}
+		args.putString("status",requestStatusCodes[Integer.parseInt(json.getString("status"))]);
 		requestFragmet.setArguments(args);
 		
 		getSupportFragmentManager().beginTransaction().add(R.id.request_entry_layout,requestFragmet).commit();
@@ -195,6 +199,11 @@ public class RequestActivity extends FragmentActivity {
 
 	public void addOffers(JSONObject json) throws JSONException {
 		JSONArray offers = (JSONArray) json.get("offers");
+		if(offers.length() == 0){
+			findViewById(R.id.view_request_offer_header).setVisibility(View.INVISIBLE);
+		}else{
+			findViewById(R.id.view_request_offer_header).setVisibility(View.VISIBLE);
+		}
 		
 		for (int i = 0; i < offers.length(); i++) {
 			JSONObject offer = offers.getJSONObject(i); 
@@ -205,7 +214,7 @@ public class RequestActivity extends FragmentActivity {
 			args.putString("date",offer.getJSONObject("date").getString("date"));
 			args.putString("description",offer.getString("description"));
 			args.putString("offerer",offer.getString("offererName"));
-			args.putString("status",offer.getString("status"));
+			args.putString("status",offerStatusCodes[Integer.parseInt(offer.getString("status"))]);
 			offerFragmet.setArguments(args);
 			
 			getSupportFragmentManager().beginTransaction().add(R.id.offer_entries_layout,offerFragmet).commit();

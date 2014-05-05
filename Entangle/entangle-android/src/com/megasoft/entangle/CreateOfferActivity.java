@@ -14,6 +14,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -95,7 +96,7 @@ public class CreateOfferActivity extends Activity {
 	/**
 	 * String of the current date
 	 */
-	final String date = currentDay + "/" + (currentMonth + 1) + "/"
+	final String date = currentDay + "-" + (currentMonth + 1) + "-"
 			+ currentYear;
 
 	/**
@@ -184,7 +185,7 @@ public class CreateOfferActivity extends Activity {
 							intent.putExtra("tangleId", tangleId);
 							intent.putExtra("requestId", requestId);
 							startActivity(intent);
-							// send notification
+							finish();
 						} else {
 
 							Toast.makeText(getApplicationContext(),
@@ -223,7 +224,7 @@ public class CreateOfferActivity extends Activity {
 			this.pickDate.setText("Due Date");
 		} else {
 			this.pickDate.setText(new StringBuilder().append(deadLineDay)
-					.append("/").append(deadLineMonth + 1).append("/")
+					.append("-").append(deadLineMonth + 1).append("-")
 					.append(deadLineYear).append(" "));
 		}
 	}
