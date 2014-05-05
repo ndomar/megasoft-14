@@ -132,15 +132,11 @@ get_tangles:
 get_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
-<<<<<<< HEAD
 
 check_availability:
     pattern: /tangle/check
     defaults: { _controller: MegasoftEntangleBundle:Tangle:checkAvailability }
     methods: [GET]
-=======
-    method: [GET]
->>>>>>> f89e9452ab674bf3af53d3325a5174cab6c9a556
 
 create_tangle:
     pattern: /tangle
@@ -188,13 +184,8 @@ dummy:
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
 
 accept_tangle_invitation:
-<<<<<<< HEAD
-    pattern: /tangle-invitation/{tangleId}/{userId}/accept
-    defaults: { _controller: MegasoftEntangleBundle:Tangle:addUser}
-=======
     pattern: /invitation/{invitationCode}
     defaults: { _controller: MegasoftEntangleBundle:Tangle:acceptInvitation}
->>>>>>> f89e9452ab674bf3af53d3325a5174cab6c9a556
     methods: [PUT]
 
 leave_tangle:
