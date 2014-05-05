@@ -172,7 +172,7 @@ public class RequestActivity extends FragmentActivity {
 		RequestEntryFragment requestFragmet = new RequestEntryFragment();
 		Bundle args = new Bundle();
 		args.putString("description",json.getString("description"));
-		args.putString("requesterName",json.getString("requester"));
+		args.putString("requesterName",json.getString("requesterName"));
 		args.putString("date",json.getJSONObject("date").getString("date"));
 		args.putString("tags",getTags(json.getJSONArray("tags")));
 		args.putString("price",json.getString("price"));
