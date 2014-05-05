@@ -9,7 +9,6 @@ use Symfony\Component\Translation\Tests\String;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Megasoft\EntangleBundle\Entity\Offer;
 use Megasoft\EntangleBundle\Entity\Message;
-use Megasoft\EntangleBundle\Entity\Request;
 use Megasoft\EntangleBundle\Entity\user;
 use Megasoft\EntangleBundle\Entity\Tangle;
 use Megasoft\EntangleBundle\Entity\UserTangle;

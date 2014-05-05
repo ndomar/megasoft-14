@@ -3,10 +3,6 @@ package com.megasoft.entangle;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.megasoft.config.Config;
-import com.megasoft.entangle.R.drawable;
-import com.megasoft.requests.PostRequest;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -19,14 +15,13 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.megasoft.config.Config;
-import com.megasoft.notifications.GCMRegistrationActivity;
+import com.megasoft.notifications.GCMRegisteration;
 import com.megasoft.requests.PostRequest;
 
 @SuppressLint({ "NewApi", "WorldReadableFiles" })
@@ -35,6 +30,20 @@ public class LoginActivity extends Activity {
 	private EditText password;
 	public final String LOGIN = "/user/login";
 
+	/**
+	 * TAG name for debugging
+	 * 
+	 * @author shaban
+	 */
+	static final String TAG = "GCM";
+
+	/**
+	 * google play services notification resolution
+	 * 
+	 * @author shaban
+	 */
+	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,9 +51,6 @@ public class LoginActivity extends Activity {
 		username = (EditText) findViewById(R.id.login_username);
 		password = (EditText) findViewById(R.id.login_password);
 
-		Intent intent = new Intent(this, GCMRegistrationActivity.class);
-		startActivity(intent);
-		
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.showSoftInput(username, InputMethodManager.SHOW_IMPLICIT);
 
@@ -162,6 +168,8 @@ public class LoginActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		register();
+
 		Intent homeActivity = new Intent(this, HomeActivity.class);
 		startActivity(homeActivity);
 
@@ -183,5 +191,46 @@ public class LoginActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * this method checks if a user is has GCM registration id. if no it asks
+	 * for one from registerInBackground
+	 * 
+	 * @param None
+	 * @return None
+	 * @author Shaban
+	 */
+	public void register() {
+		if (checkPlayServices()) {
+			Intent gcmRegIntentService = new Intent(getApplicationContext(),
+					GCMRegisteration.class);
+			startService(gcmRegIntentService);
+		} else {
+			Log.i(TAG, "no play services api found");
+		}
+	}
+
+	/**
+	 * Check the device to make sure it has the Google Play Services APK. If it
+	 * doesn't, display a dialog that allows users to download the APK from the
+	 * Google Play Store or enable it in the device's system settings.
+	 * 
+	 * @author Google
+	 */
+	private boolean checkPlayServices() {
+		int resultCode = GooglePlayServicesUtil
+				.isGooglePlayServicesAvailable(this);
+		if (resultCode != ConnectionResult.SUCCESS) {
+			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+				GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+						PLAY_SERVICES_RESOLUTION_REQUEST).show();
+			} else {
+				Log.i("ERROR", "This device is not supported.");
+				finish();
+			}
+			return false;
+		}
+		return true;
 	}
 }
