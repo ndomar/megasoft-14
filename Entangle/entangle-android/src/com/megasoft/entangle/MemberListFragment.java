@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
+import com.megasoft.widgets.LoadingWidget;
 
 /*
  * A fragment for the member list.
@@ -129,17 +130,13 @@ public class MemberListFragment extends Fragment {
 	 */
 	private void fetchMembers(){
 		
-		final AlertDialog ad = new AlertDialog.Builder(getActivity()).create();
-		ad.setCancelable(false);
-		ad.setMessage("Loading ...");
-		ad.show();       
+		LoadingWidget.show(getActivity());
 
 		
 		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
 				+ "/tangle/" + getTangleId() + "/user") {
 			public void onPostExecute(String response) {
-				ad.dismiss();
-				Log.e("test", this.getStatusCode() + ""); /////////////////////////////////
+				LoadingWidget.hide();
 				
 				if(!this.hasError() && this.getStatusCode() == 200){
 					if(!showData(response)){
