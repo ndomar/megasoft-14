@@ -2,7 +2,68 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/entangle_logo_transparent"
     android:orientation="vertical" >
     
-
+    <LinearLayout
+       android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="200dp"
+        android:orientation="horizontal" 
+        android:layout_marginLeft="@dimen/marginLarge">
+        
+ <TextView 
+    android:text="@string/welcome"
+    android:textSize="@dimen/textLarge"
+    android:textColor="@color/gray"
+    android:textStyle="bold"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    />
+ 
+  <TextView 
+    android:text="@string/toEntangle"
+    android:textSize="@dimen/textLarge"
+    android:textColor="@color/gray"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    />
+ 
+    </LinearLayout>
+    
+    <LinearLayout
+       android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal" 
+        android:layout_marginLeft="@dimen/marginLarge"
+        android:layout_marginTop="@dimen/paddingSmall">
+  
+    <TextView 
+    android:text="@string/hurryUp"
+    android:textSize="@dimen/textLarge"
+    android:textColor="@color/gray"
+    android:textStyle="bold"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    />
+    
+    <TextView 
+    android:text="@string/andCreate"
+    android:textSize="@dimen/textLarge"
+    android:textColor="@color/gray"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    />
+    
+    <TextView 
+    android:text="@string/aTangle"
+    android:textSize="@dimen/textLarge"
+    android:textColor="@color/gray"
+    android:textStyle="bold"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    />
+    </LinearLayout>
 </LinearLayout>
