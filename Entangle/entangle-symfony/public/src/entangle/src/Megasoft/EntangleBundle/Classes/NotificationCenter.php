@@ -170,6 +170,7 @@ class NotificationCenter
      */
     function notificationCenter($userID, $notification)
     {
+
         $Authorization = $this->container->getParameter('GOOGLE_API_KEY');
         $serverUrl = $this->container->getParameter('SERVER_URL');
 
@@ -520,7 +521,7 @@ class NotificationCenter
 
         $tangleId = $request->getTangle()->getId();
 
-        $data = array("title" => $title, "body" => $body, "type" => $this->reopenRequestNotificationId, "requestId" => $requestId, "tangleId" => $tangleId);
+        $data = array("title" => $title, "body" => $body, "type" => $this->reopenRequestNotificationId, "requestId" => $requestId, "tangleId" => $tangleId,);
 
         foreach ($offers as $offer) {
             $notification = new ReopenRequestNotification();
@@ -625,7 +626,7 @@ class NotificationCenter
             }
         }
     }
-    
+
     /**
      * this function sends an email notification to user with userID
      * @param $email

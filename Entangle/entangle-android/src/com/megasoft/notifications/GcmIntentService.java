@@ -63,7 +63,7 @@ public class GcmIntentService extends IntentService {
 		Intent dest = null;
 		switch (type) {
 		case 0:
-			dest = new Intent(this, MainActivity.class);
+			dest = fetchOfferData(bundle);
 			break;
 		case 1:
 			break;
@@ -86,7 +86,6 @@ public class GcmIntentService extends IntentService {
 			dest = fetchRequestData(bundle);
 			break;
 		case 8:
-			// ask salma
 			dest = null;
 			break;
 		}

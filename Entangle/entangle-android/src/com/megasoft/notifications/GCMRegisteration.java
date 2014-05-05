@@ -127,7 +127,7 @@ public class GCMRegisteration extends IntentService {
 			protected void onPostExecute(String regid) {
 				sendRegisterationId(regid);
 				Log.i(TAG, regid);
-				// storeRegisteratinId(regid);
+				 storeRegisteratinId(regid);
 			}
 		}.execute(null, null, null);
 	}
@@ -181,7 +181,6 @@ public class GCMRegisteration extends IntentService {
 	 */
 	protected String getSessionId() {
 		SharedPreferences prefs = getSharedPreferences(Config.SETTING, 0);
-		// return "5";
 		Log.i(TAG, prefs.getString(Config.SESSION_ID, ""));
 		return prefs.getString(Config.SESSION_ID, "");
 	}
