@@ -76,30 +76,6 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/stream"
-            android:layout_width="0px"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/viewStream"
-            android:textSize="14sp" />
-
-        <Button
-            android:id="@+id/members"
-            android:layout_width="0px"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/viewMembers"
-            android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/profile"
-            android:layout_width="0px"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/viewProfile"
-            android:textSize="14sp" />
-
-        <Button
             android:id="@+id/invite"
             android:layout_width="0px"
             android:layout_height="wrap_content"
