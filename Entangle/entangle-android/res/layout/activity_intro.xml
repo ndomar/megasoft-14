@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/entangle_logo_transparent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:gravity="center" >
     
     <LinearLayout
        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="200dp"
         android:orientation="horizontal" 
         android:layout_marginLeft="@dimen/marginLarge">
         
@@ -44,7 +44,7 @@
     android:text="@string/hurryUp"
     android:textSize="@dimen/textLarge"
     android:textColor="@color/gray"
-    android:textStyle="bold"
+
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     />
@@ -61,9 +61,24 @@
     android:text="@string/aTangle"
     android:textSize="@dimen/textLarge"
     android:textColor="@color/gray"
-    android:textStyle="bold"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     />
+    
     </LinearLayout>
+    
+    <Button
+            android:id="@+id/here"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/buttonHeight"
+
+            android:clickable="true"
+            android:text="@string/here"
+    		android:textStyle="bold"      
+    		android:layout_margin="@dimen/marginLarge"  
+    		android:background="@color/cyan"
+            android:onClick="redirectToCreateTangle"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/textLarge" />
 </LinearLayout>

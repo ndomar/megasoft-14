@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.megasoft.config.Config;
 import com.megasoft.entangle.CreateTangleActivity;
 import com.megasoft.entangle.HomeActivity;
+import com.megasoft.entangle.IntroActivity;
 import com.megasoft.entangle.R;
 import com.megasoft.requests.GetRequest;
 
@@ -120,6 +121,9 @@ public class TangleStreamActivity extends Fragment {
 			
 			if (tangles.length() > 0) {
 				activity.switchFragment(tangleIds.get(0), 0);
+			} else {
+				Intent ntent = new Intent(getActivity(), IntroActivity.class);
+				startActivity(ntent);
 			}
 			listView.setAdapter(new ArrayAdapter<String>(activity.getApplicationContext(), R.layout.sidebar_list_item, R.id.textView1, arr));
 			listView.setOnItemClickListener(new ListView.OnItemClickListener() {
