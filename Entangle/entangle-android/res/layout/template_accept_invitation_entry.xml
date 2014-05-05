@@ -14,17 +14,18 @@
         android:src="@drawable/ic_action_person" />
 
     <TextView
-        android:id="@+id/pending_invitation_text"
+        android:id="@+id/invitation_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/invitation_avatar"
         android:layout_marginLeft="@dimen/marginSmall"
         android:layout_marginTop="@dimen/marginAvatar"
         android:layout_toRightOf="@+id/invitation_avatar"
+        android:text="Mohamed Farghal"
         android:textSize="@dimen/textMedium" />
 
     <Button
-        android:id="@+id/pending_invitation_approve"
+        android:id="@+id/invitation_right"
         android:layout_width="@dimen/iconSmall"
         android:layout_height="@dimen/iconSmall"
         android:layout_alignParentRight="true"
@@ -33,12 +34,12 @@
         android:background="@drawable/ic_action_accept_green" />
 
     <Button
-        android:id="@+id/pending_invitation_reject"
+        android:id="@+id/invitation_wrong"
         android:layout_width="@dimen/iconSmall"
         android:layout_height="@dimen/iconSmall"
-        android:layout_alignBottom="@+id/pending_invitation_approve"
+        android:layout_alignBottom="@+id/invitation_right"
         android:layout_marginRight="@dimen/marginSmall"
-        android:layout_toLeftOf="@+id/pending_invitation_approve"
+        android:layout_toLeftOf="@+id/invitation_right"
         android:background="@drawable/ic_action_remove_red" />
     
     <View

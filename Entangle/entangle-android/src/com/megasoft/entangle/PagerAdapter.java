@@ -1,6 +1,7 @@
 package com.megasoft.entangle;
 
 import com.megasoft.config.Config;
+import com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationFragment;
 import com.megasoft.entangle.megafragments.TangleFragment;
 
 import android.content.Context;
@@ -16,15 +17,17 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 	int userId;
 	Context context;
 	private String tangleName;
+	private boolean isTangleOwner;
 	final static String STREAM = "Stream";
 
 	public PagerAdapter(Context con, FragmentManager fm, int tangleId,
-			int userId, String tangleName) {
+			int userId, String tangleName, boolean isTangleOwner) {
 		super(fm);
 		this.context = con;
 		this.tangleName = tangleName;
 		this.tangleId = tangleId;
 		this.userId = userId;
+		this.isTangleOwner = isTangleOwner;
 	}
 
 	/**
@@ -55,9 +58,14 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 			break;
 
 		case 3:
-			fragment = new MyRequestsFragment();
-			break;
+			if (isTangleOwner) {
+				fragment = new ManagePendingInvitationFragment();
+				break;
 
+			} else {
+				fragment = new MyRequestsFragment();
+				break;
+			}
 		default:
 			break;
 		}
@@ -67,7 +75,12 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public int getCount() {
-		return 4;
+		if (isTangleOwner) {
+			return 4;
+		} else {
+			return 4;
+		}
+
 	}
 
 	@Override
@@ -82,7 +95,11 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 			return "You";
 
 		case 3:
-			return "MyRequests";
+			if (isTangleOwner) {
+				return "Tangle Managment";
+			} else {
+				return "MyRequests";
+			}
 
 		default:
 			return "Tab " + position;
