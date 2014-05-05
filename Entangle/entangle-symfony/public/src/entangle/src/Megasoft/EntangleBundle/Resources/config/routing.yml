@@ -133,6 +133,7 @@ get_tangles:
 get_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
+    method: [GET]
 
 create_tangle:
     pattern: /tangle

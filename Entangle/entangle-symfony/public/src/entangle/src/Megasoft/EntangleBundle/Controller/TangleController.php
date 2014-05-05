@@ -279,9 +279,9 @@ class TangleController extends Controller {
                 </html>";
 
 
-        $user = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail')->findOneBy(array("email" => $email))->getUser();
+        
         $notificationCenter = $this->get('notification_center.service');
-        $notificationCenter->sendMail($user->getId(), $title, $body);
+        $notificationCenter->sendMailToEmail($email, $title, $body);
     }
 
     /**
@@ -929,8 +929,9 @@ class TangleController extends Controller {
         $UserTanglerepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
         $tangles = $UserTanglerepo->findBy(array('userId' => $userId, 'leavingDate' => null));
         $ret = array();
-        foreach ($tangles as $tangle) {
-            $ret[] = array("id" => $tangle->getTangleId(), "name" => $tangle->getTangle()->getName());
+
+        foreach($tangles as $tangle){
+            $ret[] = array("id"=>$tangle->getTangleId(),"name"=>$tangle->getTangle()->getName(),"isOwner"=>$tangle->getTangleOwner());
         }
 
         $jsonResponse = new JsonResponse();

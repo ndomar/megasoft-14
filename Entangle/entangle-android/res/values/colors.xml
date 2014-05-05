@@ -23,7 +23,7 @@
     <color name="darkGray">#222222</color>
     <color name="lightText">#FFFFFF</color>
     <color name="lightGray">#AAAAAA</color>
-    <color name="darkWhite">#DDDDDD</color>
+    <color name="darkWhite">#f5f5f5</color>
     <color name="sucess">#00FF00</color>
     <color name="success">#00FF00</color>
     <color name="error">#FF0000</color>

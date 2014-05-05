@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,8 @@ public class TangleStreamActivity extends Fragment {
 	 */
 	public static ArrayList<String> tangleNames;
 	
+	public static ArrayList<Boolean> tangleOwners;
+	
 	private View view;
 	
 	private HomeActivity activity;
@@ -66,6 +69,7 @@ public class TangleStreamActivity extends Fragment {
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		tangleIds = new ArrayList<Integer>();
 		tangleNames = new ArrayList<String>();
+		tangleOwners = new ArrayList<Boolean>();
 		fetchTangles();
 		
 		return view;
@@ -111,6 +115,7 @@ public class TangleStreamActivity extends Fragment {
 				arr[i] = tangle.getString("name"); 
 				tangleIds.add(tangle.getInt("id"));
 				tangleNames.add(tangle.getString("name"));
+				tangleOwners.add(tangle.getBoolean("isOwner"));
 			}
 			
 			if (tangles.length() > 0) {

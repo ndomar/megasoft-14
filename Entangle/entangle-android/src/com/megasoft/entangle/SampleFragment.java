@@ -29,6 +29,7 @@ public class SampleFragment extends Fragment {
 	private int tangleId;
 	private int userId;
 	private String tangleName;
+	private boolean isTangleOwner;
 	
 	
 	@Override
@@ -44,8 +45,8 @@ public class SampleFragment extends Fragment {
 		userId = settings.getInt(Config.USER_ID, -1);
 		tangleId = getArguments().getInt("tangleId");
 		tangleName = getArguments().getString("tangleName");
-		
-        tab = new PagerAdapter(activity, activity.getSupportFragmentManager(),tangleId,userId, tangleName);
+		isTangleOwner = getArguments().getBoolean("isTangleOwner");
+        tab = new PagerAdapter(activity, activity.getSupportFragmentManager(),tangleId,userId, tangleName,isTangleOwner);
         pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(tab);
        

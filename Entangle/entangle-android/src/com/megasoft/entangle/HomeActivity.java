@@ -76,6 +76,7 @@ public class HomeActivity extends FragmentActivity {
 		Bundle args = new Bundle();
 		args.putInt("tangleId",tangleId);
 		args.putString("tangleName", TangleStreamActivity.tangleNames.get(position));
+		args.putBoolean("isTangleOwner", TangleStreamActivity.tangleOwners.get(position));
 		fragment.setArguments(args);
 		fragmentTransaction.replace(R.id.content_frame, fragment);
 		fragmentTransaction.commit();
