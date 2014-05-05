@@ -1,29 +1,23 @@
 package com.megasoft.widgets;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.view.LayoutInflater;
-import android.view.View;
-
-import com.megasoft.entangle.R;
+import android.app.ProgressDialog;
 
 public class LoadingWidget {
-	private static AlertDialog window = null;
-	private final static int WINDOW_DIMENSION = 400;
+	private static ProgressDialog window = null;
+	private final static int WINDOW_WIDTH = 600;
+	private final static int WINDOW_HEIGHT = 300;
 	
 	public static void show(Activity activity){
 		if(window != null){
 			hide();
 		}  
 		
-		window = new AlertDialog.Builder(activity).create();
-		
-		LayoutInflater factory = LayoutInflater.from(activity);
-		final View view = factory.inflate(R.layout.widget_loading, null);
-		window.setView(view);
-		
+		window = new ProgressDialog(activity);
+		window.setMessage("Loading...");
+		window.setCancelable(false);
 		window.show();
-		window.getWindow().setLayout(WINDOW_DIMENSION, WINDOW_DIMENSION);
+		window.getWindow().setLayout(WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 	
 	public static void hide(){
