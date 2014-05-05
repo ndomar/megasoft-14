@@ -135,6 +135,7 @@ check_availability:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:checkAvailability }
     methods: [GET]
 
+
 create_tangle:
     pattern: /tangle
     defaults: { _controller: MegasoftEntangleBundle:Tangle:createTangle }
@@ -270,3 +271,4 @@ _mail:
   pattern: /notification/mail
   defaults: {_controller:MegasoftEntangleBundle:Notification:SendEmail}
   methods: [GET]
+
