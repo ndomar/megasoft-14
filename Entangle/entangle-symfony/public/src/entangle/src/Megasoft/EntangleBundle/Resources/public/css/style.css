@@ -17,25 +17,6 @@ CONTENTS:
 08 Buttons
 09 Media queries 
 ===========================
-*/
-/* Import css */
-/* Google font */
-@import url('http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
-/* bootstrap */
-@import url('bootstrap.css');
-/* bootstrap responsive */
-@import url('bootstrap-responsive.css');
-/* prettyPhoto */
-@import url('prettyPhoto.css');
-/* flexslider */
-@import url('flexslider.css');
-
-/* font awesome */
-@import url('font-awesome.css');
-/* overwrite */
-@import url('overwrite.css');
-/* animation */
-@import url('animate.css');
 
 
 
@@ -366,7 +347,7 @@ header .logo {
 	text-align:center;
 	margin-bottom:30px;
 }
-
+cache:clear
 /* --- Header slider --- */
 #header-wrapper.header-slider {
 	background: #444 url(../img/bg/bg-1.jpg) no-repeat center center fixed;
