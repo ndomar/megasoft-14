@@ -86,7 +86,7 @@ public class GcmIntentService extends IntentService {
 			dest = fetchRequestData(bundle);
 			break;
 		case 8:
-			//ask salma
+			// ask salma
 			dest = null;
 			break;
 		}
@@ -104,6 +104,12 @@ public class GcmIntentService extends IntentService {
 		}
 	}
 
+	/**
+	 * fetches request activity data from bundle
+	 * 
+	 * @param bundle
+	 * @return
+	 */
 	public Intent fetchRequestData(Bundle bundle) {
 		SharedPreferences settings = getSharedPreferences(Config.SETTING, 0);
 		String sessionId = settings.getString(Config.SESSION_ID, "");
@@ -125,6 +131,12 @@ public class GcmIntentService extends IntentService {
 		return dest;
 	}
 
+	/**
+	 * fetch offer activity data from bundle
+	 * 
+	 * @param bundle
+	 * @return
+	 */
 	public Intent fetchOfferData(Bundle bundle) {
 		Intent dest = new Intent(this, OfferActivity.class);
 		int offerId = -1;
@@ -135,6 +147,12 @@ public class GcmIntentService extends IntentService {
 		return dest;
 	}
 
+	/**
+	 * fetches home activity from bundle
+	 * 
+	 * @param bundle
+	 * @return
+	 */
 	public Intent fetchHomeActivity(Bundle bundle) {
 		Intent dest = new Intent(this, HomeActivity.class);
 		int tangleId = -1;
