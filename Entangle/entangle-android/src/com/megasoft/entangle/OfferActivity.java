@@ -1,33 +1,36 @@
 package com.megasoft.entangle;
 
-import com.megasoft.config.Config;
-import com.megasoft.requests.GetRequest;
-import com.megasoft.requests.ImageRequest;
-import com.megasoft.requests.PostRequest;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import org.json.JSONException;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.app.Activity;
-import android.app.FragmentTransaction;
 
-import org.json.JSONObject;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.View;
+import com.megasoft.config.Config;
+import com.megasoft.requests.GetRequest;
+import com.megasoft.requests.ImageRequest;
+import com.megasoft.requests.PostRequest;
 
 /**
  * View an offer given the offer Id
  * 
  * @author Almgohar
  */
-public class OfferActivity extends Activity {
+public class OfferActivity extends FragmentActivity {
 
 	/**
 	 * The TextView that holds the offer's description
@@ -125,6 +128,8 @@ public class OfferActivity extends Activity {
 	 */
 	private FragmentTransaction transaction;
 
+	private ScrollView scrollView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -157,9 +162,10 @@ public class OfferActivity extends Activity {
 		offererName = (TextView) findViewById(R.id.offerer_name);
 		offerStatus = (TextView) findViewById(R.id.offer_status);
 		offerPrice = (TextView) findViewById(R.id.offer_price);
-		offerDate = (TextView) findViewById(R.id.offer_date);
-		comment = (EditText) findViewById(R.id.add_comment);
-		addComment = (ImageView) findViewById(R.id.add);
+		offerDate = (TextView) findViewById(R.id.offer_date); 
+		comment = (EditText) findViewById(R.id.add_comment_field); 
+		addComment = (ImageView) findViewById(R.id.add_comment_button);
+		scrollView = (ScrollView) findViewById(R.id.comment_area_scroll_view);
 		
 		//deleteOfferLayout = (LinearLayout) findViewById(R.id.delete_offer_layout);
 		acceptOffer = (Button) findViewById(R.id.accept_offer);
@@ -176,6 +182,7 @@ public class OfferActivity extends Activity {
 						JSONObject offerInformation = jSon
 								.getJSONObject("offerInformation");
 						viewOfferInfo(offerInformation);
+						viewComments(jSon.getJSONArray("comments"));
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
@@ -229,16 +236,6 @@ public class OfferActivity extends Activity {
 			if (requesterId == loggedInId) {
 				validate();
 			}
-			addComment.setOnClickListener(new View.OnClickListener() {	
-				@Override
-				public void onClick(View v) {
-					if(comment.getText().toString().matches("")) {
-									
-				} else {
-					addComment(offererId, comment.getText().toString());
-				}
-				}
-			});
 			
 			offererName.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -249,6 +246,40 @@ public class OfferActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Renders the comments in the layout
+	 * @param comments the JSON array of comments
+	 * @author mohamedbassem
+	 */
+	private void viewComments(JSONArray comments){
+		LinearLayout commentsArea = ((LinearLayout)findViewById(R.id.offer_comments_area));
+		commentsArea.removeAllViews();
+		if(comments.length() > 0){
+			commentsArea.setVisibility(View.VISIBLE);
+		}
+		
+		for(int i=0;i<comments.length();i++){
+			try {
+				JSONObject comment = comments.getJSONObject(i);
+				CommentEntryFragment entry = new CommentEntryFragment();
+				entry.setComment(comment.getString("comment"));
+				entry.setCommenter(comment.getString("commenter"));
+				entry.setCommentDate(comment.getString("commentDate"));
+				getSupportFragmentManager().beginTransaction().add(R.id.offer_comments_area, entry).commit();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		scrollView.postDelayed(new Runnable() {
+
+	        @Override
+	        public void run() {
+	            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+	        }
+	    }, 500);
 	}
 
 	/**
@@ -261,20 +292,6 @@ public class OfferActivity extends Activity {
 		profile.putExtra("user id", userId);
 		profile.putExtra("tangle id", this.tangleId);
 		startActivity(profile);
-	}
-	
-	/**
-	 * Adds a comment to the stream of comments
-	 * @param int userId
-	 * @author Almgohar
-	 */
-	private void addComment(int userId, String comment) {
-		Toast toast = Toast
-				.makeText(
-						getApplicationContext(),
-						"Comment added.",
-						Toast.LENGTH_SHORT);
-		toast.show();
 	}
 
 	/**
@@ -300,8 +317,8 @@ public class OfferActivity extends Activity {
 
 			@Override
 			protected void onPostExecute(String response) {
+				if(true){return;}
 				try {
-
 					JSONObject jsonResponse = new JSONObject(response);
 					JSONObject offerDetails = (JSONObject) jsonResponse
 							.get("offerInformation");
@@ -321,7 +338,7 @@ public class OfferActivity extends Activity {
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-			}
+			} 
 
 		};
 		request.addHeader(Config.API_SESSION_ID, sessionId);
@@ -353,6 +370,43 @@ public class OfferActivity extends Activity {
 			}
 		});
 
+	}
+	
+	/**
+	 * The callback for the add comment button which adds the comment and re-renders the layout 
+	 * @param view
+	 * @author mohamedbassem
+	 */
+	public void addComment(View view){
+		
+		PostRequest request = new PostRequest(Config.API_BASE_URL + "/offer/" + offerId + "/comment") {
+
+			@Override
+			protected void onPostExecute(String response) {
+				if(this.getStatusCode() == 201){
+					comment.setText("");
+					viewOffer();
+				}else{
+					Toast.makeText(getApplicationContext(), this.getErrorMessage(), Toast.LENGTH_LONG).show();
+				}
+			}
+
+		};
+		
+		String commentMessage = comment.getText().toString();
+		if(commentMessage.equals("")){
+			return;
+		}
+		JSONObject body = new JSONObject();
+		try {
+			body.put("body", commentMessage);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		request.addHeader(Config.API_SESSION_ID, sessionId);
+		request.setBody(body);
+		request.execute();
 	}
 
 }

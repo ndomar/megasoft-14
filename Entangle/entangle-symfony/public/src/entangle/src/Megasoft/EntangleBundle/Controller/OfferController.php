@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\Tests\String;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Megasoft\EntangleBundle\Entity\Offer;
 use Megasoft\EntangleBundle\Entity\Message;
 use Megasoft\EntangleBundle\Entity\user;
@@ -401,5 +402,90 @@ class OfferController extends Controller
         $this->getDoctrine()->getManager()->persist($userTangle);
         $this->getDoctrine()->getManager()->flush();
         return;
+    }
+    
+    /**
+      * Validates the authority of the user
+      * @param Request $request
+      * @param integer $offerId
+      * @return Response | null
+      * @author MohamedBassem
+      */
+    private function verifyUser($request, $offerId){
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        
+        $jsonString = $request->getContent();
+        $json = json_decode($jsonString, true);
+
+        if($offerId == null || $sessionId == null || $json['body'] == null){
+            return new Response('Bad Request', 400);
+         }
+        
+        $doctrine = $this->getDoctrine();
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        if($session == null || $session->getExpired()){
+            return new Response('Bad Request', 400);
+        }
+        
+        $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $offer = $offerRepo->find($offerId);
+        
+        $user = $session->getUser();
+        
+        $userId = $user->getId();
+        $tangleId = $offer->getRequest()->getTangleId();
+        
+        $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $userId));
+        
+        
+        if($userTangle == null){
+            return new Response('Unauthorized', 401);
+        }
+        
+        return null;
+    }
+
+    /**
+     * The endpoint responsible for adding comments on offers
+     * @param Request $request
+     * @param $offerId
+     * @return null|Response
+     */
+    public function commentAction(Request $request,$offerId){
+        $verification = $this->verifyUser($request, $offerId);
+        
+        if($verification != null){
+            return $verification;
+        }
+        
+        $doctrine = $this->getDoctrine();
+        
+        $jsonString = $request->getContent();
+        $json = json_decode($jsonString, true);
+        
+        $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $offer = $offerRepo->find($offerId);
+        
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        
+        $user = $session->getUser();
+        
+        $message = new Message();
+        $message->setOffer($offer);
+        $message->setSender($user);
+        $message->setDate(new \DateTime("now"));
+        $message->setDeleted(false);
+        $message->setBody($json['body']);
+        
+        $doctrine->getManager()->persist($message);
+        $doctrine->getManager()->flush();
+        
+        return new Response('Ok',201);
     }
 }
