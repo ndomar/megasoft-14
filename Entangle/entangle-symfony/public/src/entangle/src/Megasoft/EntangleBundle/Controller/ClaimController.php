@@ -14,12 +14,13 @@ class ClaimController extends Controller {
      * the data base after making sure of the validation of all the information
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param int $requestId
+     * @param int $offerId
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @author Salma Amr
      */
-    public function getMailsAction(\Symfony\Component\HttpFoundation\Request $request, $requestId) {
-        $validation = $this->validate($request, $requestId);  
-        if($validation != null){
+    public function getMailsAction(\Symfony\Component\HttpFoundation\Request $request, $requestId, $offerId) {
+        $validation = $this->validate($request, $requestId, $offerId);
+        if ($validation != null) {
             return $validation;
         }
         $doctrine = $this->getDoctrine();
@@ -32,7 +33,7 @@ class ClaimController extends Controller {
         $tangleId = $claimerRequest->getTangleId();
         $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
         $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'tangleOwner' => 1));
-        if($userTangle == null) {
+        if ($userTangle == null) {
             return new Response('Bad Request', 400);
         }
         $tangleOwnerId = $userTangle->getUserId();
@@ -46,6 +47,7 @@ class ClaimController extends Controller {
         $response->setData
                 (array('X-TANGLEOWNER-MAIL' => $tangleOwnerMail, 'X-CLAIMER-MAIL' => $claimerMail));
         $response->setStatusCode(200);
+
         return $response;
     }
 
@@ -54,13 +56,14 @@ class ClaimController extends Controller {
      * aftr making sure  of the validation of all the info
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param int $requestId
+     * @param int $offerId
      * @return \Symfony\Component\HttpFoundation\Response
      * @author Salma Amr
      */
-    public function createClaimAction(\Symfony\Component\HttpFoundation\Request $request, $requestId) {
-        
-        $validation = $this->validate($request, $requestId);  
-        if($validation != null){
+    public function createClaimAction(\Symfony\Component\HttpFoundation\Request $request, $requestId, $offerId) {
+
+        $validation = $this->validate($request, $requestId, $offerId);
+        if ($validation != null) {
             return $validation;
         }
         $doctrine = $this->getDoctrine();
@@ -72,6 +75,7 @@ class ClaimController extends Controller {
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
         $claimerRequest = $requestRepo->findOneBy(array('id' => $requestId));
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $offer = $offerRepo->findOneBy(array('id' => $offerId));
         $tangleId = $claimerRequest->getTangleId();
         $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
         $tangle = $tangleRepo->findOneBy(array('id' => $tangleId, 'deleted' => false));
@@ -82,10 +86,12 @@ class ClaimController extends Controller {
             return new Response('Empty MssgBody', 400);
         }
         $claim = new Claim();
-        $claim->setUser($user);
-        $claim->setUsedId($userId);
+        $claim->setClaimer($user);
+        $claim->setClaimerId($userId);
         $claim->setTangle($tangle);
         $claim->setTangleId($tangleId);
+        $claim->setOffer($offer);
+        $claim->setOfferId($offerId);
         $claim->setMessage($mssgBody);
         $claim->setDeleted(false);
         $claim->setStatus(0);
@@ -94,13 +100,20 @@ class ClaimController extends Controller {
         $response = new JsonResponse();
         $response->setData(array('X-CLAIM-ID' => $claim->getId()));
         $response->setStatusCode(201);
+
         return $response;
     }
-    
-    public function validate($request , $requestId) {
-        
-        if ($requestId == null) {
-            return new Response('No such request', 400);
+    /**
+     * This method validates the information of the offer and the request to create the claim
+     * @param type $request
+     * @param type $requestId
+     * @param type $offerId
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     */
+    public function validate($request, $requestId, $offerId) {
+
+        if ($requestId == null || $offerId == null) {
+            return new Response('No such request or offer', 400);
         }
         $doctrine = $this->getDoctrine();
         $sessionId = $request->headers->get('X-SESSION-ID');
@@ -114,7 +127,7 @@ class ClaimController extends Controller {
         if ($sessionId == null) {
             return new Response('No such session', 400);
         }
-        if($session->getExpired()) {
+        if ($session->getExpired()) {
             return new Response('No such session', 400);
         }
         $userId = $session->getUserId();
@@ -126,7 +139,7 @@ class ClaimController extends Controller {
         }
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $offer = $offerRepo->findOneBy(array('requestId' => $requestId, 'deleted' => false, 'status' => 2));
-        
+
         if ($offer == null) {
             return new Response('No such offer', 400);
         }
@@ -134,14 +147,14 @@ class ClaimController extends Controller {
             return new Response('Not authorized to claim', 400);
         }
         $tangleId = $claimerRequest->getTangleId();
-        
+
         $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
         $tangle = $tangleRepo->findOneBy(array('id' => $tangleId, 'deleted' => false));
 
         if ($tangleId == null || $tangle == null) {
             return new Response('No such tangle', 400);
         }
-        
+
         return null;
     }
 

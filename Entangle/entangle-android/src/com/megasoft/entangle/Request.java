@@ -52,8 +52,9 @@ public class Request extends Activity {
 		String sessionID = (String) getIntent().getCharSequenceExtra(
 				"sessionID");
 		int requestId = (int) getIntent().getIntExtra("requestId", -1);
+		int offerId = (int) getIntent().getIntExtra("offerId", -1);
 		GetRequest requestTangleOwnerMail = new GetRequest(Config.API_BASE_URL_SERVER
-				+ "/tangleOwnerAndClaimerMail/" + requestId + "/claim") {
+				+ "/tangleOwnerAndClaimerMail/" + requestId + "/claim/" + offerId + "/user") {
 
 			protected void onPostExecute(String response) {
 				try {
@@ -79,6 +80,7 @@ public class Request extends Activity {
 			intent.putExtra("sender", claimerMail);
 			intent.putExtra("requestId", requestId);
 			intent.putExtra("sessionID", sessionID);
+			intent.putExtra("offerId", offerId);
 	}
 
 	@Override

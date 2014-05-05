@@ -66,12 +66,12 @@ withdraw_offer:
         offerId: \d+
 
 getMails:
-    pattern: /tangleOwnerAndClaimerMail/{requestId}/claim
+    pattern: /tangleOwnerAndClaimerMail/{requestId}/claim/{offerId}/user
     defaults: { _controller: MegasoftEntangleBundle:Claim:getMails }
     methods: [GET]
     
 createClaim:
-    pattern: /claim/{requestId}/sendClaim
+    pattern: /claim/{requestId}/sendClaim/{offerId}/user
     defaults: { _controller: MegasoftEntangleBundle:Claim:createClaim }
     methods: [POST]
         
