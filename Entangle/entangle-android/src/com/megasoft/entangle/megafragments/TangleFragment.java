@@ -215,7 +215,7 @@ public class TangleFragment extends Fragment {
 							requesterButtonText, requestPrice, requestOffersCount, this);
 			transaction.add(R.id.streamLayout, requestFragment);
 			transaction.commit();
-		} catch (JSONException e) {
+		} catch (JSONException e) { 
 			e.printStackTrace();
 		}
 	}
