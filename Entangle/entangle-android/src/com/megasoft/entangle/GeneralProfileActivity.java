@@ -39,6 +39,14 @@ public class GeneralProfileActivity extends Activity {
 		}
 	}
 
+	/*
+	 * this method gets the sessionId and sends a request to the server and then
+	 * calls goToLogout method
+	 * 
+	 * 
+	 * @author maisaraFarahat
+	 */
+
 	@SuppressWarnings("deprecation")
 	public void logout() {
 
@@ -78,8 +86,7 @@ public class GeneralProfileActivity extends Activity {
 
 		prefsEditor.commit();
 
-		Intent intent = new Intent(getApplicationContext(),
-				LoginActivity.class);
+		Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		intent.putExtra("EXIT", true);
 		startActivity(intent);
