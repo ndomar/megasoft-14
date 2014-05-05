@@ -26,6 +26,7 @@
             android:visibility="gone" />
 
         <Button
+            android:id="@+id/manage_pending_invitation_refresh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="refresh"
