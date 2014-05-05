@@ -137,15 +137,16 @@ class NotificationCenter
     private $requestDeletedNotificationId = 6;
 
     /**
-     * new claim notification id
-     * @var int
-     */
-    private $newClaimNotificationId = 7;
-    /**
      * request reopen notification id
      * @var int
      */
     private $reopenRequestNotificationId = 7;
+
+    /**
+     * new claim notification id
+     * @var int
+     */
+    private $newClaimNotificationId = 8;
 
 
     /**
@@ -169,6 +170,7 @@ class NotificationCenter
      */
     function notificationCenter($userID, $notification)
     {
+
         $Authorization = $this->container->getParameter('GOOGLE_API_KEY');
         $serverUrl = $this->container->getParameter('SERVER_URL');
 
@@ -187,7 +189,6 @@ class NotificationCenter
         $body = array("registration_ids" => $regIdArray,
             "data" => $notification,
         );
-
 
         $request = curl_init($serverUrl);
         curl_setopt($request, CURLOPT_HTTPHEADER, $header);
@@ -398,7 +399,7 @@ class NotificationCenter
         if (!$title)
             $title = $this->newOfferNotificationTitle;
         if ($body)
-            $body = $this->formatMessage($body, $from, null);
+            $body = $this->formatMessage($body, $from->getName(), null);
         else
             $body = $from->getName() . "made a new offer";
 
@@ -445,7 +446,7 @@ class NotificationCenter
             $body = $fromName . "deleted his offer";
 
         $data = array('notificationId' => $notification->getId(), 'title' => $title, 'body' => $body, 'type' => $this->offerDeletedNotificationId,
-            'offerId' => $offerId);
+            'offerId' => $offerId, 'requestId' => $request->getId());
         return $this->notificationCenter($to->getId(), $data);
 
     }
@@ -518,7 +519,9 @@ class NotificationCenter
         else
             $body = $fromName . "reopened his request";
 
-        $data = array("title" => $title, "body" => $body, "type" => $this->reopenRequestNotificationId, "requestId" => $requestId);
+        $tangleId = $request->getTangle()->getId();
+
+        $data = array("title" => $title, "body" => $body, "type" => $this->reopenRequestNotificationId, "requestId" => $requestId, "tangleId" => $tangleId,);
 
         foreach ($offers as $offer) {
             $notification = new ReopenRequestNotification();
@@ -588,7 +591,7 @@ class NotificationCenter
     function formatMessage($message, $from, $to)
     {
         if ($from)
-            $message = str_replace("{{from}} ", $from, $message);
+            $message = str_replace("{{from}}", $from, $message);
         if ($to)
             $message = str_replace("{{to}}", $to, $message);
         return $message;
@@ -623,7 +626,7 @@ class NotificationCenter
             }
         }
     }
-    
+
     /**
      * this function sends an email notification to user with userID
      * @param $email
