@@ -3,6 +3,7 @@ package com.megasoft.entangle;
 import com.megasoft.config.Config;
 import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
 import com.megasoft.requests.ImageRequest;
+import android.content.SharedPreferences;
 
 import android.app.ActionBar;
 import android.support.v4.app.FragmentManager;
@@ -31,17 +32,17 @@ public class HomeActivity extends FragmentActivity {
 	private String[] listTitles;
 	
 	/**
-	 * navigation drawer layout object
+	 * Navigation drawer layout object.
 	 */
 	private DrawerLayout drawer;
 	
 	/**
-	 * navigation drawer list view
+	 * Navigation drawer list view.
 	 */
 	private LinearLayout drawerList;
 	
 	/**
-	 * the main layout of the navigation drawer
+	 * The main layout of the navigation drawer.
 	 */
 	private LinearLayout drawerLayout;
 	private ActionBar actionBar;
@@ -54,13 +55,15 @@ public class HomeActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		
+		
+		
 		initNavigationDrawer();
 		initializeDrawerToggle();
 	
 	}
 	
 	/**
-	 * Switch fragment. switch views in the drawer layout navigation
+	 * Switch fragment. switch views in the drawer layout navigation.
 	 * 
 	 * @param tangleId, position of menu item
 	 * @return 
@@ -86,7 +89,7 @@ public class HomeActivity extends FragmentActivity {
 	}
 	
 	/**
-	 * Initialize the navigation drawer (sidebar menu)
+	 * Initialize the navigation drawer (sidebar menu).
 	 * 
 	 * @param 
 	 * @return 
@@ -122,19 +125,25 @@ public class HomeActivity extends FragmentActivity {
 	
 	
 	/**
-	 * Template method to show the profile of the user
+	 * Template method to show the profile of the user.
 	 * 
 	 * @param view
 	 * @return 
 	 * @author Mohamed Farghal
 	 */
 	public void showProfile(View view) {
-		Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
+		
+		SharedPreferences settings = this.getSharedPreferences(Config.SETTING, 0);
+		int userId = settings.getInt(Config.USER_ID, -1);	
+		Intent intent = new Intent(this, ProfileActivity.class);
+		intent.putExtra("tangleId", tangleId);
+		intent.putExtra("userId", userId);
+		startActivity(intent);
 	}
 	
 	
 	/**
-	 * Initialize the navigation drawer trigger button on the action bar
+	 * Initialize the navigation drawer trigger button on the action bar.
 	 * 
 	 * @param 
 	 * @return 
@@ -181,7 +190,7 @@ public class HomeActivity extends FragmentActivity {
 
 	
 	/**
-	 * Navigation drawer indicator click event
+	 * Navigation drawer indicator click event.
 	 * 
 	 * @param item
 	 * @return 
@@ -199,12 +208,25 @@ public class HomeActivity extends FragmentActivity {
 	 	        intent.putExtra("tangleId", this.tangleId);
 	 	        startActivity(intent);
 	 	        return true;
+	 	    
+	 	 	case R.id.action_invite:
+	 	 		Intent invitationIntent = new Intent(this, InviteUserActivity.class);
+	 	        invitationIntent.putExtra("tangleId", this.tangleId);
+	 	        startActivity(invitationIntent);
+	 	 		
 	 	    default:
 	 	        return super.onOptionsItemSelected(item);
 	 	 }
 
 	}
 	
+	/**
+	 * Redirects to Create tangle activity
+	 * 
+	 * @param view
+	 * @return 
+	 * @author Mohamed Farghal
+	 */
 	public void redirectToCreateTangle(View v) {
 		startActivity(new Intent(this, CreateTangleActivity.class));
 	}

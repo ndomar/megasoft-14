@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.megasoft.config.Config;
@@ -171,7 +172,7 @@ public class RequestActivity extends FragmentActivity {
 		RequestEntryFragment requestFragmet = new RequestEntryFragment();
 		Bundle args = new Bundle();
 		args.putString("description",json.getString("description"));
-		args.putString("requesterName",json.getString("requester"));
+		args.putString("requesterName",json.getString("requesterName"));
 		args.putString("date",json.getJSONObject("date").getString("date"));
 		args.putString("tags",getTags(json.getJSONArray("tags")));
 		args.putString("price",json.getString("price"));
@@ -243,6 +244,23 @@ public class RequestActivity extends FragmentActivity {
 
 		getMenuInflater().inflate(R.menu.request_information, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	     
+	 	 switch (item.getItemId()) {
+	 	 	case R.id.createOffer:
+	 	 		Intent intent = new Intent(this, CreateOfferActivity.class);
+	 	        intent.putExtra("tangleId", this.tangleId);
+	 	        intent.putExtra("requestId", this.requestId);
+	 	        startActivity(intent);
+	 	        return true;
+	 	 		
+	 	    default:
+	 	        return super.onOptionsItemSelected(item);
+	 	 }
+
 	}
 
 }
