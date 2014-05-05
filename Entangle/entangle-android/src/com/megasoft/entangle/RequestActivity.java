@@ -176,7 +176,9 @@ public class RequestActivity extends FragmentActivity {
 		args.putString("date",json.getJSONObject("date").getString("date"));
 		args.putString("tags",getTags(json.getJSONArray("tags")));
 		args.putString("price",json.getString("price"));
-		args.putString("deadline",json.getJSONObject("deadline").getString("date"));
+		if(json.get("deadline") == null){
+			args.putString("deadline",json.getJSONObject("deadline").getString("date"));
+		}
 		args.putString("status",json.getString("status"));
 		requestFragmet.setArguments(args);
 		

@@ -87,6 +87,7 @@ public class LoginActivity extends Activity {
 				Config.SESSION_ID, null) != null) {
 			Intent registerActivity = new Intent(this, HomeActivity.class);
 			startActivity(registerActivity);
+			finish();
 		}
 
 	}
