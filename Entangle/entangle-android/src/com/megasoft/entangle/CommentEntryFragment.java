@@ -7,11 +7,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+/**
+ * The class responsible for the comment entry fragment
+ * @author mohamedbassem
+ *
+ */
 public class CommentEntryFragment extends Fragment {
 	
 	private View view;
+	/**
+	 * The commenter name
+	 */
 	private String commenter;
+	
+	/**
+	 * The comment body
+	 */
 	private String comment;
+	
+	/**
+	 * The comment date
+	 */
 	private String commentDate;
 
 	@Override
@@ -23,15 +39,27 @@ public class CommentEntryFragment extends Fragment {
 		((TextView)view.findViewById(R.id.commenter)).setText(commenter);
 		return view;
 	}
-
+	
+	/**
+	 * Sets the commenter
+	 * @param commenter
+	 */
 	public void setCommenter(String commenter) {
 		this.commenter = commenter;
 	}
-
+	
+	/**
+	 * Sets the comment
+	 * @param comment
+	 */
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
 
+	/**
+	 * Sets the comment date
+	 * @param commentDate
+	 */
 	public void setCommentDate(String commentDate) {
 		this.commentDate = commentDate;
 	}
