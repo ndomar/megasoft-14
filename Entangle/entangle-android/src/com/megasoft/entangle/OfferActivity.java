@@ -363,8 +363,11 @@ public class OfferActivity extends Activity {
 					protected void onPostExecute(String response) {
 						status = this.getStatusCode();
 						if (status == 201) {
-							acceptOffer.setVisibility(View.GONE);
+							acceptOffer.setVisibility(View.INVISIBLE);
 							offerStatus.setText("Accepted");
+							offerStatus.setTextColor(getResources().getColor(
+									R.color.green));
+							
 						} else {
 							if (status == 405) {
 								Toast toast = Toast
