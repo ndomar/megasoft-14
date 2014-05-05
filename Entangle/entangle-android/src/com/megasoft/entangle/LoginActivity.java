@@ -5,14 +5,18 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.megasoft.config.Config;
@@ -31,11 +35,44 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		username = (EditText) findViewById(R.id.usernameBox);
-		password = (EditText) findViewById(R.id.passwordBox);
-		login = (Button) findViewById(R.id.loginButton);
-		register = (Button) findViewById(R.id.registerButton);
+		username = (EditText) findViewById(R.id.login_username);
+		password = (EditText) findViewById(R.id.login_password);
+
+		Intent intent = new Intent(this, GCMRegistrationActivity.class);
+		startActivity(intent);
 		
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(username, InputMethodManager.SHOW_IMPLICIT);
+
+		getActionBar().hide();
+
+		final EditText onTouch = (EditText) findViewById(R.id.login_username);
+		username.setOnTouchListener(new View.OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				TextView showError = (TextView) findViewById(R.id.invalidUserNameOrPassword);
+				showError.setVisibility(View.INVISIBLE);
+				username.requestFocus();
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.showSoftInput(username, InputMethodManager.SHOW_IMPLICIT);
+				return true;
+			}
+		});
+		final EditText onTouch2 = (EditText) findViewById(R.id.login_username);
+		password.setOnTouchListener(new View.OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				TextView showError = (TextView) findViewById(R.id.invalidUserNameOrPassword);
+				showError.setVisibility(View.INVISIBLE);
+				password.requestFocus();
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.showSoftInput(password, InputMethodManager.SHOW_IMPLICIT);
+				return true;
+			}
+		});
+
 		if (getSharedPreferences(Config.SETTING, 0).getString(
 				Config.SESSION_ID, null) != null) {
 			Intent registerActivity = new Intent(this, HomeActivity.class);
@@ -131,7 +168,6 @@ public class LoginActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
 	public void register(View view) {
 		Intent registerActivity = new Intent(this, InviteUserActivity.class);
 		startActivity(registerActivity);

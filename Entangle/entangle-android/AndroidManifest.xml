@@ -119,7 +119,6 @@
             android:label="@string/title_activity_manage_pending_invitation" >
         </activity>
 
-     
         <activity
             android:name="com.megasoft.entangle.ProfileActivity"
             android:label="@string/profileActivity" >
@@ -146,6 +145,10 @@
         </activity>
 
         <!-- this is GCM manifest -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity
             android:name="com.megasoft.notifications.GCMRegistrationActivity"
             android:label="@string/title_activity_gcmregistration" >
