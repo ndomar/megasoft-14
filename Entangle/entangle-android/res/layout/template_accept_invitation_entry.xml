@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ImageView
+        android:id="@+id/invitation_avatar"
+        android:layout_width="@dimen/avatarMedium"
+        android:layout_height="@dimen/avatarMedium"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/marginMedium"
+        android:layout_marginTop="@dimen/marginMedium"
+        android:src="@drawable/ic_action_person" />
+
+    <TextView
+        android:id="@+id/invitation_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/invitation_avatar"
+        android:layout_marginLeft="@dimen/marginSmall"
+        android:layout_marginTop="@dimen/marginAvatar"
+        android:layout_toRightOf="@+id/invitation_avatar"
+        android:text="Mohamed Farghal"
+        android:textSize="@dimen/textMedium" />
+
+    <Button
+        android:id="@+id/invitation_right"
+        android:layout_width="@dimen/iconSmall"
+        android:layout_height="@dimen/iconSmall"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/marginSmall"
+        android:layout_alignBottom="@+id/invitation_avatar"
+        android:background="@drawable/ic_action_accept_green" />
+
+    <Button
+        android:id="@+id/invitation_wrong"
+        android:layout_width="@dimen/iconSmall"
+        android:layout_height="@dimen/iconSmall"
+        android:layout_alignBottom="@+id/invitation_right"
+        android:layout_marginRight="@dimen/marginSmall"
+        android:layout_toLeftOf="@+id/invitation_right"
+        android:background="@drawable/ic_action_remove_red" />
+    
+    <View
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/invitation_avatar"
+        android:layout_marginTop="@dimen/marginMedium"
+        style="@style/Divider"
+        android:background="@color/lightGray"
+    />
+
+</RelativeLayout>

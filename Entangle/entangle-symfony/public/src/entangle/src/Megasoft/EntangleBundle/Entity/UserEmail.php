@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity
  */
-class UserEmail
-{
+class UserEmail {
+
     /**
      * @var integer
      *
@@ -34,7 +34,7 @@ class UserEmail
      * @ORM\Column(name="email", type="string", length=255)
      */
     private $email;
-    
+
     /**
      *
      * @var User
@@ -43,14 +43,14 @@ class UserEmail
      * @ORM\JoinColumn(name="userId", referencedColumnName="id")
      */
     private $user;
-    
+
     /**
      *
      * @var boolean
      * 
      * @ORM\Column(name="verified", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
      */
-    private $verified  = false;
+    private $verified = false;
 
     /**
      *
@@ -59,14 +59,13 @@ class UserEmail
      * @ORM\Column(name="deleted", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
      */
     private $deleted = false;
-    
+
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -76,8 +75,7 @@ class UserEmail
      * @param integer $userId
      * @return UserEmails
      */
-    public function setUserId($userId)
-    {
+    public function setUserId($userId) {
         $this->userId = $userId;
 
         return $this;
@@ -88,8 +86,7 @@ class UserEmail
      *
      * @return integer 
      */
-    public function getUserId()
-    {
+    public function getUserId() {
         return $this->userId;
     }
 
@@ -99,8 +96,7 @@ class UserEmail
      * @param string $email
      * @return UserEmails
      */
-    public function setEmail($email)
-    {
+    public function setEmail($email) {
         $this->email = $email;
 
         return $this;
@@ -111,8 +107,7 @@ class UserEmail
      *
      * @return string 
      */
-    public function getEmail()
-    {
+    public function getEmail() {
         return $this->email;
     }
 
@@ -122,8 +117,7 @@ class UserEmail
      * @param \Megasoft\EntangleBundle\Entity\User $user
      * @return UserEmail
      */
-    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null)
-    {
+    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null) {
         $this->user = $user;
 
         return $this;
@@ -134,8 +128,7 @@ class UserEmail
      *
      * @return \Megasoft\EntangleBundle\Entity\User 
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->user;
     }
 
@@ -145,8 +138,7 @@ class UserEmail
      * @param boolean $deleted
      * @return UserEmail
      */
-    public function setDeleted($deleted)
-    {
+    public function setDeleted($deleted) {
         $this->deleted = $deleted;
 
         return $this;
@@ -157,8 +149,7 @@ class UserEmail
      *
      * @return boolean 
      */
-    public function getDeleted()
-    {
+    public function getDeleted() {
         return $this->deleted;
     }
 
@@ -168,8 +159,7 @@ class UserEmail
      * @param boolean $verified
      * @return UserEmail
      */
-    public function setVerified($verified)
-    {
+    public function setVerified($verified) {
         $this->verified = $verified;
 
         return $this;
@@ -180,8 +170,8 @@ class UserEmail
      *
      * @return boolean 
      */
-    public function getVerified()
-    {
+    public function getVerified() {
         return $this->verified;
     }
+
 }
