@@ -196,7 +196,7 @@ public class HomeActivity extends FragmentActivity {
 	 	 switch (item.getItemId()) {
 	 	 	case R.id.createRequest:
 	 	 		Intent intent = new Intent(this, CreateRequestActivity.class);
-	 	        intent.putExtra("tangleID", this.tangleId);
+	 	        intent.putExtra("tangleId", this.tangleId);
 	 	        startActivity(intent);
 	 	        return true;
 	 	    default:
