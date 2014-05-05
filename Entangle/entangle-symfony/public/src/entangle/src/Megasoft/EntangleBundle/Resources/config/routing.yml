@@ -11,6 +11,11 @@ fetch_tags_in_tangle:
     requirements:
         tangleId: \d+
         
+check_membership:
+    pattern: /tangle/{tangleId}/check-membership
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:checkMembership }
+    methods: [POST]
+
 invite:
     pattern: /tangle/{tangleId}/invite
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
@@ -75,22 +80,23 @@ createClaim:
     defaults: { _controller: MegasoftEntangleBundle:Claim:createClaim }
     methods: [POST]
  
+dummy:
+    pattern: /dummy
+    defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
+
+
 create_Offer:
     pattern: /tangle/{tangleId}/request/{requestId}/offer
     defaults: { _controller: MegasoftEntangleBundle:CreateOffer:createOffer }
     methods: [POST]
 
-dummy:
-    pattern: /dummy
-    defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
- 
 delete_request:
     pattern: /request/{requestId}
     defaults: { _controller: MegasoftEntangleBundle:Request:Delete }
     methods: [DELETE]
     requirements:
         requestId: \d+
-
+    
 get_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
@@ -98,7 +104,7 @@ get_offer:
 index:
     pattern: /
     defaults: { _controller: MegasoftEntangleBundle:Site:index }
-  
+    
 get_tangles:
     pattern: /tangle
     defaults: { _controller: MegasoftEntangleBundle:Tangle:getTangles }
@@ -115,8 +121,8 @@ create_tangle:
     methods: [POST]
 
 accept_tangle_invitation:
-    pattern: /tangle-invitation/{tangleId}/{userId}/accept
-    defaults: { _controller: MegasoftEntangleBundle:Tangle:addUser}
+    pattern: /invitation/{invitationCode}
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:acceptInvitation}
     methods: [PUT]
 
 leave_tangle:
@@ -180,13 +186,13 @@ _test:
   defaults: {_controller: MegasoftEntangleBundle:Notification:test}
   methods: [GET]
 
+
 get_my_requests:
     pattern:  /tangle/{tangleId}/userRequests
     defaults: { _controller: MegasoftEntangleBundle:Tangle:userRequests}
     methods: [GET]
-    
+ 
 _mail:
   pattern: /notification/mail
   defaults: {_controller:MegasoftEntangleBundle:Notification:SendEmail}
   methods: [GET]
-

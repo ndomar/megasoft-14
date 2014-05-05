@@ -51,6 +51,14 @@
             android:label="@string/title_activity_invite_users" >
         </activity>
         <activity
+            android:name="com.megasoft.entangle.GeneralProfileActivity"
+            android:label="@string/title_activity_general_profile" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.SplashActivity"
+            android:label="@string/title_activity_splash" >
+        </activity>
+        <activity
             android:name="com.megasoft.entangle.CreateTangleActivity"
             android:label="@string/title_activity_create_tangle" >
         </activity>
@@ -109,6 +117,10 @@
         <activity
             android:name="com.megasoft.entangle.ProfileActivity"
             android:label="@string/profileActivity" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.LogoutActivity"
+            android:label="@string/logoutActivity" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.EditProfileActivity"
