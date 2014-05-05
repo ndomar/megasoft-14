@@ -4,11 +4,11 @@ namespace Megasoft\EntangleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\Tests\String;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Megasoft\EntangleBundle\Entity\Offer;
 use Megasoft\EntangleBundle\Entity\Message;
-use Megasoft\EntangleBundle\Entity\Request;
 use Megasoft\EntangleBundle\Entity\user;
 use Megasoft\EntangleBundle\Entity\Tangle;
 use Megasoft\EntangleBundle\Entity\UserTangle;
@@ -153,7 +153,7 @@ class OfferController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @author Mansour
      */
-    public function changeOfferPriceAction(Symfony\Component\HttpFoundation\Request $request, $offerid)
+    public function changeOfferPriceAction(Request $request, $offerid)
     {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
@@ -170,6 +170,7 @@ class OfferController extends Controller
         }
         $offerRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Offer');
         $requestOffer = $offerRepo->findOneBy(array('id' => $offerid));
+        $oldPrice = $requestOffer->getRequestedPrice();
         if ($requestOffer == null) {
             return new Response("Not found", 404);
         }
@@ -198,6 +199,14 @@ class OfferController extends Controller
             return new Response("Same price, enter a new one", 400);
         }
         $requestOffer->setRequestedPrice($newOfferPrice);
+
+        //notification
+
+        $notificationCenter = $this->get('notification_center.service');
+        $title = "offer changed";
+        $body = "{{from}} changed his offer";
+        $notificationCenter->offerChangeNotification($requestOffer->getId(), $oldPrice, $title, $body);
+
         $this->getDoctrine()->getManager()->persist($requestOffer);
         $this->getDoctrine()->getManager()->flush();
         return new Response('Price changed', 200);
@@ -209,7 +218,7 @@ class OfferController extends Controller
      * @return Response $response returns 201 or 409 status code and message depending on verification
      * @author sak9
      */
-    public function acceptOfferAction(Symfony\Component\HttpFoundation\Request $request)
+    public function acceptOfferAction(\Symfony\Component\HttpFoundation\Request $request)
     {
         $doctrine = $this->getDoctrine();
         $json = $request->getContent();
@@ -306,6 +315,13 @@ class OfferController extends Controller
         $request->setStatus($request->FROZEN);
         $requester->setCredit($requesterBalance - $price);
         $offer->setStatus(1);
+
+        //notification
+        $notificationCenter = $this->get('notification_center.service');
+        $title = "accept offer";
+        $body = "{{from}} accepted your offer";
+        $notificationCenter->offerChosenNotification($offer->getId(), $title, $body);
+
         $doctrine->getManager()->persist($request);
         $doctrine->getManager()->persist($requester);
         $doctrine->getManager()->persist($offer);
@@ -347,6 +363,13 @@ class OfferController extends Controller
         if ($offer->getStatus() == $offer->ACCEPTED) {
             $this->unfreezePoints($offer->getRequest(), $offer->getRequestedPrice());
         }
+
+        // notification
+        $notificationCenter = $this->get('notification_center.service');
+        $title = "offer deleted";
+        $body = "{{from}} deleted his offer";
+        $notificationCenter->offerDeletedNotification($offer->getId(), $title, $body);
+
 
         $offer->setDeleted(true);
         $offer->setStatus($offer->FAILED);
