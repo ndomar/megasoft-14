@@ -50,6 +50,7 @@ class TangleController extends Controller {
         $requestsJsonArray = array();
         foreach ($requests as $request) {
             $requestsJsonArray[] = array(
+                'userId' => $request->getUserId(), 'username' => $request->getUser()->getName(),
                 'id' => $request->getId(), 'description' => $request->getDescription(),
                 'offersCount' => sizeof($request->getOffers()), 'price' => $request->getRequestedPrice(),
                 'status' => $request->getStatus(), 'icon' => $request->getIcon(),
