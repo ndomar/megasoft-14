@@ -33,7 +33,7 @@ import com.megasoft.requests.GetRequest;
 /**
  * This is the fragment that holds the stream of the requests
  * 
- * @author Farghal , HebaAamer
+ * @author Mohamed Farghal , HebaAamer
  */
 public class TangleFragment extends Fragment {
 

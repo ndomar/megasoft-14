@@ -1,31 +1,23 @@
 package com.megasoft.entangle;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.megasoft.config.Config;
-import com.megasoft.entangle.FilteringFragment;
 import com.megasoft.entangle.R;
 import com.megasoft.entangle.StreamRequestFragment;
 import com.megasoft.requests.GetRequest;
@@ -79,7 +71,8 @@ public class MyRequestsFragment extends Fragment {
 		TextView tangle = (TextView) view.findViewById(R.id.tangleName);
 		sendRequest(rootResource + "/tangle/" + tangleId + "/userRequests");
 		tangle.setText(tangleName);
-		LinearLayout buttom = (LinearLayout)view.findViewById(R.id.footerLayout);
+		LinearLayout buttom = (LinearLayout) view
+				.findViewById(R.id.footerLayout);
 		buttom.removeAllViews();
 		return view;
 	}
