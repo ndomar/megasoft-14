@@ -6,37 +6,33 @@ import java.util.concurrent.ExecutionException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
+import android.app.IntentService;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.megasoft.config.Config;
 import com.megasoft.entangle.MainActivity;
-import com.megasoft.entangle.R;
-import com.megasoft.entangle.R.layout;
 import com.megasoft.requests.PostRequest;
 import com.megasoft.utils.UI;
 
-/**
- * this activity is responsible for registering to gcm or fetching gcm key from
- * shared prefs
- * 
- * @author Shaban
- * 
- */
-public class GCMRegistrationActivity extends Activity {
+public class GCMRegisteration extends IntentService {
 
-	/**
-	 * google play services notification resolution
-	 */
-	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+	public GCMRegisteration() {
+		super("GCMRegisteration");
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	protected void onHandleIntent(Intent arg0) {
+		// TODO Auto-generated method stub
+		register();
+	}
+
 	/**
 	 * key of registration ID in shared prefs
 	 */
@@ -63,14 +59,8 @@ public class GCMRegistrationActivity extends Activity {
 	 * URI for registration
 	 */
 
-	public static final String uri = "http://192.168.43.60/entangle/app_dev.php/notification/register";
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		register();
-	}
+	public static final String uri = Config.API_BASE_URL_SERVER
+			+ "/notification/register";
 
 	/**
 	 * this method checks if a user is has GCM registration id. if no it asks
@@ -81,40 +71,10 @@ public class GCMRegistrationActivity extends Activity {
 	 * @author Shaban
 	 */
 	public void register() {
-		if (checkPlayServices()) {
-			regid = getRegistrationId(getApplicationContext());
-			if (regid.equals(""))
-				registerInBackground();
-			else
-				UI.makeToast(getApplicationContext(),
-						"user already registerd to GCM", Toast.LENGTH_SHORT);
-		} else {
-			Log.i(TAG, "no play services api found");
-		}
-	}
-
-	/**
-	 * Check the device to make sure it has the Google Play Services APK. If it
-	 * doesn't, display a dialog that allows users to download the APK from the
-	 * Google Play Store or enable it in the device's system settings.
-	 * 
-	 * @author Google
-	 */
-	private boolean checkPlayServices() {
-		int resultCode = GooglePlayServicesUtil
-				.isGooglePlayServicesAvailable(this);
-		if (resultCode != ConnectionResult.SUCCESS) {
-			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-				GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-						PLAY_SERVICES_RESOLUTION_REQUEST).show();
-			} else {
-				Log.i("ERROR", "This device is not supported.");
-
-				finish();
-			}
-			return false;
-		}
-		return true;
+		regid = getRegistrationId(getApplicationContext());
+		if (regid.equals(""))
+			registerInBackground();
+		
 	}
 
 	/**
@@ -165,7 +125,7 @@ public class GCMRegistrationActivity extends Activity {
 			protected void onPostExecute(String regid) {
 				sendRegisterationId(regid);
 				Log.i(TAG, regid);
-				storeRegisteratinId(regid);
+				 storeRegisteratinId(regid);
 			}
 		}.execute(null, null, null);
 	}
@@ -193,8 +153,6 @@ public class GCMRegistrationActivity extends Activity {
 				// TODO Auto-generated method stub
 				try {
 					String res = this.get();
-					UI.makeToast(getApplicationContext(), "" + res,
-							Toast.LENGTH_LONG);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -218,9 +176,8 @@ public class GCMRegistrationActivity extends Activity {
 	 * @author Shaban
 	 */
 	protected String getSessionId() {
-		SharedPreferences prefs = getSharedPreferences("sessionIDPrefs",
-				MODE_PRIVATE);
-		// return "5";
+		SharedPreferences prefs = getSharedPreferences(Config.SETTING, 0);
+		Log.i(TAG, prefs.getString(Config.SESSION_ID, ""));
 		return prefs.getString(Config.SESSION_ID, "");
 	}
 

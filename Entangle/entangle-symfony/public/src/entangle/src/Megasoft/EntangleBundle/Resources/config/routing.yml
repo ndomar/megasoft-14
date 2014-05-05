@@ -10,7 +10,12 @@ fetch_tags_in_tangle:
     methods: [GET]
     requirements:
         tangleId: \d+
-        
+
+check_membership:
+    pattern: /tangle/{tangleId}/check-membership
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:checkMembership }
+    methods: [POST]
+
 invite:
     pattern: /tangle/{tangleId}/invite
     defaults: { _controller: MegasoftEntangleBundle:Tangle:invite }
@@ -109,6 +114,7 @@ dummy:
 get_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
+    methods: [GET]
 
 
 
@@ -122,14 +128,11 @@ get_tangles:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:getTangles }
     methods: [GET]
 
-get_offer:
-    pattern: /offer/{offerId}
-    defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
-
 check_availability:
     pattern: /tangle/check
     defaults: { _controller: MegasoftEntangleBundle:Tangle:checkAvailability }
     methods: [GET]
+
 
 create_tangle:
     pattern: /tangle
@@ -175,8 +178,8 @@ dummy:
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
 
 accept_tangle_invitation:
-    pattern: /tangle-invitation/{tangleId}/{userId}/accept
-    defaults: { _controller: MegasoftEntangleBundle:Tangle:addUser}
+    pattern: /invitation/{invitationCode}
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:acceptInvitation}
     methods: [PUT]
 
 leave_tangle:
@@ -202,11 +205,6 @@ get_tangles:
     pattern: /tangle
     defaults: { _controller: MegasoftEntangleBundle:Tangle:getTangles }
     methods: [GET]
-
-
-get_offer:
-    pattern: /offer/{offerId}
-    defaults: { _controller: MegasoftEntangleBundle:Offer:offer }    
 
 megasoft_entangle_about:
     pattern:  /about
@@ -259,3 +257,14 @@ _test:
   pattern: /notification/test
   defaults: {_controller: MegasoftEntangleBundle:Notification:test}
   methods: [GET]
+
+comment_on_offer:
+    pattern:  /offer/{offerId}/comment
+    defaults: { _controller: MegasoftEntangleBundle:Offer:comment}
+    methods: [POST]
+
+_mail:
+  pattern: /notification/mail
+  defaults: {_controller:MegasoftEntangleBundle:Notification:SendEmail}
+  methods: [GET]
+
