@@ -76,8 +76,11 @@ public class MyRequestsFragment extends Fragment {
 
 		tangleId = getArguments().getInt("tangleId");
 		tangleName = getArguments().getString("tangleName");
-
+		TextView tangle = (TextView) view.findViewById(R.id.tangleName);
 		sendRequest(rootResource + "/tangle/" + tangleId + "/userRequests");
+		tangle.setText(tangleName);
+		LinearLayout buttom = (LinearLayout)view.findViewById(R.id.footerLayout);
+		buttom.removeAllViews();
 		return view;
 	}
 
@@ -93,6 +96,7 @@ public class MyRequestsFragment extends Fragment {
 	 * 
 	 * @param res
 	 *            , is the response string of the stream request
+	 * @author HebaAamer
 	 */
 	private void setTheLayout(String res) {
 		try {
@@ -128,6 +132,7 @@ public class MyRequestsFragment extends Fragment {
 	 * 
 	 * @param request
 	 *            , is the request to be added in the layout
+	 * @author HebaAamer
 	 */
 	@SuppressLint("NewApi")
 	private void addRequest(JSONObject request) {
@@ -161,6 +166,7 @@ public class MyRequestsFragment extends Fragment {
 	 * 
 	 * @param url
 	 *            , is the URL to which the request is going to be sent
+	 * @author HebaAamer
 	 */
 	public void sendRequest(final String url) {
 		sessionId = activity.getSharedPreferences(Config.SETTING, 0).getString(
@@ -187,6 +193,7 @@ public class MyRequestsFragment extends Fragment {
 	 * This is a getter method used to get the tangle name
 	 * 
 	 * @return tangle name
+	 * @author HebaAamer
 	 */
 	private String getTangleName() {
 		return tangleName;
@@ -196,6 +203,7 @@ public class MyRequestsFragment extends Fragment {
 	 * This is a getter method used to get the session id of the user
 	 * 
 	 * @return session id
+	 * @author HebaAamer
 	 */
 	private String getSessionId() {
 		return sessionId;
@@ -205,6 +213,7 @@ public class MyRequestsFragment extends Fragment {
 	 * This is a getter method used to get the tangle id
 	 * 
 	 * @return tangle id
+	 * @author HebaAamer
 	 */
 	private int getTangleId() {
 		return tangleId;

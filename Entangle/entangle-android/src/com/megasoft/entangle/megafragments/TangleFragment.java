@@ -115,43 +115,12 @@ public class TangleFragment extends Fragment {
         
          sendFilteredRequest(rootResource + "/tangle/" + tangleId
  				+ "/request");
-        setAttributes();
-        
         Log.e("test", tangleId+"");
         Log.e("test", sessionId+"");
  		setRedirections();
  		tangle.setText(tangleName);
         return view;
     }
-	
-	/**
-	 * This method is called to set the attributes of the activity passed from
-	 * the previous activity
-	 */
-	private void setAttributes() {
-//		if (activity.getIntent() != null) {
-//			if (!activity.getIntent().hasExtra("sessionId")) {
-//				intent = new Intent(activity, LoginActivity.class);
-//				// to be changed to login activity
-//			}
-//			if (!activity.getIntent().hasExtra("tangleId")) {
-//				intent = new Intent(activity, LoginActivity.class);
-//				// to be changed to tangles' list activity
-//			}
-//			if (!activity.getIntent().hasExtra("tangleName")) {
-//				intent = new Intent(activity, LoginActivity.class);
-//				// to be changed to tangles' list activity
-//			}
-//			tangleId = activity.getIntent().getIntExtra("tangleId", 0);
-//			tangleName = activity.getIntent().getStringExtra("tangleName");
-//			sessionId = activity.getIntent().getStringExtra("sessionId");
-//			TextView tangle = (TextView) activity.findViewById(R.id.tangleName);
-//			tangle.setText(tangleName);
-//		} else {
-//			intent = new Intent(activity, LoginActivity.class);
-//			// to be changed to login activity
-//		}
-	}
 
 	/**
 	 * This method is used to set the layout of the stream dynamically according
@@ -225,15 +194,6 @@ public class TangleFragment extends Fragment {
 	 * (stream, members, profile, invite) buttons
 	 */
 	private void setRedirections() {
-		Button stream = (Button) view.findViewById(R.id.stream);
-		setButtonRedirection(stream, "TangleActivity");
-
-		Button members = (Button) view.findViewById(R.id.members);
-		setButtonRedirection(members, "Members");
-
-		Button profile = (Button) view.findViewById(R.id.profile);
-		setButtonRedirection(profile, "ProfileActivity");
-
 		Button invite = (Button) view.findViewById(R.id.invite);
 		setButtonRedirection(invite, "InviteUserActivity");
 	}
@@ -259,7 +219,6 @@ public class TangleFragment extends Fragment {
 										+ activityName));
 						intent.putExtra("tangleId", getTangleId());
 						intent.putExtra("tangleName", getTangleName());
-						intent.putExtra("sessionId", getSessionId());
 						startActivity(intent);
 					}
 				} catch (ClassNotFoundException e) {
