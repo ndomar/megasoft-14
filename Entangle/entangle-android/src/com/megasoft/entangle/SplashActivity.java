@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-
+/*
+	This class is responsible for creating the Splash activity .
+ */
 public class SplashActivity extends Activity {
 
 	public static final String REGISTER_LINK = "http://entangle.io/app_dev.php/register";
