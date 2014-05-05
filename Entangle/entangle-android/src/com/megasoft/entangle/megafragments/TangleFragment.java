@@ -30,10 +30,26 @@ import com.megasoft.entangle.R;
 import com.megasoft.entangle.StreamRequestFragment;
 import com.megasoft.requests.GetRequest;
 
+/**
+ * This is the fragment that holds the stream of the requests
+ * 
+ * @author Farghal , HebaAamer
+ */
 public class TangleFragment extends Fragment {
 
+	/**
+	 * The FragmentActivity that hosts that fragment
+	 */
 	private FragmentActivity activity;
+
+	/**
+	 * The View of the fragment
+	 */
 	private View view;
+
+	/**
+	 * The TextView that holds the name of the tangle
+	 */
 	private TextView tangle;
 
 	/**
@@ -438,11 +454,15 @@ public class TangleFragment extends Fragment {
 
 	@Override
 	public void onAttach(Activity activity) {
-
 		this.activity = (FragmentActivity) activity;
 		super.onAttach(activity);
 	}
 
+	/**
+	 * This is a getter method used to get the name of the tangle
+	 * 
+	 * @return session id
+	 */
 	public String getTangleName() {
 		return tangleName;
 	}

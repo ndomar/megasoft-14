@@ -39,9 +39,9 @@ public class StreamRequestFragment extends Fragment {
 	 * The text of the request button
 	 */
 	private String requestString;
-	
+
 	/**
-	 * The view of the request 
+	 * The view of the request
 	 */
 	private View view;
 
@@ -59,7 +59,7 @@ public class StreamRequestFragment extends Fragment {
 	 * The requester button
 	 */
 	private TextView requester;
-	
+
 	/**
 	 * The requester avatar
 	 */
@@ -74,13 +74,17 @@ public class StreamRequestFragment extends Fragment {
 	 * The offers count text
 	 */
 	private String offersCount;
-	
-	private Activity activity;
 
+	/**
+	 * The id of the current tangle
+	 */
 	private int tangleId;
-	
+
+	/**
+	 * The name of the current tangle
+	 */
 	private String tangleName;
-	
+
 	/**
 	 * This method is used to create an instance of the StreamRequestFragment
 	 * and sets its fields
@@ -96,7 +100,8 @@ public class StreamRequestFragment extends Fragment {
 	 * @return an instance of the StreamRequestFragment
 	 */
 	public static StreamRequestFragment createInstance(int requestId,
-			int requesterId, String requestString, String requesterString, String price, String offersCount, int tangleId, String tangleName) {
+			int requesterId, String requestString, String requesterString,
+			String price, String offersCount, int tangleId, String tangleName) {
 		StreamRequestFragment fragment = new StreamRequestFragment();
 		fragment.setRequestId(requestId);
 		fragment.setRequesterId(requesterId);
@@ -115,18 +120,20 @@ public class StreamRequestFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstancState) {
-		view = inflater.inflate(R.layout.fragment_stream_request,
-				container, false);
+		view = inflater.inflate(R.layout.fragment_stream_request, container,
+				false);
 		request = (TextView) view.findViewById(R.id.requestDescription);
-		requesterAvatar = (RoundedImageView) view.findViewById(R.id.requesterAvatar);
+		requesterAvatar = (RoundedImageView) view
+				.findViewById(R.id.requesterAvatar);
 		requester = (TextView) view.findViewById(R.id.requesterName);
 		setRequestRedirection();
 		setRequesterRedirection();
 		TextView priceView = (TextView) view.findViewById(R.id.requestPrice);
 		priceView.setText(price);
-		TextView offersCountView = (TextView) view.findViewById(R.id.requestOffersCount);
+		TextView offersCountView = (TextView) view
+				.findViewById(R.id.requestOffersCount);
 		offersCountView.setText(offersCount);
-		
+
 		return view;
 	}
 
@@ -207,7 +214,7 @@ public class StreamRequestFragment extends Fragment {
 	private void setRequestButtonText(String text) {
 		requestString = text;
 	}
-	
+
 	/**
 	 * This method is used to set the text of the price
 	 * 
@@ -217,7 +224,7 @@ public class StreamRequestFragment extends Fragment {
 	private void setPrice(String text) {
 		price = text;
 	}
-	
+
 	/**
 	 * This method is used to set the text of the offers count
 	 * 
@@ -243,10 +250,8 @@ public class StreamRequestFragment extends Fragment {
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity().getBaseContext(),
 						ProfileFragment.class);
-				intent.putExtra("tangleId",
-						getTangleId());
-				intent.putExtra("tangleName",
-						getTangleName());
+				intent.putExtra("tangleId", getTangleId());
+				intent.putExtra("tangleName", getTangleName());
 				intent.putExtra("userId", getRequesterId());
 				startActivity(intent);
 			}
@@ -256,10 +261,8 @@ public class StreamRequestFragment extends Fragment {
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity().getBaseContext(),
 						ProfileFragment.class);
-				intent.putExtra("tangleId",
-						getTangleId());
-				intent.putExtra("tangleName",
-						getTangleName());
+				intent.putExtra("tangleId", getTangleId());
+				intent.putExtra("tangleName", getTangleName());
 				intent.putExtra("userId", getRequesterId());
 				startActivity(intent);
 			}
@@ -280,31 +283,49 @@ public class StreamRequestFragment extends Fragment {
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity().getBaseContext(),
 						RequestActivity.class);
-				intent.putExtra("tangleId",
-						getTangleId());
-				intent.putExtra("tangleName",
-						getTangleName());
+				intent.putExtra("tangleId", getTangleId());
+				intent.putExtra("tangleName", getTangleName());
 				intent.putExtra("requestId", getRequestId());
 				startActivity(intent);
 			}
 		});
 	}
 
+	/**
+	 * getter method for tangle id
+	 * 
+	 * @return tangleId
+	 */
 	private int getTangleId() {
 		return tangleId;
 	}
-	
-	
+
+	/**
+	 * getter method for tangle name
+	 * 
+	 * @return name
+	 */
 	private String getTangleName() {
 		return tangleName;
 	}
-	
-	
+
+	/**
+	 * setter method for tangle id
+	 * 
+	 * @param tangleId
+	 *            , id of the tangle
+	 */
 	private void setTangleId(int tangleId) {
-		tangleId = tangleId;
+		this.tangleId = tangleId;
 	}
-	
-	private void setTangleName (String tangleName) {
-		tangleName = tangleName;
+
+	/**
+	 * setter method for the tangle name
+	 * 
+	 * @param tangleName
+	 *            , name of the tangle
+	 */
+	private void setTangleName(String tangleName) {
+		this.tangleName = tangleName;
 	}
 }
