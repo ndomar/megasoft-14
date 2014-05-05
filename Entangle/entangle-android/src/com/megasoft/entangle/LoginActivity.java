@@ -169,7 +169,7 @@ public class LoginActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		register();
+		//register();
 
 		Intent homeActivity = new Intent(this, HomeActivity.class);
 		startActivity(homeActivity);
