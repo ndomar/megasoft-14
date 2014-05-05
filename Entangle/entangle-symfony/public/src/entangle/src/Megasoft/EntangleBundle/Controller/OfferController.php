@@ -155,9 +155,7 @@ class OfferController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response
      * @author Mansour
      */
-
-    public function changeOfferPriceAction(Request $request, $offerid)
-    {
+    public function changeOfferPriceAction(Request $request, $offerid) {
 
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
@@ -205,7 +203,6 @@ class OfferController extends Controller {
         $requestOffer->setRequestedPrice($newOfferPrice);
 
         //notification
-
 //        $notificationCenter = $this->get('notification_center.service');
 //        $title = "offer changed";
 //        $body = "{{from}} changed his offer";
@@ -223,7 +220,7 @@ class OfferController extends Controller {
      * @author sak9
      */
 
-     /**
+    /**
      * this recieves a request and calls verify to check if it can accept the offer
      * @param  Request $request
      * @return Response $response returns 201 or 409 status code and message depending on verification
@@ -267,18 +264,16 @@ class OfferController extends Controller {
         if ($verificationMessage == "Offer Accepted.") {
             $response = new Response($verificationMessage, 201);
         } else {
-           if($verificationMessage=="Error: Not enough balance."){
-                           $response = new Response($verificationMessage, 405);
-
-           }else{
-            $response = new Response($verificationMessage, 401);
+            if ($verificationMessage == "Error: Not enough balance.") {
+                $response = new Response($verificationMessage, 405);
+            } else {
+                $response = new Response($verificationMessage, 401);
+            }
         }
-        
-           }
 
         return $response;
     }
-    
+
     /**
      * this recieves an offerId and checks if it can be accepted, if it can it accepts it and updates all fields in tables
      * @param  Int $offerId
@@ -408,48 +403,47 @@ class OfferController extends Controller {
         return;
     }
 
-    
     /**
-      * Validates the authority of the user
-      * @param Request $request
-      * @param integer $offerId
-      * @return Response | null
-      * @author MohamedBassem
-      */
-    private function verifyUser($request, $offerId){
+     * Validates the authority of the user
+     * @param Request $request
+     * @param integer $offerId
+     * @return Response | null
+     * @author MohamedBassem
+     */
+    private function verifyUser($request, $offerId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
-        
+
         $jsonString = $request->getContent();
         $json = json_decode($jsonString, true);
 
-        if($offerId == null || $sessionId == null || $json['body'] == null){
+        if ($offerId == null || $sessionId == null || $json['body'] == null) {
             return new Response('Bad Request', 400);
-         }
-        
+        }
+
         $doctrine = $this->getDoctrine();
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
-        
+
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
-        if($session == null || $session->getExpired()){
+        if ($session == null || $session->getExpired()) {
             return new Response('Bad Request', 400);
         }
-        
+
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $offer = $offerRepo->find($offerId);
-        
+
         $user = $session->getUser();
-        
+
         $userId = $user->getId();
         $tangleId = $offer->getRequest()->getTangleId();
-        
+
         $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
         $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $userId));
-        
-        
-        if($userTangle == null){
+
+
+        if ($userTangle == null) {
             return new Response('Unauthorized', 401);
         }
-        
+
         return null;
     }
 
@@ -459,39 +453,39 @@ class OfferController extends Controller {
      * @param $offerId
      * @return null|Response
      */
-    public function commentAction(Request $request,$offerId){
+    public function commentAction(Request $request, $offerId) {
         $verification = $this->verifyUser($request, $offerId);
-        
-        if($verification != null){
+
+        if ($verification != null) {
             return $verification;
         }
-        
+
         $doctrine = $this->getDoctrine();
-        
+
         $jsonString = $request->getContent();
         $json = json_decode($jsonString, true);
-        
+
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $offer = $offerRepo->find($offerId);
-        
+
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
-        
+
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
-        
+
         $user = $session->getUser();
-        
+
         $message = new Message();
         $message->setOffer($offer);
         $message->setSender($user);
         $message->setDate(new \DateTime("now"));
         $message->setDeleted(false);
         $message->setBody($json['body']);
-        
+
         $doctrine->getManager()->persist($message);
         $doctrine->getManager()->flush();
-        
-        return new Response('Ok',201);
+
+        return new Response('Ok', 201);
     }
 
 }
