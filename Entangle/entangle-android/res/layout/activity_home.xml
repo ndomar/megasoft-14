@@ -35,7 +35,7 @@
             android:id="@+id/sidebar_avatar"
             android:layout_width="100dp" 
             android:layout_height="100dp" 
-            android:src="@drawable/avatar"
+            android:src="@drawable/ic_action_person"
 			android:layout_gravity="center"
 			android:layout_marginTop="15dp"
            />

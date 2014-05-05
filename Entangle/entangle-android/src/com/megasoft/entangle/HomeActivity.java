@@ -3,6 +3,7 @@ package com.megasoft.entangle;
 import com.megasoft.config.Config;
 import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
 import com.megasoft.requests.ImageRequest;
+import android.content.SharedPreferences;
 
 import android.app.ActionBar;
 import android.support.v4.app.FragmentManager;
@@ -131,7 +132,13 @@ public class HomeActivity extends FragmentActivity {
 	 * @author Mohamed Farghal
 	 */
 	public void showProfile(View view) {
-		Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
+		
+		SharedPreferences settings = this.getSharedPreferences(Config.SETTING, 0);
+		int userId = settings.getInt(Config.USER_ID, -1);	
+		Intent intent = new Intent(this, ProfileActivity.class);
+		intent.putExtra("tangleId", tangleId);
+		intent.putExtra("userId", userId);
+		startActivity(intent);
 	}
 	
 	
