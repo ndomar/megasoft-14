@@ -76,7 +76,7 @@ public class MyRequestsFragment extends Fragment {
 
 		tangleId = getArguments().getInt("tangleId");
 		tangleName = getArguments().getString("tangleName");
-		
+
 		sendRequest(rootResource + "/tangle/" + tangleId + "/userRequests");
 		return view;
 	}
@@ -86,7 +86,7 @@ public class MyRequestsFragment extends Fragment {
 		this.activity = (FragmentActivity) activity;
 		super.onAttach(activity);
 	}
-	
+
 	/**
 	 * This method is used to set the layout of the stream dynamically according
 	 * to response of the request of getting all the requests
@@ -156,7 +156,6 @@ public class MyRequestsFragment extends Fragment {
 		}
 	}
 
-	
 	/**
 	 * This method is used to send a get request to get requests of certain user
 	 * 
