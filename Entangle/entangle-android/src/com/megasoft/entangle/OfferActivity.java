@@ -309,7 +309,6 @@ public class OfferActivity extends Activity {
 				try {
 
 					if (this.getStatusCode() == 200) {
-
 						JSONObject jsonResponse = new JSONObject(response);
 						JSONObject offerDetails = (JSONObject) jsonResponse
 								.get("offerInformation");
@@ -365,6 +364,7 @@ public class OfferActivity extends Activity {
 						status = this.getStatusCode();
 						if (status == 201) {
 							acceptOffer.setVisibility(View.GONE);
+							offerStatus.setText("Accepted");
 						} else {
 							if (status == 405) {
 								Toast toast = Toast
