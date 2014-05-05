@@ -1,11 +1,15 @@
-<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    tools:context=".TangleActivity" >
+ <ScrollView xmlns:tools="http://schemas.android.com/tools"
+   		xmlns:android="http://schemas.android.com/apk/res/android"
+        android:fillViewport="true"
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:background="@color/darkWhite"
+		 >
 
-    <LinearLayout
+
+    <!-- <LinearLayout
         android:id="@+id/tangleNameLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -37,21 +41,13 @@
         android:background="#ffffff"
         android:orientation="vertical" >
 
-        <!-- <Button
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="filterStream"
-            android:text="Filter Stream" /> -->
-    </LinearLayout>
+            android:text="Filter Stream" />
+    </LinearLayout> -->
 
-    <ScrollView
-        android:id="@+id/scroll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/footerLayout"
-        android:layout_below="@+id/searchLayout"
-        android:background="@color/darkWhite" >
-		
 
         <LinearLayout
             android:id="@+id/streamLayout"
@@ -62,11 +58,11 @@
             android:layout_marginRight="@dimen/boxMargin"
             android:background="@color/darkWhite"
             android:orientation="vertical"
-            android:paddingTop="15dp" >
+            >
         </LinearLayout>
-    </ScrollView>
 
-    <LinearLayout
+
+   <!-- <LinearLayout
         android:id="@+id/footerLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -106,6 +102,6 @@
             android:layout_weight="1"
             android:text="@string/invite"
             android:textSize="14sp" />
-    </LinearLayout>
+    </LinearLayout> -->
 
-</RelativeLayout>
+</ScrollView>

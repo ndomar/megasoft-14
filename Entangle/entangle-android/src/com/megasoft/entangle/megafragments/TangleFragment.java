@@ -99,19 +99,19 @@ public class TangleFragment extends Fragment {
          view = inflater.inflate(
         		 R.layout.activity_tangle, container, false);
          
-         ImageView filterButton = (ImageView) view.findViewById(R.id.filterButton);
-         filterButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				filterStream(arg0);
-				
-			}
-		});
+//         ImageView filterButton = (ImageView) view.findViewById(R.id.filterButton);
+//         filterButton.setOnClickListener(new View.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View arg0) {
+//				filterStream(arg0);
+//				
+//			}
+//		});
          
          tangleId = getArguments().getInt("tangleId");
          tangleName = getArguments().getString("tangleName");
-         tangle = (TextView) view.findViewById(R.id.tangleName);
+         //tangle = (TextView) view.findViewById(R.id.tangleName);
         
          sendFilteredRequest(rootResource + "/tangle/" + tangleId
  				+ "/request");
@@ -120,7 +120,7 @@ public class TangleFragment extends Fragment {
         Log.e("test", tangleId+"");
         Log.e("test", sessionId+"");
  		setRedirections();
- 		tangle.setText(tangleName);
+ 		//tangle.setText(tangleName);
         return view;
     }
 	
@@ -225,17 +225,17 @@ public class TangleFragment extends Fragment {
 	 * (stream, members, profile, invite) buttons
 	 */
 	private void setRedirections() {
-		Button stream = (Button) view.findViewById(R.id.stream);
-		setButtonRedirection(stream, "TangleActivity");
-
-		Button members = (Button) view.findViewById(R.id.members);
-		setButtonRedirection(members, "Members");
-
-		Button profile = (Button) view.findViewById(R.id.profile);
-		setButtonRedirection(profile, "ProfileActivity");
-
-		Button invite = (Button) view.findViewById(R.id.invite);
-		setButtonRedirection(invite, "InviteUserActivity");
+//		Button stream = (Button) view.findViewById(R.id.stream);
+//		setButtonRedirection(stream, "TangleActivity");
+//
+//		Button members = (Button) view.findViewById(R.id.members);
+//		setButtonRedirection(members, "Members");
+//
+//		Button profile = (Button) view.findViewById(R.id.profile);
+//		setButtonRedirection(profile, "ProfileActivity");
+//
+//		Button invite = (Button) view.findViewById(R.id.invite);
+//		setButtonRedirection(invite, "InviteUserActivity");
 	}
 
 	/**

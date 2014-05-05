@@ -1,23 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="add">Add</string>
     <string name="app_name">Entangle</string>
     <string name="action_settings">Settings</string>
     <string name="claim_button">Claim </string>
     <string name="mssg">Body:</string>
     <string name="claimName">Claim Form</string>
-    <string name="send">Send Claim </string>
+    <string name="send">Send</string>
+    <string name="enterClaim">I am claiming about \.\.\.</string>
     <string name="Requests">Create Request</string>
     <string name="name">Request\'s name</string>
     <string name="description">What do you need ?</string>
     <string name="post">Create</string>
+    <string name="termsOfUse">\tPlease read the terms of use in this  \t</string>
     <string name="Tags">Tags</string>
     <string name="tagHint">food, tech, living</string>
     <string name="priceHint">5</string>
     <string name="hello_world">Hello world!</string>
-    
-    <string name="tangleNameHint">Specify a Tangle name</string>
-    <string name="iconButton">Choose an Icon</string>
+    <string name="link"><a href="https://www.google.com/">link</a></string>
+    <string name="requestDescription">I want someone to help me change the world\.\.\.</string>
+    <string name="tags">Tags: food, society, games</string>
+    <string name="priceDescription">Price\: 125</string>
+    <string name="dueDate">Due date</string>
+    <string name="pts">Pts</string>
+    <string name="due">Due</string>
+    <string name="create">Create</string>
+    <string name="createRequest">Request</string>
+    <string name="tangleNameHint">Title (Megasoft..)</string>
+    <string name="iconButton">Icon</string>
     <string name="tangleIcon">Tangle Icon</string>
     <string name="createTangle">CREATE</string>
     <string name="checkTangleName">Check</string>
@@ -54,13 +65,24 @@
     <string name="wrong_emails">Not Valid Emails</string>
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
+    <string name="title_activity_notification_test">NotificationTest</string>
+    <string name="PREFERENCE_FILE_KEY">prefs</string>
+    <string name="title_activity_gcmregistration">GCMRegistrationActivity</string>
+    <string name="new_notification">new Notification</string>
     <string name="icon">icon</string>
     <string name="title_activity_upload_request_icon">Upload Request Icon</string>
-    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_home">Entangle</string>
+	<string name="comment_description">Write a comment\.\.\.</string>
+	<string name="accept_offer">accept</string>
+	<string name="register">Register</string>
+    <string name="wrongCredentials">Invalid Username or Password</string>
+    <string name="tangleDescriptionHint">Description (This tangle aims to....etc)</string>
+    <string name="createTangleAgreement">By Creating This Tangle You Have Agreed To Entangle terms of use</string>
     <string-array name="sidebar_list">
-        <item >Item A</item>
-        <item >Item B</item>
+        <item>Item A</item>
+        <item>Item B</item>
     </string-array>
+
     <string name="title_activity_change_offer_price">ChangeOfferPriceActivity</string>
     <string name="newOfferPrice">Enter the new price</string>
     <string name="changePrice">CHANGE</string>
@@ -89,16 +111,19 @@
     <string name="title_activity_offer">OfferActivity</string>
     <string name="action_filter">Filter</string>
     <string name="offers">Offers</string>
-   
     <string name="profileActivity">Profile</string>
+    <string name="requiredField">This field is required</string>
+    <string name="dateChoice">4/May/2014</string>
 
     <string-array name="spinnerChoice">
         <item>None</item>
         <item>Tag</item>
         <item>Requester Name</item>
         <item>Full Text Search</item>
-    </string-array> 
+    </string-array>
 
+    <string name="action_invite">Invite</string>
+    
     <string name="title_activity_stream_request_fragment">StreamRequestFragment</string>
     <string name="delete_button_text">Delete</string>
     <string name="title_section1">Section 1</string>
@@ -108,10 +133,17 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="title_activity_tangle_stream">TangleStreamActivity</string>
-
     <string name="title_activity_create_tangle">Create Tangle</string>
-
-
     <string name="create_tangle">Create Tangle</string>
+    <string name="login">Login</string>
+    <string name="cancel">Cancel</string>
+    <string name="email">email: user@entangle.io</string>
+    <string name="password">password</string>
+    <string name="sample_user_main">user@entangle.io</string>
+    <string name="invitation_message_placeholder">Write an invitation message ..</string>
+    <string name="logoutActivity">Logout</string>
+    <string name="logout">Logout</string>
+    <string name="title_activity_general_profile">General Profile</string>
+    <string name="title_activity_splash">Splash</string>
 
 </resources>

@@ -34,12 +34,12 @@ public class ProfileFragment extends Fragment {
 	/**
 	 * The Button that redirects to the EditProfileActivity
 	 */
-	private Button edit;
+	//private Button edit;
 	
 	/**
 	 * The button that allows the user to leave the current tangle
 	 */
-	private Button leave;
+	//private Button leave;
 	/**
 	 * The TextView that holds the user's name
 	 */
@@ -53,17 +53,17 @@ public class ProfileFragment extends Fragment {
 	/**
 	 * The TextView that holds the user's credit/balance
 	 */
-	private TextView balance;
+	//private TextView balance;
 	
 	/**
 	 * The TextView that holds the user's birth date
 	 */
-	private TextView birthDate;
+	//private TextView birthDate;
 	
 	/**
 	 * The ImageView that indicates whether the user is verified
 	 */
-	private ImageView verifiedView;
+	//private ImageView verifiedView;
 	
 	/**
 	 * The ImageView that holds the user's profile picture
@@ -131,13 +131,13 @@ public class ProfileFragment extends Fragment {
 	 * @author Almgohar
 	 */
 	public void viewProfile() {
-		edit = (Button) view.findViewById(R.id.EditProfile);
-		leave = (Button) view.findViewById(R.id.LeaveTangle);
+		//edit = (Button) view.findViewById(R.id.EditProfile);
+		//leave = (Button) view.findViewById(R.id.LeaveTangle);
 		name = (TextView) view.findViewById(R.id.nameView);
-		balance = (TextView) view.findViewById(R.id.balanceView);
-		birthDate = (TextView) view.findViewById(R.id.birthdateView);
+		//balance = (TextView) view.findViewById(R.id.balanceView);
+		//birthDate = (TextView) view.findViewById(R.id.birthdateView);
 		description = (TextView) view.findViewById(R.id.descriptionView);
-		verifiedView = (ImageView) view.findViewById(R.id.verifiedView);
+		//verifiedView = (ImageView) view.findViewById(R.id.verifiedView);
 		profilePictureView = (ImageView)view.findViewById(R.id.profileImage);
 		
 		viewInformation();
@@ -163,30 +163,30 @@ public class ProfileFragment extends Fragment {
 					viewTransactions(transactions);
 					name.setText(information.getString("name"));
 					description.setText("Description: " + information.getString("description"));
-					balance.setText("Credit: " + information.getString("credit") + " points");
-					birthDate.setText("Birthdate: " + information.getJSONObject("birthdate").getString("date"));
+					//balance.setText("Credit: " + information.getString("credit") + " points");
+					//birthDate.setText("Birthdate: " + information.getJSONObject("birthdate").getString("date"));
 					viewProfilePicture(information.getString("photo"));
 					boolean verified = information.getBoolean("verified");
 					if (verified) {
-							verifiedView.setVisibility(View.VISIBLE);
+							//verifiedView.setVisibility(View.VISIBLE);
 							} 
 					if(loggedInId == userId) {
-						edit.setVisibility(View.VISIBLE);
-						leave.setVisibility(View.VISIBLE);
+						//edit.setVisibility(View.VISIBLE);
+						//leave.setVisibility(View.VISIBLE);
 						
-						edit.setOnClickListener(new View.OnClickListener() {
-							@Override
-				            public void onClick(View v) {
-				            	goToEditProfile();
-				            	}
-				            });
-						leave.setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								 leaveTangle();
-
-							}
-						});
+//						edit.setOnClickListener(new View.OnClickListener() {
+//							@Override
+//				            public void onClick(View v) {
+//				            	goToEditProfile();
+//				            	}
+//				            });
+//						leave.setOnClickListener(new View.OnClickListener() {
+//							@Override
+//							public void onClick(View v) {
+//								 leaveTangle();
+//
+//							}
+//						});
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -228,21 +228,21 @@ public class ProfileFragment extends Fragment {
 	 * @author Almgohar
 	 */
 	private void addTransaction(JSONObject transaction) {
-		try {
-			String request = transaction.getString("requestDescription");
-			String requester = transaction.getString("requesterName");
-			int requesterId = transaction.getInt("requesterId");
-			int requestId = transaction.getInt("requestId");
-			int amount = transaction.getInt("amount");
-					
-			fragmentTransaction = getFragmentManager().beginTransaction();
-			TransactionsFragment transactionFragment = TransactionsFragment
-					.createInstance(requester, request, amount, requestId, requesterId, tangleId);
-			fragmentTransaction.add(R.id.transactions_layout, transactionFragment);
-			fragmentTransaction.commit();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			String request = transaction.getString("requestDescription");
+//			String requester = transaction.getString("requesterName");
+//			int requesterId = transaction.getInt("requesterId");
+//			int requestId = transaction.getInt("requestId");
+//			int amount = transaction.getInt("amount");
+//					
+//			fragmentTransaction = getFragmentManager().beginTransaction();
+//			TransactionsFragment transactionFragment = TransactionsFragment
+//					.createInstance(requester, request, amount, requestId, requesterId, tangleId);
+//			fragmentTransaction.add(R.id.transactions_layout, transactionFragment);
+//			fragmentTransaction.commit();
+//		} catch (JSONException e) {
+//			e.printStackTrace();
+//		}
 			
 	}
 	
