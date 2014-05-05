@@ -26,7 +26,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_search" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -37,11 +36,13 @@
         android:background="#ffffff"
         android:orientation="vertical" >
 
-        <!-- <Button
+        <!--
+             <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="filterStream"
-            android:text="Filter Stream" /> -->
+            android:text="Filter Stream" />
+        -->
     </LinearLayout>
 
     <ScrollView
@@ -51,13 +52,11 @@
         android:layout_above="@+id/footerLayout"
         android:layout_below="@+id/searchLayout"
         android:background="@color/darkWhite" >
-		
 
         <LinearLayout
             android:id="@+id/streamLayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginLeft="@dimen/boxMargin"
             android:layout_marginRight="@dimen/boxMargin"
             android:background="@color/darkWhite"

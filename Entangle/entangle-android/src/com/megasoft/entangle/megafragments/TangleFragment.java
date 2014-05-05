@@ -35,7 +35,7 @@ public class TangleFragment extends Fragment {
 	private FragmentActivity activity;
 	private View view;
 	private TextView tangle;
-	
+
 	/**
 	 * The Intent used to redirect to other activities
 	 */
@@ -83,44 +83,40 @@ public class TangleFragment extends Fragment {
 	 * @param savedInstanceState
 	 *            , is the passed bundle from the previous activity
 	 */
-	
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 	}
-	
+
 	@Override
-    public View onCreateView(LayoutInflater inflater,
-            ViewGroup container, Bundle savedInstanceState) {
-        // The last two arguments ensure LayoutParams are inflated
-        // properly.
-         view = inflater.inflate(
-        		 R.layout.activity_tangle, container, false);
-         
-         ImageView filterButton = (ImageView) view.findViewById(R.id.filterButton);
-         filterButton.setOnClickListener(new View.OnClickListener() {
-			
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		view = inflater.inflate(R.layout.activity_tangle, container, false);
+
+		ImageView filterButton = (ImageView) view
+				.findViewById(R.id.filterButton);
+		filterButton.setOnClickListener(new View.OnClickListener() {
+
 			@Override
 			public void onClick(View arg0) {
 				filterStream(arg0);
-				
+
 			}
 		});
-         
-         tangleId = getArguments().getInt("tangleId");
-         tangleName = getArguments().getString("tangleName");
-         tangle = (TextView) view.findViewById(R.id.tangleName);
-        
-         sendFilteredRequest(rootResource + "/tangle/" + tangleId
- 				+ "/request");
-        Log.e("test", tangleId+"");
-        Log.e("test", sessionId+"");
- 		setRedirections();
- 		tangle.setText(tangleName);
-        return view;
-    }
+
+		tangleId = getArguments().getInt("tangleId");
+		tangleName = getArguments().getString("tangleName");
+		tangle = (TextView) view.findViewById(R.id.tangleName);
+
+		sendFilteredRequest(rootResource + "/tangle/" + tangleId + "/request");
+		Log.e("test", tangleId + "");
+		Log.e("test", sessionId + "");
+		setRedirections();
+		tangle.setText(tangleName);
+		return view;
+	}
 
 	/**
 	 * This method is used to set the layout of the stream dynamically according
@@ -136,7 +132,8 @@ public class TangleFragment extends Fragment {
 				int count = response.getInt("count");
 				JSONArray requestArray = response.getJSONArray("requests");
 				if (count > 0 && requestArray != null) {
-					LinearLayout layout = (LinearLayout) activity.findViewById(R.id.streamLayout);
+					LinearLayout layout = (LinearLayout) activity
+							.findViewById(R.id.streamLayout);
 					layout.removeAllViews();
 					for (int i = 0; i < count && i < requestArray.length(); i++) {
 						JSONObject request = requestArray.getJSONObject(i);
@@ -174,14 +171,15 @@ public class TangleFragment extends Fragment {
 			String requesterButtonText = requesterName;
 			String requestButtonText = requestBody;
 			String requestPrice = "0";
-					
-			if(request.get("price") != null)
+
+			if (request.get("price") != null)
 				requestPrice = "" + request.getInt("price");
-			
+
 			transaction = getFragmentManager().beginTransaction();
 			StreamRequestFragment requestFragment = StreamRequestFragment
 					.createInstance(requestId, userId, requestButtonText,
-							requesterButtonText, requestPrice, requestOffersCount, getTangleId(), getTangleName());
+							requesterButtonText, requestPrice,
+							requestOffersCount, getTangleId(), getTangleName());
 			transaction.add(R.id.streamLayout, requestFragment);
 			transaction.commit();
 		} catch (JSONException e) {
@@ -241,7 +239,6 @@ public class TangleFragment extends Fragment {
 		return tangleId;
 	}
 
-	
 	/**
 	 * This is a getter method used to get the hashMap that maps a tag to its id
 	 * 
@@ -261,8 +258,6 @@ public class TangleFragment extends Fragment {
 		return userToId;
 	}
 
-	
-
 	/**
 	 * This method is used to send a get request to get the stream filtered/not
 	 * 
@@ -270,16 +265,18 @@ public class TangleFragment extends Fragment {
 	 *            , is the URL to which the request is going to be sent
 	 */
 	public void sendFilteredRequest(final String url) {
-		sessionId = activity.getSharedPreferences(Config.SETTING, 0).getString(Config.SESSION_ID, "");
+		sessionId = activity.getSharedPreferences(Config.SETTING, 0).getString(
+				Config.SESSION_ID, "");
 		GetRequest getStream = new GetRequest(url) {
 			protected void onPostExecute(String res) {
 				if (!this.hasError() && res != null) {
-					LinearLayout layout = (LinearLayout) activity.findViewById(R.id.streamLayout);
+					LinearLayout layout = (LinearLayout) activity
+							.findViewById(R.id.streamLayout);
 					layout.removeAllViews();
 					setTheLayout(res);
 				} else {
-					Log.e("test",this.getErrorMessage());
-					Log.e("test",url);
+					Log.e("test", this.getErrorMessage());
+					Log.e("test", url);
 					Toast.makeText(activity.getBaseContext(),
 							"Sorry, There is a problem in loading the stream",
 							Toast.LENGTH_LONG).show();
@@ -438,14 +435,14 @@ public class TangleFragment extends Fragment {
 		}
 		return new ArrayList<String>();
 	}
-	
+
 	@Override
 	public void onAttach(Activity activity) {
-		
+
 		this.activity = (FragmentActivity) activity;
 		super.onAttach(activity);
 	}
-	
+
 	public String getTangleName() {
 		return tangleName;
 	}
@@ -458,5 +455,5 @@ public class TangleFragment extends Fragment {
 	public String getSessionId() {
 		return sessionId;
 	}
-	
+
 }
