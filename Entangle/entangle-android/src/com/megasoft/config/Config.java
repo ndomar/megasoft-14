@@ -4,6 +4,7 @@ public class Config {
 
 	public static final String API_BASE_URL = "http://192.168.0.100/entangle/app_dev.php"; 
 	public static final String API_BASE_URL_SERVER = API_BASE_URL;
+
 	public static final String API_SESSION_ID = "X-SESSION-ID";
 
 	public static final String SETTING = "SETTINGS";
