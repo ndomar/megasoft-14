@@ -14,6 +14,7 @@
         android:layout_marginLeft="@dimen/marginLarge">
         
  <TextView 
+    android:id="@+id/welcome"
     android:text="@string/welcome"
     android:textSize="@dimen/textLarge"
     android:textColor="@color/gray"
@@ -23,6 +24,7 @@
     />
  
   <TextView 
+    android:id="@+id/toEntangle"
     android:text="@string/toEntangle"
     android:textSize="@dimen/textLarge"
     android:textColor="@color/gray"
@@ -44,12 +46,13 @@
     android:text="@string/hurryUp"
     android:textSize="@dimen/textLarge"
     android:textColor="@color/gray"
-
+    android:id="@+id/hurryUp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     />
     
     <TextView 
+    android:id="@+id/andCreate"
     android:text="@string/andCreate"
     android:textSize="@dimen/textLarge"
     android:textColor="@color/gray"
@@ -58,6 +61,7 @@
     />
     
     <TextView 
+    android:id="@+id/aTangle"
     android:text="@string/aTangle"
     android:textSize="@dimen/textLarge"
     android:textColor="@color/gray"
@@ -72,7 +76,6 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/buttonHeight"
-
             android:clickable="true"
             android:text="@string/here"
     		android:textStyle="bold"      
