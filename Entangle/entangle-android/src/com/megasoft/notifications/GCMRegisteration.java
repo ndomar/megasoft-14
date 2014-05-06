@@ -74,9 +74,7 @@ public class GCMRegisteration extends IntentService {
 		regid = getRegistrationId(getApplicationContext());
 		if (regid.equals(""))
 			registerInBackground();
-		else
-			UI.makeToast(getApplicationContext(),
-					"user already registerd to GCM", Toast.LENGTH_SHORT);
+		
 	}
 
 	/**
@@ -155,8 +153,6 @@ public class GCMRegisteration extends IntentService {
 				// TODO Auto-generated method stub
 				try {
 					String res = this.get();
-					UI.makeToast(getApplicationContext(), "" + res,
-							Toast.LENGTH_LONG);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

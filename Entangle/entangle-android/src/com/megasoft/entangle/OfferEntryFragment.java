@@ -24,6 +24,7 @@ public class OfferEntryFragment extends Fragment{
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(), OfferActivity.class);
 				intent.putExtra("offerID", offerId);
+				startActivity(intent);
 				
 			}
 		});

@@ -160,9 +160,9 @@ public class ProfileFragment extends Fragment {
 					jSon = new JSONObject(response);
 					JSONArray transactions = jSon.getJSONArray("transactions");
 					JSONObject information =  jSon.getJSONObject("information");
-					viewTransactions(transactions);
+				//	viewTransactions(transactions);
 					name.setText(information.getString("name"));
-					description.setText("Description: " + information.getString("description"));
+					description.setText(information.getString("description"));
 					//balance.setText("Credit: " + information.getString("credit") + " points");
 					//birthDate.setText("Birthdate: " + information.getJSONObject("birthdate").getString("date"));
 					viewProfilePicture(information.getString("photo"));
