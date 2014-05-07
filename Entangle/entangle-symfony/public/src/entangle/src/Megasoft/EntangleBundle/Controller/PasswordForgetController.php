@@ -26,13 +26,18 @@ class PasswordForgetController extends Controller{
         $UserRepo = $doctrine->getRepository('MegasoftEntangleBundle:User');
         $emailRepo= $doctrine->getRepository('MegasoftEntangleBundle:UserEmail');
         $user = $UserRepo->findOneBy(array('name' => $name));
-        $userId= $user-> getId();
         $userEmail= $emailRepo->findOneBy(array('email' => $email));
-        $userIdByMail= $userEmail-> getUserID();
-        if($userId != $userIdByMail){
-           return -1;
+        if($user == null || $userEmail== null){
+            return -1;
+        }else{
+            $userId= $user-> getId();
+            $userIdByMail= $userEmail-> getUserID();
+            if($userId != $userIdByMail){
+                return -1;
+            }
+            return $userId;
         }
-        return $userId;
+
     }
 
     /**
