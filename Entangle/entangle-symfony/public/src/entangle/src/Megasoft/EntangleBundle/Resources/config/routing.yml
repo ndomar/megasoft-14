@@ -239,7 +239,12 @@ logout:
     pattern:  /user/logout
     defaults: { _controller: MegasoftEntangleBundle:User:logout}
     methods: [POST]
- 
+
+forget_password:
+    pattern:  /user/forgetPass
+    defaults: { _controller: MegasoftEntangleBundle:PasswordForget:retrievePassword}
+    methods: [PUT]
+
 filter_requests_in_tangle:
     pattern:  /tangle/{tangleId}/request
     defaults: { _controller: MegasoftEntangleBundle:Tangle:filterRequests }
