@@ -22,36 +22,31 @@ class VerificationController extends Controller {
 
     /**
      * This method sends verification email to user
-     * @param type $userName
-     * @param type $userEmail
-     * @param type $verificationHash
+     * @param String $userName
+     * @param String $userEmail
+     * @param String $verificationHash
      * @return  response
      * @author MahmoudGamal
      */
     public function emailUserAction($userName, $userEmail, $verificationHash) {
-        $body = 'Thanks for signing up!
+        $body = 'Welcome to Entangle!
             
-        Your account has been created, you can login with the 
-        following user name after you have activated 
-        your account by pressing the url below.
+        Your account has been created, you can 
+        verify your account by clicking the link below
  
         ------------------------
         Username: ' . $userName . '
         ------------------------
-        Please click this link to activate your account:
+        Please click this link to verify your account:
         http://www.entangle.com/verify/' . $verificationHash . '';
-        $message = \Swift_Message::newInstance()
-                ->setSubject('Entangle Verification')
-                ->setFrom('mahmoudgamaleid@gmail.com')
-                ->setTo($userEmail)
-                ->setBody($body);
-        $this->get('mailer')->send($message);
+        $subject = 'Entangle user verification';
+        sendMailToEmail($userEmail, $subject, $body);
         return new Response("Email Sent", 200);
     }
 
     /**
      * This method changes the verified parameter of the user to true
-     * @param type $verificationCode
+     * @param String $verificationCode
      * @return \Symfony\Component\HttpFoundation\Response
      * @author MahmoudGamal
      */
@@ -73,8 +68,10 @@ class VerificationController extends Controller {
             return new Response("User not found", 404);
         }
         $user->setVerified(true);
+        $search->setExpired(true);
         $this->getDoctrine()->getManager()->flush();
         return new Response("User verified", 201);
     }
-
+    
+    
 }
