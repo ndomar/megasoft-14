@@ -5,6 +5,7 @@
     <dimen name="marginSmall">5dp</dimen>
     <dimen name="marginMedium">10dp</dimen>
     <dimen name="marginLarge">40dp</dimen>
+    <dimen name="marginAvatar">7dp</dimen>
     
     <!-- Paddings -->
     <dimen name="paddingSmall">5dp</dimen>
@@ -17,7 +18,7 @@
     
     <!-- Text -->
     <dimen name="textSmall">7sp</dimen>
-    <dimen name="textMedium">10sp</dimen>
+    <dimen name="textMedium">13sp</dimen>
     <dimen name="textLarge">25sp</dimen>
     
     <!-- Buttons -->
@@ -36,9 +37,14 @@
 
     <dimen name="fontSizeMedium">30sp</dimen>
     <dimen name="fontSizeSmall">10sp</dimen>
+    
     <dimen name="boxMargin">12dp</dimen>
     <!-- sidebar -->
-    <dimen name="sidebarMenuItemHeight">40dp</dimen>
+    <dimen name="sidebarMenuItemHeight">45dp</dimen>
     <dimen name="navigation_drawer_width">240dp</dimen>
+    
+     <!-- Images dimen -->
+    <dimen name="iconSmall">30dp</dimen>
+    <dimen name="avatarMedium">30dp</dimen>
 
 </resources>
