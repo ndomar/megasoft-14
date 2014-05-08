@@ -28,7 +28,7 @@ class VerificationController extends Controller {
      * @return  response
      * @author MahmoudGamal
      */
-    public function emailUserAction($userName, $userEmail, $verificationHash) {
+    public function sendUserVerificationEmailAction($userName, $userEmail, $verificationHash) {
         $body = 'Welcome to Entangle!
             
         Your account has been created, you can 
@@ -43,7 +43,25 @@ class VerificationController extends Controller {
         sendMailToEmail($userEmail, $subject, $body);
         return new Response("Email Sent", 200);
     }
-
+    /**
+     * This method sends Email verification mail to user
+     * @param String $userName
+     * @param String $userEmail
+     * @param String $verificationHash
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function sendEmailVerificationEmailAction($userName , $userEmail , $verificationHash){
+        $body = 'Hello' .$userName .'
+            
+                You have added this email as an additional email to your account.
+                If you did so please click on the following link to verify:
+                
+                http://www.entangle.com/verify/email/' . $verificationHash . '
+                If this is not you please ignore this email';
+        $subject = 'Entangle Additional Email verification';
+        sendMailToEmail($userEmail , $subject , $body);
+        return new Response("Email Sent",200);
+    }
     /**
      * This method changes the verified parameter of the user to true
      * @param String $verificationCode
@@ -72,6 +90,5 @@ class VerificationController extends Controller {
         $this->getDoctrine()->getManager()->flush();
         return new Response("User verified", 201);
     }
-    
     
 }
