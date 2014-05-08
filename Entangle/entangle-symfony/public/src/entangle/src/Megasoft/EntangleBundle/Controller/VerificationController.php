@@ -90,5 +90,31 @@ class VerificationController extends Controller {
         $this->getDoctrine()->getManager()->flush();
         return new Response("User verified", 201);
     }
-    
+    /**
+     * This method Verifies additional emails for user
+     * @param String $verificationCode
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function verifyEmailAction($verificationCode) {
+        $criteria = array('verificationCode' => $verificationCode);
+        $search = current($this->getDoctrine()
+                ->getRepository('MegasoftEntangleBundle:VerificationCode')
+                ->findBy($criteria));
+        $UserEmail = $search->getEmail();
+        $expired = $search->getExpired();
+        if ($expired) {
+            return new Response("Verification Link expired", 400);
+        }
+        $verified = $UserEmail->getVerified();
+        if ($verified) {
+            return new Response("User Already Verified", 400);
+        }
+        if (!$search) {
+            return new Response("User not found", 404);
+        }
+        $UserEmail->setVerified(true);
+        $search->setExpired(true);
+        $this->getDoctrine()->getManager()->flush();
+        return new Response("User verified", 201);
+    }
 }
