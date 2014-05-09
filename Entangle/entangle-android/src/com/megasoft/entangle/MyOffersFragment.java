@@ -293,4 +293,27 @@ public class MyOffersFragment extends Fragment {
 		return tangleName;
 	}
 
+	/**
+	 * This is a getter method used to get the session id of the user
+	 * 
+	 * @return session id
+	 * @author HebaAamer
+	 */
+	public String getSessionId() {
+		return sessionId;
 	}
+
+	/**
+	 * This method is used to clear the different layouts in the view
+	 * 
+	 * @author HebaAamer
+	 */
+	private void removeLayoutViews() {
+		pendingOffers.removeAllViews();
+		doneOffers.removeAllViews();
+		acceptedOffers.removeAllViews();
+		failedOffers.removeAllViews();
+		rejectedOffers.removeAllViews();
+	}
+
+}
