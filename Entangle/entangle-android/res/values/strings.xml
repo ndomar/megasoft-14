@@ -147,5 +147,10 @@
     <string name="logout">Logout</string>
     <string name="title_activity_general_profile">General Profile</string>
     <string name="title_activity_splash">Splash</string>
+    <string name="pendingOffers">PENDING OFFERS</string>
+    <string name="doneOffers">DONE OFFERS</string>
+    <string name="acceptedOffers">ACCEPTED OFFERS</string>
+    <string name="failedOffers">FAILED OFFERS</string>
+    <string name="rejectedOffers">REJECTED OFFERS</string>
 
 </resources>
