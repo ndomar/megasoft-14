@@ -35,9 +35,20 @@ public class SplashActivity extends Activity {
 	 * @param view
 	 * @author Farghal
 	 */
+	//public void redirectToRegister(View view) {
+	//	Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(REGISTER_LINK));
+	//	startActivity(browserIntent);
+	//}
+	
+	/**
+	 * Redirects to register page
+	 * @param view
+	 * @author eslam
+	 */
+	
 	public void redirectToRegister(View view) {
-		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(REGISTER_LINK));
-		startActivity(browserIntent);
+		startActivity(new Intent(this, RegisterActivity.class));
+		this.finish();
 	}
 	
 	/**
