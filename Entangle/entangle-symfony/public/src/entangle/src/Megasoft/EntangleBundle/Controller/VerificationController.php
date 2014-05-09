@@ -70,25 +70,23 @@ class VerificationController extends Controller {
      */
     public function verifyUserAction($verificationCode) {
         $criteria = array('verificationCode' => $verificationCode);
-        $search = current($this->getDoctrine()
+        $search = $this->getDoctrine()
                         ->getRepository('MegasoftEntangleBundle:VerificationCode')
-                        ->findBy($criteria));
-        $user = $search->getUser();
+                        ->findOneBy($criteria);
+        if (!$search) {
+             return $this->render('MegasoftEntangleBundle:Verified:notfound.html.twig');
+        }
         $expired = $search->getExpired();
         if ($expired) {
-            return new Response("Verification Link expired", 400);
+            return $this->render('MegasoftEntangleBundle:Verified:expired.html.twig');
         }
-        $verified = $user->getVerified();
-        if ($verified) {
-            return new Response("User Already Verified", 400);
-        }
-        if (!$search) {
-            return new Response("User not found", 404);
-        }
+        $user = $search->getUser();
+        $username = $user->getName();
         $user->setVerified(true);
         $search->setExpired(true);
         $this->getDoctrine()->getManager()->flush();
-        return new Response("User verified", 201);
+        return $this->render('MegasoftEntangleBundle:Verified:verified.html.twig',array(
+        'username' => $username));
     }
     /**
      * This method Verifies additional emails for user
@@ -97,9 +95,9 @@ class VerificationController extends Controller {
      */
     public function verifyEmailAction($verificationCode) {
         $criteria = array('verificationCode' => $verificationCode);
-        $search = current($this->getDoctrine()
+        $search = $this->getDoctrine()
                 ->getRepository('MegasoftEntangleBundle:VerificationCode')
-                ->findBy($criteria));
+                ->findOneBy($criteria);
         $UserEmail = $search->getEmail();
         $expired = $search->getExpired();
         if ($expired) {
