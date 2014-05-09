@@ -473,15 +473,15 @@ public class OfferActivity extends FragmentActivity {
 	 * @author mohamedzayan
 	 */
 	public void markCheck(View view) {
-		Toast x;
+		Toast error;
 		if (offerStatus.getText().equals(Pending)) {
-			x = Toast.makeText(getApplicationContext(),
+			error = Toast.makeText(getApplicationContext(),
 					"Offer is not accepted", Toast.LENGTH_LONG);
-			x.show();
+			error.show();
 		} else if (offerStatus.getText().equals(Done)) {
-			x = Toast.makeText(getApplicationContext(),
+			error = Toast.makeText(getApplicationContext(),
 					"Offer is already marked as done", Toast.LENGTH_LONG);
-			x.show();
+			error.show();
 		} else {
 			markAsDone(offerId);
 		}
