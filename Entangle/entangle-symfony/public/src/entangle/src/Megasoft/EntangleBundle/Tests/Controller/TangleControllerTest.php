@@ -2,22 +2,29 @@
 
 namespace Megasoft\EntangleBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Doctrine\Common\DataFixtures\Loader;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\ORM\Tools\SchemaTool;
+use Megasoft\EntangleBundle\DataFixtures\ORM\LoadTangleData;
+use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserData;
+use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserTangleData;
+use Megasoft\EntangleBundle\Tests\EntangleTestCase;
 
-class TangleControllerTest extends WebTestCase
+class TangleControllerTest extends EntangleTestCase
 {
-    public function testCheckmembership()
-    {
-        $client = static::createClient();
+    public function setup() {   
+        $loader = new Loader();
+        $loader->addFixture(new LoadTangleData());
+        $loader->addFixture(new LoadUserData());
+        $loader->addFixture(new LoadUserTangleData());
 
-        $crawler = $client->request('GET', '/tangle/{tangleId}/check-membership');
+        $purger = new ORMPurger($this->em);
+        $executor = new ORMExecutor($this->em, $purger);
+        $executor->execute($loader->getFixtures());
+        parent::setup();
     }
-
-    public function testInvite()
-    {
-        $client = static::createClient();
-
-        $crawler = $client->request('GET', '/tangle/{tangleId}/invite');
+    
+    public function testSimpleGetAction(){
     }
-
 }

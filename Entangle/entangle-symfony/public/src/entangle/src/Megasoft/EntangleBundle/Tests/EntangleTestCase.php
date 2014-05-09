@@ -25,22 +25,4 @@ class EntangleTestCase extends WebTestCase
         $schemaTool->createSchema($metadata);
         parent::setUpBeforeClass();
     }
-    
-    public function setup() {
-        static::$kernel = static::createKernel();
-        static::$kernel->boot();
-        $this->em = static::$kernel->getContainer()
-            ->get('doctrine')
-            ->getManager();
-
-        $loader = new Loader();
-        $loader->addFixture(new LoadTangleData());
-        $loader->addFixture(new LoadUserData());
-        $loader->addFixture(new LoadUserTangleData());
-
-        $purger = new ORMPurger($this->em);
-        $executor = new ORMExecutor($this->em, $purger);
-        $executor->execute($loader->getFixtures());
-        parent::setup();
-    }
 }
