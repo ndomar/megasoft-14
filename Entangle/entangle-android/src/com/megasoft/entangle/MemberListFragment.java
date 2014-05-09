@@ -275,15 +275,19 @@ public class MemberListFragment extends Fragment {
  */
 	
 	private void searchMembers(String searchString) {
+		int memberCount=0; 
 		for (int i = 0; i < getNumberOfMembers(); i++) {
 			if (!memberFragments.get(i).getMemberName().toLowerCase()
 					.startsWith(searchString.toLowerCase())) {
 				memberFragments.get(i).getView().setVisibility(View.GONE);
 			}
 			else{
-			
 					memberFragments.get(i).getView().setVisibility(View.VISIBLE);
+					memberCount++; 
 			}
+		}
+		if(memberCount == 0){
+			Toast.makeText(getActivity().getBaseContext(), getString(R.string.member_not_found), Toast.LENGTH_LONG).show();
 		}
 	}
 }
