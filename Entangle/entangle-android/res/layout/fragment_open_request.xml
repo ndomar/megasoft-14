@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/boxMargin"
@@ -69,12 +68,14 @@
     <Button
         android:id="@+id/deleteRequestButton"
         style="?android:attr/buttonBarButtonStyle"
+        android:textSize="@dimen/textMedium"
+        android:textColor="@color/darkGray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/requestOffersCount"
         android:layout_alignTop="@+id/requestOffersCount"
         android:drawableLeft="@drawable/ic_action_remove_red"
-        android:text="@string/deleteRequestButton" 
-        android:onClick="deleteRequest"/>
+        android:onClick="deleteRequest"
+        android:text="@string/deleteRequestButton" />
 
 </RelativeLayout>
