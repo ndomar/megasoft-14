@@ -65,7 +65,7 @@ class VerificationController extends Controller {
     /**
      * This method changes the verified parameter of the user to true
      * @param String $verificationCode
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return twig view
      * @author MahmoudGamal
      */
     public function verifyUserAction($verificationCode) {
@@ -91,8 +91,9 @@ class VerificationController extends Controller {
     /**
      * This method Verifies additional emails for user
      * @param String $verificationCode
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return twig view
      */
+    
     public function verifyEmailAction($verificationCode) {
         $criteria = array('verificationCode' => $verificationCode);
         $search = $this->getDoctrine()
@@ -100,19 +101,17 @@ class VerificationController extends Controller {
                 ->findOneBy($criteria);
         $UserEmail = $search->getEmail();
         $expired = $search->getExpired();
-        if ($expired) {
-            return new Response("Verification Link expired", 400);
-        }
-        $verified = $UserEmail->getVerified();
-        if ($verified) {
-            return new Response("User Already Verified", 400);
-        }
+        $username = $search->getUser()->getName();
         if (!$search) {
-            return new Response("User not found", 404);
+           return $this->render('MegasoftEntangleBundle:Verified:notfound.html.twig');
+        }
+        if ($expired) {
+            return $this->render('MegasoftEntangleBundle:Verified:expired.html.twig');
         }
         $UserEmail->setVerified(true);
         $search->setExpired(true);
         $this->getDoctrine()->getManager()->flush();
-        return new Response("User verified", 201);
+        return $this->render('MegasoftEntangleBundle:Verified:emailVerified.html.twig',array(
+        'username' => $username));
     }
 }
