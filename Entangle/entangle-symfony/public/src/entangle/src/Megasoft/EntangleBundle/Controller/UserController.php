@@ -200,6 +200,7 @@ class UserController extends Controller {
     /**
      * Gets the basic information of a given user in a give tangle
      * @param user $user
+     * @param boolean $general
      * @return \Symfony\Component\HttpFoundation\Response | JsonResponse $response
      * @author Almgohar
      */
@@ -239,12 +240,13 @@ class UserController extends Controller {
         $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionTable->findOneBy(array('sessionId' => $sessionId,));
-        $user = $userTable->findOneBy(array('id' => $userId,));
-        $userTangle = $userTangleTable->findOneBy(array('userId' => $userId, 'tangleId' => $tangleId,));
-        $loggedInUser = $session->getUser();
         if ($session == null || $session->getExpired()) {
             return new Response('Unauthorized', 401);
         }
+        $loggedInUser = $session->getUser();
+        $user = $userTable->findOneBy(array('id' => $userId,));
+        $userTangle = $userTangleTable->findOneBy(array('userId' => $userId, 'tangleId' => $tangleId,));
+
         if (!$this->validateTangle($tangleId)) {
             return new Response('Tangle not found', 404);
         }
@@ -277,7 +279,7 @@ class UserController extends Controller {
             return new Response('Transactions not found', 404);
         }
         $response = new JsonResponse();
-        $response->setData(array('credit' => $credit,'transactions' => $transactions,));
+        $response->setData(array('transactions' => $transactions,));
         $response->setStatusCode(200);
         return $response;
     }
