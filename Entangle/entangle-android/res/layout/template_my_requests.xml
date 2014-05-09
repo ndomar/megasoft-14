@@ -22,7 +22,9 @@
                 android:id="@+id/openRequestsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="OPEN REQUESTS" />
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:text="OPEN REQUESTS"
+                android:textColor="@color/megenta" />
 
             <LinearLayout
                 android:id="@+id/openRequests"
@@ -35,16 +37,17 @@
             </LinearLayout>
 
             <View
-                style="@style/Divider"
+                style="@style/dividerVertical"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/marginMedium" />
 
             <TextView
                 android:id="@+id/frozenRequestsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="FROZEN REQUESTS" />
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:text="FROZEN REQUESTS"
+                android:textColor="@color/megenta" />
 
             <LinearLayout
                 android:id="@+id/frozenRequests"
@@ -57,10 +60,27 @@
             </LinearLayout>
 
             <View
-                style="@style/Divider"
+                style="@style/dividerVertical"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="@dimen/marginMedium" />
+
+            <TextView
+                android:id="@+id/closedRequestsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:text="CLOSED REQUESTS"
+                android:textColor="@color/megenta" />
+
+            <LinearLayout
+                android:id="@+id/closedRequests"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/marginMedium" />
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:layout_marginRight="@dimen/boxMargin"
+                android:background="@color/darkWhite"
+                android:orientation="vertical" >
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
