@@ -27,11 +27,11 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_action_person_white"
-             />
+            android:src="@drawable/ic_action_person_white" />
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profileImageLayout"
@@ -61,6 +61,17 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/marginMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/transactions_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/profile"
+        android:paddingTop="@dimen/paddingMedium"
+        android:background="@color/darkWhite"
+        android:orientation="vertical" >
     </LinearLayout>
 
     <LinearLayout
@@ -101,4 +112,3 @@
     </LinearLayout>
 
 </RelativeLayout>
-

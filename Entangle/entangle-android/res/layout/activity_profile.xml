@@ -5,10 +5,18 @@
     android:layout_height="match_parent"
     android:fillViewport="true" >
 
-    <LinearLayout
-        android:id="@+id/profile_layout"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" />
-        
-    </ScrollView>
+        android:layout_gravity="top" >
+
+        <LinearLayout
+            android:id="@+id/profile_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true" />
+
+    </RelativeLayout>
+
+</ScrollView>
