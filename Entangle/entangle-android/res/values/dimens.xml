@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	
     <!-- Margins -->
     <dimen name="marginSmall">5dp</dimen>
     <dimen name="marginMedium">10dp</dimen>
