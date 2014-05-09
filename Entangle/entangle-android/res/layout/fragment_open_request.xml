@@ -2,13 +2,12 @@
     android:id="@+id/fragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:padding="@dimen/boxMargin"
-    android:background="@color/postBackground"
     android:layout_marginBottom="@dimen/boxMargin"
     android:layout_marginRight="@dimen/boxMargin"
-	 >
+    android:background="@color/postBackground"
+    android:orientation="vertical"
+    android:padding="@dimen/boxMargin"
+    android:paddingBottom="@dimen/activity_vertical_margin" >
 
     <com.megasoft.entangle.views.RoundedImageView
         android:id="@+id/requesterAvatar"
@@ -22,34 +21,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/requesterAvatar"
-        android:layout_marginLeft="@dimen/boxMargin"
         android:layout_alignTop="@+id/requesterAvatar"
-        android:layout_marginTop="8dp"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/boxMargin"
+        android:layout_marginTop="8dp"
         android:layout_toRightOf="@+id/requesterAvatar"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-         />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/requestDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-       	android:layout_alignTop="@+id/hr"
-       	android:layout_below="@+id/hr"
-        android:layout_marginTop="24dp"
         android:layout_alignLeft="@+id/hr"
         android:layout_alignRight="@+id/hr"
+        android:layout_alignTop="@+id/hr"
+        android:layout_below="@+id/hr"
         android:layout_marginRight="@dimen/boxMargin"
-        />
-    
+        android:layout_marginTop="24dp" />
+
     <View
         android:id="@+id/hr"
-    	android:layout_width="fill_parent"
-    	android:layout_height="1dp"
-    	android:layout_marginTop="@dimen/boxMargin"
-    	android:background="@color/lightGray"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
         android:layout_below="@+id/requesterName"
- 		/>
+        android:layout_marginTop="@dimen/boxMargin"
+        android:background="@color/lightGray" />
 
     <TextView
         android:id="@+id/requestPrice"
@@ -57,9 +53,9 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/hr"
         android:layout_alignTop="@+id/requesterName"
-        android:textColor="@color/green"
         android:text="142"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/green" />
 
     <TextView
         android:id="@+id/requestOffersCount"
@@ -69,5 +65,16 @@
         android:layout_alignBottom="@+id/requestDescription"
         android:layout_alignRight="@+id/requestPrice"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <Button
+        android:id="@+id/deleteRequestButton"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/requestOffersCount"
+        android:layout_alignTop="@+id/requestOffersCount"
+        android:drawableLeft="@drawable/ic_action_remove_red"
+        android:text="@string/deleteRequestButton" 
+        android:onClick="deleteRequest"/>
 
 </RelativeLayout>

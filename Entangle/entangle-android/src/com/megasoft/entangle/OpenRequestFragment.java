@@ -15,4 +15,8 @@ public class OpenRequestFragment extends Fragment {
 		return rootView;
 	}
 
+	public void deleteRequest() {
+
+	}
+
 }
