@@ -455,5 +455,60 @@ public void addComment(View view){
 	request.setBody(body);
 	request.execute();
 }
+/**
+ * this checks if an offer is already marked as done or not accepted.if
+ * neither it navigates to the actual notifying method
+ * @param View view The Button clicked
+ * @return None
+ * @author mohamedzayan
+ */
+public void notifyCheck(View view) {
+	GetRequest initRequest = new GetRequest(
+			Config.API_BASE_URL+Request + 1 + Offer + offerId) {
+		protected void onPostExecute(String response) {
+			if (this.getStatusCode() == 200) {
+				JSONObject jresponse;
+				try {
+					jresponse = new JSONObject(response);
+					if (jresponse.getString("status").equals(Pending)
+							|| jresponse.getString("status").equals(Done)) {
+						Toast error = Toast.makeText(
+								getApplicationContext(), R.string.error,
+								Toast.LENGTH_LONG);
+						error.show();
+					} else {
+						sendNotification(offerId);
+					}
+
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	};
+	initRequest.addHeader(Config.API_SESSION_ID, sessionId);
+	initRequest.execute();
+/**
+ * this sends the actual notification
+ * @param  Int OfferId offer ID
+ * @return None
+ * @author mohamedzayan
+ */
+public void sendNotification(int Offerid) {
+	PostRequest request = new PostRequest(
+			Config.API_BASE_URL+Request + Offerid) {
+		protected void onPostExecute(String response) {
+			if (this.getStatusCode() == 201) {
+				Toast success = Toast.makeText(getApplicationContext(),
+						R.string.note, Toast.LENGTH_LONG);
+				success.show();
+			}
+		}
+
+	};
+	request.addHeader(Config.API_SESSION_ID, sessionId);
+	request.execute();
+}
 
 }
