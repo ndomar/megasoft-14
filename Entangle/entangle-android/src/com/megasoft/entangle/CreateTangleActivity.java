@@ -1,14 +1,18 @@
 package com.megasoft.entangle;
 
 import java.io.ByteArrayOutputStream;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
+
 import android.util.Base64;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,10 +22,17 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,10 +43,18 @@ public class CreateTangleActivity extends Activity {
 	public static final int GREEN = 0xff00ff00;
 	public static final int RED = 0xffff0000;
 	public static final int BLACK = 0xff000000;
-	boolean defaultIcon = true;
 	String encodedImage;
 	String sessionId;
 	SharedPreferences settings;
+
+	private static Integer[] imageIconDatabase = { R.drawable.aatrox,
+			R.drawable.ahri, R.drawable.akali, R.drawable.amumu,
+			R.drawable.zac, R.drawable.ziggs };
+
+	private String[] imageNameDatabase = { "aatrox", "ahri", "akali", "amumu",
+			"zac", "ziggs" };
+
+	private int usedIcon;
 
 	@Override
 	/**
@@ -48,6 +67,23 @@ public class CreateTangleActivity extends Activity {
 		setContentView(R.layout.activity_create_tangle);
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
+		Spinner iconSpinner = (Spinner) findViewById(R.id.iconSpinner);
+		iconSpinner.setAdapter(new TangleIconSpinnerAdapter(
+				CreateTangleActivity.this, R.layout.spinner_icons,
+				imageNameDatabase));
+		iconSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				usedIcon = arg0.getSelectedItemPosition();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		});
+		usedIcon = iconSpinner.getSelectedItemPosition();
 	}
 
 	@Override
@@ -90,18 +126,17 @@ public class CreateTangleActivity extends Activity {
 	 * @author Mansour
 	 */
 	@SuppressLint("NewApi")
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE
-				&& null != data) {
-			Bitmap bitmap = getPhotoPath(data.getData());
-			Button tangleIcon = (Button) findViewById(R.id.tangleIcon);
-			tangleIcon
-					.setBackground(new BitmapDrawable(getResources(), bitmap));
-			encodeToBase64(bitmap);
-			defaultIcon = false;
-		}
-	}
+//	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		super.onActivityResult(requestCode, resultCode, data);
+//		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE
+//				&& null != data) {
+//			Bitmap bitmap = getPhotoPath(data.getData());
+//			Button tangleIcon = (Button) findViewById(R.id.tangleIcon);
+//			tangleIcon
+//					.setBackground(new BitmapDrawable(getResources(), bitmap));
+//			encodeToBase64(bitmap);
+//		}
+//	}
 
 	public void encodeToBase64(Bitmap bitmap) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -152,14 +187,10 @@ public class CreateTangleActivity extends Activity {
 					Toast.makeText(getApplicationContext(),
 							"Descritpion Is Empty", Toast.LENGTH_LONG).show();
 				} else {
-					if (defaultIcon) {
-						Bitmap bitmap = BitmapFactory.decodeResource(
-								getResources(), R.drawable.entangle_logo);
-						encodeToBase64(bitmap);
-						sendTangleToServer();
-					} else {
-						sendTangleToServer();
-					}
+					Bitmap bitmap = BitmapFactory.decodeResource(
+							getResources(), imageIconDatabase[usedIcon]);
+					encodeToBase64(bitmap);
+					sendTangleToServer();
 				}
 			}
 		}
@@ -180,7 +211,8 @@ public class CreateTangleActivity extends Activity {
 				} else {
 					if (!(this.getStatusCode() == 201)) {
 						Toast.makeText(getApplicationContext(),
-								"Try Again Later"+this.getStatusCode(), Toast.LENGTH_LONG).show();
+								"Try Again Later" + this.getStatusCode(),
+								Toast.LENGTH_LONG).show();
 					} else {
 						goToHomePage();
 					}
@@ -269,7 +301,6 @@ public class CreateTangleActivity extends Activity {
 	 * @author Mansour
 	 */
 	public void goToHomeHelper() {
-		startActivity(new Intent(this, MainActivity.class));
 		this.finish();
 	}
 
@@ -281,5 +312,36 @@ public class CreateTangleActivity extends Activity {
 	 */
 	public void cancelRedirect(View view) {
 		this.finish();
+	}
+
+	private class TangleIconSpinnerAdapter extends ArrayAdapter<String> {
+
+		public TangleIconSpinnerAdapter(Context context,
+				int textViewResourceId, String[] objects) {
+			super(context, textViewResourceId, objects);
+		}
+
+		@Override
+		public View getDropDownView(int position, View convertView,
+				ViewGroup parent) {
+			return getCustomView(position, convertView, parent);
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			return getCustomView(position, convertView, parent);
+		}
+
+		public View getCustomView(int position, View convertView,
+				ViewGroup parent) {
+
+			LayoutInflater inflater = getLayoutInflater();
+			View row = inflater.inflate(R.layout.spinner_icons, parent, false);
+
+			ImageView icon = (ImageView) row.findViewById(R.id.icon);
+			icon.setImageResource(imageIconDatabase[position]);
+
+			return row;
+		}
 	}
 }
