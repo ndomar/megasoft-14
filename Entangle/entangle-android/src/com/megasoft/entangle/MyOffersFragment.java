@@ -190,5 +190,31 @@ public class MyOffersFragment extends Fragment {
 		}
 	}
 
-	
+	/**
+	 * This method is used to add specific offer which is EntryOfferFragment to
+	 * the view
+	 * 
+	 * @param offer
+	 *            , is the offer to be added in the layout
+	 */
+	@SuppressLint("NewApi")
+	private void addOffer(JSONObject offer) {
+		try {
+			int userId = offer.getInt("userId");
+			String offererName = offer.getString("username");
+			int offerId = offer.getInt("id");
+			String offerBody = offer.getString("description");
+			int status = offer.getInt("status");
+			String offerPrice = "---";
+			if (offer.get("price") != null
+					&& !offer.getString("price").equals("null"))
+				offerPrice = "" + offer.getInt("price");
+			addOfferEntry(userId, offererName, offerId, offerBody, offerPrice,
+					status);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+
 }
