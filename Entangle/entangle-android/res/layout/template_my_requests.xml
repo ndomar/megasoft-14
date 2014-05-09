@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/marginSmall"
                 android:layout_marginLeft="@dimen/boxMargin"
-                android:text="OPEN REQUESTS"
+                android:text="@string/openRequests"
                 android:textColor="@color/blue" />
 
             <LinearLayout
@@ -51,7 +51,7 @@
                 android:layout_marginBottom="@dimen/marginSmall"
                 android:layout_marginLeft="@dimen/boxMargin"
                 android:layout_marginTop="@dimen/marginSmall"
-                android:text="FROZEN REQUESTS"
+                android:text="@string/frozenRequests"
                 android:textColor="@color/blue" />
 
             <LinearLayout
@@ -77,7 +77,7 @@
                 android:layout_marginBottom="@dimen/marginSmall"
                 android:layout_marginLeft="@dimen/boxMargin"
                 android:layout_marginTop="@dimen/marginSmall"
-                android:text="CLOSED REQUESTS"
+                android:text="@string/closedRequests"
                 android:textColor="@color/blue" />
 
             <LinearLayout

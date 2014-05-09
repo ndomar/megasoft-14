@@ -150,5 +150,8 @@
     <string name="title_activity_splash">Splash</string>
     <string name="deleteRequestButton">Delete</string>
     <string name="reOpenRequestButton">Reopen</string>
+    <string name="closedRequests">CLOSED REQUESTS</string>
+    <string name="openRequests">OPEN REQUESTS</string>
+    <string name="frozenRequests">FROZEN REQUESTS</string>
 
 </resources>

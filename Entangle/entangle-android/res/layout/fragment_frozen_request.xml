@@ -52,7 +52,6 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/hr"
         android:layout_alignTop="@+id/requesterName"
-        android:text="142"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/green" />
 
