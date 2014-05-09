@@ -294,8 +294,8 @@ public class OfferActivity extends FragmentActivity {
 	 */
 	private void goToProfile(int userId) {
 		Intent profile = new Intent(this, ProfileActivity.class);
-		profile.putExtra("user id", userId);
-		profile.putExtra("tangle id", this.tangleId);
+		profile.putExtra("userId", userId);
+		profile.putExtra("tangleId", tangleId);
 		startActivity(profile);
 	}
 
