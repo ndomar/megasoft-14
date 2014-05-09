@@ -152,5 +152,6 @@
     <string name="acceptedOffers">ACCEPTED OFFERS</string>
     <string name="failedOffers">FAILED OFFERS</string>
     <string name="rejectedOffers">REJECTED OFFERS</string>
+    <string name="title_activity_my_offers_fragment">MyOffersFragment</string>
 
 </resources>
