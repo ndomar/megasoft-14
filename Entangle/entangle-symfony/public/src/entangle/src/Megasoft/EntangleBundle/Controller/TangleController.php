@@ -973,5 +973,107 @@ class TangleController extends Controller {
 
         return $response;
     }
+    /**
+     * This method is used to reset a Tangle
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param integer $tangleId
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author Salma Khaled
+     */
+    public function resetTangleAction(Request $request, $tangleId) {
+        $sessionId = $request->headers->get("X-SESSION-ID");
+        $tangleRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Tangle");
+        $tangle = $tangleRepo->findOneBy(array('id' => $tangleId));
+        if ($tangle == null) {
+            return new Response("Tangle doesn't exist", 404);
+        }
+        $verified = $this->validateIsOwner($sessionId, $tangleId);
+        if ($verified != null) {
+            return $verified;
+        }
+        $tangleUsers = $tangle->getUsers();
+        if ($tangleUsers != null) {
+            foreach ($tangleUsers as $tangleUser) {
+                $userId = $tangleUser->getId();
+                $userTangleRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:UserTangle");
+                $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $userId));
+                $userTangle->setCredit(0);
+                $this->deleteRequests($tangleId, $userId);
+                $this->deleteClaims($tangleId, $userId);
+            }
+        }
+        return new Response("Tangle reset", 200);
+    }
+
+    /**
+     * delete requests of that user in that tangle
+     * @param integer $tangleId
+     * @param integer $userId
+     * @return none
+     * @author Salma Khaled
+     */
+    private function deleteRequests($tangleId, $userId) {
+        $requestRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Request");
+        $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
+        $user = $userRepo->find($userId);
+        $requests = $requestRepo->findBy(array('tangleId' => $tangleId, 'userId' => $userId));
+        if ($requests != null) {
+            foreach ($requests as $request) {
+                $request->setDeleted(1);
+                if ($user != null) {
+                    $user->removeRequest($request);
+                }
+                $this->getDoctrine()->getManager()->flush();
+                $requestId = $request->getId();
+                $this->deleteOffers($requestId, $userId);
+            }
+        }
+    }
+
+    /**
+     * delete offers on specific request
+     * @param integer $requestId
+     * @param integer $userId
+     * @return none
+     * @author Salma Khaled
+     */
+    private function deleteOffers($requestId, $userId) {
+        $offerRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Offer");
+        $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
+        $user = $userRepo->find($userId);
+        $offers = $offerRepo->findBy(array('requestId' => $requestId, 'userId' => $userId));
+        if ($offers != null) {
+            foreach ($offers as $offer) {
+                $offer->setDeleted(1);
+                if ($user != null) {
+                    $user->removeOffer($offer);
+                }
+                $this->getDoctrine()->getManager()->flush();
+            }
+        }
+    }
+
+    /**
+     * remove claims by that user in that tangle
+     * @param integer $tangleId
+     * @param integer $userId
+     * @return none
+     * @author Salma Khaled
+     */
+    private function deleteClaims($tangleId, $userId) {
+        $claimRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Claim");
+        $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
+        $user = $userRepo->find($userId);
+        $claims = $claimRepo->findBy(array('tangleId' => $tangleId, 'claimerId' => $userId));
+        if ($claims != null) {
+            foreach ($claims as $claim) {
+                $claim->setDeleted(1);
+                if ($user != null) {
+                    $user->removeClaim($claim);
+                }
+                $this->getDoctrine()->getManager()->flush();
+            }
+        }
+    }
 
 }
