@@ -15,4 +15,35 @@
         android:layout_alignParentLeft="true"
         android:src="@drawable/ic_action_person" />
 
+    <TextView
+        android:id="@+id/requesterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/requesterAvatar"
+        android:layout_alignTop="@+id/requesterAvatar"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/boxMargin"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@+id/requesterAvatar"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/requestDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/hr"
+        android:layout_alignRight="@+id/hr"
+        android:layout_alignTop="@+id/hr"
+        android:layout_below="@+id/hr"
+        android:layout_marginRight="@dimen/boxMargin"
+        android:layout_marginTop="24dp" />
+
+    <View
+        android:id="@+id/hr"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/requesterName"
+        android:layout_marginTop="@dimen/boxMargin"
+        android:background="@color/lightGray" />
+
 </RelativeLayout>
