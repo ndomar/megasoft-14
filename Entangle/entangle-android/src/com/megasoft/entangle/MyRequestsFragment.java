@@ -10,12 +10,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.megasoft.config.Config;
@@ -175,6 +173,25 @@ public class MyRequestsFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * This method is used to create a fragment with passed parameters
+	 * 
+	 * @param status
+	 *            , is the status of the request
+	 * @param requestId
+	 *            , is the id of the request
+	 * @param userId
+	 *            , is the id of the requester
+	 * @param requestButtonText
+	 *            , is the description of the request
+	 * @param requesterButtonText
+	 *            , is the name of the requester
+	 * @param requestPrice
+	 *            , is the price of the request
+	 * @param requestOffersCount
+	 *            , is the number of offers in that request
+	 * @author HebaAamer
+	 */
 	private void createFragment(int status, int requestId, int userId,
 			String requestButtonText, String requesterButtonText,
 			String requestPrice, String requestOffersCount) {
