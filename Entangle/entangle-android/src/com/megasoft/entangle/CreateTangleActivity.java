@@ -33,9 +33,9 @@ public class CreateTangleActivity extends Activity {
 	public static final int GREEN = 0xff00ff00;
 	public static final int RED = 0xffff0000;
 	public static final int BLACK = 0xff000000;
-	String encodedImage;
-	String sessionId;
-	SharedPreferences settings;
+	public SharedPreferences settings;
+	private String encodedImage;
+	private String sessionId;
 
 	private static Integer[] imageIconDatabase = { R.drawable.aatrox,
 			R.drawable.ahri, R.drawable.akali, R.drawable.amumu,
@@ -102,15 +102,11 @@ public class CreateTangleActivity extends Activity {
 		EditText tangleDescription = (EditText) findViewById(R.id.tangleDescription);
 		if (tangleName.getText().toString().equals("")) {
 			Toast.makeText(getApplicationContext(), "Tangle Name Is Empty",
-					Toast.LENGTH_LONG).show();
+					Toast.LENGTH_SHORT).show();
 		} else {
-			if (tangleName.getCurrentTextColor() == RED) {
-				Toast.makeText(getApplicationContext(),
-						"Tangle Name Unavailable", Toast.LENGTH_LONG).show();
-			} else {
 				if (tangleDescription.getText().toString().equals("")) {
 					Toast.makeText(getApplicationContext(),
-							"Descritpion Is Empty", Toast.LENGTH_LONG).show();
+							"Descritpion Is Empty", Toast.LENGTH_SHORT).show();
 				} else {
 					Bitmap bitmap = BitmapFactory.decodeResource(
 							getResources(), imageIconDatabase[usedIcon]);
@@ -119,7 +115,6 @@ public class CreateTangleActivity extends Activity {
 				}
 			}
 		}
-	}
 
 	/**
 	 * Sends the tangle info to the server.
