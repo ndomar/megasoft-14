@@ -20,7 +20,7 @@ import android.widget.TextView;
  * requests stream. It consists of two buttons, one represents the request and
  * the other represents the requester.
  * 
- * @author HebaAamer
+ * @author HebaAamer, MohamedFarghal
  * 
  */
 @SuppressLint("NewApi")
@@ -156,7 +156,7 @@ public class StreamRequestFragment extends Fragment {
 	 * 
 	 * @return request id
 	 */
-	private int getRequestId() {
+	protected int getRequestId() {
 		return requestId;
 	}
 
@@ -165,7 +165,7 @@ public class StreamRequestFragment extends Fragment {
 	 * 
 	 * @return requester id
 	 */
-	private int getRequesterId() {
+	protected int getRequesterId() {
 		return requesterId;
 	}
 
@@ -175,7 +175,7 @@ public class StreamRequestFragment extends Fragment {
 	 * 
 	 * @return requestString
 	 */
-	private String getRequestString() {
+	protected String getRequestString() {
 		return requestString;
 	}
 
@@ -185,7 +185,7 @@ public class StreamRequestFragment extends Fragment {
 	 * 
 	 * @return requesterString
 	 */
-	private String getRequesterString() {
+	protected String getRequesterString() {
 		return requesterString;
 	}
 
@@ -195,7 +195,7 @@ public class StreamRequestFragment extends Fragment {
 	 * @param id
 	 *            , id of the requester
 	 */
-	private void setRequesterId(int id) {
+	protected void setRequesterId(int id) {
 		requesterId = id;
 	}
 
@@ -205,7 +205,7 @@ public class StreamRequestFragment extends Fragment {
 	 * @param id
 	 *            , id of the request
 	 */
-	private void setRequestId(int id) {
+	protected void setRequestId(int id) {
 		requestId = id;
 	}
 
@@ -215,7 +215,7 @@ public class StreamRequestFragment extends Fragment {
 	 * @param text
 	 *            , text to be written in the requester button
 	 */
-	private void setRequesterButtonText(String text) {
+	protected void setRequesterButtonText(String text) {
 		requesterString = text;
 	}
 
@@ -225,7 +225,7 @@ public class StreamRequestFragment extends Fragment {
 	 * @param text
 	 *            , text to be written in the request button
 	 */
-	private void setRequestButtonText(String text) {
+	protected void setRequestButtonText(String text) {
 		requestString = text;
 	}
 
@@ -235,7 +235,7 @@ public class StreamRequestFragment extends Fragment {
 	 * @param text
 	 *            , text to be written in the request button
 	 */
-	private void setPrice(String text) {
+	protected void setPrice(String text) {
 		price = text;
 	}
 
@@ -245,7 +245,7 @@ public class StreamRequestFragment extends Fragment {
 	 * @param text
 	 *            , text to be written in the request button
 	 */
-	private void setOffersCount(String text) {
+	protected void setOffersCount(String text) {
 		offersCount = text;
 	}
 
@@ -256,7 +256,7 @@ public class StreamRequestFragment extends Fragment {
 	 * @param requester
 	 *            , is the requester button
 	 */
-	private void setRequesterRedirection() {
+	protected void setRequesterRedirection() {
 		requester.setTextSize(16);
 		requester.setText(getRequesterString());
 		requester.setOnClickListener(new View.OnClickListener() {
@@ -290,7 +290,7 @@ public class StreamRequestFragment extends Fragment {
 	 * @param request
 	 *            , is the request button
 	 */
-	private void setRequestRedirection() {
+	protected void setRequestRedirection() {
 		request.setText(getRequestString());
 		view.setOnClickListener(new View.OnClickListener() {
 			@Override
