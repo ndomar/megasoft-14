@@ -151,18 +151,38 @@ public class MyRequestsFragment extends Fragment {
 				requestPrice = "" + request.getInt("price");
 
 			transaction = getFragmentManager().beginTransaction();
-			StreamRequestFragment requestFragment = StreamRequestFragment
-					.createInstance(requestId, userId, requestButtonText,
-							requesterButtonText, requestPrice,
-							requestOffersCount, getTangleId(), getTangleName());
-			addRequest(status, requestFragment);
+			StreamRequestFragment requestFragment = new StreamRequestFragment();
+			switch (status) {
+			case 0:
+				requestFragment = OpenRequestFragment.createInstance(requestId,
+						userId, requestButtonText, requesterButtonText,
+						requestPrice, requestOffersCount, getTangleId(),
+						getTangleName());
+				break;
+			case 1:
+				requestFragment = FrozenRequestFragment.createInstance(
+						requestId, userId, requestButtonText,
+						requesterButtonText, requestPrice, requestOffersCount,
+						getTangleId(), getTangleName());
+				break;
+			case 2:
+				requestFragment = ClosedRequestFragment.createInstance(
+						requestId, userId, requestButtonText,
+						requesterButtonText, requestPrice, requestOffersCount,
+						getTangleId(), getTangleName());
+				break;
+			default:
+				break;
+			}
+			addRequestFragment(status, requestFragment);
 			transaction.commit();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void addRequest(int status, StreamRequestFragment requestFragment) {
+	private void addRequestFragment(int status,
+			StreamRequestFragment requestFragment) {
 		switch (status) {
 		case 0:
 			transaction.add(R.id.openRequests, requestFragment);
