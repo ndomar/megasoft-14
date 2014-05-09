@@ -158,5 +158,37 @@ public class MyOffersFragment extends Fragment {
 		getStream.execute();
 	}
 
+	/**
+	 * This method is used to set the layout of the view dynamically according
+	 * to response of the request
+	 * 
+	 * @param res
+	 *            , is the response string of the stream request
+	 */
+	private void setTheLayout(String res) {
+		try {
+			JSONObject response = new JSONObject(res);
+			if (response != null) {
+				int count = response.getInt("count");
+				JSONArray offerArray = response.getJSONArray("offers");
+				if (count > 0 && offerArray != null) {
+					removeLayoutViews();
+					for (int i = 0; i < count && i < offerArray.length(); i++) {
+						JSONObject offer = offerArray.getJSONObject(i);
+						if (offer != null) {
+							addOffer(offer);
+						}
+					}
+				} else {
+					Toast.makeText(activity.getBaseContext(),
+							"Sorry, You have no offers in this tangle",
+							Toast.LENGTH_LONG).show();
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
 	
 }
