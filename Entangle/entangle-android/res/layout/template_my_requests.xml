@@ -10,21 +10,23 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/darkWhite"
-        android:overScrollMode="ifContentScrolls" >
+        android:background="@color/darkWhite" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/marginMedium"
+            android:layout_marginTop="@dimen/marginMedium"
             android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/openRequestsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/marginSmall"
                 android:layout_marginLeft="@dimen/boxMargin"
                 android:text="OPEN REQUESTS"
-                android:textColor="@color/megenta" />
+                android:textColor="@color/blue" />
 
             <LinearLayout
                 android:id="@+id/openRequests"
@@ -37,17 +39,20 @@
             </LinearLayout>
 
             <View
-                style="@style/dividerVertical"
                 android:layout_width="fill_parent"
-                android:layout_marginTop="@dimen/marginMedium" />
+                android:layout_height="2dp"
+                android:layout_margin="@dimen/boxMargin"
+                android:background="@color/orange" />
 
             <TextView
                 android:id="@+id/frozenRequestsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/marginSmall"
                 android:layout_marginLeft="@dimen/boxMargin"
+                android:layout_marginTop="@dimen/marginSmall"
                 android:text="FROZEN REQUESTS"
-                android:textColor="@color/megenta" />
+                android:textColor="@color/blue" />
 
             <LinearLayout
                 android:id="@+id/frozenRequests"
@@ -60,17 +65,20 @@
             </LinearLayout>
 
             <View
-                style="@style/dividerVertical"
                 android:layout_width="fill_parent"
-                android:layout_marginTop="@dimen/marginMedium" />
+                android:layout_height="2dp"
+                android:layout_margin="@dimen/boxMargin"
+                android:background="@color/orange" />
 
             <TextView
                 android:id="@+id/closedRequestsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/marginSmall"
                 android:layout_marginLeft="@dimen/boxMargin"
+                android:layout_marginTop="@dimen/marginSmall"
                 android:text="CLOSED REQUESTS"
-                android:textColor="@color/megenta" />
+                android:textColor="@color/blue" />
 
             <LinearLayout
                 android:id="@+id/closedRequests"

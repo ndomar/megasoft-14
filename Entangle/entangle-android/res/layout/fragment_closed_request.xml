@@ -5,8 +5,10 @@
     android:layout_marginRight="@dimen/boxMargin"
     android:background="@color/postBackground"
     android:orientation="vertical"
-    android:padding="@dimen/boxMargin"
-    android:paddingBottom="@dimen/activity_vertical_margin" >
+    android:paddingBottom="@dimen/zeroPadding"
+    android:paddingLeft="@dimen/boxMargin"
+    android:paddingRight="@dimen/boxMargin"
+    android:paddingTop="@dimen/boxMargin" >
 
     <com.megasoft.entangle.views.RoundedImageView
         android:id="@+id/requesterAvatar"
@@ -35,6 +37,7 @@
         android:layout_alignRight="@+id/hr"
         android:layout_alignTop="@+id/hr"
         android:layout_below="@+id/hr"
+        android:layout_marginBottom="@dimen/marginSmall"
         android:layout_marginRight="@dimen/boxMargin"
         android:layout_marginTop="24dp" />
 
@@ -65,15 +68,23 @@
         android:layout_alignRight="@+id/requestPrice"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
+    <View
+        android:id="@+id/hr1"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/requestOffersCount"
+        android:layout_marginTop="@dimen/boxMargin"
+        android:background="@color/lightGray" />
+
     <Button
         android:id="@+id/reopenRequestButton"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/requestOffersCount"
-        android:layout_alignTop="@+id/requestOffersCount"
+        android:layout_alignTop="@+id/hr1"
+        android:layout_marginBottom="0dp"
         android:drawableLeft="@drawable/ic_action_repeat"
-        android:onClick="reOpenRequest"
         android:text="@string/reOpenRequestButton"
         android:textColor="@color/darkGray"
         android:textSize="@dimen/textMedium" />

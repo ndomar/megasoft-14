@@ -148,7 +148,7 @@
     <string name="logout">Logout</string>
     <string name="title_activity_general_profile">General Profile</string>
     <string name="title_activity_splash">Splash</string>
-    <string name="deleteRequestButton">Delete Request</string>
-    <string name="reOpenRequestButton">Reopen Request</string>
+    <string name="deleteRequestButton">Delete</string>
+    <string name="reOpenRequestButton">Reopen</string>
 
 </resources>
