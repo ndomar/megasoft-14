@@ -11,6 +11,14 @@ use Symfony\Component\Validator\Constraints\False;
 
 class PasswordForgetController extends Controller{
 
+    private function randPassGen(){
+        $newpass = '';
+        $seed = "abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for ($i = 0; $i < 5; $i++) {
+            $newpass .= $seed[rand(0, strlen($seed) - 1)];
+        }
+        return $newpass;
+    }
     /**
      * this function validates that the user credentials are correct
      * @param $name
@@ -46,7 +54,7 @@ class PasswordForgetController extends Controller{
      * @return JsonResponse
      * @author KareemWahby
      */
-    public function retrievePasswordAction(Request $request){
+    public function resetPasswordAction(Request $request){
         $data = json_decode($request->getContent(),true);
         $name = $data['name'];
         $email= $data['email'];
@@ -58,11 +66,15 @@ class PasswordForgetController extends Controller{
             return $response;
         }else{
             $doctrine = $this->getDoctrine();
+            $em=$doctrine->getEntityManager();
             $UserRepo = $doctrine->getRepository('MegasoftEntangleBundle:User');
             $user = $UserRepo->findOneBy(array('id' => $id));
-            $password=$user->getPassword();
+            $newPass=$this->randPassGen();
+            $user->setPassword($newPass);
+            $em->persist($user);
+            $em->flush();
             $response->setStatusCode(200);
-            $response->setContent(json_encode(array('password'=> $password)));
+            $response->setContent(json_encode(array('password'=> $newPass)));
             return $response;
         }
 
