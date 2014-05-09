@@ -4,10 +4,18 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.annotation.TargetApi;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 
 public class EditProfileActivity extends Activity {
+	private static final int REQUEST_ID = 1;
+	Button browse;
+	Button upload;
+	Bitmap picture;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -15,7 +23,30 @@ public class EditProfileActivity extends Activity {
 		setContentView(R.layout.activity_edit_profile);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		browse = (Button) findViewById(R.id.browse_button);
+        upload = (Button) findViewById(R.id.upload_button);
+        browse.setOnClickListener(browseHandler);
+        upload.setOnClickListener(uploadHandler);
 	}
+	/**
+	 * action taken when find a photo button is clicked
+	 * @author Nader Nessem
+	 */
+	View.OnClickListener browseHandler = new View.OnClickListener() {
+	    public void onClick(View v) {
+	    	Intent intent = new Intent();
+		    intent.setAction(Intent.ACTION_GET_CONTENT);
+		    intent.addCategory(Intent.CATEGORY_OPENABLE);
+		    intent.setType("image/*");
+			startActivityForResult(intent, REQUEST_ID);
+	    }
+	 };
+	 View.OnClickListener uploadHandler = new View.OnClickListener() {
+	    public void onClick(View v) {
+	      
+	    }
+	 };
+	
 
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
