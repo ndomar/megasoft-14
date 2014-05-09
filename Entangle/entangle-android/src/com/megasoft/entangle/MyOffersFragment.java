@@ -242,5 +242,36 @@ public class MyOffersFragment extends Fragment {
 		transaction.commit();
 	}
 
+	/**
+	 * This method is used to put each offer in its corresponding layout
+	 * 
+	 * @param status
+	 *            , is the status of the offer
+	 * @param offer
+	 *            , is the offer fragment
+	 * @author HebaAamer
+	 */
+	private void putInPlace(int status, OfferEntryFragment offer) {
+		switch (status) {
+		case 0:
+			transaction.add(R.id.pendingOffers, offer);
+			break;
+		case 1:
+			transaction.add(R.id.doneOffers, offer);
+			break;
+		case 2:
+			transaction.add(R.id.acceptedOffers, offer);
+			break;
+		case 3:
+			transaction.add(R.id.failedOffers, offer);
+			break;
+		case 4:
+			transaction.add(R.id.rejectedOffers, offer);
+			break;
+		default:
+			break;
+		}
+	}
+
 	
 }
