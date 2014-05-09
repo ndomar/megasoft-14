@@ -34,13 +34,7 @@ public class TangleFragment extends Fragment {
 
 	private FragmentActivity activity;
 	private View view;
-	private TextView tangle;
 	
-	/**
-	 * The Intent used to redirect to other activities
-	 */
-	private Intent intent;
-
 	/**
 	 * The domain to which the requests are sent
 	 */
@@ -111,47 +105,14 @@ public class TangleFragment extends Fragment {
          
          tangleId = getArguments().getInt("tangleId");
          tangleName = getArguments().getString("tangleName");
-         //tangle = (TextView) view.findViewById(R.id.tangleName);
         
          sendFilteredRequest(rootResource + "/tangle/" + tangleId
  				+ "/request");
-        setAttributes();
         
-        Log.e("test", tangleId+"");
-        Log.e("test", sessionId+"");
  		setRedirections();
- 		//tangle.setText(tangleName);
+ 		
         return view;
     }
-	
-	/**
-	 * This method is called to set the attributes of the activity passed from
-	 * the previous activity
-	 */
-	private void setAttributes() {
-//		if (activity.getIntent() != null) {
-//			if (!activity.getIntent().hasExtra("sessionId")) {
-//				intent = new Intent(activity, LoginActivity.class);
-//				// to be changed to login activity
-//			}
-//			if (!activity.getIntent().hasExtra("tangleId")) {
-//				intent = new Intent(activity, LoginActivity.class);
-//				// to be changed to tangles' list activity
-//			}
-//			if (!activity.getIntent().hasExtra("tangleName")) {
-//				intent = new Intent(activity, LoginActivity.class);
-//				// to be changed to tangles' list activity
-//			}
-//			tangleId = activity.getIntent().getIntExtra("tangleId", 0);
-//			tangleName = activity.getIntent().getStringExtra("tangleName");
-//			sessionId = activity.getIntent().getStringExtra("sessionId");
-//			TextView tangle = (TextView) activity.findViewById(R.id.tangleName);
-//			tangle.setText(tangleName);
-//		} else {
-//			intent = new Intent(activity, LoginActivity.class);
-//			// to be changed to login activity
-//		}
-	}
 
 	/**
 	 * This method is used to set the layout of the stream dynamically according
@@ -236,41 +197,6 @@ public class TangleFragment extends Fragment {
 //
 //		Button invite = (Button) view.findViewById(R.id.invite);
 //		setButtonRedirection(invite, "InviteUserActivity");
-	}
-
-	/**
-	 * This method is a generic one that is called to set the action of a
-	 * specific button to redirect upon clicking to a specific activity
-	 * 
-	 * @param button
-	 *            , is the button intended to set its action
-	 * @param activityName
-	 *            , is the name of the class/activity to be redirected to upon
-	 *            clicking the button
-	 */
-	private void setButtonRedirection(Button button, final String activityName) {
-		button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				try {
-					if (activityName != null) {
-						intent = new Intent(activity.getBaseContext(), Class
-								.forName("com.megasoft.entangle."
-										+ activityName));
-						intent.putExtra("tangleId", getTangleId());
-						intent.putExtra("tangleName", getTangleName());
-						intent.putExtra("sessionId", getSessionId());
-						startActivity(intent);
-					}
-				} catch (ClassNotFoundException e) {
-					Toast.makeText(
-							((View) v.getParent()).getContext(),
-							"Sorry, There is a problem in getting the "
-									+ activityName + " page", Toast.LENGTH_LONG)
-							.show();
-				}
-			}
-		});
 	}
 
 	/**
