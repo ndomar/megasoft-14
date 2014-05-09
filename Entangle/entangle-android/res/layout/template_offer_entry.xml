@@ -16,5 +16,44 @@
         android:layout_alignParentLeft="true"
         android:src="@drawable/ic_action_person" />
 
-   
+    <TextView
+        android:id="@+id/offererName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/offererAvatar"
+        android:layout_alignTop="@+id/offererAvatar"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/boxMargin"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@+id/offererAvatar"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/offerDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/hr"
+        android:layout_alignRight="@+id/hr"
+        android:layout_alignTop="@+id/hr"
+        android:layout_below="@+id/hr"
+        android:layout_marginRight="@dimen/boxMargin"
+        android:layout_marginTop="24dp" />
+
+    <View
+        android:id="@+id/hr"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/offererName"
+        android:layout_marginTop="@dimen/boxMargin"
+        android:background="@color/lightGray" />
+
+    <TextView
+        android:id="@+id/offerPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/hr"
+        android:layout_alignTop="@+id/offererName"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/green" />
+
 </RelativeLayout>
