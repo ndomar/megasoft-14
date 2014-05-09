@@ -134,7 +134,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/offer_price"
-                    android:drawableRight="@drawable/ic_action_edit" />
+                    android:drawableRight="@drawable/ic_action_edit" 
+                    android:onClick="changePrice"/>
             </RelativeLayout>
 
             <TextView
