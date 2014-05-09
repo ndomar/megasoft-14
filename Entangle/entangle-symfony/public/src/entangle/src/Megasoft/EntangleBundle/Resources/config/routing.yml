@@ -264,14 +264,11 @@ _test:
   pattern: /notification/test
   defaults: {_controller: MegasoftEntangleBundle:Notification:test}
   methods: [GET]
+
 update:
-    path:      /request/{requestid}/offer/{offerid}
+    path:    /markAsDone/offer/{offerid}
     defaults:  { _controller: MegasoftEntangleBundle:Offer:update }
     methods: [POST]
-statusInformation:
-    path:      /request/{requestid}/offer/{offerid}
-    defaults:  { _controller: MegasoftEntangleBundle:Offer:statusInformation }
-    methods: [GET]
 
 
 megasoft_entangle_homepage:

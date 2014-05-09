@@ -12,6 +12,7 @@ use Megasoft\EntangleBundle\Entity\Message;
 use Megasoft\EntangleBundle\Entity\user;
 use Megasoft\EntangleBundle\Entity\Tangle;
 use Megasoft\EntangleBundle\Entity\UserTangle;
+use Megasoft\EntangleBundle\Entity\Transaction;
 
 /**
  * Gets the required information to view a certain offer
@@ -212,13 +213,6 @@ class OfferController extends Controller {
         $this->getDoctrine()->getManager()->flush();
         return new Response('Price changed', 200);
     }
-
-    /**
-     * this recieves a request and calls verify to check if it can accept the offer
-     * @param Request $request
-     * @return Response $response returns 201 or 409 status code and message depending on verification
-     * @author sak9
-     */
 
     /**
      * this recieves a request and calls verify to check if it can accept the offer
@@ -488,13 +482,24 @@ class OfferController extends Controller {
         return new Response('Ok', 201);
     }
 
-    public function updateAction($requestid, $offerid, \Symfony\Component\HttpFoundation\Request $request) {
+    /**
+     * This marks an offer as done
+     * @param Int $offerid offer ID
+     * @param \Symfony\Component\HttpFoundation\Request
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @author mohamedzayan
+     */
+    public function updateAction($offerid, \Symfony\Component\HttpFoundation\Request $request) {
         $sessionId = $request->headers->get('X-SESSION-ID');
         if ($sessionId == null) {
             return new Response('Unauthorized', 401);
         }
         $doctrine = $this->getDoctrine();
         $requestTable = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+        $repo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $offerId = $offerid;
+        $offer = $repo->find($offerId);
+        $requestid = $offer->getRequestId();
         $testrequest = $requestTable->find($requestid);
         if ($testrequest == null) {
             return new Response('Request does not exist', 401);
@@ -505,9 +510,6 @@ class OfferController extends Controller {
             return new Response('Unauthorized', 401);
         }
         $userOfSession = $session->getUserId();
-        $repo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
-        $offerId = $offerid;
-        $offer = $repo->find($offerId);
         if ($testrequest->getDeleted()) {
             return new Response('This request does not exist anymore', 401);
         }
@@ -554,19 +556,6 @@ class OfferController extends Controller {
             $this->getDoctrine()->getManager()->flush();
             return $response;
         }
-    }
-
-    public function statusInformationAction($offerid) {
-        $doctrine = $this->getDoctrine();
-        $offertable = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
-        $offer = $offertable->find($offerid);
-        if ($offer == null) {
-            return new response("Offer Does not exist", 401);
-        }
-        $status = $offer->getStatus();
-        $response = new JsonResponse();
-        $response->setData(array('status' => $status));
-        return $response;
     }
 
 }

@@ -1,12 +1,10 @@
 package com.megasoft.entangle;
 
-
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.PostRequest;
 
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -91,6 +89,10 @@ public class OfferActivity extends FragmentActivity {
 	 * The button that allows the user to accept an offer
 	 */
 	private Button acceptOffer;
+	/**
+	 * The button that allows the user to mark an offer as done
+	 */
+	private Button markOfferAsDone;
 
 	/**
 	 * The tangle Id
@@ -131,7 +133,7 @@ public class OfferActivity extends FragmentActivity {
 	/**
 	 * String for get and post offer details endpoint
 	 */
-	final String Request = "/request/";
+	final String markAsDone = "/markAsDone";
 	/**
 	 * String for get offer details endpoint
 	 */
@@ -143,7 +145,7 @@ public class OfferActivity extends FragmentActivity {
 	/**
 	 * offer status
 	 */
-	final String Pending = "0";	
+	final String Pending = "0";
 	/**
 	 * The id of the logged in user
 	 */
@@ -196,6 +198,7 @@ public class OfferActivity extends FragmentActivity {
 		// deleteOfferLayout = (LinearLayout)
 		// findViewById(R.id.delete_offer_layout);
 		acceptOffer = (Button) findViewById(R.id.accept_offer);
+		markOfferAsDone = (Button) findViewById(R.id.mark_asdone);
 		String link = Config.API_BASE_URL + "/offer/" + offerId;
 
 		GetRequest request = new GetRequest(link) {
@@ -371,7 +374,10 @@ public class OfferActivity extends FragmentActivity {
 							if (offerStatus == 0) {
 								addAcceptButton();
 
+							} else if (offerStatus == 2) {
+								addMarkAsDoneButton();
 							}
+
 						}
 					} else {
 						Toast toast = Toast.makeText(getApplicationContext(),
@@ -445,117 +451,116 @@ public class OfferActivity extends FragmentActivity {
 		});
 
 	}
+
 	/**
-	 * this checks if an offer is already marked as done or not accepted.if
+	 * This adds the mark as done button to the layout
+	 * 
+	 * @param None
+	 * @return None
+	 * @author mohamedzayan
+	 */
+	public void addMarkAsDoneButton() {
+		markOfferAsDone.setVisibility(1);
+	}
+
+	/**
+	 * This checks if an offer is already marked as done or not accepted.if
 	 * neither it navigates to the actual marking method
-	 * @param  View view The checkbox clicked
+	 * 
+	 * @param View
+	 *            view The Button clicked
 	 * @return None
 	 * @author mohamedzayan
 	 */
 	public void markCheck(View view) {
-		GetRequest initRequest = new GetRequest(Config.API_BASE_URL
-				+ Request + 1 + Offer + 1) {
-			protected void onPostExecute(String response) {
-				if (this.getStatusCode() == 200) {
-					JSONObject jresponse;
-					try {
-						jresponse = new JSONObject(response);
-						System.out.println(jresponse.getString("status"));
-						if (jresponse.getString("status").equals(Pending)
-								|| jresponse.getString("status").equals(Done)) {
-							Toast error = Toast.makeText(
-									getApplicationContext(), R.string.error,
-									Toast.LENGTH_LONG);
-							error.show();
-						} else {
-							markAsDone(offerId);
-						}
-
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-		};
-		initRequest.addHeader(Config.API_SESSION_ID,sessionId);
-		initRequest.execute();
+		Toast x;
+		if (offerStatus.getText().equals(Pending)) {
+			x = Toast.makeText(getApplicationContext(),
+					"Offer is not accepted", Toast.LENGTH_LONG);
+			x.show();
+		} else if (offerStatus.getText().equals(Done)) {
+			x = Toast.makeText(getApplicationContext(),
+					"Offer is already marked as done", Toast.LENGTH_LONG);
+			x.show();
+		} else {
+			markAsDone(offerId);
+		}
 
 	}
 
 	/**
-	 * this marks an accepted offer as done
-	 * @param  Int OfferId offer ID
+	 * This marks an accepted offer as done
+	 * 
+	 * @param Int
+	 *            OfferId offer ID
 	 * @return None
 	 * @author mohamedzayan
 	 */
 	public void markAsDone(int Offerid) {
 
-		JSONObject json = new JSONObject();
-		try {
-			json.put("status", Done);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		PostRequest request = new PostRequest(Config.API_BASE_URL + Request + 1 + Offer
-				+ Offerid) {
+		PostRequest request = new PostRequest(Config.API_BASE_URL + markAsDone
+				+ Offer + Offerid) {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 201) {
 					Toast success = Toast.makeText(getApplicationContext(),
 							R.string.mark, Toast.LENGTH_LONG);
 					success.show();
-					CheckBox checkbox1 = (CheckBox) findViewById(R.id.mark_asdone);
-					checkbox1.setEnabled(false);
-				}
-				else {
-					Toast x = Toast.makeText(getApplicationContext(),
+					Button mark = (Button) findViewById(R.id.mark_asdone);
+					mark.setEnabled(false);
+					mark.setVisibility(View.INVISIBLE);
+					offerStatus.setText("Done");
+				} else {
+					Toast error = Toast.makeText(getApplicationContext(),
 							R.string.error, Toast.LENGTH_LONG);
-					x.show();
+					error.show();
 				}
 			}
 
 		};
-		request.addHeader(Config.API_SESSION_ID,sessionId);
-		request.setBody(json);
+		request.addHeader(Config.API_SESSION_ID, sessionId);
 		request.execute();
 
 	}
 
-/**
- * The callback for the add comment button which adds the comment and re-renders the layout 
- * @param view
- * @author mohamedbassem
- */
-public void addComment(View view){
+	/**
+	 * The callback for the add comment button which adds the comment and
+	 * re-renders the layout
+	 * 
+	 * @param view
+	 * @author mohamedbassem
+	 */
+	public void addComment(View view) {
 
-	PostRequest request = new PostRequest(Config.API_BASE_URL + "/offer/" + offerId + "/comment") {
+		PostRequest request = new PostRequest(Config.API_BASE_URL + "/offer/"
+				+ offerId + "/comment") {
 
-		@Override
-		protected void onPostExecute(String response) {
-			if(this.getStatusCode() == 201){
-				comment.setText("");
-				viewOffer();
-			}else{
-				Toast.makeText(getApplicationContext(), this.getErrorMessage(), Toast.LENGTH_LONG).show();
+			@Override
+			protected void onPostExecute(String response) {
+				if (this.getStatusCode() == 201) {
+					comment.setText("");
+					viewOffer();
+				} else {
+					Toast.makeText(getApplicationContext(),
+							this.getErrorMessage(), Toast.LENGTH_LONG).show();
+				}
 			}
+
+		};
+
+		String commentMessage = comment.getText().toString();
+		if (commentMessage.equals("")) {
+			return;
+		}
+		JSONObject body = new JSONObject();
+		try {
+			body.put("body", commentMessage);
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
 
-	};
-
-	String commentMessage = comment.getText().toString();
-	if(commentMessage.equals("")){
-		return;
+		request.addHeader(Config.API_SESSION_ID, sessionId);
+		request.setBody(body);
+		request.execute();
 	}
-	JSONObject body = new JSONObject();
-	try {
-		body.put("body", commentMessage);
-	} catch (JSONException e) {
-		e.printStackTrace();
-	}
-
-	request.addHeader(Config.API_SESSION_ID, sessionId);
-	request.setBody(body);
-	request.execute();
-}
 
 }

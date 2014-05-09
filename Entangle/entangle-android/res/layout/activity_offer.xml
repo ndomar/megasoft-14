@@ -130,11 +130,17 @@
 
                 <Button
                     android:id="@+id/mark_asdone"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_toLeftOf="@+id/accept_offer"
-                    android:text="@string/Do_ne" />
+                    android:layout_alignParentRight="true"
+                    android:text="@string/done"
+                    android:textAlignment="center"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/textLarge"
+                    android:visibility="invisible" 
+                    android:onClick="markCheck"/>
 
             </RelativeLayout>
 
