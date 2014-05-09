@@ -114,6 +114,19 @@ public class StreamRequestFragment extends Fragment {
 		return fragment;
 	}
 
+	protected void setFragmentAttributes(int requestId, int requesterId,
+			String requestString, String requesterString, String price,
+			String offersCount, int tangleId, String tangleName) {
+		this.setRequestId(requestId);
+		this.setRequesterId(requesterId);
+		this.setRequestButtonText(requestString);
+		this.setRequesterButtonText(requesterString);
+		this.setPrice(price);
+		this.setOffersCount(offersCount);
+		this.setTangleId(tangleId);
+		this.setTangleName(tangleName);
+	}
+
 	/**
 	 * This method is used to setup and return the view of the fragment
 	 */
@@ -310,7 +323,7 @@ public class StreamRequestFragment extends Fragment {
 	 * 
 	 * @return tangleId
 	 */
-	private int getTangleId() {
+	protected int getTangleId() {
 		return tangleId;
 	}
 
@@ -319,7 +332,7 @@ public class StreamRequestFragment extends Fragment {
 	 * 
 	 * @return name
 	 */
-	private String getTangleName() {
+	protected String getTangleName() {
 		return tangleName;
 	}
 
@@ -329,7 +342,7 @@ public class StreamRequestFragment extends Fragment {
 	 * @param tangleId
 	 *            , id of the tangle
 	 */
-	private void setTangleId(int tangleId) {
+	protected void setTangleId(int tangleId) {
 		this.tangleId = tangleId;
 	}
 
@@ -339,7 +352,7 @@ public class StreamRequestFragment extends Fragment {
 	 * @param tangleName
 	 *            , name of the tangle
 	 */
-	private void setTangleName(String tangleName) {
+	protected void setTangleName(String tangleName) {
 		this.tangleName = tangleName;
 	}
 }
