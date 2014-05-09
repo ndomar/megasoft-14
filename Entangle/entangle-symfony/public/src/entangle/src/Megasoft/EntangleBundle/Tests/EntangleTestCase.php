@@ -13,6 +13,18 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class EntangleTestCase extends WebTestCase
 {
+    public function setUpBeforeClass() {
+        static::$kernel = static::createKernel();
+        static::$kernel->boot();
+        $this->em = static::$kernel->getContainer()
+            ->get('doctrine')
+            ->getManager();
+        $schemaTool = new SchemaTool($this->em);
+        $metadata = $this->em->getMetadataFactory()->getAllMetadata();
+        $schemaTool->dropSchema($metadata);
+        $schemaTool->createSchema($metadata);
+        parent::setUpBeforeClass();
+    }
     
     public function setup() {
         static::$kernel = static::createKernel();
@@ -30,12 +42,5 @@ class EntangleTestCase extends WebTestCase
         $executor = new ORMExecutor($this->em, $purger);
         $executor->execute($loader->getFixtures());
         parent::setup();
-    }
-    
-    public function testSimpleGetAction(){
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/simpleget/sampleTangle', array(), array(), array('HTTP_X_SESSION_ID'=>'fdfdsffdsdf'), 'hello');
-
-        $this->assertEquals('sampleUser', $client->getResponse()->getContent());
     }
 }
