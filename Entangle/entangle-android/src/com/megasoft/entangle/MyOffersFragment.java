@@ -111,12 +111,51 @@ public class MyOffersFragment extends Fragment {
 		return view;
 	}
 
+	@Override
+	public void onAttach(Activity activity) {
+
+		this.activity = (FragmentActivity) activity;
+		super.onAttach(activity);
+	}
+
+	/**
+	 * This method is used to initialize the different layouts of the view
+	 * 
+	 * @author HebaAamer
+	 */
 	private void setAttributes() {
 		pendingOffers = (LinearLayout) view.findViewById(R.id.pendingOffers);
 		doneOffers = (LinearLayout) view.findViewById(R.id.doneOffers);
 		acceptedOffers = (LinearLayout) view.findViewById(R.id.acceptedOffers);
 		failedOffers = (LinearLayout) view.findViewById(R.id.failedOffers);
 		rejectedOffers = (LinearLayout) view.findViewById(R.id.rejectedOffers);
+	}
+
+	/**
+	 * This method is used to send a get request to get all the offers
+	 * 
+	 * @param url
+	 *            , is the URL to which the request is going to be sent
+	 * 
+	 * @author HebaAamer
+	 */
+	public void sendRequest(final String url) {
+		sessionId = activity.getSharedPreferences(Config.SETTING, 0).getString(
+				Config.SESSION_ID, "");
+		GetRequest getStream = new GetRequest(url) {
+			protected void onPostExecute(String res) {
+				if (!this.hasError() && res != null) {
+					removeLayoutViews();
+					setTheLayout(res);
+				} else {
+					Toast.makeText(activity.getBaseContext(),
+							"Sorry, There is a problem in loading your offers",
+							Toast.LENGTH_LONG).show();
+				}
+			}
+		};
+		getStream.addHeader(Config.API_SESSION_ID, getSessionId());
+		getStream.execute();
 	}
 
 	
