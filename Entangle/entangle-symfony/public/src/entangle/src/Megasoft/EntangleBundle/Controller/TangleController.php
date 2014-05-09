@@ -25,9 +25,20 @@ class TangleController extends Controller {
      * @author HebaAamer
      */
     public function userOffersAction(Request $request, $tangleId) {
-        
+        $verification = $this->verifyUser($request, $tangleId);
+
+        if ($verification != null) {
+            return $verification;
+        }
+        $doctrine = $this->getDoctrine();
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        $userId = $session->getUserId();
     }
-    
+
     /**
      * Validates that the request has correct format,  session Id is active and of a user and that the user is in the tangle
      * @param Request $request
@@ -79,7 +90,6 @@ class TangleController extends Controller {
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
 
         $query = $requestRepo->createQueryBuilder('request')
-
                 ->where('request.tangleId = :tangleId')
                 ->setParameter('tangleId', $tangleId)
                 ->andWhere('request.deleted = :false')
@@ -88,21 +98,21 @@ class TangleController extends Controller {
         $userId = $request->query->get('userid', null);
         if ($userId != null) {
             $query = $query->andWhere('request.userId = :userId')
-                ->setParameter('userId', $userId);
+                    ->setParameter('userId', $userId);
         }
 
         $fullText = $request->query->get('fulltext', null);
         if ($fullText != null) {
             $query = $query->andWhere('request.description LIKE :fullTextFormat')
-                ->setParameter('fullTextFormat', '%' . $fullText . '%');
+                    ->setParameter('fullTextFormat', '%' . $fullText . '%');
         }
 
 
         $usernamePrefix = $request->query->get('usernameprefix', null);
         if ($usernamePrefix != null) {
             $query = $query->innerJoin('MegasoftEntangleBundle:User', 'user', 'WITH', 'request.userId = user.id')
-                ->andWhere('user.name LIKE :usernamePrefixFormat')
-                ->setParameter('usernamePrefixFormat', $usernamePrefix . '%');
+                    ->andWhere('user.name LIKE :usernamePrefixFormat')
+                    ->setParameter('usernamePrefixFormat', $usernamePrefix . '%');
         }
 
         $requests = $query->getQuery()->getResult();
@@ -151,7 +161,6 @@ class TangleController extends Controller {
      * @return Response | Symfony\Component\HttpFoundation\JsonResponse
      * @author OmarElAzazy
      */
-
     public function allTagsAction(Request $request, $tangleId) {
         $verification = $this->verifyUser($request, $tangleId);
 
@@ -247,9 +256,7 @@ class TangleController extends Controller {
      * @param string $message
      * @author MohamedBassem
      */
-
-    
-    public function inviteUser($email,$tangleId,$inviterId,$message){
+    public function inviteUser($email, $tangleId, $inviterId, $message) {
         $randomString = $this->generateRandomString(30);
 
         $tangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Tangle');
@@ -274,7 +281,7 @@ class TangleController extends Controller {
         $this->getDoctrine()->getManager()->persist($newInvitationCode);
         $this->getDoctrine()->getManager()->flush();
 
-        $title = "you are invited to ".$tangle->getName();
+        $title = "you are invited to " . $tangle->getName();
         $body = "<!DOCTYPE html>
                 <html lang=\"en\">
                     <head>
@@ -288,7 +295,7 @@ class TangleController extends Controller {
                 </html>";
 
 
-        
+
         $notificationCenter = $this->get('notification_center.service');
         $notificationCenter->sendMailToEmail($email, $title, $body);
     }
@@ -338,12 +345,12 @@ class TangleController extends Controller {
 
         foreach ($json['emails'] as $email) {
 
-            if ( !$this->isValidEmail($email) || (!$this->isNewMember($email) && $this->isTangleMember($email, $tangleId)) ) {
+            if (!$this->isValidEmail($email) || (!$this->isNewMember($email) && $this->isTangleMember($email, $tangleId))) {
                 continue;
             }
 
             if ($isOwner) {
-                $this->inviteuser($email,$tangleId,$session->getUserId(),$json['message']);
+                $this->inviteuser($email, $tangleId, $session->getUserId(), $json['message']);
             } else {
                 $em = $this->getDoctrine()->getManager();
 
@@ -373,10 +380,10 @@ class TangleController extends Controller {
 
         $jsonResponse = new JsonResponse();
         $jsonResponse->setStatusCode(201);
-        if($isOwner){
-            $jsonResponse->setData(array('pending'=>0));
-        }else{
-            $jsonResponse->setData(array('pending'=>1));
+        if ($isOwner) {
+            $jsonResponse->setData(array('pending' => 0));
+        } else {
+            $jsonResponse->setData(array('pending' => 1));
         }
         return $jsonResponse;
     }
@@ -457,7 +464,7 @@ class TangleController extends Controller {
 
         $response = new Response();
         $response->setStatusCode(201);
-        
+
         return $response;
     }
 
@@ -818,8 +825,8 @@ class TangleController extends Controller {
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
         $email = $pendingInvitation->getEmail();
 
-        if ($this->isNewMember($email) || !$this->isTangleMember($email, $pendingInvitation->getTangleId()) ) {
-            $this->inviteuser($email,$pendingInvitation->getTangleId(),$pendingInvitation->getInviterId(),$message);
+        if ($this->isNewMember($email) || !$this->isTangleMember($email, $pendingInvitation->getTangleId())) {
+            $this->inviteuser($email, $pendingInvitation->getTangleId(), $pendingInvitation->getInviterId(), $message);
             $pendingInvitation->setApproved(true);
             $this->getDoctrine()->getManager()->flush();
             return new Response("Approved", 200);
@@ -885,14 +892,14 @@ class TangleController extends Controller {
         $tangleId = $invitation->getTangleId();
         $userId = $invitation->getUserId();
         $tangle = $this->getDoctrine()
-            ->getRepository('MegasoftEntangleBundle:Tangle')
-            ->find($tangleId);
+                ->getRepository('MegasoftEntangleBundle:Tangle')
+                ->find($tangleId);
         if (!$tangle) {
             return new Response("Tangle not found", 404);
         }
         $user = $this->getDoctrine()
-            ->getRepository('MegasoftEntangleBundle:User')
-            ->find($userId);
+                ->getRepository('MegasoftEntangleBundle:User')
+                ->find($userId);
         if (!$user) {
             return new Response("User not found", 404);
         }
@@ -944,8 +951,8 @@ class TangleController extends Controller {
         $tangles = $UserTanglerepo->findBy(array('userId' => $userId, 'leavingDate' => null));
         $ret = array();
 
-        foreach($tangles as $tangle){
-            $ret[] = array("id"=>$tangle->getTangleId(),"name"=>$tangle->getTangle()->getName(),"isOwner"=>$tangle->getTangleOwner());
+        foreach ($tangles as $tangle) {
+            $ret[] = array("id" => $tangle->getTangleId(), "name" => $tangle->getTangle()->getName(), "isOwner" => $tangle->getTangleOwner());
         }
 
         $jsonResponse = new JsonResponse();
