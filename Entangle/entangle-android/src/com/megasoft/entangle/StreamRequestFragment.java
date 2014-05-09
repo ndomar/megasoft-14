@@ -1,18 +1,14 @@
 package com.megasoft.entangle;
 
-import com.megasoft.entangle.megafragments.TangleFragment;
 import com.megasoft.entangle.views.RoundedImageView;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -103,14 +99,8 @@ public class StreamRequestFragment extends Fragment {
 			int requesterId, String requestString, String requesterString,
 			String price, String offersCount, int tangleId, String tangleName) {
 		StreamRequestFragment fragment = new StreamRequestFragment();
-		fragment.setRequestId(requestId);
-		fragment.setRequesterId(requesterId);
-		fragment.setRequestButtonText(requestString);
-		fragment.setRequesterButtonText(requesterString);
-		fragment.setPrice(price);
-		fragment.setOffersCount(offersCount);
-		fragment.setTangleId(tangleId);
-		fragment.setTangleName(tangleName);
+		fragment.setFragmentAttributes(requestId, requesterId, requestString,
+				requesterString, price, offersCount, tangleId, tangleName);
 		return fragment;
 	}
 
@@ -135,18 +125,7 @@ public class StreamRequestFragment extends Fragment {
 			Bundle savedInstancState) {
 		view = inflater.inflate(R.layout.fragment_stream_request, container,
 				false);
-		request = (TextView) view.findViewById(R.id.requestDescription);
-		requesterAvatar = (RoundedImageView) view
-				.findViewById(R.id.requesterAvatar);
-		requester = (TextView) view.findViewById(R.id.requesterName);
-		setRequestRedirection();
-		setRequesterRedirection();
-		TextView priceView = (TextView) view.findViewById(R.id.requestPrice);
-		priceView.setText(price);
-		TextView offersCountView = (TextView) view
-				.findViewById(R.id.requestOffersCount);
-		offersCountView.setText(offersCount);
-
+		setAttributes();
 		return view;
 	}
 
