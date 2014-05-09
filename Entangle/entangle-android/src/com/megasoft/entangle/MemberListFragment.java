@@ -1,5 +1,7 @@
 package com.megasoft.entangle;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,10 +10,13 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -33,7 +38,10 @@ public class MemberListFragment extends Fragment {
 	private LinearLayout memberListView;
 	private int numberOfMembers;
 	private ViewGroup container;
-
+	public EditText searchBar;
+	private ArrayList<MemberEntryFragment> memberFragments = new ArrayList<MemberEntryFragment>();
+	FragmentTransaction fragmentTransaction;
+	
 	public ViewGroup getContainer() {
 		return container;
 	}
@@ -119,9 +127,29 @@ public class MemberListFragment extends Fragment {
 		setContainer(container);
 		setMemberListView((LinearLayout) view
 				.findViewById(R.id.view_member_list));
+		searchBar = (EditText) view.findViewById(R.id.search_field);
+		fetchMembers();
+		searchBar.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void afterTextChanged(Editable arg0) {
+				// TODO Auto-generated method stub
 
-		fetchMembers("");
+			}
 
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+					int arg3) {
+				searchMembers(arg0.toString());
+
+			}
+		});
 		return view;
 	}
 
@@ -129,11 +157,9 @@ public class MemberListFragment extends Fragment {
 	 * It makes a request getting members and creating the fragments for member
 	 * entries to be viewed
 	 * 
-	 * @param String searchString, passed to showData method
-	 * 
 	 * @author Omar ElAzazy
 	 */
-	private void fetchMembers(final String searchString) {
+	private void fetchMembers() {
 
 		final AlertDialog ad = new AlertDialog.Builder(getActivity()).create();
 		ad.setCancelable(false);
@@ -147,7 +173,7 @@ public class MemberListFragment extends Fragment {
 				Log.e("test", this.getStatusCode() + ""); // ///////////////////////////////
 
 				if (!this.hasError() && this.getStatusCode() == 200) {
-					if (!showData(response, searchString)) {
+					if (!showData(response)) {
 						toasterShow("Something went wrong, please try again later");
 					}
 				} else {
@@ -166,36 +192,28 @@ public class MemberListFragment extends Fragment {
 	 * @param String response, the body of the response of the request to get
 	 * all members in a tangle
 	 * 
-	 * @param String searchString, the string that is being searched for which
-	 * is empty if no search is being carried out
-	 * 
 	 * @return a boolean indicating if this was successful or not
 	 * 
 	 * @author Omar ElAzazy
 	 */
-	private boolean showData(String response, String searchString) {
+	private boolean showData(String response) {
 		if (!populateData(response)) {
 			return false;
 		}
-
-		FragmentTransaction fragmentTransaction = getActivity()
+		 fragmentTransaction = getActivity()
 				.getSupportFragmentManager().beginTransaction();
 
 		for (int i = 0; i < getNumberOfMembers(); i++) {
 			MemberEntryFragment memberEntryFragment = new MemberEntryFragment();
-			if (getMemberNames()[i].toLowerCase().startsWith( searchString.toLowerCase())) {
-				Bundle bundle = new Bundle();
-				bundle.putInt(Config.USER_ID, getMemberIds()[i]);
-				bundle.putInt(Config.TANGLE_ID, getTangleId());
-				bundle.putString(Config.MEMBER_NAME, getMemberNames()[i]);
-				bundle.putInt(Config.MEMBER_BALANCE, getMemberBalances()[i]);
-				bundle.putString(Config.MEMBER_AVATAR_URL,
-						getMemberAvatarURLs()[i]);
-
-				memberEntryFragment.setArguments(bundle);
-				fragmentTransaction.add(R.id.view_member_list,
-						memberEntryFragment);
-			}
+			memberFragments.add(memberEntryFragment);
+			Bundle bundle = new Bundle();
+			bundle.putInt(Config.USER_ID, getMemberIds()[i]);
+			bundle.putInt(Config.TANGLE_ID, getTangleId());
+			bundle.putString(Config.MEMBER_NAME, getMemberNames()[i]);
+			bundle.putInt(Config.MEMBER_BALANCE, getMemberBalances()[i]);
+			bundle.putString(Config.MEMBER_AVATAR_URL, getMemberAvatarURLs()[i]);
+			memberEntryFragment.setArguments(bundle);
+			fragmentTransaction.add(R.id.view_member_list, memberEntryFragment);
 		}
 
 		fragmentTransaction.commit();
@@ -247,5 +265,25 @@ public class MemberListFragment extends Fragment {
 	private void toasterShow(String message) {
 		Toast.makeText(getActivity().getBaseContext(), message,
 				Toast.LENGTH_LONG).show();
+	}
+/*
+ * Searches for member.
+ * 
+ * @param String searchString, the name being searched for
+ * 
+ * @author sak93
+ */
+	
+	private void searchMembers(String searchString) {
+		for (int i = 0; i < getNumberOfMembers(); i++) {
+			if (!memberFragments.get(i).getMemberName().toLowerCase()
+					.startsWith(searchString.toLowerCase())) {
+				memberFragments.get(i).getView().setVisibility(View.GONE);
+			}
+			else{
+			
+					memberFragments.get(i).getView().setVisibility(View.VISIBLE);
+			}
+		}
 	}
 }
