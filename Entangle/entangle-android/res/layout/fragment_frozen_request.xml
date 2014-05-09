@@ -46,4 +46,23 @@
         android:layout_marginTop="@dimen/boxMargin"
         android:background="@color/lightGray" />
 
+    <TextView
+        android:id="@+id/requestPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/hr"
+        android:layout_alignTop="@+id/requesterName"
+        android:text="142"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/green" />
+
+    <TextView
+        android:id="@+id/requestOffersCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/requestDescription"
+        android:layout_alignBottom="@+id/requestDescription"
+        android:layout_alignRight="@+id/requestPrice"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
 </RelativeLayout>
