@@ -4,7 +4,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -21,6 +23,8 @@ import android.widget.Toast;
 import com.megasoft.config.Config;
 import com.megasoft.entangle.R;
 import com.megasoft.requests.GetRequest;
+import com.megasoft.requests.PostRequest;
+import com.megasoft.requests.PutRequest;
 /**
  * The Activity that handles the pending tangle invitations.
  * @author MohamedBassem
@@ -57,6 +61,15 @@ public class ManagePendingInvitationFragment extends Fragment {
 		tangleId = getArguments().getInt("tangleId", 1);
 		this.settings = getActivity().getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
+		Button resetButton = (Button) view.findViewById(R.id.reset_tangle);
+		resetButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				reset();
+				
+			}
+		});
 		Button button = (Button) view.findViewById(R.id.manage_pending_invitation_refresh);
 		button.setOnClickListener(new View.OnClickListener() {
 			
@@ -170,6 +183,55 @@ public class ManagePendingInvitationFragment extends Fragment {
 	 */
 	private void showErrorToast(){
 		Toast.makeText(getActivity(), "Sorry , Something went wrong.", Toast.LENGTH_SHORT).show();
+	}
+	
+	/**
+	 * method to reset tangle by sending json object
+	 * 
+	 * @param none
+	 * @return none
+	 * @author Salma Khaled
+	 */
+	public void reset() {
+		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+				case DialogInterface.BUTTON_POSITIVE: {
+					JSONObject json = new JSONObject();
+
+					PutRequest request = new PutRequest(
+							Config.API_BASE_URL_SERVER + "/tangle/" + tangleId
+									+ "/reset") {
+						protected void onPostExecute(String response) {
+							if (this.getStatusCode() == 200) {
+								Toast.makeText(getActivity(),
+										"Tangle is reset !", Toast.LENGTH_SHORT)
+										.show();
+							} else {
+								Toast.makeText(getActivity(),
+										"Error, Can not create request",
+										Toast.LENGTH_SHORT).show();
+							}
+						}
+					};
+					request.addHeader(Config.API_SESSION_ID, sessionId);
+					request.setBody(json);
+					request.execute();
+					break;
+				}
+				case DialogInterface.BUTTON_NEGATIVE: {
+					dialog.dismiss();
+					break;
+				}
+				}
+			}
+		};
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage("Are you sure?")
+				.setPositiveButton("Yes", dialogClickListener)
+				.setNegativeButton("No", dialogClickListener).show();
+
 	}
 
 }
