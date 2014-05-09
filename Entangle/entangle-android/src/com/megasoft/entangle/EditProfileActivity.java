@@ -32,7 +32,7 @@ public class EditProfileActivity extends Activity {
 	private Bitmap picture;
 	private String sessionId;
 	private SharedPreferences settings;
-	private String url;
+	private String url = Config.API_BASE_URL;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
