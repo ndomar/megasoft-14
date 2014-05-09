@@ -19,14 +19,8 @@ public class ClosedRequestFragment extends StreamRequestFragment {
 			int requesterId, String requestString, String requesterString,
 			String price, String offersCount, int tangleId, String tangleName) {
 		ClosedRequestFragment fragment = new ClosedRequestFragment();
-		fragment.setRequestId(requestId);
-		fragment.setRequesterId(requesterId);
-		fragment.setRequestButtonText(requestString);
-		fragment.setRequesterButtonText(requesterString);
-		fragment.setPrice(price);
-		fragment.setOffersCount(offersCount);
-		fragment.setTangleId(tangleId);
-		fragment.setTangleName(tangleName);
+		fragment.setFragmentAttributes(requestId, requesterId, requestString,
+				requesterString, price, offersCount, tangleId, tangleName);
 		return fragment;
 	}
 

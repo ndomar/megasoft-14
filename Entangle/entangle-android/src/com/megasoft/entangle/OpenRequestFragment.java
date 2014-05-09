@@ -15,6 +15,15 @@ public class OpenRequestFragment extends StreamRequestFragment {
 		return view;
 	}
 
+	public static OpenRequestFragment createInstance(int requestId,
+			int requesterId, String requestString, String requesterString,
+			String price, String offersCount, int tangleId, String tangleName) {
+		OpenRequestFragment fragment = new OpenRequestFragment();
+		fragment.setFragmentAttributes(requestId, requesterId, requestString,
+				requesterString, price, offersCount, tangleId, tangleName);
+		return fragment;
+	}
+
 	public void deleteRequest() {
 
 	}

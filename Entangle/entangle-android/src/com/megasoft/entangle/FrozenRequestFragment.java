@@ -15,4 +15,13 @@ public class FrozenRequestFragment extends StreamRequestFragment {
 		return view;
 	}
 
+	public static FrozenRequestFragment createInstance(int requestId,
+			int requesterId, String requestString, String requesterString,
+			String price, String offersCount, int tangleId, String tangleName) {
+		FrozenRequestFragment fragment = new FrozenRequestFragment();
+		fragment.setFragmentAttributes(requestId, requesterId, requestString,
+				requesterString, price, offersCount, tangleId, tangleName);
+		return fragment;
+	}
+
 }
