@@ -43,7 +43,7 @@ public class StreamRequestFragment extends Fragment {
 	/**
 	 * The view of the request
 	 */
-	private View view;
+	protected View view;
 
 	/**
 	 * The text of the requester button
@@ -135,6 +135,20 @@ public class StreamRequestFragment extends Fragment {
 		offersCountView.setText(offersCount);
 
 		return view;
+	}
+
+	protected void setAttributes() {
+		request = (TextView) view.findViewById(R.id.requestDescription);
+		requesterAvatar = (RoundedImageView) view
+				.findViewById(R.id.requesterAvatar);
+		requester = (TextView) view.findViewById(R.id.requesterName);
+		setRequestRedirection();
+		setRequesterRedirection();
+		TextView priceView = (TextView) view.findViewById(R.id.requestPrice);
+		priceView.setText(price);
+		TextView offersCountView = (TextView) view
+				.findViewById(R.id.requestOffersCount);
+		offersCountView.setText(offersCount);
 	}
 
 	/**
