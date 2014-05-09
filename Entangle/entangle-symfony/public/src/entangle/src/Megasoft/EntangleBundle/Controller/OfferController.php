@@ -14,18 +14,18 @@ use Megasoft\EntangleBundle\Entity\Tangle;
 use Megasoft\EntangleBundle\Entity\UserTangle;
 
 /**
-* Gets the required information to view a certain offer
-* @author Almgohar
-*/
+ * Gets the required information to view a certain offer
+ * @author Almgohar
+ */
 class OfferController extends Controller {
 
     /**
-*
-* @param \Megasoft\EntangleBundle\Entity\Request $request
-* @param integer $sessionId
-* @return boolean true if the user can view this request and false otherwise
-* @author Almgohar
-*/
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Request $request
+     * @param integer $sessionId
+     * @return boolean true if the user can view this request and false otherwise
+     * @author Almgohar
+     */
     private function validateUser($request, $sessionId) {
         $sessionTable = $this->getDoctrine()->
                 getRepository('MegasoftEntangleBundle:Session');
@@ -46,12 +46,12 @@ class OfferController extends Controller {
     }
 
     /**
-* Sends the required information in a JSon response
-* @param \Symfony\Component\HttpFoundation\Request $req
-* @param integer $offerId
-* @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
-* @author Almgohar
-*/
+     * Sends the required information in a JSon response
+     * @param \Symfony\Component\HttpFoundation\Request $req
+     * @param integer $offerId
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @author Almgohar
+     */
     public function offerAction
     (\Symfony\Component\HttpFoundation\Request $req, $offerId) {
         $sessionId = $req->headers->get('X-SESSION-ID');
@@ -89,11 +89,11 @@ class OfferController extends Controller {
     }
 
     /**
-* Gets the comments of a certain offer
-* @param \Megasoft\EntangleBundle\Entity\Request $request $request
-* @return array $comments
-* @author Almgohar
-*/
+     * Gets the comments of a certain offer
+     * @param \Megasoft\EntangleBundle\Entity\Request $request $request
+     * @return array $comments
+     * @author Almgohar
+     */
     private function getComments($messageTable, $offerId) {
         $comments = array();
         $messages = $messageTable->findBy(array('offerId' => $offerId));
@@ -114,11 +114,11 @@ class OfferController extends Controller {
     }
 
     /**
-*
-* @param \Megasoft\EntangleBundle\Entity\Offer $offer
-* @return array $offerInformation
-* @author Almgohar
-*/
+     *
+     * @param \Megasoft\EntangleBundle\Entity\Offer $offer
+     * @return array $offerInformation
+     * @author Almgohar
+     */
     private function getOfferInformation($offer) {
         $user = $offer->getUser();
         $offererId = $user->getId();
@@ -149,12 +149,12 @@ class OfferController extends Controller {
     }
 
     /**
-* Changes the price of an offer
-* @param \Megasoft\EntangleBundle\Entity\Request $request
-* @param type $offerid
-* @return \Symfony\Component\HttpFoundation\Response
-* @author Mansour
-*/
+     * Changes the price of an offer
+     * @param \Megasoft\EntangleBundle\Entity\Request $request
+     * @param type $offerid
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author Mansour
+     */
     public function changeOfferPriceAction(Request $request, $offerid) {
 
         $sessionId = $request->headers->get('X-SESSION-ID');
@@ -214,18 +214,18 @@ class OfferController extends Controller {
     }
 
     /**
-* this recieves a request and calls verify to check if it can accept the offer
-* @param Request $request
-* @return Response $response returns 201 or 409 status code and message depending on verification
-* @author sak9
-*/
+     * this recieves a request and calls verify to check if it can accept the offer
+     * @param Request $request
+     * @return Response $response returns 201 or 409 status code and message depending on verification
+     * @author sak9
+     */
 
     /**
-* this recieves a request and calls verify to check if it can accept the offer
-* @param Request $request
-* @return Response $response returns 201 or 409 status code and message depending on verification
-* @author sak9
-*/
+     * this recieves a request and calls verify to check if it can accept the offer
+     * @param Request $request
+     * @return Response $response returns 201 or 409 status code and message depending on verification
+     * @author sak9
+     */
     public function acceptOfferAction(\Symfony\Component\HttpFoundation\Request $request) {
         $doctrine = $this->getDoctrine();
         $json = $request->getContent();
@@ -275,11 +275,11 @@ class OfferController extends Controller {
     }
 
     /**
-* this recieves an offerId and checks if it can be accepted, if it can it accepts it and updates all fields in tables
-* @param Int $offerId
-* @return String either a success or error message
-* @author sak9
-*/
+     * this recieves an offerId and checks if it can be accepted, if it can it accepts it and updates all fields in tables
+     * @param Int $offerId
+     * @return String either a success or error message
+     * @author sak9
+     */
     public function verify($offerId) {
         $doctrine = $this->getDoctrine();
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
@@ -332,12 +332,12 @@ class OfferController extends Controller {
     }
 
     /**
-* An endpoint to withdraw an offer.
-* @param Request $request
-* @param integer $offerId
-* @return Response
-* @author OmarElAzazy
-*/
+     * An endpoint to withdraw an offer.
+     * @param Request $request
+     * @param integer $offerId
+     * @return Response
+     * @author OmarElAzazy
+     */
     public function withdrawAction(Request $request, $offerId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
@@ -381,12 +381,12 @@ class OfferController extends Controller {
     }
 
     /**
-* A function to unfreeze points for the requester for withdrawn offer.
-* @param Request $request
-* @param integer $points
-* @return
-* @author OmarElAzazy
-*/
+     * A function to unfreeze points for the requester for withdrawn offer.
+     * @param Request $request
+     * @param integer $points
+     * @return
+     * @author OmarElAzazy
+     */
     public function unfreezePoints($request, $points) {
         $requesterId = $request->getUser()->getId();
         $tangleId = $request->getTangleId();
@@ -404,12 +404,12 @@ class OfferController extends Controller {
     }
 
     /**
-* Validates the authority of the user
-* @param Request $request
-* @param integer $offerId
-* @return Response | null
-* @author MohamedBassem
-*/
+     * Validates the authority of the user
+     * @param Request $request
+     * @param integer $offerId
+     * @return Response | null
+     * @author MohamedBassem
+     */
     private function verifyUser($request, $offerId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
@@ -448,11 +448,11 @@ class OfferController extends Controller {
     }
 
     /**
-* The endpoint responsible for adding comments on offers
-* @param Request $request
-* @param $offerId
-* @return null|Response
-*/
+     * The endpoint responsible for adding comments on offers
+     * @param Request $request
+     * @param $offerId
+     * @return null|Response
+     */
     public function commentAction(Request $request, $offerId) {
         $verification = $this->verifyUser($request, $offerId);
 
@@ -487,7 +487,8 @@ class OfferController extends Controller {
 
         return new Response('Ok', 201);
     }
-        public function updateAction($requestid, $offerid, \Symfony\Component\HttpFoundation\Request $request) {
+
+    public function updateAction($requestid, $offerid, \Symfony\Component\HttpFoundation\Request $request) {
         $sessionId = $request->headers->get('X-SESSION-ID');
         if ($sessionId == null) {
             return new Response('Unauthorized', 401);
@@ -543,7 +544,7 @@ class OfferController extends Controller {
             $this->getDoctrine()->getManager()->flush();
             $response = new JsonResponse();
             $response->setStatusCode(201);
-            $transaction=new Transaction();
+            $transaction = new Transaction();
             $transaction->setDate(new \DateTime('now'));
             $transaction->setOfferId($offer->getId());
             $transaction->setOffer($offer);
@@ -553,6 +554,19 @@ class OfferController extends Controller {
             $this->getDoctrine()->getManager()->flush();
             return $response;
         }
+    }
+
+    public function statusInformationAction($offerid) {
+        $doctrine = $this->getDoctrine();
+        $offertable = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $offer = $offertable->find($offerid);
+        if ($offer == null) {
+            return new response("Offer Does not exist", 401);
+        }
+        $status = $offer->getStatus();
+        $response = new JsonResponse();
+        $response->setData(array('status' => $status));
+        return $response;
     }
 
 }
