@@ -196,29 +196,10 @@ public class MyRequestsFragment extends Fragment {
 			String requestButtonText, String requesterButtonText,
 			String requestPrice, String requestOffersCount) {
 		transaction = getFragmentManager().beginTransaction();
-		StreamRequestFragment requestFragment = new StreamRequestFragment();
-		switch (status) {
-		case 0:
-			requestFragment = OpenRequestFragment.createInstance(requestId,
-					userId, requestButtonText, requesterButtonText,
-					requestPrice, requestOffersCount, getTangleId(),
-					getTangleName());
-			break;
-		case 1:
-			requestFragment = FrozenRequestFragment.createInstance(requestId,
-					userId, requestButtonText, requesterButtonText,
-					requestPrice, requestOffersCount, getTangleId(),
-					getTangleName());
-			break;
-		case 2:
-			requestFragment = ClosedRequestFragment.createInstance(requestId,
-					userId, requestButtonText, requesterButtonText,
-					requestPrice, requestOffersCount, getTangleId(),
-					getTangleName());
-			break;
-		default:
-			break;
-		}
+		StreamRequestFragment requestFragment = StreamRequestFragment
+				.createInstance(requestId, userId, requestButtonText,
+						requesterButtonText, requestPrice, requestOffersCount,
+						getTangleId(), getTangleName());
 		addRequestFragment(status, requestFragment);
 		transaction.commit();
 	}
