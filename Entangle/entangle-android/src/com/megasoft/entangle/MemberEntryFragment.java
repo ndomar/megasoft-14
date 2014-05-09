@@ -65,7 +65,7 @@ public class MemberEntryFragment extends Fragment {
 	public TextView getMemberNameView() {
 		return memberNameView;
 	}
-
+	
 	public void setMemberNameView(TextView memberNameView) {
 		this.memberNameView = memberNameView;
 	}

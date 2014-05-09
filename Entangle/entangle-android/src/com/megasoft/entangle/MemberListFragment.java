@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.megasoft.config.Config;
@@ -38,10 +39,10 @@ public class MemberListFragment extends Fragment {
 	private LinearLayout memberListView;
 	private int numberOfMembers;
 	private ViewGroup container;
-	public EditText searchBar;
+	private EditText searchBar;
 	private ArrayList<MemberEntryFragment> memberFragments = new ArrayList<MemberEntryFragment>();
-	FragmentTransaction fragmentTransaction;
-	
+	private TextView noMembers;
+
 	public ViewGroup getContainer() {
 		return container;
 	}
@@ -128,6 +129,10 @@ public class MemberListFragment extends Fragment {
 		setMemberListView((LinearLayout) view
 				.findViewById(R.id.view_member_list));
 		searchBar = (EditText) view.findViewById(R.id.search_field);
+		noMembers = new TextView(getActivity().getBaseContext());
+		noMembers.setText(getString(R.string.member_not_found));
+		getMemberListView().addView(noMembers);
+		noMembers.setVisibility(View.GONE);
 		fetchMembers();
 		searchBar.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -200,7 +205,7 @@ public class MemberListFragment extends Fragment {
 		if (!populateData(response)) {
 			return false;
 		}
-		 fragmentTransaction = getActivity()
+		FragmentTransaction fragmentTransaction = getActivity()
 				.getSupportFragmentManager().beginTransaction();
 
 		for (int i = 0; i < getNumberOfMembers(); i++) {
@@ -266,28 +271,30 @@ public class MemberListFragment extends Fragment {
 		Toast.makeText(getActivity().getBaseContext(), message,
 				Toast.LENGTH_LONG).show();
 	}
-/*
- * Searches for member.
- * 
- * @param String searchString, the name being searched for
- * 
- * @author sak93
- */
-	
+
+	/*
+	 * Searches for member.
+	 * 
+	 * @param String searchString, the name being searched for
+	 * 
+	 * @author sak93
+	 */
+
 	private void searchMembers(String searchString) {
-		int memberCount=0; 
+		int memberCount = 0;
 		for (int i = 0; i < getNumberOfMembers(); i++) {
 			if (!memberFragments.get(i).getMemberName().toLowerCase()
 					.startsWith(searchString.toLowerCase())) {
 				memberFragments.get(i).getView().setVisibility(View.GONE);
-			}
-			else{
-					memberFragments.get(i).getView().setVisibility(View.VISIBLE);
-					memberCount++; 
+			} else {
+				memberFragments.get(i).getView().setVisibility(View.VISIBLE);
+				memberCount++;
 			}
 		}
-		if(memberCount == 0){
-			Toast.makeText(getActivity().getBaseContext(), getString(R.string.member_not_found), Toast.LENGTH_LONG).show();
+		if (memberCount == 0) {
+			noMembers.setVisibility(View.VISIBLE);
+		} else {
+			noMembers.setVisibility(View.GONE);
 		}
 	}
 }
