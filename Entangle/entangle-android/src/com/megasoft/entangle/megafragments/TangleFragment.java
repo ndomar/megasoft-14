@@ -108,7 +108,11 @@ public class TangleFragment extends Fragment {
  		
         return view;
     }
-
+	
+	/**
+	 * Sets the listeners for the search button in the action bar
+	 * @author MohamedBassem
+	 */
 	private void setSearchListener() {
 		SearchView searchView = activity.getSearchView();
 		
