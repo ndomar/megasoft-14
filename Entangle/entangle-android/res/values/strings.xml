@@ -148,6 +148,6 @@
     <string name="logout">Logout</string>
     <string name="title_activity_general_profile">General Profile</string>
     <string name="title_activity_splash">Splash</string>
-
+    <string name="title_activity_open_request_fragment">OpenRequestFragment</string>
 
 </resources>
