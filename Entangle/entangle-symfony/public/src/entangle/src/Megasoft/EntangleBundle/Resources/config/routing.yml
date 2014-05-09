@@ -242,7 +242,7 @@ logout:
 
 forget_password:
     pattern:  /user/forgetPass
-    defaults: { _controller: MegasoftEntangleBundle:PasswordForget:retrievePassword}
+    defaults: { _controller: MegasoftEntangleBundle:PasswordForget:resetPassword}
     methods: [POST]
 
 filter_requests_in_tangle:
