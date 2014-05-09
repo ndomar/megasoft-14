@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <EditText
-        android:id="@+id/searchField"
+        android:id="@+id/search_field"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/search_string"
