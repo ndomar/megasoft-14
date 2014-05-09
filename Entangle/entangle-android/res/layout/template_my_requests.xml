@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:layout_alignParentTop="true"
+    android:layout_marginBottom="@dimen/marginMedium"
     android:background="@color/darkWhite"
     android:fillViewport="true" >
 
@@ -89,6 +90,10 @@
                 android:background="@color/darkWhite"
                 android:orientation="vertical" >
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/paddingSmall" />
         </LinearLayout>
     </ScrollView>
 
