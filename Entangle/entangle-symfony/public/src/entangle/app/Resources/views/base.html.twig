@@ -5,17 +5,30 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
              {% stylesheets '@MegasoftEntangleBundle/Resources/public/css/*' filter='cssrewrite' %}
-                <link rel="stylesheet" href="{{ asset_url }}" />
+                <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+
             {% endstylesheets %}
         {% endblock %}
+
+        <style>
+
+            @font-face {
+                font-family: 'FontAwesome';
+                src: url('/bundles/megasoftentangle/font/fontawesome-webfont.eot');
+                src: url('/bundles/megasoftentangle/font/fontawesome-webfont.eot?#iefix&v=3.2.1') format('embedded-opentype'),
+                url('/bundles/megasoftentangle/font/fontawesome-webfont.woff?v=3.2.1') format('woff'),
+                url('/bundles/megasoftentangle/font/fontawesome-webfont.ttf?v=3.2.1') format('truetype'),
+                url('/bundles/megasoftentangle/font/fontawesome-webfont.svg#fontawesomeregular?v=3.2.1') format('svg');
+                font-weight: normal;
+                font-style: normal;
+            }
+        </style>
     </head>
     <body>
 
         {% block body %}{% endblock %}
 
-         {{ include(
-            '::footer.html.twig'
-        ) }}
+
 
         {% block javascripts %}
 

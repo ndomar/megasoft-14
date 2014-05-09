@@ -11,6 +11,7 @@ namespace Megasoft\EntangleBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  *
@@ -29,7 +30,9 @@ class NotificationController extends Controller
     {
         $nc = $this->get('notification_center.service');
         $response = new JsonResponse();
-        $name = $nc->reopenRequestNotification(0);
+        $title = "new message";
+        $body = "{{from}} made new message";
+        $name = $nc->newMessageNotification(0, $title, $body);
         $response->setData($name);
         return $response;
     }
@@ -69,4 +72,32 @@ class NotificationController extends Controller
         return $response;
     }
 
+    /**
+     * @return Response
+     * @author amrelzanaty
+     */
+    public function SendEmailAction()
+    {
+        $message = "bate5a";
+        $randomString = "thisIsARandomString";
+        $title = "you are invited to bla";
+        $body = "<!DOCTYPE html>
+                <html lang=\"en\">
+                    <head>
+                    </head>
+                    <body>
+                           <h3>
+                                Hello
+                           </h3>
+                           <p>" . $message . "</p>
+                           <a href=\"http://entangle.io/invitation/" . $randomString . "\">link</a>
+                           <p>Cheers<br>Entangle Team</p>
+                    </body>
+                </html>";
+
+        $user = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail')->findOneBy(array("email" => "mohamed19936@gmail.com"))->getUser();
+        $notificationCenter = $this->get('notification_center.service');
+        $notificationCenter->sendMail($user->getId(), $title, $body);
+        return new Response("OK", 200);
+    }
 }
