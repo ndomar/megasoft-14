@@ -219,7 +219,6 @@ class UserController extends Controller {
         $response = new JsonResponse();
         $response->setData($information);
         $response->setStatusCode(200);
-
         return $response;
     }
 
@@ -275,36 +274,6 @@ class UserController extends Controller {
         }
 
         return $transactions;
-    }
-
-    /**
-     * Gets the basic information of a given user in a give tangle
-     * @param user $user
-     * @param integer $tangleId
-     * @return \Symfony\Component\HttpFoundation\Response | array #info
-     * @author Almgohar
-     */
-    private function getUserInfo($user, $tangleId) {
-        if ($user == null) {
-            return new Response('Bad Request', 400);
-        }
-        $doctrine = $this->getDoctrine();
-        $userId = $user->getId();
-        $userTangleTable = $doctrine->
-                getRepository('MegasoftEntangleBundle:UserTangle');
-        $userTangle = $userTangleTable->
-                findOneBy(array('userId' => $userId, 'tangleId' => $tangleId));
-        $name = $user->getName();
-        $description = $user->getUserBio();
-        $credit = $userTangle->getCredit();
-        $photo = $user->getPhoto();
-        $birthdate = $user->getBirthDate();
-        $verfied = $user->getVerified();
-        $info = array('name' => $name, 'description' => $description,
-            'credit' => $credit, 'photo' => 'http://entangle.io/images/profilePictures/' . $photo, 'birthdate' => $birthdate,
-            'verified' => $verfied);
-
-        return $info;
     }
 
     /**
