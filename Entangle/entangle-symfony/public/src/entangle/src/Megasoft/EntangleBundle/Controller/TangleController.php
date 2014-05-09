@@ -37,10 +37,8 @@ class TangleController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         $userId = $session->getUserId();
-
+        
         $query = $offerRepo->createQueryBuilder('offer')
-                ->where('offer.request.tangleId =: tangleId')
-                ->setParameter('tangleId', $tangleId)
                 ->andWhere('offer.deleted = :false')
                 ->setParameter('false', false)
                 ->andWhere('offer.userId = :userId')
@@ -49,11 +47,13 @@ class TangleController extends Controller {
         $offers = $query->getQuery()->getResult();
         $offersJsonArray = array();
         foreach ($offers as $offer) {
-            $offersJsonArray[] = array(
-                'userId' => $offer->getUserId(), 'username' => $offer->getUser()->getName(),
-                'id' => $offer->getId(), 'description' => $offer->getDescription(),
-                'price' => $offer->getRequestedPrice(),
-                'status' => $offer->getStatus(), );
+            if ($offer->getTangleId() == $tangleId) {
+                $offersJsonArray[] = array(
+                    'userId' => $offer->getUserId(), 'username' => $offer->getUser()->getName(),
+                    'id' => $offer->getId(), 'description' => $offer->getDescription(),
+                    'price' => $offer->getRequestedPrice(),
+                    'status' => $offer->getStatus(),);
+            }
         }
 
         $response = new JsonResponse();

@@ -269,6 +269,6 @@ _mail:
   methods: [GET]
 
 get_my_offers:
-    pattern: /tangleId/{tangleId}/user/offers
-    defaults: {_controller:MegasoftEnatngleBundle:Tangle:userOffers}
+    pattern: /tangle/{tangleId}/user/offers
+    defaults: {_controller:MegasoftEntangleBundle:Tangle:userOffers}
     methods: [GET]
