@@ -9,8 +9,10 @@
     tools:context=".OfferActivity" >
 
     <ScrollView
+        android:id="@+id/comment_area_scroll_view"
         android:layout_width="fill_parent"
-        android:layout_height="500dp" >
+        android:layout_height="0dp"
+        android:layout_weight="1" >
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -28,7 +30,8 @@
                     android:id="@+id/offerer_avatar"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_alignParentLeft="true" />
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/ic_action_person" />
 
                 <TextView
                     android:id="@+id/offerer_name"
@@ -132,65 +135,17 @@
                 android:layout_marginLeft="300dp"
                 android:drawableTop="@drawable/play" />
 
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/offer_comments_area"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:background="@color/darkWhite"
-                android:visibility="invisible" >
+                android:visibility="invisible"
+                android:orientation="vertical" >
 
-                <View
-                    android:id="@+id/vertical"
-                    style="@style/dividerVertical"
-                    android:layout_width="3dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:background="@color/lightText" />
 
-                <View
-                    android:id="@+id/horizental"
-                    style="@style/Divider"
-                    android:layout_width="@dimen/marginMedium"
-                    android:layout_marginTop="20dp"
-                    android:layout_toRightOf="@id/vertical"
-                    android:background="@color/lightText" />
-
-                <com.megasoft.entangle.views.RoundedImageView
-                    android:id="@+id/commenter_avatar"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_toRightOf="@id/horizental"
-                    android:src="@drawable/avatar" />
-
-                <TextView
-                    android:id="@+id/commenter"
-                    android:layout_width="170dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/commenter_avatar"
-                    android:layout_marginTop="8dp"
-                    android:layout_toRightOf="@id/commenter_avatar"
-                    android:paddingLeft="@dimen/paddingSmall"
-                    android:textSize="@dimen/textMedium" />
-
-                <TextView
-                    android:id="@+id/comment_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/commenter"
-                    android:layout_below="@id/commenter"
-                    android:paddingLeft="@dimen/paddingSmall"
-                    android:textSize="@dimen/textSmall" />
-
-                <TextView
-                    android:id="@+id/comment_content"
-                    android:layout_width="230dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/commenter_avatar"
-                    android:layout_below="@id/comment_date" />
-            </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
@@ -200,7 +155,7 @@
         android:layout_gravity="top" >
 
         <EditText
-            android:id="@+id/add_comment"
+            android:id="@+id/add_comment_field"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
@@ -211,7 +166,7 @@
             android:textSize="@dimen/textMedium" />
 
         <ImageView
-            android:id="@+id/add"
+            android:id="@+id/add_comment_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -220,7 +175,9 @@
             android:layout_marginLeft="6dp"
             android:layout_marginRight="5dp"
             android:contentDescription="@string/icon"
-            android:src="@drawable/send" />
+            android:background="@drawable/send"
+            android:clickable="true"
+            android:onClick="addComment" />
     </RelativeLayout>
 
 </LinearLayout>

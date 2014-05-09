@@ -40,7 +40,7 @@
     
     <dimen name="boxMargin">12dp</dimen>
     <!-- sidebar -->
-    <dimen name="sidebarMenuItemHeight">40dp</dimen>
+    <dimen name="sidebarMenuItemHeight">45dp</dimen>
     <dimen name="navigation_drawer_width">240dp</dimen>
     
      <!-- Images dimen -->

@@ -280,7 +280,6 @@ public class CreateTangleActivity extends Activity {
 	 * @author Mansour
 	 */
 	public void cancelRedirect(View view) {
-		startActivity(new Intent(this, MainActivity.class));
 		this.finish();
 	}
 }

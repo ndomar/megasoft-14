@@ -1,33 +1,35 @@
 package com.megasoft.entangle;
 
-import com.megasoft.config.Config;
-import com.megasoft.requests.GetRequest;
-import com.megasoft.requests.ImageRequest;
-import com.megasoft.requests.PostRequest;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import org.json.JSONException;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.app.Activity;
-import android.app.FragmentTransaction;
-
-import org.json.JSONObject;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.View;
+import com.megasoft.config.Config;
+import com.megasoft.requests.GetRequest;
+import com.megasoft.requests.ImageRequest;
+import com.megasoft.requests.PostRequest;
 
 /**
  * View an offer given the offer Id
  * 
  * @author Almgohar
  */
-public class OfferActivity extends Activity {
+public class OfferActivity extends FragmentActivity {
 
 	/**
 	 * The TextView that holds the offer's description
@@ -58,12 +60,12 @@ public class OfferActivity extends Activity {
 	 * The TextView that holds the date on which the offer was created
 	 */
 	private TextView offerDate;
-	
+
 	/**
 	 * The EditText of the comment
 	 */
 	private EditText comment;
-	
+
 	/**
 	 * The button that enables the user to add his comment
 	 */
@@ -72,7 +74,7 @@ public class OfferActivity extends Activity {
 	 * The imageView containing the offerer's photo
 	 */
 	private com.megasoft.entangle.views.RoundedImageView offererAvatar;
-	
+
 	/**
 	 * The button that allows the user to accept an offer
 	 */
@@ -119,11 +121,13 @@ public class OfferActivity extends Activity {
 	 * The id of the logged in user
 	 */
 	private int loggedInId;
-	
+
 	/**
 	 * The FragmentTransaction that handles adding the fragments to the activity
 	 */
 	private FragmentTransaction transaction;
+
+	private ScrollView scrollView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -157,13 +161,14 @@ public class OfferActivity extends Activity {
 		offererName = (TextView) findViewById(R.id.offerer_name);
 		offerStatus = (TextView) findViewById(R.id.offer_status);
 		offerPrice = (TextView) findViewById(R.id.offer_price);
-		offerDate = (TextView) findViewById(R.id.offer_date);
-		comment = (EditText) findViewById(R.id.add_comment);
-		addComment = (ImageView) findViewById(R.id.add);
-		
-		//deleteOfferLayout = (LinearLayout) findViewById(R.id.delete_offer_layout);
-		acceptOffer = (Button) findViewById(R.id.accept_offer);
 
+		offerDate = (TextView) findViewById(R.id.offer_date);
+		comment = (EditText) findViewById(R.id.add_comment_field);
+		addComment = (ImageView) findViewById(R.id.add_comment_button);
+		scrollView = (ScrollView) findViewById(R.id.comment_area_scroll_view);
+		// deleteOfferLayout = (LinearLayout)
+		// findViewById(R.id.delete_offer_layout);
+		acceptOffer = (Button) findViewById(R.id.accept_offer);
 		String link = Config.API_BASE_URL + "/offer/" + offerId;
 
 		GetRequest request = new GetRequest(link) {
@@ -176,6 +181,7 @@ public class OfferActivity extends Activity {
 						JSONObject offerInformation = jSon
 								.getJSONObject("offerInformation");
 						viewOfferInfo(offerInformation);
+						viewComments(jSon.getJSONArray("comments"));
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
@@ -183,7 +189,8 @@ public class OfferActivity extends Activity {
 					Toast toast = Toast
 							.makeText(
 									getApplicationContext(),
-									this.getErrorMessage() + " " + this.getStatusCode(),
+									this.getErrorMessage() + " "
+											+ this.getStatusCode(),
 									Toast.LENGTH_SHORT);
 					toast.show();
 				}
@@ -196,7 +203,9 @@ public class OfferActivity extends Activity {
 	/**
 	 * Retrieves the required offer information from the JSonObject Views the
 	 * offer information
-	 * @param JSonObject offerInformation
+	 * 
+	 * @param JSonObject
+	 *            offerInformation
 	 * @author Almgohar
 	 */
 	private void viewOfferInfo(JSONObject offerInformation) {
@@ -218,28 +227,17 @@ public class OfferActivity extends Activity {
 			} else {
 				if (status == 1) {
 					offerStatus.setText("Done");
-					} else {
-						offerStatus.setText("Accepted");
-						offerStatus.setTextColor(getResources().getColor(R.color.green));					
-					}
+				} else {
+					offerStatus.setText("Accepted");
+					offerStatus.setTextColor(getResources().getColor(
+							R.color.green));
 				}
-					
-			
-			
+			}
+
 			if (requesterId == loggedInId) {
 				validate();
 			}
-			addComment.setOnClickListener(new View.OnClickListener() {	
-				@Override
-				public void onClick(View v) {
-					if(comment.getText().toString().matches("")) {
-									
-				} else {
-					addComment(offererId, comment.getText().toString());
-				}
-				}
-			});
-			
+
 			offererName.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -252,7 +250,45 @@ public class OfferActivity extends Activity {
 	}
 
 	/**
+	 * Renders the comments in the layout
+	 * 
+	 * @param comments
+	 *            the JSON array of comments
+	 * @author mohamedbassem
+	 */
+	private void viewComments(JSONArray comments) {
+		LinearLayout commentsArea = ((LinearLayout) findViewById(R.id.offer_comments_area));
+		commentsArea.removeAllViews();
+		if (comments.length() > 0) {
+			commentsArea.setVisibility(View.VISIBLE);
+		}
+
+		for (int i = 0; i < comments.length(); i++) {
+			try {
+				JSONObject comment = comments.getJSONObject(i);
+				CommentEntryFragment entry = new CommentEntryFragment();
+				entry.setComment(comment.getString("comment"));
+				entry.setCommenter(comment.getString("commenter"));
+				entry.setCommentDate(comment.getString("commentDate"));
+				getSupportFragmentManager().beginTransaction()
+						.add(R.id.offer_comments_area, entry).commit();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		scrollView.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+			}
+		}, 500);
+	}
+
+	/**
 	 * Redirects to a user's profile given his id
+	 * 
 	 * @param int userId
 	 * @author Almgohar
 	 */
@@ -262,29 +298,17 @@ public class OfferActivity extends Activity {
 		profile.putExtra("tangle id", this.tangleId);
 		startActivity(profile);
 	}
-	
-	/**
-	 * Adds a comment to the stream of comments
-	 * @param int userId
-	 * @author Almgohar
-	 */
-	private void addComment(int userId, String comment) {
-		Toast toast = Toast
-				.makeText(
-						getApplicationContext(),
-						"Comment added.",
-						Toast.LENGTH_SHORT);
-		toast.show();
-	}
 
 	/**
 	 * Views the user's profile picture
-	 * @param String imageURL
+	 * 
+	 * @param String
+	 *            imageURL
 	 * @author Almgohar
-	 */ 
+	 */
 	public void viewProfilePicture(String imageURL) {
-            ImageRequest image = new ImageRequest(offererAvatar);
-            image.execute(imageURL);
+		ImageRequest image = new ImageRequest(offererAvatar);
+		image.execute(imageURL);
 	}
 
 	/**
@@ -296,33 +320,43 @@ public class OfferActivity extends Activity {
 	 * @author sak93
 	 */
 	public void validate() {
-		GetRequest request = new GetRequest(Config.API_BASE_URL + OFFER) {
+
+		GetRequest request = new GetRequest(Config.API_BASE_URL + "/offer/"
+				+ offerId) {
 
 			@Override
 			protected void onPostExecute(String response) {
+
 				try {
 
-					JSONObject jsonResponse = new JSONObject(response);
-					JSONObject offerDetails = (JSONObject) jsonResponse
-							.get("offerInformation");
-					JSONObject requestDetails = (JSONObject) jsonResponse
-							.get("requestInformation");
-					int requestStatus = (Integer) requestDetails
-							.get("requestStatus");
-					if (requestStatus != 0) {
-						return;
-					} else {
-						int offerStatus = (Integer) offerDetails
-								.get("offerStatus");
-						if (offerStatus == 0) {
-							addAcceptButton();
+					if (this.getStatusCode() == 200) {
+						JSONObject jsonResponse = new JSONObject(response);
+						JSONObject offerDetails = (JSONObject) jsonResponse
+								.get("offerInformation");
+						int requestStatus = (Integer) offerDetails
+								.get("requestStatus");
+						if (requestStatus != 0) {
+
+							return;
+						} else {
+							int offerStatus = (Integer) offerDetails
+									.get("offerStatus");
+							if (offerStatus == 0) {
+								addAcceptButton();
+
+							}
 						}
+					} else {
+						Toast toast = Toast.makeText(getApplicationContext(),
+								getString(R.string.toastError),
+								Toast.LENGTH_SHORT);
+						toast.show();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-			}
 
+			}
 		};
 		request.addHeader(Config.API_SESSION_ID, sessionId);
 		request.execute();
@@ -342,17 +376,84 @@ public class OfferActivity extends Activity {
 		returnedResponse = new JSONObject();
 		returnedResponse.put("offerId", "" + offerId);
 		acceptOffer.setOnClickListener(new View.OnClickListener() {
-			@Override
+			int status;
+
 			public void onClick(View v) {
-				PostRequest r = new PostRequest(Config.API_BASE_URL + ACCEPT);
-				r.setBody(returnedResponse);
-				r.addHeader("x-session-id", Config.SESSION_ID);
-				r.execute();
-				acceptOffer.setVisibility(View.GONE);
+				PostRequest request = new PostRequest(Config.API_BASE_URL
+						+ ACCEPT) {
+					protected void onPostExecute(String response) {
+						status = this.getStatusCode();
+						if (status == 201) {
+							acceptOffer.setVisibility(View.INVISIBLE);
+							offerStatus.setText("Accepted");
+							offerStatus.setTextColor(getResources().getColor(
+									R.color.green));
+
+						} else {
+							if (status == 405) {
+								Toast toast = Toast
+										.makeText(
+												getApplicationContext(),
+												getString(R.string.balanceInsufficient),
+												Toast.LENGTH_SHORT);
+								toast.show();
+							} else {
+								Toast toast = Toast.makeText(
+										getApplicationContext(),
+										getString(R.string.toastError),
+										Toast.LENGTH_SHORT);
+								toast.show();
+							}
+						}
+					}
+				};
+				request.setBody(returnedResponse);
+				settings = getSharedPreferences(Config.SETTING, 0);
+				String sessionId = settings.getString(Config.SESSION_ID, "");
+				request.addHeader(Config.API_SESSION_ID, sessionId);
+				request.execute();
 
 			}
+
 		});
 
 	}
+
+/**
+ * The callback for the add comment button which adds the comment and re-renders the layout 
+ * @param view
+ * @author mohamedbassem
+ */
+public void addComment(View view){
+
+	PostRequest request = new PostRequest(Config.API_BASE_URL + "/offer/" + offerId + "/comment") {
+
+		@Override
+		protected void onPostExecute(String response) {
+			if(this.getStatusCode() == 201){
+				comment.setText("");
+				viewOffer();
+			}else{
+				Toast.makeText(getApplicationContext(), this.getErrorMessage(), Toast.LENGTH_LONG).show();
+			}
+		}
+
+	};
+
+	String commentMessage = comment.getText().toString();
+	if(commentMessage.equals("")){
+		return;
+	}
+	JSONObject body = new JSONObject();
+	try {
+		body.put("body", commentMessage);
+	} catch (JSONException e) {
+		e.printStackTrace();
+	}
+
+	request.addHeader(Config.API_SESSION_ID, sessionId);
+	request.setBody(body);
+	request.execute();
+}
 
 }

@@ -71,9 +71,6 @@ public class MyRequestsFragment extends Fragment {
 		TextView tangle = (TextView) view.findViewById(R.id.tangleName);
 		sendRequest(rootResource + "/tangle/" + tangleId + "/userRequests");
 		tangle.setText(tangleName);
-		LinearLayout buttom = (LinearLayout) view
-				.findViewById(R.id.footerLayout);
-		buttom.removeAllViews();
 		return view;
 	}
 

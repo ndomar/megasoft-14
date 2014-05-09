@@ -129,9 +129,39 @@ public class TangleFragment extends Fragment {
 		sendFilteredRequest(rootResource + "/tangle/" + tangleId + "/request");
 		Log.e("test", tangleId + "");
 		Log.e("test", sessionId + "");
-		setRedirections();
 		tangle.setText(tangleName);
 		return view;
+
+	}
+
+	/**
+	 * This method is called to set the attributes of the activity passed from
+	 * the previous activity
+	 */
+	private void setAttributes() {
+		// if (activity.getIntent() != null) {
+		// if (!activity.getIntent().hasExtra("sessionId")) {
+		// intent = new Intent(activity, LoginActivity.class);
+		// // to be changed to login activity
+		// }
+		// if (!activity.getIntent().hasExtra("tangleId")) {
+		// intent = new Intent(activity, LoginActivity.class);
+		// // to be changed to tangles' list activity
+		// }
+		// if (!activity.getIntent().hasExtra("tangleName")) {
+		// intent = new Intent(activity, LoginActivity.class);
+		// // to be changed to tangles' list activity
+		// }
+		// tangleId = activity.getIntent().getIntExtra("tangleId", 0);
+		// tangleName = activity.getIntent().getStringExtra("tangleName");
+		// sessionId = activity.getIntent().getStringExtra("sessionId");
+		// TextView tangle = (TextView) activity.findViewById(R.id.tangleName);
+		// tangle.setText(tangleName);
+		// } else {
+		// intent = new Intent(activity, LoginActivity.class);
+		// // to be changed to login activity
+		// }
+
 	}
 
 	/**
@@ -201,15 +231,6 @@ public class TangleFragment extends Fragment {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * This method is used to set the actions of the fixed buttons in the footer
-	 * (stream, members, profile, invite) buttons
-	 */
-	private void setRedirections() {
-		Button invite = (Button) view.findViewById(R.id.invite);
-		setButtonRedirection(invite, "InviteUserActivity");
 	}
 
 	/**
