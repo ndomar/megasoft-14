@@ -19,7 +19,7 @@ import com.megasoft.requests.ImageRequest;
  * @author Omar ElAzazy
  */
 public class MemberEntryFragment extends Fragment {
-	
+
 	private int memberId;
 	private int tangleId;
 	private String memberName;
@@ -29,7 +29,7 @@ public class MemberEntryFragment extends Fragment {
 	private ImageView memberAvatarView;
 	private String memberAvatarURL;
 	private View view;
-	
+
 	public ImageView getMemberAvatarView() {
 		return memberAvatarView;
 	}
@@ -37,7 +37,7 @@ public class MemberEntryFragment extends Fragment {
 	public void setMemberAvatarView(ImageView memberAvatarView) {
 		this.memberAvatarView = memberAvatarView;
 	}
-	
+
 	public String getMemberAvatarURL() {
 		return memberAvatarURL;
 	}
@@ -65,7 +65,7 @@ public class MemberEntryFragment extends Fragment {
 	public TextView getMemberNameView() {
 		return memberNameView;
 	}
-	
+
 	public void setMemberNameView(TextView memberNameView) {
 		this.memberNameView = memberNameView;
 	}
@@ -93,59 +93,61 @@ public class MemberEntryFragment extends Fragment {
 	public void setTangleId(int tangleId) {
 		this.tangleId = tangleId;
 	}
-	
-	public View getFragmentView(){
+
+	public View getFragmentView() {
 		return view;
 	}
 
-	@Override 
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstancState) {
-		
+
 		setMemberId(getArguments().getInt(Config.USER_ID, -1));
 		setTangleId(getArguments().getInt(Config.TANGLE_ID, -1));
 		setMemberName(getArguments().getString(Config.MEMBER_NAME));
 		setMemberBalance(getArguments().getInt(Config.MEMBER_BALANCE, 0));
 		setMemberAvatarURL(getArguments().getString(Config.MEMBER_AVATAR_URL));
-		
-		view = inflater.inflate(R.layout.fragment_member_entry,
-				container, false);
-		
+
+		view = inflater.inflate(R.layout.fragment_member_entry, container,
+				false);
+
 		view.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View view) {
-				Intent profileIntent = new Intent(getActivity().getBaseContext(), ProfileActivity.class);
+				Intent profileIntent = new Intent(getActivity()
+						.getBaseContext(), ProfileActivity.class);
 				profileIntent.putExtra("tangle id", getTangleId());
 				profileIntent.putExtra("user id", getMemberId());
-				
+
 				startActivity(profileIntent);
 			}
 		});
-		
+
 		setMemberNameView((TextView) view.findViewById(R.id.memberName));
 		setMemberBalanceView((TextView) view.findViewById(R.id.memberBalance));
 		setMemberAvatarView((ImageView) view.findViewById(R.id.memberAvatar));
 
 		getMemberNameView().setText(getMemberName());
 		getMemberBalanceView().setText(getMemberBalance() + "");
-		try{ 
+		try {
 			ImageRequest imageRequest = new ImageRequest(getMemberAvatarView());
 			imageRequest.execute(getMemberAvatarURL());
-		} catch(Exception e){
+		} catch (Exception e) {
 			toasterShow("Fetching photo is not working ...");
 		}
 		return view;
 	}
-	
+
 	/*
 	 * It shows the given message in a toaster
+	 * 
 	 * @param String message, the message to be showed
+	 * 
 	 * @author Omar ElAzazy
 	 */
-	private void toasterShow(String message){
-		Toast.makeText(getActivity().getBaseContext(),
-				message,
+	private void toasterShow(String message) {
+		Toast.makeText(getActivity().getBaseContext(), message,
 				Toast.LENGTH_LONG).show();
 	}
 }
