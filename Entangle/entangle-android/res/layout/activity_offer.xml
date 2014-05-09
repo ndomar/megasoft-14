@@ -20,10 +20,22 @@
             android:layout_gravity="top"
             android:orientation="vertical" >
 
+            <Button
+                android:id="@+id/deleteButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="delete offer"
+                android:onClick="deleteOffer" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="15dp"
+                android:layout_marginLeft="300dp"
+                android:drawableTop="@drawable/play" />
+
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
+                android:layout_height="132dp"
                 android:padding="@dimen/boxMargin" >
 
                 <com.megasoft.entangle.views.RoundedImageView
@@ -129,22 +141,14 @@
                     android:visibility="invisible" />
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="15dp"
-                android:layout_marginLeft="300dp"
-                android:drawableTop="@drawable/play" />
-
             <LinearLayout
                 android:id="@+id/offer_comments_area"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:background="@color/darkWhite"
-                android:visibility="invisible"
-                android:orientation="vertical" >
-
-
+                android:orientation="vertical"
+                android:visibility="invisible" >
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -174,9 +178,9 @@
             android:layout_marginBottom="@dimen/marginMedium"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="5dp"
-            android:contentDescription="@string/icon"
             android:background="@drawable/send"
             android:clickable="true"
+            android:contentDescription="@string/icon"
             android:onClick="addComment" />
     </RelativeLayout>
 
