@@ -33,7 +33,7 @@ public class MemberListFragment extends Fragment {
 	private LinearLayout memberListView;
 	private int numberOfMembers;
 	private ViewGroup container;
-	
+
 	public ViewGroup getContainer() {
 		return container;
 	}
@@ -97,55 +97,60 @@ public class MemberListFragment extends Fragment {
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
-	
+
 	public int getTangleId() {
 		return tangleId;
 	}
-	
+
 	public void setTangleId(int tangleId) {
 		this.tangleId = tangleId;
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		setSessionId(getActivity().getSharedPreferences(Config.SETTING, 0).getString(Config.SESSION_ID, ""));
+		setSessionId(getActivity().getSharedPreferences(Config.SETTING, 0)
+				.getString(Config.SESSION_ID, ""));
 		setTangleId(getArguments().getInt(Config.TANGLE_ID));
-		
-		View view = inflater.inflate(R.layout.fragment_member_list,
-				container, false);
-		
+
+		View view = inflater.inflate(R.layout.fragment_member_list, container,
+				false);
+
 		setContainer(container);
-		setMemberListView((LinearLayout) view.findViewById(R.id.view_member_list));
-		
-		fetchMembers();
-		
+		setMemberListView((LinearLayout) view
+				.findViewById(R.id.view_member_list));
+
+		fetchMembers("");
+
 		return view;
 	}
-	
+
 	/*
-	 * It makes a request getting members and creating the fragments for member entries to be viewed
+	 * It makes a request getting members and creating the fragments for member
+	 * entries to be viewed
+	 * 
+	 * @param String searchString, passed to showData method
+	 * 
 	 * @author Omar ElAzazy
 	 */
-	private void fetchMembers(){
-		
+	private void fetchMembers(final String searchString) {
+
 		final AlertDialog ad = new AlertDialog.Builder(getActivity()).create();
 		ad.setCancelable(false);
 		ad.setMessage("Loading ...");
-		ad.show();       
+		ad.show();
 
-		
 		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
 				+ "/tangle/" + getTangleId() + "/user") {
 			public void onPostExecute(String response) {
 				ad.dismiss();
-				Log.e("test", this.getStatusCode() + ""); /////////////////////////////////
-				
-				if(!this.hasError() && this.getStatusCode() == 200){
-					if(!showData(response)){
+				Log.e("test", this.getStatusCode() + ""); // ///////////////////////////////
+
+				if (!this.hasError() && this.getStatusCode() == 200) {
+					if (!showData(response, searchString)) {
 						toasterShow("Something went wrong, please try again later");
 					}
-				}else{
+				} else {
 					toasterShow("Something went wrong, please try again later");
 				}
 			}
@@ -154,59 +159,72 @@ public class MemberListFragment extends Fragment {
 		getRequest.addHeader(Config.API_SESSION_ID, sessionId);
 		getRequest.execute();
 	}
-	
+
 	/*
 	 * It creates the fragments to be viewed in the list
-	 * @param String response, the body of the response of the request to get all members in a tangle
+	 * 
+	 * @param String response, the body of the response of the request to get
+	 * all members in a tangle
+	 * 
+	 * @param String searchString, the string that is being searched for which
+	 * is empty if no search is being carried out
+	 * 
 	 * @return a boolean indicating if this was successful or not
+	 * 
 	 * @author Omar ElAzazy
 	 */
-	private boolean showData(String response){
-		if(!populateData(response)){
+	private boolean showData(String response, String searchString) {
+		if (!populateData(response)) {
 			return false;
 		}
-		
-		FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-		
-        for(int i = 0; i < getNumberOfMembers(); i++) {
-        	MemberEntryFragment memberEntryFragment = new MemberEntryFragment();
-        	
-        	Bundle bundle = new Bundle();
-        	bundle.putInt(Config.USER_ID, getMemberIds()[i]);
-        	bundle.putInt(Config.TANGLE_ID, getTangleId());
-        	bundle.putString(Config.MEMBER_NAME, getMemberNames()[i]);
-        	bundle.putInt(Config.MEMBER_BALANCE, getMemberBalances()[i]);
-        	bundle.putString(Config.MEMBER_AVATAR_URL, getMemberAvatarURLs()[i]);
-            
-        	memberEntryFragment.setArguments(bundle);
-        	fragmentTransaction.add(R.id.view_member_list, memberEntryFragment);
-        }
-        
-        fragmentTransaction.commit();
+
+		FragmentTransaction fragmentTransaction = getActivity()
+				.getSupportFragmentManager().beginTransaction();
+
+		for (int i = 0; i < getNumberOfMembers(); i++) {
+			MemberEntryFragment memberEntryFragment = new MemberEntryFragment();
+			if (getMemberNames()[i].toLowerCase().startsWith( searchString.toLowerCase())) {
+				Bundle bundle = new Bundle();
+				bundle.putInt(Config.USER_ID, getMemberIds()[i]);
+				bundle.putInt(Config.TANGLE_ID, getTangleId());
+				bundle.putString(Config.MEMBER_NAME, getMemberNames()[i]);
+				bundle.putInt(Config.MEMBER_BALANCE, getMemberBalances()[i]);
+				bundle.putString(Config.MEMBER_AVATAR_URL,
+						getMemberAvatarURLs()[i]);
+
+				memberEntryFragment.setArguments(bundle);
+				fragmentTransaction.add(R.id.view_member_list,
+						memberEntryFragment);
+			}
+		}
+
+		fragmentTransaction.commit();
 		return true;
 	}
-	
+
 	/*
 	 * It takes the response and populates the variables of this fragment
+	 * 
 	 * @return a boolean indicating if this was successful or not
+	 * 
 	 * @author Omar ElAzazy
 	 */
-	private boolean populateData(String response){
-		
+	private boolean populateData(String response) {
+
 		try {
 			JSONObject json = new JSONObject(response);
 			JSONArray members = json.getJSONArray("users");
-			
+
 			setNumberOfMembers(members.length());
-			
+
 			memberIds = new int[numberOfMembers];
 			memberBalances = new int[numberOfMembers];
 			memberNames = new String[numberOfMembers];
 			memberAvatarURLs = new String[numberOfMembers];
-			
-			for(int i = 0; i < numberOfMembers; i++){
+
+			for (int i = 0; i < numberOfMembers; i++) {
 				JSONObject member = members.getJSONObject(i);
-				
+
 				memberIds[i] = member.getInt("id");
 				memberNames[i] = member.getString("username");
 				memberBalances[i] = member.getInt("balance");
@@ -215,18 +233,19 @@ public class MemberListFragment extends Fragment {
 		} catch (JSONException e) {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	/*
 	 * It shows the given message in a toaster
+	 * 
 	 * @param String message, the message to be showed
+	 * 
 	 * @author Omar ElAzazy
 	 */
-	private void toasterShow(String message){
-		Toast.makeText(getActivity().getBaseContext(),
-				message,
+	private void toasterShow(String message) {
+		Toast.makeText(getActivity().getBaseContext(), message,
 				Toast.LENGTH_LONG).show();
 	}
 }
