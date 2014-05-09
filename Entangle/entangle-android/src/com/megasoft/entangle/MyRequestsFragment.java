@@ -145,8 +145,8 @@ public class MyRequestsFragment extends Fragment {
 			String requestOffersCount = "" + request.getInt("offersCount");
 			String requesterButtonText = requesterName;
 			String requestButtonText = requestBody;
-			String requestPrice = "0";
-
+			String requestPrice = "---";
+			int status = request.getInt("status");
 			if (request.get("price") != null)
 				requestPrice = "" + request.getInt("price");
 
@@ -155,10 +155,26 @@ public class MyRequestsFragment extends Fragment {
 					.createInstance(requestId, userId, requestButtonText,
 							requesterButtonText, requestPrice,
 							requestOffersCount, getTangleId(), getTangleName());
-			transaction.add(R.id.streamLayout, requestFragment);
+			addRequest(status, requestFragment);
 			transaction.commit();
 		} catch (JSONException e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void addRequest(int status, StreamRequestFragment requestFragment) {
+		switch (status) {
+		case 0:
+			transaction.add(R.id.openRequests, requestFragment);
+			break;
+		case 1:
+			transaction.add(R.id.frozenRequests, requestFragment);
+			break;
+		case 2:
+			transaction.add(R.id.closedRequests, requestFragment);
+			break;
+		default:
+			break;
 		}
 	}
 
