@@ -9,30 +9,26 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.megasoft.config.Config;
-import com.megasoft.entangle.FilteringFragment;
+import com.megasoft.entangle.HomeActivity;
 import com.megasoft.entangle.R;
 import com.megasoft.entangle.StreamRequestFragment;
 import com.megasoft.requests.GetRequest;
 
 public class TangleFragment extends Fragment {
 
-	private FragmentActivity activity;
+	private HomeActivity activity;
 	private View view;
 	
 	/**
@@ -106,13 +102,36 @@ public class TangleFragment extends Fragment {
          tangleId = getArguments().getInt("tangleId");
          tangleName = getArguments().getString("tangleName");
         
-         sendFilteredRequest(rootResource + "/tangle/" + tangleId
+        sendFilteredRequest(rootResource + "/tangle/" + tangleId
  				+ "/request");
-        
- 		setRedirections();
+ 		setSearchListener();
  		
         return view;
     }
+
+	private void setSearchListener() {
+		SearchView searchView = activity.getSearchView();
+		
+		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			String text;
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				sendFilteredRequest(rootResource + "/tangle/" + tangleId
+		 				+ "/request?query="+query);
+				return true;
+			}
+			
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				if(newText.equals("")){
+					sendFilteredRequest(rootResource + "/tangle/" + tangleId
+			 				+ "/request");
+				}
+				return true;
+			}
+		});
+		
+	}
 
 	/**
 	 * This method is used to set the layout of the stream dynamically according
@@ -155,7 +174,6 @@ public class TangleFragment extends Fragment {
 	 * @param request
 	 *            , is the request to be added in the layout
 	 */
-	@SuppressLint("NewApi")
 	private void addRequest(JSONObject request) {
 		try {
 			int userId = request.getInt("userId");
@@ -179,24 +197,6 @@ public class TangleFragment extends Fragment {
 		} catch (JSONException e) { 
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * This method is used to set the actions of the fixed buttons in the footer
-	 * (stream, members, profile, invite) buttons
-	 */
-	private void setRedirections() {
-//		Button stream = (Button) view.findViewById(R.id.stream);
-//		setButtonRedirection(stream, "TangleActivity");
-//
-//		Button members = (Button) view.findViewById(R.id.members);
-//		setButtonRedirection(members, "Members");
-//
-//		Button profile = (Button) view.findViewById(R.id.profile);
-//		setButtonRedirection(profile, "ProfileActivity");
-//
-//		Button invite = (Button) view.findViewById(R.id.invite);
-//		setButtonRedirection(invite, "InviteUserActivity");
 	}
 
 	/**
@@ -245,8 +245,6 @@ public class TangleFragment extends Fragment {
 					layout.removeAllViews();
 					setTheLayout(res);
 				} else {
-					Log.e("test",this.getErrorMessage());
-					Log.e("test",url);
 					Toast.makeText(activity.getBaseContext(),
 							"Sorry, There is a problem in loading the stream",
 							Toast.LENGTH_LONG).show();
@@ -256,160 +254,11 @@ public class TangleFragment extends Fragment {
 		getStream.addHeader("X-SESSION-ID", getSessionId());
 		getStream.execute();
 	}
-
-	/**
-	 * This method is used to send a request to get all users/tags
-	 * 
-	 * @param url
-	 *            , is the URL to which the request is going to be sent
-	 * 
-	 * @param type
-	 *            , is an integer that indicates whether it is a getAllUsers
-	 *            request or it a getAllTags request, where (0) means tags and
-	 *            (1) means users
-	 */
-	public void sendGetAllRequest(String url, final int type) {
-		GetRequest getStream = new GetRequest(url) {
-			protected void onPostExecute(String res) {
-				if (!this.hasError() && res != null) {
-					if (type == 0)
-						setTagsSuggestions(res);
-					else
-						setUsersSuggestions(res);
-				} else {
-					Toast.makeText(
-							activity.getBaseContext(),
-							"Sorry, There is a problem in filtering the stream",
-							Toast.LENGTH_LONG).show();
-				}
-			}
-		};
-		getStream.addHeader("x-session-id", getSessionId());
-		getStream.execute();
-	}
-
-	/**
-	 * This method is used to handle the response of getting all tags, and sets
-	 * the tagToId hashMap
-	 * 
-	 * @param res
-	 *            , is the response of the request
-	 */
-	private void setTagsSuggestions(String res) {
-		try {
-			JSONObject response = new JSONObject(res);
-			if (response != null) {
-				int count = response.getInt("count");
-				JSONArray tagArray = response.getJSONArray("tags");
-				if (count > 0 && tagArray != null) {
-					tagToId = new HashMap<String, Integer>();
-					for (int i = 0; i < count && i < tagArray.length(); i++) {
-						JSONObject tag = tagArray.getJSONObject(i);
-						if (tag != null) {
-							String tagName = tag.getString("name");
-							int tagId = tag.getInt("id");
-							tagToId.put(tagName, tagId);
-						}
-					}
-
-				} else {
-					Toast.makeText(activity.getBaseContext(),
-							"Sorry, There are no tags in this tangle",
-							Toast.LENGTH_LONG).show();
-				}
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * This method is used to handle the response of getting all users, and sets
-	 * the userToId hashMap, then it runs a FilteringFragment
-	 * 
-	 * @param res
-	 *            , is the response of the request
-	 */
-	@SuppressLint("NewApi")
-	private void setUsersSuggestions(String res) {
-		try {
-			JSONObject response = new JSONObject(res);
-			if (response != null) {
-				int count = response.getInt("count");
-				JSONArray usersArray = response.getJSONArray("users");
-				if (count > 0 && usersArray != null) {
-					userToId = new HashMap<String, Integer>();
-					for (int i = 0; i < count && i < usersArray.length(); i++) {
-						JSONObject user = usersArray.getJSONObject(i);
-						if (user != null) {
-							String userName = user.getString("username");
-							int userId = user.getInt("id");
-							userToId.put(userName, userId);
-						}
-					}
-					FilteringFragment filter = FilteringFragment
-							.createInstance(getTagToIdHashMap(),
-									getUserToIdHashMap(), this);
-					filter.show(activity.getFragmentManager(), "filter_dialog");
-				} else {
-					Toast.makeText(activity.getBaseContext(),
-							"Sorry, There are no users in this tangle",
-							Toast.LENGTH_LONG).show();
-				}
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * This method is used when the filtering button is clicked, so it gets all
-	 * users and all tags
-	 * 
-	 * @param view
-	 *            , in this case it is the filtering button
-	 */
-	public void filterStream(View view) {
-		String url = rootResource + "/tangle/" + getTangleId() + "/tag";
-		sendGetAllRequest(url, 0);
-		url = rootResource + "/tangle/" + getTangleId() + "/user";
-		sendGetAllRequest(url, 1);
-	}
-
-	/**
-	 * This method is used to return an ArrayList of all the tags came from the
-	 * getAllTags request, this method is called from the filtering fragment to
-	 * initialize its suggestions
-	 * 
-	 * @return ArrayList of tags
-	 */
-	public ArrayList<String> getTagsSuggestions() {
-		HashMap<String, Integer> toId = getTagToIdHashMap();
-		if (toId != null) {
-			return new ArrayList<String>(toId.keySet());
-		}
-		return new ArrayList<String>();
-	}
-
-	/**
-	 * This method is used to return an ArrayList of all the users came from the
-	 * getAllUsers request, this method is called from the filtering fragment to
-	 * initialize its suggestions
-	 * 
-	 * @return ArrayList of users
-	 */
-	public ArrayList<String> getUsersSuggestions() {
-		HashMap<String, Integer> toId = getUserToIdHashMap();
-		if (toId != null) {
-			return new ArrayList<String>(toId.keySet());
-		}
-		return new ArrayList<String>();
-	}
 	
 	@Override
 	public void onAttach(Activity activity) {
 		
-		this.activity = (FragmentActivity) activity;
+		this.activity = (HomeActivity) activity;
 		super.onAttach(activity);
 	}
 	
