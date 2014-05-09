@@ -13,24 +13,55 @@
         android:background="@color/darkWhite"
         android:overScrollMode="ifContentScrolls" >
 
-        <TextView
-            android:id="@+id/openRequestsText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
         <LinearLayout
-            android:id="@+id/openRequests"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/boxMargin"
-            android:layout_marginRight="@dimen/boxMargin"
-            android:background="@color/darkWhite"
             android:orientation="vertical" >
-        </LinearLayout>
 
-        <View
-            style="@style/Divider"
-            android:layout_marginTop="@dimen/marginMedium" />
+            <TextView
+                android:id="@+id/openRequestsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OPEN REQUESTS" />
+
+            <LinearLayout
+                android:id="@+id/openRequests"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:layout_marginRight="@dimen/boxMargin"
+                android:background="@color/darkWhite"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <View
+                style="@style/Divider"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/marginMedium" />
+
+            <TextView
+                android:id="@+id/frozenRequestsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FROZEN REQUESTS" />
+
+            <LinearLayout
+                android:id="@+id/frozenRequests"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:layout_marginRight="@dimen/boxMargin"
+                android:background="@color/darkWhite"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <View
+                style="@style/Divider"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/marginMedium" />
+        </LinearLayout>
     </ScrollView>
 
 </RelativeLayout>
