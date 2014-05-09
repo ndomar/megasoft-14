@@ -45,6 +45,21 @@ class TangleController extends Controller {
                 ->setParameter('false', false)
                 ->andWhere('offer.userId = :userId')
                 ->setParameter('userId', $userId);
+
+        $offers = $query->getQuery()->getResult();
+        $offersJsonArray = array();
+        foreach ($offers as $offer) {
+            $offersJsonArray[] = array(
+                'userId' => $offer->getUserId(), 'username' => $offer->getUser()->getName(),
+                'id' => $offer->getId(), 'description' => $offer->getDescription(),
+                'price' => $offer->getRequestedPrice(),
+                'status' => $offer->getStatus(), );
+        }
+
+        $response = new JsonResponse();
+        $response->setData(array('count' => sizeof($offersJsonArray), 'offers' => $offersJsonArray,));
+
+        return $response;
     }
 
     /**
