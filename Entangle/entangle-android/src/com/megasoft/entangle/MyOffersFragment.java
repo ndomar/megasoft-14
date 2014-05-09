@@ -238,7 +238,7 @@ public class MyOffersFragment extends Fragment {
 			String offerBody, String offerPrice, int status) {
 		transaction = getFragmentManager().beginTransaction();
 		OfferEntryFragment fragment = new OfferEntryFragment();
-		putInPlace(fragment);
+		putInPlace(status, fragment);
 		transaction.commit();
 	}
 
@@ -273,5 +273,24 @@ public class MyOffersFragment extends Fragment {
 		}
 	}
 
-	
-}
+	/**
+	 * This is a getter method used to get the tangle id
+	 * 
+	 * @return tangle id
+	 * @author HebaAamer
+	 */
+	public int getTangleId() {
+		return tangleId;
+	}
+
+	/**
+	 * This method is a getter method used to get the name of the tangle
+	 * 
+	 * @return tangle name
+	 * @author HebaAamer
+	 */
+	public String getTangleName() {
+		return tangleName;
+	}
+
+	}
