@@ -1,14 +1,17 @@
 package com.megasoft.entangle;
 
+import java.io.InputStream;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 
 public class EditProfileActivity extends Activity {
@@ -46,7 +49,26 @@ public class EditProfileActivity extends Activity {
 	      
 	    }
 	 };
-	
+	 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+			InputStream stream = null;
+		    if (requestCode == REQUEST_ID && resultCode == Activity.RESULT_OK) {
+		    	try {
+		    		stream = getContentResolver().openInputStream(data.getData());
+		    		picture = BitmapFactory.decodeStream(stream);
+		    		((ImageView)findViewById(R.id.image_holder)).setImageBitmap(Bitmap.createScaledBitmap(picture, 
+		    				picture.getWidth()/2, picture.getHeight()/2, true));
+		    	} catch (Exception e) {
+		    		e.printStackTrace();
+		    	}
+		    	if (stream != null) {
+		    		try {
+		    			stream.close();
+		    		} catch (Exception e) {
+		    			e.printStackTrace();
+		    		}
+		    	}
+			}
+		}
 
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
