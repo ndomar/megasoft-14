@@ -54,6 +54,12 @@ public class MyRequestsFragment extends Fragment {
 	 */
 	private FragmentTransaction transaction;
 
+	private LinearLayout openRequests;
+
+	private LinearLayout frozenRequests;
+
+	private LinearLayout closedRequests;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,14 +69,15 @@ public class MyRequestsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater
-				.inflate(R.layout.activity_tangle, container, false);
+		View view = inflater.inflate(R.layout.template_my_requests, container,
+				false);
 
 		tangleId = getArguments().getInt("tangleId");
 		tangleName = getArguments().getString("tangleName");
-		TextView tangle = (TextView) view.findViewById(R.id.tangleName);
-		sendRequest(rootResource + "/tangle/" + tangleId + "/userRequests");
-		tangle.setText(tangleName);
+		sendRequest(rootResource + "/tangle/" + tangleId + "/user/requests");
+		openRequests = (LinearLayout) view.findViewById(R.id.openRequests);
+		frozenRequests = (LinearLayout) view.findViewById(R.id.frozenRequests);
+		closedRequests = (LinearLayout) view.findViewById(R.id.closedRequests);
 		return view;
 	}
 
@@ -95,9 +102,7 @@ public class MyRequestsFragment extends Fragment {
 				int count = response.getInt("count");
 				JSONArray requestArray = response.getJSONArray("requests");
 				if (count > 0 && requestArray != null) {
-					LinearLayout layout = (LinearLayout) activity
-							.findViewById(R.id.streamLayout);
-					layout.removeAllViews();
+					cleanTheLayouts();
 					for (int i = 0; i < count && i < requestArray.length(); i++) {
 						JSONObject request = requestArray.getJSONObject(i);
 						if (request != null) {
@@ -114,6 +119,12 @@ public class MyRequestsFragment extends Fragment {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void cleanTheLayouts() {
+		openRequests.removeAllViews();
+		frozenRequests.removeAllViews();
+		closedRequests.removeAllViews();
 	}
 
 	/**
