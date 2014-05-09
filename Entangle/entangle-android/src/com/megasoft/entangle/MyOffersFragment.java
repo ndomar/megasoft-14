@@ -237,7 +237,7 @@ public class MyOffersFragment extends Fragment {
 	private void addOfferEntry(int userId, String offererName, int offerId,
 			String offerBody, String offerPrice, int status) {
 		transaction = getFragmentManager().beginTransaction();
-		OfferEntryFragment offerFragment = new OfferEntryFragment();
+		EntryOfferFragment offerFragment = new EntryOfferFragment();
 		Bundle args = new Bundle();
 		args.putInt("offerId", offerId); 
 		args.putString("requestedPrice",offerPrice);
@@ -257,7 +257,7 @@ public class MyOffersFragment extends Fragment {
 	 *            , is the offer fragment
 	 * @author HebaAamer
 	 */
-	private void putInPlace(int status, OfferEntryFragment offer) {
+	private void putInPlace(int status, EntryOfferFragment offer) {
 		switch (status) {
 		case 0:
 			transaction.add(R.id.pendingOffers, offer);
