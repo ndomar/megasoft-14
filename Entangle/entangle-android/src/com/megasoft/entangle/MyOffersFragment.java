@@ -1,9 +1,27 @@
 package com.megasoft.entangle;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.megasoft.config.Config;
+import com.megasoft.entangle.R;
+import com.megasoft.requests.GetRequest;
 
 public class MyOffersFragment extends Fragment {
 
@@ -37,4 +55,50 @@ public class MyOffersFragment extends Fragment {
 	 */
 	private String sessionId;
 
+	/**
+	 * The FragmentTransaction that handles adding the fragments to the activity
+	 */
+	private FragmentTransaction transaction;
+
+	/**
+	 * The Layout that holds the pending offers
+	 */
+	private LinearLayout pendingOffers;
+
+	/**
+	 * The Layout that holds the done offers
+	 */
+	private LinearLayout doneOffers;
+
+	/**
+	 * The Layout that holds the accepted offers
+	 */
+	private LinearLayout acceptedOffers;
+
+	/**
+	 * The Layout that holds the failed offers
+	 */
+	private LinearLayout failedOffers;
+
+	/**
+	 * The Layout that holds tha rejected offers
+	 */
+	private LinearLayout rejectedOffers;
+
+	/**
+	 * This method is called when the activity starts , it sets the attributes
+	 * and redirections of all the views in this activity
+	 * 
+	 * @param savedInstanceState
+	 *            , is the passed bundle from the previous activity
+	 * @author HebaAamer
+	 */
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+	}
+
+	
 }
