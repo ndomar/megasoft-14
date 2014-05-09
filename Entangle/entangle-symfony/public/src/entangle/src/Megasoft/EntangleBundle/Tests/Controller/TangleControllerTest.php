@@ -26,5 +26,13 @@ class TangleControllerTest extends EntangleTestCase
     }
     
     public function testSimpleGetAction(){
+        $client = static::createClient();
+        $crawler = $client->request('GET', 
+                '/tangle/1/user', 
+                array(), 
+                array(), 
+                array('HTTP_X_SESSION_ID'=>'fdfdsffdsdf'));
+
+        $this->assertEquals('sampleUser', $client->getResponse()->getContent());
     }
 }
