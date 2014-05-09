@@ -54,7 +54,7 @@ class TangleController extends Controller {
      * An endpoint to filter requests of a specific tangle by requester, tag, prefix of requester's name or description
      * @param Request $request
      * @param integer $tangleId
-     * @return Response | Symfony\Component\HttpFoundation\JsonResponse
+     * @return Response | \Symfony\Component\HttpFoundation\JsonResponse
      * @author OmarElAzazy
      */
     public function filterRequestsAction(Request $request, $tangleId) {
@@ -64,58 +64,32 @@ class TangleController extends Controller {
             return $verification;
         }
 
-        $doctrine = $this->getDoctrine();
+        $doctrine = $this->getDoctrine()->getManager();
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
 
+        $queryValue = $request->query->get('query', null);
+
         $query = $requestRepo->createQueryBuilder('request')
-
-                ->where('request.tangleId = :tangleId')
-                ->setParameter('tangleId', $tangleId)
-                ->andWhere('request.deleted = :false')
-                ->setParameter('false', false);
-
-        $userId = $request->query->get('userid', null);
-        if ($userId != null) {
-            $query = $query->andWhere('request.userId = :userId')
-                ->setParameter('userId', $userId);
+            ->where('request.tangleId = :tangleId')
+            ->setParameter('tangleId', $tangleId)
+            ->andWhere('request.deleted = 0');
+        if($queryValue != null){
+            $query = $query->innerJoin('MegasoftEntangleBundle:User', 'user' , 'WITH' , 'request.userId = user.id')
+                            ->leftJoin('request.tags','tag')
+                            ->andWhere(
+                                    $query->expr()->orx(
+                                        $query->expr()->like('user.name', ':query2'),
+                                        $query->expr()->like('request.description', ':query'),
+                                        $query->expr()->like('tag.name', ':query')
+                                    )
+                            )->setParameter('query' , '%'.$queryValue.'%')
+                             ->setParameter('query2' , $queryValue.'%');
         }
-
-        $fullText = $request->query->get('fulltext', null);
-        if ($fullText != null) {
-            $query = $query->andWhere('request.description LIKE :fullTextFormat')
-                ->setParameter('fullTextFormat', '%' . $fullText . '%');
-        }
-
-
-        $usernamePrefix = $request->query->get('usernameprefix', null);
-        if ($usernamePrefix != null) {
-            $query = $query->innerJoin('MegasoftEntangleBundle:User', 'user', 'WITH', 'request.userId = user.id')
-                ->andWhere('user.name LIKE :usernamePrefixFormat')
-                ->setParameter('usernamePrefixFormat', $usernamePrefix . '%');
-        }
-
         $requests = $query->getQuery()->getResult();
 
-        $tagId = $request->query->get('tagid', null);
         $requestsJsonArray = array();
 
-
         foreach ($requests as $tangleRequest) {
-
-            if ($tagId != null) {
-                $foundTag = false;
-                foreach ($tangleRequest->getTags() as $tag) {
-                    if ($tag->getId() == $tagId) {
-                        $foundTag = true;
-                        break;
-                    }
-                }
-
-
-                if (!$foundTag) {
-                    continue;
-                }
-            }
 
             $requestsJsonArray[] = array(
                 'id' => $tangleRequest->getId(),
@@ -137,7 +111,7 @@ class TangleController extends Controller {
      * An endpoint to return the list of tags in a specific tangle
      * @param Request $request
      * @param integer $tangleId
-     * @return Response | Symfony\Component\HttpFoundation\JsonResponse
+     * @return Response | \Symfony\Component\HttpFoundation\JsonResponse
      * @author OmarElAzazy
      */
 
@@ -237,7 +211,7 @@ class TangleController extends Controller {
      * @author MohamedBassem
      */
 
-    
+
     public function inviteUser($email,$tangleId,$inviterId,$message){
         $randomString = $this->generateRandomString(30);
 
