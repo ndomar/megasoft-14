@@ -1,6 +1,9 @@
 package com.megasoft.entangle;
 
 import java.io.InputStream;
+
+import com.megasoft.config.Config;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -10,15 +13,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 
 public class EditProfileActivity extends Activity {
 	private static final int REQUEST_ID = 1;
-	Button browse;
-	Button upload;
-	Bitmap picture;
+	private Button browse;
+	private Button upload;
+	private Bitmap picture;
+	private String sessionId;
+	private SharedPreferences settings;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +36,8 @@ public class EditProfileActivity extends Activity {
         upload = (Button) findViewById(R.id.upload_button);
         browse.setOnClickListener(browseHandler);
         upload.setOnClickListener(uploadHandler);
+        this.settings = getSharedPreferences(Config.SETTING, 0);
+		this.sessionId = settings.getString(Config.SESSION_ID, "");
 	}
 	/**
 	 * action taken when find a photo button is clicked
