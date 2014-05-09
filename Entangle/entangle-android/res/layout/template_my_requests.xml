@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:layout_alignParentTop="true"
+    android:background="@color/darkWhite"
+    android:fillViewport="true" >
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/darkWhite"
+        android:overScrollMode="ifContentScrolls" >
+
+        <TextView
+            android:id="@+id/openRequestsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/openRequests"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/boxMargin"
+            android:layout_marginRight="@dimen/boxMargin"
+            android:background="@color/darkWhite"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <View
+            style="@style/Divider"
+            android:layout_marginTop="@dimen/marginMedium" />
+    </ScrollView>
+
+</RelativeLayout>
