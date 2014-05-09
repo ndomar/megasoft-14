@@ -28,6 +28,7 @@ public class MemberEntryFragment extends Fragment {
 	private TextView memberBalanceView;
 	private ImageView memberAvatarView;
 	private String memberAvatarURL;
+	private View view;
 	
 	public ImageView getMemberAvatarView() {
 		return memberAvatarView;
@@ -92,6 +93,10 @@ public class MemberEntryFragment extends Fragment {
 	public void setTangleId(int tangleId) {
 		this.tangleId = tangleId;
 	}
+	
+	public View getFragmentView(){
+		return view;
+	}
 
 	@Override 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -103,7 +108,7 @@ public class MemberEntryFragment extends Fragment {
 		setMemberBalance(getArguments().getInt(Config.MEMBER_BALANCE, 0));
 		setMemberAvatarURL(getArguments().getString(Config.MEMBER_AVATAR_URL));
 		
-		View view = inflater.inflate(R.layout.fragment_member_entry,
+		view = inflater.inflate(R.layout.fragment_member_entry,
 				container, false);
 		
 		view.setOnClickListener(new OnClickListener() {
