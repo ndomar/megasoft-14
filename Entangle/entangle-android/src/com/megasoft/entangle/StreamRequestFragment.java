@@ -276,7 +276,7 @@ public class StreamRequestFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity().getBaseContext(),
-						ProfileFragment.class);
+						ProfileActivity.class);
 				intent.putExtra("tangleId", getTangleId());
 				intent.putExtra("tangleName", getTangleName());
 				intent.putExtra("userId", getRequesterId());
@@ -287,7 +287,7 @@ public class StreamRequestFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity().getBaseContext(),
-						ProfileFragment.class);
+						ProfileActivity.class);
 				intent.putExtra("tangleId", getTangleId());
 				intent.putExtra("tangleName", getTangleName());
 				intent.putExtra("userId", getRequesterId());

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -147,9 +148,9 @@ public class MyRequestsFragment extends Fragment {
 			String requestButtonText = requestBody;
 			String requestPrice = "---";
 			int status = request.getInt("status");
-			if (request.get("price") != null)
+			if (request.get("price") != null
+					&& !request.getString("price").equals("null"))
 				requestPrice = "" + request.getInt("price");
-
 			transaction = getFragmentManager().beginTransaction();
 			StreamRequestFragment requestFragment = new StreamRequestFragment();
 			switch (status) {
@@ -211,9 +212,7 @@ public class MyRequestsFragment extends Fragment {
 		GetRequest getStream = new GetRequest(url) {
 			protected void onPostExecute(String res) {
 				if (!this.hasError() && res != null) {
-					LinearLayout layout = (LinearLayout) activity
-							.findViewById(R.id.streamLayout);
-					layout.removeAllViews();
+					cleanTheLayouts();
 					setTheLayout(res);
 				} else {
 					Toast.makeText(activity.getBaseContext(),
