@@ -104,6 +104,28 @@ public class StreamRequestFragment extends Fragment {
 		return fragment;
 	}
 
+	/**
+	 * This method is used to set the attributes of a fragment with the passed
+	 * parameters
+	 * 
+	 * @param requestId
+	 *            , is the id of the request
+	 * @param requesterId
+	 *            , is the id of the requester
+	 * @param requestString
+	 *            , is the description of the request
+	 * @param requesterString
+	 *            , is the name of the requester
+	 * @param price
+	 *            , is the price of the request
+	 * @param offersCount
+	 *            , is the number of offers on that request
+	 * @param tangleId
+	 *            , is the id of the tangle
+	 * @param tangleName
+	 *            , is the name of the tangle
+	 * @author HebaAamer
+	 */
 	protected void setFragmentAttributes(int requestId, int requesterId,
 			String requestString, String requesterString, String price,
 			String offersCount, int tangleId, String tangleName) {
@@ -129,6 +151,11 @@ public class StreamRequestFragment extends Fragment {
 		return view;
 	}
 
+	/**
+	 * This method is used to set the fields of the fragment view
+	 * 
+	 * @author HebaAamer
+	 */
 	protected void setAttributes() {
 		request = (TextView) view.findViewById(R.id.requestDescription);
 		requesterAvatar = (RoundedImageView) view
