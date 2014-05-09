@@ -8,9 +8,32 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".EditProfileActivity" >
 
-    <TextView
+    <ImageView
+        android:id="@+id/image_holder"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:src="@android:drawable/alert_dark_frame" />
+
+    <Button
+        android:id="@+id/browse_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignLeft="@+id/image_holder"
+        android:layout_below="@+id/image_holder"
+        android:layout_marginLeft="34dp"
+        android:text="Find a Photo" />
+
+    <Button
+        android:id="@+id/upload_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/browse_button"
+        android:layout_alignBottom="@+id/browse_button"
+        android:layout_alignRight="@+id/image_holder"
+        android:layout_marginRight="34dp"
+        android:text="Upload" />
 
 </RelativeLayout>
