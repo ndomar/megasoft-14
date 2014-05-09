@@ -198,7 +198,7 @@ public class OfferActivity extends FragmentActivity {
 		// deleteOfferLayout = (LinearLayout)
 		// findViewById(R.id.delete_offer_layout);
 		acceptOffer = (Button) findViewById(R.id.accept_offer);
-		markOfferAsDone = (Button) findViewById(R.id.mark_asdone);
+		markOfferAsDone = (Button) findViewById(R.id.mark_as_done);
 		String link = Config.API_BASE_URL + "/offer/" + offerId;
 
 		GetRequest request = new GetRequest(link) {
@@ -476,11 +476,11 @@ public class OfferActivity extends FragmentActivity {
 		Toast error;
 		if (offerStatus.getText().equals(Pending)) {
 			error = Toast.makeText(getApplicationContext(),
-					"Offer is not accepted", Toast.LENGTH_LONG);
+					R.string.notaccepted, Toast.LENGTH_LONG);
 			error.show();
 		} else if (offerStatus.getText().equals(Done)) {
 			error = Toast.makeText(getApplicationContext(),
-					"Offer is already marked as done", Toast.LENGTH_LONG);
+					R.string.alreadymarked, Toast.LENGTH_LONG);
 			error.show();
 		} else {
 			markAsDone(offerId);
@@ -505,9 +505,8 @@ public class OfferActivity extends FragmentActivity {
 					Toast success = Toast.makeText(getApplicationContext(),
 							R.string.mark, Toast.LENGTH_LONG);
 					success.show();
-					Button mark = (Button) findViewById(R.id.mark_asdone);
-					mark.setEnabled(false);
-					mark.setVisibility(View.INVISIBLE);
+					markOfferAsDone.setEnabled(false);
+					markOfferAsDone.setVisibility(View.INVISIBLE);
 					offerStatus.setText("Done");
 				} else {
 					Toast error = Toast.makeText(getApplicationContext(),

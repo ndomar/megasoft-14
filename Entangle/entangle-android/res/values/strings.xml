@@ -150,7 +150,9 @@
 
     <string name="done">Mark as done</string>
     <string name="mark">Marked As Done</string>
-    <string name="error">Error</string>    
+    <string name="error">Error</string>
+    <string name="notaccepted">Offer is not accepted</string>  
+    <string name="alreadymarked">Offer is already marked as done</string>      
 
 
 </resources>
