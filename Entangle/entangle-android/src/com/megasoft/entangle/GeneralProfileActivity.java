@@ -1,23 +1,46 @@
 package com.megasoft.entangle;
 
-import com.megasoft.config.Config;
-import com.megasoft.requests.PostRequest;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
+import com.megasoft.config.Config;
 
-@SuppressLint("WorldReadableFiles")
-public class GeneralProfileActivity extends Activity {
+import com.megasoft.requests.PostRequest;
+
+/**
+ * Views a user's general profile given his user Id 
+ * @author Almgohar
+ */
+
+public class GeneralProfileActivity extends FragmentActivity {
 
 	private static final String LOGOUT = "/user/logout";
+	private int userId;
+	private int tangleId;	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_profile);
+		ProfileFragment profile = new ProfileFragment();
+		Bundle bundle = new Bundle();
+		tangleId = getIntent().getIntExtra("tangleId", 2);
+		userId = getIntent().getIntExtra("userId", 0);
+		bundle.putInt("tangleId", tangleId);
+		bundle.putInt("userId", userId);
+		bundle.putBoolean("general", true);
+		profile.setArguments(bundle);
+		FragmentTransaction transaction = getSupportFragmentManager()
+				.beginTransaction();
+		transaction.add(R.id.profile_layout, profile);
+		transaction.commit();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -86,12 +109,10 @@ public class GeneralProfileActivity extends Activity {
 
 		prefsEditor.commit();
 
-		Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+		Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		intent.putExtra("EXIT", true);
 		startActivity(intent);
 		this.finish();
 
 	}
-
 }
