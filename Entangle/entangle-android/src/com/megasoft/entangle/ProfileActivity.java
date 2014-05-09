@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.ImageRequest;
+import com.megasoft.requests.PostRequest;
 
 /**
  * Views a user's profile given his user Id and the tangle Id that redirected to
@@ -101,6 +104,8 @@ public class ProfileActivity extends FragmentActivity {
 
 	private String sessionId;
 
+	private static final String LOGOUT = "/user/logout";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -110,185 +115,84 @@ public class ProfileActivity extends FragmentActivity {
 		bundle.putInt("tangleId", getIntent().getIntExtra("tangleId", 0));
 		bundle.putInt("userId", getIntent().getIntExtra("userId", 0));
 		profile.setArguments(bundle);
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		FragmentTransaction transaction = getSupportFragmentManager()
+				.beginTransaction();
 		transaction.add(R.id.profile_layout, profile);
 		transaction.commit();
 	}
 
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.profile, menu);
-		return true;
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.general_profile, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
-
-	/**
-	 * Initialize all views to link them to the XML views calls the
-	 * ViewInformation() method
-	 * 
-	 * @author Almgohar
-	 */
-	public void viewProfile() {
-		edit = (Button) findViewById(R.id.EditProfile);
-		leave = (Button) findViewById(R.id.LeaveTangle);
-		name = (TextView) findViewById(R.id.nameView);
-		balance = (TextView) findViewById(R.id.balanceView);
-		birthDate = (TextView) findViewById(R.id.birthdateView);
-		description = (TextView) findViewById(R.id.descriptionView);
-		verifiedView = (ImageView) findViewById(R.id.verifiedView);
-		profilePictureView = (ImageView) findViewById(R.id.profileImage);
-		transactionsLayout = (LinearLayout) this
-				.findViewById(R.id.transactions_layout);
-
-		viewInformation();
-	}
-
-	/**
-	 * Creates a JSon request asking for the required information Retrieves the
-	 * required information from the JSon response
-	 * 
-	 * @author Almgohar
-	 */
-	public void viewInformation() {
-		String link = Config.API_BASE_URL+ "/tangle/" + tangleId
-				+ "/user/" + userId + "/profile";
-		GetRequest request = new GetRequest(link) {
-			protected void onPostExecute(String response) {
-				if (this.getStatusCode() == 200) {
-					try {
-						JSONObject jSon;
-						jSon = new JSONObject(response);
-						JSONArray transactions = jSon
-								.getJSONArray("transactions");
-						JSONObject information = jSon
-								.getJSONObject("information");
-						viewTransactions(transactions);
-						name.setText(information.getString("name"));
-						description.setText("Description: "
-								+ information.getString("description"));
-						balance.setText("Credit: "
-								+ information.getString("balance") + " points");
-						birthDate.setText("Birthdate: "
-								+ information.getString("birthdate"));
-						viewProfilePicture(information.getString("picture URL"));
-						boolean verified = information.getBoolean("verified");
-						if (verified) {
-							verifiedView.setVisibility(View.VISIBLE);
-						}
-						if (loggedInId == userId) {
-							edit.setVisibility(View.VISIBLE);
-							leave.setVisibility(View.VISIBLE);
-
-							edit.setOnClickListener(new View.OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									goToEditProfile();
-								}
-							});
-							leave.setOnClickListener(new View.OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									leaveTangle();
-
-								}
-							});
-						}
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-				} else {
-					Toast toast = Toast.makeText(getApplicationContext(),
-							"Some error happened.", Toast.LENGTH_SHORT);
-					toast.show();
-				}
-			}
-		};
-		request.addHeader("X-SESSION-ID", this.sessionId);
-		request.execute();
-	}
-
-	/**
-	 * Gets the user's transactions from a JSONArray and views them
-	 * 
-	 * @param JSONArray
-	 *            transactions
-	 * @author Almgohar
-	 */
-	public void viewTransactions(JSONArray transactions) {
-		TextView title = new TextView(this);
-		title.setText("Transactions: ");
-		title.setTextSize(20);
-		transactionsLayout.addView(title);
-		for (int i = 0; i < transactions.length(); i++) {
-			JSONObject object;
-			try {
-				object = transactions.getJSONObject(i);
-				TextView transaction = new TextView(this);
-				final int offerId = object.getInt("offerId");
-				String requester = object.getString("requesterName");
-				String request = object.getString("requestDescription");
-				String amount = object.getString("amount");
-				transaction.setText("Requester: " + requester + '\n'
-						+ "Request: " + request + '\n' + "Amount: " + amount);
-
-				transaction.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						goToOffer(offerId);
-					}
-				});
-
-				transactionsLayout.addView(transaction);
-
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle presses on the action bar items
+		switch (item.getItemId()) {
+		case R.id.logoutButton:
+			logout();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 
-	/**
-	 * Views the user's profile picture
+	/*
+	 * this method gets the sessionId and sends a request to the server and then
+	 * calls goToLogout method
 	 * 
-	 * @param String
-	 *            imageURL
-	 * @author Almgohar
+	 * 
+	 * @author maisaraFarahat
 	 */
-	public void viewProfilePicture(String imageURL) {
-		ImageRequest image = new ImageRequest(profilePictureView);
-		image.execute(imageURL);
+
+	@SuppressWarnings("deprecation")
+	public void logout() {
+
+		SharedPreferences myPrefs = this.getSharedPreferences(Config.SETTING,
+				MODE_WORLD_READABLE);
+		String sessionId = myPrefs.getString(Config.SESSION_ID, "");
+		PostRequest request = new PostRequest(Config.API_BASE_URL_SERVER
+				+ LOGOUT) {
+			protected void onPostExecute(String response) {
+
+				if (this.getStatusCode() == 200) {
+					goToLogout();
+
+				}
+
+			}
+
+		};
+		request.addHeader(Config.API_SESSION_ID, sessionId);
+		request.execute();
+
 	}
 
-	/**
-	 * Redirects to the EditProfileActivity
+	/*
+	 * this method removes the sessionId from the shared prefs and redirects to
+	 * login
 	 * 
-	 * @author Almgohar
+	 * @author maisaraFarahat
 	 */
-	public void goToEditProfile() {
-		Intent editProfile = new Intent(this, EditProfileActivity.class);
-		editProfile.putExtra("user id", loggedInId);
-		startActivity(editProfile);
-	}
 
-	/**
-	 * Let the user leave the current tangle
-	 * 
-	 * @author Almgohar
-	 */
-	public void leaveTangle() {
+	@SuppressWarnings("deprecation")
+	private void goToLogout() {
+		SharedPreferences sessionIDPrefs = this.getSharedPreferences(
+				Config.SETTING, MODE_WORLD_READABLE);
+		SharedPreferences.Editor prefsEditor = sessionIDPrefs.edit();
+		prefsEditor.putString(Config.SESSION_ID, null);
 
-	}
+		prefsEditor.commit();
 
-	/**
-	 * Redirects to OfferActivity
-	 * 
-	 * @author Almgohar
-	 */
-	public void goToOffer(int offerId) {
-		Intent offer = new Intent(this, OfferActivity.class);
-		offer.putExtra("offer id", offerId);
-		startActivity(offer);
+		Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+		this.finish();
+
 	}
 
 }

@@ -30,7 +30,9 @@ class NotificationController extends Controller
     {
         $nc = $this->get('notification_center.service');
         $response = new JsonResponse();
-        $name = $nc->reopenRequestNotification(0);
+        $title = "new message";
+        $body = "{{from}} made new message";
+        $name = $nc->newMessageNotification(0, $title, $body);
         $response->setData($name);
         return $response;
     }

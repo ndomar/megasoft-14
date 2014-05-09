@@ -273,6 +273,7 @@ statusInformation:
     defaults:  { _controller: MegasoftEntangleBundle:Offer:statusInformation }
     methods: [GET]
 
+
 megasoft_entangle_homepage:
     pattern:  /hello/{hello}
     defaults: { _controller: MegasoftEntangleBundle:Default:index }
@@ -390,9 +391,11 @@ get_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
 
+
 index:
     pattern: /
     defaults: { _controller: MegasoftEntangleBundle:Site:index }
+    methods: [GET]
 
 viewRequest:
     pattern: tangle/{tangleId}/request/{requestId}
@@ -404,9 +407,15 @@ get_tangles:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:getTangles }
     methods: [GET]
 
+
 get_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
+
+check_availability:
+    pattern: /tangle/check
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:checkAvailability }
+    methods: [GET]
 
 create_tangle:
     pattern: /tangle
@@ -416,7 +425,8 @@ create_tangle:
 index:
     pattern: /
     defaults: { _controller: MegasoftEntangleBundle:Site:index }
-    
+
+
 fetch_pending_invitations:
     pattern: /tangle/{tangleId}/pending-invitations
     defaults: { _controller: MegasoftEntangleBundle:Tangle:pendingInvitations}
@@ -457,6 +467,8 @@ accept_tangle_invitation:
     pattern: /invitation/{invitationCode}
     defaults: { _controller: MegasoftEntangleBundle:Tangle:acceptInvitation}
     methods: [PUT]
+    methods: [GET]
+
 
 leave_tangle:
     pattern: /tangle/{tangleId}/user
@@ -466,6 +478,8 @@ leave_tangle:
 megasoft_entangle_register:
     pattern:  /register
     defaults: { _controller: MegasoftEntangleBundle:Register:register }
+    pattern:  /
+    defaults: { _controller: MegasoftEntangleBundle:Site:register }
 
 create_Offer:
     pattern: /tangle/{tangleId}/request/{requestId}/offer
@@ -481,6 +495,7 @@ get_tangles:
     pattern: /tangle
     defaults: { _controller: MegasoftEntangleBundle:Tangle:getTangles }
     methods: [GET]
+
 
 
 get_offer:
@@ -538,6 +553,13 @@ _test:
   pattern: /notification/test
   defaults: {_controller: MegasoftEntangleBundle:Notification:test}
   methods: [GET]
+
+
+comment_on_offer:
+    pattern:  /offer/{offerId}/comment
+    defaults: { _controller: MegasoftEntangleBundle:Offer:comment}
+    methods: [POST]
+
 
 _mail:
   pattern: /notification/mail

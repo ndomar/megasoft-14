@@ -1,119 +1,192 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true" >
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/paddingSmall"
+    tools:context=".OfferActivity" >
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/comment_area_scroll_view"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/request_description"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="30dp"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/requester_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="5dp"
-            android:textSize="12sp" />
-
-        <View style="@style/Divider" />
-
-        <TextView
-            android:id="@+id/offer_description"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:textSize="18sp" />
+        android:layout_height="0dp"
+        android:layout_weight="1" >
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:layout_gravity="top"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:padding="@dimen/boxMargin" >
+
+                <com.megasoft.entangle.views.RoundedImageView
+                    android:id="@+id/offerer_avatar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/ic_action_person" />
+
+                <TextView
+                    android:id="@+id/offerer_name"
+                    android:layout_width="190dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/offerer_avatar"
+                    android:layout_alignTop="@id/offerer_avatar"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@id/offerer_avatar"
+                    android:paddingLeft="@dimen/paddingSmall"
+                    android:textSize="@dimen/textLarge" />
+
+                <TextView
+                    android:id="@+id/offer_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/offerer_name"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/offerer_name"
+                    android:layout_marginLeft="45dp"
+                    android:layout_marginTop="2dp"
+                    android:textSize="@dimen/textMedium" />
+
+                <TextView
+                    android:id="@+id/offer_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/offer_date"
+                    android:layout_marginRight="@dimen/marginMedium"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/lightGray"
+                    android:textSize="@dimen/textMedium" />
+
+                <TextView
+                    android:id="@+id/due"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/offer_description"
+                    android:layout_below="@id/offer_description"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/due"
+                    android:textSize="@dimen/textMedium" />
+
+                <TextView
+                    android:id="@+id/offer_deadline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/offer_description"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_toRightOf="@id/due"
+                    android:textSize="@dimen/textMedium" />
+
+                <TextView
+                    android:id="@+id/offer_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/offer_date"
+                    android:layout_toLeftOf="@+id/pts"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/textLarge" />
+
+                <TextView
+                    android:id="@+id/offer_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignRight="@+id/pts"
+                    android:layout_below="@id/offer_deadline"
+                    android:textSize="@dimen/textMedium" />
+
+                <TextView
+                    android:id="@+id/pts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/offerer_name"
+                    android:layout_alignBottom="@+id/offerer_name"
+                    android:layout_alignRight="@+id/accept_offer"
+                    android:text="@string/pts"
+                    android:textColor="@color/lightGray"
+                    android:textSize="@dimen/textMedium" />
+
+                <Button
+                    android:id="@+id/accept_offer"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/accept_offer"
+                    android:textAlignment="center"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/textLarge"
+                    android:visibility="invisible" />
+
+                <Button
+                    android:id="@+id/mark_asdone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toLeftOf="@+id/accept_offer"
+                    android:text="@string/Do_ne" />
+
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/offerer_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="5dp"
-                android:textSize="14sp" />
+                android:layout_width="fill_parent"
+                android:layout_height="15dp"
+                android:layout_marginLeft="300dp"
+                android:drawableTop="@drawable/play" />
 
-            <TextView
-                android:id="@+id/offer_date"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/offer_comments_area"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="70dp"
-                android:layout_marginTop="5dp"
-                android:textSize="14sp" />
+                android:layout_gravity="top"
+                android:background="@color/darkWhite"
+                android:visibility="invisible"
+                android:orientation="vertical" >
+
+
+            </LinearLayout>
         </LinearLayout>
+    </ScrollView>
 
-        <TextView
-            android:id="@+id/offer_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:textSize="16sp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/marginLarge"
+        android:layout_gravity="top" >
 
-        <CheckBox
-            android:id="@+id/checkBox1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Do_ne"
-            android:onClick="markCheck" />
-
-        <TextView
-            android:id="@+id/offer_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="5dp"
-            android:textSize="16sp" />
-
-
-
-        <LinearLayout
+        <EditText
+            android:id="@+id/add_comment_field"
             android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/marginMedium"
+            android:height="@dimen/textFieldHeight"
+            android:hint="@string/comment_description"
+            android:inputType="textMultiLine"
+            android:textSize="@dimen/textMedium" />
+
+        <ImageView
+            android:id="@+id/add_comment_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/marginMedium"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="5dp"
+            android:contentDescription="@string/icon"
+            android:background="@drawable/send"
+            android:clickable="true"
+            android:onClick="addComment" />
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/offer_deadline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="5dp"
-                android:textSize="16sp" />
-
-            <Button
-                android:id="@+id/accept_offer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="160dp"
-                android:layout_marginTop="5dp"
-                android:visibility="invisible" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/delete_offer_layout"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="250dp"
-            android:orientation="horizontal"
-            android:visibility="invisible" >      
-        </LinearLayout>
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>
