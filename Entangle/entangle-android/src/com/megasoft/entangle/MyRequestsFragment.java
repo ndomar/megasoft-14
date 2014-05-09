@@ -168,35 +168,42 @@ public class MyRequestsFragment extends Fragment {
 			if (request.get("price") != null
 					&& !request.getString("price").equals("null"))
 				requestPrice = "" + request.getInt("price");
-			transaction = getFragmentManager().beginTransaction();
-			StreamRequestFragment requestFragment = new StreamRequestFragment();
-			switch (status) {
-			case 0:
-				requestFragment = OpenRequestFragment.createInstance(requestId,
-						userId, requestButtonText, requesterButtonText,
-						requestPrice, requestOffersCount, getTangleId(),
-						getTangleName());
-				break;
-			case 1:
-				requestFragment = FrozenRequestFragment.createInstance(
-						requestId, userId, requestButtonText,
-						requesterButtonText, requestPrice, requestOffersCount,
-						getTangleId(), getTangleName());
-				break;
-			case 2:
-				requestFragment = ClosedRequestFragment.createInstance(
-						requestId, userId, requestButtonText,
-						requesterButtonText, requestPrice, requestOffersCount,
-						getTangleId(), getTangleName());
-				break;
-			default:
-				break;
-			}
-			addRequestFragment(status, requestFragment);
-			transaction.commit();
+			createFragment(status, requestId, userId, requestButtonText,
+					requesterButtonText, requestPrice, requestOffersCount);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void createFragment(int status, int requestId, int userId,
+			String requestButtonText, String requesterButtonText,
+			String requestPrice, String requestOffersCount) {
+		transaction = getFragmentManager().beginTransaction();
+		StreamRequestFragment requestFragment = new StreamRequestFragment();
+		switch (status) {
+		case 0:
+			requestFragment = OpenRequestFragment.createInstance(requestId,
+					userId, requestButtonText, requesterButtonText,
+					requestPrice, requestOffersCount, getTangleId(),
+					getTangleName());
+			break;
+		case 1:
+			requestFragment = FrozenRequestFragment.createInstance(requestId,
+					userId, requestButtonText, requesterButtonText,
+					requestPrice, requestOffersCount, getTangleId(),
+					getTangleName());
+			break;
+		case 2:
+			requestFragment = ClosedRequestFragment.createInstance(requestId,
+					userId, requestButtonText, requesterButtonText,
+					requestPrice, requestOffersCount, getTangleId(),
+					getTangleName());
+			break;
+		default:
+			break;
+		}
+		addRequestFragment(status, requestFragment);
+		transaction.commit();
 	}
 
 	/**
