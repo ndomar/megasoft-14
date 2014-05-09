@@ -219,6 +219,7 @@ class UserController extends Controller {
         $response = new JsonResponse();
         $response->setData($information);
         $response->setStatusCode(200);
+
         return $response;
     }
 
@@ -264,24 +265,47 @@ class UserController extends Controller {
                 $requesterName = $offer->getRequest()->getUser()->getName();
                 $requestDescription = $offer->getRequest()->getDescription();
                 $amount = $offer->getTransaction()->getFinalPrice();
-                $requestId = $offer->getRequest()->getId();
-                $requesterId = $offer->getRequest()->getUserId();
-                $transactions[] = array('offerId'=>$offer->getId(),
+                $requestId = $offer->getRequest() . getId();
+                $requesterId = $offer->getRequest() . getUserId();
+                $transactions[] = array('offerId' => $offer->getId(),
                     'requesterName' => $requesterName,
                     'requestDescription' => $requestDescription,
-                    'amount' => $amount, 'requestId' => $requestId, 'requesterId' => $requesterId,);
-            } else {
-                continue;
+                    'amount' => $amount, 'requestId' => $requestId, 'requesterId' => $requesterId);
             }
         }
-        if(count($transactions) == 0) {
-            return new Response('Transactions not found', 404);
+
+        return $transactions;
+    }
+
+    /**
+     * Gets the basic information of a given user in a give tangle
+     * @param user $user
+     * @param integer $tangleId
+     * @return \Symfony\Component\HttpFoundation\Response | array #info
+     * @author Almgohar
+     */
+    private function getUserInfo($user, $tangleId) {
+        if ($user == null) {
+            return new Response('Bad Request', 400);
         }
-        $response = new JsonResponse();
-        $response->setData(array('credit' => $credit,'transactions' => $transactions,));
-        $response->setStatusCode(200);
-        return $response;
-    } 
+        $doctrine = $this->getDoctrine();
+        $userId = $user->getId();
+        $userTangleTable = $doctrine->
+                getRepository('MegasoftEntangleBundle:UserTangle');
+        $userTangle = $userTangleTable->
+                findOneBy(array('userId' => $userId, 'tangleId' => $tangleId));
+        $name = $user->getName();
+        $description = $user->getUserBio();
+        $credit = $userTangle->getCredit();
+        $photo = $user->getPhoto();
+        $birthdate = $user->getBirthDate();
+        $verfied = $user->getVerified();
+        $info = array('name' => $name, 'description' => $description,
+            'credit' => $credit, 'photo' => 'http://entangle.io/images/profilePictures/' . $photo, 'birthdate' => $birthdate,
+            'verified' => $verfied);
+
+        return $info;
+    }
 
     /**
      * checks if a session id exists and removes it from the user sessions
