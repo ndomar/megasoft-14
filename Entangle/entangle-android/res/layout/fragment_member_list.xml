@@ -3,6 +3,12 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
+    <EditText
+        android:id="@+id/searchField"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/search_string"
+        android:inputType="text" />
 
     <LinearLayout
         android:id="@+id/view_member_list"
