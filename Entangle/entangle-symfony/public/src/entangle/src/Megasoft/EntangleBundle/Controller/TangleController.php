@@ -18,6 +18,17 @@ use Megasoft\EntangleBundle\Entity\Session;
 class TangleController extends Controller {
 
     /**
+     * An endpoint to get all the offers of certain user in specific tangle
+     * @param type $request
+     * @param type $tangleId
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @author HebaAamer
+     */
+    public function userOffersAction(Request $request, $tangleId) {
+        
+    }
+    
+    /**
      * Validates that the request has correct format,  session Id is active and of a user and that the user is in the tangle
      * @param Request $request
      * @param integer $tangleId
