@@ -100,5 +100,24 @@ public class MyOffersFragment extends Fragment {
 
 	}
 
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		view = inflater.inflate(R.layout.template_my_offers, container, false);
+		tangleId = getArguments().getInt("tangleId");
+		tangleName = getArguments().getString("tangleName");
+		sendRequest(rootResource + "/tangle/" + tangleId + "/user/offers");
+		setAttributes();
+		return view;
+	}
+
+	private void setAttributes() {
+		pendingOffers = (LinearLayout) view.findViewById(R.id.pendingOffers);
+		doneOffers = (LinearLayout) view.findViewById(R.id.doneOffers);
+		acceptedOffers = (LinearLayout) view.findViewById(R.id.acceptedOffers);
+		failedOffers = (LinearLayout) view.findViewById(R.id.failedOffers);
+		rejectedOffers = (LinearLayout) view.findViewById(R.id.rejectedOffers);
+	}
+
 	
 }
