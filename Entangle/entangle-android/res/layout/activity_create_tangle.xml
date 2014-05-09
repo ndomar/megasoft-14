@@ -87,28 +87,24 @@
         <EditText
             android:id="@+id/tangleName"
             android:layout_width="0dp"
-            android:layout_height="35dp"
+            android:layout_height="45dp"
             android:layout_marginTop="@dimen/marginSmall"
             android:layout_weight="4"
             android:ems="10"
             android:hint="@string/tangleNameHint"
             android:inputType="text" />
 
-        <Button
-            android:id="@+id/tangleIcon"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+        <Spinner
+            android:id="@+id/iconSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/marginSmall"
             android:layout_marginRight="@dimen/marginLarge"
-            android:layout_marginTop="@dimen/marginSmall"
-            android:background="@drawable/entangle_logo"
-            android:clickable="true"
+            android:drawSelectorOnTop="true"
             android:ems="10"
             android:gravity="center"
-            android:onClick="chooseIcon"
-            android:textAlignment="center"
-            android:textColor="@color/gray" />
+            android:prompt="@string/tangleIcon"
+            android:spinnerMode="dialog" />
     </LinearLayout>
 
     <EditText
@@ -130,18 +126,5 @@
         android:layout_marginTop="@dimen/marginMedium"
         android:text="@string/createTangleAgreement"
         android:textSize="@dimen/textMedium" />
-
-    <Spinner
-        android:id="@+id/iconSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/marginSmall"
-        android:layout_marginRight="@dimen/marginLarge"
-        android:layout_marginTop="@dimen/marginSmall"
-        android:drawSelectorOnTop="true"
-        android:gravity="center"
-        android:prompt="@string/tangleIcon"
-        android:textAlignment="center"
-        android:textColor="@color/gray" />
 
 </LinearLayout>

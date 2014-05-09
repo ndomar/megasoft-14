@@ -29,7 +29,7 @@
     <string name="createRequest">Request</string>
     <string name="tangleNameHint">Specify a Tangle name</string>
     <string name="iconButton">Choose an Icon</string>
-    <string name="tangleIcon">Icon</string>
+    <string name="tangleIcon">Available Icons</string>
     <string name="createTangle">CREATE</string>
     <string name="checkTangleName">Check</string>
     <string name="date">Date</string>
