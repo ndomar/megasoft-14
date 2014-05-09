@@ -65,6 +65,32 @@
                 android:orientation="vertical" >
             </LinearLayout>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:layout_margin="@dimen/boxMargin"
+                android:background="@color/orange" />
+
+            <TextView
+                android:id="@+id/acceptedOffersText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/marginSmall"
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:text="@string/acceptedOffers"
+                android:textColor="@color/blue" />
+
+            <LinearLayout
+                android:id="@+id/acceptedOffers"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:layout_marginRight="@dimen/boxMargin"
+                android:background="@color/darkWhite"
+                android:orientation="vertical" >
+            </LinearLayout>
+
             
         </LinearLayout>
     </ScrollView>
