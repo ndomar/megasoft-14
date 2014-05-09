@@ -216,5 +216,31 @@ public class MyOffersFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * This method is used to create an EntryOfferFragment with the specified
+	 * parameters
+	 * 
+	 * @param userId
+	 *            , is the id of the offerer
+	 * @param offererName
+	 *            , is the name of the offerer
+	 * @param offerId
+	 *            , is the id of the offer
+	 * @param offerBody
+	 *            , is the description of the offer
+	 * @param offerPrice
+	 *            , is the price of the offer
+	 * @param status
+	 *            , is the status of the offer
+	 * @author HebaAamer
+	 */
+	private void addOfferEntry(int userId, String offererName, int offerId,
+			String offerBody, String offerPrice, int status) {
+		transaction = getFragmentManager().beginTransaction();
+		OfferEntryFragment fragment = new OfferEntryFragment();
+		putInPlace(fragment);
+		transaction.commit();
+	}
 
+	
 }
