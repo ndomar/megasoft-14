@@ -195,7 +195,6 @@ class UserController extends Controller {
             return new Response('The requested user is not a member of this tangle', 401);
         }
         return $this->viewProfile($user);
-        
     }
 
     /**
@@ -264,16 +263,23 @@ class UserController extends Controller {
                 $requesterName = $offer->getRequest()->getUser()->getName();
                 $requestDescription = $offer->getRequest()->getDescription();
                 $amount = $offer->getTransaction()->getFinalPrice();
-                $requestId = $offer->getRequest() . getId();
-                $requesterId = $offer->getRequest() . getUserId();
-                $transactions[] = array('offerId' => $offer->getId(),
+                $requestId = $offer->getRequest()->getId();
+                $requesterId = $offer->getRequest()->getUserId();
+                $transactions[] = array('offerId'=>$offer->getId(),
                     'requesterName' => $requesterName,
                     'requestDescription' => $requestDescription,
-                    'amount' => $amount, 'requestId' => $requestId, 'requesterId' => $requesterId);
+                    'amount' => $amount, 'requestId' => $requestId, 'requesterId' => $requesterId,);
+            } else {
+                continue;
             }
         }
-
-        return $transactions;
+        if(count($transactions) == 0) {
+            return new Response('Transactions not found', 404);
+        }
+        $response = new JsonResponse();
+        $response->setData(array('credit' => $credit,'transactions' => $transactions,));
+        $response->setStatusCode(200);
+        return $response;
     }
 
     /**
