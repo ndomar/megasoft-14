@@ -55,10 +55,19 @@ public class MyRequestsFragment extends Fragment {
 	 */
 	private FragmentTransaction transaction;
 
+	/**
+	 * The Layout that contains the open requests
+	 */
 	private LinearLayout openRequests;
 
+	/**
+	 * The Layout that contains the frozen requests
+	 */
 	private LinearLayout frozenRequests;
 
+	/**
+	 * The Layout that contains the closed requests
+	 */
 	private LinearLayout closedRequests;
 
 	@Override
@@ -122,6 +131,11 @@ public class MyRequestsFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * This method is used to remove all the views in the different layouts
+	 * 
+	 * @author HebaAamer
+	 */
 	private void cleanTheLayouts() {
 		openRequests.removeAllViews();
 		frozenRequests.removeAllViews();
@@ -144,6 +158,9 @@ public class MyRequestsFragment extends Fragment {
 			int requestId = request.getInt("id");
 			String requestBody = request.getString("description");
 			String requestOffersCount = "" + request.getInt("offersCount");
+			if (request.getInt("offersCount") == 0) {
+				requestOffersCount = "";
+			}
 			String requesterButtonText = requesterName;
 			String requestButtonText = requestBody;
 			String requestPrice = "---";
@@ -182,6 +199,16 @@ public class MyRequestsFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * This method is used to put the request in its specific layout
+	 * 
+	 * @param status
+	 *            , is the status of the request
+	 * @param requestFragment
+	 *            , is fragment to be added to the view
+	 * 
+	 * @author HebaAamer
+	 */
 	private void addRequestFragment(int status,
 			StreamRequestFragment requestFragment) {
 		switch (status) {
