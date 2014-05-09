@@ -37,6 +37,14 @@ class TangleController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         $userId = $session->getUserId();
+
+        $query = $offerRepo->createQueryBuilder('offer')
+                ->where('offer.request.tangleId =: tangleId')
+                ->setParameter('tangleId', $tangleId)
+                ->andWhere('offer.deleted = :false')
+                ->setParameter('false', false)
+                ->andWhere('offer.userId = :userId')
+                ->setParameter('userId', $userId);
     }
 
     /**
