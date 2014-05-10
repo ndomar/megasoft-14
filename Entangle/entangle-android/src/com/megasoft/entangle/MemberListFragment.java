@@ -279,7 +279,6 @@ public class MemberListFragment extends Fragment {
 	 * 
 	 * @author sak93
 	 */
-
 	private void searchMembers(String searchString) {
 		int memberCount = 0;
 		for (int i = 0; i < getNumberOfMembers(); i++) {
