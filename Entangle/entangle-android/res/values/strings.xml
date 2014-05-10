@@ -137,8 +137,10 @@
     <string name="create_tangle">Create Tangle</string>
     <string name="login">Login</string>
     <string name="cancel">Cancel</string>
+    <string  name="username">Username</string>
     <string name="email">email: user@entangle.io</string>
     <string name="password">password</string>
+    <string name="confirmPassword">Confirm Password</string>
     <string name="toastError">An error has occurred.</string>
     <string name="sample_user_main">user@entangle.io</string>
     <string name="invitation_message_placeholder">Write an invitation message ..</string>
