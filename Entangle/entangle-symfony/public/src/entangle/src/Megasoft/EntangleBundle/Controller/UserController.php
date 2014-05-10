@@ -289,7 +289,7 @@ class UserController extends Controller {
 
         return new Response(200);
     }
-    
+
     /*
      * Checks that the username is unique
      * @param: String  username
@@ -297,16 +297,16 @@ class UserController extends Controller {
      * 
      * @author: Eslam
      */
-    
+
     private function validateUniqueUsername($username) {
-        $nameRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
-        if ($nameRepo->findOneBy(array('name' => $username)) == null && $username != null && $username != "") {
+        $userRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
+        if ($userRepo->findOneBy(array('name' => $username)) == null && $username != null && $username != "") {
             return true;
         } else {
             return false;
         }
     }
-    
+
     /*
      * Checks that the email is unique
      * @param: String email
@@ -314,10 +314,10 @@ class UserController extends Controller {
      * 
      * @author: Eslam
      */
-    
+
     private function validateUniqueEmail($email) {
         $emailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
-        if ($emailRepo->findOneBy(array('email' =>$email))) {
+        if ($emailRepo->findOneBy(array('email' => $email,))) {
             return false;
         } else {
             return true;
@@ -331,8 +331,6 @@ class UserController extends Controller {
      *
      * @author Eslam Maged
      */
-    
-    
 
     public function registerAction(\Symfony\Component\HttpFoundation\Request $request) {
         $response = new JsonResponse();
@@ -377,18 +375,17 @@ class UserController extends Controller {
                 return new JsonResponse("Invalid Characters in username", 400);
             }
 
-            if (! $this->validateUniqueUsername($username)) {
+            if (!$this->validateUniqueUsername($username)) {
                 return new JsonResponse("Username is not unique", 400);
             }
 
-            if (! $this->validateUniqueEmail($email)) {
+            if (!$this->validateUniqueEmail($email)) {
                 return new JsonResponse("Email is already in-use", 400);
             }
 
             $user = new User;
             $userEmail = new UserEmail();
             $user->addEmail($userEmail);
-
             $user->setName($username);
             $user->setPassword($password);
             $userEmail->setEmail($email);
@@ -397,15 +394,11 @@ class UserController extends Controller {
             $entityManager->persist($user);
             $entityManager->persist($userEmail);
             $entityManager->flush();
-            
-            $response->setData(array('username' => $username, 'email'=>$email, 'password' =>$password ,));
+            $response->setData(array('username' => $username, 'email' => $email, 'password' => $password,));
             $response->setStatusCode(201);
-            
+
             return $response;
         }
-        
     }
-    
-    
 
 }
