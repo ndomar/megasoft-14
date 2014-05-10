@@ -221,6 +221,7 @@ public class OfferActivity extends FragmentActivity {
 			final int offererId = offerInformation.getInt("offererId");
 			final int requesterId = offerInformation.getInt("requesterId");
 			int status = offerInformation.getInt("offerStatus");
+			
 			if (status == 0) {
 				offerStatus.setText("Pending");
 				offerStatus.setTextColor(getResources().getColor(R.color.red));
@@ -237,7 +238,11 @@ public class OfferActivity extends FragmentActivity {
 			if (requesterId == loggedInId) {
 				validate();
 			}
-
+			
+			if(offererId == loggedInId) {
+				((ImageView)findViewById(R.id.edit_price)).setVisibility(View.VISIBLE);
+			}
+			
 			offererName.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
