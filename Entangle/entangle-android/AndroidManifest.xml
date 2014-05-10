@@ -141,6 +141,7 @@
             android:name="com.megasoft.entangle.viewtanglelsit.TangleStreamActivity"
             android:label="@string/title_activity_tangle_stream" >
         </activity>
+        <activity android:name="com.example.test.NotificationStream"></activity>
 
         <!-- this is GCM manifest -->
         <meta-data
