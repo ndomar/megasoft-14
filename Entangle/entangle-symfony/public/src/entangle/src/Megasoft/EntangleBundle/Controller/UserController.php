@@ -290,6 +290,14 @@ class UserController extends Controller {
         return new Response(200);
     }
     
+    /*
+     * Checks that the username is unique
+     * @param: String  username
+     * @param: boolean value, true if unique. False otherwise
+     * 
+     * @author: Eslam
+     */
+    
     private function validateUniqueUsername($username) {
         $nameRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
         if ($nameRepo->findOneBy(array('name' => $username)) == null && $username != null && $username != "") {
@@ -298,6 +306,14 @@ class UserController extends Controller {
             return false;
         }
     }
+    
+    /*
+     * Checks that the email is unique
+     * @param: String email
+     * @param: boolean value, true if unique. False otherwise
+     * 
+     * @author: Eslam
+     */
     
     private function validateUniqueEmail($email) {
         $emailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
