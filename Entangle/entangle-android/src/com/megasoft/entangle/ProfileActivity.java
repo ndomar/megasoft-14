@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 public class ProfileActivity extends FragmentActivity {
@@ -22,6 +23,8 @@ public class ProfileActivity extends FragmentActivity {
 	private int tangleId;
 	private SharedPreferences settings;
 	private String sessionId;
+	private ScrollView scrollView;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class ProfileActivity extends FragmentActivity {
 		transaction.add(R.id.profile_layout, profile);
 		transaction.commit();
 		GetTransactions();
+		
 	}
 	
 	private void GetTransactions() {
@@ -66,7 +70,7 @@ public class ProfileActivity extends FragmentActivity {
 	
 	private void viewTransactions(JSONArray transactions) {
 		LinearLayout transactions_layout = ((LinearLayout) findViewById(R.id.transactions_layout));
-		transactions_layout.removeAllViews();
+		scrollView = (ScrollView) findViewById(R.id.transactions_scroll_view);
 		if (transactions.length() > 0) {
 			transactions_layout.setVisibility(View.VISIBLE);
 		}
@@ -75,14 +79,24 @@ public class ProfileActivity extends FragmentActivity {
 			try {
 				JSONObject transaction = transactions.getJSONObject(i);
 				TransactionEntryFragment entry = new TransactionEntryFragment();
-				entry.setRequest(transaction.getString("requestDescription"));
+				entry.setOfferer(transaction.getString("offererName"));
 				entry.setRequester(transaction.getString("requesterName"));
+				entry.setOffererId(transaction.getInt("offererId"));
+				entry.setRequesterId(transaction.getInt("requesterId"));
 				entry.setAmount(transaction.getInt("amount"));
+				entry.setTangleId(tangleId);
 				getSupportFragmentManager().beginTransaction()
 						.add(R.id.transactions_layout, entry).commit();
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}
+		scrollView.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				scrollView.fullScroll(ScrollView.FOCUS_UP);
+			}
+		}, 500);
 	}
 }

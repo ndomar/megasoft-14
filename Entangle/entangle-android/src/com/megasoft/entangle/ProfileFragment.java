@@ -82,6 +82,7 @@ public class ProfileFragment extends Fragment {
 	private View view;
 
 	private FragmentActivity activity;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {

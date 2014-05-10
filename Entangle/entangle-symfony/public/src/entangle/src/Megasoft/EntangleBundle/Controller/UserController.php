@@ -263,14 +263,15 @@ class UserController extends Controller {
             $offer = $offers[$i];
             if (($offer->getRequest()->getTangleId() == $tangleId) && ($offer->getTransaction() != null)) {
                 $requesterName = $offer->getRequest()->getUser()->getName();
-                $requestDescription = $offer->getRequest()->getDescription();
+                $offererName = $offer->getUser()->getName();
                 $amount = $offer->getTransaction()->getFinalPrice();
                 $requestId = $offer->getRequest()->getId();
                 $requesterId = $offer->getRequest()->getUserId();
+                $offererId = $offer->getUserId();
                 $transactions[] = array('offerId'=>$offer->getId(),
                     'requesterName' => $requesterName,
-                    'requestDescription' => $requestDescription,
-                    'amount' => $amount, 'requestId' => $requestId, 'requesterId' => $requesterId,);
+                    'offererName' => $offererName,
+                    'amount' => $amount, 'requestId' => $requestId, 'requesterId' => $requesterId, 'offererId' => $offererId,);
             } else {
                 continue;
             }
