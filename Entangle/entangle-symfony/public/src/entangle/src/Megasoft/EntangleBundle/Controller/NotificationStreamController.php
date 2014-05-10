@@ -185,5 +185,103 @@ class NotificationStreamController extends Controller
         }
     }
 
+    /**
+     * @param $userId
+     * Adds the Notifications into the array
+     * @author : Mohamed Ayman
+     */
+    public function getNewMessageNotifications($userId)
+    {
+        $notificationRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:NewMessageNotification');
+        $notifications = $notificationRepo->findBy(array('userId' => $userId));
+        if(count($notifications) == 0)
+        {
+            return;
+        }
+        $count = count($notifications);
+        for($i = 0; $i < $count ; $i++)
+        {
+            $notification = $notifications[$i];
+            $description = "You have a new message!";
+            $array = array($description , $notification->getId() , $notification->getCreated() ,
+                $notification->getSeen() , "message=".$notification->getMessageId());
+            array_push($this->arr , $array);
+        }
+    }
+
+    /**
+     * @param $userId
+     * Adds the Notifications into the array
+     * @author : Mohamed Ayman
+     */
+    public function getTransactionNotifications($userId)
+    {
+        $notificationRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:TransactionNotification');
+        $notifications = $notificationRepo->findBy(array('userId' => $userId));
+        if(count($notifications) == 0)
+        {
+            return;
+        }
+        $count = count($notifications);
+        for($i = 0; $i < $count ; $i++)
+        {
+            $notification = $notifications[$i];
+            $description = "You have a new transaction!";
+            $array = array($description , $notification->getId() , $notification->getCreated() ,
+                $notification->getSeen() , "transaction=".$notification->getTransactionId());
+            array_push($this->arr , $array);
+        }
+    }
+
+    /**
+     * @param $userId
+     * Adds the Notifications into the array
+     * @author : Mohamed Ayman
+     */
+    public function getOfferDeletedNotifications($userId)
+    {
+        $notificationRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:OfferDeletedNotification');
+        $notifications = $notificationRepo->findBy(array('userId' => $userId));
+        if(count($notifications) == 0)
+        {
+            return;
+        }
+        $count = count($notifications);
+        for($i = 0; $i < $count ; $i++)
+        {
+            $notification = $notifications[$i];
+            $otherUserId = $notification->getOffer()->getUserId();
+            $name = $this->getName($otherUserId);
+            $description = $name." has deleted his offer!";
+            $array = array($description , $notification->getId() , $notification->getCreated() ,
+                $notification->getSeen() , "offer=".$notification->getOfferId());
+            array_push($this->arr , $array);
+        }
+    }
+
+    /**
+     * @param $userId
+     * @return JsonResponse
+     * Gets all the notifications of the user
+     * @author : Mohamed Ayman
+     */
+    public function getNotificationAction($userId)
+	{
+        $this->arr = array();
+        $this->getClaimNotifications($userId);
+        $this->getPriceChangeNotifications($userId);
+        $this->getNewOfferNotifications($userId);
+        $this->getReopenRequestNotifications($userId);
+        $this->getOfferChosenNotifications($userId);
+        $this->getRequestDeletedNotifications($userId);
+        $this->getNewMessageNotifications($userId);
+        $this->getTransactionNotifications($userId);
+        $this->getOfferDeletedNotifications($userId);
+
+		$response = new JsonResponse();
+		$response->setdata($this->arr);
+		$response->setStatusCode(200);
+		return $response;
+	}
 
 }
