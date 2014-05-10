@@ -11,10 +11,15 @@ use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserTangleData;
 use Megasoft\EntangleBundle\Tests\EntangleTestCase;
 
-
+/*
+ * Test Class for Tangle Controller
+ */
 class TangleControllerTest extends EntangleTestCase
 {
-    
+    /*
+     * A method called at the beginning of every test
+     * Overriden to add needed fixtures
+     */
     public function setup() {  
         parent::setup();
         $loader = new Loader();
@@ -28,6 +33,9 @@ class TangleControllerTest extends EntangleTestCase
         $executor->execute($loader->getFixtures());
     }
     
+    /*
+     * Test Case testing sending a wrong session to AllUsersAction
+     */
     public function testAllUsersAction_WrongSession(){
         $client = static::createClient();
         $client->request('GET', 
@@ -39,6 +47,9 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals(400, $client->getResponse()->getStatusCode());
     }
     
+    /*
+     * Test Case testing sending correct request to AllUsersAction
+     */
     public function testAllUsersAction_GetListWithSampleUser(){
         $client = static::createClient();
         $client->request('GET', 
