@@ -168,21 +168,28 @@ public class OfferActivity extends FragmentActivity {
 	}
 
 	/**
-	 * This method allow the offerer/requester to claim on the offer
-	 * @author Salma Amr
+	 * This method allows the offerer/requester to claim on the offer (mock)
+	 * @author Almgohar
 	 */
 	private void claim() {
 		
 	}
 
 	/**
-	 * This method allow the offerer to delete his offer
-	 * @author Ahmad Ossama
+	 * This method allows the offerer to delete his offer (mock)
+	 * @author Almgohar
 	 */
 	private void deleteOffer() {
 		
 	}
 
+	/**
+	 * This method allows the offerer to edit the offer price (mock)
+	 * @author Almgohar
+	 */
+	private void editPrice() {
+		
+	}
 	/**
 	 * Initializes all views to link to the XML views Sends a GET request and
 	 * get the JSon response Calls the ViewRequestInformation method Calls the
