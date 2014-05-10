@@ -78,6 +78,7 @@
     <string name="wrongCredentials">Invalid Username or Password</string>
     <string name="tangleDescriptionHint">Description (This tangle aims to....etc)</string>
     <string name="createTangleAgreement">By Creating This Tangle You Have Agreed To Entangle terms of use</string>
+    <string name="requestIcon">Available Icons</string>
 
     <string-array name="sidebar_list">
         <item>Item A</item>

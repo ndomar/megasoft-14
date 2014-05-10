@@ -8,9 +8,6 @@
     android:paddingBottom="@dimen/paddingSmall"
     tools:context=".RequestsActivity" >
 
-    
-        
-    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,14 +24,10 @@
             android:text="@string/cancel"
             android:textAlignment="center"
             android:textColor="@color/gray"
-            android:textSize="@dimen/textLarge"
-            />
+            android:textSize="@dimen/textLarge" />
 
-        <View 
-            style="@style/dividerVertical"
-        />
-        
-        
+        <View style="@style/dividerVertical" />
+
         <Button
             android:id="@+id/post"
             style="?android:attr/buttonBarButtonStyle"
@@ -42,9 +35,9 @@
             android:layout_height="@dimen/buttonHeight"
             android:layout_weight="1"
             android:clickable="true"
-            android:textAlignment="center"
             android:drawableLeft="@drawable/ic_action_create"
             android:text="@string/createRequest"
+            android:textAlignment="center"
             android:textColor="@color/green"
             android:textSize="@dimen/textLarge" />
     </LinearLayout>
@@ -105,42 +98,57 @@
         android:hint="@string/tags"
         android:inputType="text" />
 
-    <EditText
-        android:id="@+id/price"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/textFieldHeight"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/marginSmall"
-        android:ems="10"
-        android:hint="@string/priceDescription"
-        android:inputType="number" >
-    </EditText>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
-    
+        <EditText
+            android:id="@+id/price"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/textFieldHeight"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/marginSmall"
+            android:ems="10"
+            android:layout_weight="4"
+            android:hint="@string/priceDescription"
+            android:inputType="number" >
+        </EditText>
+
+        <Spinner
+            android:id="@+id/requestIconSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/marginSmall"
+            android:drawSelectorOnTop="true"
+            android:ems="10"
+            android:gravity="center"
+            android:prompt="@string/requestIcon"
+            android:spinnerMode="dialog" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/myDatePickerButton"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/marginSmall"
+        android:layout_gravity="right"
         android:layout_marginRight="@dimen/marginSmall"
+        android:layout_marginTop="@dimen/marginSmall"
         android:clickable="true"
         android:drawableLeft="@drawable/ic_action_go_to_today"
         android:spinnerMode="dialog"
         android:text="@string/dueDate"
-        android:textColor="@color/darkGray"
-        android:layout_gravity="right" />
+        android:textColor="@color/darkGray" />
 
-  <TextView
+    <TextView
         android:id="@+id/deadlineError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/requiredField"
-        android:textColor="@color/red"
         android:layout_gravity="right"
-        android:layout_marginRight="@dimen/marginSmall" >
-
+        android:layout_marginRight="@dimen/marginSmall"
+        android:text="@string/requiredField"
+        android:textColor="@color/red" >
     </TextView>
 
 </LinearLayout>
