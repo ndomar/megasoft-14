@@ -1,5 +1,7 @@
 package com.megasoft.entangle;
 
+import com.megasoft.entangle.views.RoundedImageView;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,26 @@ public class EntryOfferFragment extends Fragment {
 	 */
 	private View view;
 
+	/**
+	 * This is the offerer avatar
+	 */
+	private RoundedImageView offererAvatar;
+
+	/**
+	 * This is the TextView holding the name of the offerer
+	 */
+	private TextView offererName;
+
+	/**
+	 * This is the id of the tangle
+	 */
+	private int tangleId;
+
+	/**
+	 * This is the name of the tangle
+	 */
+	private String tangleName;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -33,6 +55,7 @@ public class EntryOfferFragment extends Fragment {
 				startActivity(intent);
 			}
 		});
+		setOffererRedirection();
 		return view;
 	}
 
@@ -44,12 +67,14 @@ public class EntryOfferFragment extends Fragment {
 	private void setAttributes() {
 		Bundle args = getArguments();
 		setOfferId(args.getInt("offerId"));
+		offererAvatar = (RoundedImageView) view
+				.findViewById(R.id.offererAvatar);
 		((TextView) view.findViewById(R.id.offerPrice)).setText(args
 				.getString("requestedPrice"));
 		((TextView) view.findViewById(R.id.offerDescription)).setText(args
 				.getString("description"));
-		((TextView) view.findViewById(R.id.offererName)).setText(args
-				.getString("offerer"));
+		offererName = ((TextView) view.findViewById(R.id.offererName));
+		offererName.setText(args.getString("offerer"));
 	}
 
 	/**
