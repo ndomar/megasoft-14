@@ -2,22 +2,40 @@
 
 namespace Megasoft\EntangleBundle\Tests;
 
-use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
 
 class EntangleTestCase extends WebTestCase
 {
-    public static function setUpBeforeClass() {
-        static::$kernel = static::createKernel();
-        static::$kernel->boot();
-        $em = static::$kernel->getContainer()
+    /* @var \Doctrine\ORM\EntityManager $em */
+    public $em =  null;
+
+    public function setUp() {
+        $kernel = static::createKernel();
+        $kernel->boot();
+
+        $this->em = $kernel->getContainer()
             ->get('doctrine')
             ->getManager();
-        $schemaTool = new SchemaTool($em);
-        $metadata = $em->getMetadataFactory()->getAllMetadata();
-        $schemaTool->dropSchema($metadata);
-        $schemaTool->createSchema($metadata);
-        parent::setUpBeforeClass();
+
+
+        $connection = $kernel->getContainer()
+            ->get('doctrine')->getConnection();
+        $connection->exec('SET foreign_key_checks = 0');
+        /* @var \Doctrine\DBAL\Schema\MySqlSchemaManager $schemaManager */
+        $schemaManager = $connection->getSchemaManager();
+        $tables = $schemaManager->listTables();
+        foreach ($tables as $table)
+        {
+            self::truncateTable($table->getName(),$connection);
+        }
+        $connection->exec('SET foreign_key_checks = 1');
+
+        parent::setUp();
+    }
+
+    protected static function truncateTable($tableName,$connection)
+    {
+        $sql = sprintf('TRUNCATE TABLE %s', $tableName);
+        $connection->exec($sql);
     }
 }
