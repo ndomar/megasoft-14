@@ -23,6 +23,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.megasoft.config.Config;
 import com.megasoft.notifications.GCMRegisteration;
 import com.megasoft.requests.PostRequest;
+import com.megasoft.widgets.LoadingWidget;
 
 @SuppressLint({ "NewApi", "WorldReadableFiles" })
 public class LoginActivity extends Activity {
@@ -102,7 +103,9 @@ public class LoginActivity extends Activity {
 	 */
 
 	public void login(View view) {
-
+		
+		LoadingWidget.show(this, "Loging in ...");
+		
 		username = (EditText) findViewById(R.id.login_username);
 		password = (EditText) findViewById(R.id.login_password);
 
@@ -116,6 +119,8 @@ public class LoginActivity extends Activity {
 		PostRequest request = new PostRequest(Config.API_BASE_URL_SERVER
 				+ LOGIN) {
 			protected void onPostExecute(String response) {
+				LoadingWidget.hide();
+				
 				password.setText("");
 				if (this.getStatusCode() == 201) {
 					goToHome(response);
