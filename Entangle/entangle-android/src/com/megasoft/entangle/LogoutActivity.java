@@ -44,7 +44,8 @@ public class LogoutActivity extends Activity {
 				MODE_WORLD_READABLE);
 		String sessionId = myPrefs.getString(Config.SESSION_ID, "");
 
-		PostRequest request = new PostRequest(Config.API_BASE_URL + LOGOUT) {
+		PostRequest request = new PostRequest(Config.API_BASE_URL_SERVER
+				+ LOGOUT) {
 			protected void onPostExecute(String response) {
 
 				if (this.getStatusCode() == 200) {

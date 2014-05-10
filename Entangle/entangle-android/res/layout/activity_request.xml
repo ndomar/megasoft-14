@@ -28,12 +28,14 @@
     	android:background="@color/lightGray" />
         
         <TextView 
+            android:id="@+id/view_request_offer_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/fontSizeMedium"
             android:text="@string/offers"
             android:textColor="@color/active"
             android:layout_marginLeft="@dimen/boxMargin"
+            android:visibility="invisible"
          />
         
         

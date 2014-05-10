@@ -117,7 +117,10 @@ public class TangleStreamActivity extends Fragment {
 				tangleNames.add(tangle.getString("name"));
 				tangleOwners.add(tangle.getBoolean("isOwner"));
 			}
-
+			
+			if (tangles.length() > 0) {
+				activity.switchFragment(tangleIds.get(0), 0);
+			}
 			listView.setAdapter(new ArrayAdapter<String>(activity.getApplicationContext(), R.layout.sidebar_list_item, R.id.textView1, arr));
 			listView.setOnItemClickListener(new ListView.OnItemClickListener() {
 				@Override
