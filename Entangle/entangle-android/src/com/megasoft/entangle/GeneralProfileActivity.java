@@ -28,8 +28,8 @@ public class GeneralProfileActivity extends FragmentActivity {
 		setContentView(R.layout.activity_profile);
 		ProfileFragment profile = new ProfileFragment();
 		Bundle bundle = new Bundle();
-		tangleId = getIntent().getIntExtra("tangleId", 2);
-		userId = getIntent().getIntExtra("userId", 0);
+		tangleId = getIntent().getIntExtra("tangleId", -1);
+		userId = getIntent().getIntExtra("userId", -1);
 		bundle.putInt("tangleId", tangleId);
 		bundle.putInt("userId", userId);
 		bundle.putBoolean("general", true);

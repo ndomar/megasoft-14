@@ -33,9 +33,9 @@ public class ProfileActivity extends FragmentActivity {
 		setContentView(R.layout.activity_profile);
 		ProfileFragment profile = new ProfileFragment();
 		Bundle bundle = new Bundle();
-		this.tangleId = getIntent().getIntExtra("tangleId", 2);
-		this.userId = getIntent().getIntExtra("userId", 0);
-		this.settings = getSharedPreferences(Config.SETTING, 0);
+		this.tangleId = getIntent().getIntExtra("tangleId", -1);
+		this.userId = getIntent().getIntExtra("userId", -1);
+		this.settings = getSharedPreferences(Config.SETTING, -1);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		bundle.putInt("tangleId", tangleId);
 		bundle.putInt("userId", userId);
@@ -71,7 +71,7 @@ public class ProfileActivity extends FragmentActivity {
 				}
 			}
 		};
-		request.addHeader("X-SESSION-ID", this.sessionId);
+		request.addHeader(Config.API_SESSION_ID, this.sessionId);
 		request.execute();
 	}
 	
