@@ -190,7 +190,13 @@ leave_tangle:
 megasoft_entangle_register:
     pattern:  /
     defaults: { _controller: MegasoftEntangleBundle:Site:register }
+    
 
+register_app:
+    pattern: /register
+    defaults: { _controller: MegasoftEntangleBundle:User:register}
+    methods: [POST]
+    
 create_Offer:
     pattern: /tangle/{tangleId}/request/{requestId}/offer
     defaults: { _controller: MegasoftEntangleBundle:CreateOffer:createOffer }
