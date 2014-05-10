@@ -41,6 +41,11 @@ public class EntryOfferFragment extends Fragment {
 	 */
 	private String tangleName;
 
+	/**
+	 * This is the id of the offerer
+	 */
+	private int offererId;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -75,6 +80,9 @@ public class EntryOfferFragment extends Fragment {
 				.getString("description"));
 		offererName = ((TextView) view.findViewById(R.id.offererName));
 		offererName.setText(args.getString("offerer"));
+		tangleId = args.getInt("tangleId");
+		tangleName = args.getString("tangleName");
+		offererId = args.getInt("userId");
 	}
 
 	/**
@@ -96,5 +104,31 @@ public class EntryOfferFragment extends Fragment {
 	 */
 	public void setOfferId(int id) {
 		this.offerId = id;
+	}
+
+	private void setOffererRedirection() {
+		offererName.setTextSize(16);
+		offererName.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity().getBaseContext(),
+						ProfileActivity.class);
+				intent.putExtra("tangleId", getTangleId());
+				intent.putExtra("tangleName", getTangleName());
+				intent.putExtra("userId", getOffererId());
+				startActivity(intent);
+			}
+		});
+		offererAvatar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity().getBaseContext(),
+						ProfileActivity.class);
+				intent.putExtra("tangleId", getTangleId());
+				intent.putExtra("tangleName", getTangleName());
+				intent.putExtra("userId", getOffererId());
+				startActivity(intent);
+			}
+		});
 	}
 }
