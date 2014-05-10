@@ -280,6 +280,14 @@ public class OfferActivity extends FragmentActivity {
 			
 			if(offererId == loggedInId) {
 				((ImageView)findViewById(R.id.edit_price)).setVisibility(View.VISIBLE);
+				((ImageView)findViewById(R.id.edit_price)).setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						editPrice();
+					}
+				});
+				
 				itemMenu.findItem(R.id.delete_offer_button).setVisible(true);
 				itemMenu.findItem(R.id.claim_on_offer_button).setVisible(true);
 			}

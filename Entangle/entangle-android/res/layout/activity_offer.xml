@@ -137,8 +137,7 @@
                     android:layout_toLeftOf="@id/offer_price"
                     android:contentDescription="@string/icon"
                     android:src="@drawable/ic_action_edit"
-                    android:visibility="invisible"
-                    android:onClick="editPrice" />
+                    android:visibility="invisible" />
             </RelativeLayout>
 
             <TextView
