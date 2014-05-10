@@ -1,17 +1,12 @@
 package com.megasoft.entangle;
 
 import java.io.ByteArrayOutputStream;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.megasoft.config.Config;
-import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.PostRequest;
-
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Base64;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -20,13 +15,15 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CreateTangleActivity extends Activity {
 
@@ -35,39 +32,20 @@ public class CreateTangleActivity extends Activity {
 	public static final int GREEN = 0xff00ff00;
 	public static final int RED = 0xffff0000;
 	public static final int BLACK = 0xff000000;
+	boolean defaultIcon = true;
 	String encodedImage;
 	String sessionId;
 	SharedPreferences settings;
 
 	@Override
 	/**
-	 * When the activity is created, it sets up listeners to the tangle name field
+	 * When the activity is created, it sets up listeners to the tangle name field.
 	 * @param Bundle savedInstanceState
 	 * @author Mansour
 	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_tangle);
-
-		EditText tangleName = (EditText) findViewById(R.id.tangleName);
-		tangleName.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void afterTextChanged(Editable arg0) {
-				resetColor(R.id.tangleName);
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-			}
-		});
-
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 	}
@@ -81,36 +59,10 @@ public class CreateTangleActivity extends Activity {
 	}
 
 	/**
-	 * Checks if the tangle name already exists or not
+	 * Redirects to the gallery when clicking choose icon button.
 	 * 
-	 * @param view
-	 * @author Mansour
-	 */
-	public void checkTangleName(View view) {
-		String tangleNameText = ((EditText) findViewById(R.id.tangleName))
-				.getText().toString();
-		if ((tangleNameText.split(" ")).length > 1) {
-			showMessage("TANGLE NAME SHOULD BE ONE WORD");
-		} else {
-			GetRequest getNameRequest = new GetRequest(Config.API_BASE_URL
-					+ "/tangle/check/" + tangleNameText) {
-				protected void onPostExecute(String response) {
-					if (!(this.getStatusCode() == 404)) {
-						insertAvailability(false, R.id.tangleName);
-					} else {
-						insertAvailability(true, R.id.tangleName);
-					}
-				}
-			};
-			getNameRequest.addHeader(Config.API_SESSION_ID, sessionId);
-			getNameRequest.execute();
-		}
-	}
-
-	/**
-	 * Redirects to gallery when clicking choose icon button
-	 * 
-	 * @param view
+	 * @param View
+	 *            view
 	 * @author Mansour
 	 */
 	public void chooseIcon(View view) {
@@ -118,7 +70,9 @@ public class CreateTangleActivity extends Activity {
 	}
 
 	/**
-	 * Goes to the gallery to pick an image from there
+	 * Goes to the gallery to pick an image from there.
+	 * 
+	 * @author Mansour
 	 */
 	public void goToGallery() {
 		startActivityForResult(new Intent(Intent.ACTION_PICK,
@@ -127,7 +81,7 @@ public class CreateTangleActivity extends Activity {
 	}
 
 	/**
-	 * Waits for the image picked from the gallery and encodes it to a string
+	 * Waits for the image picked from the gallery and encodes it to a String.
 	 * 
 	 * @param int requestCode
 	 * @param int resultCode
@@ -135,23 +89,30 @@ public class CreateTangleActivity extends Activity {
 	 *            data
 	 * @author Mansour
 	 */
+	@SuppressLint("NewApi")
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE
 				&& null != data) {
 			Bitmap bitmap = getPhotoPath(data.getData());
-			ImageView imageView = (ImageView) findViewById(R.id.icon);
-			imageView.setImageBitmap(bitmap);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-			byte[] byteArray = baos.toByteArray();
-			encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+			Button tangleIcon = (Button) findViewById(R.id.tangleIcon);
+			tangleIcon
+					.setBackground(new BitmapDrawable(getResources(), bitmap));
+			encodeToBase64(bitmap);
+			defaultIcon = false;
 		}
+	}
+
+	public void encodeToBase64(Bitmap bitmap) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+		byte[] byteArray = baos.toByteArray();
+		encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
 	}
 
 	/**
 	 * Get the path of the photo the user picked from the gallery and returns
-	 * the image as a bitmap
+	 * the image as a bitmap.
 	 * 
 	 * @param uri
 	 * @return Bitmap
@@ -166,29 +127,36 @@ public class CreateTangleActivity extends Activity {
 		String filePath = cursor.getString(columnIndex);
 		cursor.close();
 		Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+
 		return bitmap;
 	}
 
 	/**
-	 * Creates the tangle when Create button is clicked
+	 * Creates the tangle when Create button is clicked.
 	 * 
 	 * @param view
 	 * @author Mansour
 	 */
 	public void create(View view) {
 		EditText tangleName = (EditText) findViewById(R.id.tangleName);
-		ImageView tangleIcon = (ImageView) findViewById(R.id.icon);
-		if ((tangleName.getText().toString()).equals("")) {
-			showMessage("PLEASE ENTER A TANGLE NAME");
+		EditText tangleDescription = (EditText) findViewById(R.id.tangleDescription);
+		if (tangleName.getText().toString().equals("")) {
+			Toast.makeText(getApplicationContext(), "Tangle Name Is Empty",
+					Toast.LENGTH_LONG).show();
 		} else {
-			if (tangleName.getCurrentTextColor() == BLACK) {
-				showMessage("PLEASE CHECK IF THE TANGLE NAME IS AVAILABLE FIRST");
+			if (tangleName.getCurrentTextColor() == RED) {
+				Toast.makeText(getApplicationContext(),
+						"Tangle Name Unavailable", Toast.LENGTH_LONG).show();
 			} else {
-				if (tangleName.getCurrentTextColor() == RED) {
-					showMessage("TANGLE NAME UNAVAILABLE, PLEASE CHOOSE ANOTHER NAME");
+				if (tangleDescription.getText().toString().equals("")) {
+					Toast.makeText(getApplicationContext(),
+							"Descritpion Is Empty", Toast.LENGTH_LONG).show();
 				} else {
-					if (tangleIcon.getDrawable() == null) {
-						showMessage("PLEASE CHOOSE A TANGLE ICON FIRST");
+					if (defaultIcon) {
+						Bitmap bitmap = BitmapFactory.decodeResource(
+								getResources(), R.drawable.entangle_logo);
+						encodeToBase64(bitmap);
+						sendTangleToServer();
 					} else {
 						sendTangleToServer();
 					}
@@ -198,7 +166,7 @@ public class CreateTangleActivity extends Activity {
 	}
 
 	/**
-	 * Sends the tangle info to the server
+	 * Sends the tangle info to the server.
 	 * 
 	 * @author Mansour
 	 */
@@ -206,10 +174,16 @@ public class CreateTangleActivity extends Activity {
 		PostRequest imagePostRequest = new PostRequest(Config.API_BASE_URL
 				+ "/tangle") {
 			protected void onPostExecute(String response) {
-				if (!(this.getStatusCode() == 201)) {
-					showMessage("ERROR, TRY AGAIN LATER");
+				if (this.getStatusCode() == 200) {
+					EditText tangleName = (EditText) findViewById(R.id.tangleName);
+					tangleName.setError("Tangle Is Already Taken");
 				} else {
-					goToHomePage();
+					if (!(this.getStatusCode() == 201)) {
+						Toast.makeText(getApplicationContext(),
+								"Try Again Later"+this.getStatusCode(), Toast.LENGTH_LONG).show();
+					} else {
+						goToHomePage();
+					}
 				}
 			}
 		};
@@ -229,7 +203,7 @@ public class CreateTangleActivity extends Activity {
 
 	/**
 	 * Shows a message dialogue to the user when called showing the message that
-	 * is called with
+	 * is called with.
 	 * 
 	 * @param message
 	 * @author Mansour
@@ -249,7 +223,7 @@ public class CreateTangleActivity extends Activity {
 	}
 
 	/**
-	 * Resets a color of a text in a text field to black
+	 * Resets a color of a text in a text field to black.
 	 * 
 	 * @param id
 	 * @author Mansour
@@ -261,7 +235,7 @@ public class CreateTangleActivity extends Activity {
 
 	/**
 	 * Changes the color of a text inside a text field to green or red according
-	 * to its availability
+	 * to its availability.
 	 * 
 	 * @param available
 	 * @param id
@@ -279,31 +253,33 @@ public class CreateTangleActivity extends Activity {
 
 	/**
 	 * Shows a dialogue informing that the tangle is created and redirecting to
-	 * homepage when pressing OK
+	 * homepage when pressing OK.
 	 * 
 	 * @author Mansour
 	 */
 	public void goToHomePage() {
-		AlertDialog ad = new AlertDialog.Builder(this).create();
-		ad.setCancelable(false);
-		ad.setMessage("CONGRATULATIONS, YOUR TANGLE IS CREATED");
-		ad.setButton(BUTTON_POSITIVE, "OK",
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-						goToHomeHelper();
-					}
-				});
-		ad.show();
+		Toast.makeText(getApplicationContext(), "Your Tangle Has Been Created",
+				Toast.LENGTH_LONG).show();
+		goToHomeHelper();
 	}
 
 	/**
-	 * Redirects the user to the home page
+	 * Redirects the user to the home page.
 	 * 
 	 * @author Mansour
 	 */
 	public void goToHomeHelper() {
-		startActivity(new Intent(this, MainActivity.class));
+
+		this.finish();
+	}
+
+	/**
+	 * Returns to the parent activity when pressing the cancel button.
+	 * 
+	 * @param view
+	 * @author Mansour
+	 */
+	public void cancelRedirect(View view) {
+		this.finish();
 	}
 }
