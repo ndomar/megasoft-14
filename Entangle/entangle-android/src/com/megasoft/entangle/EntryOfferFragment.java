@@ -131,4 +131,34 @@ public class EntryOfferFragment extends Fragment {
 			}
 		});
 	}
+
+	/**
+	 * This is a getter method to get the id of the tangle
+	 * 
+	 * @return tangle id
+	 * @author HebaAamer
+	 */
+	public int getTangleId() {
+		return tangleId;
+	}
+
+	/**
+	 * This is a getter method to get the id of the offerer
+	 * 
+	 * @return offerer id
+	 * @author HebaAamer
+	 */
+	public int getOffererId() {
+		return offererId;
+	}
+
+	/**
+	 * This is a getter method to get the name of the tangle
+	 * 
+	 * @return tangle name
+	 * @author HebaAamer
+	 */
+	public String getTangleName() {
+		return tangleName;
+	}
 }
