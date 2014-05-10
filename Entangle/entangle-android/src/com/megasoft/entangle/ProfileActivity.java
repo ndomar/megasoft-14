@@ -3,20 +3,16 @@ package com.megasoft.entangle;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ProfileActivity extends FragmentActivity {
 	

@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.megasoft.config.Config;
-
 import com.megasoft.requests.PostRequest;
 
 /**
