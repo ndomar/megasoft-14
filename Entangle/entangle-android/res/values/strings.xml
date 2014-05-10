@@ -148,5 +148,7 @@
     <string name="logout">Logout</string>
     <string name="title_activity_general_profile">General Profile</string>
     <string name="title_activity_splash">Splash</string>
+    <string name="search_string">Member Name</string>
+    <string name ="member_not_found">"Member not found."</string>
 
 </resources>
