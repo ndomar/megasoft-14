@@ -1,17 +1,25 @@
 package com.megasoft.entangle;
 
+import com.megasoft.requests.ImageRequest;
+
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class TransactionEntryFragment extends Fragment {
 	
 	private View view;
 
+	/**
+	 * Request id
+	 */
+	private int requestId;
+	
 	/**
 	 * Requester name
 	 */
@@ -38,25 +46,29 @@ public class TransactionEntryFragment extends Fragment {
 	private int requesterId;
 	
 	/**
-	 * The offerer Id
+	 * The ImageView that holds the user's profile picture
 	 */
-	private int offererId;
+	private com.megasoft.entangle.views.RoundedImageView profilePictureView;
 
+	/**
+	 * The image url of the user's image
+	 */
+	private String imageURL;
 	
 	/**
-	 * Sets the value of the requester Id
+	 * Sets the value of the requester id
 	 * @param requesterId
 	 */
 	public void setRequesterId(int requesterId) {
 		this.requesterId = requesterId;
 	}
-
+	
 	/**
-	 * Sets the value of the offerer Id
-	 * @param offererId
+	 * Sets the value of the request id
+	 * @param requestId
 	 */
-	public void setOffererId(int offererId) {
-		this.offererId = offererId;
+	public void setRequestId(int requestId) {
+		this.requestId = requestId;
 	}
 
 	/**
@@ -90,7 +102,13 @@ public class TransactionEntryFragment extends Fragment {
 	public void setTangleId(int tangleId) {
 		this.tangleId = tangleId;
 	}
-
+	
+	/**
+	 * Sets the value of the image url
+	 */
+	public void setImageURL(String url) {
+		this.imageURL = url;
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,19 +117,32 @@ public class TransactionEntryFragment extends Fragment {
 		((TextView)view.findViewById(R.id.offerer)).setText(offerer);
 		((TextView)view.findViewById(R.id.transaction_amount)).setText(""+amount);
 		((TextView)view.findViewById(R.id.requester)).setText(requester);
+		profilePictureView = (com.megasoft.entangle.views.RoundedImageView) view.findViewById(R.id.requester_avatar);
+		viewProfilePicture(imageURL);
 		redirection();
 		return view;
+	}
+	
+	
+	/**
+	 * Views the user's profile picture
+	 * @param String imageURL
+	 * @author Almgohar
+	 */ 
+	public void viewProfilePicture(String imageURL) {
+            ImageRequest image = new ImageRequest(profilePictureView);
+            image.execute(imageURL);
 	}
 	
 	/**
 	 * Redirects to the offerer/requester profile
 	 */
 	public void redirection() {
-		((TextView)view.findViewById(R.id.offerer)).setOnClickListener(new View.OnClickListener() {
+		((TextView)view.findViewById(R.id.transaction_description)).setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				goToProfile(offererId);
+				goToRequest();				
 			}
 		});
 		((TextView)view.findViewById(R.id.requester)).setOnClickListener(new View.OnClickListener() {
@@ -120,13 +151,19 @@ public class TransactionEntryFragment extends Fragment {
 			public void onClick(View v) {
 				goToProfile(requesterId);
 			}
-		});		
+		});
+		profilePictureView.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				goToProfile(requesterId);				
+			}
+		});
 	}
 	
 	
 	/**
 	 * Redirects to a user's profile given his id
-	 * 
 	 * @param int userId
 	 * @author Almgohar
 	 */
@@ -137,4 +174,15 @@ public class TransactionEntryFragment extends Fragment {
 		startActivity(profile);
 	}
 	
+	/**
+	 * Redirects to a request given the request id and tangle id
+	 * @param int requestId
+	 * @param int tangleId
+	 * @author Almgohar
+	 */
+	private void goToRequest() {
+		Intent request = new Intent(getActivity().getBaseContext(), RequestActivity.class);
+		request.putExtra("requestId", requestId);
+		request.putExtra("tangleId", tangleId);
+	}
 }

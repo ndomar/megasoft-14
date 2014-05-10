@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ProfileActivity extends FragmentActivity {
@@ -55,7 +56,8 @@ public class ProfileActivity extends FragmentActivity {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 200) {
 					try {
-						JSONObject jSon = new JSONObject(response); 	
+						JSONObject jSon = new JSONObject(response); 
+						((TextView)findViewById(R.id.credit)).setText("" + jSon.getInt("credit"));
 						viewTransactions(jSon.getJSONArray("transactions"));
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -80,8 +82,9 @@ public class ProfileActivity extends FragmentActivity {
 				JSONObject transaction = transactions.getJSONObject(i);
 				TransactionEntryFragment entry = new TransactionEntryFragment();
 				entry.setOfferer(transaction.getString("offererName"));
+				entry.setImageURL(transaction.getString("photo"));
 				entry.setRequester(transaction.getString("requesterName"));
-				entry.setOffererId(transaction.getInt("offererId"));
+				entry.setRequestId(transaction.getInt("requestId"));
 				entry.setRequesterId(transaction.getInt("requesterId"));
 				entry.setAmount(transaction.getInt("amount"));
 				entry.setTangleId(tangleId);

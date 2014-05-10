@@ -246,7 +246,6 @@ class UserController extends Controller {
         $loggedInUser = $session->getUser();
         $user = $userTable->findOneBy(array('id' => $userId,));
         $userTangle = $userTangleTable->findOneBy(array('userId' => $userId, 'tangleId' => $tangleId,));
-
         if (!$this->validateTangle($tangleId)) {
             return new Response('Tangle not found', 404);
         }
@@ -263,24 +262,20 @@ class UserController extends Controller {
             $offer = $offers[$i];
             if (($offer->getRequest()->getTangleId() == $tangleId) && ($offer->getTransaction() != null)) {
                 $requesterName = $offer->getRequest()->getUser()->getName();
+                $photo = $offer->getRequest()->getUser()->getPhoto();
                 $offererName = $offer->getUser()->getName();
                 $amount = $offer->getTransaction()->getFinalPrice();
                 $requestId = $offer->getRequest()->getId();
                 $requesterId = $offer->getRequest()->getUserId();
-                $offererId = $offer->getUserId();
                 $transactions[] = array('offerId'=>$offer->getId(),
-                    'requesterName' => $requesterName,
-                    'offererName' => $offererName,
-                    'amount' => $amount, 'requestId' => $requestId, 'requesterId' => $requesterId, 'offererId' => $offererId,);
+                    'requesterName' => $requesterName, 'photo' => $photo, 'offererName' => $offererName,
+                    'amount' => $amount, 'requestId' => $requestId, 'requesterId' => $requesterId,);
             } else {
                 continue;
             }
         }
-        if(count($transactions) == 0) {
-            return new Response('Transactions not found', 404);
-        }
         $response = new JsonResponse();
-        $response->setData(array('transactions' => $transactions,));
+        $response->setData(array('transactions' => $transactions, 'credit' => $credit,));
         $response->setStatusCode(200);
         return $response;
     }

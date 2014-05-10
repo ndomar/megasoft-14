@@ -49,7 +49,7 @@ public class ProfileFragment extends Fragment {
 	/**
 	 * The ImageView that holds the user's profile picture
 	 */
-	private ImageView profilePictureView;
+	private com.megasoft.entangle.views.RoundedImageView profilePictureView;
 	
     
     /**
@@ -105,7 +105,7 @@ public class ProfileFragment extends Fragment {
 	public void viewProfile() {
 		name = (TextView) view.findViewById(R.id.nameView);
 		description = (TextView) view.findViewById(R.id.descriptionView);
-		profilePictureView = (ImageView)view.findViewById(R.id.profileImage);		
+		profilePictureView = (com.megasoft.entangle.views.RoundedImageView) view.findViewById(R.id.profileImage);		
 		viewInformation();
 	}
 	
@@ -131,7 +131,6 @@ public class ProfileFragment extends Fragment {
 					information = new JSONObject(response);
 					name.setText(information.getString("name"));
 					description.setText(information.getString("description"));
-					birthDate.setText("Birthdate: " + information.getJSONObject("birth_date").getString("date"));
 					viewProfilePicture(information.getString("photo"));
 					} catch (JSONException e) {
 						e.printStackTrace();
