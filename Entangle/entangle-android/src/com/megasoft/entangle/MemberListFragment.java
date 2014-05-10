@@ -155,6 +155,7 @@ public class MemberListFragment extends Fragment {
 
 			}
 		});
+		
 		return view;
 	}
 
