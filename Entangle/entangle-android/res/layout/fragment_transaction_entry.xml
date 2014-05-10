@@ -8,33 +8,45 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginLeft="@dimen/marginMedium"
+        android:layout_marginTop="@dimen/marginMedium"
         android:layout_toRightOf="@id/horizental"
         android:src="@drawable/ic_action_person" />
+
+    <TextView
+        android:id="@+id/offerer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/requester_avatar"
+        android:layout_marginTop="@dimen/marginMedium"
+        android:layout_toRightOf="@id/requester_avatar"
+        android:textSize="@dimen/textMedium" />
+
+    <TextView
+        android:id="@+id/transaction_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/offerer"
+        android:layout_toRightOf="@id/offerer"
+        android:text="@string/transaction_description"
+        android:textSize="@dimen/textMedium" />
 
     <TextView
         android:id="@+id/requester"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/requester_avatar"
-        android:layout_marginTop="8dp"
-        android:layout_toRightOf="@id/requester_avatar"
-        android:textSize="@dimen/textMedium"/>
-
+        android:layout_alignBottom="@id/offerer"
+        android:layout_marginTop="@dimen/marginSmall"
+        android:layout_toRightOf="@id/transaction_description"
+        android:textSize="@dimen/textMedium" />
 
     <TextView
-        android:id="@+id/request_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/requester_avatar"
-        android:layout_below="@id/requester" />
-    
-    <TextView 
         android:id="@+id/transaction_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/requester_avatar"
-        android:layout_below="@id/request_description"/>
+        android:layout_alignBottom="@id/requester"
+        android:layout_marginRight="@dimen/marginMedium"
+        android:layout_marginLeft="@dimen/marginSmall"
+        android:layout_alignParentRight="true" />
 
 </RelativeLayout>

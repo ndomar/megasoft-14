@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true" >
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/profile_layout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top" >
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" />
 
-        <LinearLayout
-            android:id="@+id/profile_layout"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:layout_alignParentTop="true" />
-
-    </RelativeLayout>
-
-</ScrollView>
+</RelativeLayout>
