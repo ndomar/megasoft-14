@@ -106,6 +106,12 @@ public class EntryOfferFragment extends Fragment {
 		this.offerId = id;
 	}
 
+	/**
+	 * This method is used to make the avatar and the name of the offerer
+	 * redirect to the profile
+	 * 
+	 * @author HebaAamer
+	 */
 	private void setOffererRedirection() {
 		offererName.setTextSize(16);
 		offererName.setOnClickListener(new View.OnClickListener() {

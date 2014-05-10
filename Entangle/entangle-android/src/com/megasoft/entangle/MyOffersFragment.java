@@ -239,10 +239,13 @@ public class MyOffersFragment extends Fragment {
 		transaction = getFragmentManager().beginTransaction();
 		EntryOfferFragment offerFragment = new EntryOfferFragment();
 		Bundle args = new Bundle();
-		args.putInt("offerId", offerId); 
-		args.putString("requestedPrice",offerPrice);
-		args.putString("description",offerBody);
-		args.putString("offerer",offererName);
+		args.putInt("offerId", offerId);
+		args.putString("requestedPrice", offerPrice);
+		args.putString("description", offerBody);
+		args.putString("offerer", offererName);
+		args.putInt("userId", userId);
+		args.putInt("tangleId", tangleId);
+		args.putString("tangleName", tangleName);
 		offerFragment.setArguments(args);
 		putInPlace(status, offerFragment);
 		transaction.commit();
