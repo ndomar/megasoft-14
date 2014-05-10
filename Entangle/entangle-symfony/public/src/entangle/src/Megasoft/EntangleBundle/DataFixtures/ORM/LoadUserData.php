@@ -7,6 +7,9 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Megasoft\EntangleBundle\Entity\User;
 
+/*
+ * Fixtures for Session table
+ */
 class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**

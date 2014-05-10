@@ -7,6 +7,9 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Megasoft\EntangleBundle\Entity\Tangle;
 
+/*
+ * Fixtures for Session table
+ */
 class LoadTangleData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
