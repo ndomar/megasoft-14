@@ -11,6 +11,7 @@ use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserTangleData;
 use Megasoft\EntangleBundle\Tests\EntangleTestCase;
 
+
 class TangleControllerTest extends EntangleTestCase
 {
     
@@ -38,7 +39,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals(400, $client->getResponse()->getStatusCode());
     }
     
-    public function testAllUsersAction_SuccessScenario(){
+    public function testAllUsersAction_GetListWithSampleUser(){
         $client = static::createClient();
         $client->request('GET', 
                 '/tangle/1/user', 
