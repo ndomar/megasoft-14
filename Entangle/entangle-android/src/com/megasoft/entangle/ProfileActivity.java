@@ -49,6 +49,11 @@ public class ProfileActivity extends FragmentActivity {
 		
 	}
 	
+	/**
+	 * Gets the transactions of the user
+	 * Calls viewTransactions(JSONArray transactions) method
+	 * @author Almgohar
+	 */
 	private void GetTransactions() {
 		String link = Config.API_BASE_URL_SERVER + "/tangle/" + tangleId + "/user/" + userId + "/transactions";
 		GetRequest request = new GetRequest(link) {
@@ -70,13 +75,17 @@ public class ProfileActivity extends FragmentActivity {
 		request.execute();
 	}
 	
+	/**
+	 * Views the user transactions
+	 * @param transactions
+	 * @author Almgohar
+	 */
 	private void viewTransactions(JSONArray transactions) {
 		LinearLayout transactions_layout = ((LinearLayout) findViewById(R.id.transactions_layout));
 		scrollView = (ScrollView) findViewById(R.id.transactions_scroll_view);
 		if (transactions.length() > 0) {
 			transactions_layout.setVisibility(View.VISIBLE);
 		}
-
 		for (int i = 0; i < transactions.length(); i++) {
 			try {
 				JSONObject transaction = transactions.getJSONObject(i);

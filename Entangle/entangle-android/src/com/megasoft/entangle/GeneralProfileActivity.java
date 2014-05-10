@@ -18,9 +18,7 @@ import com.megasoft.requests.PostRequest;
  * Views a user's general profile given his user Id 
  * @author Almgohar
  */
-
 public class GeneralProfileActivity extends FragmentActivity {
-
 	private static final String LOGOUT = "/user/logout";
 	private int userId;
 	private int tangleId;	
