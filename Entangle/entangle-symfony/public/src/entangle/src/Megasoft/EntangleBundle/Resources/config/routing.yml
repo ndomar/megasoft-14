@@ -268,3 +268,7 @@ _mail:
   defaults: {_controller:MegasoftEntangleBundle:Notification:SendEmail}
   methods: [GET]
 
+get_my_offers:
+    pattern: /tangle/{tangleId}/user/offers
+    defaults: {_controller:MegasoftEntangleBundle:Tangle:userOffers}
+    methods: [GET]

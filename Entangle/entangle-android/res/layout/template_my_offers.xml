@@ -1,0 +1,152 @@
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:layout_alignParentTop="true"
+    android:layout_marginBottom="@dimen/marginMedium"
+    android:background="@color/darkWhite"
+    android:fillViewport="true" >
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/darkWhite" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/marginMedium"
+            android:layout_marginTop="@dimen/marginMedium"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/pendingOffersText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/marginSmall"
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:text="@string/pendingOffers"
+                android:textColor="@color/blue" />
+
+            <LinearLayout
+                android:id="@+id/pendingOffers"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:layout_marginRight="@dimen/boxMargin"
+                android:background="@color/darkWhite"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:layout_margin="@dimen/boxMargin"
+                android:background="@color/orange" />
+
+            <TextView
+                android:id="@+id/doneOffersText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/marginSmall"
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:text="@string/doneOffers"
+                android:textColor="@color/blue" />
+
+            <LinearLayout
+                android:id="@+id/doneOffers"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:layout_marginRight="@dimen/boxMargin"
+                android:background="@color/darkWhite"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:layout_margin="@dimen/boxMargin"
+                android:background="@color/orange" />
+
+            <TextView
+                android:id="@+id/acceptedOffersText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/marginSmall"
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:text="@string/acceptedOffers"
+                android:textColor="@color/blue" />
+
+            <LinearLayout
+                android:id="@+id/acceptedOffers"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:layout_marginRight="@dimen/boxMargin"
+                android:background="@color/darkWhite"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:layout_margin="@dimen/boxMargin"
+                android:background="@color/orange" />
+
+            <TextView
+                android:id="@+id/failedOffersText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/marginSmall"
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:text="@string/failedOffers"
+                android:textColor="@color/blue" />
+
+            <LinearLayout
+                android:id="@+id/failedOffers"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:layout_marginRight="@dimen/boxMargin"
+                android:background="@color/darkWhite"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:layout_margin="@dimen/boxMargin"
+                android:background="@color/orange" />
+
+            <TextView
+                android:id="@+id/rejectedOffersText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/marginSmall"
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:text="@string/rejectedOffers"
+                android:textColor="@color/blue" />
+
+            <LinearLayout
+                android:id="@+id/rejectedOffers"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/boxMargin"
+                android:layout_marginRight="@dimen/boxMargin"
+                android:background="@color/darkWhite"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/paddingSmall" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
