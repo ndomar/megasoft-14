@@ -8,13 +8,13 @@ public class LoadingWidget {
 	private final static int WINDOW_WIDTH = 600;
 	private final static int WINDOW_HEIGHT = 300;
 	
-	public static void show(Activity activity){
+	public static void show(Activity activity, String message){
 		if(window != null){
 			hide();
 		}  
 		
 		window = new ProgressDialog(activity);
-		window.setMessage("Loading...");
+		window.setMessage(message);
 		window.setCancelable(false);
 		window.show();
 		window.getWindow().setLayout(WINDOW_WIDTH, WINDOW_HEIGHT);
