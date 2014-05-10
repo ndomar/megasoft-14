@@ -6,8 +6,8 @@ use Megasoft\EntangleBundle\Entity\Tangle;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Megasoft\EntangleBundle\Entity\Offer;
 use Megasoft\EntangleBundle\Entity\InvitationCode;
 use Megasoft\EntangleBundle\Entity\InvitationMessage;
@@ -54,7 +54,7 @@ class TangleController extends Controller {
      * An endpoint to filter requests of a specific tangle by requester, tag, prefix of requester's name or description
      * @param Request $request
      * @param integer $tangleId
-     * @return Response | Symfony\Component\HttpFoundation\JsonResponse
+     * @return Response | \Symfony\Component\HttpFoundation\JsonResponse
      * @author OmarElAzazy
      */
     public function filterRequestsAction(Request $request, $tangleId) {
@@ -137,7 +137,7 @@ class TangleController extends Controller {
      * An endpoint to return the list of tags in a specific tangle
      * @param Request $request
      * @param integer $tangleId
-     * @return Response | Symfony\Component\HttpFoundation\JsonResponse
+     * @return Response | \Symfony\Component\HttpFoundation\JsonResponse
      * @author OmarElAzazy
      */
 
@@ -859,6 +859,7 @@ class TangleController extends Controller {
      */
     public function acceptInvitationAction($invitationCode) {
 
+
         $criteria1 = array('code' => $invitationCode);
         $invitation = $this->getDoctrine()
                 ->getRepository('MegasoftEntangleBundle:InvitationCode')
@@ -898,7 +899,6 @@ class TangleController extends Controller {
         $tangleUser->setUser($user);
         $tangleUser->setTangle($tangle);
         $tangleUser->setCredit(0);
-
         $invitation->setExpired(true);
         $this->getDoctrine()->getManager()->persist($tangleUser);
         $this->getDoctrine()->getManager()->flush();

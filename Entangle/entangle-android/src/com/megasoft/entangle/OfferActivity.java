@@ -161,7 +161,6 @@ public class OfferActivity extends FragmentActivity {
 		offererName = (TextView) findViewById(R.id.offerer_name);
 		offerStatus = (TextView) findViewById(R.id.offer_status);
 		offerPrice = (TextView) findViewById(R.id.offer_price);
-
 		offerDate = (TextView) findViewById(R.id.offer_date);
 		comment = (EditText) findViewById(R.id.add_comment_field);
 		addComment = (ImageView) findViewById(R.id.add_comment_button);
@@ -294,8 +293,8 @@ public class OfferActivity extends FragmentActivity {
 	 */
 	private void goToProfile(int userId) {
 		Intent profile = new Intent(this, ProfileActivity.class);
-		profile.putExtra("user id", userId);
-		profile.putExtra("tangle id", this.tangleId);
+		profile.putExtra("userId", userId);
+		profile.putExtra("tangleId", tangleId);
 		startActivity(profile);
 	}
 
