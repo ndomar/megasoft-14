@@ -57,7 +57,8 @@ public class TransactionEntryFragment extends Fragment {
 	
 	/**
 	 * Sets the value of the requester id
-	 * @param requesterId
+	 * @param int requesterId
+	 * @author Almgohar
 	 */
 	public void setRequesterId(int requesterId) {
 		this.requesterId = requesterId;
@@ -65,7 +66,8 @@ public class TransactionEntryFragment extends Fragment {
 	
 	/**
 	 * Sets the value of the request id
-	 * @param requestId
+	 * @param int requestId
+	 * @author Almgohar
 	 */
 	public void setRequestId(int requestId) {
 		this.requestId = requestId;
@@ -73,15 +75,17 @@ public class TransactionEntryFragment extends Fragment {
 
 	/**
 	 * Sets the value of the requester name
-	 * @param requester
+	 * @param String requester
+	 * @author Almgohar
 	 */
 	public void setRequester(String requester) {
 		this.requester = requester;
 	}
 
 	/**
-	 * Sets the value of the request description
-	 * @param request
+	 * Sets the value of the offerer name
+	 * @param String offerer
+	 * @author Almgohar
 	 */
 	public void setOfferer(String offerer) {
 		this.offerer = offerer;
@@ -89,7 +93,8 @@ public class TransactionEntryFragment extends Fragment {
 
 	/**
 	 * Sets the value of the transaction amount
-	 * @param amount
+	 * @param int amount
+	 * @author Almgohar
 	 */
 	public void setAmount(int amount) {
 		this.amount = amount;
@@ -97,7 +102,8 @@ public class TransactionEntryFragment extends Fragment {
 	
 	/**
 	 * Sets the value of the tangle Id
-	 * @param tangleId
+	 * @param int tangleId
+	 * @author Almgohar
 	 */
 	public void setTangleId(int tangleId) {
 		this.tangleId = tangleId;
@@ -105,6 +111,8 @@ public class TransactionEntryFragment extends Fragment {
 	
 	/**
 	 * Sets the value of the image url
+	 * @param String url
+	 * @author Almgohar
 	 */
 	public void setImageURL(String url) {
 		this.imageURL = url;
@@ -136,6 +144,7 @@ public class TransactionEntryFragment extends Fragment {
 	
 	/**
 	 * Redirects to the offerer/requester profile
+	 * @author Almgohar
 	 */
 	public void redirection() {
 		((TextView)view.findViewById(R.id.transaction_description)).setOnClickListener(new View.OnClickListener() {
@@ -176,8 +185,6 @@ public class TransactionEntryFragment extends Fragment {
 	
 	/**
 	 * Redirects to a request given the request id and tangle id
-	 * @param int requestId
-	 * @param int tangleId
 	 * @author Almgohar
 	 */
 	private void goToRequest() {
