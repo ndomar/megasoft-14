@@ -142,10 +142,16 @@
     <string name="toastError">An error has occurred.</string>
     <string name="sample_user_main">user@entangle.io</string>
     <string name="invitation_message_placeholder">Write an invitation message ..</string>
+    <string name="title_activity_my_requests">MyRequestsActivity</string>
     <string name="balanceInsufficient">"Not enough balance"</string>
     <string name="logoutActivity">Logout</string>
     <string name="logout">Logout</string>
     <string name="title_activity_general_profile">General Profile</string>
     <string name="title_activity_splash">Splash</string>
+    <string name="deleteRequestButton">Delete</string>
+    <string name="reOpenRequestButton">Reopen</string>
+    <string name="closedRequests">CLOSED REQUESTS</string>
+    <string name="openRequests">OPEN REQUESTS</string>
+    <string name="frozenRequests">FROZEN REQUESTS</string>
 
 </resources>
