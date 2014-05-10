@@ -109,7 +109,7 @@ class UserController extends Controller {
         $userTangleTable = $this->getDoctrine()->
                 getRepository('MegasoftEntangleBundle:UserTangle');
         $userTangle = $userTangleTable->
-                findOneBy(array('userId' => $userId, 'tangleId' => $tangleId));
+                findOneBy(array('userId' => $userId, 'tangleId' => $tangleId,));
         if ($userTangle == null) {
             return false;
         } else {
@@ -300,7 +300,7 @@ class UserController extends Controller {
 
     private function validateUniqueUsername($username) {
         $userRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
-        if ($userRepo->findOneBy(array('name' => $username)) == null && $username != null && $username != "") {
+        if ($userRepo->findOneBy(array('name' => $username,)) == null && $username != null && $username != "") {
             return true;
         } else {
             return false;
