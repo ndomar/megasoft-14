@@ -13,22 +13,18 @@ use Megasoft\EntangleBundle\Tests\EntangleTestCase;
 
 class TangleControllerTest extends EntangleTestCase
 {
+    
     public function setup() {  
-        static::$kernel = static::createKernel();
-        static::$kernel->boot();
-        $em = static::$kernel->getContainer()
-            ->get('doctrine')
-            ->getManager();
+        parent::setup();
         $loader = new Loader();
         $loader->addFixture(new LoadTangleData());
         $loader->addFixture(new LoadUserData());
         $loader->addFixture(new LoadUserTangleData());
         $loader->addFixture(new LoadSessionData());
-
-        $purger = new ORMPurger($em);
-        $executor = new ORMExecutor($em, $purger);
+ 
+        $purger = new ORMPurger($this->em);
+        $executor = new ORMExecutor($this->em, $purger);
         $executor->execute($loader->getFixtures());
-        parent::setup();
     }
     
     public function testAllUsersAction_WrongSession(){
@@ -45,7 +41,7 @@ class TangleControllerTest extends EntangleTestCase
     public function testAllUsersAction_SuccessScenario(){
         $client = static::createClient();
         $client->request('GET', 
-                '/tangle/2/user', 
+                '/tangle/1/user', 
                 array(), 
                 array(), 
                 array('HTTP_X_SESSION_ID'=>'sampleSession'));
@@ -62,7 +58,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals(1, $json['count']);
         
         $users = $json['users'];
-        $this->assertEquals(2, $users[0]['id']);
+        $this->assertEquals(1, $users[0]['id']);
         $this->assertEquals('sampleUser', $users[0]['username']);
         $this->assertEquals(0, $users[0]['balance']);
         $this->assertEquals('http://entangle.io/images/profilePictures/', $users[0]['iconUrl']);
