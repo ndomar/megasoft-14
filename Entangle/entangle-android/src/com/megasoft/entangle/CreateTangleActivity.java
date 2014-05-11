@@ -1,19 +1,14 @@
 package com.megasoft.entangle;
 
-import java.io.ByteArrayOutputStream;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 
-import android.util.Base64;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,26 +24,38 @@ import android.widget.Toast;
 
 public class CreateTangleActivity extends Activity {
 
-	public static final int BUTTON_POSITIVE = 0xffffffff;
-	public static final int GREEN = 0xff00ff00;
-	public static final int RED = 0xffff0000;
-	public static final int BLACK = 0xff000000;
+	/**
+	 * App's shared preferences.
+	 */
 	public SharedPreferences settings;
-	private String encodedImage;
+
+	/**
+	 * User's session id.
+	 */
 	private String sessionId;
 
+	/**
+	 * An array of the ids of the request icons available in the app.
+	 */
 	private static Integer[] imageIconDatabase = { R.drawable.aatrox,
 			R.drawable.ahri, R.drawable.akali, R.drawable.amumu,
 			R.drawable.zac, R.drawable.ziggs };
 
+	/**
+	 * An array of the names of the request icons available in the app.
+	 */
 	private String[] imageNameDatabase = { "aatrox", "ahri", "akali", "amumu",
 			"zac", "ziggs" };
 
+	/**
+	 * A number indicating the currently selected icon by the user in the
+	 * spinner.
+	 */
 	private int usedIcon;
 
 	@Override
 	/**
-	 * When the activity is created, it sets up listeners to the tangle name field.
+	 * When the activity is created, it sets up listeners to the spinner.
 	 * @param Bundle savedInstanceState
 	 * @author Mansour
 	 */
@@ -84,17 +91,11 @@ public class CreateTangleActivity extends Activity {
 		return true;
 	}
 
-	public void encodeToBase64(Bitmap bitmap) {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-		byte[] byteArray = baos.toByteArray();
-		encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-	}
-
 	/**
 	 * Creates the tangle when Create button is clicked.
 	 * 
-	 * @param view
+	 * @param View
+	 *            view
 	 * @author Mansour
 	 */
 	public void create(View view) {
@@ -104,17 +105,14 @@ public class CreateTangleActivity extends Activity {
 			Toast.makeText(getApplicationContext(), "Tangle Name Is Empty",
 					Toast.LENGTH_SHORT).show();
 		} else {
-				if (tangleDescription.getText().toString().equals("")) {
-					Toast.makeText(getApplicationContext(),
-							"Descritpion Is Empty", Toast.LENGTH_SHORT).show();
-				} else {
-					Bitmap bitmap = BitmapFactory.decodeResource(
-							getResources(), imageIconDatabase[usedIcon]);
-					encodeToBase64(bitmap);
-					sendTangleToServer();
-				}
+			if (tangleDescription.getText().toString().equals("")) {
+				Toast.makeText(getApplicationContext(), "Descritpion Is Empty",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				sendTangleToServer();
 			}
 		}
+	}
 
 	/**
 	 * Sends the tangle info to the server.
@@ -122,7 +120,7 @@ public class CreateTangleActivity extends Activity {
 	 * @author Mansour
 	 */
 	public void sendTangleToServer() {
-		PostRequest imagePostRequest = new PostRequest(Config.API_BASE_URL
+		PostRequest tanglePostRequest = new PostRequest(Config.API_BASE_URL
 				+ "/tangle") {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 200) {
@@ -131,26 +129,28 @@ public class CreateTangleActivity extends Activity {
 				} else {
 					if (!(this.getStatusCode() == 201)) {
 						Toast.makeText(getApplicationContext(),
-								"Try Again Later" + this.getStatusCode(),
-								Toast.LENGTH_LONG).show();
+								"Try Again Later", Toast.LENGTH_LONG).show();
 					} else {
 						goToHomePage();
 					}
 				}
 			}
 		};
-		JSONObject imageJSON = new JSONObject();
+		JSONObject tangleJSON = new JSONObject();
 		try {
-			imageJSON.put("tangleName",
+			tangleJSON.put("tangleName",
 					((EditText) findViewById(R.id.tangleName)).getText()
 							.toString());
-			imageJSON.put("tangleIcon", encodedImage);
+			tangleJSON.put("tangleIcon", usedIcon);
+			tangleJSON.put("tangleDescription",
+					((EditText) findViewById(R.id.tangleDescription)).getText()
+							.toString());
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		imagePostRequest.setBody(imageJSON);
-		imagePostRequest.addHeader(Config.API_SESSION_ID, sessionId);
-		imagePostRequest.execute();
+		tanglePostRequest.setBody(tangleJSON);
+		tanglePostRequest.addHeader(Config.API_SESSION_ID, sessionId);
+		tanglePostRequest.execute();
 	}
 
 	/**
@@ -165,6 +165,11 @@ public class CreateTangleActivity extends Activity {
 		this.finish();
 	}
 
+	/**
+	 * A private class that defines the adapter for the icons' spinner
+	 * 
+	 * @author Mansour
+	 */
 	private class TangleIconSpinnerAdapter extends ArrayAdapter<String> {
 
 		public TangleIconSpinnerAdapter(Context context,

@@ -400,11 +400,12 @@ class TangleController extends Controller {
         $json_array = json_decode($json, true);
         $tangleName = $json_array['tangleName'];
         $tangleIcon = $json_array['tangleIcon'];
+        $tangleDescription = $json_array['tangleDescription'];
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
 
-        if ($sessionId == null || $tangleIcon == null || $tangleName == null) {
+        if ($sessionId == null || $tangleIcon == null || $tangleName == null || $tangleDescription == null) {
             return new Response("Bad Request", 400);
         }
 
@@ -415,25 +416,11 @@ class TangleController extends Controller {
         if (!($this->checkAvailability($tangleName))) {
             return new Response("Tangle Already Taken", 200);
         }
-        $imageData = base64_decode($tangleIcon);
-        $f = finfo_open();
-        $mimeType = finfo_buffer($f, $imageData, FILEINFO_MIME_TYPE);
-        if ($mimeType == false || $mimeType != 'image/png') {
-            return new Response("Bad image", 400);
-        }
-        $icon = imagecreatefromstring($imageData);
-        $iconName = $this->generateRandomString(50) . '.png';
-        $kernel = $this->get('kernel');
-        $path = $kernel->getRootDir() . '/../web/bundles/megasoftentangle/images/tangle/icons/' . $iconName;
-
-        if ($icon != null) {
-            imagepng($icon, $path, 9);
-            imagedestroy($icon);
-        }
-
+        
         $tangle = new Tangle();
         $tangle->setName($tangleName);
-        $tangle->setIcon($iconName);
+        $tangle->setIcon($tangleIcon);
+        $tangle->setDescription($tangleDescription);
         $tangle->setDeleted(false);
         $tangleOwner = new UserTangle();
         $tangleOwner->setUserId($session->getUserId());
