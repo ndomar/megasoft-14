@@ -273,3 +273,8 @@ get_notification:
     defaults: { _controller: MegasoftEntangleBundle:NotificationStream:getNotification}
     methods: [GET]
 
+set_seen:
+    pattern: /notification/{notificationId}/set-seen
+    defaults: { _controller: MegasoftEntangleBundle:NotificationStream:setSeen}
+    methods: [PUT]
+

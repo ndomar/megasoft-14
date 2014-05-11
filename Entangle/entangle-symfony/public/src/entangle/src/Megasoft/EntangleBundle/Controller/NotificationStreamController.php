@@ -284,4 +284,20 @@ class NotificationStreamController extends Controller
 		return $response;
 	}
 
+    /**
+     * @param $notificationId
+     * @return Response
+     * Sets a notification status as seen
+     * @author : Mohamed Ayman
+     */
+    public function setSeenAction($notificationId)
+    {
+        $notificationRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Notification');
+        $notification = $notificationRepo->findOneById($notificationId);
+        $notification->setSeen(true);
+        $this->getDoctrine()->getManager()->persist($notification);
+        $this->getDoctrine()->getManager()->flush();
+        return new Response("Ok" , 200);
+    }
+
 }
