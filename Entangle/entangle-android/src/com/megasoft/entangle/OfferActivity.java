@@ -467,6 +467,11 @@ public class OfferActivity extends FragmentActivity {
 		request.execute();
 	}
 
+	/**
+	 * Executed when the edit price button is pressed, showing a dialog with a field to enter the new price.
+	 * @param View view
+	 * @author Mansour
+	 */
 	public void changePrice(View view) {
 		final AlertDialog changePriceDialog = new AlertDialog.Builder(this)
 				.create();
@@ -492,6 +497,10 @@ public class OfferActivity extends FragmentActivity {
 		changePriceDialog.show();
 	}
 
+	/**
+	 * Validates the new price before sending it to the server.
+	 * @author Mansour
+	 */
 	public void changePrice() {
 		if (newPriceText.equals("")) {
 			Toast.makeText(getApplicationContext(), "Nothing Changed",
@@ -513,6 +522,10 @@ public class OfferActivity extends FragmentActivity {
 		}
 	}
 
+	/**
+	 * Sends the new price to the server.
+	 * @author Mansour
+	 */
 	public void sendPriceToServer() {
 		PostRequest imagePostRequest = new PostRequest(Config.API_BASE_URL
 				+ "/offers/" + offerId + "/changePrice") {
