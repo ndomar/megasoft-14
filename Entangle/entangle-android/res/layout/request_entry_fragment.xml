@@ -35,7 +35,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="@dimen/boxMargin"
-        android:layout_alignLeft="@+id/request_entry_requester_name"
         android:layout_below="@+id/request_entry_requester_name"
         android:textColor="@color/lightGray"
         android:textSize="@dimen/fontSizeSmall"
@@ -44,10 +43,11 @@
 
     <TextView
         android:id="@+id/request_entry_description"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
        	android:layout_below="@+id/request_entry_tags"
         android:layout_marginTop="24dp"
+        android:layout_alignParentLeft="true"
         android:layout_alignLeft="@+id/request_entry_tags"
         android:layout_alignRight="@+id/hr"
         android:textColor="@color/darkGray"
@@ -94,9 +94,10 @@
         android:id="@+id/request_entry_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/request_entry_description"
-        android:layout_alignBottom="@+id/request_entry_description"
-        android:layout_alignRight="@+id/request_entry_price"
+        android:layout_alignBaseline="@+id/request_entry_tags"
+        android:layout_alignBottom="@+id/request_entry_tags"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/green"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

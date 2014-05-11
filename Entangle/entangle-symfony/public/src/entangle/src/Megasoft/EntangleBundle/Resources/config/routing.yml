@@ -180,7 +180,7 @@ dummy:
 accept_tangle_invitation:
     pattern: /invitation/{invitationCode}
     defaults: { _controller: MegasoftEntangleBundle:Tangle:acceptInvitation}
-    methods: [PUT]
+    methods: [GET]
 
 leave_tangle:
     pattern: /tangle/{tangleId}/user

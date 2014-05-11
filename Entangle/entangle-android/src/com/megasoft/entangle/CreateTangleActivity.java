@@ -116,7 +116,6 @@ public class CreateTangleActivity extends Activity {
 
 	/**
 	 * Sends the tangle info to the server.
-	 * 
 	 * @author Mansour
 	 */
 	public void sendTangleToServer() {
@@ -154,9 +153,7 @@ public class CreateTangleActivity extends Activity {
 	}
 
 	/**
-	 * Shows a dialogue informing that the tangle is created and redirecting to
-	 * homepage when pressing OK.
-	 * 
+	 * Shows a toast informing that the tangle is created and closing the activity.
 	 * @author Mansour
 	 */
 	public void goToHomePage() {
@@ -166,8 +163,7 @@ public class CreateTangleActivity extends Activity {
 	}
 
 	/**
-	 * A private class that defines the adapter for the icons' spinner
-	 * 
+	 * A private class that defines the adapter for the icons' spinner.
 	 * @author Mansour
 	 */
 	private class TangleIconSpinnerAdapter extends ArrayAdapter<String> {
