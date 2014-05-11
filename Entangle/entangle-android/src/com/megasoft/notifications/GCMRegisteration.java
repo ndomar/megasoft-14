@@ -12,31 +12,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.megasoft.config.Config;
 import com.megasoft.entangle.MainActivity;
 import com.megasoft.requests.PostRequest;
-import com.megasoft.utils.UI;
 
+/**
+ * this class is responsible for registering the user to google cloud messaging.
+ * it runs in the background  
+ * @author mohamed
+ */
 public class GCMRegisteration extends IntentService {
 
-	public GCMRegisteration() {
-		super("GCMRegisteration");
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	protected void onHandleIntent(Intent arg0) {
-		// TODO Auto-generated method stub
-		register();
-	}
-
-	/**
-	 * key of registration ID in shared prefs
-	 */
-	public static final String PROPERTY_REG_ID = "registration_id";
 	/**
 	 * entangle Google Cloud Messaging project number
 	 */
@@ -61,7 +49,19 @@ public class GCMRegisteration extends IntentService {
 
 	public static final String uri = Config.API_BASE_URL_SERVER
 			+ "/notification/register";
+	
+	
+	public GCMRegisteration() {
+		super("GCMRegisteration");
+		// TODO Auto-generated constructor stub
+	}
 
+	@Override
+	protected void onHandleIntent(Intent arg0) {
+		// TODO Auto-generated method stub
+		register();
+	}
+	
 	/**
 	 * this method checks if a user is has GCM registration id. if no it asks
 	 * for one from registerInBackground
@@ -74,7 +74,7 @@ public class GCMRegisteration extends IntentService {
 		regid = getRegistrationId(getApplicationContext());
 		if (regid.equals(""))
 			registerInBackground();
-		
+
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class GCMRegisteration extends IntentService {
 	private String getRegistrationId(Context context) {
 		SharedPreferences prefs = getSharedPreferences(
 				MainActivity.class.getSimpleName(), MODE_PRIVATE);
-		String registrationId = prefs.getString(PROPERTY_REG_ID, "");
+		String registrationId = prefs.getString(Config.PROPERTY_REG_ID, "");
 		if (registrationId.equals("")) {
 			Log.i(TAG, "reg id not found");
 		} else {
@@ -125,7 +125,7 @@ public class GCMRegisteration extends IntentService {
 			protected void onPostExecute(String regid) {
 				sendRegisterationId(regid);
 				Log.i(TAG, regid);
-				 storeRegisteratinId(regid);
+				storeRegistrationId(regid);
 			}
 		}.execute(null, null, null);
 	}
@@ -188,12 +188,11 @@ public class GCMRegisteration extends IntentService {
 	 * @return None
 	 * @author Shaban
 	 */
-	protected void storeRegisteratinId(String regid) {
+	protected void storeRegistrationId(String regid) {
 		SharedPreferences prefs = getSharedPreferences(
-				MainActivity.class.getSimpleName(), MODE_PRIVATE);
+				GCMRegisteration.class.getSimpleName(), MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
-		editor.putString(PROPERTY_REG_ID, regid);
+		editor.putString(Config.PROPERTY_REG_ID, regid);
 		editor.commit();
 	}
-
 }
