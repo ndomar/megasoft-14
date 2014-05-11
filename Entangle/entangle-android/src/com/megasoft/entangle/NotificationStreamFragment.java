@@ -2,6 +2,9 @@ package com.megasoft.entangle;
 
 import org.json.JSONObject;
 
+import com.megasoft.config.Config;
+import com.megasoft.requests.PutRequest;
+
 import android.R.color;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -23,13 +26,11 @@ public class NotificationStreamFragment extends Fragment {
 	private String notificationType;
 	private boolean seen;
 	
-	public void setData(int notificationId , int userId , boolean seen , String notificationDescription , 
-				String notificationType) {
+	public void setData(int notificationId , int userId , boolean seen , String notificationDescription) {
 		
 		this.userId = userId;
 		this.notificationId = notificationId;
 		this.notificationDescription = notificationDescription;
-		this.notificationType = notificationType;
 		this.seen = seen;
 		
 	}
@@ -67,12 +68,9 @@ public class NotificationStreamFragment extends Fragment {
 	 */
 	public void setSeen() {
 		
-		JSONObject json = new JSONObject();
-
-		//PutRequest putRequest = new PutRequest("http://entangle2.apiary.io/notification/1/set-seen");
-		//putRequest.addHeader("sessionID", "testest");
-		//putRequest.setBody(json);
-		//putRequest.execute("http://entangle2.apiary.io/1/notification/set-seen");
+		PutRequest putRequest = new PutRequest(Config.API_BASE_URL + "/notification/" + notificationId + "/set-seen");
+		putRequest.addHeader("sessionID", "testest");
+		putRequest.execute();
 	}
 	
 	public void checkSeen() {
