@@ -290,7 +290,7 @@ class RequestController extends Controller
      * @return Response|JsonResponse|null
      * @author Salma Khaled
      */
-    public function validate($sessionId, $session, $deadLineFormated, $dateFormated, $requestedPrice, $tangle, $description, $user, $date)
+    public function validate($sessionId, $session, $deadLineFormated, $dateFormated, $requestedPrice, $tangle, $description, $user, $date, $icon)
     {
         $response = new JsonResponse();
         if ($sessionId == null) {
@@ -345,6 +345,11 @@ class RequestController extends Controller
             $response->setContent("price must be a positive value!");
             return $response;
         }
+        if ($icon == null){
+            $response->setStatusCode(400);
+            $response->setContent("some data are missing");
+            return $response;
+        }
         return null;
     }
 
@@ -382,6 +387,7 @@ class RequestController extends Controller
         $description = $json_array['description'];
         $tags = $json_array['tags'];
         $date = $json_array['date'];
+        $icon = $json_array['icon'];
         $dateFormated = new DateTime2($date);
         $deadLine = $json_array['deadLine'];
         if ($deadLine == "") {
@@ -396,7 +402,7 @@ class RequestController extends Controller
         $theTangleId = (int)$tangleId;
         $tangle = $tangleTable->findOneBy(array('id' => $theTangleId));
         $user = $userTable->findOneBy(array('id' => $userId));
-        $valid = $this->validate($sessionId, $session, $deadLineFormated, $dateFormated, $requestedPrice, $tangle, $description, $user, $date);
+        $valid = $this->validate($sessionId, $session, $deadLineFormated, $dateFormated, $requestedPrice, $tangle, $description, $user, $date, $icon);
         if ($valid != null) {
             return $valid;
         }
@@ -408,6 +414,7 @@ class RequestController extends Controller
         $newRequest->setDeadLine($deadLineFormated);
         $newRequest->setUser($user);
         $newRequest->setRequestedPrice($requestedPrice);
+        $newRequest->setIcon($icon);
         $this->addTags($newRequest, $tags);
         $doctrine->getManager()->persist($newRequest);
         $doctrine->getManager()->flush();
