@@ -571,6 +571,10 @@ class OfferController extends Controller {
             $offerer->setCredit($offerer->getCredit()+$transaction->getFinalPrice()); 
             $this->getDoctrine()->getManager()->persist($offerer);
             $this->getDoctrine()->getManager()->flush();
+            $requeststatus=$testrequest->CLOSE;
+            $testrequest->setStatus($requeststatus);
+            $this->getDoctrine()->getManager()->persist($testrequest);
+            $this->getDoctrine()->getManager()->flush();
             return $response;
   
         }
