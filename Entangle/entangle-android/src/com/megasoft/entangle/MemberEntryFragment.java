@@ -117,8 +117,8 @@ public class MemberEntryFragment extends Fragment {
 			public void onClick(View view) {
 				Intent profileIntent = new Intent(getActivity()
 						.getBaseContext(), ProfileActivity.class);
-				profileIntent.putExtra("tangle id", getTangleId());
-				profileIntent.putExtra("user id", getMemberId());
+				profileIntent.putExtra("tangleId", getTangleId());
+				profileIntent.putExtra("userId", getMemberId());
 
 				startActivity(profileIntent);
 			}

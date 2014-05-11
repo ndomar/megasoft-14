@@ -119,7 +119,6 @@ public class LoginActivity extends Activity {
 			protected void onPostExecute(String response) {
 				password.setText("");
 				if (this.getStatusCode() == 201) {
-					register();
 					goToHome(response);
 				} else {
 
@@ -171,7 +170,7 @@ public class LoginActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
+		register();
 		Intent homeActivity = new Intent(this, HomeActivity.class);
 		startActivity(homeActivity);
 
