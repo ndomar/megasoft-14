@@ -81,6 +81,10 @@ public class OfferActivity extends FragmentActivity {
 	private Button acceptOffer;
 
 	/**
+	 * The button that allows the user to notify a requester to mark offer as done
+	 */
+	private Button notifyMarkAsDone;
+	/**
 	 * The tangle Id
 	 */
 	private int tangleId;
@@ -116,6 +120,11 @@ public class OfferActivity extends FragmentActivity {
 	 * String for post offer endpoint
 	 */
 	final String ACCEPT = "/accept/offer";
+
+	/**
+	 * String for post offer endpoint
+	 */
+	final String notify = "/notify";
 
 	/**
 	 * The id of the logged in user
@@ -169,6 +178,7 @@ public class OfferActivity extends FragmentActivity {
 		// deleteOfferLayout = (LinearLayout)
 		// findViewById(R.id.delete_offer_layout);
 		acceptOffer = (Button) findViewById(R.id.accept_offer);
+		notifyMarkAsDone= (Button) findViewById(R.id.notify_mark_as_done);
 		String link = Config.API_BASE_URL + "/offer/" + offerId;
 
 		GetRequest request = new GetRequest(link) {
@@ -456,6 +466,16 @@ public void addComment(View view){
 	request.execute();
 }
 /**
+* This adds the notify to mark as done button to the layout
+*
+* @param None
+* @return None
+* @author mohamedzayan
+*/
+public void addMarkAsDoneButton() {
+notifyMarkAsDone.setVisibility(1);
+}
+/**
  * this checks if an offer is already marked as done or not accepted.if
  * neither it navigates to the actual notifying method
  * @param View view The Button clicked
@@ -463,32 +483,16 @@ public void addComment(View view){
  * @author mohamedzayan
  */
 public void notifyCheck(View view) {
-	GetRequest initRequest = new GetRequest(
-			Config.API_BASE_URL+Request + 1 + Offer + offerId) {
-		protected void onPostExecute(String response) {
-			if (this.getStatusCode() == 200) {
-				JSONObject jresponse;
-				try {
-					jresponse = new JSONObject(response);
-					if (jresponse.getString("status").equals(Pending)
-							|| jresponse.getString("status").equals(Done)) {
-						Toast error = Toast.makeText(
-								getApplicationContext(), R.string.error,
-								Toast.LENGTH_LONG);
-						error.show();
-					} else {
-						sendNotification(offerId);
-					}
-
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-	};
-	initRequest.addHeader(Config.API_SESSION_ID, sessionId);
-	initRequest.execute();
+	Toast error;
+	if(offerStatus.getText().equals("0")) {
+		 error = Toast.makeText(getApplicationContext(),"Offer is not accepted",Toast.LENGTH_LONG);
+	}else if(offerStatus.getText().equals("1")) {
+		error =Toast.makeText(getApplicationContext(),"Offer is already marked as done",Toast.LENGTH_LONG);
+	} else {
+		sendNotification(offerId);
+	}
+		
+}
 /**
  * this sends the actual notification
  * @param  Int OfferId offer ID
@@ -497,7 +501,7 @@ public void notifyCheck(View view) {
  */
 public void sendNotification(int Offerid) {
 	PostRequest request = new PostRequest(
-			Config.API_BASE_URL+Request + Offerid) {
+			Config.API_BASE_URL+ notify +"/offer/" + Offerid) {
 		protected void onPostExecute(String response) {
 			if (this.getStatusCode() == 201) {
 				Toast success = Toast.makeText(getApplicationContext(),
