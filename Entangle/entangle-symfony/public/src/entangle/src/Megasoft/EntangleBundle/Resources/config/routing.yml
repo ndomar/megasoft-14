@@ -48,7 +48,7 @@ viewRequest:
     defaults: { _controller: MegasoftEntangleBundle:Request:viewRequest }
     methods: [GET]
 
-create:
+create_request:
     pattern: /tangle/{tangleId}/request
     defaults: { _controller: MegasoftEntangleBundle:Request:create }
     methods: [POST]
@@ -268,3 +268,7 @@ _mail:
   defaults: {_controller:MegasoftEntangleBundle:Notification:SendEmail}
   methods: [GET]
 
+reset_tangle:
+    pattern: /tangle/{tangleId}/reset
+    defaults: {_controller: MegasoftEntangleBundle:Tangle:resetTangle }
+    methods: [PUT]
