@@ -986,7 +986,7 @@ class TangleController extends Controller {
     public function resetTangleAction(Request $request, $tangleId) {
         $sessionId = $request->headers->get("X-SESSION-ID");
         $tangleRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Tangle");
-        $tangle = $tangleRepo->findOneBy(array('id' => $tangleId));
+        $tangle = $tangleRepo->findOneBy(array('id' => $tangleId,));
         if ($tangle == null) {
             return new Response("Tangle doesn't exist", 404);
         }
@@ -999,7 +999,7 @@ class TangleController extends Controller {
             foreach ($tangleUsers as $tangleUser) {
                 $userId = $tangleUser->getId();
                 $userTangleRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:UserTangle");
-                $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $userId));
+                $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $userId,));
                 $userTangle->setCredit(0);
                 $this->deleteRequests($tangleId, $userId);
                 $this->deleteClaims($tangleId, $userId);
@@ -1021,7 +1021,7 @@ class TangleController extends Controller {
         $requestRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Request");
         $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
         $user = $userRepo->find($userId);
-        $requests = $requestRepo->findBy(array('tangleId' => $tangleId, 'userId' => $userId));
+        $requests = $requestRepo->findBy(array('tangleId' => $tangleId, 'userId' => $userId,));
         if ($requests != null) {
             foreach ($requests as $request) {
                 $request->setDeleted(1);
@@ -1046,7 +1046,7 @@ class TangleController extends Controller {
         $offerRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Offer");
         $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
         $user = $userRepo->find($userId);
-        $offers = $offerRepo->findBy(array('requestId' => $requestId, 'userId' => $userId));
+        $offers = $offerRepo->findBy(array('requestId' => $requestId, 'userId' => $userId,));
         if ($offers != null) {
             foreach ($offers as $offer) {
                 $offer->setDeleted(1);
@@ -1069,7 +1069,7 @@ class TangleController extends Controller {
         $claimRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Claim");
         $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
         $user = $userRepo->find($userId);
-        $claims = $claimRepo->findBy(array('tangleId' => $tangleId, 'claimerId' => $userId));
+        $claims = $claimRepo->findBy(array('tangleId' => $tangleId, 'claimerId' => $userId,));
         if ($claims != null) {
             foreach ($claims as $claim) {
                 $claim->setDeleted(1);
