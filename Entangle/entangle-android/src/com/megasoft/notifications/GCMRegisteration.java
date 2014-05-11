@@ -18,18 +18,12 @@ import com.megasoft.config.Config;
 import com.megasoft.entangle.MainActivity;
 import com.megasoft.requests.PostRequest;
 
+/**
+ * this class is responsible for registering the user to google cloud messaging.
+ * it runs in the background  
+ * @author mohamed
+ */
 public class GCMRegisteration extends IntentService {
-
-	public GCMRegisteration() {
-		super("GCMRegisteration");
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	protected void onHandleIntent(Intent arg0) {
-		// TODO Auto-generated method stub
-		register();
-	}
 
 	/**
 	 * entangle Google Cloud Messaging project number
@@ -55,7 +49,19 @@ public class GCMRegisteration extends IntentService {
 
 	public static final String uri = Config.API_BASE_URL_SERVER
 			+ "/notification/register";
+	
+	
+	public GCMRegisteration() {
+		super("GCMRegisteration");
+		// TODO Auto-generated constructor stub
+	}
 
+	@Override
+	protected void onHandleIntent(Intent arg0) {
+		// TODO Auto-generated method stub
+		register();
+	}
+	
 	/**
 	 * this method checks if a user is has GCM registration id. if no it asks
 	 * for one from registerInBackground
