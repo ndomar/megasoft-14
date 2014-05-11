@@ -1006,6 +1006,7 @@ class TangleController extends Controller {
             }
         }
         $this->getDoctrine()->getManager()->flush();
+
         return new Response("Tangle reset", 200);
     }
 
