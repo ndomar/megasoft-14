@@ -147,5 +147,8 @@
     <string name="logout">Logout</string>
     <string name="title_activity_general_profile">General Profile</string>
     <string name="title_activity_splash">Splash</string>
-
+    <string name="title_activity_forget_password">ForgetPasswordActivity</string>
+	<string name="passwordReset">Reset</string>
+	<string name="your_name">Your User Name</string>
+	<string name="your_email">your.email@example.com</string>
 </resources>

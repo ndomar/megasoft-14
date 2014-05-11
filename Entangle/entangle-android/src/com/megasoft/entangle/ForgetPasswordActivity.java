@@ -7,21 +7,18 @@ import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.os.Build;
+import android.widget.Toast;
 
 public class ForgetPasswordActivity extends Activity {
-
+	/**
+	 * email of the user
+	 */
 	EditText email;
+	/**
+	 * name of the user
+	 */
 	EditText name;
 	public final String FORGET = "/user/forgetPass";
 	@Override
@@ -30,6 +27,11 @@ public class ForgetPasswordActivity extends Activity {
 		setContentView(R.layout.activity_forget_password);
 		
 	}
+	
+	/**
+	 * this function is responsible for getting the user name and email from the user and sending the password reset request
+	 * @author KareemWahby
+	 */
 	public void forgetPassword() {
 		email=(EditText) findViewById(R.id.emailFroget);
 		name=(EditText) findViewById(R.id.nameForget);
@@ -46,12 +48,14 @@ public class ForgetPasswordActivity extends Activity {
 				+ FORGET) {
 			@Override
 			protected void onPostExecute(String response) {
-				if (this.getStatusCode() == 200) {
-					//send email to user here
-				} else {
-					
+				if(this.getStatusCode()!=200){
+					Toast.makeText(getBaseContext(), "The data entered is not correct!",
+							Toast.LENGTH_SHORT).show();
+				}else{
+					Toast.makeText(getBaseContext(), "Email Sent Successfully!, Check you mail",
+							Toast.LENGTH_SHORT).show();
+					finish();
 				}
-
 			}
 		};
 		request.setBody(json);
