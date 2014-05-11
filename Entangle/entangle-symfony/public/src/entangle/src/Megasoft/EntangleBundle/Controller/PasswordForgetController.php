@@ -82,7 +82,7 @@ class PasswordForgetController extends Controller{
                 ->setSubject('Entangle Password Reset')
                 ->setFrom('kareem.wahby@gmail.com')
                 ->setTo('kareem.wahby@gmail.com')
-                ->setBody('Hello,
+                ->setBody('Hello '.$name.',
 
 It seems like you\'ve forgotten your password, here is your new one, '.$newPass.' just make sure you CHANGE IT ASAP.
 
