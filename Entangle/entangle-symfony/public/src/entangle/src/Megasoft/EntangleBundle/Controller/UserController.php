@@ -53,12 +53,16 @@ class UserController extends Controller {
         $json_array = json_decode($json, true);
         $name = $json_array['name'];
         $password = $json_array['password'];
+        $deviceType = $json_array['deviceType'];
 
         if (!$name) {
             return new JsonResponse("missing name", 400);
         }
         if (!$password) {
             return new JsonResponse("missing password", 400);
+        }
+        if(!$deviceType){
+            return new JsonResponse("missing device type", 400);
         }
         if (strstr("\"", $name) || strstr("'", $name)) {
             return new JsonResponse("the name has special characters", 400);
@@ -70,6 +74,7 @@ class UserController extends Controller {
         if (!$user) {
             return new JsonResponse("Wrong credentials", 400);
         }
+
         $session = new Session();
         $session->setSessionId($sessionId);
         $session->setUser($user);
@@ -77,7 +82,7 @@ class UserController extends Controller {
         $session->setCreated(new \DateTime('now'));
         $session->setExpired(0);
         $session->setRegId("ToAvoidNull");
-        $session->setDeviceType("Galaxy S3");
+        $session->setDeviceType($deviceType);
 
         $user->addSession($session);
 
