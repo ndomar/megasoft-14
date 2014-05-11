@@ -12,19 +12,23 @@ use Symfony\Component\Form\Exception\LogicException;
 use Megasoft\EntangleBundle\Entity\User;
 use Megasoft\EntangleBundle\Entity\UserEmail;
 
-class AboutController extends Controller {
+class AboutController extends Controller
+{
 
-    public function indexAction($name) {
+    public function indexAction($name)
+    {
         return $this->render('MegasoftEntangleBundle:About:about.html.twig', array('name' => $name));
     }
-/**
-* Renders the About.html.twig page
-* @param null
-* @return rendered page
-* @author Eslam Maged
-*/
 
-    public function  aboutAction() {
+    /**
+     * Renders the About.html.twig page
+     * @param null
+     * @return rendered page
+     * @author Eslam Maged
+     */
+
+    public function  aboutAction()
+    {
         return $this->render('MegasoftEntangleBundle:About:about.html.twig');
     }
 

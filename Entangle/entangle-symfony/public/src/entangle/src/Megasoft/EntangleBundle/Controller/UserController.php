@@ -14,16 +14,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Constraints\DateTime;
 
-class UserController extends Controller {
+class UserController extends Controller
+{
 
     /**
      * Validates the username and password from request and returns sessionID
      * @param  Integer $len length for the generated sessionID
      * @return String $generatedSessionID the session id that will be used
-     * 
+     *
      * @author maisaraFarahat
      */
-    private function generateSessionId($len) {
+    private function generateSessionId($len)
+    {
         $generatedSessionID = '';
         $seed = "abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         for ($i = 0; $i < $len; $i++) {
@@ -36,10 +38,11 @@ class UserController extends Controller {
      * Validates the username and password from request and returns sessionID
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse $response
-     * 
+     *
      * @author maisaraFarahat
      */
-    public function loginAction(\Symfony\Component\HttpFoundation\Request $request) {
+    public function loginAction(\Symfony\Component\HttpFoundation\Request $request)
+    {
         $response = new JsonResponse();
         $badReq = "bad request";
         if (!$request) {
@@ -90,8 +93,8 @@ class UserController extends Controller {
         $filepath = 'http://entangle.io/images/profilePictures/';
 
         $response->setData(array('sessionId' => $sessionId, 'userId' => $user->getId()
-            , 'profileImage' => $filepath . $user->getPhoto(),
-            'username' => $user->getName() , ));
+        , 'profileImage' => $filepath . $user->getPhoto(),
+            'username' => $user->getName(),));
         $response->setStatusCode(201);
 
         return $response;
@@ -104,11 +107,12 @@ class UserController extends Controller {
      * @return boolean true if the user is a memeber of this tangle, false otherwise
      * @author Almgohar
      */
-    private function validateUser($userId, $tangleId) {
+    private function validateUser($userId, $tangleId)
+    {
         $userTangleTable = $this->getDoctrine()->
-                getRepository('MegasoftEntangleBundle:UserTangle');
+            getRepository('MegasoftEntangleBundle:UserTangle');
         $userTangle = $userTangleTable->
-                findOneBy(array('userId' => $userId, 'tangleId' => $tangleId));
+            findOneBy(array('userId' => $userId, 'tangleId' => $tangleId));
         if ($userTangle == null) {
             return false;
         } else {
@@ -122,9 +126,10 @@ class UserController extends Controller {
      * @return boolean true if the tangle exists, false otherwise
      * @author Almgohar
      */
-    private function validateTangle($tangleId) {
+    private function validateTangle($tangleId)
+    {
         $tangleTable = $this->getDoctrine()->
-                getRepository('MegasoftEntangleBundle:Tangle');
+            getRepository('MegasoftEntangleBundle:Tangle');
         $tangle = $tangleTable->findOneBy(array('id' => $tangleId));
         if ($tangle == null) {
             return false;
@@ -141,7 +146,8 @@ class UserController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
      * @author Almgohar
      */
-    public function profileAction(\Symfony\Component\HttpFoundation\Request $request, $userId, $tangleId) {
+    public function profileAction(\Symfony\Component\HttpFoundation\Request $request, $userId, $tangleId)
+    {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($sessionId == null) {
@@ -194,7 +200,8 @@ class UserController extends Controller {
      * @return array of arrays $transactions
      * @author Almgohar
      */
-    private function getTransactions($offers, $tangleId) {
+    private function getTransactions($offers, $tangleId)
+    {
         $transactions = array();
         for ($i = 0; $i < count($offers); $i++) {
             $offer = $offers[$i];
@@ -224,16 +231,17 @@ class UserController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response | array #info
      * @author Almgohar
      */
-    private function getUserInfo($user, $tangleId) {
+    private function getUserInfo($user, $tangleId)
+    {
         if ($user == null) {
             return new Response('Bad Request', 400);
         }
         $doctrine = $this->getDoctrine();
         $userId = $user->getId();
         $userTangleTable = $doctrine->
-                getRepository('MegasoftEntangleBundle:UserTangle');
+            getRepository('MegasoftEntangleBundle:UserTangle');
         $userTangle = $userTangleTable->
-                findOneBy(array('userId' => $userId, 'tangleId' => $tangleId));
+            findOneBy(array('userId' => $userId, 'tangleId' => $tangleId));
         $name = $user->getName();
         $description = $user->getUserBio();
         $credit = $userTangle->getCredit();
@@ -251,10 +259,11 @@ class UserController extends Controller {
      * checks if a session id exists and removes it from the user sessions
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse $response
-     * 
+     *
      * @author maisaraFarahat
      */
-    public function logoutAction(\Symfony\Component\HttpFoundation\Request $request) {
+    public function logoutAction(\Symfony\Component\HttpFoundation\Request $request)
+    {
         $response = new JsonResponse();
         $badReq = "bad request";
         if (!$request) {
@@ -283,7 +292,6 @@ class UserController extends Controller {
         $this->getDoctrine()->getManager()->persist($session);
 
         $this->getDoctrine()->getManager()->flush();
-
 
 
         return new Response(200);

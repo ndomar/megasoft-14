@@ -237,7 +237,7 @@ class RequestController extends Controller
             if ($sessionUserId == $requester) {
                 $myRequest = 1;
             }
-            $requestDetails = array('requester' => $requester, 'requesterName'=>$request->getUser()->getName() ,'description' => $description,
+            $requestDetails = array('requester' => $requester, 'requesterName' => $request->getUser()->getName(), 'description' => $description,
                 'status' => $status, 'MyRequest' => $myRequest, 'date' => $date, 'deadline' => $deadline, 'icon' => $icon,
                 'price' => $price, 'tangle' => $tangle, 'tags' => $tags, 'offers' => $offers);
         }

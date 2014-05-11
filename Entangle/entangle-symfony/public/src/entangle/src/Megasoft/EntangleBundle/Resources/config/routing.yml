@@ -268,3 +268,13 @@ _mail:
   defaults: {_controller:MegasoftEntangleBundle:Notification:SendEmail}
   methods: [GET]
 
+_megasoft_entangle_login:
+  pattern: /login
+  defaults: {_controller:MegasoftEntangleBundle:Site:login}
+  methods: [POST]
+
+_manage_tangle_from_website:
+  pattern: /admin/manageTangle
+  defaults: {_controller:MegasoftEntangleBundle:Site:manageTangle}
+  methods: [GET]
+

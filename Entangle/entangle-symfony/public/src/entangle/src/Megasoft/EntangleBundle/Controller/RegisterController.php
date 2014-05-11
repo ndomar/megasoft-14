@@ -18,9 +18,11 @@ use Megasoft\EntangleBundle\Entity\UserEmail;
  * Responsible for the user creation process
  * @author: Eslam
  */
-class RegisterController extends Controller {
+class RegisterController extends Controller
+{
 
-    public function indexAction($name) {
+    public function indexAction($name)
+    {
         return $this->render('MegasoftEntangleBundle:Register:register.html.twig', array('name' => $name));
     }
 
@@ -30,7 +32,8 @@ class RegisterController extends Controller {
      * @return String $ret
      * @author: Eslam
      * * */
-    private function generate($len) {
+    private function generate($len)
+    {
         $ret = '';
         $seed = "abcdefghijklmnopqrstuvwxyz123456789";
         for ($i = 0; $i < $len; $i++) {
@@ -45,7 +48,8 @@ class RegisterController extends Controller {
      * @return boolean true if the username is unique , false otherwise
      * @author: Eslam
      * * */
-    private function validateUniqueUsername($username) {
+    private function validateUniqueUsername($username)
+    {
         $nameRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
         if ($nameRepo->findOneBy(array('name' => $username)) == null && $username != null && $username != "") {
             return true;
@@ -60,7 +64,8 @@ class RegisterController extends Controller {
      * @return Boolean value, true if they match. False otherwise.
      * @author: Eslam
      * * */
-    private function passwordsMatch($password, $confirmPassword) {
+    private function passwordsMatch($password, $confirmPassword)
+    {
         if ($password == $confirmPassword) {
             return true;
         } else {
@@ -74,9 +79,10 @@ class RegisterController extends Controller {
      * @return Boolean value, true if unique. false otherwise
      * @author: Eslam
      * * */
-    private function EmailIsUnique($email) {
+    private function EmailIsUnique($email)
+    {
         $emailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
-        if ($emailRepo->findOneBy(array('email' =>$email))) {
+        if ($emailRepo->findOneBy(array('email' => $email))) {
             return false;
         } else {
             return true;
@@ -89,9 +95,10 @@ class RegisterController extends Controller {
      * @return void (Creates a new user if successful, otherwise it returns an error)
      * @author: Eslam
      * * */
-    public function registerAction(\Symfony\Component\HttpFoundation\Request $request) {
+    public function registerAction(\Symfony\Component\HttpFoundation\Request $request)
+    {
         $status = "";
-        $message ="";
+        $message = "";
         if ($request->getMethod() == 'POST') {
 
             $name = $request->get('name');
@@ -125,7 +132,7 @@ class RegisterController extends Controller {
                             $filename = substr(md5(time()), 0, 10) . $this->generate(5);
                             $filepath = $kernel->getRootDir() . '/../web/images/profilePictures/' . $filename . '.' . $fileType;
                             move_uploaded_file($image, $filepath);
-                            $user->setPhoto($filename . '.' .$fileType);
+                            $user->setPhoto($filename . '.' . $fileType);
                         }
                     }
                 }
@@ -134,33 +141,29 @@ class RegisterController extends Controller {
                 $entityManager->persist($userEmail);
                 $entityManager->flush();
                 $status = "Successful!";
-                $message ="Account created sweetie!";
+                $message = "Account created sweetie!";
 
-                return $this->render('MegasoftEntangleBundle:Register:register.html.twig', array('status'=> $status, 'message'=> $message));
+                return $this->render('MegasoftEntangleBundle:Register:register.html.twig', array('status' => $status, 'message' => $message));
 
-            }
-            else if(!( $this->validateUniqueUsername($name))) {
+            } else if (!($this->validateUniqueUsername($name))) {
                 $status = "Failed!";
                 $message = "Username is not unique!";
-                return $this->render('MegasoftEntangleBundle:Register:register.html.twig', array('status'=> $status, 'message'=> $message));
+                return $this->render('MegasoftEntangleBundle:Register:register.html.twig', array('status' => $status, 'message' => $message));
 
-            }
-            else if(!($this->EmailIsUnique($email))){
+            } else if (!($this->EmailIsUnique($email))) {
                 $status = "Failed!";
                 $message = "Email is not unique!";
-                return $this->render('MegasoftEntangleBundle:Register:register.html.twig', array('status'=> $status, 'message'=> $message));
+                return $this->render('MegasoftEntangleBundle:Register:register.html.twig', array('status' => $status, 'message' => $message));
 
-            }
-            
-            else if(!($this->passwordsMatch($password, $confirmPassword))) {
+            } else if (!($this->passwordsMatch($password, $confirmPassword))) {
                 $status = "Failed!";
                 $message = "Passwords do not match!";
-                return $this->render('MegasoftEntangleBundle:Register:register.html.twig', array('status'=> $status, 'message'=> $message));
+                return $this->render('MegasoftEntangleBundle:Register:register.html.twig', array('status' => $status, 'message' => $message));
 
             }
 
         }
-        return $this->render('MegasoftEntangleBundle:Register:register.html.twig', array('status'=> $status, 'message'=> $message));
+        return $this->render('MegasoftEntangleBundle:Register:register.html.twig', array('status' => $status, 'message' => $message));
     }
 
 }

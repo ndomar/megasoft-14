@@ -30,6 +30,7 @@
                             <li><a title="team" href="#about">About</a></li>
                             <li><a title="download" href="#download">Download</a></li>
                             <li><a title="register" href="#register">Register</a></li>
+                            <li><a title="login" href="#login">login</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -470,6 +471,55 @@
             </div>
         </div>
     </section>
+
+    <!--Start section login-->
+    <section id="login" class="section green">
+        <div class="container">
+            <h4>Login </h4>
+
+            <div class="blankdivider30">
+            </div>
+            <div class="row">
+                <div class="span12">
+                    <div class="cform" id="contact-form">
+                        <div id="sendmessage">
+                            Your message has been sent. Thank you!
+                        </div>
+                        <form  class="contactForm" method="POST" enctype='multipart/form-data' role="form"   action="{{ path('megasoft_entangle_login') }}">
+                            <div class="row">
+                                <div class="span6">
+                                    <div class="field your-name">
+                                        <input type="text" name="name" placeholder="Your Name" class="cform-text" size="40" data-rule="maxlen:4" data-msg="Please enter a valid username" />
+                                        <div class="validation">
+                                        </div>
+                                    </div>
+
+                                    <div class="field subject">
+                                        <input type="password" name="password" placeholder="Password" class="cform" size="40" data-rule="maxlen:4" data-msg="Please enter a valid password" />
+                                        <div class="validation">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span6">
+
+
+
+
+
+                                    <input type="submit" value="Submit" class="btn btn-theme pull-left">
+                                    <p>{{ status }}</p>
+                                    <p>{{ message }}</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- ./span12 -->
+            </div>
+        </div>
+    </section>
+
+
     <footer>
 
 

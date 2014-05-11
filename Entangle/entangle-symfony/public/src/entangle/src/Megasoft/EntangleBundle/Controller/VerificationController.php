@@ -9,7 +9,7 @@
 /**
  * Description of VerificationController
  * this controller controls the process of sending emails to users
- * and verifying them 
+ * and verifying them
  * @author MahmoudGamal
  */
 
@@ -18,7 +18,8 @@ namespace Megasoft\EntangleBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
-class VerificationController extends Controller {
+class VerificationController extends Controller
+{
 
     /**
      * This method sends verification email to user
@@ -28,7 +29,8 @@ class VerificationController extends Controller {
      * @return  response
      * @author MahmoudGamal
      */
-    public function emailUserAction($userName, $userEmail, $verificationHash) {
+    public function emailUserAction($userName, $userEmail, $verificationHash)
+    {
         $body = 'Thanks for signing up!
             
         Your account has been created, you can login with the 
@@ -41,10 +43,10 @@ class VerificationController extends Controller {
         Please click this link to activate your account:
         http://www.entangle.com/verify/' . $verificationHash . '';
         $message = \Swift_Message::newInstance()
-                ->setSubject('Entangle Verification')
-                ->setFrom('mahmoudgamaleid@gmail.com')
-                ->setTo($userEmail)
-                ->setBody($body);
+            ->setSubject('Entangle Verification')
+            ->setFrom('mahmoudgamaleid@gmail.com')
+            ->setTo($userEmail)
+            ->setBody($body);
         $this->get('mailer')->send($message);
         return new Response("Email Sent", 200);
     }
@@ -55,11 +57,12 @@ class VerificationController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response
      * @author MahmoudGamal
      */
-    public function verifyUserAction($verificationCode) {
+    public function verifyUserAction($verificationCode)
+    {
         $criteria = array('verificationCode' => $verificationCode);
         $search = current($this->getDoctrine()
-                        ->getRepository('MegasoftEntangleBundle:VerificationCode')
-                        ->findBy($criteria));
+            ->getRepository('MegasoftEntangleBundle:VerificationCode')
+            ->findBy($criteria));
         $user = $search->getUser();
         $expired = $search->getExpired();
         if ($expired) {
