@@ -147,6 +147,9 @@
     <string name="logout">Logout</string>
     <string name="title_activity_general_profile">General Profile</string>
     <string name="title_activity_splash">Splash</string>
+    <string name="reset">reset tangle!</string>
+    <string name="search_string">Member Name</string>
+    <string name ="member_not_found">"Member not found."</string>
 
     <string name="done">Mark as done</string>
     <string name="mark">Marked As Done</string>
