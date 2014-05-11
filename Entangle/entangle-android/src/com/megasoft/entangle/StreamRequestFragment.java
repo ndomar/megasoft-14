@@ -258,7 +258,7 @@ public class StreamRequestFragment extends Fragment {
 				intent.putExtra("tangleId",
 						parent.getTangleId());
 				intent.putExtra("tangleName",
-						parent.getTangleName());
+						parent.getTangleName()); 
 				intent.putExtra("sessionId",
 						parent.getSessionId());
 				intent.putExtra("userId", getRequesterId());
