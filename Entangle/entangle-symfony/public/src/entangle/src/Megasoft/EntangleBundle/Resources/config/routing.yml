@@ -268,3 +268,8 @@ _mail:
   defaults: {_controller:MegasoftEntangleBundle:Notification:SendEmail}
   methods: [GET]
 
+get_notification:
+    pattern: /{userId}/notifications
+    defaults: { _controller: MegasoftEntangleBundle:NotificationStream:getNotification}
+    methods: [GET]
+
