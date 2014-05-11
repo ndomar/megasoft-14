@@ -66,7 +66,7 @@ public class CreateTangleActivity extends Activity {
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		Spinner iconSpinner = (Spinner) findViewById(R.id.iconSpinner);
 		iconSpinner.setAdapter(new TangleIconSpinnerAdapter(
-				CreateTangleActivity.this, R.layout.spinner_icons,
+				CreateTangleActivity.this, R.layout.tangle_spinner_icons,
 				imageNameDatabase));
 		iconSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -188,7 +188,7 @@ public class CreateTangleActivity extends Activity {
 				ViewGroup parent) {
 
 			LayoutInflater inflater = getLayoutInflater();
-			View row = inflater.inflate(R.layout.spinner_icons, parent, false);
+			View row = inflater.inflate(R.layout.tangle_spinner_icons, parent, false);
 
 			ImageView icon = (ImageView) row.findViewById(R.id.icon);
 			icon.setImageResource(imageIconDatabase[position]);
