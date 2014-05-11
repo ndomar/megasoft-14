@@ -72,7 +72,7 @@ class TangleController extends Controller {
         $query = $requestRepo->createQueryBuilder('request')
             ->where('request.tangleId = :tangleId')
             ->setParameter('tangleId', $tangleId)
-            ->andWhere('request.deleted = 0');
+            ->andWhere('request.deleted = 0 AND request.status = 0');
         if($queryValue != null){
             $query = $query->innerJoin('MegasoftEntangleBundle:User', 'user' , 'WITH' , 'request.userId = user.id')
                             ->leftJoin('request.tags','tag')
