@@ -354,34 +354,18 @@ class UserController extends Controller {
             $password = $json_array['password'];
             $confirmPassword = $json_array['confirmPassword'];
 
-            if (!$username) {
-                return new JsonResponse("Missing Username", 400);
+            if (!$username || !$email || !$password || !$confirmPassword || (!preg_match('/^[a-zA-Z0-9]+$/', $username))) {
+                return new JsonResponse($badRequest, 400);
             }
 
-            if (!$email) {
-                return new JsonResponse("Missing Email", 400);
+            if(!$this->validateUniqueUsername($username)) {
+                return new JsonResponse("Not unique username", 401);
             }
 
-            if (!$password) {
-                return new JsonResponse("Missing Password", 400);
+            if(!$this->validateUniqueEmail($email)) {
+                return new JsonResponse("Not unique Email", 402);
             }
 
-            if (!$confirmPassword) {
-                return new JsonResponse("Missing Password Condirmation", 400);
-            }
-
-            if (!preg_match('/^[a-zA-Z0-9]+$/', $username)) {
-
-                return new JsonResponse("Invalid Characters in username", 400);
-            }
-
-            if (!$this->validateUniqueUsername($username)) {
-                return new JsonResponse("Username is not unique", 400);
-            }
-
-            if (!$this->validateUniqueEmail($email)) {
-                return new JsonResponse("Email is already in-use", 400);
-            }
 
             $user = new User;
             $userEmail = new UserEmail();
