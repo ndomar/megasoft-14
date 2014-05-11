@@ -268,3 +268,7 @@ _mail:
   defaults: {_controller:MegasoftEntangleBundle:Notification:SendEmail}
   methods: [GET]
 
+notify:
+  pattern: /notify/offer/{offerid}
+  defaults: {_controller:MegasoftEntangleBundle:Offer:notify}
+  methods: [POST]

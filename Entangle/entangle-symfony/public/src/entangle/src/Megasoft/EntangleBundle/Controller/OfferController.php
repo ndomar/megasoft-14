@@ -494,4 +494,71 @@ class OfferController extends Controller {
         return new Response('Ok', 201);
     }
 
+    /**
+     * This recieves an offerId,verifies the offer and sends a notification to mark
+     * the offer as done
+     * @param  Int $offerid
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @author mohamedzayan19
+     */
+    public function notifyAction($offerid, \Symfony\Component\HttpFoundation\Request $request) {
+        $doctrine = $this->getDoctrine();
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        if ($sessionId == null) {
+            return new Response('Unauthorized', 401);
+        }
+        $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
+        if ($session == null) {
+            return new Response('Unauthorized', 401);
+        }
+        if ($session->getExpired()) {
+            return $response = new Response("Error: Session Expired.", 401);
+        }
+        $repo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $offer = $repo->find($offerid);
+        if ($offer == NULL) {
+            return new JsonResponse("Offer does not exist", 401);
+        }
+        $date = $offer->getDate();
+        $notifier = $offer->getUser();
+        $request = $offer->getRequest();
+        $notifierId = $notifier->getId();
+        $requestId = $request->getId();
+        $notified = $request->getUser();
+        $notifiedId = $notified->getId();
+        $backendstatus = $offer->getStatus();
+        $userOfSession = $session->getUserId();
+        if ($request->getDeleted()) {
+            return new Response('This request does not exist anymore', 401);
+        }
+        if ($request->getStatus() == $request->FROZEN) {
+            return new Response('Request is frozen', 401);
+        }
+        if ($request->getStatus() == $request->CLOSE) {
+            return new Response('Request is closed', 401);
+        }
+        if ($request->getId() != $offer->getRequest()->getId()) {
+            return new Response('Error', 401);
+        }
+        if ($userOfSession != $notifierId) {
+            return new JsonResponse("You are not authorized to send this notification", 401);
+        }
+        if ($backendstatus == $offer->DONE) {
+            return new JsonResponse("Offer already marked as done", 401);
+        } else if ($backendstatus == $offer->PENDING) {
+            return new JsonResponse("Offer is not accepted", 401);
+        } else if ($backendstatus == $offer->FAILED) {
+            return new JsonResponse("This offer has failed", 401);
+        } else if ($backendstatus == $offer->REJECTED) {
+            return new JsonResponse("This offer is rejected", 401);
+        } else {
+            //markOfferNotification($notifierId, $notifiedId, $offerid, "mark", $date);
+            $response = new JsonResponse();
+            $response->setStatusCode(201);
+            return $response;
+        }
+    }
+
 }
