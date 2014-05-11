@@ -6,8 +6,8 @@ use Megasoft\EntangleBundle\Entity\Tangle;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Megasoft\EntangleBundle\Entity\Offer;
 use Megasoft\EntangleBundle\Entity\InvitationCode;
 use Megasoft\EntangleBundle\Entity\InvitationMessage;
@@ -833,6 +833,7 @@ class TangleController extends Controller {
      */
     public function acceptInvitationAction($invitationCode) {
 
+
         $criteria1 = array('code' => $invitationCode);
         $invitation = $this->getDoctrine()
                 ->getRepository('MegasoftEntangleBundle:InvitationCode')
@@ -872,7 +873,6 @@ class TangleController extends Controller {
         $tangleUser->setUser($user);
         $tangleUser->setTangle($tangle);
         $tangleUser->setCredit(0);
-
         $invitation->setExpired(true);
         $this->getDoctrine()->getManager()->persist($tangleUser);
         $this->getDoctrine()->getManager()->flush();
