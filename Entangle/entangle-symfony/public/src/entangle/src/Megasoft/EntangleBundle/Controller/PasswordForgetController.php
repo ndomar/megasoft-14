@@ -10,7 +10,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\False;
 
 class PasswordForgetController extends Controller{
-
+    /**
+     * This Function generates a Random String to be used as the new Password
+     * @return string
+     * @author KareemWahby
+     */
     private function randPassGen(){
         $newpass = '';
         $seed = "abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -19,11 +23,12 @@ class PasswordForgetController extends Controller{
         }
         return $newpass;
     }
+
     /**
-     * this function validates that the user credentials are correct
+     * This function takes the user name and email and checks if the user with these attributes is a valid user
      * @param $name
      * @param $email
-     * @return int
+     * @return int user id if succsesful -1 if not
      * @author KareemWahby
      */
     private function securityCheck($name,$email) {
@@ -49,7 +54,7 @@ class PasswordForgetController extends Controller{
     }
 
     /**
-     * this function is the endpiont that returns the user password if he forgets it
+     * This is the endpoint responsible for resetting the password for the user and send him an email with the new password
      * @param Request $request
      * @return JsonResponse
      * @author KareemWahby
@@ -73,8 +78,20 @@ class PasswordForgetController extends Controller{
             $user->setPassword($newPass);
             $em->persist($user);
             $em->flush();
+            $message = \Swift_Message::newInstance()
+                ->setSubject('Entangle Password Reset')
+                ->setFrom('kareem.wahby@gmail.com')
+                ->setTo('kareem.wahby@gmail.com')
+                ->setBody('Hello,
+
+It seems like you\'ve forgotten your password, here is your new one, '.$newPass.' just make sure you CHANGE IT ASAP.
+
+Cheers,
+Entangle Team.')
+            ;
+            $this->get('mailer')->send($message);
             $response->setStatusCode(200);
-            $response->setContent(json_encode(array('password'=> $newPass)));
+            $response->setContent('Email Sent Successfully');
             return $response;
         }
 
