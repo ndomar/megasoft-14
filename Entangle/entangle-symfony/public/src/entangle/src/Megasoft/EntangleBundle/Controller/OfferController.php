@@ -564,7 +564,15 @@ class OfferController extends Controller {
             $transaction->setFinalPrice($offer->getRequestedPrice());
             $this->getDoctrine()->getManager()->persist($transaction);
             $this->getDoctrine()->getManager()->flush();
+            $tangleId=$testrequest->getTangleId();
+            $userTangleTable = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+                    $offerer = $userTangleTable->
+                findOneBy(array('userId' => $offer->getUserId(), 'tangleId' => $tangleId));
+            $offerer->setCredit($offerer->getCredit()+$transaction->getFinalPrice()); 
+            $this->getDoctrine()->getManager()->persist($offerer);
+            $this->getDoctrine()->getManager()->flush();
             return $response;
+  
         }
     }
 
