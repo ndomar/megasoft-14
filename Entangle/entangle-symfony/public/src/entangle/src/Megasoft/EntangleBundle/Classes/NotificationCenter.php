@@ -384,7 +384,7 @@ class NotificationCenter
         $request = $offer->getRequest();
         $notification = new NewOfferNotification();
         $from = $offer->getUser();
-
+        $to = $offer->getRequest()->getUser();
         $date = date('m/d/Y h:i:s a', time());
         $date = DateTime::createFromFormat('m/d/Y h:i:s a', $date);
 
@@ -404,7 +404,7 @@ class NotificationCenter
             $body = $from->getName() . "made a new offer";
 
         $data = array('notificationId' => $notification->getId(), "title" => $title, "body" => $body, "type" => $this->newOfferNotificationId, "offerId" => $offerid);
-        return $this->notificationCenter($from->getId(), $data);
+        return $this->notificationCenter($to->getId(), $data);
 
     }
 
@@ -470,6 +470,9 @@ class NotificationCenter
         $date = DateTime::createFromFormat('m / d / Y h:i:s a', $date);
 
         foreach ($offerArray as $offer) {
+            if($offer->getDeleted() == 1)
+                continue;
+
             $to = $offer->getUser();
 
             $notification = new RequestDeletedNotification();
