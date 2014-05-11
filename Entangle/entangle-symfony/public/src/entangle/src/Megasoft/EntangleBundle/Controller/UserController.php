@@ -233,10 +233,9 @@ class UserController extends Controller {
         $name = $user->getName();
         $description = $user->getUserBio();
         $photo = $user->getPhoto();
-        $birthDate = $user->getBirthDate()->format('d/m/Y');
         $verified = $user->getVerified();
         $information = array('name' => $name, 'description' => $description,
-            'photo' => $photo, 'birth_date' => $birthDate,
+            'photo' => $photo,
             'verified' => $verified,);
         $response = new JsonResponse();
         $response->setData($information);
