@@ -11,7 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.megasoft.config.Config;
 import com.megasoft.entangle.CreateTangleActivity;
 import com.megasoft.entangle.HomeActivity;
-import com.megasoft.entangle.IntroActivity;
+import com.megasoft.entangle.IntroFragment;
 import com.megasoft.entangle.R;
 import com.megasoft.requests.GetRequest;
 
@@ -121,10 +121,14 @@ public class TangleStreamActivity extends Fragment {
 
 			if (tangles.length() > 0) {
 				activity.switchFragment(tangleIds.get(0), 0);
-			} else {
-				Intent ntent = new Intent(getActivity(), IntroActivity.class);
-				startActivity(ntent);
 			}
+			else {
+//				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+//				IntroFragment intro = new IntroFragment();
+//				fragmentTransaction.replace(R.id.content_frame, intro);
+//				fragmentTransaction.commit();
+			}
+			
 			listView.setAdapter(new ArrayAdapter<String>(activity.getApplicationContext(), R.layout.sidebar_list_item, R.id.textView1, arr));
 			listView.setOnItemClickListener(new ListView.OnItemClickListener() {
 				@Override

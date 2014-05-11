@@ -16,12 +16,12 @@
 
     <Button
         android:id="@+id/create_tangle_button"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:text="@string/create_tangle"
-       	style="?android:attr/borderlessButtonStyle"
-       	android:textColor="@color/darkGray"
         android:background="@color/active"
-        android:onClick="redirectToCreateTangle"/>
+        android:onClick="redirectToCreateTangle"
+        android:text="@string/create_tangle"
+        android:textColor="@color/darkGray" />
 
 </LinearLayout>
