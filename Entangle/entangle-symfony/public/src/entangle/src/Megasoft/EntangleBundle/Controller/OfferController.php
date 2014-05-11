@@ -513,9 +513,6 @@ class OfferController extends Controller {
         if ($testrequest->getDeleted()) {
             return new Response('This request does not exist anymore', 401);
         }
-        if ($testrequest->getStatus() == $testrequest->FROZEN) {
-            return new Response('Request is frozen', 401);
-        }
         if ($testrequest->getStatus() == $testrequest->CLOSE) {
             return new Response('Request is closed', 401);
         }
@@ -529,7 +526,7 @@ class OfferController extends Controller {
         $request = $offer->getRequest();
         $requesterId = $request->getUserId();
         if ($requesterId != $userOfSession) {
-            return new Response("Error: You are unauthorized to accept this offer.", 409);
+            return new Response("Error: You are unauthorized to mark this offer as done.", 409);
         }
         $backendstatus = $offer->getStatus();
         if ($backendstatus == $offer->DONE) {

@@ -421,6 +421,7 @@ public class OfferActivity extends FragmentActivity {
 							offerStatus.setText("Accepted");
 							offerStatus.setTextColor(getResources().getColor(
 									R.color.green));
+							addMarkAsDoneButton();
 
 						} else {
 							if (status == 405) {
