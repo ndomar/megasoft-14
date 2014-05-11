@@ -26,7 +26,7 @@ import com.megasoft.requests.ImageRequest;
 import com.megasoft.requests.PostRequest;
 
 /**
- * View an offer given the offer id
+ * Views an offer given the offer id
  * @author Almgohar
  */
 public class OfferActivity extends FragmentActivity {
