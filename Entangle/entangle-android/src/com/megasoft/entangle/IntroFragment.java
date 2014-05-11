@@ -9,13 +9,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 public class IntroFragment extends Fragment {
-
+	/**
+	 * Create tangle button in the layout
+	 */
 	private Button redirectToCreateTangle;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
+
 		View view = inflater.inflate(R.layout.activity_intro, container, false);
 		redirectToCreateTangle = (Button) view.findViewById(R.id.here);
 		redirectToCreateTangle.setOnClickListener(new Button.OnClickListener() {
@@ -29,6 +31,6 @@ public class IntroFragment extends Fragment {
 			}
 		});
 		return view;
-		
+
 	}
 }
