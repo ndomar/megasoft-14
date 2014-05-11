@@ -109,7 +109,7 @@ public class TangleFragment extends Fragment {
     }
 	
 	/**
-	 * Sets the listeners for the search button in the action bar
+	 * Sets the listeners for the search button in the action bar.
 	 * @author MohamedBassem
 	 */
 	private void setSearchListener() {
