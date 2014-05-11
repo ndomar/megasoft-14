@@ -67,6 +67,7 @@ public class ProfileActivity extends FragmentActivity {
 				}
 			}
 		};
+		
 		request.addHeader(Config.API_SESSION_ID, this.sessionId);
 		request.execute();
 	}

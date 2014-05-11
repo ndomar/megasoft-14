@@ -1,10 +1,8 @@
 package com.megasoft.entangle;
 
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -15,12 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v4.app.FragmentTransaction;
-
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.ImageRequest;
@@ -40,12 +34,7 @@ public class ProfileFragment extends Fragment {
 	 * The TextView that holds the user's description
 	 */
 	private TextView description;
-	
-	/**
-	 * The TextView that holds the user's birth date
-	 */
-	private TextView birthDate;
-	
+
 	/**
 	 * The ImageView that holds the user's profile picture
 	 */
