@@ -188,9 +188,8 @@ public class ProfileActivity extends FragmentActivity {
 
 		prefsEditor.commit();
 
-		Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+		Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		intent.putExtra("EXIT", true);
 		startActivity(intent);
 		this.finish();
 
