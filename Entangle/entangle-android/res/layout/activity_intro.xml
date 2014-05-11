@@ -16,7 +16,7 @@
  <TextView 
     android:id="@+id/welcome"
     android:text="@string/welcome"
-    android:textSize="@dimen/textLarge"
+    android:textSize="@dimen/textMediumLarge"
     android:textColor="@color/gray"
     android:textStyle="bold"
     android:layout_width="wrap_content"
@@ -26,7 +26,7 @@
   <TextView 
     android:id="@+id/toEntangle"
     android:text="@string/toEntangle"
-    android:textSize="@dimen/textLarge"
+    android:textSize="@dimen/textMediumLarge"
     android:textColor="@color/gray"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
   
     <TextView 
     android:text="@string/hurryUp"
-    android:textSize="@dimen/textLarge"
+    android:textSize="@dimen/textMediumLarge"
     android:textColor="@color/gray"
     android:id="@+id/hurryUp"
     android:layout_width="wrap_content"
@@ -54,7 +54,7 @@
     <TextView 
     android:id="@+id/andCreate"
     android:text="@string/andCreate"
-    android:textSize="@dimen/textLarge"
+    android:textSize="@dimen/textMediumLarge"
     android:textColor="@color/gray"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
     <TextView 
     android:id="@+id/aTangle"
     android:text="@string/aTangle"
-    android:textSize="@dimen/textLarge"
+    android:textSize="@dimen/textMediumLarge"
     android:textColor="@color/gray"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -82,5 +82,5 @@
     		android:layout_margin="@dimen/marginLarge"  
     		android:background="@color/cyan"
             android:textColor="@color/gray"
-            android:textSize="@dimen/textLarge" />
+            android:textSize="@dimen/textMediumLarge" />
 </LinearLayout>

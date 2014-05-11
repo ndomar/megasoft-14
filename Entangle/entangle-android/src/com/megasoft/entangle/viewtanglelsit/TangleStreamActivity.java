@@ -123,10 +123,11 @@ public class TangleStreamActivity extends Fragment {
 				activity.switchFragment(tangleIds.get(0), 0);
 			}
 			else {
-//				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-//				IntroFragment intro = new IntroFragment();
-//				fragmentTransaction.replace(R.id.content_frame, intro);
-//				fragmentTransaction.commit();
+				
+				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+				IntroFragment intro = new IntroFragment();
+				fragmentTransaction.replace(R.id.content_frame, intro);
+				fragmentTransaction.commit();
 			}
 			
 			listView.setAdapter(new ArrayAdapter<String>(activity.getApplicationContext(), R.layout.sidebar_list_item, R.id.textView1, arr));

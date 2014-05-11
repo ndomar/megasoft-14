@@ -17,7 +17,7 @@ public class IntroFragment extends Fragment {
 			Bundle savedInstanceState) {
 		
 		View view = inflater.inflate(R.layout.activity_intro, container, false);
-		redirectToCreateTangle = (Button) getView().findViewById(R.id.here);
+		redirectToCreateTangle = (Button) view.findViewById(R.id.here);
 		redirectToCreateTangle.setOnClickListener(new Button.OnClickListener() {
 
 			@Override
@@ -31,31 +31,4 @@ public class IntroFragment extends Fragment {
 		return view;
 		
 	}
-//
-//	@Override
-//	public void onStart() {
-//		super.onStart();
-//		initialize();
-//	}
-
-	/**
-	 * This method redirects the user to create a tangle activtiy
-	 * 
-	 * @param view
-	 * @author Salma Amr
-	 */
-//	public void initialize() {
-//
-//		redirectToCreateTangle = (Button) getView().findViewById(R.id.here);
-//		redirectToCreateTangle.setOnClickListener(new Button.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				Intent intent = new Intent(getActivity(),
-//						CreateTangleActivity.class);
-//				startActivity(intent);
-//
-//			}
-//		});
-//	}
 }
