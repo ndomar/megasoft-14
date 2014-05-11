@@ -31,6 +31,11 @@
             android:layout_height="wrap_content"
             android:onClick="refresh"
             android:text="@string/refresh" />
+         <Button
+            android:id="@+id/reset_tangle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reset" />
     </LinearLayout>
 
 </ScrollView>
