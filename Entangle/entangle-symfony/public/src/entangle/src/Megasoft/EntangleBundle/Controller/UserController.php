@@ -8,6 +8,7 @@ use Megasoft\EntangleBundle\Entity\Session;
 use Megasoft\EntangleBundle\Entity\Tangle;
 use Megasoft\EntangleBundle\Entity\Offer;
 use Megasoft\EntangleBundle\Entity\User;
+use Megasoft\EntangleBundle\Entity\UserEmail;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,7 +20,7 @@ class UserController extends Controller {
     /**
      * Validates the username and password from request and returns sessionID
      * @param  Integer $len length for the generated sessionID
-     * @return String $generatedSessionID the session id that will be used
+     * @return String $generatedSessionID the session id that will beconfig.php – This file contains constant v used
      * 
      * @author maisaraFarahat
      */
@@ -96,7 +97,7 @@ class UserController extends Controller {
 
         $response->setData(array('sessionId' => $sessionId, 'userId' => $user->getId()
             , 'profileImage' => $filepath . $user->getPhoto(),
-            'username' => $user->getName() , ));
+            'username' => $user->getName(),));
         $response->setStatusCode(201);
 
         return $response;
@@ -353,6 +354,101 @@ class UserController extends Controller {
 
 
         return new Response(200);
+    }
+
+    /*
+     * Checks that the username is unique
+     * @param: String  username
+     * @param: boolean value, true if unique. False otherwise
+     * 
+     * @author: Eslam
+     */
+
+    private function validateUniqueUsername($username) {
+        $userRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
+        if ($userRepo->findOneBy(array('name' => $username,)) == null && $username != null && $username != "") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /*
+     * Checks that the email is unique
+     * @param: String email
+     * @param: boolean value, true if unique. False otherwise
+     * 
+     * @author: Eslam
+     */
+
+    private function validateUniqueEmail($email) {
+        $emailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
+        if ($emailRepo->findOneBy(array('email' => $email,))) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /*
+     * An endpoint for the user to register from the mobile application
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse $response
+     *
+     * @author Eslam Maged
+     */
+
+    public function registerAction(\Symfony\Component\HttpFoundation\Request $request) {
+        $response = new JsonResponse();
+        $badRequest = "Bad Request";
+
+        if (!$request) {
+            return new JsonResponse($badRequest, 400);
+        }
+
+        $json = $request->getContent();
+
+        if (!$json) {
+            $response->setStatusCode(400, $badRequest);
+            return $response;
+        }
+
+        if ($request->getMethod() == 'POST') {
+            $json_array = json_decode($json, true);
+            $username = $json_array['username'];
+            $email = $json_array['email'];
+            $password = $json_array['password'];
+            $confirmPassword = $json_array['confirmPassword'];
+
+            if (!$username || !$email || !$password || !$confirmPassword || (!preg_match('/^[a-zA-Z0-9]+$/', $username))) {
+                return new JsonResponse($badRequest, 400);
+            }
+
+            if(!$this->validateUniqueUsername($username)) {
+                return new JsonResponse("Not unique username", 401);
+            }
+
+            if(!$this->validateUniqueEmail($email)) {
+                return new JsonResponse("Not unique Email", 402);
+            }
+
+
+            $user = new User;
+            $userEmail = new UserEmail();
+            $user->addEmail($userEmail);
+            $user->setName($username);
+            $user->setPassword($password);
+            $userEmail->setEmail($email);
+            $user->setVerified(FALSE);
+            $entityManager = $this->getDoctrine()->getEntityManager();
+            $entityManager->persist($user);
+            $entityManager->persist($userEmail);
+            $entityManager->flush();
+            $response->setData(array('username' => $username, 'email' => $email, 'password' => $password,));
+            $response->setStatusCode(201);
+
+            return $response;
+        }
     }
 
 }
