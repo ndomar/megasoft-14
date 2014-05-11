@@ -209,10 +209,10 @@ class OfferController extends Controller
         $requestOffer->setRequestedPrice($newOfferPrice);
 
         //notification
-//        $notificationCenter = $this->get('notification_center.service');
-//        $title = "offer changed";
-//        $body = "{{from}} changed his offer";
-//        $notificationCenter->offerChangeNotification($requestOffer->getId(), $oldPrice, $title, $body);
+        $notificationCenter = $this->get('notification_center.service');
+        $title = "offer changed";
+        $body = "{{from}} changed his offer";
+        $notificationCenter->offerChangeNotification($requestOffer->getId(), $oldPrice, $title, $body);
 
         $this->getDoctrine()->getManager()->persist($requestOffer);
         $this->getDoctrine()->getManager()->flush();
@@ -335,6 +335,12 @@ class OfferController extends Controller
         $doctrine->getManager()->persist($requester);
         $doctrine->getManager()->persist($offer);
         $doctrine->getManager()->flush();
+
+        // notification
+        $notificationCenter = $this->get('notification_center.service');
+        $title = "offer accepted";
+        $body = "{{from}} accepted your offer";
+        $notificationCenter->offerChosenNotification($offerId, $title, $body);
 
         return "Offer Accepted.";
     }
