@@ -145,13 +145,6 @@ public class TransactionEntryFragment extends Fragment {
 	 * @author Almgohar
 	 */
 	public void redirection() {
-		((TextView)view.findViewById(R.id.transaction_description)).setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				goToRequest();				
-			}
-		});
 		((TextView)view.findViewById(R.id.requester)).setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -163,7 +156,7 @@ public class TransactionEntryFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				goToProfile(requesterId);				
+				goToRequest();
 			}
 		});
 	}
@@ -189,5 +182,7 @@ public class TransactionEntryFragment extends Fragment {
 		Intent request = new Intent(getActivity().getBaseContext(), RequestActivity.class);
 		request.putExtra("requestId", requestId);
 		request.putExtra("tangleId", tangleId);
+		startActivity(request);
+
 	}
 }
