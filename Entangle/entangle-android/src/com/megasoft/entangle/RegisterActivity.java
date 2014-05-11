@@ -49,11 +49,37 @@ public class RegisterActivity extends Activity {
 				}
 
 				try {
-					json.put("username", username.getText().toString());
-					json.put("email", email.getText().toString());
-					json.put("password", password.getText().toString());
-					json.put("confirmPassword", confirmPassword.getText()
-							.toString());
+					if (!isValidEmail(email.getText().toString())) {
+						Toast.makeText(getApplicationContext(),
+								"Error, not a valid email", Toast.LENGTH_SHORT)
+								.show();
+						return;
+					} else if (shortPassword(password.getText().toString())) {
+
+							Toast.makeText(
+									getApplicationContext(),
+									"Password should be more than six characters",
+									Toast.LENGTH_SHORT).show();
+							return;
+
+						}
+						
+
+						else if (!passwordsMatch(password.getText().toString(),
+								confirmPassword.getText().toString())) {
+							Toast.makeText(getApplicationContext(),
+									"Passwords do not match",
+									Toast.LENGTH_SHORT).show();
+							return;
+						}
+						else {
+
+						json.put("username", username.getText().toString());
+						json.put("email", email.getText().toString());
+						json.put("password", password.getText().toString());
+						json.put("confirmPassword", confirmPassword.getText()
+								.toString());
+					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -62,14 +88,22 @@ public class RegisterActivity extends Activity {
 						Config.API_BASE_URL_SERVER + "/register") {
 					protected void onPostExecute(String response) {
 						if (this.getStatusCode() == 201) {
-							Toast.makeText(getApplicationContext(), "Success!",
+							Toast.makeText(getApplicationContext(),
+									"Registered Successfully!",
 									Toast.LENGTH_LONG).show();
 							goToLogin(response);
-						} else {
+						} else if(this.getStatusCode() == 401){
 							Toast.makeText(getApplicationContext(),
-									"Error, cannot create request",
+									"Not unique username",
 									Toast.LENGTH_SHORT).show();
 						}
+						
+						else if(this.getStatusCode() == 402){
+							Toast.makeText(getApplicationContext(),
+									"Not unique email",
+									Toast.LENGTH_SHORT).show();
+						}
+
 					}
 
 				};
@@ -80,17 +114,41 @@ public class RegisterActivity extends Activity {
 		});
 
 	}
+	
 
+	/*
+	 * redirect the user to the splash activity once clicked
+	 * @param: View view
+	 * 
+	 * 
+	 * @author: Eslam Maged
+	 */
 	public void cancel(View view) {
 		Intent intent = new Intent(this, SplashActivity.class);
 		startActivity(intent);
 		this.finish();
 	}
+	
+	/*
+	 * redirect the user to the login page once successfuly registered
+	 * @param: String response
+	 * 
+	 * 
+	 * @author: Eslam Maged
+	 */
 
 	public void goToLogin(String response) {
 		startActivity(new Intent(this, LoginActivity.class));
 		this.finish();
 	}
+	
+	/*
+	 * checks if the textbox is empty
+	 * @param: EditText editText
+	 * @return: boolean, true if empty. false otherwise.
+	 * 
+	 * @author: Eslam Maged
+	 */
 
 	private boolean isEmpty(EditText editText) {
 		if (editText.getText().toString().length() == 0) {
@@ -99,5 +157,49 @@ public class RegisterActivity extends Activity {
 		}
 		editText.setError(null);
 		return false;
+	}
+	
+	/*
+	 * Validates that a certain email is in a correct format
+	 * @param the email to be validated
+	 * @return true if the email is in a valid format.
+	 * 
+	 * @author: Eslam Maged
+	 */
+
+	private boolean isValidEmail(String email) {
+		String regex = "^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$";
+		return email.matches(regex);
+	}
+	
+	/*
+	 * checks if the two given passwords match
+	 * @param: String password
+	 * @param: String confirmPassword
+	 * @return: boolean, true if short. false otherwise.
+	 * 
+	 * @author: Eslam Maged
+	 */
+
+	private boolean passwordsMatch(String password, String confirmPassword) {
+		if (password.equals(confirmPassword)) {
+			return true;
+		} else
+			return false;
+	}
+	/*
+	 * checks for the length of the password
+	 * @param: String password
+	 * @return: boolean, true if short. false otherwise.
+	 * 
+	 * @author: Eslam Maged
+	 */
+
+	private boolean shortPassword(String password) {
+		if (password.length() < 7) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
