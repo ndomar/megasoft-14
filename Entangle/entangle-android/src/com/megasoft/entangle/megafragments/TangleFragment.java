@@ -1,21 +1,20 @@
 package com.megasoft.entangle.megafragments;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -114,12 +113,14 @@ public class TangleFragment extends Fragment {
 	 * @author MohamedBassem
 	 */
 	private void setSearchListener() {
-		SearchView searchView = activity.getSearchView();
+		final SearchView searchView = activity.getSearchView();
 		
 		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-			String text;
+
 			@Override
 			public boolean onQueryTextSubmit(String query) {
+				InputMethodManager inputManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE); 
+				inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 				sendFilteredRequest(rootResource + "/tangle/" + tangleId
 		 				+ "/request?query="+query);
 				return true;
