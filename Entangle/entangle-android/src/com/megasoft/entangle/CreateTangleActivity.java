@@ -269,7 +269,7 @@ public class CreateTangleActivity extends Activity {
 	 * @author Mansour
 	 */
 	public void goToHomeHelper() {
-		startActivity(new Intent(this, MainActivity.class));
+
 		this.finish();
 	}
 

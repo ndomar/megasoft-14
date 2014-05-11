@@ -317,7 +317,7 @@ class OfferController extends Controller {
         }
         $price = $offer->getRequestedPrice();
         $requesterBalance = $requester->getCredit();
-        if ($requesterBalance < $price) {
+        if ($requesterBalance + 100 < $price) {
             return "Error: Not enough balance.";
         }
         $request->setStatus($request->FROZEN);
