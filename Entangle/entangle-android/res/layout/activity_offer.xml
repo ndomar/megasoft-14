@@ -30,7 +30,8 @@
                     android:id="@+id/offerer_avatar"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_alignParentLeft="true" />
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/ic_action_person" />
 
                 <TextView
                     android:id="@+id/offerer_name"
@@ -142,6 +143,7 @@
                 android:background="@color/darkWhite"
                 android:visibility="invisible"
                 android:orientation="vertical" >
+
 
             </LinearLayout>
         </LinearLayout>

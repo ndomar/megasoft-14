@@ -263,18 +263,16 @@ class TangleController extends Controller {
         $this->getDoctrine()->getManager()->persist($newInvitationCode);
         $this->getDoctrine()->getManager()->flush();
 
-        $title = "you are invited to bla";
+        $title = "you are invited to ".$tangle->getName();
         $body = "<!DOCTYPE html>
                 <html lang=\"en\">
                     <head>
                     </head>
                     <body>
-                           <h3>
-                                Hello
-                           </h3>
+                            Hello!<br>
                            <p>" . $message . "</p>
-                           <a href=\"http://entangle.io/invitation/" . $randomString . "\">link</a>
-                           <p>Cheers<br>Entangle Team</p>
+                           <a href=\"http://localhost:9001/invitation/" . $randomString . "\">link</a>
+                           <p>Cheers,<br>Entangle Team</p>
                     </body>
                 </html>";
 
@@ -860,10 +858,12 @@ class TangleController extends Controller {
      * @author MahmoudGamal
      */
     public function acceptInvitationAction($invitationCode) {
-        $criteria1 = array('Code' => $invitationCode);
+
+        $criteria1 = array('code' => $invitationCode);
         $invitation = $this->getDoctrine()
                 ->getRepository('MegasoftEntangleBundle:InvitationCode')
-                ->findBy($criteria1);
+                ->findOneBy($criteria1);
+
         if (!$invitation) {
             return new Response("Invitation not found", 404);
         }
@@ -898,8 +898,11 @@ class TangleController extends Controller {
         $tangleUser->setUser($user);
         $tangleUser->setTangle($tangle);
         $tangleUser->setCredit(0);
+
+        $invitation->setExpired(true);
+        $this->getDoctrine()->getManager()->persist($tangleUser);
         $this->getDoctrine()->getManager()->flush();
-        return new Response("User added", 201);
+        return new Response("Thank you! You can now view this tangle in your mobile app.", 201);
     }
 
     /**

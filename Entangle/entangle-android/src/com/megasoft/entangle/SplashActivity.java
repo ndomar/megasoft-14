@@ -12,7 +12,7 @@ import android.view.View;
  */
 public class SplashActivity extends Activity {
 
-	public static final String REGISTER_LINK = "http://entangle.io/app_dev.php/register";
+	public static final String REGISTER_LINK = "http://localhost:9001/#register";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

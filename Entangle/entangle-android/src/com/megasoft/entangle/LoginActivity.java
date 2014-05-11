@@ -87,6 +87,7 @@ public class LoginActivity extends Activity {
 				Config.SESSION_ID, null) != null) {
 			Intent registerActivity = new Intent(this, HomeActivity.class);
 			startActivity(registerActivity);
+			finish();
 		}
 
 	}
@@ -109,6 +110,7 @@ public class LoginActivity extends Activity {
 		try {
 			json.put("name", username.getText().toString());
 			json.put("password", password.getText().toString());
+			json.put("deviceType", android.os.Build.MODEL);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -169,7 +171,6 @@ public class LoginActivity extends Activity {
 			e.printStackTrace();
 		}
 		register();
-
 		Intent homeActivity = new Intent(this, HomeActivity.class);
 		startActivity(homeActivity);
 
