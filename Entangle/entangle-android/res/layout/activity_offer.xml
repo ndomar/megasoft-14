@@ -127,6 +127,15 @@
                     android:textColor="@color/green"
                     android:textSize="@dimen/textLarge"
                     android:visibility="invisible" />
+
+                <Button
+                    android:id="@+id/changeOfferPrice"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/offer_price"
+                    android:drawableRight="@drawable/ic_action_edit" 
+                    android:onClick="changePrice"/>
             </RelativeLayout>
 
             <TextView
@@ -141,10 +150,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:background="@color/darkWhite"
-                android:visibility="invisible"
-                android:orientation="vertical" >
-
-
+                android:orientation="vertical"
+                android:visibility="invisible" >
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -174,9 +181,9 @@
             android:layout_marginBottom="@dimen/marginMedium"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="5dp"
-            android:contentDescription="@string/icon"
             android:background="@drawable/send"
             android:clickable="true"
+            android:contentDescription="@string/icon"
             android:onClick="addComment" />
     </RelativeLayout>
 

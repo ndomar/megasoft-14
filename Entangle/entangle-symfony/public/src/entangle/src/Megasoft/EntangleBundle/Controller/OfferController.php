@@ -198,7 +198,7 @@ class OfferController extends Controller {
             return new Response("Bad Request", 400);
         }
         if (($requestOffer->getRequestedPrice()) == $newOfferPrice) {
-            return new Response("Same price, enter a new one", 400);
+            return new Response("Same price, enter a new one", 409);
         }
         $requestOffer->setRequestedPrice($newOfferPrice);
 

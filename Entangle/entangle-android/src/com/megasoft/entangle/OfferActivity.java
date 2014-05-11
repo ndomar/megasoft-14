@@ -4,21 +4,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.ImageRequest;
@@ -128,6 +131,10 @@ public class OfferActivity extends FragmentActivity {
 	private FragmentTransaction transaction;
 
 	private ScrollView scrollView;
+
+	private String newPriceText;
+
+	public static final int BUTTON_POSITIVE = 0xffffffff;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -419,41 +426,144 @@ public class OfferActivity extends FragmentActivity {
 
 	}
 
-/**
- * The callback for the add comment button which adds the comment and re-renders the layout 
- * @param view
- * @author mohamedbassem
- */
-public void addComment(View view){
+	/**
+	 * The callback for the add comment button which adds the comment and
+	 * re-renders the layout
+	 * 
+	 * @param view
+	 * @author mohamedbassem
+	 */
+	public void addComment(View view) {
 
-	PostRequest request = new PostRequest(Config.API_BASE_URL + "/offer/" + offerId + "/comment") {
+		PostRequest request = new PostRequest(Config.API_BASE_URL + "/offer/"
+				+ offerId + "/comment") {
 
-		@Override
-		protected void onPostExecute(String response) {
-			if(this.getStatusCode() == 201){
-				comment.setText("");
-				viewOffer();
-			}else{
-				Toast.makeText(getApplicationContext(), this.getErrorMessage(), Toast.LENGTH_LONG).show();
+			@Override
+			protected void onPostExecute(String response) {
+				if (this.getStatusCode() == 201) {
+					comment.setText("");
+					viewOffer();
+				} else {
+					Toast.makeText(getApplicationContext(),
+							this.getErrorMessage(), Toast.LENGTH_LONG).show();
+				}
 			}
+
+		};
+
+		String commentMessage = comment.getText().toString();
+		if (commentMessage.equals("")) {
+			return;
+		}
+		JSONObject body = new JSONObject();
+		try {
+			body.put("body", commentMessage);
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
 
-	};
-
-	String commentMessage = comment.getText().toString();
-	if(commentMessage.equals("")){
-		return;
-	}
-	JSONObject body = new JSONObject();
-	try {
-		body.put("body", commentMessage);
-	} catch (JSONException e) {
-		e.printStackTrace();
+		request.addHeader(Config.API_SESSION_ID, sessionId);
+		request.setBody(body);
+		request.execute();
 	}
 
-	request.addHeader(Config.API_SESSION_ID, sessionId);
-	request.setBody(body);
-	request.execute();
-}
+	/**
+	 * Executed when the edit price button is pressed, showing a dialog with a field to enter the new price.
+	 * @param View view
+	 * @author Mansour
+	 */
+	public void changePrice(View view) {
+		final AlertDialog changePriceDialog = new AlertDialog.Builder(this)
+				.create();
+		changePriceDialog.setCancelable(false);
+		changePriceDialog.setMessage("Enter Your New Price!");
+		EditText newPrice = new EditText(this);
+		newPrice.setHint("Price");
+		newPrice.setId(R.id.offerNewPrice);
+		newPrice.setSingleLine(true);
+		newPrice.setInputType(InputType.TYPE_CLASS_NUMBER);
+		changePriceDialog.setView(newPrice);
+		changePriceDialog.setButton(BUTTON_POSITIVE, "OK",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						newPriceText = ((EditText) changePriceDialog
+								.findViewById(R.id.offerNewPrice)).getText()
+								.toString();
+						changePrice();
+						dialog.dismiss();
+					}
+				});
+		changePriceDialog.show();
+	}
+
+	/**
+	 * Validates the new price before sending it to the server.
+	 * @author Mansour
+	 */
+	public void changePrice() {
+		if (newPriceText.equals("")) {
+			Toast.makeText(getApplicationContext(), "Nothing Changed",
+					Toast.LENGTH_LONG).show();
+		} else {
+			if (sessionId == "") {
+				Toast.makeText(getApplicationContext(),
+						"Session Expired, Please Relogin", Toast.LENGTH_LONG)
+						.show();
+			} else {
+				if (offerId == -1) {
+					Toast.makeText(getApplicationContext(),
+							"Invalid Offer, Try Again Later", Toast.LENGTH_LONG)
+							.show();
+				} else {
+					sendPriceToServer();
+				}
+			}
+		}
+	}
+
+	/**
+	 * Sends the new price to the server.
+	 * @author Mansour
+	 */
+	public void sendPriceToServer() {
+		PostRequest imagePostRequest = new PostRequest(Config.API_BASE_URL
+				+ "/offers/" + offerId + "/changePrice") {
+			protected void onPostExecute(String response) {
+				if (this.getStatusCode() == 403) {
+					Toast.makeText(getApplicationContext(),
+							"Sorry, You Can't Change The Price Of This Offer",
+							Toast.LENGTH_LONG).show();
+				} else {
+					if (this.getStatusCode() == 409) {
+						Toast.makeText(getApplicationContext(),
+								"Same Price, Choose a New One",
+								Toast.LENGTH_LONG).show();
+					} else {
+						if (!(this.getStatusCode() == 200)) {
+							Toast.makeText(getApplicationContext(),
+									"Error, Try Again Later", Toast.LENGTH_LONG)
+									.show();
+						} else {
+							Toast.makeText(getApplicationContext(),
+									"Offer Price Changed", Toast.LENGTH_LONG)
+									.show();
+							TextView originalPrice = (TextView) findViewById(R.id.offer_price);
+							originalPrice.setText(newPriceText);
+						}
+					}
+				}
+			}
+		};
+		JSONObject priceJSON = new JSONObject();
+		try {
+			priceJSON.put("newPrice", Integer.parseInt(newPriceText));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		imagePostRequest.setBody(priceJSON);
+		imagePostRequest.addHeader(Config.API_SESSION_ID, sessionId);
+		imagePostRequest.execute();
+	}
 
 }
