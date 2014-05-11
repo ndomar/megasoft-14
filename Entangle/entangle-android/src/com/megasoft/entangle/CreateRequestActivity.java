@@ -129,13 +129,22 @@ public class CreateRequestActivity extends Activity {
 	 */
 	TextView deadlineError;
 
+	/**
+	 * An array of the ids of the request icons available in the app.
+	 */
 	private static Integer[] imageIconDatabase = { R.drawable.aatrox,
 			R.drawable.ahri, R.drawable.akali, R.drawable.amumu,
 			R.drawable.zac, R.drawable.ziggs };
 
+	/**
+	 * An array of the names of the request icons available in the app.
+	 */
 	private String[] imageNameDatabase = { "aatrox", "ahri", "akali", "amumu",
 			"zac", "ziggs" };
 
+	/**
+	 * A number indicating the currently selected icon by the user in the spinner.
+	 */
 	private int usedIcon;
 
 	/**
@@ -206,6 +215,7 @@ public class CreateRequestActivity extends Activity {
 					}
 					json.put("deadLine", deadLineData);
 					json.put("tags", jsonTagsArray);
+					json.put("icon", usedIcon);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -351,6 +361,11 @@ public class CreateRequestActivity extends Activity {
 		return true;
 	}
 
+	/**
+	 * A private class that defines the adapter for the icons' spinner
+	 * @author Mansour
+	 *
+	 */
 	private class RequestIconSpinnerAdapter extends ArrayAdapter<String> {
 
 		public RequestIconSpinnerAdapter(Context context,

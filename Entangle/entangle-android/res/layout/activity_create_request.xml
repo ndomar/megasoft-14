@@ -109,8 +109,8 @@
             android:layout_height="@dimen/textFieldHeight"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/marginSmall"
-            android:ems="10"
             android:layout_weight="4"
+            android:ems="10"
             android:hint="@string/priceDescription"
             android:inputType="number" >
         </EditText>
