@@ -250,7 +250,7 @@ public class CreateRequestActivity extends Activity {
 
 		Spinner iconSpinner = (Spinner) findViewById(R.id.requestIconSpinner);
 		iconSpinner.setAdapter(new RequestIconSpinnerAdapter(
-				CreateRequestActivity.this, R.layout.spinner_icons,
+				CreateRequestActivity.this, R.layout.request_spinner_icons,
 				imageNameDatabase));
 		iconSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -364,7 +364,6 @@ public class CreateRequestActivity extends Activity {
 	/**
 	 * A private class that defines the adapter for the icons' spinner
 	 * @author Mansour
-	 *
 	 */
 	private class RequestIconSpinnerAdapter extends ArrayAdapter<String> {
 
@@ -388,7 +387,7 @@ public class CreateRequestActivity extends Activity {
 				ViewGroup parent) {
 
 			LayoutInflater inflater = getLayoutInflater();
-			View row = inflater.inflate(R.layout.spinner_icons, parent, false);
+			View row = inflater.inflate(R.layout.request_spinner_icons, parent, false);
 
 			ImageView icon = (ImageView) row.findViewById(R.id.requestIcon);
 			icon.setImageResource(imageIconDatabase[position]);
