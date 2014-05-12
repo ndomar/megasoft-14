@@ -81,7 +81,7 @@ class PasswordForgetController extends Controller{
             $message = \Swift_Message::newInstance()
                 ->setSubject('Entangle Password Reset')
                 ->setFrom('kareem.wahby@gmail.com')
-                ->setTo('kareem.wahby@gmail.com')
+                ->setTo($email)
                 ->setBody('Hello '.$name.',
 
 It seems like you\'ve forgotten your password, here is your new one, '.$newPass.' just make sure you CHANGE IT ASAP.
