@@ -155,14 +155,7 @@ public class ProfileFragment extends Fragment {
 		startActivity(editProfile);
 	}
 	
-	/**
-	 * Let the user leave the current tangle
-	 * @author Almgohar
-	 */
-	public void leaveTangle() {
 		
-	}
-	
 	@Override
 	public void onAttach(Activity activity) {	
 	    this.activity = (FragmentActivity) activity;
