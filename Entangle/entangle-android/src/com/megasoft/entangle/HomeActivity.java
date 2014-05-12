@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -322,7 +323,7 @@ public class HomeActivity extends FragmentActivity {
 	 */
 	private void sendLeaveRequest() {
 		DeleteRequest leaveRequest = new DeleteRequest(Config.API_BASE_URL
-				+ "/tangle/" + tangleId + "/user") {
+				+ "/" + Config.TANGLE + "/" + tangleId + "/" + Config.USER) {
 			public void onPostExecute(String response) {
 				if (getStatusCode() == 204) {
 					UI.makeToast(getBaseContext(),
