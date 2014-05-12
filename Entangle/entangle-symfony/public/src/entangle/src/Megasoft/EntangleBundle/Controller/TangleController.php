@@ -543,9 +543,6 @@ class TangleController extends Controller {
                     } else {
                         $request->setDeleted(true);
                     }
-                    if ($user != null) {
-                        $user->removeRequest($request);
-                    }
                     $offers = $request->getOffers();
                     if ($offers != null) {
                         foreach ($offers as $offer) {
@@ -587,7 +584,6 @@ class TangleController extends Controller {
                         if ($offerStatus != $offer->DONE) {
                             $this->deleteOfferMessages($user, $offer);
                             $offer->setDeleted(true);
-                            $user->removeOffer($offer);
                         }
                     }
                     //to be done in the coming sprint
@@ -595,7 +591,6 @@ class TangleController extends Controller {
                     //case of PENDING and ACCEPTED
                 }
             }
-            $this->getDoctrine()->getManager()->flush();
         }
     }
 
@@ -613,7 +608,6 @@ class TangleController extends Controller {
             foreach ($messages as $message) {
                 if ($message != null && $message->getSenderId() == $user->getId()) {
                     $message->setDeleted(true);
-                    $user->removeMessage($message);
                 }
             }
         }
@@ -647,7 +641,6 @@ class TangleController extends Controller {
                 $updatedDeletedBalance = $deletedBalance + ($userTangle->getCredit());
                 $tangle->setDeletedBalance($updatedDeletedBalance);
             }
-            $doctrine->getManager()->flush();
         }
     }
 
@@ -660,21 +653,12 @@ class TangleController extends Controller {
      */
     private function removeClaims($tangleId, $userId) {
         $claimRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Claim");
-        $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
-        $user = $userRepo->find($userId);
-
-        //to be changed to userId
-        $claims = $claimRepo->findBy(array('tangleId' => $tangleId, 'usedId' => $userId));
+        
+        $claims = $claimRepo->findBy(array('tangleId' => $tangleId, 'claimer' => $userId));
         if ($claims != null) {
             foreach ($claims as $claim) {
                 if ($claim != null) {
-                    //assuming 1 resolved
-                    if ($claim->getStatus() == 1) {
-                        $claim->setDeleted(true);
-                    }
-                    if ($user != null) {
-                        $user->removeClaim($claim);
-                    }
+                    $claim->setDeleted(true);
                 }
             }
         }
@@ -701,13 +685,12 @@ class TangleController extends Controller {
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         $userId = $session->getUserId();
 
-        $this->removeUser($tangleId, $userId);
         $this->removeOffers($tangleId, $userId);
         $this->removeRequests($tangleId, $userId);
         $this->removeClaims($tangleId, $userId);
-
-        //removing notifications to be added in the coming sprint
-
+        $this->removeUser($tangleId, $userId);
+        $this->getDoctrine()->getManager()->flush();
+        
         return new Response("You have left successfully", 204);
     }
 
