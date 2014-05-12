@@ -262,16 +262,14 @@ public class MemberListFragment extends Fragment {
 
 	/*
 	 * Searches for member.
-	 * 
 	 * @param String searchString, the name being searched for
-	 * 
 	 * @author sak93
 	 */
 	private void searchMembers(String searchString) {
 		int memberCount = 0;
 		for (int i = 0; i < getNumberOfMembers(); i++) {
 			if (!memberFragments.get(i).getMemberName().toLowerCase()
-					.startsWith(searchString.toLowerCase())) {
+					.contains(searchString.toLowerCase())) {
 				memberFragments.get(i).getView().setVisibility(View.GONE);
 			} else {
 				memberFragments.get(i).getView().setVisibility(View.VISIBLE);
