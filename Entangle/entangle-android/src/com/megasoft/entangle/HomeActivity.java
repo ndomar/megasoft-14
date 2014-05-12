@@ -324,7 +324,27 @@ public class HomeActivity extends FragmentActivity {
 		DeleteRequest leaveRequest = new DeleteRequest(Config.API_BASE_URL
 				+ "/tangle/" + tangleId + "/user") {
 			public void onPostExecute(String response) {
-				
+				if (getStatusCode() == 204) {
+					UI.makeToast(getBaseContext(),
+							"You left the tangle successfully",
+							Toast.LENGTH_LONG);
+					FragmentManager fragmentManager = getSupportFragmentManager();
+					FragmentTransaction fragmentTransaction = fragmentManager
+							.beginTransaction();
+					TangleStreamActivity tangleTitlesFragment = new TangleStreamActivity();
+					fragmentTransaction.replace(R.id.tangleList,
+							tangleTitlesFragment);
+					fragmentTransaction.commit();
+				} else if (getStatusCode() == 403) {
+					UI.makeToast(getBaseContext(),
+							"Sorry, you are not allowed to leave the tangle",
+							Toast.LENGTH_LONG);
+				} else {
+					UI.makeToast(
+							getBaseContext(),
+							"Sorry, problem happened while leaving the tangle. Try again later",
+							Toast.LENGTH_LONG);
+				}
 			}
 
 		};
