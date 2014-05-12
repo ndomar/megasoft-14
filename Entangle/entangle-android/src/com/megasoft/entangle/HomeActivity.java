@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -116,6 +115,7 @@ public class HomeActivity extends FragmentActivity {
 				.getString(Config.USERNAME, "User"));
 		ImageView image = (ImageView) findViewById(R.id.sidebar_avatar);
 		ImageRequest request = new ImageRequest(image);
+
 		// request.execute(pref.getString(Config.PROFILE_IMAGE, ""));
 
 		FragmentManager fragmentManager = getSupportFragmentManager();
@@ -132,6 +132,7 @@ public class HomeActivity extends FragmentActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		this.menu = menu;
+
 		TangleStreamActivity tangleStream = new TangleStreamActivity();
 		if (tangleStream.tangleNames.size() >= 0) {
 			menu.findItem(R.id.action_invite).setVisible(true);

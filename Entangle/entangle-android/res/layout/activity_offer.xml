@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/offerer_name"
                     android:layout_alignBottom="@+id/offerer_name"
-                    android:layout_alignRight="@+id/accept_offer"
+                    android:layout_alignParentRight="true"
                     android:text="@string/pts"
                     android:textColor="@color/lightGray"
                     android:textSize="@dimen/textMedium" />
@@ -127,6 +127,34 @@
                     android:textColor="@color/green"
                     android:textSize="@dimen/textLarge"
                     android:visibility="invisible" />
+
+
+                <Button
+                    android:id="@+id/mark_as_done"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/done"
+                    android:textAlignment="center"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/textLarge"
+                    android:visibility="invisible" 
+                    android:onClick="markCheck"/>
+
+
+                <ImageView
+                    android:id="@+id/edit_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/price"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_toLeftOf="@id/offer_price"
+                    android:contentDescription="@string/icon"
+                    android:src="@drawable/ic_action_edit"
+                    android:visibility="invisible" />
+
             </RelativeLayout>
 
             <TextView
@@ -141,10 +169,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:background="@color/darkWhite"
-                android:visibility="invisible"
-                android:orientation="vertical" >
-
-
+                android:orientation="vertical"
+                android:visibility="invisible" >
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -174,9 +200,9 @@
             android:layout_marginBottom="@dimen/marginMedium"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="5dp"
-            android:contentDescription="@string/icon"
             android:background="@drawable/send"
             android:clickable="true"
+            android:contentDescription="@string/icon"
             android:onClick="addComment" />
     </RelativeLayout>
 
