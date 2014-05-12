@@ -5,9 +5,34 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
+<<<<<<< HEAD
     <item android:id="@+id/action_delete"
           android:icon="@drawable/ic_action_delete"
           android:title="@string/action_delete"
           android:showAsAction="ifRoom" />
+=======
+    <item
+        android:id="@+id/delete_offer_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="45dp"
+        android:text="@string/delete_button_text"
+        android:textSize="@dimen/textMedium"
+        android:visible="false"
+        android:title="@string/delete_button_text">
+    </item>
+    <item
+        android:id="@+id/claim_on_offer_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="45dp"
+        android:text="@string/claim_button"
+        android:textSize="@dimen/textMedium"
+        android:visible="false"
+        android:title="@string/claim_button">
+    </item>
+>>>>>>> 0fb61ee2f1537bddbfce1e16af3192f8281db83e
 
 </menu>
