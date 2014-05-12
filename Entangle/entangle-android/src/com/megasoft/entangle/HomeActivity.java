@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -277,6 +278,34 @@ public class HomeActivity extends FragmentActivity {
 		dialogBuilder.setTitle("Leaving the tangle");
 		dialogBuilder
 				.setMessage("Are you sure you want to leave this tangle ?");
+		dialogBuilder.setPositiveButton("Yes",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						sendLeaveRequest();
+						dialog.dismiss();
+					}
+				});
+		dialogBuilder.setNegativeButton("NO",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
 		return dialogBuilder.create();
+	}
+
+	/**
+	 * This method is used to send the request of leaving the tangle and handles
+	 * different responses, if the user left the tangle it will be redirected to
+	 * the list of tangles activity
+	 * 
+	 * @author HebaAamer
+	 */
+	private void sendLeaveRequest() {
+
 	}
 }
