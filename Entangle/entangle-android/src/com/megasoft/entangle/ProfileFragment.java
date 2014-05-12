@@ -66,6 +66,9 @@ public class ProfileFragment extends Fragment {
 	 */
 	private String sessionId;
 	
+	/**
+	 * The boolean specifying whether the profile is general
+	 */
 	private boolean isGeneral;
 	
 	private View view;
