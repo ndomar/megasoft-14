@@ -1,6 +1,9 @@
 package com.megasoft.entangle;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -10,7 +13,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -255,6 +257,26 @@ public class HomeActivity extends FragmentActivity {
 	 * @author HebaAamer
 	 */
 	public void leaveTangle() {
+		this.showDialog(0);
+	}
 
+	/**
+	 * This method is called when showDialog(int) method is called and it is
+	 * responsible for creating a dialog to make sure that the user wants to
+	 * leave the tangle
+	 * 
+	 * @param dialogId
+	 *            , is an int that corresponds to the id of the dialog being
+	 *            created but it is not used in this situation
+	 * 
+	 * @author HebaAamer
+	 */
+	@Override
+	protected Dialog onCreateDialog(int dialogId) {
+		Builder dialogBuilder = new AlertDialog.Builder(this);
+		dialogBuilder.setTitle("Leaving the tangle");
+		dialogBuilder
+				.setMessage("Are you sure you want to leave this tangle ?");
+		return dialogBuilder.create();
 	}
 }
