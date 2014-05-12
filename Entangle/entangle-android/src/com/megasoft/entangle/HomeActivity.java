@@ -70,18 +70,27 @@ public class HomeActivity extends FragmentActivity {
 	 * @author Mohamed Farghal
 	 */
 	public void switchFragment(int tangleId, int position) {
+		TangleStreamActivity tangleStream = new TangleStreamActivity();
+		if (tangleStream.tangleNames.size() >= 0) {
+			menu.findItem(R.id.action_invite).setVisible(true);
+			menu.findItem(R.id.createRequest).setVisible(true);
+			menu.findItem(R.id.action_search).setVisible(true);
+		}
 		this.tangleId = tangleId;
-		FragmentManager fragmentManager = getSupportFragmentManager(); 
-		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager
+				.beginTransaction();
 		SampleFragment fragment = new SampleFragment();
 		Bundle args = new Bundle();
-		args.putInt("tangleId",tangleId);
-		args.putString("tangleName", TangleStreamActivity.tangleNames.get(position));
-		args.putBoolean("isTangleOwner", TangleStreamActivity.tangleOwners.get(position));
+		args.putInt("tangleId", tangleId);
+		args.putString("tangleName",
+				TangleStreamActivity.tangleNames.get(position));
+		args.putBoolean("isTangleOwner",
+				TangleStreamActivity.tangleOwners.get(position));
 		fragment.setArguments(args);
 		fragmentTransaction.replace(R.id.content_frame, fragment);
 		fragmentTransaction.commit();
-		
+
 		// Highlight the selected item, update the title, and close the drawer
 	    //drawerList.setItemChecked(position, true);
 	    setTitle(TangleStreamActivity.tangleNames.get(position));
@@ -120,11 +129,17 @@ public class HomeActivity extends FragmentActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		this.menu = menu;
-		searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+		TangleStreamActivity tangleStream = new TangleStreamActivity();
+		if (tangleStream.tangleNames.size() >= 0) {
+			menu.findItem(R.id.action_invite).setVisible(true);
+			menu.findItem(R.id.createRequest).setVisible(true);
+			menu.findItem(R.id.action_search).setVisible(true);
+		}
+		searchView = (SearchView) menu.findItem(R.id.action_search)
+				.getActionView();
 		return super.onCreateOptionsMenu(menu);
 	}
-	
-	
+
 	/**
 	 * Template method to show the profile of the user.
 	 * 
