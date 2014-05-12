@@ -6,8 +6,8 @@ use Megasoft\EntangleBundle\Entity\Tangle;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Megasoft\EntangleBundle\Entity\Offer;
 use Megasoft\EntangleBundle\Entity\InvitationCode;
 use Megasoft\EntangleBundle\Entity\InvitationMessage;
@@ -54,7 +54,7 @@ class TangleController extends Controller {
      * An endpoint to filter requests of a specific tangle by requester, tag, prefix of requester's name or description
      * @param Request $request
      * @param integer $tangleId
-     * @return Response | Symfony\Component\HttpFoundation\JsonResponse
+     * @return Response | \Symfony\Component\HttpFoundation\JsonResponse
      * @author OmarElAzazy
      */
     public function filterRequestsAction(Request $request, $tangleId) {
@@ -64,58 +64,32 @@ class TangleController extends Controller {
             return $verification;
         }
 
-        $doctrine = $this->getDoctrine();
+        $doctrine = $this->getDoctrine()->getManager();
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
 
+        $queryValue = $request->query->get('query', null);
+
         $query = $requestRepo->createQueryBuilder('request')
-
-                ->where('request.tangleId = :tangleId')
-                ->setParameter('tangleId', $tangleId)
-                ->andWhere('request.deleted = :false')
-                ->setParameter('false', false);
-
-        $userId = $request->query->get('userid', null);
-        if ($userId != null) {
-            $query = $query->andWhere('request.userId = :userId')
-                ->setParameter('userId', $userId);
+            ->where('request.tangleId = :tangleId')
+            ->setParameter('tangleId', $tangleId)
+            ->andWhere('request.deleted = 0 AND request.status = 0');
+        if($queryValue != null){
+            $query = $query->innerJoin('MegasoftEntangleBundle:User', 'user' , 'WITH' , 'request.userId = user.id')
+                            ->leftJoin('request.tags','tag')
+                            ->andWhere(
+                                    $query->expr()->orx(
+                                        $query->expr()->like('user.name', ':query2'),
+                                        $query->expr()->like('request.description', ':query'),
+                                        $query->expr()->like('tag.name', ':query')
+                                    )
+                            )->setParameter('query' , '%'.$queryValue.'%')
+                             ->setParameter('query2' , $queryValue.'%');
         }
-
-        $fullText = $request->query->get('fulltext', null);
-        if ($fullText != null) {
-            $query = $query->andWhere('request.description LIKE :fullTextFormat')
-                ->setParameter('fullTextFormat', '%' . $fullText . '%');
-        }
-
-
-        $usernamePrefix = $request->query->get('usernameprefix', null);
-        if ($usernamePrefix != null) {
-            $query = $query->innerJoin('MegasoftEntangleBundle:User', 'user', 'WITH', 'request.userId = user.id')
-                ->andWhere('user.name LIKE :usernamePrefixFormat')
-                ->setParameter('usernamePrefixFormat', $usernamePrefix . '%');
-        }
-
         $requests = $query->getQuery()->getResult();
 
-        $tagId = $request->query->get('tagid', null);
         $requestsJsonArray = array();
 
-
         foreach ($requests as $tangleRequest) {
-
-            if ($tagId != null) {
-                $foundTag = false;
-                foreach ($tangleRequest->getTags() as $tag) {
-                    if ($tag->getId() == $tagId) {
-                        $foundTag = true;
-                        break;
-                    }
-                }
-
-
-                if (!$foundTag) {
-                    continue;
-                }
-            }
 
             $requestsJsonArray[] = array(
                 'id' => $tangleRequest->getId(),
@@ -137,7 +111,7 @@ class TangleController extends Controller {
      * An endpoint to return the list of tags in a specific tangle
      * @param Request $request
      * @param integer $tangleId
-     * @return Response | Symfony\Component\HttpFoundation\JsonResponse
+     * @return Response | \Symfony\Component\HttpFoundation\JsonResponse
      * @author OmarElAzazy
      */
 
@@ -237,7 +211,7 @@ class TangleController extends Controller {
      * @author MohamedBassem
      */
 
-    
+
     public function inviteUser($email,$tangleId,$inviterId,$message){
         $randomString = $this->generateRandomString(30);
 
@@ -859,6 +833,7 @@ class TangleController extends Controller {
      */
     public function acceptInvitationAction($invitationCode) {
 
+
         $criteria1 = array('code' => $invitationCode);
         $invitation = $this->getDoctrine()
                 ->getRepository('MegasoftEntangleBundle:InvitationCode')
@@ -898,7 +873,6 @@ class TangleController extends Controller {
         $tangleUser->setUser($user);
         $tangleUser->setTangle($tangle);
         $tangleUser->setCredit(0);
-
         $invitation->setExpired(true);
         $this->getDoctrine()->getManager()->persist($tangleUser);
         $this->getDoctrine()->getManager()->flush();
@@ -975,6 +949,110 @@ class TangleController extends Controller {
         $response->setData(array('count' => sizeof($usersJsonArray), 'users' => $usersJsonArray));
 
         return $response;
+    }
+    /**
+     * This method is used to reset a Tangle
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param integer $tangleId
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author Salma Khaled
+     */
+    public function resetTangleAction(Request $request, $tangleId) {
+        $sessionId = $request->headers->get("X-SESSION-ID");
+        $tangleRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Tangle");
+        $tangle = $tangleRepo->findOneBy(array('id' => $tangleId,));
+        if ($tangle == null) {
+            return new Response("Tangle doesn't exist", 404);
+        }
+        $verified = $this->validateIsOwner($sessionId, $tangleId);
+        if ($verified != null) {
+            return $verified;
+        }
+        $tangleUsers = $tangle->getUsers();
+        if ($tangleUsers != null) {
+            foreach ($tangleUsers as $tangleUser) {
+                $userId = $tangleUser->getId();
+                $userTangleRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:UserTangle");
+                $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $userId,));
+                $userTangle->setCredit(0);
+                $this->deleteRequests($tangleId, $userId);
+                $this->deleteClaims($tangleId, $userId);
+            }
+        }
+        $this->getDoctrine()->getManager()->flush();
+
+        return new Response("Tangle reset", 200);
+    }
+
+    /**
+     * delete requests of that user in that tangle
+     * @param integer $tangleId
+     * @param integer $userId
+     * @return none
+     * @author Salma Khaled
+     */
+    private function deleteRequests($tangleId, $userId) {
+        $requestRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Request");
+        $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
+        $user = $userRepo->find($userId);
+        $requests = $requestRepo->findBy(array('tangleId' => $tangleId, 'userId' => $userId,));
+        if ($requests != null) {
+            foreach ($requests as $request) {
+                $request->setDeleted(1);
+                if ($user != null) {
+                    $user->removeRequest($request);
+                }
+                $this->getDoctrine()->getManager()->flush();
+                $requestId = $request->getId();
+                $this->deleteOffers($requestId, $userId);
+            }
+        }
+    }
+
+    /**
+     * delete offers on specific request
+     * @param integer $requestId
+     * @param integer $userId
+     * @return none
+     * @author Salma Khaled
+     */
+    private function deleteOffers($requestId, $userId) {
+        $offerRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Offer");
+        $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
+        $user = $userRepo->find($userId);
+        $offers = $offerRepo->findBy(array('requestId' => $requestId, 'userId' => $userId,));
+        if ($offers != null) {
+            foreach ($offers as $offer) {
+                $offer->setDeleted(1);
+                if ($user != null) {
+                    $user->removeOffer($offer);
+                }
+                $this->getDoctrine()->getManager()->flush();
+            }
+        }
+    }
+
+    /**
+     * remove claims by that user in that tangle
+     * @param integer $tangleId
+     * @param integer $userId
+     * @return none
+     * @author Salma Khaled
+     */
+    private function deleteClaims($tangleId, $userId) {
+        $claimRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Claim");
+        $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
+        $user = $userRepo->find($userId);
+        $claims = $claimRepo->findBy(array('tangleId' => $tangleId, 'claimerId' => $userId,));
+        if ($claims != null) {
+            foreach ($claims as $claim) {
+                $claim->setDeleted(1);
+                if ($user != null) {
+                    $user->removeClaim($claim);
+                }
+                $this->getDoctrine()->getManager()->flush();
+            }
+        }
     }
 
 }
