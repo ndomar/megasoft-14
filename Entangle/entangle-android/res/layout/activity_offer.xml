@@ -8,6 +8,8 @@
     android:paddingBottom="@dimen/paddingSmall"
     tools:context=".OfferActivity" >
 
+   
+
     <ScrollView
         android:id="@+id/comment_area_scroll_view"
         android:layout_width="fill_parent"
@@ -19,13 +21,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:orientation="vertical" >
-
-            <Button
-                android:id="@+id/deleteButton"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="delete offer"
-                android:onClick="deleteOffer" />
 
             <TextView
                 android:layout_width="fill_parent"

@@ -4,12 +4,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +22,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.megasoft.config.Config;
+import com.megasoft.requests.DeleteRequest;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.ImageRequest;
 import com.megasoft.requests.PostRequest;
@@ -419,41 +422,80 @@ public class OfferActivity extends FragmentActivity {
 
 	}
 
-/**
- * The callback for the add comment button which adds the comment and re-renders the layout 
- * @param view
- * @author mohamedbassem
- */
-public void addComment(View view){
+	/**
+	 * The callback for the add comment button which adds the comment and
+	 * re-renders the layout
+	 * 
+	 * @param view
+	 * @author mohamedbassem
+	 */
+	public void addComment(View view) {
 
-	PostRequest request = new PostRequest(Config.API_BASE_URL + "/offer/" + offerId + "/comment") {
+		PostRequest request = new PostRequest(Config.API_BASE_URL + "/offer/"
+				+ offerId + "/comment") {
 
-		@Override
-		protected void onPostExecute(String response) {
-			if(this.getStatusCode() == 201){
-				comment.setText("");
-				viewOffer();
-			}else{
-				Toast.makeText(getApplicationContext(), this.getErrorMessage(), Toast.LENGTH_LONG).show();
+			@Override
+			protected void onPostExecute(String response) {
+				if (this.getStatusCode() == 201) {
+					comment.setText("");
+					viewOffer();
+				} else {
+					Toast.makeText(getApplicationContext(),
+							this.getErrorMessage(), Toast.LENGTH_LONG).show();
+				}
 			}
+
+		};
+
+		String commentMessage = comment.getText().toString();
+		if (commentMessage.equals("")) {
+			return;
+		}
+		JSONObject body = new JSONObject();
+		try {
+			body.put("body", commentMessage);
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
 
-	};
-
-	String commentMessage = comment.getText().toString();
-	if(commentMessage.equals("")){
-		return;
-	}
-	JSONObject body = new JSONObject();
-	try {
-		body.put("body", commentMessage);
-	} catch (JSONException e) {
-		e.printStackTrace();
+		request.addHeader(Config.API_SESSION_ID, sessionId);
+		request.setBody(body);
+		request.execute();
 	}
 
-	request.addHeader(Config.API_SESSION_ID, sessionId);
-	request.setBody(body);
-	request.execute();
-}
+	/**
+	 * This method sends a delete request to withdraw an offer
+	 * 
+	 * @param none
+	 * @auther Ahmed osama
+	 */
+	public void deleteOffer() {
+
+		String url = Config.API_BASE_URL + "/offer/";
+
+		DeleteRequest deleteRequest = new DeleteRequest(url) {
+			protected void onPostExecute(String res) {
+				String message = "Sorry, there are problems in the delete process. Please, try again later";
+
+				if (!this.hasError() && res != null) {
+					message = "Deleted!";
+				}
+
+			}
+		};
+
+		deleteRequest.addHeader(Config.API_SESSION_ID, sessionId);
+		deleteRequest.execute();
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		if (item.getItemId() == R.id.action_delete) {
+			deleteOffer();
+			return true;
+		}
+
+		return false;
+	}
 
 }
