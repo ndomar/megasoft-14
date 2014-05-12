@@ -1,6 +1,16 @@
 package com.megasoft.entangle;
 
+import com.megasoft.config.Config;
+import com.megasoft.requests.GetRequest;
+import com.megasoft.requests.PostRequest;
+
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -79,6 +89,10 @@ public class OfferActivity extends FragmentActivity {
 	 * The button that allows the user to accept an offer
 	 */
 	private Button acceptOffer;
+	/**
+	 * The button that allows the user to mark an offer as done
+	 */
+	private Button markOfferAsDone;
 
 	/**
 	 * The tangle Id
@@ -116,7 +130,22 @@ public class OfferActivity extends FragmentActivity {
 	 * String for post offer endpoint
 	 */
 	final String ACCEPT = "/accept/offer";
-
+	/**
+	 * String for get and post offer details endpoint
+	 */
+	final String markAsDone = "/markAsDone";
+	/**
+	 * String for get offer details endpoint
+	 */
+	final String Offer = "/offer/";
+	/**
+	 * offer status
+	 */
+	final String Done = "1";
+	/**
+	 * offer status
+	 */
+	final String Pending = "0";
 	/**
 	 * The id of the logged in user
 	 */
@@ -208,6 +237,7 @@ public class OfferActivity extends FragmentActivity {
 		addComment = (ImageView) findViewById(R.id.add_comment_button);
 		scrollView = (ScrollView) findViewById(R.id.comment_area_scroll_view);
 		acceptOffer = (Button) findViewById(R.id.accept_offer);
+		markOfferAsDone = (Button) findViewById(R.id.mark_as_done);
 		String link = Config.API_BASE_URL + "/offer/" + offerId;
 		
 		GetRequest request = new GetRequest(link) {
@@ -395,7 +425,10 @@ public class OfferActivity extends FragmentActivity {
 							if (offerStatus == 0) {
 								addAcceptButton();
 
+							} else if (offerStatus == 2) {
+								addMarkAsDoneButton();
 							}
+
 						}
 					} else {
 						Toast toast = Toast.makeText(getApplicationContext(),
@@ -439,6 +472,7 @@ public class OfferActivity extends FragmentActivity {
 							offerStatus.setText("Accepted");
 							offerStatus.setTextColor(getResources().getColor(
 									R.color.green));
+							addMarkAsDoneButton();
 
 						} else {
 							if (status == 405) {
@@ -470,41 +504,114 @@ public class OfferActivity extends FragmentActivity {
 
 	}
 
-/**
- * The callback for the add comment button which adds the comment and re-renders the layout 
- * @param view
- * @author mohamedbassem
- */
-public void addComment(View view){
+	/**
+	 * This adds the mark as done button to the layout
+	 * 
+	 * @param None
+	 * @return None
+	 * @author mohamedzayan
+	 */
+	public void addMarkAsDoneButton() {
+		markOfferAsDone.setVisibility(1);
+	}
 
-	PostRequest request = new PostRequest(Config.API_BASE_URL + "/offer/" + offerId + "/comment") {
-
-		@Override
-		protected void onPostExecute(String response) {
-			if(this.getStatusCode() == 201){
-				comment.setText("");
-				viewOffer();
-			}else{
-				Toast.makeText(getApplicationContext(), this.getErrorMessage(), Toast.LENGTH_LONG).show();
-			}
+	/**
+	 * This checks if an offer is already marked as done or not accepted.if
+	 * neither it navigates to the actual marking method
+	 * 
+	 * @param View
+	 *            view The Button clicked
+	 * @return None
+	 * @author mohamedzayan
+	 */
+	public void markCheck(View view) {
+		Toast error;
+		if (offerStatus.getText().equals(Pending)) {
+			error = Toast.makeText(getApplicationContext(),
+					R.string.notaccepted, Toast.LENGTH_LONG);
+			error.show();
+		} else if (offerStatus.getText().equals(Done)) {
+			error = Toast.makeText(getApplicationContext(),
+					R.string.alreadymarked, Toast.LENGTH_LONG);
+			error.show();
+		} else {
+			markAsDone(offerId);
 		}
 
-	};
-
-	String commentMessage = comment.getText().toString();
-	if(commentMessage.equals("")){
-		return;
-	}
-	JSONObject body = new JSONObject();
-	try {
-		body.put("body", commentMessage);
-	} catch (JSONException e) {
-		e.printStackTrace();
 	}
 
-	request.addHeader(Config.API_SESSION_ID, sessionId);
-	request.setBody(body);
-	request.execute();
-}
+	/**
+	 * This marks an accepted offer as done
+	 * 
+	 * @param Int
+	 *            OfferId offer ID
+	 * @return None
+	 * @author mohamedzayan
+	 */
+	public void markAsDone(int Offerid) {
+
+		PostRequest request = new PostRequest(Config.API_BASE_URL + markAsDone
+				+ Offer + Offerid) {
+			protected void onPostExecute(String response) {
+				if (this.getStatusCode() == 201) {
+					Toast success = Toast.makeText(getApplicationContext(),
+							R.string.mark, Toast.LENGTH_LONG);
+					success.show();
+					markOfferAsDone.setEnabled(false);
+					markOfferAsDone.setVisibility(View.INVISIBLE);
+					offerStatus.setText("Done");
+				} else {
+					Toast error = Toast.makeText(getApplicationContext(),
+							R.string.error, Toast.LENGTH_LONG);
+					error.show();
+				}
+			}
+
+		};
+		request.addHeader(Config.API_SESSION_ID, sessionId);
+		request.execute();
+
+	}
+
+	/**
+	 * The callback for the add comment button which adds the comment and
+	 * re-renders the layout
+	 * 
+	 * @param view
+	 * @author mohamedbassem
+	 */
+	public void addComment(View view) {
+
+		PostRequest request = new PostRequest(Config.API_BASE_URL + "/offer/"
+				+ offerId + "/comment") {
+
+			@Override
+			protected void onPostExecute(String response) {
+				if (this.getStatusCode() == 201) {
+					comment.setText("");
+					viewOffer();
+				} else {
+					Toast.makeText(getApplicationContext(),
+							this.getErrorMessage(), Toast.LENGTH_LONG).show();
+				}
+			}
+
+		};
+
+		String commentMessage = comment.getText().toString();
+		if (commentMessage.equals("")) {
+			return;
+		}
+		JSONObject body = new JSONObject();
+		try {
+			body.put("body", commentMessage);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		request.addHeader(Config.API_SESSION_ID, sessionId);
+		request.setBody(body);
+		request.execute();
+	}
 
 }

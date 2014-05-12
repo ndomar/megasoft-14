@@ -128,6 +128,22 @@
                     android:textSize="@dimen/textLarge"
                     android:visibility="invisible" />
 
+
+                <Button
+                    android:id="@+id/mark_as_done"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/done"
+                    android:textAlignment="center"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/textLarge"
+                    android:visibility="invisible" 
+                    android:onClick="markCheck"/>
+
+
                 <ImageView
                     android:id="@+id/edit_price"
                     android:layout_width="wrap_content"
@@ -138,6 +154,7 @@
                     android:contentDescription="@string/icon"
                     android:src="@drawable/ic_action_edit"
                     android:visibility="invisible" />
+
             </RelativeLayout>
 
             <TextView
