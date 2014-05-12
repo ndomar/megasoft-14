@@ -20,7 +20,6 @@
     <item
         android:id="@+id/action_leave_tangle"
         android:showAsAction="never"
-        android:title="@string/actionLeaveTangle"
-        android:visible="false"/>
+        android:title="@string/actionLeaveTangle"/>
 
 </menu>

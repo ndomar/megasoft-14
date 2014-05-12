@@ -21,10 +21,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.megasoft.config.Config;
 import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
+import com.megasoft.requests.DeleteRequest;
 import com.megasoft.requests.ImageRequest;
+import com.megasoft.utils.UI;
 
 public class HomeActivity extends FragmentActivity {
 
@@ -53,13 +56,25 @@ public class HomeActivity extends FragmentActivity {
 
 	private SearchView searchView;
 
+	/**
+	 * The id of the logged in user
+	 */
+	private int userId;
+
+	/**
+	 * The session id of the user
+	 */
+	private String sessionId;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		initNavigationDrawer();
 		initializeDrawerToggle();
-
+		SharedPreferences settings = this.getSharedPreferences(Config.SETTING,
+				0);
+		sessionId = settings.getString(Config.SESSION_ID, "");
 	}
 
 	/**
@@ -142,7 +157,7 @@ public class HomeActivity extends FragmentActivity {
 
 		SharedPreferences settings = this.getSharedPreferences(Config.SETTING,
 				0);
-		int userId = settings.getInt(Config.USER_ID, -1);
+		userId = settings.getInt(Config.USER_ID, -1);
 		Intent intent = new Intent(this, GeneralProfileActivity.class);
 		intent.putExtra("tangleId", tangleId);
 		intent.putExtra("userId", userId);
@@ -306,6 +321,14 @@ public class HomeActivity extends FragmentActivity {
 	 * @author HebaAamer
 	 */
 	private void sendLeaveRequest() {
+		DeleteRequest leaveRequest = new DeleteRequest(Config.API_BASE_URL
+				+ "/tangle/" + tangleId + "/user") {
+			public void onPostExecute(String response) {
+				
+			}
 
+		};
+		leaveRequest.addHeader(Config.API_SESSION_ID, sessionId);
+		leaveRequest.execute();
 	}
 }
