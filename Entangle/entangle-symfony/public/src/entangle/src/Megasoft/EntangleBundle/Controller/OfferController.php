@@ -12,6 +12,7 @@ use Megasoft\EntangleBundle\Entity\Message;
 use Megasoft\EntangleBundle\Entity\user;
 use Megasoft\EntangleBundle\Entity\Tangle;
 use Megasoft\EntangleBundle\Entity\UserTangle;
+use Megasoft\EntangleBundle\Entity\Transaction;
 
 /**
  * Gets the required information to view a certain offer
@@ -203,10 +204,17 @@ class OfferController extends Controller {
         $requestOffer->setRequestedPrice($newOfferPrice);
 
         //notification
+
+// $notificationCenter = $this->get('notification_center.service');
+// $title = "offer changed";
+// $body = "{{from}} changed his offer";
+// $notificationCenter->offerChangeNotification($requestOffer->getId(), $oldPrice, $title, $body);
+
         $notificationCenter = $this->get('notification_center.service');
         $title = "offer changed";
         $body = "{{from}} changed his offer";
         $notificationCenter->offerChangeNotification($requestOffer->getId(), $oldPrice, $title, $body);
+
 
         $this->getDoctrine()->getManager()->persist($requestOffer);
         $this->getDoctrine()->getManager()->flush();
@@ -215,14 +223,7 @@ class OfferController extends Controller {
 
     /**
      * this recieves a request and calls verify to check if it can accept the offer
-     * @param  Request $request
-     * @return Response $response returns 201 or 409 status code and message depending on verification
-     * @author sak9
-     */
-
-    /**
-     * this recieves a request and calls verify to check if it can accept the offer
-     * @param  Request $request
+     * @param Request $request
      * @return Response $response returns 201 or 409 status code and message depending on verification
      * @author sak9
      */
@@ -276,7 +277,7 @@ class OfferController extends Controller {
 
     /**
      * this recieves an offerId and checks if it can be accepted, if it can it accepts it and updates all fields in tables
-     * @param  Int $offerId
+     * @param Int $offerId
      * @return String either a success or error message
      * @author sak9
      */
@@ -492,6 +493,91 @@ class OfferController extends Controller {
         $doctrine->getManager()->flush();
 
         return new Response('Ok', 201);
+    }
+
+    /**
+     * This marks an offer as done
+     * @param Int $offerid offer ID
+     * @param \Symfony\Component\HttpFoundation\Request
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @author mohamedzayan
+     */
+    public function updateAction($offerid, \Symfony\Component\HttpFoundation\Request $request) {
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        if ($sessionId == null) {
+            return new Response('Unauthorized', 401);
+        }
+        $doctrine = $this->getDoctrine();
+        $requestTable = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+        $repo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $offerId = $offerid;
+        $offer = $repo->find($offerId);
+        $requestid = $offer->getRequestId();
+        $testrequest = $requestTable->find($requestid);
+        if ($testrequest == null) {
+            return new Response('Request does not exist', 401);
+        }
+        $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
+        if ($session == null || $session->getExpired()) {
+            return new Response('Unauthorized', 401);
+        }
+        $userOfSession = $session->getUserId();
+        if ($testrequest->getDeleted()) {
+            return new Response('This request does not exist anymore', 401);
+        }
+        if ($testrequest->getStatus() == $testrequest->CLOSE) {
+            return new Response('Request is closed', 401);
+        }
+        if ($offer == null) {
+            return new Response('Offer does not exist', 401);
+        }
+        if ($testrequest->getId() != $offer->getRequest()->getId()) {
+            return new Response('Error', 401);
+        }
+        $status = $offer->DONE;
+        $request = $offer->getRequest();
+        $requesterId = $request->getUserId();
+        if ($requesterId != $userOfSession) {
+            return new Response("Error: You are unauthorized to mark this offer as done.", 409);
+        }
+        $backendstatus = $offer->getStatus();
+        if ($backendstatus == $offer->DONE) {
+            return new JsonResponse("Offer already marked as done", 401);
+        } else if ($backendstatus == $offer->PENDING) {
+            return new JsonResponse("Offer is not accepted", 401);
+        } else if ($backendstatus == $offer->FAILED) {
+            return new JsonResponse("This offer has failed", 401);
+        } else if ($backendstatus == $offer->REJECTED) {
+            return new JsonResponse("This offer is rejected", 401);
+        } else {
+            $offer->setStatus($status);
+            $this->getDoctrine()->getManager()->persist($offer);
+            $this->getDoctrine()->getManager()->flush();
+            $response = new JsonResponse();
+            $response->setStatusCode(201);
+            $transaction = new Transaction();
+            $transaction->setDate(new \DateTime('now'));
+            $transaction->setOfferId($offer->getId());
+            $transaction->setOffer($offer);
+            $transaction->setDeleted(false);
+            $transaction->setFinalPrice($offer->getRequestedPrice());
+            $this->getDoctrine()->getManager()->persist($transaction);
+            $this->getDoctrine()->getManager()->flush();
+            $tangleId=$testrequest->getTangleId();
+            $userTangleTable = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+                    $offerer = $userTangleTable->
+                findOneBy(array('userId' => $offer->getUserId(), 'tangleId' => $tangleId));
+            $offerer->setCredit($offerer->getCredit()+$transaction->getFinalPrice()); 
+            $this->getDoctrine()->getManager()->persist($offerer);
+            $this->getDoctrine()->getManager()->flush();
+            $requeststatus=$testrequest->CLOSE;
+            $testrequest->setStatus($requeststatus);
+            $this->getDoctrine()->getManager()->persist($testrequest);
+            $this->getDoctrine()->getManager()->flush();
+            return $response;
+  
+        }
     }
 
 }

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/login_background" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/marginLarge"
+        android:layout_marginRight="@dimen/marginLarge"
+        android:layout_marginTop="200dp"
+        android:background="@drawable/border_gray"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/register_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/username"
+            android:inputType="text" >
+        </EditText>
+        
+        <EditText
+            android:id="@+id/register_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress" >
+        </EditText>
+
+        <EditText
+            android:id="@+id/register_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:inputType="textPassword" >
+        </EditText>
+        
+         <EditText
+            android:id="@+id/register_confirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/confirmPassword"
+            android:inputType="textPassword" >
+        </EditText>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2" >
+
+            <Button
+                android:id="@+id/btnLinkToSplash"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/buttonHeight"
+                android:layout_weight="1"
+                android:onClick="cancel"
+                android:text="@string/cancel"
+                android:textColor="@color/gray" />
+
+            <Button
+                android:id="@+id/btnRegister"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/buttonHeight"
+                android:layout_weight="1"
+                android:onClick="register"
+                android:text="@string/register"
+                android:textColor="@color/green" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:weightSum="5" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBox"
+            android:layout_weight="1"
+            android:background="@color/blue" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBox"
+            android:layout_weight="1"
+            android:background="@color/orange" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBox"
+            android:layout_weight="1"
+            android:background="@color/cyan" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBox"
+            android:layout_weight="1"
+            android:background="@color/megenta" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBox"
+            android:layout_weight="1"
+            android:background="@color/lightGreen" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="@dimen/logo_big"
+        android:layout_height="@dimen/logo_big"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/marginLarge"
+        android:src="@drawable/entangle_logo" />
+
+    <requestFocus />
+
+    <TextView
+        android:id="@+id/registerErrorMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="@string/wrongCredentials"
+        android:textColor="@color/red"
+        android:visibility="gone" />
+
+</RelativeLayout>
