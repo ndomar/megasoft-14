@@ -50,6 +50,10 @@
             android:label="@string/title_activity_general_profile" >
         </activity>
         <activity
+            android:name="com.megasoft.entangle.ProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
+        <activity
             android:name="com.megasoft.entangle.SplashActivity"
             android:label="@string/title_activity_home" >
             <intent-filter>
@@ -111,10 +115,6 @@
         <activity
             android:name="com.megasoft.entangle.acceptPendingInvitation.AcceptPendingInvitationActivity"
             android:label="@string/title_activity_accept_pending_invitation" >
-        </activity>
-        <activity
-            android:name="com.megasoft.entangle.ProfileActivity"
-            android:label="@string/profileActivity" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.LogoutActivity"

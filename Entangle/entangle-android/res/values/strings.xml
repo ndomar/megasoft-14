@@ -78,7 +78,8 @@
     <string name="wrongCredentials">Invalid Username or Password</string>
     <string name="tangleDescriptionHint">Description (This tangle aims to....etc)</string>
     <string name="createTangleAgreement">By Creating This Tangle You Have Agreed To Entangle terms of use</string>
-
+	<string name="transaction_description"> &#160; completed an offer for &#160; </string>
+	<string name="transactions_title">Activities: </string>
     <string-array name="sidebar_list">
         <item>Item A</item>
         <item>Item B</item>
@@ -137,8 +138,10 @@
     <string name="create_tangle">Create Tangle</string>
     <string name="login">Login</string>
     <string name="cancel">Cancel</string>
+    <string  name="username">Username</string>
     <string name="email">email: user@entangle.io</string>
     <string name="password">password</string>
+    <string name="confirmPassword">Confirm Password</string>
     <string name="toastError">An error has occurred.</string>
     <string name="sample_user_main">user@entangle.io</string>
     <string name="invitation_message_placeholder">Write an invitation message ..</string>
@@ -151,4 +154,7 @@
 	<string name="passwordReset">Reset</string>
 	<string name="your_name">Your User Name</string>
 	<string name="your_email">your.email@example.com</string>
+    <string name="reset">reset tangle!</string>
+    <string name="search_string">Member Name</string>
+    <string name ="member_not_found">"Member not found."</string>
 </resources>
