@@ -328,13 +328,11 @@ public class HomeActivity extends FragmentActivity {
 					UI.makeToast(getBaseContext(),
 							"You left the tangle successfully",
 							Toast.LENGTH_LONG);
-					FragmentManager fragmentManager = getSupportFragmentManager();
-					FragmentTransaction fragmentTransaction = fragmentManager
-							.beginTransaction();
-					TangleStreamActivity tangleTitlesFragment = new TangleStreamActivity();
-					fragmentTransaction.replace(R.id.tangleList,
-							tangleTitlesFragment);
-					fragmentTransaction.commit();
+					Intent intent = new Intent(getBaseContext(),
+							HomeActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+					startActivity(intent);
+					finish();
 				} else if (getStatusCode() == 403) {
 					UI.makeToast(getBaseContext(),
 							"Sorry, you are not allowed to leave the tangle",
