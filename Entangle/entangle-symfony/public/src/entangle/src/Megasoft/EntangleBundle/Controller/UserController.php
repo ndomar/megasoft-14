@@ -556,7 +556,6 @@ class UserController extends Controller {
             $user->setName($username);
             $user->setPassword($password);
             $userEmail->setEmail($email);
-            $user->setVerified(FALSE);
             $entityManager = $this->getDoctrine()->getEntityManager();
             $entityManager->persist($user);
             $entityManager->persist($userEmail);
