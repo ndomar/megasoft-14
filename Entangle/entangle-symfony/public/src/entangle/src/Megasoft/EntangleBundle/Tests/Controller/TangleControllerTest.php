@@ -2,9 +2,6 @@
 
 namespace Megasoft\EntangleBundle\Tests\Controller;
 
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\Loader;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadSessionData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadTangleData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserData;
