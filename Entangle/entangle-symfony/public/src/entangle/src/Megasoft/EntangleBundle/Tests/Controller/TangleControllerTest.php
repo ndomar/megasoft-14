@@ -16,27 +16,17 @@ use Megasoft\EntangleBundle\Tests\EntangleTestCase;
  */
 class TangleControllerTest extends EntangleTestCase
 {
-    /*
-     * A method called at the beginning of every test
-     * Overriden to add needed fixtures
-     */
-    public function setup() {  
-        parent::setup();
-        $loader = new Loader();
-        $loader->addFixture(new LoadTangleData());
-        $loader->addFixture(new LoadUserData());
-        $loader->addFixture(new LoadUserTangleData());
-        $loader->addFixture(new LoadSessionData());
- 
-        $purger = new ORMPurger($this->em);
-        $executor = new ORMExecutor($this->em, $purger);
-        $executor->execute($loader->getFixtures());
-    }
     
     /*
      * Test Case testing sending a wrong session to AllUsersAction
      */
     public function testAllUsersAction_WrongSession(){
+        $this->addFixture(new LoadTangleData());
+        $this->addFixture(new LoadUserData());
+        $this->addFixture(new LoadSessionData());
+        $this->addFixture(new LoadUserTangleData());
+        $this->loadFixtures();
+        
         $client = static::createClient();
         $client->request('GET', 
                 '/tangle/1/user', 
@@ -51,6 +41,12 @@ class TangleControllerTest extends EntangleTestCase
      * Test Case testing sending correct request to AllUsersAction
      */
     public function testAllUsersAction_GetListWithSampleUser(){
+        $this->addFixture(new LoadTangleData());
+        $this->addFixture(new LoadUserData());
+        $this->addFixture(new LoadSessionData());
+        $this->addFixture(new LoadUserTangleData());
+        $this->loadFixtures();
+        
         $client = static::createClient();
         $client->request('GET', 
                 '/tangle/1/user', 
