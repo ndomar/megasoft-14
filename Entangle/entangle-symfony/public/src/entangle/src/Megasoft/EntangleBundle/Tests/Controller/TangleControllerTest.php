@@ -17,7 +17,7 @@ use Megasoft\EntangleBundle\Tests\EntangleTestCase;
 class TangleControllerTest extends EntangleTestCase
 {
     /*
-     * A method called at the beginning of every test
+     * A function called at the beginning of every test
      * Overriden to add needed fixtures
      */
     public function setup() {  
@@ -77,7 +77,9 @@ class TangleControllerTest extends EntangleTestCase
     }
     
     /**
-     * Test Case testing not sending a tangle id in the request 
+     * Test Case testing not sending a tangle id in the request
+     * 
+     * @author HebaAamer 
      */
     public function testLeaveTangleAction_NullTangleId() {
         $client = static::createClient();
@@ -87,6 +89,35 @@ class TangleControllerTest extends EntangleTestCase
                 array(),
                 array('HTTP_X_SESSION_ID'=>'session'));
         $response = $client->getResponse();
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(400, $response->getStatusCode());
+    }
+    
+    /**
+     * Test Case testing not sending a session id in the 
+     */
+    public function testLeaveTangleAction_NullSessionId() {
+        $client = static::createClient();
+        $client->request('DELELTE',
+                'tangle/1/user',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID', null));
+        $response = $client->getResponse();
+        $this->assertEquals(400, $response->getStatusCode());
+    }
+    
+    /**
+     * Test Case testing sending expired session 
+     */
+    public function testLeaveTangleAction_ExpiredSession() {
+        $client = static::createClient();
+        $client->request('DELELTE',
+                'tangle/1/user',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID', 'sampleSession'));
+        $response = $client->getResponse();
+        $this->assertEquals(400, $response->getStatusCode());
     }
 }
+
