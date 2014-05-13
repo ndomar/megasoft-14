@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/notificationType"
+        android:id="@+id/notificationDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="31dp" />
@@ -19,6 +19,17 @@
         android:layout_marginRight="14dp"
         android:contentDescription="@string/markseen" 
         android:src="@drawable/ic_action_accept_green"/>
+    
+    <TextView 
+        android:id="@+id/notificationDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="@dimen/boxMargin"
+        android:layout_below="@+id/notificationDescription"
+        android:textColor="@color/lightGray"
+        android:textSize="@dimen/fontSizeSmall"
+        />
 
     <View
         android:id="@+id/view1"
@@ -26,15 +37,6 @@
         android:layout_height="3dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:background="@color/lightGray" />
-    
-    <TextView
-        android:id="@+id/notificationDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/notificationType"
-        android:layout_marginLeft="14dp"
-        android:layoutDirection="ltr" />
+        android:background="@color/lightGreen" />
 
 </RelativeLayout>

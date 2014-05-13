@@ -2,12 +2,8 @@ package com.megasoft.entangle;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
-
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -27,7 +23,7 @@ public class NotificationStream extends FragmentActivity {
 	/**
 	 * The user Id
 	 */
-	private int userId = 1;
+	private int loggedInId;
 	
 	/**
 	 * The preferences instance
@@ -38,7 +34,9 @@ public class NotificationStream extends FragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_notification);
-		
+		this.settings = getSharedPreferences(Config.SETTING, 0);
+		this.sessionId = settings.getString(Config.SESSION_ID, "");
+		this.loggedInId = settings.getInt(Config.USER_ID, 1);
 		generate();
 	}
 	
@@ -48,11 +46,13 @@ public class NotificationStream extends FragmentActivity {
 		return true;
 	}
 
+	/**
+	 * This method creates GET request to retrive the notifications of the user
+	 * @author Mohamed Ayman
+	 */
 	public void generate() {
 		
-		//viewNotificationsTest();
-		
-		String link = "http://192.168.1.3:9001" + "/" + userId + "/notifications";
+		String link = Config.API_BASE_URL + "/" + loggedInId + "/notifications";
 		
 		GetRequest request = new GetRequest(link) {
 			@Override
@@ -70,45 +70,27 @@ public class NotificationStream extends FragmentActivity {
 					Toast toast = Toast
 							.makeText(
 									getApplicationContext(),
-									this.getStatusCode() + " "
+									this.getStatusCode() + "Error "
 											+ this.getStatusCode(),
 									Toast.LENGTH_SHORT);
 					toast.show();
 				}
 			}
 		};
-		request.addHeader(Config.API_SESSION_ID, sessionId);
+		request.addHeader("X-SESSION-ID", this.sessionId);
 		request.execute();
 	}
-	/*
-	public void viewNotificationsTest() {
+
+	/**
+	 * This method view the notifications by building fragment for each notification
+	 * @param notifications
+	 * @author Mohamed Ayman
+	 */
+	public void viewNotifications(JSONArray notifications) {
 		
 		LinearLayout notificationsArea = ((LinearLayout) findViewById(R.id.notification_stream));
 		notificationsArea.removeAllViews();
 		notificationsArea.setVisibility(View.VISIBLE);
-		
-		NotificationStreamFragment fragment = new NotificationStreamFragment();
-		fragment.setData(1, 2, false , "Notification 1 description", "New offer notification :");
-		getSupportFragmentManager().beginTransaction().add(R.id.notification_stream, fragment).commit();
-		NotificationStreamFragment fragment2 = new NotificationStreamFragment();
-		fragment2.setData(2, 2,true , "Notification 2 description", "New message notification :");
-		getSupportFragmentManager().beginTransaction().add(R.id.notification_stream, fragment2).commit();
-		NotificationStreamFragment fragment3 = new NotificationStreamFragment();
-		fragment3.setData(2, 2,true , "Notification 2 description", "change notification");
-		getSupportFragmentManager().beginTransaction().add(R.id.notification_stream, fragment3).commit();
-		
-		final ScrollView scrollView = (ScrollView) findViewById(R.id.scroll);
-		scrollView.postDelayed(new Runnable() {
-
-			@Override
-			public void run() {
-				scrollView.fullScroll(ScrollView.FOCUS_UP);
-			}
-		}, 500);
-		
-	}
-	*/
-	public void viewNotifications(JSONArray notifications) {
 		
 		for(int i = 0; i < notifications.length();i++) {
 			try {
@@ -117,7 +99,9 @@ public class NotificationStream extends FragmentActivity {
 				String notificationDescription = notification.getString(0);
 				int notificationId = notification.getInt(1);
 				boolean seen = notification.getBoolean(3);
-				fragment.setData(notificationId, userId , seen , notificationDescription);
+				String notificationDate = notification.getString(2);
+				String linkTo = notification.getString(4);
+				fragment.setData(notificationId , seen , notificationDescription , notificationDate , linkTo);
 				getSupportFragmentManager().beginTransaction().add(R.id.notification_stream, fragment).commit();
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -135,6 +119,4 @@ public class NotificationStream extends FragmentActivity {
 			}
 		}, 500);
 	}
-	
 }
-
