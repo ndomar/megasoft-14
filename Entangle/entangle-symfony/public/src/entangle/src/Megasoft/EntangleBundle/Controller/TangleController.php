@@ -501,12 +501,12 @@ class TangleController extends Controller {
         $userTangleRepo = $doctrine->getRepository("MegasoftEntangleBundle:UserTangle");
         if (($userTangle = $userTangleRepo
                 ->findOneBy(array('userId' => $userId,
-            'tangleId' => $tangleId, 'tangleOwner' => true))) != null) {
+            'tangleId' => $tangleId, 'tangleOwner' => true, ))) != null) {
             return new Response("Forbidden", 403);
         }
         $userTangle = $userTangleRepo
                 ->findOneBy(array('userId' => $userId,
-            'tangleId' => $tangleId));
+            'tangleId' => $tangleId, ));
         if ($userTangle->getLeavingDate() != null) {
             return new Response("Unauthorized", 401);
         }
@@ -569,14 +569,10 @@ class TangleController extends Controller {
 
                     if ($request != null) {
                         $offerStatus = $offer->getStatus();
-                        //different statuses
                         if ($offerStatus != $offer->DONE) {
                             $offer->setDeleted(true);
                         }
                     }
-                    //to be done in the coming sprint
-                    //send notification to the requester only in 
-                    //case of PENDING and ACCEPTED
                 }
             }
         }
