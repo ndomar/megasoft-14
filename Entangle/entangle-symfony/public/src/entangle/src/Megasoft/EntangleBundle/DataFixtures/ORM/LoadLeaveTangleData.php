@@ -36,4 +36,26 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         return 1;
     }
     
+    private function createUser(ObjectManager $manager, $name, $password) {
+        $user = new User();
+        $user->setName($name);
+        $user->setPassword($password);
+        
+        $manager->persist($user);
+        $this->addReference('user' . "$name", $user);
+    }
+    
+    
+    private function createSession(ObjectManager $manager, $reference, $sessionId, $expired, $regId) {
+        $session = new Session();
+        $session->setUser($this->getReference("$reference"));
+        $session->setSessionId("$sessionId");
+        $session->setExpired($expired);
+        $session->setCreated(new DateTime('now'));
+        $session->setDeviceType('Samsung S4');
+        $session->setRegId($regId);
+        
+        $manager->persist($session);
+        $this->addReference('session' . "$reference", $session);
+    }
 }
