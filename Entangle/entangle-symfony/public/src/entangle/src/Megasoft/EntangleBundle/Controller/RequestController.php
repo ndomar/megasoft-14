@@ -476,9 +476,7 @@ class RequestController extends Controller
         $title = "request deleted";
         $body = "{{from}} deleted his request";
         $notificationCenter->requestDeletedNotification($request->getId(), $title, $body);
-
-        $request->setDeleted(true);
-        $request->setStatus($request->CLOSE);
+    
         $this->getDoctrine()->getManager()->persist($request);
         
         $offers = $request->getOffers();
