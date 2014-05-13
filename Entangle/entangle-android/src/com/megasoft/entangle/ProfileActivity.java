@@ -41,8 +41,6 @@ public class ProfileActivity extends FragmentActivity {
 				.beginTransaction();
 		transaction.add(R.id.profile_layout, profile);
 		transaction.commit();
-		this.setTitle(getIntent().getStringExtra("userName"));
-
 		GetTransactions();
 		
 	}
