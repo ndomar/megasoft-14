@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 /*
  * Custom Class to extend PHPUnit's WebTestCase class and override setup
  * to truncate all tables of the database at the beginning of every test case
+ * @author OmarElAzazy
  */
 class EntangleTestCase extends WebTestCase
 {
@@ -22,6 +23,7 @@ class EntangleTestCase extends WebTestCase
     /*
      * A method called at the beginning of every test
      * Overriden to truncate all tables of the database at the beginning of every test case
+     * @author OmarElAzazy
      */
     public function setUp() {
         $kernel = static::createKernel();
@@ -50,6 +52,7 @@ class EntangleTestCase extends WebTestCase
      * and truncates that table
      * @param String $tableName table name
      * @param Connection $connection connection to database
+     * @author OmarElAzazy
      */
     protected static function truncateTable($tableName,$connection)
     {
@@ -57,10 +60,19 @@ class EntangleTestCase extends WebTestCase
         $connection->exec($sql);
     }
     
+    /*
+     * Function to add a fixture to the list of fixtures to be loaded
+     * @param \Doctrine\Common\DataFixtures\AbstractFixture $fixture fixture to be added
+     * @author OmarElAzazy
+     */
     public function addFixture($fixture){
         $this->loader->addFixture($fixture);
     }
     
+    /*
+     * Function to load all added fixtures
+     * @author OmarElAzazy
+     */
     public function loadFixtures(){
         $purger = new ORMPurger($this->em);
         $executor = new ORMExecutor($this->em, $purger);

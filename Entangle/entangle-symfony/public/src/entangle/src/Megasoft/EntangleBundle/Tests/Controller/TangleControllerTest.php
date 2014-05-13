@@ -10,12 +10,14 @@ use Megasoft\EntangleBundle\Tests\EntangleTestCase;
 
 /*
  * Test Class for Tangle Controller
+ * @author OmarElAzazy
  */
 class TangleControllerTest extends EntangleTestCase
 {
     
     /*
      * Test Case testing sending a wrong session to AllUsersAction
+     * @author OmarElAzazy
      */
     public function testAllUsersAction_WrongSession(){
         $this->addFixture(new LoadTangleData());
@@ -36,6 +38,7 @@ class TangleControllerTest extends EntangleTestCase
     
     /*
      * Test Case testing sending correct request to AllUsersAction
+     * @author OmarElAzazy
      */
     public function testAllUsersAction_GetListWithSampleUser(){
         $this->addFixture(new LoadTangleData());
