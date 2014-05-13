@@ -1,22 +1,17 @@
 package com.megasoft.entangle;
 
-import com.megasoft.config.Config;
-
-import android.app.ActionBar;
 import android.app.Activity;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.app.ActionBar.Tab;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.SearchView;
+
+import com.megasoft.config.Config;
 
 public class SampleFragment extends Fragment {
 
@@ -24,24 +19,18 @@ public class SampleFragment extends Fragment {
 	private FragmentActivity activity;
 	private View view;
 	private ViewPager pager;
-	private ActionBar actionBar;
-	private String sessionId;
 	private int tangleId;
 	private int userId;
 	private String tangleName;
 	private boolean isTangleOwner;
 	
-	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 		
         view = inflater.inflate(R.layout.fragment_pager, container, false);
-//        ((TextView) view.findViewById(R.id.sample)).setText(getArguments().getString("key"));
         
         SharedPreferences settings = activity.getSharedPreferences(Config.SETTING, 0);
-		sessionId = settings.getString(Config.SESSION_ID, "");
 		userId = settings.getInt(Config.USER_ID, -1);
 		tangleId = getArguments().getInt("tangleId");
 		tangleName = getArguments().getString("tangleName");
@@ -49,8 +38,6 @@ public class SampleFragment extends Fragment {
         tab = new PagerAdapter(activity, activity.getSupportFragmentManager(),tangleId,userId, tangleName,isTangleOwner);
         pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(tab);
-       
-        
         return view;
     }
 	

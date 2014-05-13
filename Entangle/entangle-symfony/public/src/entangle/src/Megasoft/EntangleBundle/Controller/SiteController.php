@@ -22,6 +22,10 @@ use Megasoft\EntangleBundle\Entity\Tangle;
 class SiteController extends Controller
 {
 
+    public function indexAction()
+    {
+        return $this->render('MegasoftEntangleBundle:Site:index.html.twig');
+    }
 
     /**
      * generates a random string
@@ -99,7 +103,6 @@ class SiteController extends Controller
                 $user->setPassword($password);
                 $userEmail->setEmail($email);
                 $user->setUserBio($userBio);
-                $user->setVerified(FALSE);
                 //$image = $request->files->get('img');
 //                if (($image instanceof UploadedFile) && ($image->getError() == '0')) {
 //                    if ($image->getSize() < 4194304) { //if image size is less that 4MB
@@ -221,12 +224,12 @@ class SiteController extends Controller
         $sessionId = $request->get('sessionId');
         $repo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $session = $repo->findOneBy(array('sessionId' => $sessionId,));
-        if(!$session){
-            return new Response(400,"adeek fel 2olla tfa77ar");
+        if (!$session) {
+            return new Response(400, "adeek fel 2olla tfa77ar");
         }
         $user = $session->getUser();
-        if(!$user)
-            return new Response(400,'bad request');
+        if (!$user)
+            return new Response(400, 'bad request');
         $repo2 = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserTangle');
 
         $userTangles = $user->getTangles();

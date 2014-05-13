@@ -8,6 +8,7 @@ use Megasoft\EntangleBundle\Entity\Session;
 use Megasoft\EntangleBundle\Entity\Tangle;
 use Megasoft\EntangleBundle\Entity\Offer;
 use Megasoft\EntangleBundle\Entity\User;
+use Megasoft\EntangleBundle\Entity\UserEmail;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,7 +21,7 @@ class UserController extends Controller
     /**
      * Validates the username and password from request and returns sessionID
      * @param  Integer $len length for the generated sessionID
-     * @return String $generatedSessionID the session id that will be used
+     * @return String $generatedSessionID the session id that will be
      *
      * @author maisaraFarahat
      */
@@ -117,7 +118,8 @@ class UserController extends Controller
         $userTangleTable = $this->getDoctrine()->
             getRepository('MegasoftEntangleBundle:UserTangle');
         $userTangle = $userTangleTable->
-            findOneBy(array('userId' => $userId, 'tangleId' => $tangleId));
+                findOneBy(array('userId' => $userId, 'tangleId' => $tangleId,));
+
         if ($userTangle == null) {
             return false;
         } else {
@@ -135,7 +137,8 @@ class UserController extends Controller
     {
         $tangleTable = $this->getDoctrine()->
             getRepository('MegasoftEntangleBundle:Tangle');
-        $tangle = $tangleTable->findOneBy(array('id' => $tangleId));
+        $tangle = $tangleTable->findOneBy(array('id' => $tangleId,));
+
         if ($tangle == null) {
             return false;
         } else {
@@ -144,15 +147,13 @@ class UserController extends Controller
     }
 
     /**
-     * Sends the required information in a JSon response
+     * Gets the general profile of the logged in user
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param integer $userId
-     * @param integer $tangleId
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
      * @author Almgohar
      */
-    public function profileAction(\Symfony\Component\HttpFoundation\Request $request, $userId, $tangleId)
-    {
+    public function generalProfileAction(\Symfony\Component\HttpFoundation\Request $request, $userId) {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($sessionId == null) {
@@ -161,9 +162,44 @@ class UserController extends Controller
 
         $doctrine = $this->getDoctrine();
         $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
+        $user = $userTable->findOneBy(array('id' => $userId,));
+
+        if ($user == null) {
+            return new Response('User not found', 404);
+        }
+
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
-        $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
-        $user = $userTable->findOneBy(array('id' => $userId));
+        $session = $sessionTable->findOneBy(array('sessionId' => $sessionId,));
+        $loggedInUser = $session->getUser();
+
+        if ($session == null || $session->getExpired() || $loggedInUser != $user) {
+            return new Response('Unauthorized', 401);
+        }
+
+        return $this->viewProfile($user);
+    }
+    
+    /**
+     * Gets the profile of a user in a given tangle
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param integer $userId
+     * @param integer $tangleId
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @author Almgohar
+     */
+    public function profileAction(\Symfony\Component\HttpFoundation\Request $request, $userId, $tangleId) {
+      $sessionId = $request->headers->get('X-SESSION-ID');
+
+        if ($sessionId == null) {
+            return new Response('Unauthorized', 401);
+        }
+
+        $doctrine = $this->getDoctrine();
+        $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
+        $user = $userTable->findOneBy(array('id' => $userId,));
+        $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionTable->findOneBy(array('sessionId' => $sessionId,));
+        $loggedInUser = $session->getUser();
 
         if ($session == null || $session->getExpired()) {
             return new Response('Unauthorized', 401);
@@ -173,13 +209,11 @@ class UserController extends Controller
             return new Response('User not found', 404);
         }
 
-        $loggedInUser = $session->getUserId();
-
         if (!$this->validateTangle($tangleId)) {
             return new Response('Tangle not found', 404);
         }
 
-        if (!$this->validateUser($loggedInUser, $tangleId)) {
+        if (!$this->validateUser($loggedInUser->getId(), $tangleId)) {
             return new Response('You are not a member of this tangle', 401);
         }
 
@@ -187,12 +221,30 @@ class UserController extends Controller
             return new Response('The requested user is not a member of this tangle', 401);
         }
 
-        $offers = $user->getOffers();
-        $info = $this->getUserInfo($user, $tangleId);
-        $transactions = $this->getTransactions($offers, $tangleId);
+        return $this->viewProfile($user);
+    }
+
+    /**
+     * Gets the basic information of a given user in a give tangle
+     * @param user $user
+     * @param boolean $general
+     * @return \Symfony\Component\HttpFoundation\Response | JsonResponse $response
+     * @author Almgohar
+     */
+    private function viewProfile($user) {
+        if ($user == null) {
+            return new Response('Bad Request', 400);
+        }
+
+        $name = $user->getName();
+        $description = $user->getUserBio();
+        $photo = $user->getPhoto();
+        $verified = $user->getVerified();
+        $information = array('name' => $name, 'description' => $description,
+            'photo' => $photo,
+            'verified' => $verified,);
         $response = new JsonResponse();
-        $response->setData(array('information' => $info,
-            'transactions' => $transactions));
+        $response->setData($information);
         $response->setStatusCode(200);
 
         return $response;
@@ -200,31 +252,69 @@ class UserController extends Controller
 
     /**
      * Gets the user's transactions in a given tangle
-     * @param array $offers
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param integer $userId
      * @param integer $tangleId
      * @return array of arrays $transactions
      * @author Almgohar
      */
-    private function getTransactions($offers, $tangleId)
-    {
+    public function transactionsAction(\Symfony\Component\HttpFoundation\Request $request, $userId, $tangleId) {
+        $sessionId = $request->headers->get('X-SESSION-ID');
+
+        if ($sessionId == null) {
+            return new Response('Unauthorized', 401);
+        }
+
+        $doctrine = $this->getDoctrine();
+        $userTangleTable = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
+        $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionTable->findOneBy(array('sessionId' => $sessionId,));
+
+        if ($session == null || $session->getExpired()) {
+            return new Response('Unauthorized', 401);
+        }
+
+        $loggedInUser = $session->getUser();
+        $user = $userTable->findOneBy(array('id' => $userId,));
+        $userTangle = $userTangleTable->findOneBy(array('userId' => $userId, 'tangleId' => $tangleId,));
+
+        if (!$this->validateTangle($tangleId)) {
+            return new Response('Tangle not found', 404);
+        }
+
+        if (!$this->validateUser($loggedInUser->getId(), $tangleId)) {
+            return new Response('You are not a member of this tangle', 401);
+        }
+
+        if (!$this->validateUser($userId, $tangleId)) {
+            return new Response('The requested user is not a member of this tangle', 401);
+        }
+
         $transactions = array();
+        $offers = $user->getOffers();
+        $credit = $userTangle->getCredit();
+
         for ($i = 0; $i < count($offers); $i++) {
             $offer = $offers[$i];
-            if ($offer == null) {
-                continue;
-            }
+
             if (($offer->getRequest()->getTangleId() == $tangleId) && ($offer->getTransaction() != null)) {
                 $requesterName = $offer->getRequest()->getUser()->getName();
-                $requestDescription = $offer->getRequest()->getDescription();
+                $photo = $offer->getRequest()->getUser()->getPhoto();
+                $offererName = $offer->getUser()->getName();
                 $amount = $offer->getTransaction()->getFinalPrice();
-                $requestId = $offer->getRequest() . getId();
-                $requesterId = $offer->getRequest() . getUserId();
-                $transactions[] = array('offerId' => $offer->getId(),
-                    'requesterName' => $requesterName,
-                    'requestDescription' => $requestDescription,
-                    'amount' => $amount, 'requestId' => $requestId, 'requesterId' => $requesterId);
+                $requestId = $offer->getRequest()->getId();
+                $requesterId = $offer->getRequest()->getUserId();
+                $transactions[] = array('offerId'=>$offer->getId(),
+                    'requesterName' => $requesterName, 'photo' => $photo, 'offererName' => $offererName,
+                    'amount' => $amount, 'requestId' => $requestId, 'requesterId' => $requesterId,);
+            } else {
+                continue;
             }
         }
+        $response = new JsonResponse();
+        $response->setData(array('transactions' => $transactions, 'credit' => $credit,));
+        $response->setStatusCode(200);
 
         return $transactions;
     }
@@ -300,6 +390,100 @@ class UserController extends Controller
 
 
         return new Response(200);
+    }
+
+    /*
+     * Checks that the username is unique
+     * @param: String  username
+     * @param: boolean value, true if unique. False otherwise
+     * 
+     * @author: Eslam
+     */
+
+    private function validateUniqueUsername($username) {
+        $userRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
+        if ($userRepo->findOneBy(array('name' => $username,)) == null && $username != null && $username != "") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /*
+     * Checks that the email is unique
+     * @param: String email
+     * @param: boolean value, true if unique. False otherwise
+     * 
+     * @author: Eslam
+     */
+
+    private function validateUniqueEmail($email) {
+        $emailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
+        if ($emailRepo->findOneBy(array('email' => $email,))) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /*
+     * An endpoint for the user to register from the mobile application
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse $response
+     *
+     * @author Eslam Maged
+     */
+
+    public function registerAction(\Symfony\Component\HttpFoundation\Request $request) {
+        $response = new JsonResponse();
+        $badRequest = "Bad Request";
+
+        if (!$request) {
+            return new JsonResponse($badRequest, 400);
+        }
+
+        $json = $request->getContent();
+
+        if (!$json) {
+            $response->setStatusCode(400, $badRequest);
+            return $response;
+        }
+
+        if ($request->getMethod() == 'POST') {
+            $json_array = json_decode($json, true);
+            $username = $json_array['username'];
+            $email = $json_array['email'];
+            $password = $json_array['password'];
+            $confirmPassword = $json_array['confirmPassword'];
+
+            if (!$username || !$email || !$password || !$confirmPassword || (!preg_match('/^[a-zA-Z0-9]+$/', $username))) {
+                return new JsonResponse($badRequest, 400);
+            }
+
+            if(!$this->validateUniqueUsername($username)) {
+                return new JsonResponse("Not unique username", 401);
+            }
+
+            if(!$this->validateUniqueEmail($email)) {
+                return new JsonResponse("Not unique Email", 402);
+            }
+
+
+            $user = new User;
+            $userEmail = new UserEmail();
+            $user->addEmail($userEmail);
+            $user->setName($username);
+            $user->setPassword($password);
+            $userEmail->setEmail($email);
+            $entityManager = $this->getDoctrine()->getEntityManager();
+            $entityManager->persist($user);
+            $entityManager->persist($userEmail);
+            $entityManager->flush();
+            $response->setData(array('username' => $username, 'email' => $email, 'password' => $password,));
+            $response->setStatusCode(201);
+
+            return $response;
+        }
     }
 
 }
