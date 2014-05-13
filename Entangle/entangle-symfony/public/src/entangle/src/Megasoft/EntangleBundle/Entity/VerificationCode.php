@@ -31,18 +31,18 @@ class VerificationCode
     /**
      * @var integer
      *
-     * @ORM\Column(name="userId", type="integer")
+     * @ORM\Column(name="userEmailId", type="integer")
      */
-    private $userId;
+    private $userEmailId;
     
     /**
      *
      * @var User
      * 
-     * @ORM\OneToOne(targetEntity="User", inversedBy="verificationCode")
-     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="UserEmail", inversedBy="verificationCode")
+     * @ORM\JoinColumn(name="userEmailId", referencedColumnName="id")
      */
-    private $user;
+    private $userEmail;
 
     /**
      * @var \DateTime
@@ -93,29 +93,6 @@ class VerificationCode
     }
 
     /**
-     * Set userId
-     *
-     * @param integer $userId
-     * @return VerificationCode
-     */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
-    /**
-     * Get userId
-     *
-     * @return integer 
-     */
-    public function getUserId()
-    {
-        return $this->userId;
-    }
-
-    /**
      * Set created
      *
      * @param \DateTime $created
@@ -161,26 +138,50 @@ class VerificationCode
         return $this->expired;
     }
 
+
     /**
-     * Set user
+     * Set userEmailId
      *
-     * @param \Megasoft\EntangleBundle\Entity\User $user
+     * @param integer $userEmailId
      * @return VerificationCode
      */
-    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null)
+    public function setUserEmailId($userEmailId)
     {
-        $this->user = $user;
+        $this->userEmailId = $userEmailId;
 
         return $this;
     }
 
     /**
-     * Get user
+     * Get userEmailId
      *
-     * @return \Megasoft\EntangleBundle\Entity\User 
+     * @return integer 
      */
-    public function getUser()
+    public function getUserEmailId()
     {
-        return $this->user;
+        return $this->userEmailId;
+    }
+
+    /**
+     * Set userEmail
+     *
+     * @param \Megasoft\EntangleBundle\Entity\UserEmail $userEmail
+     * @return VerificationCode
+     */
+    public function setUserEmail(\Megasoft\EntangleBundle\Entity\UserEmail $userEmail = null)
+    {
+        $this->userEmail = $userEmail;
+
+        return $this;
+    }
+
+    /**
+     * Get userEmail
+     *
+     * @return \Megasoft\EntangleBundle\Entity\UserEmail 
+     */
+    public function getUserEmail()
+    {
+        return $this->userEmail;
     }
 }

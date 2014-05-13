@@ -59,6 +59,13 @@ class UserEmail
      * @ORM\Column(name="deleted", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
      */
     private $deleted = false;
+
+    /**
+     * @var VerificationCode
+     *
+     * @ORM\OneToOne(targetEntity="VerificationCode", mappedBy="userEmail", cascade={"persist"})
+     */
+    private $verificationCode;
     
     /**
      * Get id
@@ -183,5 +190,28 @@ class UserEmail
     public function getVerified()
     {
         return $this->verified;
+    }
+
+    /**
+     * Set verificationCode
+     *
+     * @param \Megasoft\EntangleBundle\Entity\VerificationCode $verificationCode
+     * @return UserEmail
+     */
+    public function setVerificationCode(\Megasoft\EntangleBundle\Entity\VerificationCode $verificationCode = null)
+    {
+        $this->verificationCode = $verificationCode;
+        $verificationCode->setUserEmail($this);
+        return $this;
+    }
+
+    /**
+     * Get verificationCode
+     *
+     * @return \Megasoft\EntangleBundle\Entity\VerificationCode
+     */
+    public function getVerificationCode()
+    {
+        return $this->verificationCode;
     }
 }
