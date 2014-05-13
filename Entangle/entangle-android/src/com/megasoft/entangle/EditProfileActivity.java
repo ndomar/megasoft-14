@@ -32,7 +32,6 @@ public class EditProfileActivity extends Activity {
 	private Bitmap picture;
 	private String sessionId;
 	private SharedPreferences settings;
-	private String url = Config.API_BASE_URL;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +74,7 @@ public class EditProfileActivity extends Activity {
 	    	  picture.compress(Bitmap.CompressFormat.PNG, 100, baos);
 	    	  byte[] byteArray = baos.toByteArray();
 	    	  String encodedPicture = Base64.encodeToString(byteArray, Base64.DEFAULT);
-	    	  PutRequest editPictureRequest = new PutRequest(url){
+	    	  PutRequest editPictureRequest = new PutRequest(Config.API_BASE_URL + "/user/{userId}/editpicture"){
 	    		  protected void onPostExecute(String res) {
 	    			  if(this.getStatusCode() == 200) {
 	    				  Toast.makeText(getApplicationContext(), "Photo uploaded",
