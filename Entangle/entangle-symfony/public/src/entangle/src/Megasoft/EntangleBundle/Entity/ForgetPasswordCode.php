@@ -5,12 +5,12 @@ namespace Megasoft\EntangleBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * VerificationCode
+ * ForgetPasswordCode
  *
  * @ORM\Table()
  * @ORM\Entity
  */
-class VerificationCode
+class ForgetPasswordCode
 {
     /**
      * @var integer
@@ -24,25 +24,25 @@ class VerificationCode
     /**
      * @var string
      *
-     * @ORM\Column(name="verificationCode", type="string", length=255)
+     * @ORM\Column(name="forgetPasswordCode", type="string", length=255)
      */
-    private $verificationCode;
+    private $forgetPasswordCode;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="userEmailId", type="integer")
+     * @ORM\Column(name="userId", type="integer")
      */
-    private $userEmailId;
-    
+    private $userId;
+
     /**
      *
-     * @var UserEmail
-     * 
-     * @ORM\OneToOne(targetEntity="UserEmail", inversedBy="verificationCode")
-     * @ORM\JoinColumn(name="userEmailId", referencedColumnName="id")
+     * @var User
+     *
+     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
      */
-    private $userEmail;
+    private $user;
 
     /**
      * @var \DateTime
@@ -70,33 +70,56 @@ class VerificationCode
     }
 
     /**
-     * Set verificationCode
+     * Set forgetPasswordCode
      *
-     * @param string $verificationCode
-     * @return VerificationCode
+     * @param string $forgetPasswordCode
+     * @return ForgetPasswordCode
      */
-    public function setVerificationCode($verificationCode)
+    public function setForgetPasswordCode($forgetPasswordCode)
     {
-        $this->verificationCode = $verificationCode;
+        $this->forgetPasswordCode = $forgetPasswordCode;
 
         return $this;
     }
 
     /**
-     * Get verificationCode
+     * Get forgetPasswordCode
      *
      * @return string 
      */
-    public function getVerificationCode()
+    public function getForgetPasswordCode()
     {
-        return $this->verificationCode;
+        return $this->forgetPasswordCode;
+    }
+
+    /**
+     * Set userId
+     *
+     * @param integer $userId
+     * @return ForgetPasswordCode
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+
+    /**
+     * Get userId
+     *
+     * @return integer 
+     */
+    public function getUserId()
+    {
+        return $this->userId;
     }
 
     /**
      * Set created
      *
      * @param \DateTime $created
-     * @return VerificationCode
+     * @return ForgetPasswordCode
      */
     public function setCreated($created)
     {
@@ -119,7 +142,7 @@ class VerificationCode
      * Set expired
      *
      * @param boolean $expired
-     * @return VerificationCode
+     * @return ForgetPasswordCode
      */
     public function setExpired($expired)
     {
@@ -138,50 +161,26 @@ class VerificationCode
         return $this->expired;
     }
 
-
     /**
-     * Set userEmailId
+     * Set user
      *
-     * @param integer $userEmailId
-     * @return VerificationCode
+     * @param \Megasoft\EntangleBundle\Entity\User $user
+     * @return ForgetPasswordCode
      */
-    public function setUserEmailId($userEmailId)
+    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null)
     {
-        $this->userEmailId = $userEmailId;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get userEmailId
+     * Get user
      *
-     * @return integer 
+     * @return \Megasoft\EntangleBundle\Entity\User 
      */
-    public function getUserEmailId()
+    public function getUser()
     {
-        return $this->userEmailId;
-    }
-
-    /**
-     * Set userEmail
-     *
-     * @param \Megasoft\EntangleBundle\Entity\UserEmail $userEmail
-     * @return VerificationCode
-     */
-    public function setUserEmail(\Megasoft\EntangleBundle\Entity\UserEmail $userEmail = null)
-    {
-        $this->userEmail = $userEmail;
-
-        return $this;
-    }
-
-    /**
-     * Get userEmail
-     *
-     * @return \Megasoft\EntangleBundle\Entity\UserEmail 
-     */
-    public function getUserEmail()
-    {
-        return $this->userEmail;
+        return $this->user;
     }
 }

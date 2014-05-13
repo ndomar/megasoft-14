@@ -121,6 +121,11 @@ public class ProfileFragment extends Fragment {
 					name.setText(information.getString("name"));
 					description.setText(information.getString("description"));
 					viewProfilePicture(information.getString("photo"));
+					
+					if(activity instanceof ProfileActivity) {
+						activity.setTitle(information.getString("name"));
+					}
+					
 					} catch (JSONException e) {
 						e.printStackTrace();
 						}
