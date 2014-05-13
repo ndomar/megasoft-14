@@ -486,8 +486,6 @@ class TangleController extends Controller {
      */
     private function leaveTangleVerification($request, $tangleId) {
         $verification = $this->verifyUser($request, $tangleId);
-
-
         if ($verification != null) {
             return $verification;
         }
@@ -526,32 +524,30 @@ class TangleController extends Controller {
      */
     private function removeRequests($tangleId, $userId) {
         $requestRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Request");
-
         $requests = $requestRepo->findBy(array('tangleId' => $tangleId,
             'userId' => $userId));
-        $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
-        $user = $userRepo->find($userId);
-
+        
         if ($requests != null) {
             foreach ($requests as $request) {
                 if ($request != null) {
-                    if ($request->getStatus() != $request->CLOSE) {
+                    //why different statuses requires differnet treament
+                    //if ($request->getStatus() != $request->CLOSE) {
                         //we need to add DONE requests
                         $request->setStatus($request->CLOSE);
-                        $request->setDeleted(true);
                         //to add a notification in the next sprint
-                    } else {
-                        $request->setDeleted(true);
-                    }
+                    //}
+                    $request->setDeleted(true);
                     $offers = $request->getOffers();
+                    //set the offer status
                     if ($offers != null) {
                         foreach ($offers as $offer) {
-                            $this->deleteOfferMessages($user, $offer);
+                            $offer->setDeleted(true);
+                            //$offer->setStatus($offer->FAILED);
+                            $this->deleteOfferMessages($offer);
                         }
                     }
                 }
             }
-            $this->getDoctrine()->getManager()->flush();
         }
     }
 
@@ -570,9 +566,7 @@ class TangleController extends Controller {
         $offers = $offerRepo->findBy(array('userId' => $userId));
         if ($offers != null) {
             $requestRepo = $doctrine->getRepository("MegasoftEntangleBundle:Request");
-            $userRepo = $doctrine->getRepository("MegasoftEntangleBundle:User");
-            $user = $userRepo->find($userId);
-
+            
             foreach ($offers as $offer) {
                 if ($offer != null) {
                     $requestId = $offer->getRequestId();
@@ -581,8 +575,9 @@ class TangleController extends Controller {
 
                     if ($request != null) {
                         $offerStatus = $offer->getStatus();
+                        //different statuses
                         if ($offerStatus != $offer->DONE) {
-                            $this->deleteOfferMessages($user, $offer);
+                            $this->deleteOfferMessages($offer);
                             $offer->setDeleted(true);
                         }
                     }
@@ -598,15 +593,14 @@ class TangleController extends Controller {
      * This function is responsible for handling the deletion of the messages
      * related to an offer
      *
-     * @param integer $user
      * @param Offer $offer
      * @author HebaAamer
      */
-    private function deleteOfferMessages($user, $offer) {
-        if ($user != null) {
+    private function deleteOfferMessages($offer) {
+        if ($offer != null) {
             $messages = $offer->getMessages();
             foreach ($messages as $message) {
-                if ($message != null && $message->getSenderId() == $user->getId()) {
+                if ($message != null) {
                     $message->setDeleted(true);
                 }
             }
@@ -655,6 +649,7 @@ class TangleController extends Controller {
         $claimRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Claim");
         
         $claims = $claimRepo->findBy(array('tangleId' => $tangleId, 'claimer' => $userId));
+        
         if ($claims != null) {
             foreach ($claims as $claim) {
                 if ($claim != null) {
