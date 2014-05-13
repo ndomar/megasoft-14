@@ -13,6 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+/**
+ * This is the activity of the Notification Stream
+ * @author Mohamed Ayman
+ *
+ */
 public class NotificationStream extends FragmentActivity {
 	
 	/**

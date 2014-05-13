@@ -12,6 +12,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+/**
+ * Class NotificationStreamController
+ * @package Megasoft\EntangleBundle\Controller
+ * This controller retrieves the notifications of a user from the database using doctrine
+ * @author : Mohamed Ayman
+ */
 class NotificationStreamController extends Controller
 {
     //The array that will have all the notifications

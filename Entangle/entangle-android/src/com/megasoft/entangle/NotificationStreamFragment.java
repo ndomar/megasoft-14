@@ -16,6 +16,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+/**
+ * This is a fragment class where each fragment is a notification
+ * @author Mohamed Ayman
+ */
 public class NotificationStreamFragment extends Fragment {
 	
 	private View view;
@@ -27,6 +31,14 @@ public class NotificationStreamFragment extends Fragment {
 	private String linkToId;
 	private FragmentActivity activity;
 	
+	/**
+	 * Setting the attributes of the fragment
+	 * @param notificationId
+	 * @param seen
+	 * @param notificationDescription
+	 * @param date
+	 * @param link
+	 */
 	public void setData(int notificationId , boolean seen , String notificationDescription , String date , String link) {
 		this.notificationId = notificationId;
 		this.notificationDescription = notificationDescription;
@@ -35,6 +47,10 @@ public class NotificationStreamFragment extends Fragment {
 		this.linkTo = link;
 	}
 	
+	/**
+	 * It manages the view of the fragment
+	 * @author Mohamed Ayman
+	 */
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstancState) {
 		view = inflater.inflate(R.layout.fragment_notification_stream,
@@ -102,12 +118,18 @@ public class NotificationStreamFragment extends Fragment {
 		putRequest.execute();
 	}
 	
+	/**
+	 * Go to the offer activity
+	 */
 	public void goToOffer() {
 		Intent intent = new Intent(activity , OfferActivity.class);
 		intent.putExtra("offer id", linkToId);
 		startActivity(intent);
 	}
 	
+	/**
+	 * Go to the request activity
+	 */
 	public void goToRequest() {
 		Intent intent = new Intent(activity , RequestActivity.class);
 		intent.putExtra("request id", linkToId);
