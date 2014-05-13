@@ -73,6 +73,10 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals('http://entangle.io/images/profilePictures/', $users[0]['iconUrl']);
     }
 
+    /*
+     * Test Case testing filtering stream if the sessionId is missing.
+     * @author MohamedBassem
+     */
     public function testFilterStream_MissingSessionId(){
         $this->addFixture(new LoadFilterStreamData());
         $this->loadFixtures();
@@ -87,6 +91,10 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals(400, $client->getResponse()->getStatusCode(),"Checking Missing SessionId");
     }
 
+    /*
+     * Test Case testing filtering stream if the sessionId is wrong.
+     * @author MohamedBassem
+     */
     public function testFilterStream_WrongSessionId(){
         $this->addFixture(new LoadFilterStreamData());
         $this->loadFixtures();
@@ -101,6 +109,10 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals(400, $client->getResponse()->getStatusCode(),"Checking Wrong SessionId");
     }
 
+    /*
+     * Test Case testing filtering stream if the sessionId is expired.
+     * @author MohamedBassem
+     */
     public function testFilterStream_ExpiredSessionId(){
         $this->addFixture(new LoadFilterStreamData());
         $this->loadFixtures();
@@ -115,6 +127,10 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals(400, $client->getResponse()->getStatusCode(),"Checking Expired SessionId");
     }
 
+    /*
+     * Test Case testing filtering stream if the user is not in the tangle.
+     * @author MohamedBassem
+     */
     public function testFilterStream_NotMemberInTheTangle(){
         $this->addFixture(new LoadFilterStreamData());
         $this->loadFixtures();
@@ -129,6 +145,11 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking Not Member in tangle");
     }
 
+    /*
+     * Test Case testing filtering stream if their is not certain search query. The response should return all
+     * open requests.
+     * @author MohamedBassem
+     */
     public function testFilterStream_SelectAll(){
         $this->addFixture(new LoadFilterStreamData());
         $this->loadFixtures();
@@ -160,6 +181,10 @@ class TangleControllerTest extends EntangleTestCase
 
     }
 
+    /*
+     * Test Case testing filtering stream if the a query parameter is added.
+     * @author MohamedBassem
+     */
     public function testFilterStream_SelectFiltered(){
         $this->addFixture(new LoadFilterStreamData());
         $this->loadFixtures();
@@ -190,6 +215,10 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals(2,count($json['requests']),"Wrong number of results in request array");
     }
 
+    /*
+     * Test Case testing filtering stream if there is no match for the query.
+     * @author MohamedBassem
+     */
     public function testFilterStream_FilterNoRequests(){
         $this->addFixture(new LoadFilterStreamData());
         $this->loadFixtures();
