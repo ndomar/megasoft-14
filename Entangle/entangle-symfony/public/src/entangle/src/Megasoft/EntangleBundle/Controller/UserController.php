@@ -498,14 +498,28 @@ class UserController extends Controller {
         $decodedPic = base64_decode($picData);
         $pic = imagecreatefromstring($decodedPic);
 
-        $picFileName = 'request' . "$requestId" . '.png';
+        $picFileName = generateRandomString(20) . '.png';
         $kernel = $this->get('kernel');
         $path = $kernel->getRootDir() . '/../web/bundles/megasoftentangle/images/profile/pictures/';
 
         $outputFilePath = $path . $picFileName;
         imagepng($pic, $outputFilePath, 9);
         imagedestroy($pic);
-        return 'http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/profile/pictures/' . $iconFileName;
+        return 'http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/profile/pictures/' . $picFileName;
     }
-
+    
+    /**
+     * Generates a random string of length $len
+     * @param integer $len
+     * @return string a randomly generated string of length $len
+     * @author MohamedBassem
+     */
+    private function generateRandomString($len) {
+        $ret = '';
+        $seed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
+        for ($i = 0; $i < $len; $i++) {
+            $ret .= $seed[rand(0, strlen($seed) - 1)];
+        }
+        return $ret;
+    }
 }
