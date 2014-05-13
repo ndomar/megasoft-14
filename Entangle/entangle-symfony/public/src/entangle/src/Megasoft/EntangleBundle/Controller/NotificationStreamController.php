@@ -277,11 +277,23 @@ class NotificationStreamController extends Controller
         $this->getNewMessageNotifications($userId);
         $this->getTransactionNotifications($userId);
         $this->getOfferDeletedNotifications($userId);
+        usort($this->arr , array($this , "notification_compare"));
 		$response = new JsonResponse();
 		$response->setdata($this->arr);
 		$response->setStatusCode(200);
 		return $response;
 	}
+
+    /**
+     * @param $a
+     * @param $b
+     * @return int
+     * This function to sort the array
+     */
+    function notification_compare($a , $b)
+    {
+        return strnatcasecmp($b[1] , $a[1]);
+    }
 
     /**
      * @param $notificationId
