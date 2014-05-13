@@ -58,8 +58,6 @@ public class NotificationStreamFragment extends Fragment {
 		String[] link = linkTo.split("=");
 		linkTo = link[0];
 		linkToId = link[1];
-		ImageButton mark = (ImageButton) view.findViewById(R.id.imageButton1);
-		mark.setBackgroundColor(color.white);
 		TextView notificationDescriptionView = (TextView) view.findViewById(R.id.notificationDescription);
 		notificationDescriptionView.setTextSize(20);
 		TextView notificationDateView = (TextView) view.findViewById(R.id.notificationDate);
@@ -67,22 +65,9 @@ public class NotificationStreamFragment extends Fragment {
 		if(!this.seen) {
 			notificationDescriptionView.setTypeface(null, Typeface.BOLD);
 		} else {
-			mark.setVisibility(mark.INVISIBLE);
 			notificationDescriptionView.setTextColor(Color.GRAY);
 		}
 		notificationDescriptionView.setText(this.notificationDescription);
-		
-		mark.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				setSeen();
-				v.setVisibility(v.INVISIBLE);
-				TextView notificationDescriptionView = (TextView) view.findViewById(R.id.notificationDescription);
-				notificationDescriptionView.setTextColor(Color.GRAY);
-			}
-		});
 		
 		notificationDescriptionView.setOnClickListener(new View.OnClickListener() {
 			
