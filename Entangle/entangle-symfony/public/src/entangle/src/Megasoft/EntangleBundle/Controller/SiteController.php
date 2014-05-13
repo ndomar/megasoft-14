@@ -92,7 +92,6 @@ class SiteController extends Controller
                 $user->setPassword($password);
                 $userEmail->setEmail($email);
                 $user->setUserBio($userBio);
-                $user->setVerified(FALSE);
                 //$image = $request->files->get('img');
 //                if (($image instanceof UploadedFile) && ($image->getError() == '0')) {
 //                    if ($image->getSize() < 4194304) { //if image size is less that 4MB

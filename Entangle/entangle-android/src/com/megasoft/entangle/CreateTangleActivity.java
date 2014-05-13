@@ -269,7 +269,6 @@ public class CreateTangleActivity extends Activity {
 	 * @author Mansour
 	 */
 	public void goToHomeHelper() {
-
 		this.finish();
 	}
 
