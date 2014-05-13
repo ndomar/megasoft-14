@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/gradient"
+    android:gravity="center" >
+    
+    <ImageView 
+        android:layout_width="@dimen/logo_big"
+        android:layout_height="@dimen/logo_big"
+        android:src="@drawable/entangle_logo"/>
+    
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Entangle"
+        android:textSize="@dimen/textLarge"
+        />
+    
+        <TextView android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="entangle.io"
+        	android:textSize="@dimen/textMedium"
+        />
+        
+        
+            
+            <Button
+	            android:id="@+id/splash_login"
+	            android:layout_marginTop="@dimen/marginLarge"
+	            style="?android:attr/buttonBarButtonStyle"
+	            android:layout_width="fill_parent"
+	            android:layout_height="@dimen/buttonHeight"
+	            android:text="@string/login"
+	            android:textAlignment="center"
+	            android:background="@color/cyan"
+	            android:textColor="@color/gray"
+	            android:onClick="redirectToLogin"
+	            android:textSize="@dimen/textLarge"
+            />
+
+ 
+        
+        
+        <Button
+            android:id="@+id/spalsh_register"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/buttonHeight"
+            android:clickable="true"
+            android:textAlignment="center"
+            android:text="@string/register"
+            android:background="@color/green"
+            android:textColor="@color/gray"
+            android:onClick="redirectToRegister"
+            android:textSize="@dimen/textLarge" />
+       
+    
+    
+    
+
+</LinearLayout>

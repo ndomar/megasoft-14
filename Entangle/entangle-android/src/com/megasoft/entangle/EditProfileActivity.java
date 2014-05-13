@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 import com.megasoft.config.Config;
 import com.megasoft.entangle.R;
-import com.megasoft.entangle.megafragments.EmailEntryFragment;
+import com.megasoft.entangle.EmailEntryFragment;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.PutRequest;
 
@@ -117,7 +117,7 @@ public class EditProfileActivity extends Activity {
 	
 	public void addEmailField() {
 		EmailEntryFragment newEmail = new EmailEntryFragment();
-		newEmail.setActivity(this);
+	//	newEmail.setActivity(this);
 		emails.add(newEmail);
 		emailsCount ++;
 	}

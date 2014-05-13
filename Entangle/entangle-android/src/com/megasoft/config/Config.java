@@ -1,6 +1,7 @@
 package com.megasoft.config;
 
 public class Config {
+
 	public static final String API_BASE_URL = "http://entangle.io/app_dev.php";
 	public static final String API_BASE_URL_SERVER = "http://192.168.43.8:9001";
 	public static final String API_SESSION_ID = "X-SESSION-ID";
@@ -17,4 +18,6 @@ public class Config {
 	public static final String MEMBER_NAME = "memberName";
 	public static final String MEMBER_BALANCE = "memberBalance";
 	public static final String MEMBER_AVATAR_URL = "memberAvatarURL";
+	public static final String GCM_REGISTRATION = "GCM_REGISTRATION";
+	public static final String PROPERTY_REG_ID = "registration_id";
 }

@@ -18,6 +18,7 @@ public class MainActivity extends Activity {
 		// setContentView(R.layout.template_create_offer);
 		// getActionBar().hide();
 
+
 	}
 
 	@Override

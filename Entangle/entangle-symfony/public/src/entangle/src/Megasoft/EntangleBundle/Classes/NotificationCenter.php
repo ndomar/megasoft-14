@@ -137,15 +137,16 @@ class NotificationCenter
     private $requestDeletedNotificationId = 6;
 
     /**
-     * new claim notification id
-     * @var int
-     */
-    private $newClaimNotificationId = 7;
-    /**
      * request reopen notification id
      * @var int
      */
     private $reopenRequestNotificationId = 7;
+
+    /**
+     * new claim notification id
+     * @var int
+     */
+    private $newClaimNotificationId = 8;
 
 
     /**
@@ -169,6 +170,7 @@ class NotificationCenter
      */
     function notificationCenter($userID, $notification)
     {
+
         $Authorization = $this->container->getParameter('GOOGLE_API_KEY');
         $serverUrl = $this->container->getParameter('SERVER_URL');
 
@@ -187,7 +189,6 @@ class NotificationCenter
         $body = array("registration_ids" => $regIdArray,
             "data" => $notification,
         );
-
 
         $request = curl_init($serverUrl);
         curl_setopt($request, CURLOPT_HTTPHEADER, $header);
@@ -383,7 +384,7 @@ class NotificationCenter
         $request = $offer->getRequest();
         $notification = new NewOfferNotification();
         $from = $offer->getUser();
-
+        $to = $offer->getRequest()->getUser();
         $date = date('m/d/Y h:i:s a', time());
         $date = DateTime::createFromFormat('m/d/Y h:i:s a', $date);
 
@@ -398,12 +399,12 @@ class NotificationCenter
         if (!$title)
             $title = $this->newOfferNotificationTitle;
         if ($body)
-            $body = $this->formatMessage($body, $from, null);
+            $body = $this->formatMessage($body, $from->getName(), null);
         else
             $body = $from->getName() . "made a new offer";
 
         $data = array('notificationId' => $notification->getId(), "title" => $title, "body" => $body, "type" => $this->newOfferNotificationId, "offerId" => $offerid);
-        return $this->notificationCenter($from->getId(), $data);
+        return $this->notificationCenter($to->getId(), $data);
 
     }
 
@@ -445,7 +446,7 @@ class NotificationCenter
             $body = $fromName . "deleted his offer";
 
         $data = array('notificationId' => $notification->getId(), 'title' => $title, 'body' => $body, 'type' => $this->offerDeletedNotificationId,
-            'offerId' => $offerId);
+            'offerId' => $offerId, 'requestId' => $request->getId());
         return $this->notificationCenter($to->getId(), $data);
 
     }
@@ -469,6 +470,9 @@ class NotificationCenter
         $date = DateTime::createFromFormat('m / d / Y h:i:s a', $date);
 
         foreach ($offerArray as $offer) {
+            if($offer->getDeleted() == 1)
+                continue;
+
             $to = $offer->getUser();
 
             $notification = new RequestDeletedNotification();
@@ -518,7 +522,9 @@ class NotificationCenter
         else
             $body = $fromName . "reopened his request";
 
-        $data = array("title" => $title, "body" => $body, "type" => $this->reopenRequestNotificationId, "requestId" => $requestId);
+        $tangleId = $request->getTangle()->getId();
+
+        $data = array("title" => $title, "body" => $body, "type" => $this->reopenRequestNotificationId, "requestId" => $requestId, "tangleId" => $tangleId,);
 
         foreach ($offers as $offer) {
             $notification = new ReopenRequestNotification();
@@ -588,10 +594,58 @@ class NotificationCenter
     function formatMessage($message, $from, $to)
     {
         if ($from)
-            $message = str_replace("{{from}} ", $from, $message);
+            $message = str_replace("{{from}}", $from, $message);
         if ($to)
             $message = str_replace("{{to}}", $to, $message);
         return $message;
     }
 
+    /**
+     * this function sends an email notification to user with userID
+     * @param $userID
+     * @param $subject
+     * @param $body
+     * @author amrelZanaty
+     */
+    public function sendMail($userID, $subject, $body)
+    {
+
+        $repo = $this->em->getRepository('MegasoftEntangleBundle:User');
+        $user = $repo->find($userID);
+        $mailrepo = $this->em->getRepository("MegasoftEntangleBundle:UserEmail");
+        $useremail = $mailrepo->findBy(array('userId' => $user->getId(), 'deleted' => 0));
+
+
+        if ($user->getAcceptMailNotifications() == true) {
+            foreach ($useremail as $mail) {
+
+                $message = \Swift_Message::newInstance()
+                    ->setSubject($subject)
+                    ->addFrom('Notifications-noreply@entangle.io', 'Entangle')
+                    ->setTo($mail->getEmail())
+                    ->setBody($body)
+                    ->setContentType("text/html");
+                $this->container->get('mailer')->send($message);
+            }
+        }
+    }
+
+    /**
+     * this function sends an email notification to user with userID
+     * @param $email
+     * @param $subject
+     * @param $body
+     * @author amrelZanaty
+     */
+    public function sendMailToEmail($email, $subject, $body)
+    {
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject($subject)
+            ->addFrom('Notifications-noreply@entangle.io', 'Entangle')
+            ->setTo($email)
+            ->setBody($body)
+            ->setContentType("text/html");
+        $this->container->get('mailer')->send($message);
+    }
 }
