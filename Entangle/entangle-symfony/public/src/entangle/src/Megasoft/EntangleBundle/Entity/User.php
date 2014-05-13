@@ -703,4 +703,19 @@ class User {
         return $this->acceptMailNotifications;
     }
 
+    /**
+     * Returns whether the user is verified or not.
+     *
+     * @return boolean
+     */
+    public function getVerified(){
+        $verified = 0;
+        foreach($this->emails as $email){
+            if(!$email->getDeleted()){
+                $verified |= $email->getVerified();
+            }
+        }
+        return $verified == 1;
+    }
+
 }
