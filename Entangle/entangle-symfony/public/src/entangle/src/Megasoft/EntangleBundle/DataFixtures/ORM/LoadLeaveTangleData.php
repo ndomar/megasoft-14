@@ -31,6 +31,13 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createUserTangle($manager, 'userMohamed', false);
         $this->createUserTangle($manager, 'userAly', false);
         
+        $this->createRequest($manager, 'userMohamed', 'i want to buy a car', 1);
+        $this->createRequest($manager, 'userMohamed', 'i want to travel to London', 2);
+        $this->createRequest($manager, 'userMohamed', 'i want to go to the doctor', 3);
+        $this->createRequest($manager, 'userAly', 'i want to buy a book', 4);
+        $this->createRequest($manager, 'userMohamed', 'i want to have a reminder software', 5);
+        $this->createRequest($manager, 'userAly', 'i want to have a ride tomorrow', 6);
+                
         $manager->flush();
     }
 
@@ -82,6 +89,16 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $userTangle->setCredit(0);
         
         $manager->persist($userTangle);
-        $this->addReference('userTangle' . "$userReference", $userTangle);
+        $this->addReference('userTangle_' . "$userReference", $userTangle);
+    }
+    
+    private function createRequest(ObjectManager $manager, $userReference, $description, $requestNumber) {
+        $request = new Request();
+        $request->setUser($this->getReference("$userReference"));
+        $request->setTangle($this->getReference('tangle'));
+        $request->setDescription("$description");
+        
+        $manager->persist($request);
+        $this->addReference('request' . "$requestNumber", $request);
     }
 }
