@@ -60,7 +60,10 @@ public class EditProfileActivity extends Activity {
 			startActivityForResult(intent, REQUEST_ID);
 	    }
 	 };
-	 
+	 /**
+	  * the action taken when the upload button is clicked
+	  * @author Nader Nessem
+	  */
 	 View.OnClickListener uploadHandler = new View.OnClickListener() {
 	    public void onClick(View v) {
 	      if (picture == null) {
