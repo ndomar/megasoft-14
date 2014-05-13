@@ -70,8 +70,8 @@ public class HomeActivity extends FragmentActivity {
 	 * @author Mohamed Farghal
 	 */
 	public void switchFragment(int tangleId, int position) {
-		TangleStreamActivity tangleStream = new TangleStreamActivity();
-		if (tangleStream.tangleNames.size() >= 0) {
+		
+		if (TangleStreamActivity.tangleNames.size() > 0) {
 			menu.findItem(R.id.action_invite).setVisible(true);
 			menu.findItem(R.id.createRequest).setVisible(true);
 			menu.findItem(R.id.action_search).setVisible(true);
@@ -129,8 +129,7 @@ public class HomeActivity extends FragmentActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		this.menu = menu;
-		TangleStreamActivity tangleStream = new TangleStreamActivity();
-		if (tangleStream.tangleNames.size() >= 0) {
+		if (TangleStreamActivity.tangleNames.size() > 0) {
 			menu.findItem(R.id.action_invite).setVisible(true);
 			menu.findItem(R.id.createRequest).setVisible(true);
 			menu.findItem(R.id.action_search).setVisible(true);
