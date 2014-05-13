@@ -9,6 +9,7 @@ use Megasoft\EntangleBundle\Entity\UserTangle;
 
 /*
  * Fixtures for Session table
+ * @author OmarElAzazy
  */
 class LoadUserTangleData extends AbstractFixture implements OrderedFixtureInterface
 {
