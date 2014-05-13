@@ -8,12 +8,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin" >
 
-    <ListView
-        android:id="@+id/view_tangle_tangle_titles"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </ListView>
-
     <Button
         android:id="@+id/create_tangle_button"
         style="?android:attr/borderlessButtonStyle"
@@ -23,5 +17,10 @@
         android:onClick="redirectToCreateTangle"
         android:text="@string/create_tangle"
         android:textColor="@color/darkGray" />
+    <ListView
+        android:id="@+id/view_tangle_tangle_titles"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </ListView>
 
 </LinearLayout>
