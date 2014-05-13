@@ -4,96 +4,82 @@ namespace Megasoft\EntangleBundle\Controller;
 
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Constraints\False;
 
 class PasswordForgetController extends Controller{
     /**
-     * This Function generates a Random String to be used as the new Password
+     * This Function generates a Random String to be used as the link to reset password
      * @return string
      * @author KareemWahby
      */
-    private function randPassGen(){
-        $newpass = '';
+    private function randPassCodeGen(){
+        $code = '';
         $seed = "abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        for ($i = 0; $i < 5; $i++) {
-            $newpass .= $seed[rand(0, strlen($seed) - 1)];
+        for ($i = 0; $i < 30; $i++) {
+            $code .= $seed[rand(0, strlen($seed) - 1)];
         }
-        return $newpass;
+        return $code;
     }
 
-    /**
-     * This function takes the user name and email and checks if the user with these attributes is a valid user
-     * @param $name
-     * @param $email
-     * @return int user id if succsesful -1 if not
-     * @author KareemWahby
-     */
-    private function securityCheck($name,$email) {
-        if ($name == null ||$email == null) {
+
+    private function securityCheck($email) {
+        if ($email == null) {
             return -1;
         }
         $doctrine = $this->getDoctrine();
-        $UserRepo = $doctrine->getRepository('MegasoftEntangleBundle:User');
         $emailRepo= $doctrine->getRepository('MegasoftEntangleBundle:UserEmail');
-        $user = $UserRepo->findOneBy(array('name' => $name));
         $userEmail= $emailRepo->findOneBy(array('email' => $email));
-        if($user == null || $userEmail== null){
+        if($userEmail== null){
             return -1;
         }else{
-            $userId= $user-> getId();
-            $userIdByMail= $userEmail-> getUserID();
-            if($userId != $userIdByMail){
-                return -1;
-            }
+            $userId= $userEmail-> getUserID();
             return $userId;
         }
 
     }
 
-    /**
-     * This is the endpoint responsible for resetting the password for the user and send him an email with the new password
-     * @param Request $request
-     * @return JsonResponse
-     * @author KareemWahby
-     */
-    public function resetPasswordAction(Request $request){
+
+    public function forgetPasswordAction(Request $request){
         $data = json_decode($request->getContent(),true);
-        $name = $data['name'];
         $email= $data['email'];
-        $response= new JsonResponse();
-        $id=$this->securityCheck($name,$email);
+        $response= new Response();
+        $id=$this->securityCheck($email);
         if($id == -1){
-            $response->sendContent("Bad Request");
             $response->setStatusCode(400);
             return $response;
         }else{
+            $random=$this->randPassCodeGen();
+            $link="http://entangle.io/reset/".$random;
             $doctrine = $this->getDoctrine();
-            $em=$doctrine->getEntityManager();
-            $UserRepo = $doctrine->getRepository('MegasoftEntangleBundle:User');
-            $user = $UserRepo->findOneBy(array('id' => $id));
-            $newPass=$this->randPassGen();
-            $user->setPassword($newPass);
-            $em->persist($user);
-            $em->flush();
-            $message = \Swift_Message::newInstance()
-                ->setSubject('Entangle Password Reset')
-                ->setFrom('kareem.wahby@gmail.com')
-                ->setTo($email)
-                ->setBody('Hello '.$name.',
+            $user = $doctrine->getRepository('MegasoftEntangleBundle:User')->findOneBy(array("id" => $id));
+            $userName = $user->getName();
 
-It seems like you\'ve forgotten your password, here is your new one, '.$newPass.' just make sure you CHANGE IT ASAP.
+            //$em=$doctrine->getEntityManager();
 
-Cheers,
-Entangle Team.')
-            ;
-            $this->get('mailer')->send($message);
+            $message = "It seems like you've forgotten your password, you can reset it by using this ";
+            $randomString = "thisIsARandomString";
+            $title = "Entangle Password Reset";
+            $body = "<!DOCTYPE html>
+                <html lang=\"en\">
+                    <head>
+                    </head>
+                    <body>
+                      <h3>
+                        Hello, ".$userName."
+                      </h3>
+                      <p>" . $message . "<a href=\"".$link."\">link</a>
+                      <p>Cheers,<br>Entangle Team</p>
+                </html>";
+
+            $notificationCenter = $this->get('notification_center.service');
+            $notificationCenter->sendMail($id, $title, $body);
             $response->setStatusCode(200);
-            $response->setContent('Email Sent Successfully');
             return $response;
         }
+    }
+
+    public function resetPasswordAction(Request $request,$passCode){
 
     }
 } 

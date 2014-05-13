@@ -551,7 +551,7 @@ logout:
 
 forget_password:
     pattern:  /user/forgetPass
-    defaults: { _controller: MegasoftEntangleBundle:PasswordForget:resetPassword}
+    defaults: { _controller: MegasoftEntangleBundle:PasswordForget:forgetPassword}
     methods: [POST]
 
 filter_requests_in_tangle:
@@ -588,3 +588,8 @@ reset_tangle:
     pattern: /tangle/{tangleId}/reset
     defaults: {_controller: MegasoftEntangleBundle:Tangle:resetTangle }
     methods: [PUT]
+
+reset_pass:
+    pattern: /reset/{passCode}
+    defaults: {_controller: MegasoftEntangleBundle:PasswordForget:resetPassword }
+    methods: [POST]
