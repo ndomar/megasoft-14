@@ -1,10 +1,8 @@
-
 megasoft_entangle_homepage:
     pattern:  /hello/{hello}
     defaults: { _controller: MegasoftEntangleBundle:Default:index }
     methods: [GET]
     
-
 fetch_tags_in_tangle:
     pattern:  /tangle/{tangleId}/tag
     defaults: { _controller: MegasoftEntangleBundle:Tangle:allTags}
@@ -169,7 +167,6 @@ _register:
   defaults: {_controller: MegasoftEntangleBundle:Notification:register }
   methods: [POST]
 
-
 _test:
   pattern: /notification/test
   defaults: {_controller: MegasoftEntangleBundle:Notification:test}
@@ -207,57 +204,16 @@ register_app:
     pattern: /register
     defaults: { _controller: MegasoftEntangleBundle:User:register}
     methods: [POST]
-]
+
 get_general_profile:
     pattern: user/{userId}/profile
     defaults: { _controller: MegasoftEntangleBundle:User:generalProfile }
     methods: [GET]
 
-get_members:
-    pattern: /tangle/{tangleId}/user
-    defaults: { _controller: MegasoftEntangleBundle:Tangle:allUsers }
-    requirements:
-        tangleId:  \d+
-
-re_open_request:
-     pattern: /request/{requestId}/reopen
-     defaults: { _controller: MegasoftEntangleBundle:Request:reOpenRequest }
-     methods: [POST]
-     
-login:
-    pattern:  /user/login
-    defaults: { _controller: MegasoftEntangleBundle:User:login}
-    methods: [POST]
-    
-logout:
-    pattern:  /user/logout
-    defaults: { _controller: MegasoftEntangleBundle:User:logout}
-    methods: [POST]
- 
-filter_requests_in_tangle:
-    pattern:  /tangle/{tangleId}/request
-    defaults: { _controller: MegasoftEntangleBundle:Tangle:filterRequests }
-    methods: [GET]
-    requirements:
-        tangleId:  \d+
-
-_register:
-  pattern: /notification/register
-  defaults: {_controller: MegasoftEntangleBundle:Notification:register }
-  methods: [POST]
-
-
-_test:
-  pattern: /notification/test
-  defaults: {_controller: MegasoftEntangleBundle:Notification:test}
-  methods: [GET]
-
-
 comment_on_offer:
     pattern:  /offer/{offerId}/comment
     defaults: { _controller: MegasoftEntangleBundle:Offer:comment}
     methods: [POST]
-
 
 _mail:
   pattern: /notification/mail
