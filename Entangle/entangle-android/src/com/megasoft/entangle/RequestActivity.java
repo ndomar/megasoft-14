@@ -246,6 +246,10 @@ public class RequestActivity extends FragmentActivity {
 		return tags;
 
 	}
+	
+	public void sendDeleteRequest(){
+		
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -265,6 +269,11 @@ public class RequestActivity extends FragmentActivity {
 	 	        intent.putExtra("requestId", this.requestId);
 	 	        startActivity(intent);
 	 	        return true;
+	 	 	
+	 	 	case R.id.deleteRequest:
+	 	 		sendDeleteRequest();
+	 	 		return true;
+	 	 		
 	 	 		
 	 	    default:
 	 	        return super.onOptionsItemSelected(item);
