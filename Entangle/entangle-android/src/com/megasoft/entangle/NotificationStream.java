@@ -52,7 +52,7 @@ public class NotificationStream extends FragmentActivity {
 	 */
 	public void generate() {
 		
-		String link = Config.API_BASE_URL + "/" + loggedInId + "/notifications";
+		String link = Config.API_BASE_URL + "/user/" + loggedInId + "/notifications";
 		
 		GetRequest request = new GetRequest(link) {
 			@Override

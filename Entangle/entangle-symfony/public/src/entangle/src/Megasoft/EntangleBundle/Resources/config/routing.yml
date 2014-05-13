@@ -269,7 +269,7 @@ _mail:
   methods: [GET]
 
 get_notification:
-    pattern: /{userId}/notifications
+    pattern: /user/{userId}/notifications
     defaults: { _controller: MegasoftEntangleBundle:NotificationStream:getNotification}
     methods: [GET]
 
