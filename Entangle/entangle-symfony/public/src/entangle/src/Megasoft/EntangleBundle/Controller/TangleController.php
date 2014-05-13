@@ -108,49 +108,6 @@ class TangleController extends Controller {
     }
 
     /**
-     * An endpoint to return the list of tags in a specific tangle
-     * @param Request $request
-     * @param integer $tangleId
-     * @return Response | \Symfony\Component\HttpFoundation\JsonResponse
-     * @author OmarElAzazy
-     */
-
-    public function allTagsAction(Request $request, $tangleId) {
-        $verification = $this->verifyUser($request, $tangleId);
-
-        if ($verification != null) {
-            return $verification;
-        }
-
-        $doctrine = $this->getDoctrine();
-        $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
-        $criteria = array('tangleId' => $tangleId, 'deleted' => false);
-        $requests = $requestRepo->findBy($criteria);
-
-        $tags = array();
-        foreach ($requests as $tangleRequest) {
-            $tags = array_merge($tags, $tangleRequest->getTags()->toArray());
-        }
-
-        $tags = array_unique($tags);
-
-        $tagsJsonArray = array();
-
-
-        foreach ($tags as $tag) {
-            $tagsJsonArray[] = array(
-                'id' => $tag->getId(),
-                'name' => $tag->getName()
-            );
-        }
-
-        $response = new JsonResponse();
-        $response->setData(array('count' => sizeof($tagsJsonArray), 'tags' => $tagsJsonArray));
-
-        return $response;
-    }
-
-    /**
      * Validates the existance of a certain tangle
      * @param integer $tangleId
      * @return boolean true if the tangle exists , false otherwise
@@ -165,7 +122,7 @@ class TangleController extends Controller {
         }
     }
 
-    /**
+    /**allUsersAction
      * Validates that the email is a valid email
      * @param string $email
      * @return boolean true if the email is valid , false otherwise
@@ -210,8 +167,6 @@ class TangleController extends Controller {
      * @param string $message
      * @author MohamedBassem
      */
-
-
     public function inviteUser($email,$tangleId,$inviterId,$message){
         $randomString = $this->generateRandomString(30);
 
@@ -249,8 +204,6 @@ class TangleController extends Controller {
                            <p>Cheers,<br>Entangle Team</p>
                     </body>
                 </html>";
-
-
         
         $notificationCenter = $this->get('notification_center.service');
         $notificationCenter->sendMailToEmail($email, $title, $body);
