@@ -87,7 +87,7 @@ class TangleControllerTest extends EntangleTestCase
                 'tangle//user',
                 array(),
                 array(),
-                array('HTTP_X_SESSION_ID'=>'session'));
+                array('HTTP_X_SESSION_ID'=>'sampleSession'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode());
     }
@@ -118,6 +118,34 @@ class TangleControllerTest extends EntangleTestCase
                 array('HTTP_X_SESSION_ID', 'sampleSession'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode());
+    }
+    
+    /**
+     * Test Case testing sending wrong session 
+     */
+    public function testLeaveTangleAction_WrongSession() {
+        $client = static::createClient();
+        $client->request('DELELTE',
+                'tangle/1/user',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID', 'session'));
+        $response = $client->getResponse();
+        $this->assertEquals(400, $response->getStatusCode());
+    }
+    
+    /**
+     * Test Case testing user not in the tangle 
+     */
+    public function testLeaveTangleAction_NotUserInTangle() {
+        $client = static::createClient();
+        $client->request('DELELTE',
+                'tangle/1/user',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID', 'sampleSession'));
+        $response = $client->getResponse();
+        $this->assertEquals(401, $response->getStatusCode());
     }
 }
 
