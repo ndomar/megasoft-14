@@ -2,6 +2,7 @@
 
 namespace Megasoft\EntangleBundle\Controller;
 
+use DateTime as DateTime2;
 use Megasoft\EntangleBundle\Entity\Transaction;
 use Megasoft\EntangleBundle\Entity\UserTangle;
 use Megasoft\EntangleBundle\Entity\Session;
@@ -12,8 +13,9 @@ use Megasoft\EntangleBundle\Entity\UserEmail;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class UserController extends Controller {
 
@@ -29,34 +31,32 @@ class UserController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $currentSession = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
+        echo($sessionId);
         if (!$currentSession) {
             return new Response("Invalid Session Id", 400);
         }
-        if (!$currentSession->getExpired()) {
+        if ($currentSession->getExpired() == 0) {
             $user = $currentSession->getUser();
-            if ($user) {
+
+            if ($user != null) {
                 $newDescription = $jsonArray['description'];
+                echo($user->getUserBio());
                 if ($user->getUserBio() != $newDescription) {
                     $user->setUserBio($newDescription);
                 }
-                $newPassword = $jsonArray['new_password'];
-                $confirmNewPassword = $jsonArray['confirm_password'];
-                $givenCurrentPassword = $jsonArray['current_password'];
-                $currentPassword = $user->getPassword();
-                if (($givenCurrentPassword == $currentPassword) && ($newPassword == $confirmNewPassword)) {
-                    $user->setPassword(md5($newPassword));
+                $oldDate = $user->getBirthDate();
+                $newDateOfBirth = $jsonArray['new_date_of_birth'];
+                $birthDate = new DateTime2($newDateOfBirth);
+                echo 'ana ba3d el new DateTime';
+                if ($birthDate != $oldDate) {
+                    echo 'ana gowa el if condition';
+                    $user->setBirthDate($birthDate);
                 }
-                $newDateOfBirthString = $jsonArray['date_of_birth'];
-
-                if ($newDateOfBirthString) {
-                    $newDateOfBirth = strtotime($newDateOfBirthString);
-                    $dateGiven = $user->getBirthDate();
-                    if ($newDateOfBirth != $dateGiven) {
-                        $user->setBirthDate($newDateOfBirth);
-                    }
-                }
+                echo 'ana abl el manager';
                 $doctrineManger = $this->getDoctrine()->getManager();
+
                 if (filter_var($jsonArray['added_email'], FILTER_VALIDATE_EMAIL)) {
+
                     $newMail = new UserEmail();
                     $newMail->setEmail($jsonArray['added_email']);
                     $newMail->setUser($user);
@@ -66,9 +66,12 @@ class UserController extends Controller {
                         $doctrineManger->persist($newMail);
                     }
                 }
-                $user->setAcceptMailNotifications($jsonArray('notification_state'));
+                echo 'ana abl el accept mail notification';
+                $user->setAcceptMailNotifications($jsonArray['notification_state']);
                 $doctrineManger->persist($user);
+                echo 'ana ba3d el persist';
                 $doctrineManger->flush();
+                echo 'ana ba3d el flush';
                 return new Response('OK', 200);
             }
         } else {
@@ -126,8 +129,9 @@ class UserController extends Controller {
         $user = $currentSession->getUser();
         $response = new JsonResponse();
         $response->setData(array('description' => $user->getUserBio(), 'date_of_birth' => $user->getBirthDate()
-            , 'notification_state' => $user->getNotificationState()));
-        $response->getStatusCode(200);
+            , 'notification_state' => $user->getAcceptMailNotifications()));
+        $response->setStatusCode(200);
+        return $response;
     }
 
     /* Validates the username and password from request and returns sessionID
