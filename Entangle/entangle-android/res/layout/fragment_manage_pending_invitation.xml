@@ -1,0 +1,41 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/pending_invitation_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp" >
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/pending_invitation_no_pending"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pending_invitation_no_pending"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/manage_pending_invitation_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="refresh"
+            android:text="@string/refresh" />
+         <Button
+            android:id="@+id/reset_tangle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reset" />
+    </LinearLayout>
+
+</ScrollView>

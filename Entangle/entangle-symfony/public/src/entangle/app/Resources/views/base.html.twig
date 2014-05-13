@@ -3,11 +3,47 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% block stylesheets %}
+             {% stylesheets '@MegasoftEntangleBundle/Resources/public/css/*' filter='cssrewrite' %}
+                <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+
+            {% endstylesheets %}
+        {% endblock %}
+
+        <style>
+
+            @font-face {
+                font-family: 'FontAwesome';
+                src: url('/bundles/megasoftentangle/font/fontawesome-webfont.eot');
+                src: url('/bundles/megasoftentangle/font/fontawesome-webfont.eot?#iefix&v=3.2.1') format('embedded-opentype'),
+                url('/bundles/megasoftentangle/font/fontawesome-webfont.woff?v=3.2.1') format('woff'),
+                url('/bundles/megasoftentangle/font/fontawesome-webfont.ttf?v=3.2.1') format('truetype'),
+                url('/bundles/megasoftentangle/font/fontawesome-webfont.svg#fontawesomeregular?v=3.2.1') format('svg');
+                font-weight: normal;
+                font-style: normal;
+            }
+        </style>
     </head>
     <body>
+
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+
+
+
+        {% block javascripts %}
+
+
+            {% javascripts '@MegasoftEntangleBundle/Resources/public/js/*' %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+
+            {% endjavascripts %}
+
+
+
+        {% endblock %}
+
+
     </body>
+
+
 </html>

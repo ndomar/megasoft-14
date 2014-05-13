@@ -24,7 +24,7 @@ class PendingInvitation
     /**
      * @var integer
      *
-     * @ORM\Column(name="inviteeId", type="integer",nullable=true)
+     * @ORM\Column(name="inviteeId", type="integer")
      */
     private $inviteeId;
 
@@ -52,58 +52,61 @@ class PendingInvitation
     /**
      *
      * @var User
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="pendingInvitationInviters")
      * @ORM\JoinColumn(name="inviterId", referencedColumnName="id")
      */
     private $inviter;
-    
+
     /**
      *
      * @var User
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="pendingInvitationInvitees")
      * @ORM\JoinColumn(name="inviteeId", referencedColumnName="id")
      */
     private $invitee;
-    
+
     /**
      *
      * @var Tangle
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="Tangle", inversedBy="pendingInvitations")
      * @ORM\JoinColumn(name="tangleId", referencedColumnName="id")
      */
     private $tangle;
-    
+
     /**
      *
      * @var InvitationMessage
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="InvitationMessage", inversedBy="pendingInvitations")
      * @ORM\JoinColumn(name="messageId", referencedColumnName="id")
      */
     private $message;
-    
+
     /**
+     *
+     *
      * @var string
      *
      * @ORM\Column(name="email", type="string")
      */
     private $email;
-    
+
     /**
      *
      * @var boolean
-     * 
+     *
      * @ORM\Column(name="approved", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
      */
     private $approved = false;
-    
+
     /**
+     *
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -126,7 +129,7 @@ class PendingInvitation
     /**
      * Get inviteeId
      *
-     * @return integer 
+     * @return integer
      */
     public function getInviteeId()
     {
@@ -149,7 +152,7 @@ class PendingInvitation
     /**
      * Get inviterId
      *
-     * @return integer 
+     * @return integer
      */
     public function getInviterId()
     {
@@ -172,7 +175,7 @@ class PendingInvitation
     /**
      * Get tangleId
      *
-     * @return integer 
+     * @return integer
      */
     public function getTangleId()
     {
@@ -195,7 +198,7 @@ class PendingInvitation
     /**
      * Get messageId
      *
-     * @return integer 
+     * @return integer
      */
     public function getMessageId()
     {
@@ -218,7 +221,7 @@ class PendingInvitation
     /**
      * Get inviter
      *
-     * @return \Megasoft\EntangleBundle\Entity\User 
+     * @return \Megasoft\EntangleBundle\Entity\User
      */
     public function getInviter()
     {
@@ -241,7 +244,7 @@ class PendingInvitation
     /**
      * Get invitee
      *
-     * @return \Megasoft\EntangleBundle\Entity\User 
+     * @return \Megasoft\EntangleBundle\Entity\User
      */
     public function getInvitee()
     {
@@ -264,7 +267,7 @@ class PendingInvitation
     /**
      * Get tangle
      *
-     * @return \Megasoft\EntangleBundle\Entity\Tangle 
+     * @return \Megasoft\EntangleBundle\Entity\Tangle
      */
     public function getTangle()
     {
@@ -287,7 +290,7 @@ class PendingInvitation
     /**
      * Get message
      *
-     * @return \Megasoft\EntangleBundle\Entity\InvitationMessage 
+     * @return \Megasoft\EntangleBundle\Entity\InvitationMessage
      */
     public function getMessage()
     {
@@ -310,7 +313,7 @@ class PendingInvitation
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -333,7 +336,7 @@ class PendingInvitation
     /**
      * Get approved
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getApproved()
     {

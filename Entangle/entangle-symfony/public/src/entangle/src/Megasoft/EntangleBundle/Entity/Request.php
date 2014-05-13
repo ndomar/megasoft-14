@@ -10,8 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity
  */
+
 class Request
 {
+    
     /**
      * @var integer
      *
@@ -62,7 +64,7 @@ class Request
      * @ORM\Column(name="requestedPrice", type="integer", nullable=true)
      */
     private $requestedPrice;
-    
+
     /**
      *
      * @var integer
@@ -70,7 +72,7 @@ class Request
      * @ORM\Column(name="tangleId", type="integer")
      */
     private $tangleId;
-    
+
     /**
      *
      * @var Tangle
@@ -79,14 +81,14 @@ class Request
      * @ORM\JoinColumn(name="tangleId", referencedColumnName="id")
      */
     private $tangle;
-    
+
     /**
      * @var Offer[]
      * 
      * @ORM\OneToMany(targetEntity="Offer", mappedBy="request", cascade={"persist"})
      */
     private $offers;
-    
+
     /**
      *
      * @var integer
@@ -94,7 +96,7 @@ class Request
      * @ORM\Column(name="userId", type="integer")
      */
     private $userId;
-    
+
     /**
      *
      * @var User
@@ -103,15 +105,15 @@ class Request
      * @ORM\JoinColumn(name="userId", referencedColumnName="id")
      */
     private $user;
-    
-     /**
-      * @var Tag[]
-      *
-      * @ORM\ManyToMany(targetEntity="Tag", inversedBy="requests", cascade={"persist"})
-      * @ORM\JoinTable(name="request_tag")
-      */
+
+    /**
+     * @var Tag[]
+     *
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="requests", cascade={"persist"})
+     * @ORM\JoinTable(name="request_tag")
+     */
     private $tags;
-    
+
     /**
      *
      * @var boolean
@@ -119,29 +121,45 @@ class Request
      * @ORM\Column(name="deleted", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
      */
     private $deleted = false;
-    
+
     /**
      * @var RequestDeletedNotification[]
      * 
      * @ORM\OneToMany(targetEntity="RequestDeletedNotification", mappedBy="request", cascade={"persist"})
      */
     private $requestDeletedNotifications;
-    
+
     /**
      * @var UnfreezeRequest[]
      * 
      * @ORM\OneToMany(targetEntity="UnfreezeRequest", mappedBy="request", cascade={"persist"})
      */
     private $unfreezeRequests;
-    
+
+    /**
+     *
+     * @var integer 
+     */
+    public $OPEN = 0;
+
+    /**
+     *
+     * @var integer 
+     */
+    public $CLOSE = 1;
+
+    /**
+     *
+     * @var integer 
+     */
+    public $FROZEN = 2;
 
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -151,8 +169,7 @@ class Request
      * @param integer $status
      * @return Request
      */
-    public function setStatus($status)
-    {
+    public function setStatus($status) {
         $this->status = $status;
 
         return $this;
@@ -163,8 +180,7 @@ class Request
      *
      * @return integer 
      */
-    public function getStatus()
-    {
+    public function getStatus() {
         return $this->status;
     }
 
@@ -174,8 +190,7 @@ class Request
      * @param string $description
      * @return Request
      */
-    public function setDescription($description)
-    {
+    public function setDescription($description) {
         $this->description = $description;
 
         return $this;
@@ -186,8 +201,7 @@ class Request
      *
      * @return string 
      */
-    public function getDescription()
-    {
+    public function getDescription() {
         return $this->description;
     }
 
@@ -197,8 +211,7 @@ class Request
      * @param \DateTime $date
      * @return Request
      */
-    public function setDate($date)
-    {
+    public function setDate($date) {
         $this->date = $date;
 
         return $this;
@@ -209,8 +222,7 @@ class Request
      *
      * @return \DateTime 
      */
-    public function getDate()
-    {
+    public function getDate() {
         return $this->date;
     }
 
@@ -220,8 +232,7 @@ class Request
      * @param \DateTime $deadline
      * @return Request
      */
-    public function setDeadline($deadline)
-    {
+    public function setDeadline($deadline) {
         $this->deadline = $deadline;
 
         return $this;
@@ -232,8 +243,7 @@ class Request
      *
      * @return \DateTime 
      */
-    public function getDeadline()
-    {
+    public function getDeadline() {
         return $this->deadline;
     }
 
@@ -243,8 +253,7 @@ class Request
      * @param string $icon
      * @return Request
      */
-    public function setIcon($icon)
-    {
+    public function setIcon($icon) {
         $this->icon = $icon;
 
         return $this;
@@ -255,8 +264,7 @@ class Request
      *
      * @return string 
      */
-    public function getIcon()
-    {
+    public function getIcon() {
         return $this->icon;
     }
 
@@ -266,8 +274,7 @@ class Request
      * @param string $requestedPrice
      * @return Request
      */
-    public function setRequestedPrice($requestedPrice)
-    {
+    public function setRequestedPrice($requestedPrice) {
         $this->requestedPrice = $requestedPrice;
 
         return $this;
@@ -278,15 +285,14 @@ class Request
      *
      * @return string 
      */
-    public function getRequestedPrice()
-    {
+    public function getRequestedPrice() {
         return $this->requestedPrice;
     }
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->notifications = new \Doctrine\Common\Collections\ArrayCollection();
         $this->offers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
@@ -298,8 +304,7 @@ class Request
      * @param integer $tangleId
      * @return Request
      */
-    public function setTangleId($tangleId)
-    {
+    public function setTangleId($tangleId) {
         $this->tangleId = $tangleId;
 
         return $this;
@@ -310,8 +315,7 @@ class Request
      *
      * @return integer 
      */
-    public function getTangleId()
-    {
+    public function getTangleId() {
         return $this->tangleId;
     }
 
@@ -321,8 +325,7 @@ class Request
      * @param integer $userId
      * @return Request
      */
-    public function setUserId($userId)
-    {
+    public function setUserId($userId) {
         $this->userId = $userId;
 
         return $this;
@@ -333,8 +336,7 @@ class Request
      *
      * @return integer 
      */
-    public function getUserId()
-    {
+    public function getUserId() {
         return $this->userId;
     }
 
@@ -344,8 +346,7 @@ class Request
      * @param \Megasoft\EntangleBundle\Entity\Tangle $tangle
      * @return Request
      */
-    public function setTangle(\Megasoft\EntangleBundle\Entity\Tangle $tangle = null)
-    {
+    public function setTangle(\Megasoft\EntangleBundle\Entity\Tangle $tangle = null) {
         $this->tangle = $tangle;
 
         return $this;
@@ -356,8 +357,7 @@ class Request
      *
      * @return \Megasoft\EntangleBundle\Entity\Tangle 
      */
-    public function getTangle()
-    {
+    public function getTangle() {
         return $this->tangle;
     }
 
@@ -367,8 +367,7 @@ class Request
      * @param \Megasoft\EntangleBundle\Entity\Offer $offers
      * @return Request
      */
-    public function addOffer(\Megasoft\EntangleBundle\Entity\Offer $offers)
-    {
+    public function addOffer(\Megasoft\EntangleBundle\Entity\Offer $offers) {
         $this->offers[] = $offers;
         $offers->setRequest($this);
         return $this;
@@ -379,8 +378,7 @@ class Request
      *
      * @param \Megasoft\EntangleBundle\Entity\Offer $offers
      */
-    public function removeOffer(\Megasoft\EntangleBundle\Entity\Offer $offers)
-    {
+    public function removeOffer(\Megasoft\EntangleBundle\Entity\Offer $offers) {
         $this->offers->removeElement($offers);
     }
 
@@ -389,8 +387,7 @@ class Request
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getOffers()
-    {
+    public function getOffers() {
         return $this->offers;
     }
 
@@ -400,8 +397,7 @@ class Request
      * @param \Megasoft\EntangleBundle\Entity\User $user
      * @return Request
      */
-    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null)
-    {
+    public function setUser(\Megasoft\EntangleBundle\Entity\User $user = null) {
         $this->user = $user;
 
         return $this;
@@ -412,8 +408,7 @@ class Request
      *
      * @return \Megasoft\EntangleBundle\Entity\User 
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->user;
     }
 
@@ -423,8 +418,7 @@ class Request
      * @param \Megasoft\EntangleBundle\Entity\Tag $tags
      * @return Request
      */
-    public function addTag(\Megasoft\EntangleBundle\Entity\Tag $tags)
-    {
+    public function addTag(\Megasoft\EntangleBundle\Entity\Tag $tags) {
         $this->tags[] = $tags;
         $tags->addRequest($this);
         return $this;
@@ -435,8 +429,7 @@ class Request
      *
      * @param \Megasoft\EntangleBundle\Entity\Tag $tags
      */
-    public function removeTag(\Megasoft\EntangleBundle\Entity\Tag $tags)
-    {
+    public function removeTag(\Megasoft\EntangleBundle\Entity\Tag $tags) {
         $this->tags->removeElement($tags);
     }
 
@@ -445,8 +438,7 @@ class Request
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getTags()
-    {
+    public function getTags() {
         return $this->tags;
     }
 
@@ -456,8 +448,7 @@ class Request
      * @param boolean $deleted
      * @return Request
      */
-    public function setDeleted($deleted)
-    {
+    public function setDeleted($deleted) {
         $this->deleted = $deleted;
 
         return $this;
@@ -468,8 +459,7 @@ class Request
      *
      * @return boolean 
      */
-    public function getDeleted()
-    {
+    public function getDeleted() {
         return $this->deleted;
     }
 
@@ -479,8 +469,7 @@ class Request
      * @param \Megasoft\EntangleBundle\Entity\RequestDeletedNotification $requestDeletedNotifications
      * @return Request
      */
-    public function addRequestDeletedNotification(\Megasoft\EntangleBundle\Entity\RequestDeletedNotification $requestDeletedNotifications)
-    {
+    public function addRequestDeletedNotification(\Megasoft\EntangleBundle\Entity\RequestDeletedNotification $requestDeletedNotifications) {
         $this->requestDeletedNotifications[] = $requestDeletedNotifications;
 
         return $this;
@@ -491,8 +480,7 @@ class Request
      *
      * @param \Megasoft\EntangleBundle\Entity\RequestDeletedNotification $requestDeletedNotifications
      */
-    public function removeRequestDeletedNotification(\Megasoft\EntangleBundle\Entity\RequestDeletedNotification $requestDeletedNotifications)
-    {
+    public function removeRequestDeletedNotification(\Megasoft\EntangleBundle\Entity\RequestDeletedNotification $requestDeletedNotifications) {
         $this->requestDeletedNotifications->removeElement($requestDeletedNotifications);
     }
 
@@ -501,8 +489,7 @@ class Request
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getRequestDeletedNotifications()
-    {
+    public function getRequestDeletedNotifications() {
         return $this->requestDeletedNotifications;
     }
 
@@ -512,8 +499,7 @@ class Request
      * @param \Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests
      * @return Request
      */
-    public function addUnfreezeRequest(\Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests)
-    {
+    public function addUnfreezeRequest(\Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests) {
         $this->unfreezeRequests[] = $unfreezeRequests;
         $unfreezeRequests->setRequest($this);
         return $this;
@@ -524,8 +510,7 @@ class Request
      *
      * @param \Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests
      */
-    public function removeUnfreezeRequest(\Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests)
-    {
+    public function removeUnfreezeRequest(\Megasoft\EntangleBundle\Entity\UnfreezeRequest $unfreezeRequests) {
         $this->unfreezeRequests->removeElement($unfreezeRequests);
     }
 
@@ -534,8 +519,8 @@ class Request
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getUnfreezeRequests()
-    {
+    public function getUnfreezeRequests() {
         return $this->unfreezeRequests;
     }
+
 }
