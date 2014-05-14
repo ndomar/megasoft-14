@@ -1,8 +1,11 @@
 package com.megasoft.requests;
 
+import android.R;
 import android.content.Context;
+import android.util.Log;
 import android.widget.ImageView;
 
+import com.google.android.gms.internal.im;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -13,6 +16,11 @@ import com.squareup.picasso.Picasso;
  */
 public class ImageRequest{
 	public ImageRequest(String url,Context context,ImageView imageView){
-		Picasso.with(context).load(url).into(imageView);
+		if(url.equals("null")){
+			int id = context.getResources().getIdentifier("ic_action_person.png", "drawable", context.getPackageName());
+			imageView.setImageResource(id);
+		}else{
+			Picasso.with(context).load(url).into(imageView);
+		}
 	}
 }
