@@ -2,10 +2,10 @@ package com.megasoft.entangle.megafragments;
 
 import java.util.HashMap;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -19,6 +19,10 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import com.actionbarpulltorefresh.library.HeaderTransformer;
+import com.actionbarpulltorefresh.library.PullToRefreshLayout;
+import com.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import com.megasoft.config.Config;
 import com.megasoft.entangle.HomeActivity;
 import com.megasoft.entangle.R;
@@ -73,6 +77,10 @@ public class TangleFragment extends Fragment {
 	 *            , is the passed bundle from the previous activity
 	 */
 	
+	/*
+	 * The layout of the pull to refresh.
+	 */
+	private PullToRefreshLayout mPullToRefreshLayout;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -87,16 +95,23 @@ public class TangleFragment extends Fragment {
         // properly.
          view = inflater.inflate(
         		 R.layout.activity_tangle, container, false);
+         mPullToRefreshLayout = (PullToRefreshLayout) view.findViewById(R.id.ptr_layout);
+
+         // Now setup the PullToRefreshLayout
          
-//         ImageView filterButton = (ImageView) view.findViewById(R.id.filterButton);
-//         filterButton.setOnClickListener(new View.OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View arg0) {
-//				filterStream(arg0);
-//				
-//			}
-//		});
+         ActionBarPullToRefresh.from(this.activity)
+                 // Mark All Children as pullable
+                 .allChildrenArePullable()
+                 .listener(new OnRefreshListener() {
+					
+					@Override
+					public void onRefreshStarted(View view) {
+						sendFilteredRequest(rootResource + "/tangle/" + tangleId
+				 				+ "/request");
+					}
+				})
+                 .setup(mPullToRefreshLayout);
+         
          
          tangleId = getArguments().getInt("tangleId");
          tangleName = getArguments().getString("tangleName");
@@ -254,6 +269,7 @@ public class TangleFragment extends Fragment {
 							"Sorry, There is a problem in loading the stream",
 							Toast.LENGTH_LONG).show();
 				}
+				mPullToRefreshLayout.setRefreshComplete();
 			}
 		};
 		getStream.addHeader("X-SESSION-ID", getSessionId());
