@@ -45,7 +45,9 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         
         $this->createTransaction($manager, 'offer1');
         
-        $this->createClaim($manager, );
+        $this->createClaim($manager, 'offer2', 'userAly', 1);
+        $this->createClaim($manager, 'offer2', 'userMohamed', 2);
+        $this->createClaim($manager, 'offer2', 'userAly', 3);
         
         $manager->flush();
     }
@@ -132,4 +134,13 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->addReference('transaction', $transaction);
     }
     
+    private function createClaim(ObjectManager $manager, $offerReference, $userReference, $claimNumber) {
+        $claim = new Claim();
+        $claim->setClaimer($this->getReference("$userReference"));
+        $claim->setTangle('tangle');
+        $calim->setOffer($this->getReference("$offerReference"));
+        
+        $manager->persist($claim);
+        $this->addReference('claim' . "$claimNumber", $claim);
+    }
 }
