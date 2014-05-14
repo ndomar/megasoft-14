@@ -472,19 +472,19 @@ class RequestController extends Controller
             return new Response('Unauthorized', 401);
         }
 
-        $notificationCenter = $this->get('notification_center.service');
-        $title = "request deleted";
-        $body = "{{from}} deleted his request";
-        $notificationCenter->requestDeletedNotification($request->getId(), $title, $body);
-    
+        $request->setDeleted(true);
         $this->getDoctrine()->getManager()->persist($request);
-        
         $offers = $request->getOffers();
         
         foreach($offers as $offer){
             $offer->setDeleted(true);
             $this->getDoctrine()->getManager()->persist($offer);
         }
+
+        $notificationCenter = $this->get('notification_center.service');
+        $title = "request deleted";
+        $body = "{{from}} deleted his request";
+        $notificationCenter->requestDeletedNotification($request->getId(), $title, $body);
         
         $this->getDoctrine()->getManager()->flush();
 
