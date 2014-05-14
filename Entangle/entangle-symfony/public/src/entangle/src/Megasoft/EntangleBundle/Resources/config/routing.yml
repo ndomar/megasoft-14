@@ -583,3 +583,11 @@ reset_tangle:
     pattern: /tangle/{tangleId}/reset
     defaults: {_controller: MegasoftEntangleBundle:Tangle:resetTangle }
     methods: [PUT]
+
+tangle_owner_remove_member:
+    pattern: /tangle/{tangleId}/user/{userId}
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:removeMember }
+    methods: [DELETE]
+    requirements:
+        tangleId: \d+
+        userId: \d+
