@@ -67,7 +67,7 @@ withdraw_offer:
         offerId: \d+
 
 claimRender:
-    pattern: /claimReport/{cliamId}/claim/{offerId}/offer
+    pattern: /claimReport/{claimId}/claim/{offerId}/offer
     defaults: { _controller: MegasoftEntangleBundle:Claim:claimRender }
     methods: [GET]
     

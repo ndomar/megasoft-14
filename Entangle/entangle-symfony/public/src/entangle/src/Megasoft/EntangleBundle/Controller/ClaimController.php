@@ -41,7 +41,7 @@ if ($claimer == null || $claimId == null) {
 return new Response('no such claimer', 400);
 }
 $userRepo = $doctrine->getRepository('MegasoftEntangleBundle:User');
-$claimerName = $userRepo->findOneBy(array('id' => $claimerId));
+$claimerName = $userRepo->findOneBy(array('id' => $claimerId))->getName();
 $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
 $offer = $offerRepo->findOneBy(array('id' => $offerId));
 if ($offer == null) {
@@ -76,13 +76,13 @@ $tangleOwnerId = $userTangle->getUserId();
 if ($tangleOwnerId == null) {
 return new Response('No such tangle owner', 400);
 }
-$tangleOwnerName = $userRepo->findOneBy(array('userId' => $tangleOwnerId))->getName();
-$tangleOwnerMail = $userRepo->findOneBy(array('userId' => $tangleOwnerId))->getEmail();
+$tangleOwnerName = $userRepo->findOneBy(array('id' => $tangleOwnerId))->getName();
+$tangleOwnerMail = $userRepo->findOneBy(array('id' => $tangleOwnerId))->getEmail();
 $response = new JsonResponse();
 $response->setData
 (array('X-CLAIM-DATE' =>$createdOn ,'X-CLAIMER' => $claimerName, 'X-OFFERER' => $offererName,
  'X-OFFERER-EMAIL' => $offererEmail, 'X-REQUESTER' => $requesterName, 'X-REQUESTER-EMAIL' => $requesterEmail,
- 'X-TANGLE-OWNER' => $tangleOwnerName, 'X-TANGLE-OWNER-EMAIL' => $tangleOwnerMail, 'X-TANGLE' => $tangleName,
+ 'X-TANGLE-OWNER' => $tangleOwnerName,'X-TANGLE-OWNER-EMAIL' => $tangleOwnerMail,  'X-TANGLE' => $tangleName,
  'X-CLAIM-MESSAGE' => $claimMessage));
 $response->setStatusCode(200);
 
@@ -123,7 +123,7 @@ return $response;
             return new Response('Empty MssgBody', 400);
         }
         $claim = new Claim();
-        $claim->setCreated(new DateTime("NOW"));
+        $claim->setCreated(new \DateTime("now"));
         $claim->setClaimer($user);
         $claim->setClaimerId($userId);
         $claim->setTangle($tangle);
