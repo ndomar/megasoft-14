@@ -14,9 +14,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.megasoft.config.Config;
+import com.megasoft.requests.DeleteRequest;
 import com.megasoft.requests.GetRequest;
 
 public class RequestActivity extends FragmentActivity {
@@ -107,6 +108,14 @@ public class RequestActivity extends FragmentActivity {
 	
 	public boolean getIsMyRequest(){
 		return this.isMyRequest;
+	}
+	
+	public int getRequestId(){
+		return this.requestId;
+	}
+	
+	public String getSessionId(){
+		return this.sessionId;
 	}
 	
 	/**
@@ -267,11 +276,28 @@ public class RequestActivity extends FragmentActivity {
 	
 	/*
 	 * Sends a delete request to the server to delete the viewed request
-	 * 
-	 * 
+	 * @author OmarElAzazy
 	 */
 	public void sendDeleteRequest(){
+		DeleteRequest deleteRequest = new DeleteRequest(Config.API_BASE_URL + 
+														"request/" + 
+														getRequestId()){
+			protected void onPostExecute(String response){
+				if (!this.hasError() && response != null){
+					// redirect to tangle stream
+				} else{
+					if(this.getStatusCode() == 401){
+						// Redirect to login
+					}
+					else{
+						toasterShow("Something went wrong, Please try again.");
+					}
+				}
+			}
+		};
 		
+		deleteRequest.addHeader(Config.API_SESSION_ID, getSessionId());
+		deleteRequest.execute();
 	}
 
 	@Override
@@ -308,6 +334,16 @@ public class RequestActivity extends FragmentActivity {
 	 	        return super.onOptionsItemSelected(item);
 	 	 }
 
+	}
+	
+	/*
+	 * Shows a message in a toaster
+	 * @author Omar ElAzazy
+	 */
+	public void toasterShow(String message){
+		Toast.makeText(getBaseContext(),
+				message,
+				Toast.LENGTH_LONG).show();
 	}
 
 }
