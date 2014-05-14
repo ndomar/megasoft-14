@@ -41,8 +41,8 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
     /**
      * This function is used to create a user
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     * @param type $name
-     * @param type $password
+     * @param String $name
+     * @param String $password
      * @author HebaAamer
      */
     private function createUser(ObjectManager $manager, $name, $password) {
@@ -57,10 +57,10 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
     /**
      * This function is used to create a session
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     * @param type $userReference
-     * @param type $sessionId
-     * @param type $expired
-     * @param type $regId
+     * @param String $userReference
+     * @param String $sessionId
+     * @param boolean $expired
+     * @param String $regId
      * @author HebaAamer
      */
     private function createSession(ObjectManager $manager, $userReference, $sessionId, $expired, $regId) {
@@ -79,7 +79,7 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
     /**
      * This function is used to create a userEmail
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     * @param type $userReference
+     * @param String $userReference
      * @author HebaAamer
      */
     private function createUserEmail(ObjectManager $manager, $userReference) {
@@ -107,10 +107,10 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
     /**
      * This function is used to create a userTangle
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     * @param type $userReference
-     * @param type $isOwner
-     * @param type $credit
-     * @param type $left
+     * @param String $userReference
+     * @param boolean $isOwner
+     * @param integer $credit
+     * @param boolean $left
      * @author HebaAamer
      */
     private function createUserTangle(ObjectManager $manager, $userReference, $isOwner, $credit, $left) {
@@ -129,10 +129,10 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
     /**
      * This function is used to create a request
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     * @param type $userReference
-     * @param type $description
-     * @param type $requestNumber
-     * @param type $requestStatus
+     * @param String $userReference
+     * @param String $description
+     * @param integer $requestNumber
+     * @param integer $requestStatus
      * @author HebaAamer
      */
     private function createRequest(ObjectManager $manager, $userReference, $description, $requestNumber, $requestStatus) {
