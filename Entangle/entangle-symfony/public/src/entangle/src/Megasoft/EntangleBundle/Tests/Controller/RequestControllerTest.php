@@ -66,6 +66,26 @@ class RequestControllerTest extends EntangleTestCase
             array('HTTP_X_SESSION_ID'=>'sessionUser1Expired'));
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(),
-            'Check for status code of bad request for bad session id');
+            'Check for status code of bad request for expired session id');
+    }
+
+    /*
+     * Test case testing sending a request to delete request end point
+     * with bad request id
+     * @author OmarElAzazy
+     */
+    public function testDeleteAction_BadRequestId(){
+        $this->addFixture(new LoadDeleteRequestData());
+        $this->loadFixtures();
+
+        $client = static::createClient();
+        $client->request('DELETE',
+            '/request/55',
+            array(),
+            array(),
+            array('HTTP_X_SESSION_ID'=>'sessionUser1'));
+
+        $this->assertEquals(401, $client->getResponse()->getStatusCode(),
+            'Check for status code of bad request for bad request id');
     }
 }
