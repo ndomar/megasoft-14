@@ -126,9 +126,9 @@ public class CreateTangleActivity extends Activity {
 					EditText tangleName = (EditText) findViewById(R.id.tangleName);
 					tangleName.setError("Tangle Is Already Taken");
 				} else {
-					if (!(this.getStatusCode() == 201)) {
+					if (this.getStatusCode() != 201) {
 						Toast.makeText(getApplicationContext(),
-								"Try Again Later", Toast.LENGTH_LONG).show();
+								"Try Again Later"+this.getErrorMessage(), Toast.LENGTH_LONG).show();
 					} else {
 						goToHomePage();
 					}
