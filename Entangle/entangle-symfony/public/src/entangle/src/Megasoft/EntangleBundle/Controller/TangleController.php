@@ -21,10 +21,11 @@ class TangleController extends Controller {
      * Validates that the request has correct format,  session Id is active and of a user and that the user is in the tangle
      * @param Request $request
      * @param integer $tangleId
+     * @param boolean $isowner optional parameter indicating whether the user must be the tangle owner or not
      * @return Response | null
      * @author OmarElAzazy
      */
-    private function verifyUser($request, $tangleId) {
+    private function verifyUser($request, $tangleId, $isOwner = false) {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($tangleId == null || $sessionId == null) {
@@ -44,6 +45,10 @@ class TangleController extends Controller {
         $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $user->getId()));
 
         if ($userTangle == null) {
+            return new Response('Unauthorized', 401);
+        }
+
+        if($isOwner && !$userTangle->getTangleOwner()){
             return new Response('Unauthorized', 401);
         }
 
@@ -1055,4 +1060,64 @@ class TangleController extends Controller {
         }
     }
 
+    /**
+     * An endpoint for the tangle owner to remove any member from the tangle
+     * @param Request $request the request
+     * @param integer $tangleId tangle id
+     * @param integer $userId user id
+     * @return Response
+     * @author OmarElAzazy
+     */
+    public function removeMemberAction(Request $request, $tangleId, $userId){
+
+
+
+    }
+
+    /*
+     * A helper function to verify the data sent for the remove member end point
+     * @param Request $request the request
+     * @param integer $tangleId tangle id
+     * @param integer $userId user id
+     * @param User &$tangleOwner output variable set to the tangle owner if valid
+     * @param User &$member output variable set to the member to be removed if valid
+     * @param UserTangle &$memberTangle output variable set to the userTangle of the member to be removed if valid
+     * @param Doctrine &$doctrine output variable set to doctrine
+     * @return Response | null
+     * @author OmarElAzazy
+     */
+    public function removeMemberVerification($request, $tangleId, $userId, &$tangleOwner, &$member, &$memberTangle, &$doctrine){
+        $sessionId = $request->headers->get('X-SESSION-ID');
+
+        if ($tangleId == null || $sessionId == null || $userId == null) {
+            return new Response('Bad Request', 400);
+        }
+
+        $doctrine = $this->getDoctrine();
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        if ($session == null || $session->getExpired()) {
+            return new Response('Bad Request', 400);
+        }
+
+        $tangleOwner = $session->getUser();
+
+        $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $ownerTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $tangleOwner->getId()));
+
+        if ($ownerTangle == null || $ownerTangle->getLeavingDate() != null) {
+            return new Response('Unauthorized', 401);
+        }
+
+        $memberTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $userId));
+
+        if($memberTangle == null || $memberTangle->getLeavingDate() != null){
+            return new Response('Bad Request', 400);
+        }
+
+        $member = $memberTangle->getUser();
+
+        return null;
+    }
 }
