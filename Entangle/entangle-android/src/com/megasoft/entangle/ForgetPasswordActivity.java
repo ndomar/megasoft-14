@@ -16,10 +16,7 @@ public class ForgetPasswordActivity extends Activity {
 	 * email of the user
 	 */
 	EditText email;
-	/**
-	 * name of the user
-	 */
-	EditText name;
+	
 	public final String FORGET = "/user/forgetPass";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +31,9 @@ public class ForgetPasswordActivity extends Activity {
 	 */
 	public void forgetPassword() {
 		email=(EditText) findViewById(R.id.emailFroget);
-		name=(EditText) findViewById(R.id.nameForget);
 		
 		JSONObject json = new JSONObject();
 		try {
-			json.put("name", name.getText().toString());
 			json.put("email", email.getText().toString());
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -49,7 +44,7 @@ public class ForgetPasswordActivity extends Activity {
 			@Override
 			protected void onPostExecute(String response) {
 				if(this.getStatusCode()!=200){
-					Toast.makeText(getBaseContext(), "The data entered is not correct!",
+					Toast.makeText(getBaseContext(), "Please enter a valid e-mail!",
 							Toast.LENGTH_SHORT).show();
 				}else{
 					Toast.makeText(getBaseContext(), "Email Sent Successfully!, Check you mail",

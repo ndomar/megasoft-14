@@ -592,4 +592,9 @@ reset_tangle:
 reset_pass:
     pattern: /reset/{passCode}
     defaults: {_controller: MegasoftEntangleBundle:PasswordForget:resetPassword }
-    methods: [POST]
+    methods: [GET]
+
+change_pass:
+     pattern: /reset
+     defaults: {_controller: MegasoftEntangleBundle:PasswordForget:changePassword }
+     methods: [POST]

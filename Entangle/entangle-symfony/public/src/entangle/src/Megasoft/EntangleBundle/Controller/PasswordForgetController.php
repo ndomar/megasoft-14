@@ -3,7 +3,10 @@
 namespace Megasoft\EntangleBundle\Controller;
 
 
+use Megasoft\EntangleBundle\Entity\ForgetPasswordCode;
+use Megasoft\EntangleBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Tests\Extension\Core\Type\RepeatedTypeTest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -45,20 +48,26 @@ class PasswordForgetController extends Controller{
         $email= $data['email'];
         $response= new Response();
         $id=$this->securityCheck($email);
+
         if($id == -1){
             $response->setStatusCode(400);
             return $response;
         }else{
+            echo($id);
             $random=$this->randPassCodeGen();
             $link="http://entangle.io/reset/".$random;
             $doctrine = $this->getDoctrine();
             $user = $doctrine->getRepository('MegasoftEntangleBundle:User')->findOneBy(array("id" => $id));
             $userName = $user->getName();
-
-            //$em=$doctrine->getEntityManager();
-
+            $em=$doctrine->getManager();
+            $passwordCode = new ForgetPasswordCode();
+            $passwordCode->setCreated(new \DateTime('now'));
+            $passwordCode->setUser($user);
+            $passwordCode->setExpired(0);
+            $passwordCode->setForgetPasswordCode($random);
+            $em->persist($passwordCode);
+            $em->flush();
             $message = "It seems like you've forgotten your password, you can reset it by using this ";
-            $randomString = "thisIsARandomString";
             $title = "Entangle Password Reset";
             $body = "<!DOCTYPE html>
                 <html lang=\"en\">
@@ -79,7 +88,58 @@ class PasswordForgetController extends Controller{
         }
     }
 
-    public function resetPasswordAction(Request $request,$passCode){
+    public function resetPasswordAction($passCode){
+        $doctrine = $this->getDoctrine();
+        $em=$doctrine->getManager();
+        $ForgetPasswordCodeRepo= $doctrine->getRepository('MegasoftEntangleBundle:ForgetPasswordCode');
+        $ForgetPasswordCode=$ForgetPasswordCodeRepo->findOneBy(array('forgetPasswordCode'=>$passCode));
+        if($ForgetPasswordCode== null){
+            return $this->render('MegasoftEntangleBundle:ForgetPassword:404.html.twig');
+        }
+        if($ForgetPasswordCode->getExpired()== 1){
+            return $this->render('MegasoftEntangleBundle:ForgetPassword:expired.html.twig');
+        }else{
+            /* @var User $user */
+            $userName=$ForgetPasswordCode->getUser()->getName();
+            $ForgetPasswordCode->setExpired(1);
+            $em->persist($ForgetPasswordCode);
+            $em->flush();
+            return $this->render('MegasoftEntangleBundle:ForgetPassword:passwordChangeform.html.twig',array('error'=> "",'status'=> "",'userName'=> $userName));
+        }
 
+    }
+    public function changePasswordAction(Request $request){
+        $userName=$request->get('Username');
+        //return new Response($userName);
+       $message="";
+        $status="";
+        $doctrine = $this->getDoctrine();
+        $em=$doctrine->getManager();
+        $userRepo= $doctrine->getRepository('MegasoftEntangleBundle:User');
+        $user=$userRepo->findOneBy(array("name"=>$userName));
+        if ($request->getMethod() == 'POST') {
+
+            $password = $request->get('newPass');
+            $retypedPassword = $request->get('newPassR');
+            if($password==null || $retypedPassword==null){
+                $message = "Please fill ALL fields!!";
+                return $this->render('MegasoftEntangleBundle:ForgetPassword:passwordChangeform.html.twig',array('error'=> $message,'status'=> $status,'userName'=> $userName));
+            }
+
+            if ($password == $retypedPassword) {
+
+                $user->setPassword($password);
+                $em->persist($user);
+                $em->flush();
+                $status = "Password Changed Successfully!";
+                return $this->render('MegasoftEntangleBundle:ForgetPassword:passwordChangeform.html.twig',array('error'=> $message,'status'=> $status,'userName'=> $userName));
+
+            }else{
+                $message = "Passwords Do Not Match!!";
+                return $this->render('MegasoftEntangleBundle:ForgetPassword:passwordChangeform.html.twig',array('error'=> $message,'status'=> $status,'userName'=> $userName));
+            }
+
+        }
+        return $this->render('MegasoftEntangleBundle:ForgetPassword:passwordChangeform.html.twig',array('error'=> "",'status'=> "",'userName'=> $userName));
     }
 } 
