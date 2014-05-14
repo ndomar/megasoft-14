@@ -80,13 +80,13 @@ class TangleControllerTest extends EntangleTestCase
         $this->loadFixtures();
         
         $client = static::createClient();
-        $client->request('DELELTE',
+        $client->request('DELETE',
                 'tangle//user',
                 array(),
                 array(),
                 array('HTTP_X_SESSION_ID'=>'userAly'));
         $response = $client->getResponse();
-        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertEquals(400, $response->getStatusCode(), 'Not sending tangle id');
     }
     
     /**
@@ -98,13 +98,13 @@ class TangleControllerTest extends EntangleTestCase
         $this->loadFixtures();
         
         $client = static::createClient();
-        $client->request('DELELTE',
+        $client->request('DELETE',
                 'tangle/1/user',
                 array(),
                 array(),
-                array('HTTP_X_SESSION_ID', null));
+                array());
         $response = $client->getResponse();
-        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertEquals(400, $response->getStatusCode(), 'Not sending session id');
     }
     
     /**
@@ -116,13 +116,13 @@ class TangleControllerTest extends EntangleTestCase
         $this->loadFixtures();
         
         $client = static::createClient();
-        $client->request('DELELTE',
+        $client->request('DELETE',
                 'tangle/1/user',
                 array(),
                 array(),
                 array('HTTP_X_SESSION_ID', 'userMohamed'));
         $response = $client->getResponse();
-        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertEquals(400, $response->getStatusCode(), 'Sending expired session');
     }
     
     /**
@@ -134,13 +134,13 @@ class TangleControllerTest extends EntangleTestCase
         $this->loadFixtures();
         
         $client = static::createClient();
-        $client->request('DELELTE',
+        $client->request('DELETE',
                 'tangle/1/user',
                 array(),
                 array(),
                 array('HTTP_X_SESSION_ID', 'session'));
         $response = $client->getResponse();
-        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertEquals(400, $response->getStatusCode(), 'Sending expired session');
     }
     
     /**
@@ -152,13 +152,13 @@ class TangleControllerTest extends EntangleTestCase
         $this->loadFixtures();
         
         $client = static::createClient();
-        $client->request('DELELTE',
+        $client->request('DELETE',
                 'tangle/1/user',
                 array(),
                 array(),
                 array('HTTP_X_SESSION_ID', 'userMazen'));
         $response = $client->getResponse();
-        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals(401, $response->getStatusCode(), 'Case user not in the tangle');
     }
     
     /**
@@ -170,27 +170,49 @@ class TangleControllerTest extends EntangleTestCase
         $this->loadFixtures();
         
         $client = static::createClient();
-        $client->request('DELELTE',
+        $client->request('DELETE',
                 'tangle/1/user',
                 array(),
                 array(),
                 array('HTTP_X_SESSION_ID', 'userAhmad'));
         $response = $client->getResponse();
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(403, $response->getStatusCode(), 'Case user is the tangle owner');
     }
     
+    /**
+     * Test Case to check if the user left the tangle or not
+     * @author HebaAamer
+     */
     public function testLeaveTangleAction_LeftUser() {
         $this->addFixture(new LoadLeaveTangleData());
         $this->loadFixtures();
         
         $client = static::createClient();
-        $client->request('DELELTE',
+        $client->request('DELETE',
                 'tangle/1/user',
                 array(),
                 array(),
-                array('HTTP_X_SESSION_ID', 'userAhmad'));
+                array('HTTP_X_SESSION_ID', 'userAdel'));
         $response = $client->getResponse();
-        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals(401, $response->getStatusCode(), 'Case left user');
+    }
+    
+    /**
+     * Test Case to check the success scenario
+     * @author HebaAamer
+     */
+    public function testLeaveTangleAction_LeaveTangle() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('DELETE',
+                'tangle/1/user',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID', 'userAly'));
+        $response = $client->getResponse();
+        $this->assertEquals(204, $response->getStatusCode(), 'Case sending a valid request');
     }
 }
 
