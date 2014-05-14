@@ -151,18 +151,18 @@ class OfferController extends Controller {
 
     /**
      * Changes the price of an offer
-     * @param \Megasoft\EntangleBundle\Entity\Request $request
-     * @param type $offerid
+     * @param Request $request
+     * @param type $offerId
      * @return \Symfony\Component\HttpFoundation\Response
      * @author Mansour
      */
-    public function changeOfferPriceAction(Request $request, $offerid) {
+    public function changeOfferPriceAction(Request $request, $offerId) {
 
         $sessionId = $request->headers->get('X-SESSION-ID');
-        $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
-        $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
+        $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($sessionId == null) {
-            return new Response("Bad meh Request", 400);
+            return new Response("Bad Request", 400);
         }
         if ($session == null) {
             return new Response("Unauthorized", 401);
@@ -172,7 +172,7 @@ class OfferController extends Controller {
             return new Response("Session expired", 440);
         }
         $offerRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Offer');
-        $requestOffer = $offerRepo->findOneBy(array('id' => $offerid));
+        $requestOffer = $offerRepo->findOneBy(array('id' => $offerId));
         $oldPrice = $requestOffer->getRequestedPrice();
         if ($requestOffer == null) {
             return new Response("Not found", 404);
@@ -214,10 +214,9 @@ class OfferController extends Controller {
         $title = "offer changed";
         $body = "{{from}} changed his offer";
         $notificationCenter->offerChangeNotification($requestOffer->getId(), $oldPrice, $title, $body);
-
-
         $this->getDoctrine()->getManager()->persist($requestOffer);
         $this->getDoctrine()->getManager()->flush();
+
         return new Response('Price changed', 200);
     }
 
