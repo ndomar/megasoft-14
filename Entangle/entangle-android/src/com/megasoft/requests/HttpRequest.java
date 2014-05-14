@@ -108,7 +108,7 @@ public abstract class HttpRequest extends AsyncTask<String, String, String> {
     			return null;
     		} else {
     			hasError = true;
-    			errorMessage = EntityUtils.toString(entity);
+    			errorMessage = "Server Error";
     			return null;
     		}
     	}catch(ClientProtocolException  e ){
