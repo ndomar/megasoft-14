@@ -20,7 +20,7 @@ import android.widget.ImageView;
 
 public class RoundedImageView extends ImageView implements Target {
 	
-	Bitmap b;
+	private Bitmap bitmap;
 
 	public RoundedImageView(Context context) {
 	    super(context);
@@ -46,15 +46,15 @@ public class RoundedImageView extends ImageView implements Target {
 	    if (getWidth() == 0 || getHeight() == 0) {
 	        return; 
 	    }
-	    if(b== null){
-	    	b =  ((BitmapDrawable)drawable).getBitmap() ;
+	    if( bitmap == null){
+	    	bitmap =  ((BitmapDrawable)drawable).getBitmap() ;
 	    }
-	    Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true);
+	    Bitmap bitmapCopy = bitmap.copy(Bitmap.Config.ARGB_8888, true);
 	
-	    int w = getWidth(), h = getHeight();
+	    int width = getWidth(), height = getHeight();
 	
 	
-	    Bitmap roundBitmap =  getCroppedBitmap(bitmap, w);
+	    Bitmap roundBitmap =  getCroppedBitmap(bitmapCopy, width);
 	    canvas.drawBitmap(roundBitmap, 0,0, null);
 	
 	}
@@ -92,7 +92,7 @@ public class RoundedImageView extends ImageView implements Target {
 	
 	@Override
 	public void onBitmapLoaded(Bitmap arg0, LoadedFrom arg1) {
-		b = arg0;
+		bitmap = arg0;
 	}
 	
 	@Override
