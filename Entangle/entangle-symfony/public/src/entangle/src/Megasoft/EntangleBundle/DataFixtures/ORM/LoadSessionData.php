@@ -10,6 +10,7 @@ use Megasoft\EntangleBundle\Entity\Session;
 
 /*
  * Fixtures for Session table
+ * @author OmarElAzazy
  */
 class LoadSessionData extends AbstractFixture implements OrderedFixtureInterface
 {
