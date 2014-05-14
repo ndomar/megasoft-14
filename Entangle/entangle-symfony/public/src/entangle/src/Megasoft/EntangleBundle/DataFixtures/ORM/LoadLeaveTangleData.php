@@ -24,14 +24,8 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->makeRequests($manager);
         $this->makeOffers($manager);
         $this->makeTransactions($manager);
-        
-        
-        
-        
-        $this->createClaim($manager, 'offer2', 'userAly', 1);
-        $this->createClaim($manager, 'offer2', 'userMohamed', 2);
-        $this->createClaim($manager, 'offer2', 'userAly', 3);
-        
+        $this->makeClaims($manager);
+                
         $manager->flush();
     }
 
@@ -71,8 +65,7 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $userEmail->setUser($this->getReference("$userReference"));
         $userEmail->setEmail("$userReference" . '@entangle.io');
         
-        $manager->persist($tangle);
-        $this->addReference('tangle', $tangle);
+        $manager->persist($userEmail);
     }
     
     private function createTangle(ObjectManager $manager) {
@@ -186,5 +179,11 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
     
     private function makeTransactions(ObjectManager $manager){
         $this->createTransaction($manager, 'offer1');
+    }
+    
+    private function makeClaims(ObjectManager $manager){
+        $this->createClaim($manager, 'offer2', 'userAly', 1);
+        $this->createClaim($manager, 'offer2', 'userMohamed', 2);
+        $this->createClaim($manager, 'offer2', 'userAly', 3);         
     }
 }
