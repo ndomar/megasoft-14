@@ -21,10 +21,16 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $user = new User();
         $user->setName('sampleUser');
         $user->setPassword('samplePassword');
-        
+        $verificationCode = new VerificationCode();
+        $verificationCode->setUser($user);
+        $verificationCode->setVerificationCode('123456');
+        $userEmail = new UserEmail();
+        $userEmail->setUser($user);
+        $userEmail->setEmail('mahmoudgamaleid@gmail.com');
         $manager->persist($user);
+        $manager->persist($verificationCode);
+        $manager->persist($userEmail);
         $manager->flush();
-        
         $this->addReference('sampleUser', $user);
     }
 
