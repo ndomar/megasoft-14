@@ -76,17 +76,17 @@ class TangleController extends Controller
             ->where('request.tangleId = :tangleId')
             ->setParameter('tangleId', $tangleId)
             ->andWhere('request.deleted = 0 AND request.status = 0');
-        if($queryValue != null){
-            $query = $query->innerJoin('MegasoftEntangleBundle:User', 'user' , 'WITH' , 'request.userId = user.id')
-                            ->leftJoin('request.tags','tag')
-                            ->andWhere(
-                                    $query->expr()->orx(
-                                        $query->expr()->like('user.name', ':query2'),
-                                        $query->expr()->like('request.description', ':query'),
-                                        $query->expr()->like('tag.name', ':query')
-                                    )
-                            )->setParameter('query' , '%'.$queryValue.'%')
-                             ->setParameter('query2' , $queryValue.'%');
+        if ($queryValue != null) {
+            $query = $query->innerJoin('MegasoftEntangleBundle:User', 'user', 'WITH', 'request.userId = user.id')
+                ->leftJoin('request.tags', 'tag')
+                ->andWhere(
+                    $query->expr()->orx(
+                        $query->expr()->like('user.name', ':query2'),
+                        $query->expr()->like('request.description', ':query'),
+                        $query->expr()->like('tag.name', ':query')
+                    )
+                )->setParameter('query', '%' . $queryValue . '%')
+                ->setParameter('query2', $queryValue . '%');
         }
         $requests = $query->getQuery()->getResult();
 
@@ -220,7 +220,8 @@ class TangleController extends Controller
      */
 
 
-    public function inviteUser($email,$tangleId,$inviterId,$message){
+    public function inviteUser($email, $tangleId, $inviterId, $message)
+    {
         $randomString = $this->generateRandomString(30);
 
         $tangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Tangle');
@@ -976,6 +977,7 @@ class TangleController extends Controller
 
         return $response;
     }
+
     /**
      * This method is used to reset a Tangle
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -983,7 +985,8 @@ class TangleController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @author Salma Khaled
      */
-    public function resetTangleAction(Request $request, $tangleId) {
+    public function resetTangleAction(Request $request, $tangleId)
+    {
         $sessionId = $request->headers->get("X-SESSION-ID");
         $tangleRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Tangle");
         $tangle = $tangleRepo->findOneBy(array('id' => $tangleId,));
@@ -1017,7 +1020,8 @@ class TangleController extends Controller
      * @return none
      * @author Salma Khaled
      */
-    private function deleteRequests($tangleId, $userId) {
+    private function deleteRequests($tangleId, $userId)
+    {
         $requestRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Request");
         $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
         $user = $userRepo->find($userId);
@@ -1042,7 +1046,8 @@ class TangleController extends Controller
      * @return none
      * @author Salma Khaled
      */
-    private function deleteOffers($requestId, $userId) {
+    private function deleteOffers($requestId, $userId)
+    {
         $offerRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Offer");
         $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
         $user = $userRepo->find($userId);
@@ -1065,7 +1070,8 @@ class TangleController extends Controller
      * @return none
      * @author Salma Khaled
      */
-    private function deleteClaims($tangleId, $userId) {
+    private function deleteClaims($tangleId, $userId)
+    {
         $claimRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Claim");
         $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
         $user = $userRepo->find($userId);
@@ -1081,4 +1087,77 @@ class TangleController extends Controller
         }
     }
 
+    // Author maisaraFarahat
+    public function websiteCreateTangleAction(Request $request)
+    {
+
+        $tangleName = $request->get('tangleName');
+        $tangleIcon = $request->get('tangleIcon');
+//        $sessionId = $request->headers->get('X-SESSION-ID');
+        $sessionId = 'ltZGEqTbYgqJ2wrFb7tRKHHCFfiPvh';
+        $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+
+        if ($sessionId == null) {
+            return $this->render('MegasoftEntangleBundle:Site:wrongTangle.html.twig', array('status' => 400, 'message' => 'el session id null'));
+
+        }
+        if ($tangleIcon == null) {
+            return $this->render('MegasoftEntangleBundle:Site:wrongTangle.html.twig', array('status' => 400, 'message' => 'el image gayya null'));
+
+        }
+        if ($tangleName == null) {
+            return $this->render('MegasoftEntangleBundle:Site:wrongTangle.html.twig', array('status' => 400, 'message' => 'el tangle name gayy null'));
+
+        }
+        if ($session == null) {
+            return $this->render('MegasoftEntangleBundle:Site:wrongTangle.html.twig', array('status' => 401, 'message' => 'session null'));
+
+        }
+
+
+        if (!($this->checkAvailability($tangleName))) {
+            return $this->render('MegasoftEntangleBundle:Site:wrongTangle.html.twig', array('status' => 400, 'message' => 'tangle name already taken'));
+
+        }
+        $imageData = base64_decode($tangleIcon);
+        $f = finfo_open();
+        $mimeType = finfo_buffer($f, $imageData, FILEINFO_MIME_TYPE);
+        if ($mimeType == false || $mimeType != 'image/png') {
+            return $this->render('MegasoftEntangleBundle:Site:wrongTangle.html.twig', array('status' => 400, 'message' => 'bad image'));
+
+        }
+        $icon = imagecreatefromstring($imageData);
+        $iconName = $this->generateRandomString(50) . '.png';
+        $kernel = $this->get('kernel');
+        $path = $kernel->getRootDir() . '/../web/bundles/megasoftentangle/images/tangle/icons/' . $iconName;
+
+        if ($icon != null) {
+            imagepng($icon, $path, 9);
+            imagedestroy($icon);
+        }
+
+        $tangle = new Tangle();
+        $tangle->setName($tangleName);
+        $tangle->setIcon($iconName);
+        $tangle->setDeleted(false);
+        $tangle->setDescription("ana lessa bagarab ya nas");
+
+        $tangleOwner = new UserTangle();
+        $tangleOwner->setUserId($session->getUserId());
+        $tangleOwner->setCredit(0);
+        $tangleOwner->setTangle($tangle);
+        $tangleOwner->setTangleOwner(true);
+        $tangleOwner->setUser($session->getUser());
+
+        $this->getDoctrine()->getManager()->persist($tangle);
+        $this->getDoctrine()->getManager()->persist($tangleOwner);
+        $this->getDoctrine()->getManager()->flush();
+
+        $response = new Response();
+        $response->setStatusCode(201);
+
+        return $this->render('MegasoftEntangleBundle:Site:createdTangle.html.twig', array('status' => 201, 'message' => 'mabrouk ya 7ayawan'));
+
+    }
 }

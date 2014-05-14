@@ -3,7 +3,12 @@
 {% block title %}MegasoftEntangleBundle:Site:selectTangle{% endblock %}
 
 {% block body %}
-  {%  for tangle in tangles %}
-    <a href="/tangle/{% tangle.id %}"> {% tangle.name %}</a>
-  {%  endfor %}
+    Choose one of these tangles to go to :D
+    {% for tangle in tangles %}
+        <p>
+            <a href="/tangle/{{ tangle.id }}/{{ sessionId }}"> {{ tangle.name }}</a>
+            <br>
+        </p>
+
+    {% endfor %}
 {% endblock %}

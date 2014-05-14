@@ -150,7 +150,7 @@ class SiteController extends Controller
     private function generateSessionId($len)
     {
         $generatedSessionID = '';
-        $seed = "abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $seed = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         for ($i = 0; $i < $len; $i++) {
             $generatedSessionID .= $seed[rand(0, strlen($seed) - 1)];
         }
@@ -160,27 +160,27 @@ class SiteController extends Controller
     public function loginAction(\Symfony\Component\HttpFoundation\Request $request)
     {
         if ($request->getMethod() != 'POST')
-            return $this->render('MegasoftEntangleBundle:Login:login.html.twig', array('status' => 400, 'message' => 'wrong request type'));
+            return $this->render('MegasoftEntangleBundle:Site:index.html.twig', array('status' => 400, 'message' => 'wrong request type'));
 
         $name = $request->get('name');
         $password = $request->get('password');
         if (!$name) {
-            return $this->render('MegasoftEntangleBundle:Login:login.html.twig', array('status' => 400, 'message' => 'Missing user name'));
+            return $this->render('MegasoftEntangleBundle:Site:index.html.twig', array('status' => 400, 'message' => 'Missing user name'));
 
         }
         if (!$password) {
-            return $this->render('MegasoftEntangleBundle:Login:login.html.twig', array('status' => 400, 'message' => 'Missing password'));
+            return $this->render('MegasoftEntangleBundle:Site:index.html.twig', array('status' => 400, 'message' => 'Missing password'));
 
         }
         if (strstr("\"", $name) || strstr("'", $name)) {
-            return $this->render('MegasoftEntangleBundle:Login:login.html.twig', array('status' => 400, 'message' => 'The username shall not have special characters'));
+            return $this->render('MegasoftEntangleBundle:Site:index.html.twig', array('status' => 400, 'message' => 'The username shall not have special characters'));
         }
         $sessionId = $this->generateSessionId(30);
 
         $repo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
         $user = $repo->findOneBy(array('name' => $name, 'password' => $password));
         if (!$user) {
-            return $this->render('MegasoftEntangleBundle:Login:login.html.twig', array('status' => 400, 'message' => 'Bad Request'));
+            return $this->render('MegasoftEntangleBundle:Site:index.html.twig', array('status' => 400, 'message' => 'Bad Request'));
 
         }
         $repo2 = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserTangle');
@@ -215,13 +215,13 @@ class SiteController extends Controller
 
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->render('MegasoftEntangleBundle:Site:manageTangle.html.twig', array('sessionId' => $sessionId,));
-
+//        return $this->render('MegasoftEntangleBundle:Site:manageTangle.html.twig', array('sessionId' => $sessionId,));
+        return $this->manageTangleAction($sessionId);
     }
 
-    public function manageTangleAction(\Symfony\Component\HttpFoundation\Request $request)
+    public function manageTangleAction( $sessionId)
     {
-        $sessionId = $request->get('sessionId');
+//        $sessionId = $request->get('sessionId');
         $repo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $session = $repo->findOneBy(array('sessionId' => $sessionId,));
         if (!$session) {
@@ -238,17 +238,16 @@ class SiteController extends Controller
 
         foreach ($userTangles as $tangle) {
 
-            $tangleOwner = $repo2->findOneBy(array('tangleId' => $tangle->getId(), 'userId' => $user->getId(), 'tangleOwner' => 0,));
-            if (!$tangleOwner) {
+            $tangleOwner = $repo2->findOneBy(array('tangleId' => $tangle->getId(), 'userId' => $user->getId(), 'tangleOwner' => 1,));
+            if ($tangleOwner) {
                 array_push($tanglesToBeAdded, $tangle);
-                $tangleOwner = null;
             }
         }
         if (sizeof($tanglesToBeAdded) > 0) {
-            return $this->render('MegasoftEntangleBundle:Site:selectTangle.html.twig', array('tangles' => $tanglesToBeAdded));
+            return $this->render('MegasoftEntangleBundle:Site:selectTangle.html.twig', array('tangles' => $tanglesToBeAdded,'sessionId'=> $sessionId,));
         }
 
-        return $this->render('MegasoftEntangleBundle:Site:createTangle.html.twig');
+        return $this->render('MegasoftEntangleBundle:Site:createTangle.html.twig' , array('sessionId'=> $sessionId,));
 
 
     }
