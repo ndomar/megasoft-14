@@ -449,5 +449,77 @@ class UserController extends Controller {
             return $response;
         }
     }
+    public function postImageAction(Request2 $request)
+    {
+        $sessionId = $request->headers->get('X-SESSION-ID');
 
+        if ($sessionId == null) {
+            return new Response('Bad Request', 400);
+        }
+
+        $doctrine = $this->getDoctrine();
+
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        if ($session == null || $session->getExpired()) {
+            return new Response('Bad Request', 400);
+        }
+
+        $jsonString = $request->getContent();
+
+        if ($jsonString == null) {
+            return new Response('Bad Request', 400);
+        }
+
+        $json = json_decode($jsonString, true);
+        $picData = $json['Picture'];
+
+        if ($picData == null) {
+            return new Response('Bad Request', 400);
+        }
+
+        try {
+            $picUrl = $this->savePic($picData);
+        } catch (Exception $e) {
+            return new Response('Internal Server Error', 500);
+        }
+        
+        $userId = $session->getUserId();
+        $userRepo = $doctrine->getRepository('MegasoftEntangleBundle:User');
+        $user = $userRepo->findOneById(array('id' => $userId));
+        $user->setPhoto($picUrl);
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->flush();
+        return new Response('Ok',200);
+        
+    }
+    private function savePic($picData)
+    {
+        $decodedPic = base64_decode($picData);
+        $pic = imagecreatefromstring($decodedPic);
+
+        $picFileName = generateRandomString(20) . '.png';
+        $kernel = $this->get('kernel');
+        $path = $kernel->getRootDir() . '/../web/bundles/megasoftentangle/images/profile/pictures/';
+
+        $outputFilePath = $path . $picFileName;
+        imagepng($pic, $outputFilePath, 9);
+        imagedestroy($pic);
+        return 'http://10.11.12.13/entangle/web/bundles/megasoftentangle/images/profile/pictures/' . $picFileName;
+    }
+    
+    /**
+     * Generates a random string of length $len
+     * @param integer $len
+     * @return string a randomly generated string of length $len
+     * @author MohamedBassem
+     */
+    private function generateRandomString($len) {
+        $ret = '';
+        $seed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
+        for ($i = 0; $i < $len; $i++) {
+            $ret .= $seed[rand(0, strlen($seed) - 1)];
+        }
+        return $ret;
+    }
 }

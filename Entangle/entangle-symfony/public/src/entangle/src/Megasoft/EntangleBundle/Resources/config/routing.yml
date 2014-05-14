@@ -583,3 +583,8 @@ reset_tangle:
     pattern: /tangle/{tangleId}/reset
     defaults: {_controller: MegasoftEntangleBundle:Tangle:resetTangle }
     methods: [PUT]
+
+edit_profile_picture:
+    pattern: /user/{userId}/editpicture
+    defaults: { _controller: MegasoftEntangleBundle:User:postImage}
+    methods: [POST]
