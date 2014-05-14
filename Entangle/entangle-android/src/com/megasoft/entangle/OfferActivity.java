@@ -1,6 +1,16 @@
 package com.megasoft.entangle;
 
+import com.megasoft.config.Config;
+import com.megasoft.requests.GetRequest;
+import com.megasoft.requests.PostRequest;
+
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,6 +20,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,8 +36,7 @@ import com.megasoft.requests.ImageRequest;
 import com.megasoft.requests.PostRequest;
 
 /**
- * View an offer given the offer Id
- * 
+ * Views an offer given the offer id
  * @author Almgohar
  */
 public class OfferActivity extends FragmentActivity {
@@ -79,6 +89,10 @@ public class OfferActivity extends FragmentActivity {
 	 * The button that allows the user to accept an offer
 	 */
 	private Button acceptOffer;
+	/**
+	 * The button that allows the user to mark an offer as done
+	 */
+	private Button markOfferAsDone;
 
 	/**
 	 * The tangle Id
@@ -116,7 +130,22 @@ public class OfferActivity extends FragmentActivity {
 	 * String for post offer endpoint
 	 */
 	final String ACCEPT = "/accept/offer";
-
+	/**
+	 * String for get and post offer details endpoint
+	 */
+	final String markAsDone = "/markAsDone";
+	/**
+	 * String for get offer details endpoint
+	 */
+	final String Offer = "/offer/";
+	/**
+	 * offer status
+	 */
+	final String Done = "1";
+	/**
+	 * offer status
+	 */
+	final String Pending = "0";
 	/**
 	 * The id of the logged in user
 	 */
@@ -129,6 +158,11 @@ public class OfferActivity extends FragmentActivity {
 
 	private ScrollView scrollView;
 
+	/**
+	 * The top menu
+	 */
+	private Menu itemMenu;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -144,14 +178,51 @@ public class OfferActivity extends FragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.offer, menu);
+		itemMenu = menu;
 		return true;
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.delete_offer_button:
+			deleteOffer();
+			return true;
+		case R.id.claim_on_offer_button:
+			claim();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 
+	/**
+	 * This method allows the offerer/requester to claim on the offer (mock)
+	 * @author Almgohar
+	 */
+	private void claim() {
+		
+	}
+
+	/**
+	 * This method allows the offerer to delete his offer (mock)
+	 * @author Almgohar
+	 */
+	private void deleteOffer() {
+		
+	}
+
+	/**
+	 * This method allows the offerer to edit the offer price (mock)
+	 * @author Almgohar
+	 */
+	private void editPrice() {
+		
+	}
 	/**
 	 * Initializes all views to link to the XML views Sends a GET request and
 	 * get the JSon response Calls the ViewRequestInformation method Calls the
 	 * ViewOfferInformation method
-	 * 
 	 * @author Almgohar
 	 */
 	public void viewOffer() {
@@ -161,16 +232,14 @@ public class OfferActivity extends FragmentActivity {
 		offererName = (TextView) findViewById(R.id.offerer_name);
 		offerStatus = (TextView) findViewById(R.id.offer_status);
 		offerPrice = (TextView) findViewById(R.id.offer_price);
-
 		offerDate = (TextView) findViewById(R.id.offer_date);
 		comment = (EditText) findViewById(R.id.add_comment_field);
 		addComment = (ImageView) findViewById(R.id.add_comment_button);
 		scrollView = (ScrollView) findViewById(R.id.comment_area_scroll_view);
-		// deleteOfferLayout = (LinearLayout)
-		// findViewById(R.id.delete_offer_layout);
 		acceptOffer = (Button) findViewById(R.id.accept_offer);
+		markOfferAsDone = (Button) findViewById(R.id.mark_as_done);
 		String link = Config.API_BASE_URL + "/offer/" + offerId;
-
+		
 		GetRequest request = new GetRequest(link) {
 			@Override
 			protected void onPostExecute(String response) {
@@ -196,6 +265,7 @@ public class OfferActivity extends FragmentActivity {
 				}
 			}
 		};
+		
 		request.addHeader("X-SESSION-ID", this.sessionId);
 		request.execute();
 	}
@@ -203,9 +273,7 @@ public class OfferActivity extends FragmentActivity {
 	/**
 	 * Retrieves the required offer information from the JSonObject Views the
 	 * offer information
-	 * 
-	 * @param JSonObject
-	 *            offerInformation
+	 * @param JSonObject offerInformation
 	 * @author Almgohar
 	 */
 	private void viewOfferInfo(JSONObject offerInformation) {
@@ -221,6 +289,7 @@ public class OfferActivity extends FragmentActivity {
 			final int offererId = offerInformation.getInt("offererId");
 			final int requesterId = offerInformation.getInt("requesterId");
 			int status = offerInformation.getInt("offerStatus");
+			
 			if (status == 0) {
 				offerStatus.setText("Pending");
 				offerStatus.setTextColor(getResources().getColor(R.color.red));
@@ -236,8 +305,23 @@ public class OfferActivity extends FragmentActivity {
 
 			if (requesterId == loggedInId) {
 				validate();
+				itemMenu.findItem(R.id.claim_on_offer_button).setVisible(true);
 			}
-
+			
+			if(offererId == loggedInId) {
+				((ImageView)findViewById(R.id.edit_price)).setVisibility(View.VISIBLE);
+				((ImageView)findViewById(R.id.edit_price)).setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						editPrice();
+					}
+				});
+				
+				itemMenu.findItem(R.id.delete_offer_button).setVisible(true);
+				itemMenu.findItem(R.id.claim_on_offer_button).setVisible(true);
+			}
+			
 			offererName.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -288,22 +372,19 @@ public class OfferActivity extends FragmentActivity {
 
 	/**
 	 * Redirects to a user's profile given his id
-	 * 
 	 * @param int userId
 	 * @author Almgohar
 	 */
 	private void goToProfile(int userId) {
 		Intent profile = new Intent(this, ProfileActivity.class);
-		profile.putExtra("user id", userId);
-		profile.putExtra("tangle id", this.tangleId);
+		profile.putExtra("userId", userId);
+		profile.putExtra("tangleId", tangleId);
 		startActivity(profile);
 	}
 
 	/**
 	 * Views the user's profile picture
-	 * 
-	 * @param String
-	 *            imageURL
+	 * @param String imageURL
 	 * @author Almgohar
 	 */
 	public void viewProfilePicture(String imageURL) {
@@ -343,7 +424,10 @@ public class OfferActivity extends FragmentActivity {
 							if (offerStatus == 0) {
 								addAcceptButton();
 
+							} else if (offerStatus == 2) {
+								addMarkAsDoneButton();
 							}
+
 						}
 					} else {
 						Toast toast = Toast.makeText(getApplicationContext(),
@@ -387,6 +471,7 @@ public class OfferActivity extends FragmentActivity {
 							offerStatus.setText("Accepted");
 							offerStatus.setTextColor(getResources().getColor(
 									R.color.green));
+							addMarkAsDoneButton();
 
 						} else {
 							if (status == 405) {
@@ -418,41 +503,114 @@ public class OfferActivity extends FragmentActivity {
 
 	}
 
-/**
- * The callback for the add comment button which adds the comment and re-renders the layout 
- * @param view
- * @author mohamedbassem
- */
-public void addComment(View view){
+	/**
+	 * This adds the mark as done button to the layout
+	 * 
+	 * @param None
+	 * @return None
+	 * @author mohamedzayan
+	 */
+	public void addMarkAsDoneButton() {
+		markOfferAsDone.setVisibility(1);
+	}
 
-	PostRequest request = new PostRequest(Config.API_BASE_URL + "/offer/" + offerId + "/comment") {
-
-		@Override
-		protected void onPostExecute(String response) {
-			if(this.getStatusCode() == 201){
-				comment.setText("");
-				viewOffer();
-			}else{
-				Toast.makeText(getApplicationContext(), this.getErrorMessage(), Toast.LENGTH_LONG).show();
-			}
+	/**
+	 * This checks if an offer is already marked as done or not accepted.if
+	 * neither it navigates to the actual marking method
+	 * 
+	 * @param View
+	 *            view The Button clicked
+	 * @return None
+	 * @author mohamedzayan
+	 */
+	public void markCheck(View view) {
+		Toast error;
+		if (offerStatus.getText().equals(Pending)) {
+			error = Toast.makeText(getApplicationContext(),
+					R.string.notaccepted, Toast.LENGTH_LONG);
+			error.show();
+		} else if (offerStatus.getText().equals(Done)) {
+			error = Toast.makeText(getApplicationContext(),
+					R.string.alreadymarked, Toast.LENGTH_LONG);
+			error.show();
+		} else {
+			markAsDone(offerId);
 		}
 
-	};
-
-	String commentMessage = comment.getText().toString();
-	if(commentMessage.equals("")){
-		return;
-	}
-	JSONObject body = new JSONObject();
-	try {
-		body.put("body", commentMessage);
-	} catch (JSONException e) {
-		e.printStackTrace();
 	}
 
-	request.addHeader(Config.API_SESSION_ID, sessionId);
-	request.setBody(body);
-	request.execute();
-}
+	/**
+	 * This marks an accepted offer as done
+	 * 
+	 * @param Int
+	 *            OfferId offer ID
+	 * @return None
+	 * @author mohamedzayan
+	 */
+	public void markAsDone(int Offerid) {
+
+		PostRequest request = new PostRequest(Config.API_BASE_URL + markAsDone
+				+ Offer + Offerid) {
+			protected void onPostExecute(String response) {
+				if (this.getStatusCode() == 201) {
+					Toast success = Toast.makeText(getApplicationContext(),
+							R.string.mark, Toast.LENGTH_LONG);
+					success.show();
+					markOfferAsDone.setEnabled(false);
+					markOfferAsDone.setVisibility(View.INVISIBLE);
+					offerStatus.setText("Done");
+				} else {
+					Toast error = Toast.makeText(getApplicationContext(),
+							R.string.error, Toast.LENGTH_LONG);
+					error.show();
+				}
+			}
+
+		};
+		request.addHeader(Config.API_SESSION_ID, sessionId);
+		request.execute();
+
+	}
+
+	/**
+	 * The callback for the add comment button which adds the comment and
+	 * re-renders the layout
+	 * 
+	 * @param view
+	 * @author mohamedbassem
+	 */
+	public void addComment(View view) {
+
+		PostRequest request = new PostRequest(Config.API_BASE_URL + "/offer/"
+				+ offerId + "/comment") {
+
+			@Override
+			protected void onPostExecute(String response) {
+				if (this.getStatusCode() == 201) {
+					comment.setText("");
+					viewOffer();
+				} else {
+					Toast.makeText(getApplicationContext(),
+							this.getErrorMessage(), Toast.LENGTH_LONG).show();
+				}
+			}
+
+		};
+
+		String commentMessage = comment.getText().toString();
+		if (commentMessage.equals("")) {
+			return;
+		}
+		JSONObject body = new JSONObject();
+		try {
+			body.put("body", commentMessage);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		request.addHeader(Config.API_SESSION_ID, sessionId);
+		request.setBody(body);
+		request.execute();
+	}
 
 }
