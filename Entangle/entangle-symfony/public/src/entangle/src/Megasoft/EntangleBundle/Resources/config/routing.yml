@@ -224,7 +224,8 @@ change_offer_price:
     
 verification:
     pattern: /verify/{verificationCode}
-    defaults: { _controller:MegasoftEntangleBundle:Verification:verifyUser}
+    defaults: { _controller:MegasoftEntangleBundle:Verification:verifyEmail}
+    methods: [GET]
 
 get_members:
     pattern: /tangle/{tangleId}/user
@@ -523,10 +524,6 @@ change_offer_price:
     pattern: /offers/{offerid}/changePrice
     defaults: { _controller: MegasoftEntangleBundle:Offer:changeOfferPrice }
     methods: [POST]
-    
-verification:
-    pattern: /verify/{verificationCode}
-    defaults: { _controller:MegasoftEntangleBundle:Verification:verifyUser}
 
 get_members:
     pattern: /tangle/{tangleId}/user
