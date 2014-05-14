@@ -5,6 +5,7 @@ namespace Megasoft\EntangleBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Megasoft\EntangleBundle\Entity\Request;
 use Megasoft\EntangleBundle\Entity\Session;
 use Megasoft\EntangleBundle\Entity\Tangle;
 use Megasoft\EntangleBundle\Entity\User;
@@ -99,5 +100,61 @@ class LoadUserTangleData extends AbstractFixture implements OrderedFixtureInterf
         $manager->persist($user2Tangle);
 
         $manager->flush();
+    }
+
+    private function addRequests(ObjectManager $manager){
+        $request1 = new Request();
+        $request1->setTangle($this->getReference('tangle'));
+        $request1->setIcon('');
+        $request1->setDescription('This is a request');
+        $request1->setDeleted(false);
+        $request1->setRequestedPrice(0);
+        $request1->setStatus(0);
+        $request1->setUser($this->getReference('user1'));
+        $manager->persist($request1);
+        $this->addReference('request1', $request1);
+
+        $request2 = new Request();
+        $request2->setTangle($this->getReference('tangle'));
+        $request2->setIcon('');
+        $request2->setDescription('This is a request');
+        $request2->setDeleted(false);
+        $request2->setRequestedPrice(0);
+        $request2->setStatus(1);
+        $request2->setUser($this->getReference('user1'));
+        $manager->persist($request2);
+        $this->addReference('request2', $request2);
+
+        $request3 = new Request();
+        $request3->setTangle($this->getReference('tangle'));
+        $request3->setIcon('');
+        $request3->setDescription('This is a request');
+        $request3->setDeleted(true);
+        $request3->setRequestedPrice(0);
+        $request3->setStatus(0);
+        $request3->setUser($this->getReference('user1'));
+        $manager->persist($request3);
+        $this->addReference('request3', $request3);
+
+        $request4 = new Request();
+        $request4->setTangle($this->getReference('tangle'));
+        $request4->setIcon('');
+        $request4->setDescription('This is a request');
+        $request4->setDeleted(false);
+        $request4->setRequestedPrice(0);
+        $request4->setStatus(0);
+        $request4->setUser($this->getReference('user2'));
+        $manager->persist($request4);
+        $this->addReference('request4', $request4);
+
+        $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 1;
     }
 }
