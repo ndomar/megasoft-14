@@ -2,10 +2,7 @@
 
 namespace Megasoft\EntangleBundle\Tests\Controller;
 
-use Megasoft\EntangleBundle\DataFixtures\ORM\LoadSessionData;
-use Megasoft\EntangleBundle\DataFixtures\ORM\LoadTangleData;
-use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserData;
-use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserTangleData;
+use Megasoft\EntangleBundle\DataFixtures\ORM\LoadDeleteRequestData;
 use Megasoft\EntangleBundle\Tests\EntangleTestCase;
 
 /*
@@ -14,4 +11,20 @@ use Megasoft\EntangleBundle\Tests\EntangleTestCase;
  */
 class RequestControllerTest extends EntangleTestCase
 {
+
+    /*
+     * Test case testing sending a request to delete request end point
+     * with no session id header
+     * @author OmarElAzazy
+     */
+    public function testDeleteAction_NoSessionId(){
+        $this->addFixture(new LoadDeleteRequestData());
+        $this->loadFixtures();
+
+        $client = static::createClient();
+        $client->request('DELETE',
+            '/request/1');
+
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), 'Check for status code of bad request');
+    }
 }
