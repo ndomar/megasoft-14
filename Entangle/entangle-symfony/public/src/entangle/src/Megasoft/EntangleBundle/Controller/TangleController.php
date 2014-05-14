@@ -1090,8 +1090,15 @@ class TangleController extends Controller
     // Author maisaraFarahat
     public function websiteCreateTangleAction(Request $request)
     {
+        if (!$request->get('tangleName')) {
+            return $this->render('MegasoftEntangleBundle:Site:wrongTangle.html.twig', array('status' => 400, 'message' => 'el tangle name matba3atsh'));
 
+        }
         $tangleName = $request->get('tangleName');
+        if (!$request->get('tangleIcon')) {
+            return $this->render('MegasoftEntangleBundle:Site:wrongTangle.html.twig', array('status' => 400, 'message' => 'el tangle icon matba3atsh'));
+
+        }
         $tangleIcon = $request->get('tangleIcon');
 //        $sessionId = $request->headers->get('X-SESSION-ID');
         $sessionId = 'ltZGEqTbYgqJ2wrFb7tRKHHCFfiPvh';
@@ -1160,4 +1167,6 @@ class TangleController extends Controller
         return $this->render('MegasoftEntangleBundle:Site:createdTangle.html.twig', array('status' => 201, 'message' => 'mabrouk ya 7ayawan'));
 
     }
+
+
 }

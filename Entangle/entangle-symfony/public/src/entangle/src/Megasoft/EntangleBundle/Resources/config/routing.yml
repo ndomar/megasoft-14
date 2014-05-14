@@ -586,16 +586,16 @@ reset_tangle:
 
 
 megasoft_entangle_login:
-  pattern: /login
+  pattern: /admin/login
   defaults: {_controller: MegasoftEntangleBundle:Site:login}
   methods: [POST]
 
 _manage_tangle_from_website:
-  pattern: /admin/manageTangle/{sessionId}
+  pattern: /admin/manageTangle
   defaults: {_controller: MegasoftEntangleBundle:Site:manageTangle}
   methods: [GET]
 
 create_tangle_from_website:
-  pattern: /admin/createTangle/{sessionId}
+  pattern: /admin/createTangle
   defaults: {_controller: MegasoftEntangleBundle:Tangle:websiteCreateTangle}
   methods: [POST]

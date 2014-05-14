@@ -6,15 +6,15 @@
     You don't own any tangles . Do you want to create one :D ?
     <br>
     <form class="createTangleForm" method="POST" enctype='multipart/form-data' role="form"
-          action="{{ path('create_tangle_from_website',{ 'sessionId':sessionId }) }} ">
+          action="{{ path('create_tangle_from_website') }} ">
         Tangle Name: <input type="text" name="tangleName"><br>
         Tangle Icon:
         <input type="image"
-               src="/media/72A2C31AA2C2E1A9/se/megasoft-14/Entangle/entangle-symfony/public/src/entangle/src/Megasoft/EntangleBundle/Resources/public/img/internship at microsoft.png"
-
+               src="img/test.png"
                name="tangleIcon"
+               alt="tangleIcon"
                 />
-
+        <br>
         <input type="submit" name="submit" value="Submit">
         <input type="reset" name="reset" value="Reset">
     </form>
