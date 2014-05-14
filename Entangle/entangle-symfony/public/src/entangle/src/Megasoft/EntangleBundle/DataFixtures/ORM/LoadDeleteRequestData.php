@@ -5,6 +5,7 @@ namespace Megasoft\EntangleBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Megasoft\EntangleBundle\Entity\Offer;
 use Megasoft\EntangleBundle\Entity\Request;
 use Megasoft\EntangleBundle\Entity\Session;
 use Megasoft\EntangleBundle\Entity\Tangle;
@@ -27,6 +28,8 @@ class LoadUserTangleData extends AbstractFixture implements OrderedFixtureInterf
         $this->addSessions($manager);
         $this->addTangles($manager);
         $this->addUserTangles($manager);
+        $this->addRequests($manager);
+        $this->addOffers($manager);
     }
 
     private function addUsers(ObjectManager $manager){
@@ -146,6 +149,22 @@ class LoadUserTangleData extends AbstractFixture implements OrderedFixtureInterf
         $request4->setUser($this->getReference('user2'));
         $manager->persist($request4);
         $this->addReference('request4', $request4);
+
+        $manager->flush();
+    }
+
+    private function addOffers(ObjectManager $manager){
+        $offer = new Offer();
+        $offer->setDeleted(false);
+        $offer->setUser($this->getReference('user2'));
+        $offer->setStatus(0);
+        $offer->setRequestedPrice(0);
+        $offer->setRequest($this->getReference('request1'));
+        $offer->setDate(new DateTime('now'));
+        $offer->setUser($this->getReference('user2'));
+        $offer->setDescription('This is an offer');
+        $offer->setExpectedDeadline(new DateTime('now'));
+        $manager->persist($offer);
 
         $manager->flush();
     }
