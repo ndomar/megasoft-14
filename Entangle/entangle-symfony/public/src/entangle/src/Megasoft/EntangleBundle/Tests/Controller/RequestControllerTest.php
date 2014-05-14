@@ -128,4 +128,56 @@ class RequestControllerTest extends EntangleTestCase
         $this->assertEquals(400, $client->getResponse()->getStatusCode(),
             'Check for status code of bad request for already deleted request');
     }
+
+    /*
+     * Test case testing sending a request to delete request end point
+     * with id of a not opened request
+     * @author OmarElAzazy
+     */
+    public function testDeleteAction_NotOpenedRequest(){
+        $this->addFixture(new LoadDeleteRequestData());
+        $this->loadFixtures();
+
+        $client = static::createClient();
+        $client->request('DELETE',
+            '/request/2',
+            array(),
+            array(),
+            array('HTTP_X_SESSION_ID'=>'sessionUser1'));
+
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(),
+            'Check for status code of bad request for deleting not opened request');
+    }
+
+    /*
+     * Test case testing sending a request to delete request end point
+     * and deletes request and its offers
+     * @author OmarElAzazy
+     */
+    public function testDeleteAction_DeleteRequestAndOffers(){
+        $this->addFixture(new LoadDeleteRequestData());
+        $this->loadFixtures();
+
+        $client = static::createClient();
+        $client->request('DELETE',
+            '/request/1',
+            array(),
+            array(),
+            array('HTTP_X_SESSION_ID'=>'sessionUser1'));
+
+        $this->assertEquals(204, $client->getResponse()->getStatusCode(),
+            'Check for status code of deleted for deleting a request and its offers');
+
+        $requestRepo = $this->doctrine->getRepository('MegasoftEntangleBundle:Request');
+
+        $request = $requestRepo->findOneBy(array('id' => 1));
+        $this->assertTrue($request->getDeleted(),
+            'Check the request is deleted');
+
+        $offerRepo = $this->doctrine->getRepository('MegasoftEntangleBundle:Offer');
+
+        $offer = $offerRepo->findOneBy(array('id' => 1));
+        $this->assertTrue($offer->getDeleted(),
+            'Check the offers are deleted');
+    }
 }
