@@ -46,7 +46,7 @@ class RequestControllerTest extends EntangleTestCase
             array('HTTP_X_SESSION_ID'=>'badSessionId'));
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(),
-            'Check for status code of bad request for bad session id');
+            'Check for status code of unauthorized for bad session id');
     }
 
     /*
@@ -66,7 +66,7 @@ class RequestControllerTest extends EntangleTestCase
             array('HTTP_X_SESSION_ID'=>'sessionUser1Expired'));
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(),
-            'Check for status code of bad request for expired session id');
+            'Check for status code of unauthorized for expired session id');
     }
 
     /*
@@ -86,6 +86,26 @@ class RequestControllerTest extends EntangleTestCase
             array('HTTP_X_SESSION_ID'=>'sessionUser1'));
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(),
-            'Check for status code of bad request for bad request id');
+            'Check for status code of unauthorized for bad request id');
+    }
+
+    /*
+     * Test case testing sending a request to delete request end point
+     * with user who is not the requester
+     * @author OmarElAzazy
+     */
+    public function testDeleteAction_UserNotRequester(){
+        $this->addFixture(new LoadDeleteRequestData());
+        $this->loadFixtures();
+
+        $client = static::createClient();
+        $client->request('DELETE',
+            '/request/4',
+            array(),
+            array(),
+            array('HTTP_X_SESSION_ID'=>'sessionUser1'));
+
+        $this->assertEquals(401, $client->getResponse()->getStatusCode(),
+            'Check for status code of unauthorized for request of another user');
     }
 }
