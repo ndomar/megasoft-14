@@ -529,7 +529,7 @@ class TangleController extends Controller {
         
         if ($requests != null) {
             foreach ($requests as $request) {
-                if ($request != null) {
+                if ($request != null && $request->getStatus() != $request->CLOSE) {
                     $request->setDeleted(true);
                     $offers = $request->getOffers();
                     //set the offer status
@@ -567,11 +567,8 @@ class TangleController extends Controller {
                     $request = $requestRepo->findOneBy(array(
                         'id' => $requestId, 'tangleId' => $tangleId, ));
 
-                    if ($request != null) {
-                        $offerStatus = $offer->getStatus();
-                        if ($offerStatus != $offer->DONE) {
-                            $offer->setDeleted(true);
-                        }
+                    if ($request != null && $offer->getTransaction() != null) {
+                        $offer->setDeleted(true);
                     }
                 }
             }

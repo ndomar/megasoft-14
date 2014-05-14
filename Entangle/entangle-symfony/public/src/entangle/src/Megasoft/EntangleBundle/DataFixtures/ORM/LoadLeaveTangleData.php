@@ -38,11 +38,15 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createRequest($manager, 'userMohamed', 'i want to have a reminder software', 5);
         $this->createRequest($manager, 'userAly', 'i want to have a ride tomorrow', 6);
         
-        $this->createOffer($manager, 'userAhmad', 'i can help', 1);
-        $this->createOffer($manager, 'userMohamed', 'i want to help', 2);
-        $this->createOffer($manager, 'userAly', 'i can do this for you', 3);
-        $this->createOffer($manager, 'userAhmad', 'i will help you', 1);
-                       
+        $this->createOffer($manager, 'userAly', 'i can help', 1, 'request1');
+        $this->createOffer($manager, 'userAly', 'i want to help', 2, 'request2');
+        $this->createOffer($manager, 'userAly', 'i can do this for you', 3, 'request3');
+        $this->createOffer($manager, 'userAly', 'i will help you', 4, 'request4');
+        
+        $this->createTransaction($manager, 'offer1');
+        
+        $this->createClaim($manager, );
+        
         $manager->flush();
     }
 
@@ -117,4 +121,15 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $manager->persist($offer);
         $this->addReference('offer' . "$offerNumber", $offer);
     }
+    
+    private function createTransaction(ObjectManager $manager, $offerReference) {
+        $transaction = new Transaction();
+        $transaction->setOffer($this->getReference("$offerReference"));
+        $transaction->setDate(new DateTime('now'));
+        $transaction->setFinalPrice(30);
+        
+        $manager->persist($transaction);
+        $this->addReference('transaction', $transaction);
+    }
+    
 }
