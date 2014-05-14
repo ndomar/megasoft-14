@@ -126,6 +126,15 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->addReference('userTangle_' . "$userReference", $userTangle);
     }
     
+    /**
+     * This function is used to create a request
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param type $userReference
+     * @param type $description
+     * @param type $requestNumber
+     * @param type $requestStatus
+     * @author HebaAamer
+     */
     private function createRequest(ObjectManager $manager, $userReference, $description, $requestNumber, $requestStatus) {
         $request = new Request();
         $request->setUser($this->getReference("$userReference"));
@@ -137,6 +146,16 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->addReference('request' . "$requestNumber", $request);
     }
     
+    /**
+     * This function is used to create an offer
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param type $userReference
+     * @param type $description
+     * @param type $offerNumber
+     * @param type $requestReference
+     * @param type $offerStatus
+     * @author HebaAamer
+     */
     private function createOffer(ObjectManager $manager, $userReference, $description, $offerNumber, $requestReference, $offerStatus) {
         $offer = new Offer();
         $offer->setUser($this->getReference("$userReference"));
@@ -149,6 +168,12 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->addReference('offer' . "$offerNumber", $offer);
     }
     
+    /**
+     * This function is used to create a transaction
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param type $offerReference
+     * @author HebaAamer
+     */
     private function createTransaction(ObjectManager $manager, $offerReference) {
         $transaction = new Transaction();
         $transaction->setOffer($this->getReference("$offerReference"));
@@ -159,6 +184,14 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->addReference("$offerReference" . 'Transaction', $transaction);
     }
     
+    /**
+     * This function is used to create a claim
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param type $offerReference
+     * @param type $userReference
+     * @param type $claimNumber
+     * @author HebaAamer
+     */
     private function createClaim(ObjectManager $manager, $offerReference, $userReference, $claimNumber) {
         $claim = new Claim();
         $claim->setClaimer($this->getReference("$userReference"));
@@ -170,6 +203,15 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->addReference('claim' . "$claimNumber", $claim);
     }
     
+    /**
+     * This function is used to create a message
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param type $messageBody
+     * @param type $userReference
+     * @param type $offerReference
+     * @param type $messageNumber
+     * @author HebaAamer
+     */
     private function createMessage(ObjectManager $manager, $messageBody, $userReference, $offerReference, $messageNumber){
         $message = new Message();
         $message->setOffer($this->getReference("$offerReference"));
