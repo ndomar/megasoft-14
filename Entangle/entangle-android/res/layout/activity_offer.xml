@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/offerer_name"
                     android:layout_alignBottom="@+id/offerer_name"
-                    android:layout_alignRight="@+id/accept_offer"
+                    android:layout_alignParentRight="true"
                     android:text="@string/pts"
                     android:textColor="@color/lightGray"
                     android:textSize="@dimen/textMedium" />
@@ -129,13 +129,31 @@
                     android:visibility="invisible" />
 
                 <Button
-                    android:id="@+id/changeOfferPrice"
+                    android:id="@+id/mark_as_done"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/offer_price"
-                    android:drawableRight="@drawable/ic_action_edit" 
-                    android:onClick="changePrice"/>
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:onClick="markCheck"
+                    android:text="@string/done"
+                    android:textAlignment="center"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/textLarge"
+                    android:visibility="invisible" />
+
+                <ImageView
+                    android:id="@+id/changeOfferPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/price"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_toLeftOf="@id/offer_price"
+                    android:contentDescription="@string/icon"
+                    android:onClick="changePrice"
+                    android:src="@drawable/ic_action_edit"
+                    android:visibility="invisible"
+                    android:clickable="true" />
             </RelativeLayout>
 
             <TextView
