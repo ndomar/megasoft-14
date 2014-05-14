@@ -9,6 +9,7 @@ use Megasoft\EntangleBundle\Entity\User;
 
 /*
  * Fixtures for Session table
+ * @author OmarElAzazy
  */
 class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -20,7 +21,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $user = new User();
         $user->setName('sampleUser');
         $user->setPassword('samplePassword');
-        $user->setVerified(true);
         
         $manager->persist($user);
         $manager->flush();
