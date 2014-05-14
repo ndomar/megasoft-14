@@ -8,6 +8,7 @@ import com.megasoft.requests.PostRequest;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
@@ -17,25 +18,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Claim extends Activity {
+
 	/**
-	 * String holding the mail of the claim sender
+	 * The preferences instance
 	 */
-	String claimerMail;
-	/**
-	 * String holding the mail of the claim receiver
-	 */
-	String tangleOwenerMail;
-	/**
-	 * String holding the subject of the claim
-	 */
-	String subject;
+	private SharedPreferences settings;
 	/**
 	 * String holding the message of the sent claim it self
 	 */
 	String mssgBody;
 
 	/**
-	 * this sets the email of the tangle owner and the requester into a non
+	 * This sets the email of the tangle owner and the requester into a non
 	 * editable edit text, also it sets the view of the claim form
 	 * 
 	 * @param Bundle
@@ -51,11 +45,9 @@ public class Claim extends Activity {
 		TextView link = (TextView) findViewById(R.id.link);
 		link.setMovementMethod(LinkMovementMethod.getInstance());
 		getActionBar().hide();
-		claimerMail = this.getIntent().getStringExtra("sender");
-		tangleOwenerMail = this.getIntent().getStringExtra("receiver");
 	}
-	
-	public void cancel() { 
+
+	public void cancel() {
 		this.finish();
 	}
 
@@ -70,7 +62,7 @@ public class Claim extends Activity {
 	 */
 	public void sendClaimForm(View view) {
 
-		final Intent intent = new Intent(this, Request.class);
+		final Intent intent = new Intent(this, OfferActivity.class);
 		mssgBody = ((EditText) findViewById(R.id.mssgText)).getText()
 				.toString();
 		if (mssgBody.equals("")) {
@@ -80,8 +72,6 @@ public class Claim extends Activity {
 
 			JSONObject object = new JSONObject();
 			try {
-				object.put("X-SENDER-MAIL", claimerMail);
-				object.put("X-RECEIVER-MAIL", tangleOwenerMail);
 				object.put("X-MSSGBODY", mssgBody);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -89,8 +79,10 @@ public class Claim extends Activity {
 			}
 
 			int requestId = (int) getIntent().getIntExtra("requestId", -1);
-			PostRequest postSubject = new PostRequest(Config.API_BASE_URL_SERVER
-					+ "/claim/" + requestId + "/sendClaim") {
+			int offerId = (int) getIntent().getIntExtra("offerId", -1);
+			PostRequest postSubject = new PostRequest(
+					Config.API_BASE_URL_SERVER + "/claim/" + requestId
+							+ "/sendClaim/" + offerId + "/user") {
 
 				protected void onPostExecute(String response) {
 					try {
@@ -98,12 +90,13 @@ public class Claim extends Activity {
 							JSONObject obj = new JSONObject(response);
 							int claimId = obj.getInt("X-CLAIM-ID");
 							intent.putExtra("claimId", claimId);
-							Toast.makeText(getBaseContext(), "Claim Sent", Toast.LENGTH_SHORT).show();
-							intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+							Toast.makeText(getBaseContext(), "Claim Sent!",
+									Toast.LENGTH_SHORT).show();
 							startActivity(intent);
 						} else {
-							Toast.makeText(getBaseContext(), "Something went wrong",
-									Toast.LENGTH_SHORT).show();
+							Toast.makeText(getBaseContext(),
+									"Something went wrong", Toast.LENGTH_SHORT)
+									.show();
 						}
 
 					} catch (JSONException e) {
@@ -112,9 +105,8 @@ public class Claim extends Activity {
 					}
 				}
 			};
-
-			String sessionID = (String) getIntent().getCharSequenceExtra(
-					"sessionID");
+			this.settings = getSharedPreferences(Config.SETTING, 0);
+			String sessionID = settings.getString(Config.SESSION_ID, "");
 			postSubject.setBody(object);
 			postSubject.addHeader("X-SESSION-ID", sessionID);
 			postSubject.execute();
