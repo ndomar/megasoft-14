@@ -66,6 +66,10 @@ class TangleControllerTest extends EntangleTestCase {
         $this->assertEquals('http://entangle.io/images/profilePictures/', $users[0]['iconUrl']);
     }
 
+    /**
+     * Testing if the the session exists or not.
+     * @author Mansour
+     */
     public function testCreateTangleAction_WrongSession() {
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
@@ -77,6 +81,10 @@ class TangleControllerTest extends EntangleTestCase {
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Wrong Session");
     }
 
+    /**
+     * Checks whether the session id is passed in the header.
+     * @author Mansour
+     */
     public function testCreateTangleAction_EmptySession() {
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
@@ -88,6 +96,10 @@ class TangleControllerTest extends EntangleTestCase {
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Empty Session");
     }
 
+    /**
+     * Checks the tangle icon exists in the request.
+     * @author Mansour
+     */
     public function testCreateTangleAction_EmptyIcon() {
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
@@ -100,6 +112,10 @@ class TangleControllerTest extends EntangleTestCase {
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Empty Icon");
     }
 
+    /**
+     * Checks if the tangle name exists in the request.
+     * @author Mansour
+     */
     public function testCreateTangleAction_EmptyName() {
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
@@ -112,6 +128,10 @@ class TangleControllerTest extends EntangleTestCase {
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Empty Name");
     }
 
+    /**
+     * Check if the tangle description exists in the request.
+     * @author Mansour
+     */
     public function testCreateTangleAction_EmptyDescription() {
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
@@ -124,6 +144,10 @@ class TangleControllerTest extends EntangleTestCase {
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Empty Description");
     }
 
+    /**
+     * Check if the tangle name already exists in the database.
+     * @author Mansour
+     */
     public function testCreateTangleAction_ExistingName() {
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
@@ -136,6 +160,10 @@ class TangleControllerTest extends EntangleTestCase {
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Tangle already exists");
     }
 
+    /**
+     * Checks whether the tangle can be created or not.
+     * @author Mansour
+     */
     public function testCreateTangleAction_TangleCreation() {
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
@@ -147,6 +175,10 @@ class TangleControllerTest extends EntangleTestCase {
         $this->assertEquals(201, $client->getResponse()->getStatusCode(), "Error Creating Tangle");
     }
 
+    /**
+     * Checks whether the name is null.
+     * @author Mansour
+     */
     public function testCreateTangleAction_NullName() {
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
@@ -158,6 +190,10 @@ class TangleControllerTest extends EntangleTestCase {
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Null Tangle Name");
     }
 
+    /**
+     * Checks whether the icon is null.
+     * @author Mansour
+     */
     public function testCreateTangleAction_NullIcon() {
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
@@ -169,6 +205,10 @@ class TangleControllerTest extends EntangleTestCase {
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Null Tangle Icon");
     }
 
+    /**
+     * Checks whether the description is null.
+     * @author Mansour
+     */
     public function testCreateTangleAction_NullDescription() {
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
@@ -180,6 +220,10 @@ class TangleControllerTest extends EntangleTestCase {
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Null Tangle Description");
     }
 
+    /**
+     * Checks whether the session is null.
+     * @author Mansour
+     */
     public function testCreateTangleAction_NullSession() {
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();

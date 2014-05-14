@@ -17,9 +17,8 @@ use Megasoft\EntangleBundle\Entity\Tangle;
  */
 
 /**
- * Description of LoadCreateTangleSessionData
- *
- * @author mansour
+ * Initialize the fixtures needed for the test.
+ * @author Mansour
  */
 class LoadCreateTangleData extends AbstractFixture implements OrderedFixtureInterface
 {
