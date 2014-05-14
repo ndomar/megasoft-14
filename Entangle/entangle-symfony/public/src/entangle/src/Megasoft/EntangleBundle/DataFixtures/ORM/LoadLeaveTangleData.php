@@ -17,16 +17,7 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
      */
     public function load(ObjectManager $manager)
     {
-        $this->createUser($manager, 'Ahmad', 'ahmad');
-        $this->createUser($manager, 'Mohamed', 'mohamed');
-        $this->createUser($manager, 'Aly', 'aly');
-        $this->createUser($manager, 'Mazen', 'mazen');
-        
-        $this->createUserEmail($manager, 'userAhmad');
-        $this->createUserEmail($manager, 'userMohamed');
-        $this->createUserEmail($manager, 'userAly');
-        $this->createUserEmail($manager, 'userMazen');
-        
+          
         $this->createSession($manager, 'userAhmad', 'userAhmad', false, 1);
         $this->createSession($manager, 'userMohamed', 'userMohamed', true, 2);
         $this->createSession($manager, 'userAly', 'userAly', false, 3);
@@ -161,5 +152,17 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         
         $manager->persist($claim);
         $this->addReference('claim' . "$claimNumber", $claim);
+    }
+    
+    private function makeUsers(ObjectManager $manager){
+        $this->createUser($manager, 'Ahmad', 'ahmad');
+        $this->createUser($manager, 'Mohamed', 'mohamed');
+        $this->createUser($manager, 'Aly', 'aly');
+        $this->createUser($manager, 'Mazen', 'mazen');
+        
+        $this->createUserEmail($manager, 'userAhmad');
+        $this->createUserEmail($manager, 'userMohamed');
+        $this->createUserEmail($manager, 'userAly');
+        $this->createUserEmail($manager, 'userMazen');
     }
 }
