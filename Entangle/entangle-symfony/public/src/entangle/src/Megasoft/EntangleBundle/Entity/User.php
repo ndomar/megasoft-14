@@ -57,13 +57,6 @@ class User {
     private $birthDate;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="verified", type="boolean")
-     */
-    private $verified;
-
-    /**
      *
      * @var boolean 
      * @ORM\Column(name="acceptMailNotifications", type="boolean" , columnDefinition="tinyint(1) DEFAULT 1")
@@ -139,13 +132,6 @@ class User {
      * @ORM\OneToMany(targetEntity="InvitationCode", mappedBy="user", cascade={"persist"})
      */
     private $invitationCodes;
-
-    /**
-     * @var VerificationCode
-     * 
-     * @ORM\OneToOne(targetEntity="VerificationCode", mappedBy="user", cascade={"persist"})
-     */
-    private $verificationCode;
 
     /**
      * @var PendingInvitation[]
@@ -259,27 +245,6 @@ class User {
      */
     public function getBirthDate() {
         return $this->birthDate;
-    }
-
-    /**
-     * Set verified
-     *
-     * @param boolean $verified
-     * @return User
-     */
-    public function setVerified($verified) {
-        $this->verified = $verified;
-
-        return $this;
-    }
-
-    /**
-     * Get verified
-     *
-     * @return boolean 
-     */
-    public function getVerified() {
-        return $this->verified;
     }
 
     /**
@@ -628,27 +593,6 @@ class User {
     }
 
     /**
-     * Set verificationCode
-     *
-     * @param \Megasoft\EntangleBundle\Entity\VerificationCode $verificationCode
-     * @return User
-     */
-    public function setVerificationCode(\Megasoft\EntangleBundle\Entity\VerificationCode $verificationCode = null) {
-        $this->verificationCode = $verificationCode;
-        $verificationCode->setUser($this);
-        return $this;
-    }
-
-    /**
-     * Get verificationCode
-     *
-     * @return \Megasoft\EntangleBundle\Entity\VerificationCode 
-     */
-    public function getVerificationCode() {
-        return $this->verificationCode;
-    }
-
-    /**
      * Add pendingInvitationInvitees
      *
      * @param \Megasoft\EntangleBundle\Entity\PendingInvitation $pendingInvitationInvitees
@@ -757,6 +701,21 @@ class User {
      */
     public function getAcceptMailNotifications() {
         return $this->acceptMailNotifications;
+    }
+
+    /**
+     * Returns whether the user is verified or not.
+     *
+     * @return boolean
+     */
+    public function getVerified(){
+        $verified = 0;
+        foreach($this->emails as $email){
+            if(!$email->getDeleted()){
+                $verified |= $email->getVerified();
+            }
+        }
+        return $verified == 1;
     }
 
 }
