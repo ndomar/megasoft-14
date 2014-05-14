@@ -17,18 +17,11 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
      */
     public function load(ObjectManager $manager)
     {
-          
-        $this->createSession($manager, 'userAhmad', 'userAhmad', false, 1);
-        $this->createSession($manager, 'userMohamed', 'userMohamed', true, 2);
-        $this->createSession($manager, 'userAly', 'userAly', false, 3);
-        $this->createSession($manager, 'userMazen', 'userMazen', false, 4);
-        
-        $this->createTangle($manager);
-        
-        $this->createUserTangle($manager, 'userAhmad', true, 0);
-        $this->createUserTangle($manager, 'userMohamed', false, 80);
-        $this->createUserTangle($manager, 'userAly', false, -80);
-        
+        $this->makeUsers($manager);
+        $this->makeSessions($manager);
+        $this->makeTangles($manager);
+        $this->makeUserTangles($manager);
+               
         $this->createRequest($manager, 'userMohamed', 'i want to buy a car', 1);
         $this->createRequest($manager, 'userMohamed', 'i want to travel to London', 2);
         $this->createRequest($manager, 'userMohamed', 'i want to go to the doctor', 3);
@@ -164,5 +157,22 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createUserEmail($manager, 'userMohamed');
         $this->createUserEmail($manager, 'userAly');
         $this->createUserEmail($manager, 'userMazen');
+    }
+    
+    private function makeSessions(ObjectManager $manager){
+        $this->createSession($manager, 'userAhmad', 'userAhmad', false, 1);
+        $this->createSession($manager, 'userMohamed', 'userMohamed', true, 2);
+        $this->createSession($manager, 'userAly', 'userAly', false, 3);
+        $this->createSession($manager, 'userMazen', 'userMazen', false, 4);
+    }
+    
+    private function makeTangles(ObjectManager $manager){
+        $this->createTangle($manager);
+    }
+    
+    private function makeUserTangles(ObjectManager $manager){
+        $this->createUserTangle($manager, 'userAhmad', true, 0);
+        $this->createUserTangle($manager, 'userMohamed', false, 80);
+        $this->createUserTangle($manager, 'userAly', false, -80);
     }
 }
