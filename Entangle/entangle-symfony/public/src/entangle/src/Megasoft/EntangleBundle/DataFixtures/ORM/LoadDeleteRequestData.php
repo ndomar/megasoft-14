@@ -44,5 +44,31 @@ class LoadUserTangleData extends AbstractFixture implements OrderedFixtureInterf
         $manager->flush();
     }
 
-    
+    private function addSessions(ObjectManager $manager){
+        $sessionUser1 = new Session();
+        $sessionUser1->setCreated(new DateTime('now'));
+        $sessionUser1->setExpired(false);
+        $sessionUser1->setSessionId('sessionUser1');
+        $sessionUser1->setUser($this->getReference('user1'));
+        $sessionUser1->setDeviceType('Device 1');
+        $manager->persist($sessionUser1);
+
+        $sessionUser2 = new Session();
+        $sessionUser2->setCreated(new DateTime('now'));
+        $sessionUser2->setExpired(false);
+        $sessionUser2->setSessionId('sessionUser2');
+        $sessionUser2->setUser($this->getReference('user2'));
+        $sessionUser2->setDeviceType('Device 2');
+        $manager->persist($sessionUser2);
+
+        $sessionUser1Expired = new Session();
+        $sessionUser1Expired->setCreated(new DateTime('now'));
+        $sessionUser1Expired->setExpired(true);
+        $sessionUser1Expired->setSessionId('sessionUser1Expired');
+        $sessionUser1Expired->setUser($this->getReference('user1'));
+        $sessionUser1Expired->setDeviceType('Device 3');
+        $manager->persist($sessionUser1Expired);
+
+        $manager->flush();
+    }
 }
