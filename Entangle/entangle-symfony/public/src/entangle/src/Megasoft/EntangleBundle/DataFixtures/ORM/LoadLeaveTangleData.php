@@ -21,20 +21,12 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->makeSessions($manager);
         $this->makeTangles($manager);
         $this->makeUserTangles($manager);
-               
-        $this->createRequest($manager, 'userMohamed', 'i want to buy a car', 1);
-        $this->createRequest($manager, 'userMohamed', 'i want to travel to London', 2);
-        $this->createRequest($manager, 'userMohamed', 'i want to go to the doctor', 3);
-        $this->createRequest($manager, 'userAly', 'i want to buy a book', 4);
-        $this->createRequest($manager, 'userMohamed', 'i want to have a reminder software', 5);
-        $this->createRequest($manager, 'userAly', 'i want to have a ride tomorrow', 6);
+        $this->makeRequests($manager);
+        $this->makeOffers($manager);
+        $this->makeTransactions($manager);
         
-        $this->createOffer($manager, 'userAly', 'i can help', 1, 'request1');
-        $this->createOffer($manager, 'userAly', 'i want to help', 2, 'request2');
-        $this->createOffer($manager, 'userAly', 'i can do this for you', 3, 'request3');
-        $this->createOffer($manager, 'userAly', 'i will help you', 4, 'request4');
         
-        $this->createTransaction($manager, 'offer1');
+        
         
         $this->createClaim($manager, 'offer2', 'userAly', 1);
         $this->createClaim($manager, 'offer2', 'userMohamed', 2);
@@ -174,5 +166,25 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createUserTangle($manager, 'userAhmad', true, 0);
         $this->createUserTangle($manager, 'userMohamed', false, 80);
         $this->createUserTangle($manager, 'userAly', false, -80);
+    }
+    
+    private function makeRequests(ObjectManager $manager){
+        $this->createRequest($manager, 'userMohamed', 'i want to buy a car', 1);
+        $this->createRequest($manager, 'userMohamed', 'i want to travel to London', 2);
+        $this->createRequest($manager, 'userMohamed', 'i want to go to the doctor', 3);
+        $this->createRequest($manager, 'userAly', 'i want to buy a book', 4);
+        $this->createRequest($manager, 'userMohamed', 'i want to have a reminder software', 5);
+        $this->createRequest($manager, 'userAly', 'i want to have a ride tomorrow', 6);
+    }
+    
+    private function makeOffers(ObjectManager $manager){
+        $this->createOffer($manager, 'userAly', 'i can help', 1, 'request1');
+        $this->createOffer($manager, 'userAly', 'i want to help', 2, 'request2');
+        $this->createOffer($manager, 'userAly', 'i can do this for you', 3, 'request3');
+        $this->createOffer($manager, 'userAly', 'i will help you', 4, 'request4');
+    }
+    
+    private function makeTransactions(ObjectManager $manager){
+        $this->createTransaction($manager, 'offer1');
     }
 }
