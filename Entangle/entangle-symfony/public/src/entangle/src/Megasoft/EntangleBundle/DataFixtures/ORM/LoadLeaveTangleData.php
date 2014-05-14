@@ -149,11 +149,11 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
     /**
      * This function is used to create an offer
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     * @param type $userReference
-     * @param type $description
-     * @param type $offerNumber
-     * @param type $requestReference
-     * @param type $offerStatus
+     * @param String $userReference
+     * @param String $description
+     * @param integer $offerNumber
+     * @param String $requestReference
+     * @param integer $offerStatus
      * @author HebaAamer
      */
     private function createOffer(ObjectManager $manager, $userReference, $description, $offerNumber, $requestReference, $offerStatus) {
@@ -171,7 +171,7 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
     /**
      * This function is used to create a transaction
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     * @param type $offerReference
+     * @param String $offerReference
      * @author HebaAamer
      */
     private function createTransaction(ObjectManager $manager, $offerReference) {
@@ -187,9 +187,9 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
     /**
      * This function is used to create a claim
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     * @param type $offerReference
-     * @param type $userReference
-     * @param type $claimNumber
+     * @param Strimg $offerReference
+     * @param String $userReference
+     * @param integer $claimNumber
      * @author HebaAamer
      */
     private function createClaim(ObjectManager $manager, $offerReference, $userReference, $claimNumber) {
@@ -206,10 +206,10 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
     /**
      * This function is used to create a message
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     * @param type $messageBody
-     * @param type $userReference
-     * @param type $offerReference
-     * @param type $messageNumber
+     * @param String $messageBody
+     * @param String $userReference
+     * @param String $offerReference
+     * @param integer $messageNumber
      * @author HebaAamer
      */
     private function createMessage(ObjectManager $manager, $messageBody, $userReference, $offerReference, $messageNumber){
