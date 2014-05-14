@@ -304,6 +304,11 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createOffer($manager, 'userMohamed', 'this is easy', 6, 'request6', 1);
     }
     
+    /**
+     * This function is used to make testing messages
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
     private function makeMessages(ObjectManager $manager){
         $this->createMessage($manager, "hi1", 'userMohamed', 'offer1', 1);
         $this->createMessage($manager, "hi2", 'userAly', 'offer1', 2);
@@ -312,11 +317,21 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createMessage($manager, "hi5", 'userAly', 'offer2', 5);
     }
     
+    /**
+     * This function is used to make testing transactions
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
     private function makeTransactions(ObjectManager $manager){
         $this->createTransaction($manager, 'offer1');
         $this->createTransaction($manager, 'offer6');
     }
     
+    /**
+     * This function is used to make testing claims
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
     private function makeClaims(ObjectManager $manager){
         $this->createClaim($manager, 'offer3', 'userAly', 1);
         $this->createClaim($manager, 'offer3', 'userMohamed', 2);
