@@ -28,5 +28,21 @@ class LoadUserTangleData extends AbstractFixture implements OrderedFixtureInterf
         $this->addUserTangles($manager);
     }
 
+    private function addUsers(ObjectManager $manager){
+        $user1 = new User();
+        $user1->setName('Omar');
+        $user1->setPassword('password1');
+        $manager->persist($user1);
+        $this->setReference('user1', $user1);
+
+        $user2 = new User();
+        $user2->setName('Aly');
+        $user2->setPassword('password2');
+        $manager->persist($user2);
+        $this->setReference('user2', $user2);
+
+        $manager->flush();
+    }
+
     
 }
