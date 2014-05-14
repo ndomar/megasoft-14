@@ -32,6 +32,11 @@ class LoadUserTangleData extends AbstractFixture implements OrderedFixtureInterf
         $this->addOffers($manager);
     }
 
+    /*
+     * Helper function to add needed users to the database for the test
+     * @param Doctrine\Common\Persistence\ObjectManager $manager The entity manager
+     * @author OmarElAzazy
+     */
     private function addUsers(ObjectManager $manager){
         $user1 = new User();
         $user1->setName('Omar');
@@ -48,6 +53,11 @@ class LoadUserTangleData extends AbstractFixture implements OrderedFixtureInterf
         $manager->flush();
     }
 
+    /*
+     * Helper function to add needed sessions to the database for the test
+     * @param Doctrine\Common\Persistence\ObjectManager $manager The entity manager
+     * @author OmarElAzazy
+     */
     private function addSessions(ObjectManager $manager){
         $sessionUser1 = new Session();
         $sessionUser1->setCreated(new DateTime('now'));
@@ -76,6 +86,11 @@ class LoadUserTangleData extends AbstractFixture implements OrderedFixtureInterf
         $manager->flush();
     }
 
+    /*
+     * Helper function to add needed tangles to the database for the test
+     * @param Doctrine\Common\Persistence\ObjectManager $manager The entity manager
+     * @author OmarElAzazy
+     */
     private function addTangles(ObjectManager $manager){
         $tangle = new Tangle();
         $tangle->setName('tangle');
@@ -89,6 +104,11 @@ class LoadUserTangleData extends AbstractFixture implements OrderedFixtureInterf
         $manager->flush();
     }
 
+    /*
+     * Helper function to add needed user tangle relation to the database for the test
+     * @param Doctrine\Common\Persistence\ObjectManager $manager The entity manager
+     * @author OmarElAzazy
+     */
     private function addUserTangles(ObjectManager $manager){
         $user1Tangle = new UserTangle();
         $user1Tangle->setCredit(0);
@@ -105,6 +125,11 @@ class LoadUserTangleData extends AbstractFixture implements OrderedFixtureInterf
         $manager->flush();
     }
 
+    /*
+     * Helper function to add needed requests to the database for the test
+     * @param Doctrine\Common\Persistence\ObjectManager $manager The entity manager
+     * @author OmarElAzazy
+     */
     private function addRequests(ObjectManager $manager){
         $request1 = new Request();
         $request1->setTangle($this->getReference('tangle'));
@@ -153,6 +178,11 @@ class LoadUserTangleData extends AbstractFixture implements OrderedFixtureInterf
         $manager->flush();
     }
 
+    /*
+     * Helper function to add needed offers to the database for the test
+     * @param Doctrine\Common\Persistence\ObjectManager $manager The entity manager
+     * @author OmarElAzazy
+     */
     private function addOffers(ObjectManager $manager){
         $offer = new Offer();
         $offer->setDeleted(false);
