@@ -194,11 +194,12 @@ class UserController extends Controller {
         $user = $userTable->findOneBy(array('id' => $userId,));
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionTable->findOneBy(array('sessionId' => $sessionId,));
-        $loggedInUser = $session->getUser();
 
         if ($session == null || $session->getExpired()) {
             return new Response('Unauthorized', 401);
         }
+
+        $loggedInUser = $session->getUser();
 
         if ($user == null) {
             return new Response('User not found', 404);
