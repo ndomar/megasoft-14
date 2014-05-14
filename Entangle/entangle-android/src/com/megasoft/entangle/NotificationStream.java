@@ -2,13 +2,18 @@ package com.megasoft.entangle;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -18,7 +23,7 @@ import android.widget.Toast;
  * @author Mohamed Ayman
  *
  */
-public class NotificationStream extends FragmentActivity {
+public class NotificationStream extends Fragment {
 	
 	/**
 	 * The session Id
@@ -35,22 +40,28 @@ public class NotificationStream extends FragmentActivity {
 	 */
 	private SharedPreferences settings;
 	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_notification);
-		this.settings = getSharedPreferences(Config.SETTING, 0);
-		this.sessionId = settings.getString(Config.SESSION_ID, "");
-		this.loggedInId = settings.getInt(Config.USER_ID, 1);
-		generate();
-	}
+	/**
+	 * The View
+	 */
+	private View view;
+	
+	private FragmentActivity activity;
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstancState) {
+		view = inflater.inflate(R.layout.activity_notification,
+				container, false);
+		//this.settings = getSharedPreferences(Config.SETTING, 0);
+		//this.sessionId = settings.getString(Config.SESSION_ID, "");
+		//this.loggedInId = settings.getInt(Config.USER_ID, 1);
+		this.settings = getActivity().getSharedPreferences(Config.SETTING, 0);
+		this.sessionId = settings.getString(Config.SESSION_ID, "");
+		this.loggedInId = settings.getInt(Config.USER_ID, -1);
+		generate();
+		return view;
 	}
-
+	
 	/**
 	 * This method creates GET request to retrive the notifications of the user
 	 * @author Mohamed Ayman
@@ -74,7 +85,7 @@ public class NotificationStream extends FragmentActivity {
 				} else {
 					Toast toast = Toast
 							.makeText(
-									getApplicationContext(),
+									activity.getApplicationContext(),
 									this.getStatusCode() + "Error "
 											+ this.getStatusCode(),
 									Toast.LENGTH_SHORT);
@@ -93,7 +104,7 @@ public class NotificationStream extends FragmentActivity {
 	 */
 	public void viewNotifications(JSONArray notifications) {
 		
-		LinearLayout notificationsArea = ((LinearLayout) findViewById(R.id.notification_stream));
+		LinearLayout notificationsArea = ((LinearLayout) view.findViewById(R.id.notification_stream));
 		notificationsArea.removeAllViews();
 		notificationsArea.setVisibility(View.VISIBLE);
 		
@@ -107,7 +118,7 @@ public class NotificationStream extends FragmentActivity {
 				String notificationDate = notification.getString(2);
 				String linkTo = notification.getString(4);
 				fragment.setData(notificationId , seen , notificationDescription , notificationDate , linkTo);
-				getSupportFragmentManager().beginTransaction().add(R.id.notification_stream, fragment).commit();
+				getFragmentManager().beginTransaction().add(R.id.notification_stream, fragment).commit();
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -115,7 +126,7 @@ public class NotificationStream extends FragmentActivity {
 			
 		}
 		
-		final ScrollView scrollView = (ScrollView) findViewById(R.id.scroll);
+		final ScrollView scrollView = (ScrollView) view.findViewById(R.id.scroll);
 		scrollView.postDelayed(new Runnable() {
 
 			@Override

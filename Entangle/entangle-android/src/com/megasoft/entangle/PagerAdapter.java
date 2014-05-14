@@ -60,6 +60,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 			fragment = new ManagePendingInvitationFragment();
 			break;
 
+		case 4:
+			fragment = new NotificationStream();
+			break;
+
 		default:
 			break;
 		}
@@ -70,9 +74,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 	@Override
 	public int getCount() {
 		if(isTangleOwner){
-			return 4;
+			return 5;
 		}else{
-			return 3;
+			return 4;
 		}
 	}
 	
@@ -89,6 +93,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 			
 		case 3:
 			return "Tangle Managment";
+
+		case 4:
+			return "Notifications";
 
 		default:
 			return "Tab " + position;

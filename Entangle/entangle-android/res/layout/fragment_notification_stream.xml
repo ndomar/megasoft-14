@@ -8,6 +8,7 @@
         android:id="@+id/notificationDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:typeface="serif"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="31dp" />
     
@@ -30,6 +31,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/notificationDate"
-        android:background="@color/lightGray" />
+        android:background="@color/common_action_bar_splitter" />
 
 </RelativeLayout>

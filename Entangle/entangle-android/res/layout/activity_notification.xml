@@ -4,53 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <TextView
-        android:id="@+id/header"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_marginLeft="20dp"
-        android:gravity="center"
-        android:text="@string/notifications"
-        android:textColor="@color/green"
-        android:textSize="25sp" />
-    
-   <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="5" >
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/colorBorder"
-            android:layout_weight="1"
-            android:background="@color/blue" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/colorBorder"
-            android:layout_weight="1"
-            android:background="@color/orange" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/colorBorder"
-            android:layout_weight="1"
-            android:background="@color/cyan" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/colorBorder"
-            android:layout_weight="1"
-            android:background="@color/megenta" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/colorBorder"
-            android:layout_weight="1"
-            android:background="@color/lightGreen" />
-    </LinearLayout>
-    
-    <ScrollView
+       <ScrollView
         android:id="@+id/scroll"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
