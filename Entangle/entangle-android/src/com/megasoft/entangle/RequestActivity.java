@@ -94,6 +94,16 @@ public class RequestActivity extends FragmentActivity {
 	
 	MenuItem deleteItem = null;
 
+	Activity activity = null;
+	
+	public Activity getActivity() {
+		return activity;
+	}
+
+	public void setActivity(Activity activity) {
+		this.activity = activity;
+	}
+
 	public MenuItem getDeleteItem() {
 		return deleteItem;
 	}
@@ -130,7 +140,7 @@ public class RequestActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_request);
-		
+		setActivity(this);
 		Intent intent = getIntent();
 		this.requestId = intent.getIntExtra("requestId", -1);
 		this.tangleId = intent.getIntExtra("tangleId", -1);
@@ -287,7 +297,8 @@ public class RequestActivity extends FragmentActivity {
 					// redirect to tangle stream
 				} else{
 					if(this.getStatusCode() == 401){
-						// Redirect to login
+						Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
+						startActivity(loginIntent);
 					}
 					else{
 						toasterShow("Something went wrong, Please try again.");
