@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.megasoft.config.Config;
 import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
 import com.megasoft.requests.ImageRequest;
+import com.megasoft.entangle.megafragments.*;
 
 
 public class HomeActivity extends FragmentActivity {
@@ -136,7 +137,7 @@ public class HomeActivity extends FragmentActivity {
 		
 		SharedPreferences settings = this.getSharedPreferences(Config.SETTING, 0);
 		int userId = settings.getInt(Config.USER_ID, -1);	
-		Intent intent = new Intent(this, GeneralProfileActivity.class);
+		Intent intent = new Intent(this, ProfileActivity.class);
 		intent.putExtra("tangleId", tangleId);
 		intent.putExtra("userId", userId);
 		startActivity(intent);

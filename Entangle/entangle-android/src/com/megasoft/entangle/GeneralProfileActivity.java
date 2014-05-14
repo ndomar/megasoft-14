@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
+import com.megasoft.entangle.megafragments.*;
 
 /**
  * Views a user's general profile given his user Id 
@@ -24,7 +25,7 @@ public class GeneralProfileActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_profile);
+	//	setContentView(R.layout.activity_profile);
 		ProfileFragment profile = new ProfileFragment();
 		Bundle bundle = new Bundle();
 		tangleId = getIntent().getIntExtra("tangleId", -1);
@@ -35,7 +36,7 @@ public class GeneralProfileActivity extends FragmentActivity {
 		profile.setArguments(bundle);
 		FragmentTransaction transaction = getSupportFragmentManager()
 				.beginTransaction();
-		transaction.add(R.id.profile_layout, profile);
+	//	transaction.add(R.id.profile_layout, profile);
 		transaction.commit();
 	}
 

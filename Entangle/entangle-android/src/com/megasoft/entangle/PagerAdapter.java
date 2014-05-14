@@ -5,11 +5,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.widget.SearchView;
 
 import com.megasoft.config.Config;
 import com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationFragment;
-import com.megasoft.entangle.megafragments.TangleFragment;
+import com.megasoft.entangle.megafragments.*;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
 	

@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
+import com.megasoft.entangle.megafragments.*;
 
 public class RequestActivity extends FragmentActivity {
 	/**
@@ -125,6 +126,13 @@ public class RequestActivity extends FragmentActivity {
 	 * @author sak93
 	 */
 	public void fillRequestDetails() {
+//		layout = (LinearLayout) this.findViewById(R.id.request_activity);
+//		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+//				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//		params.gravity = Gravity.RIGHT;
+//		ImageView icon = new ImageView(this);
+//		icon.setLayoutParams(params);
+//		layout.addView(icon);
 
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");

@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import com.megasoft.entangle.megafragments.*;
+
 
 public class ProfileActivity extends FragmentActivity {
 	
@@ -26,7 +28,8 @@ public class ProfileActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_profile);
+		//setContentView(R.layout.activity_profile);
+
 		ProfileFragment profile = new ProfileFragment();
 		Bundle bundle = new Bundle();
 		this.tangleId = getIntent().getIntExtra("tangleId", -1);
@@ -39,17 +42,18 @@ public class ProfileActivity extends FragmentActivity {
 		profile.setArguments(bundle);
 		FragmentTransaction transaction = getSupportFragmentManager()
 				.beginTransaction();
-		transaction.add(R.id.profile_layout, profile);
+		//transaction.add(R.id.profile_layout, profile);
 		transaction.commit();
 		GetTransactions();
 		
 	}
-	
+
 	/**
 	 * Gets the transactions of the user
 	 * Calls viewTransactions(JSONArray transactions) method
 	 * @author Almgohar
 	 */
+
 	private void GetTransactions() {
 		String link = Config.API_BASE_URL_SERVER + "/tangle/" + tangleId + "/user/" + userId + "/transactions";
 		GetRequest request = new GetRequest(link) {

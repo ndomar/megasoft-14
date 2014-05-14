@@ -169,6 +169,23 @@ create:
     methods: [POST]
     
 
+
+retrieve_data:
+    pattern: /user/retrieveData
+    defaults: { _controller: MegasoftEntangleBundle:User:retrieveData }
+    methods: [GET]
+    
+edit:
+    pattern: /user/edit
+    defaults: { _controller: MegasoftEntangleBundle:User:edit }
+    methods: [PUT]    
+    
+delete_secondary_email:
+    pattern: /user/delete-secondary-email
+    defaults: { _controller: MegasoftEntangleBundle:User:deleteSecondaryEmail}
+    methods: [DELETE]
+    
+
 acceptOffer:
     pattern: /accept/offer
     defaults: {_controller: MegasoftEntangleBundle:Offer:acceptOffer }

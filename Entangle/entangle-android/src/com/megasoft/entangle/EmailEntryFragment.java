@@ -35,7 +35,7 @@ public class EmailEntryFragment extends Fragment {
 	/**
 	 * The parent activity
 	 */
-	private InviteUserActivity activity;
+	private AddEmailInterface activity;
 	
 	/**
 	 * The event listener to the email field change to add a new field whenever someone
@@ -67,6 +67,7 @@ public class EmailEntryFragment extends Fragment {
             Bundle savedInstanceState) {
 		this.view = inflater.inflate(R.layout.fragment_invite_user_email_field, container,false);
 		this.editText = (EditText) view.findViewById(R.id.invite_user_edit_text);
+		Log.e("test", this.editText.toString());
 		this.removeButton = (Button) view.findViewById(R.id.invite_user_remove_edit_text);
 		setlisteners();
 		setTextChangeListener();
@@ -111,7 +112,7 @@ public class EmailEntryFragment extends Fragment {
 	/**
 	 * Sets the parent activity
 	 */
-	public void setActivity(InviteUserActivity activity){
+	public void setActivity(AddEmailInterface activity){
 		this.activity = activity;
 	}
 }
