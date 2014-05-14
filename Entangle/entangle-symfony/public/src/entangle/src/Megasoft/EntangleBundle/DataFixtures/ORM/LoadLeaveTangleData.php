@@ -58,6 +58,7 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $session->setRegId("$regId");
         
         $manager->persist($session);
+        $this->addReference('session_' . "$userReference", $session);
     }
     
     private function createUserEmail(ObjectManager $manager, $userReference) {
@@ -85,6 +86,7 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $userTangle->setCredit($credit);
         
         $manager->persist($userTangle);
+        $this->addReference('userTangle' . "$userReference", $userTangle);
     }
     
     private function createRequest(ObjectManager $manager, $userReference, $description, $requestNumber, $requestStatus) {
@@ -117,9 +119,10 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $transaction->setFinalPrice(30);
         
         $manager->persist($transaction);
+        $this->addReference("$offerReference" . 'Transaction', $transaction);
     }
     
-    private function createClaim(ObjectManager $manager, $offerReference, $userReference) {
+    private function createClaim(ObjectManager $manager, $offerReference, $userReference, $claimNumber) {
         $claim = new Claim();
         $claim->setClaimer($this->getReference("$userReference"));
         $claim->setTangle('tangle');
@@ -127,9 +130,10 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $claim->setCreated(new DateTime('now'));
         
         $manager->persist($claim);
+        $this->addReference('claim' . "$claimNumber", $claim);
     }
     
-    private function createMessage(ObjectManager $manager, $messageBody, $userReference, $offerReference){
+    private function createMessage(ObjectManager $manager, $messageBody, $userReference, $offerReference, $messageNumber){
         $message = new Message();
         $message->setOffer($this->getReference("$offerReference"));
         $message->setSender($this->getReference("$userReference"));
@@ -137,6 +141,7 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $message->setBody($messageBody);
         
         $manager->persist($message);
+        $this->addReference('message' . "$messageNumber", $message);
     }
     
     private function makeUsers(ObjectManager $manager){
@@ -187,11 +192,11 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
     }
     
     private function makeMessages(ObjectManager $manager){
-        $this->createMessage($manager, "hi1", 'userMohamed', 'offer1');
-        $this->createMessage($manager, "hi2", 'userAly', 'offer1');
-        $this->createMessage($manager, "hi3", 'userMohamed', 'offer1');
-        $this->createMessage($manager, "hi4", 'userAly', 'offer2');
-        $this->createMessage($manager, "hi5", 'userAly', 'offer2');
+        $this->createMessage($manager, "hi1", 'userMohamed', 'offer1', 1);
+        $this->createMessage($manager, "hi2", 'userAly', 'offer1', 2);
+        $this->createMessage($manager, "hi3", 'userMohamed', 'offer1', 3);
+        $this->createMessage($manager, "hi4", 'userAly', 'offer2', 4);
+        $this->createMessage($manager, "hi5", 'userAly', 'offer2', 5);
     }
     
     private function makeTransactions(ObjectManager $manager){
@@ -200,8 +205,8 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
     }
     
     private function makeClaims(ObjectManager $manager){
-        $this->createClaim($manager, 'offer3', 'userAly');
-        $this->createClaim($manager, 'offer3', 'userMohamed');
-        $this->createClaim($manager, 'offer5', 'userAly');         
+        $this->createClaim($manager, 'offer3', 'userAly', 1);
+        $this->createClaim($manager, 'offer3', 'userMohamed', 2);
+        $this->createClaim($manager, 'offer5', 'userAly', 3);         
     }
 }

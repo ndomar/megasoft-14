@@ -77,6 +77,9 @@ class TangleControllerTest extends EntangleTestCase
      * @author HebaAamer 
      */
     public function testLeaveTangleAction_NullTangleId() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
         $client = static::createClient();
         $client->request('DELELTE',
                 'tangle//user',
@@ -91,6 +94,9 @@ class TangleControllerTest extends EntangleTestCase
      * Test Case testing not sending a session id in the 
      */
     public function testLeaveTangleAction_NullSessionId() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
         $client = static::createClient();
         $client->request('DELELTE',
                 'tangle/1/user',
@@ -105,6 +111,9 @@ class TangleControllerTest extends EntangleTestCase
      * Test Case testing sending expired session 
      */
     public function testLeaveTangleAction_ExpiredSession() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
         $client = static::createClient();
         $client->request('DELELTE',
                 'tangle/1/user',
@@ -119,6 +128,9 @@ class TangleControllerTest extends EntangleTestCase
      * Test Case testing sending wrong session 
      */
     public function testLeaveTangleAction_WrongSession() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
         $client = static::createClient();
         $client->request('DELELTE',
                 'tangle/1/user',
@@ -133,6 +145,9 @@ class TangleControllerTest extends EntangleTestCase
      * Test Case testing user not in the tangle 
      */
     public function testLeaveTangleAction_NotUserInTangle() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
         $client = static::createClient();
         $client->request('DELELTE',
                 'tangle/1/user',
