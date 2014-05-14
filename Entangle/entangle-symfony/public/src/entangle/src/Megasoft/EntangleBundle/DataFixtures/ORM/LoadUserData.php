@@ -9,6 +9,7 @@ use Megasoft\EntangleBundle\Entity\User;
 
 /*
  * Fixtures for Session table
+ * @author OmarElAzazy
  */
 class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
 {
