@@ -38,6 +38,13 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         return 1;
     }
     
+    /**
+     * This function is used to create a user
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param type $name
+     * @param type $password
+     * @author HebaAamer
+     */
     private function createUser(ObjectManager $manager, $name, $password) {
         $user = new User();
         $user->setName($name);
@@ -47,7 +54,15 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->addReference('user' . "$name", $user);
     }
     
-    
+    /**
+     * This function is used to create a session
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param type $userReference
+     * @param type $sessionId
+     * @param type $expired
+     * @param type $regId
+     * @author HebaAamer
+     */
     private function createSession(ObjectManager $manager, $userReference, $sessionId, $expired, $regId) {
         $session = new Session();
         $session->setUser($this->getReference("$userReference"));
@@ -61,6 +76,12 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->addReference('session_' . "$userReference", $session);
     }
     
+    /**
+     * This function is used to create a userEmail
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param type $userReference
+     * @author HebaAamer
+     */
     private function createUserEmail(ObjectManager $manager, $userReference) {
         $userEmail = new UserEmail();
         $userEmail->setUser($this->getReference("$userReference"));
@@ -69,6 +90,11 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $manager->persist($userEmail);
     }
     
+    /**
+     * This function is used to create a tangle
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
     private function createTangle(ObjectManager $manager) {
         $tangle = new Tangle();
         $tangle->setName('Tangle');
@@ -78,6 +104,15 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->addReference('tangle', $tangle);
     }
     
+    /**
+     * This function is used to create a userTangle
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param type $userReference
+     * @param type $isOwner
+     * @param type $credit
+     * @param type $left
+     * @author HebaAamer
+     */
     private function createUserTangle(ObjectManager $manager, $userReference, $isOwner, $credit, $left) {
         $userTangle = new UserTangle();
         $userTangle->setUser($this->getReference("$userReference"));
