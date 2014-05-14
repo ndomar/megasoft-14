@@ -32,6 +32,7 @@ import com.megasoft.requests.PutRequest;
 @SuppressLint("DefaultLocale")
 public class EditProfileActivity extends FragmentActivity implements
 		AddEmailInterface {
+	JSONArray currentEmails;
 	final Calendar calendar = Calendar.getInstance();
 	static final int DATE_DIALOG_ID = 0;
 	SharedPreferences settings;
@@ -79,6 +80,7 @@ public class EditProfileActivity extends FragmentActivity implements
 					Log.i("Message", "0");
 					retrieveDataResponse = new JSONObject(response);
 					try {
+
 						oldDescription = retrieveDataResponse
 								.getString("description");
 						oldBirthDate = retrieveDataResponse
@@ -93,6 +95,16 @@ public class EditProfileActivity extends FragmentActivity implements
 						currentDescription.setText(oldDescription);
 						notification = retrieveDataResponse
 								.getBoolean("notification_state");
+						currentEmails = retrieveDataResponse
+								.getJSONArray("emails");
+						for(int i=0;i<currentEmails.length();i++){
+							String email = currentEmails.getString(i);
+							Log.i("Message",email);
+							addEmailField();
+							emails.get(emails.size()-1).getEditText().setText(email);
+							//emails.get(emails.size()-1).getEditText().setEnabled(false);
+						}
+						addEmailField();
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
@@ -135,7 +147,7 @@ public class EditProfileActivity extends FragmentActivity implements
 			emailNotification.setText("Turn on notification");
 		}
 		currentDescription = (EditText) findViewById(R.id.CurrentDescription);
-		this.addEmailField();
+		//this.addEmailField();
 	}
 
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -252,7 +264,6 @@ public class EditProfileActivity extends FragmentActivity implements
 	 */
 	private void getActivity() {
 		viewEditedProfile = new Intent(this, ProfileActivity.class);
-
 	}
 
 	/**

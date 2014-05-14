@@ -115,7 +115,7 @@ class UserController extends Controller {
      * @author menna
      */
     public function retrieveDataAction(Request $request) {
-        $userEmailArray;
+        $userEmailArray = array();
         $requestContent = $request->getContent();
         $jsonArray = json_decode($requestContent, true);
         $sessionId = $request->headers->get('X-SESSION-ID');
@@ -135,7 +135,7 @@ class UserController extends Controller {
         }
         $response = new JsonResponse();
         $response->setData(array('description' => $user->getUserBio(), 'date_of_birth' => $user->getBirthDate()
-            , 'notification_state' => $user->getAcceptMailNotifications(), 'emails_array' => $usermailArray));
+            , 'notification_state' => $user->getAcceptMailNotifications(), 'emails' => $userEmailArray));
         $response->setStatusCode(200);
         return $response;
     }
