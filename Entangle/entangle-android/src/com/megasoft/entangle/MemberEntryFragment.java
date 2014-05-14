@@ -124,10 +124,9 @@ public class MemberEntryFragment extends Fragment {
 
 		getMemberNameView().setText(getMemberName());
 		getMemberBalanceView().setText(getMemberBalance() + "");
-		try{ 
-			ImageRequest imageRequest = new ImageRequest(getMemberAvatarView());
-			imageRequest.execute(getMemberAvatarURL());
-		} catch(Exception e){
+		try {
+			new ImageRequest(getMemberAvatarURL(),getActivity().getApplicationContext(),getMemberAvatarView());
+		} catch (Exception e) {
 			toasterShow("Fetching photo is not working ...");
 		}
 		return view;

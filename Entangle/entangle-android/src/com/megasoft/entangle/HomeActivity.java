@@ -105,10 +105,9 @@ public class HomeActivity extends FragmentActivity {
 		SharedPreferences pref = getSharedPreferences(Config.SETTING, 0);
 		((TextView)findViewById(R.id.sidebar_username)).setText(pref.getString(Config.USERNAME, "User"));
 		ImageView image = (ImageView)findViewById(R.id.sidebar_avatar);
-		ImageRequest request = new ImageRequest(image);
-		request.execute(pref.getString(Config.PROFILE_IMAGE, ""));
-		Log.e("test",pref.getString(Config.PROFILE_IMAGE, "") );
-		
+		//ImageRequest request = new ImageRequest(image);
+		//request.execute(pref.getString(Config.PROFILE_IMAGE, ""));
+
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		TangleStreamActivity tangleTitlesFragment = new TangleStreamActivity();

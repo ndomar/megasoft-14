@@ -307,8 +307,7 @@ public class OfferActivity extends FragmentActivity {
 	 * @author Almgohar
 	 */
 	public void viewProfilePicture(String imageURL) {
-		ImageRequest image = new ImageRequest(offererAvatar);
-		image.execute(imageURL);
+		ImageRequest image = new ImageRequest(imageURL,getApplicationContext(),offererAvatar);
 	}
 
 	/**

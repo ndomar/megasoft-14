@@ -252,8 +252,7 @@ public class ProfileFragment extends Fragment {
 	 * @author Almgohar
 	 */ 
 	public void viewProfilePicture(String imageURL) {
-            ImageRequest image = new ImageRequest(profilePictureView);
-            image.execute(imageURL);
+            new ImageRequest(imageURL,getActivity().getApplicationContext(),profilePictureView);
 	}
 	
 	/**
