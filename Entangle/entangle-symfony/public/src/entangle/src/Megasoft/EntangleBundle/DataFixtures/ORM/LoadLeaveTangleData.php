@@ -20,10 +20,17 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createUser($manager, 'Ahmad', 'ahmad');
         $this->createUser($manager, 'Mohamed', 'mohamed');
         $this->createUser($manager, 'Aly', 'aly');
+        $this->createUser($manager, 'Mazen', 'mazen');
+        
+        $this->createUserEmail($manager, 'userAhmad');
+        $this->createUserEmail($manager, 'userMohamed');
+        $this->createUserEmail($manager, 'userAly');
+        $this->createUserEmail($manager, 'userMazen');
         
         $this->createSession($manager, 'userAhmad', 'userAhmad', false, 1);
         $this->createSession($manager, 'userMohamed', 'userMohamed', true, 2);
         $this->createSession($manager, 'userAly', 'userAly', false, 3);
+        $this->createSession($manager, 'userMazen', 'userMazen', false, 4);
         
         $this->createTangle($manager);
         
@@ -83,6 +90,15 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->addReference('session' . "$reference", $session);
     }
     
+    private function createUserEmail(ObjectManager $manager, $userReference) {
+        $userEmail = new UserEmail();
+        $userEmail->setUser($this->getReference("$userReference"));
+        $userEmail->setEmail("$userReference" . '@entangle.io');
+        
+        $manager->persist($tangle);
+        $this->addReference('tangle', $tangle);
+    }
+    
     private function createTangle(ObjectManager $manager) {
         $tangle = new Tangle();
         $tangle->setName('Tangle');
@@ -103,22 +119,24 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->addReference('userTangle_' . "$userReference", $userTangle);
     }
     
-    private function createRequest(ObjectManager $manager, $userReference, $description, $requestNumber) {
+    private function createRequest(ObjectManager $manager, $userReference, $description, $requestNumber, $requestStatus) {
         $request = new Request();
         $request->setUser($this->getReference("$userReference"));
         $request->setTangle($this->getReference('tangle'));
         $request->setDescription("$description");
+        $request->setStatus($requestStatus);
         
         $manager->persist($request);
         $this->addReference('request' . "$requestNumber", $request);
     }
     
-    private function createOffer(ObjectManager $manager, $userReference, $description, $offerNumber, $requestReference) {
+    private function createOffer(ObjectManager $manager, $userReference, $description, $offerNumber, $requestReference, $offerStatus) {
         $offer = new Offer();
         $offer->setUser($this->getReference("$userReference"));
         $offer->setRequest($this->getReference("$requestReference"));
         $offer->setDescription($description);
         $offer->setRequestedPrice(25);
+        $offer->setStatus($offerStatus);
         
         $manager->persist($offer);
         $this->addReference('offer' . "$offerNumber", $offer);
@@ -138,7 +156,8 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $claim = new Claim();
         $claim->setClaimer($this->getReference("$userReference"));
         $claim->setTangle('tangle');
-        $calim->setOffer($this->getReference("$offerReference"));
+        $claim->setOffer($this->getReference("$offerReference"));
+        $claim->setCreated(new DateTime('now'));
         
         $manager->persist($claim);
         $this->addReference('claim' . "$claimNumber", $claim);
