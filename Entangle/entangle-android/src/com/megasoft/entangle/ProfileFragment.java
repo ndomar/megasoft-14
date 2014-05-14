@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.megasoft.config.Config;
@@ -125,7 +126,11 @@ public class ProfileFragment extends Fragment {
 					description.setText(information.getString("description"));
 					viewProfilePicture(information.getString("photo"));
 					
-					if(activity instanceof ProfileActivity) {
+					if (information.getBoolean("verified")) {
+						((ImageView)view.findViewById(R.id.verified)).setVisibility(View.VISIBLE);
+					}
+					
+					if (activity instanceof ProfileActivity) {
 						activity.setTitle(information.getString("name"));
 					}
 					
