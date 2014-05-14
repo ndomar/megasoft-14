@@ -472,6 +472,10 @@ class RequestController extends Controller
             return new Response('Unauthorized', 401);
         }
 
+        if($request->getStatus() != 0 || $request->getDeleted() == true){
+            return new Response('Bad Request', 400);
+        }
+
         $request->setDeleted(true);
         $this->getDoctrine()->getManager()->persist($request);
         $offers = $request->getOffers();
