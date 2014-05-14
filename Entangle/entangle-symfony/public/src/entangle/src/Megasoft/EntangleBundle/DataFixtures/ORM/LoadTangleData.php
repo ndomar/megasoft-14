@@ -9,6 +9,7 @@ use Megasoft\EntangleBundle\Entity\Tangle;
 
 /*
  * Fixtures for Session table
+ * @author OmarElAzazy
  */
 class LoadTangleData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -19,6 +20,7 @@ class LoadTangleData extends AbstractFixture implements OrderedFixtureInterface
     {
         $tangle = new Tangle();
         $tangle->setName('sampleTangle');
+        $tangle->setDescription('Just a sample tangle');
         
         $manager->persist($tangle);
         $manager->flush();
