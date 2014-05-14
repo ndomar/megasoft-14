@@ -73,7 +73,6 @@ class TangleControllerTest extends EntangleTestCase
     
     /**
      * Test Case testing not sending a tangle id in the request
-     * 
      * @author HebaAamer 
      */
     public function testLeaveTangleAction_NullTangleId() {
@@ -85,13 +84,14 @@ class TangleControllerTest extends EntangleTestCase
                 'tangle//user',
                 array(),
                 array(),
-                array('HTTP_X_SESSION_ID'=>'sampleSession'));
+                array('HTTP_X_SESSION_ID'=>'userAly'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode());
     }
     
     /**
      * Test Case testing not sending a session id in the 
+     * @author HebaAamer
      */
     public function testLeaveTangleAction_NullSessionId() {
         $this->addFixture(new LoadLeaveTangleData());
@@ -109,6 +109,7 @@ class TangleControllerTest extends EntangleTestCase
     
     /**
      * Test Case testing sending expired session 
+     * @author HebaAamer
      */
     public function testLeaveTangleAction_ExpiredSession() {
         $this->addFixture(new LoadLeaveTangleData());
@@ -119,13 +120,14 @@ class TangleControllerTest extends EntangleTestCase
                 'tangle/1/user',
                 array(),
                 array(),
-                array('HTTP_X_SESSION_ID', 'sampleSession'));
+                array('HTTP_X_SESSION_ID', 'userMohamed'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode());
     }
     
     /**
      * Test Case testing sending wrong session 
+     * @author HebaAamer
      */
     public function testLeaveTangleAction_WrongSession() {
         $this->addFixture(new LoadLeaveTangleData());
@@ -143,6 +145,7 @@ class TangleControllerTest extends EntangleTestCase
     
     /**
      * Test Case testing user not in the tangle 
+     * @author HebaAamer
      */
     public function testLeaveTangleAction_NotUserInTangle() {
         $this->addFixture(new LoadLeaveTangleData());
@@ -153,9 +156,27 @@ class TangleControllerTest extends EntangleTestCase
                 'tangle/1/user',
                 array(),
                 array(),
-                array('HTTP_X_SESSION_ID', 'sampleSession'));
+                array('HTTP_X_SESSION_ID', 'userMazen'));
         $response = $client->getResponse();
         $this->assertEquals(401, $response->getStatusCode());
+    }
+    
+    /**
+     * Test Case to check the condition of being a tangle owner
+     * @author HebaAamer
+     */
+    public function testLeaveTangleAction_IsTangleOwner() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('DELELTE',
+                'tangle/1/user',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID', 'userAhmad'));
+        $response = $client->getResponse();
+        $this->assertEquals(403, $response->getStatusCode());
     }
 }
 

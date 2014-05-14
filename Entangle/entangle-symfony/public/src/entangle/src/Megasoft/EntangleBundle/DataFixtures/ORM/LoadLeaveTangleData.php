@@ -86,7 +86,7 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $userTangle->setCredit($credit);
         
         $manager->persist($userTangle);
-        $this->addReference('userTangle' . "$userReference", $userTangle);
+        $this->addReference('userTangle_' . "$userReference", $userTangle);
     }
     
     private function createRequest(ObjectManager $manager, $userReference, $description, $requestNumber, $requestStatus) {
