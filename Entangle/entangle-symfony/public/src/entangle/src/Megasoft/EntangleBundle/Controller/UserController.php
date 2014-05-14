@@ -54,24 +54,24 @@ class UserController extends Controller {
                 }
                 echo 'ana abl el manager';
                 $doctrineManger = $this->getDoctrine()->getManager();
-
-                if (filter_var($jsonArray['added_email'], FILTER_VALIDATE_EMAIL)) {
-
-                    $newMail = new UserEmail();
-                    $newMail->setEmail($jsonArray['added_email']);
-                    $newMail->setUser($user);
-                    if ($user->getId()) {
-                        $newMail->setUserId($user->getId());
-                        $user->addEmail($newMail);
-                        $doctrineManger->persist($newMail);
+                $email_array = $jsonArray['emails'];
+                if (!empty($email_array)) {
+                    foreach ($email_array as $email) {
+                        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                            $newMail = new UserEmail();
+                            $newMail->setEmail($email);
+                            $newMail->setUser($user);
+                            if ($user->getId()) {
+                                $newMail->setUserId($user->getId());
+                                $user->addEmail($newMail);
+                                $doctrineManger->persist($newMail);
+                            }
+                        }
                     }
                 }
-                echo 'ana abl el accept mail notification';
                 $user->setAcceptMailNotifications($jsonArray['notification_state']);
                 $doctrineManger->persist($user);
-                echo 'ana ba3d el persist';
                 $doctrineManger->flush();
-                echo 'ana ba3d el flush';
                 return new Response('OK', 200);
             }
         } else {
@@ -115,6 +115,7 @@ class UserController extends Controller {
      * @author menna
      */
     public function retrieveDataAction(Request $request) {
+        $userEmailArray;
         $requestContent = $request->getContent();
         $jsonArray = json_decode($requestContent, true);
         $sessionId = $request->headers->get('X-SESSION-ID');
@@ -127,9 +128,14 @@ class UserController extends Controller {
             return new Response("Session Expired", 400);
         }
         $user = $currentSession->getUser();
+        $emails_array = $user->getEmails();
+
+        foreach ($emails_array as $user_email) {
+            array_push($userEmailArray, $user_email->getEmail());
+        }
         $response = new JsonResponse();
         $response->setData(array('description' => $user->getUserBio(), 'date_of_birth' => $user->getBirthDate()
-            , 'notification_state' => $user->getAcceptMailNotifications()));
+            , 'notification_state' => $user->getAcceptMailNotifications(), 'emails_array' => $usermailArray));
         $response->setStatusCode(200);
         return $response;
     }
@@ -179,7 +185,7 @@ class UserController extends Controller {
         if (!$password) {
             return new JsonResponse("missing password", 400);
         }
-        if(!$deviceType){
+        if (!$deviceType) {
             return new JsonResponse("missing device type", 400);
         }
         if (strstr("\"", $name) || strstr("'", $name)) {
@@ -214,7 +220,6 @@ class UserController extends Controller {
 
         $response->setData(array('sessionId' => $sessionId, 'userId' => $user->getId()
             , 'profileImage' => $filepath . $user->getPhoto(),
-
             'username' => $user->getName(),));
         $response->setStatusCode(201);
 
@@ -249,7 +254,7 @@ class UserController extends Controller {
      */
     private function validateTangle($tangleId) {
         $tangleTable = $this->getDoctrine()->
-            getRepository('MegasoftEntangleBundle:Tangle');
+                getRepository('MegasoftEntangleBundle:Tangle');
         $tangle = $tangleTable->findOneBy(array('id' => $tangleId,));
 
         if ($tangle == null) {
@@ -291,7 +296,7 @@ class UserController extends Controller {
 
         return $this->viewProfile($user);
     }
-    
+
     /**
      * Gets the profile of a user in a given tangle
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -301,7 +306,7 @@ class UserController extends Controller {
      * @author Almgohar
      */
     public function profileAction(\Symfony\Component\HttpFoundation\Request $request, $userId, $tangleId) {
-      $sessionId = $request->headers->get('X-SESSION-ID');
+        $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($sessionId == null) {
             return new Response('Unauthorized', 401);
@@ -419,19 +424,17 @@ class UserController extends Controller {
 
                 $requestId = $offer->getRequest()->getId();
                 $requesterId = $offer->getRequest()->getUserId();
-                $transactions[] = array('offerId'=>$offer->getId(),
+                $transactions[] = array('offerId' => $offer->getId(),
                     'requesterName' => $requesterName, 'photo' => $photo, 'offererName' => $offererName,
                     'amount' => $amount, 'requestId' => $requestId, 'requesterId' => $requesterId,);
             } else {
                 continue;
-
             }
         }
         $response = new JsonResponse();
         $response->setData(array('transactions' => $transactions, 'credit' => $credit,));
         $response->setStatusCode(200);
         return $response;
-
     }
 
     /**
@@ -541,11 +544,11 @@ class UserController extends Controller {
                 return new JsonResponse($badRequest, 400);
             }
 
-            if(!$this->validateUniqueUsername($username)) {
+            if (!$this->validateUniqueUsername($username)) {
                 return new JsonResponse("Not unique username", 401);
             }
 
-            if(!$this->validateUniqueEmail($email)) {
+            if (!$this->validateUniqueEmail($email)) {
                 return new JsonResponse("Not unique Email", 402);
             }
 

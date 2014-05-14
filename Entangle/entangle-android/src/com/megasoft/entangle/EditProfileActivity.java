@@ -5,51 +5,44 @@ import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.megasoft.config.Config;
-import com.megasoft.entangle.R;
-import com.megasoft.entangle.EmailEntryFragment;
-import com.megasoft.requests.GetRequest;
-import com.megasoft.requests.PutRequest;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.megasoft.config.Config;
+import com.megasoft.requests.GetRequest;
+import com.megasoft.requests.PutRequest;
+
 @SuppressLint("DefaultLocale")
-public class EditProfileActivity extends Activity {
+public class EditProfileActivity extends FragmentActivity implements
+		AddEmailInterface {
 	final Calendar calendar = Calendar.getInstance();
 	static final int DATE_DIALOG_ID = 0;
 	SharedPreferences settings;
 	String sessionId;
-	private ArrayList<EmailEntryFragment> emails;
+	private ArrayList<EmailEntryFragment> emails = new ArrayList<EmailEntryFragment>();
 	String oldDescription;
 	String oldDOB[];
 	String[] day;
 	String[] userEmails;
 	CheckBox emailNotification;
 	EditText currentDescription;
-	// EditText currentPassword;
-	// EditText newPassword;
-	// EditText confirmPassword;
 	EditText addedMail;
 	JSONObject oldBirthDate;
 	String date;
@@ -83,6 +76,7 @@ public class EditProfileActivity extends Activity {
 				+ RETRIEVEDATA) {
 			public void onPostExecute(String response) {
 				try {
+					Log.i("Message", "0");
 					retrieveDataResponse = new JSONObject(response);
 					try {
 						oldDescription = retrieveDataResponse
@@ -112,18 +106,21 @@ public class EditProfileActivity extends Activity {
 		getRequest.addHeader(Config.API_SESSION_ID, sessionId);
 		getRequest.execute();
 		initializeView();
+
 	}
 
-	
 	public void addEmailField() {
 		EmailEntryFragment newEmail = new EmailEntryFragment();
-	//	newEmail.setActivity(this);
+		newEmail.setActivity(this);
 		emails.add(newEmail);
-		emailsCount ++;
+		emailsCount++;
+		getSupportFragmentManager().beginTransaction()
+				.add(R.id.user_emails, newEmail).commit();
 	}
+
+	@SuppressWarnings("deprecation")
 	public void selectDOB(View view) {
 		showDialog(DATE_DIALOG_ID);
-
 	}
 
 	/**
@@ -132,12 +129,13 @@ public class EditProfileActivity extends Activity {
 	 * @author menna
 	 */
 	private void initializeView() {
+		Log.i("Message", "1");
 		emailNotification = (CheckBox) findViewById(R.id.set_notification);
 		if (!notification) {
 			emailNotification.setText("Turn on notification");
 		}
 		currentDescription = (EditText) findViewById(R.id.CurrentDescription);
-		addedMail = (EditText) findViewById(R.id.AddedMail);
+		this.addEmailField();
 	}
 
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -168,15 +166,13 @@ public class EditProfileActivity extends Activity {
 	 */
 	@SuppressLint("SimpleDateFormat")
 	public void saveAll(View view) {
+		Log.i("Message", oldDescription);
+		Log.i("Message", currentDescription.getText().toString());
 		if ((oldDescription.equals(currentDescription.getText().toString()))
-				// && (day[0].equals(newday.getSelectedItem()))
-				// && (splittedDate[1].equals(newmonth.getSelectedItem()))
-				// && (splittedDate[0].equals(newyear.getSelectedItem()))
-				// && (currentPassword.getText().toString().matches(""))
-				// && (newPassword.getText().toString().matches(""))
-				// && (currentPassword.getText().toString().matches(""))
-				&& (!emailNotification.isChecked())
-				&& (addedMail).getText().toString().matches("")) {
+				&& (day[0].equals(String.valueOf(newDay)))
+				&& (splittedDate[1].equals(String.valueOf(newMonth)))
+				&& (splittedDate[0].equals(String.valueOf(newYear)))
+				&& emails.isEmpty() && (!emailNotification.isChecked())) {
 			Context context = getApplicationContext();
 			CharSequence text = "Nothing has been changed";
 			int duration = Toast.LENGTH_SHORT;
@@ -184,29 +180,42 @@ public class EditProfileActivity extends Activity {
 			toast.show();
 		} else {
 			try {
+				Log.i("Message", "2");
 				if (emailNotification.isChecked()) {
 					putReJsonObject.put("notification_state", true);
 				} else {
 					putReJsonObject.put("notification_state", false);
 				}
 
-				 String date = newYear + "-"
-				 + newMonth
-				 + "-" + newDay+" 00:00:00";
+				String date = newYear + "-" + newMonth + "-" + newDay
+						+ " 00:00:00";
 
 				putReJsonObject.put("description", currentDescription.getText()
 						.toString());
-				 putReJsonObject.put("new_date_of_birth", date);
-				
-				addedEmail = addedMail.getText().toString();
-				if ((!(emailValidator(addedEmail)))
-						&& (!(addedEmail.matches("")))) {
-					addedMail.setError("This is not a valid Email");
+				putReJsonObject.put("new_date_of_birth", date);
+				boolean hasErrors = false;
+
+				view.setEnabled(false);
+				JSONArray emails = new JSONArray();
+				for (EmailEntryFragment email : this.emails) {
+					String val = email.getEmail();
+					if (val.equals("")) {
+						continue;
+					}
+					if (!val.equals("") && !emailValidator(val)) {
+						email.getEditText().setError("Invalid Email");
+						hasErrors = true;
+					} else {
+						email.getEditText().setError(null);
+						emails.put(val);
+					}
+				}
+
+				if (hasErrors) {
+					view.setEnabled(true);
 					return;
 				}
-				
-				putReJsonObject.put("added_email", addedMail.getText()
-						.toString());
+				putReJsonObject.put("emails", emails);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -260,10 +269,23 @@ public class EditProfileActivity extends Activity {
 		return matcher.matches();
 	}
 
-
 	public void removeEmailField(EmailEntryFragment emailEntryFragment) {
-		// TODO Auto-generated method stub
-		
+		if (emailsCount == 1) {
+			emailEntryFragment.getEditText().setText("");
+		} else {
+			if (emails.indexOf(emailEntryFragment) == emails.size() - 1) {
+				emails.get(emails.size() - 2).setTextChangeListener();
+			}
+			getSupportFragmentManager().beginTransaction()
+					.remove(emailEntryFragment).commit();
+			emails.remove(emailEntryFragment);
+			emailsCount--;
+		}
+
+	}
+
+	public void cancelRedirect(View view) {
+		this.finish();
 	}
 
 }

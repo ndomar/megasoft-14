@@ -21,7 +21,7 @@ import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 import com.megasoft.entangle.megafragments.*;
 
-public class InviteUserActivity extends FragmentActivity {
+public class InviteUserActivity extends FragmentActivity implements AddEmailInterface{
 	/**
 	 * The tangle Id that we want to invite users to
 	 */
@@ -76,7 +76,7 @@ public class InviteUserActivity extends FragmentActivity {
 	 */
 	public void addEmailField() {
 		EmailEntryFragment newEmail = new EmailEntryFragment();
-	//	newEmail.setActivity(this);
+		newEmail.setActivity(this);
 		emails.add(newEmail);
 		emailsCount ++;
 		getSupportFragmentManager().beginTransaction().add(R.id.invite_emails, newEmail).commit();

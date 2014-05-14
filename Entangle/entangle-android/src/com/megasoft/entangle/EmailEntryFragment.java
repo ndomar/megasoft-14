@@ -35,7 +35,7 @@ public class EmailEntryFragment extends Fragment {
 	/**
 	 * The parent activity
 	 */
-	private InviteUserActivity activity;
+	private AddEmailInterface activity;
 	
 	/**
 	 * The event listener to the email field change to add a new field whenever someone
@@ -111,7 +111,7 @@ public class EmailEntryFragment extends Fragment {
 	/**
 	 * Sets the parent activity
 	 */
-	public void setActivity(InviteUserActivity activity){
+	public void setActivity(AddEmailInterface activity){
 		this.activity = activity;
 	}
 }
