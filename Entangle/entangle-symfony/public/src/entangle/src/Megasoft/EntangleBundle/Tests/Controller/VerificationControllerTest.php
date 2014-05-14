@@ -2,73 +2,38 @@
 
 namespace Megasoft\EntangleBundle\Tests\Controller;
 
-use Megasoft\EntangleBundle\DataFixtures\ORM\LoadSessionData;
-use Megasoft\EntangleBundle\DataFixtures\ORM\LoadTangleData;
-use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserData;
-use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserTangleData;
+use Megasoft\EntangleBundle\DataFixtures\ORM\LoadVerificationData;
 use Megasoft\EntangleBundle\Tests\EntangleTestCase;
 
-/*
- * Test Class for Tangle Controller
- * @author OmarElAzazy
- */
-class TangleControllerTest extends EntangleTestCase
+
+class VerificationControllerTest extends EntangleTestCase
 {
     
-    /*
-     * Test Case testing sending a wrong session to AllUsersAction
-     * @author OmarElAzazy
-     */
-    public function testAllUsersAction_WrongSession(){
-        $this->addFixture(new LoadTangleData());
-        $this->addFixture(new LoadUserData());
-        $this->addFixture(new LoadSessionData());
-        $this->addFixture(new LoadUserTangleData());
+    public function testEmailVerification_verified(){
+        $this->addFixture(new LoadVerificationData());
         $this->loadFixtures();
-        
         $client = static::createClient();
-        $client->request('GET', 
-                '/tangle/1/user', 
-                array(), 
-                array(), 
-                array('HTTP_X_SESSION_ID'=>'wrongSession'));
-
-        $this->assertEquals(400, $client->getResponse()->getStatusCode());
-    }
-    
-    /*
-     * Test Case testing sending correct request to AllUsersAction
-     * @author OmarElAzazy
-     */
-    public function testAllUsersAction_GetListWithSampleUser(){
-        $this->addFixture(new LoadTangleData());
-        $this->addFixture(new LoadUserData());
-        $this->addFixture(new LoadSessionData());
-        $this->addFixture(new LoadUserTangleData());
-        $this->loadFixtures();
-        
-        $client = static::createClient();
-        $client->request('GET', 
-                '/tangle/1/user', 
-                array(), 
-                array(), 
-                array('HTTP_X_SESSION_ID'=>'sampleSession'));
-
+        $client->request('GET','/verify/123456' );
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        
-        $json_string = $client->getResponse()->getContent();
-        $this->assertJson($json_string);
-        
-        $json = json_decode($json_string, true);
-        $this->assertEquals(2, sizeof($json));
-        $this->assertEquals(true, isset($json['count']));
-        $this->assertEquals(true, isset($json['users']));
-        $this->assertEquals(1, $json['count']);
-        
-        $users = $json['users'];
-        $this->assertEquals(1, $users[0]['id']);
-        $this->assertEquals('sampleUser', $users[0]['username']);
-        $this->assertEquals(0, $users[0]['balance']);
-        $this->assertEquals('http://entangle.io/images/profilePictures/', $users[0]['iconUrl']);
+        $htmlWebPage = $client->getResponse()->getContent();
+        $this->assertContains('Congratulations, sampleUser you have been verified,Welcome to Entangle!',$htmlWebPage,'Verified!');
+    }
+    public function testEmailVerification_expired(){
+        $this->addFixture(new LoadVerificationData());
+        $this->loadFixtures();
+        $client = static::createClient();
+        $client->request('GET','/verify/1234567' );
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $htmlWebPage = $client->getResponse()->getContent();
+        $this->assertContains('Woops, Something went wrong either this link has expired or user has been already verified.',$htmlWebPage,'Expired!');
+    }
+    public function testEmailVerification_notFound(){
+        $this->addFixture(new LoadVerificationData());
+        $this->loadFixtures();
+        $client = static::createClient();
+        $client->request('GET','/verify/12345' );
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $htmlWebPage = $client->getResponse()->getContent();
+        $this->assertContains('This user does not exist,or it disappeared into a black hole.',$htmlWebPage,'Not Found!');
     }
 }
