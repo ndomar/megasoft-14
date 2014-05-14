@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
  * Fixtures for Delete Request Action in Request Controller
  * @author OmarElAzazy
  */
-class LoadUserTangleData extends AbstractFixture implements OrderedFixtureInterface
+class LoadDeleteRequestData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * {@inheritDoc}
