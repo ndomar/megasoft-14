@@ -1,8 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 	
-    <item android:id="@+id/deleteRequest"
-     	android:icon="@drawable/ic_action_remove"
-		android:title="@+string/action_delete"
+    <item android:id="@+id/deleteRequestOption"
+     	android:icon="@drawable/ic_action_cancel_white"
+		android:title="@+string/action_delete_request"
 		android:showAsAction="ifRoom" 
 		android:enabled="false"
 		android:visible="false"/>

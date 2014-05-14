@@ -95,7 +95,7 @@ public class RequestActivity extends FragmentActivity {
 	MenuItem deleteItem = null;
 
 	Activity activity = null;
-	
+
 	public Activity getActivity() {
 		return activity;
 	}
@@ -290,19 +290,13 @@ public class RequestActivity extends FragmentActivity {
 	 */
 	public void sendDeleteRequest(){
 		DeleteRequest deleteRequest = new DeleteRequest(Config.API_BASE_URL + 
-														"request/" + 
+														"/request/" + 
 														getRequestId()){
 			protected void onPostExecute(String response){
-				if (!this.hasError() && response != null){
-					// redirect to tangle stream
+				if (!this.hasError()){
+					getActivity().finish();
 				} else{
-					if(this.getStatusCode() == 401){
-						Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
-						startActivity(loginIntent);
-					}
-					else{
-						toasterShow("Something went wrong, Please try again.");
-					}
+					toasterShow("Something went wrong, Please try again.");
 				}
 			}
 		};
@@ -317,7 +311,7 @@ public class RequestActivity extends FragmentActivity {
 		
 		getMenuInflater().inflate(R.menu.request_information, menu);
 		
-		setDeleteItem(menu.findItem(R.id.deleteRequest));
+		setDeleteItem(menu.findItem(R.id.deleteRequestOption));
 		if(getIsMyRequest()){
 			getDeleteItem().setEnabled(true);
 			getDeleteItem().setVisible(true);
@@ -330,8 +324,8 @@ public class RequestActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	     
 	 	 switch (item.getItemId()) {
-		 	case R.id.deleteRequest:
-	 	 		sendDeleteRequest();
+		 	case R.id.deleteRequestOption:
+		 		sendDeleteRequest();
 	 	 		return true;
  	 		
 	 	 	case R.id.createOffer:
@@ -352,7 +346,7 @@ public class RequestActivity extends FragmentActivity {
 	 * @author Omar ElAzazy
 	 */
 	public void toasterShow(String message){
-		Toast.makeText(getBaseContext(),
+		Toast.makeText(getActivity().getBaseContext(),
 				message,
 				Toast.LENGTH_LONG).show();
 	}
