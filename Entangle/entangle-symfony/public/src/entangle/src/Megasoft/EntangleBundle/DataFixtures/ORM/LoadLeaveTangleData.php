@@ -223,6 +223,11 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->addReference('message' . "$messageNumber", $message);
     }
     
+    /**
+     * This function is used to make testing users and their userEmails
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
     private function makeUsers(ObjectManager $manager){
         $this->createUser($manager, 'Ahmad', 'ahmad');
         $this->createUser($manager, 'Mohamed', 'mohamed');
@@ -237,6 +242,11 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createUserEmail($manager, 'userAdel');
     }
     
+    /**
+     * This function is used to make testing sessions
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
     private function makeSessions(ObjectManager $manager){
         $this->createSession($manager, 'userAhmad', 'userAhmad', false, '1');
         $this->createSession($manager, 'userMohamed', 'userMohamed', true, '2');
@@ -245,10 +255,20 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createSession($manager, 'userAdel', 'userAdel', false, '5');
     }
     
+    /**
+     * This function is used to make a testing tangle
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
     private function makeTangles(ObjectManager $manager){
         $this->createTangle($manager);
     }
     
+    /**
+     * This function is used to make testing userTangles
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
     private function makeUserTangles(ObjectManager $manager){
         $this->createUserTangle($manager, 'userAhmad', true, 0, false);
         $this->createUserTangle($manager, 'userMohamed', false, 80, false);
@@ -256,6 +276,11 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createUserTangle($manager, 'userAdel', false, 0, true);
     }
     
+    /**
+     * This function is used to make testing requests
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
     private function makeRequests(ObjectManager $manager){
         $this->createRequest($manager, 'userMohamed', 'i want to buy a car', 1, 1);
         $this->createRequest($manager, 'userMohamed', 'i want to travel to London', 2, 0);
@@ -265,6 +290,11 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createRequest($manager, 'userAly', 'i want to have a ride tomorrow', 6, 1);
     }
     
+    /**
+     * This function is used to make testing offers
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
     private function makeOffers(ObjectManager $manager){
         $this->createOffer($manager, 'userAly', 'i can help', 1, 'request1', 1);
         $this->createOffer($manager, 'userAly', 'i want to help', 2, 'request2', 0);
