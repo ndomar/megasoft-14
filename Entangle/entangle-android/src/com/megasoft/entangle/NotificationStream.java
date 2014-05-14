@@ -52,9 +52,6 @@ public class NotificationStream extends Fragment {
 			Bundle savedInstancState) {
 		view = inflater.inflate(R.layout.activity_notification,
 				container, false);
-		//this.settings = getSharedPreferences(Config.SETTING, 0);
-		//this.sessionId = settings.getString(Config.SESSION_ID, "");
-		//this.loggedInId = settings.getInt(Config.USER_ID, 1);
 		this.settings = getActivity().getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		this.loggedInId = settings.getInt(Config.USER_ID, -1);
@@ -78,7 +75,6 @@ public class NotificationStream extends Fragment {
 					try {
 						JSONArray json = new JSONArray(response);
 						viewNotifications(json);
-						//viewNotificationsTest();
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
@@ -108,6 +104,13 @@ public class NotificationStream extends Fragment {
 		notificationsArea.removeAllViews();
 		notificationsArea.setVisibility(View.VISIBLE);
 		
+		if(notifications.length() == 0) {
+			Toast toast = Toast
+					.makeText(
+							activity.getApplicationContext(),
+							"You have no notifications",
+							Toast.LENGTH_SHORT);
+		}
 		for(int i = 0; i < notifications.length();i++) {
 			try {
 				JSONArray notification = (JSONArray) notifications.getJSONArray(i);
