@@ -78,13 +78,15 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->addReference('tangle', $tangle);
     }
     
-    private function createUserTangle(ObjectManager $manager, $userReference, $isOwner, $credit) {
+    private function createUserTangle(ObjectManager $manager, $userReference, $isOwner, $credit, $left) {
         $userTangle = new UserTangle();
         $userTangle->setUser($this->getReference("$userReference"));
         $userTangle->setTangle($this->getReference('tangle'));
         $userTangle->setTangleOwner($isOwner);
         $userTangle->setCredit($credit);
-        
+        if($left){
+            $userTangle->setLeavingDate(new DateTime('now'));
+        }
         $manager->persist($userTangle);
         $this->addReference('userTangle_' . "$userReference", $userTangle);
     }
@@ -149,11 +151,13 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createUser($manager, 'Mohamed', 'mohamed');
         $this->createUser($manager, 'Aly', 'aly');
         $this->createUser($manager, 'Mazen', 'mazen');
+        $this->createUser($manager, 'Adel', 'adel');
         
         $this->createUserEmail($manager, 'userAhmad');
         $this->createUserEmail($manager, 'userMohamed');
         $this->createUserEmail($manager, 'userAly');
         $this->createUserEmail($manager, 'userMazen');
+        $this->createUserEmail($manager, 'userAdel');
     }
     
     private function makeSessions(ObjectManager $manager){
@@ -161,6 +165,7 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createSession($manager, 'userMohamed', 'userMohamed', true, '2');
         $this->createSession($manager, 'userAly', 'userAly', false, '3');
         $this->createSession($manager, 'userMazen', 'userMazen', false, '4');
+        $this->createSession($manager, 'userAdel', 'userAdel', false, '5');
     }
     
     private function makeTangles(ObjectManager $manager){
@@ -168,9 +173,10 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
     }
     
     private function makeUserTangles(ObjectManager $manager){
-        $this->createUserTangle($manager, 'userAhmad', true, 0);
-        $this->createUserTangle($manager, 'userMohamed', false, 80);
-        $this->createUserTangle($manager, 'userAly', false, -80);
+        $this->createUserTangle($manager, 'userAhmad', true, 0, false);
+        $this->createUserTangle($manager, 'userMohamed', false, 80, false);
+        $this->createUserTangle($manager, 'userAly', false, -80, false);
+        $this->createUserTangle($manager, 'userAdel', false, 0, true);
     }
     
     private function makeRequests(ObjectManager $manager){

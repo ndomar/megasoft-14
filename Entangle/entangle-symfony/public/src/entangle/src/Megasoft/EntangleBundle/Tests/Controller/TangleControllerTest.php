@@ -178,5 +178,19 @@ class TangleControllerTest extends EntangleTestCase
         $response = $client->getResponse();
         $this->assertEquals(403, $response->getStatusCode());
     }
+    
+    public function testLeaveTangleAction_LeftUser() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('DELELTE',
+                'tangle/1/user',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID', 'userAhmad'));
+        $response = $client->getResponse();
+        $this->assertEquals(401, $response->getStatusCode());
+    }
 }
 
