@@ -3,7 +3,9 @@
     <item android:id="@+id/deleteRequest"
      	android:icon="@drawable/ic_action_remove"
 		android:title="@+string/action_delete"
-		android:showAsAction="ifRoom" />
+		android:showAsAction="ifRoom" 
+		android:enabled="false"
+		android:visible="false"/>
     
      <item android:id="@+id/createOffer"
      	android:icon="@drawable/ic_action_new_white"

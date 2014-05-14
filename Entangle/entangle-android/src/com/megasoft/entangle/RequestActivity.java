@@ -4,7 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
@@ -79,7 +79,7 @@ public class RequestActivity extends FragmentActivity {
 	/**
 	 * this is for checking if I have my own request open
 	 */
-	boolean myRequest = false;
+	boolean isMyRequest = false;
 	/**
 	 * this is an array to match the request status code to it's worded
 	 * equivalent
@@ -90,7 +90,25 @@ public class RequestActivity extends FragmentActivity {
 	 */
 	String[] offerStatusCodes = { "PENDING", "DONE", "ACCEPTED", "FAILED",
 			"REJECTED" };
+	
+	MenuItem deleteItem = null;
 
+	public MenuItem getDeleteItem() {
+		return deleteItem;
+	}
+
+	public void setDeleteItem(MenuItem deleteItem) {
+		this.deleteItem = deleteItem;
+	}
+
+	public void setIsMyRequest(boolean myRequest){
+		this.isMyRequest = myRequest;
+	}
+	
+	public boolean getIsMyRequest(){
+		return this.isMyRequest;
+	}
+	
 	/**
 	 * this calls fillRequestDetails() to generate the request preview
 	 * 
@@ -170,7 +188,6 @@ public class RequestActivity extends FragmentActivity {
 	 * @author sak93
 	 */
 	public void addRequestFields(JSONObject json) throws JSONException {
-		
 		RequestEntryFragment requestFragmet = new RequestEntryFragment();
 		Bundle args = new Bundle();
 		args.putString("description",json.getString("description"));
@@ -184,7 +201,14 @@ public class RequestActivity extends FragmentActivity {
 		args.putString("status",requestStatusCodes[Integer.parseInt(json.getString("status"))]);
 		requestFragmet.setArguments(args);
 		
+		setIsMyRequest(Integer.parseInt(json.getString("MyRequest")) == 1);
+		if(getIsMyRequest() && getDeleteItem() != null){
+			getDeleteItem().setEnabled(true);
+			getDeleteItem().setVisible(true);
+		}
+		
 		getSupportFragmentManager().beginTransaction().add(R.id.request_entry_layout,requestFragmet).commit();
+		
 	}
 
 	/**
@@ -219,12 +243,6 @@ public class RequestActivity extends FragmentActivity {
 			
 			getSupportFragmentManager().beginTransaction().add(R.id.offer_entries_layout,offerFragmet).commit();
 		}
-		
-//		if (myRequest == true) {
-//			Button deleteRequest = new Button(this);
-//			deleteRequest.setText("Delete");
-//			layout.addView(deleteRequest);
-//		}
 	}
 
 	/**
@@ -247,6 +265,11 @@ public class RequestActivity extends FragmentActivity {
 
 	}
 	
+	/*
+	 * Sends a delete request to the server to delete the viewed request
+	 * 
+	 * 
+	 */
 	public void sendDeleteRequest(){
 		
 	}
@@ -254,8 +277,15 @@ public class RequestActivity extends FragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-
+		
 		getMenuInflater().inflate(R.menu.request_information, menu);
+		
+		setDeleteItem(menu.findItem(R.id.deleteRequest));
+		if(getIsMyRequest()){
+			getDeleteItem().setEnabled(true);
+			getDeleteItem().setVisible(true);
+		}
+		
 		return true;
 	}
 	
@@ -263,6 +293,10 @@ public class RequestActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	     
 	 	 switch (item.getItemId()) {
+		 	case R.id.deleteRequest:
+	 	 		sendDeleteRequest();
+	 	 		return true;
+ 	 		
 	 	 	case R.id.createOffer:
 	 	 		Intent intent = new Intent(this, CreateOfferActivity.class);
 	 	        intent.putExtra("tangleId", this.tangleId);
@@ -270,11 +304,6 @@ public class RequestActivity extends FragmentActivity {
 	 	        startActivity(intent);
 	 	        return true;
 	 	 	
-	 	 	case R.id.deleteRequest:
-	 	 		sendDeleteRequest();
-	 	 		return true;
-	 	 		
-	 	 		
 	 	    default:
 	 	        return super.onOptionsItemSelected(item);
 	 	 }
