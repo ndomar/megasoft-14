@@ -467,6 +467,7 @@ public class OfferActivity extends FragmentActivity {
 						+ ACCEPT) {
 					protected void onPostExecute(String response) {
 						status = this.getStatusCode();
+						String errorMessage = this.getErrorMessage();
 						if (status == 201) {
 							acceptOffer.setVisibility(View.INVISIBLE);
 							offerStatus.setText("Accepted");
@@ -478,8 +479,7 @@ public class OfferActivity extends FragmentActivity {
 							if (status == 405) {
 								Toast toast = Toast
 										.makeText(
-												getApplicationContext(),
-												getString(R.string.balanceInsufficient),
+												getApplicationContext(),errorMessage,
 												Toast.LENGTH_SHORT);
 								toast.show();
 							} else {
