@@ -162,4 +162,22 @@ class TangleControllerTest extends EntangleTestCase
         $response = $client->getResponse();
         $this->assertEquals(401, $response->getStatusCode(), 'Case user not in the tangle');
     }
+    
+    /**
+     * Test Case to check if the user left the tangle or not
+     * @author HebaAamer
+     */
+    public function testUserRequestsAction_LeftUser() {
+        $this->addFixture(new LoadMyRequestsData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('GET',
+                'tangle/1/user/requests',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userAdel'));
+        $response = $client->getResponse();
+        $this->assertEquals(401, $response->getStatusCode(), 'Case left user');
+    }
 }
