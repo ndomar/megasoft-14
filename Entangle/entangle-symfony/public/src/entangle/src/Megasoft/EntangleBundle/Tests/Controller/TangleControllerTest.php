@@ -450,6 +450,33 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals(401, $response->getStatusCode(), 'Case left user');
     }
     
+      /**
+     * Test Case to get the requests of the tangle owner
+     * @author HebaAamer
+     */
+    public function testUserRequestsAction_CaseTangleOwner() {
+        $this->addFixture(new LoadMyOffersData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('GET',
+                'tangle/1/user/offers',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userAhmad'));
+        $response = $client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode(), 'Case Tangle Owner');
+        $content = $response->getContent();
+        $this->assertJson($content, 'Output JSON is wrong formated');
+        
+        $json = json_decode($content, true);
+        $this->assertArrayHasKey('count', $json, "count not found in response");
+        $this->assertArrayHasKey('offers', $json, "offers not found in response");
+        
+        $this->assertEquals(0, $json['count'], 'count is not zero');
+        $this->assertEquals(0, count($json['offers']), 'there should be no offers');
+    }
+    
     /**
      * Test Case to get the offers of the tangle member
      * @author HebaAamer
