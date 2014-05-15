@@ -7,6 +7,7 @@ use Megasoft\EntangleBundle\DataFixtures\ORM\LoadSessionData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadTangleData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserTangleData;
+use Megasoft\EntangleBundle\DataFixtures\ORM\LoadMyOffersData;
 use Megasoft\EntangleBundle\Tests\EntangleTestCase;
 
 /*
@@ -346,7 +347,7 @@ class TangleControllerTest extends EntangleTestCase
      * Test Case sending wrong tangle id in the request
      * @author HebaAamer 
      */
-    public function testUserRequestsAction_WrongTangleId() {
+    public function testUserOffersAction_WrongTangleId() {
         $this->addFixture(new LoadMyOffersData());
         $this->loadFixtures();
         
@@ -364,7 +365,7 @@ class TangleControllerTest extends EntangleTestCase
      * Test Case testing not sending a session id in the 
      * @author HebaAamer
      */
-    public function testUserRequestsAction_NullSessionId() {
+    public function testUserOffersAction_NullSessionId() {
         $this->addFixture(new LoadMyOffersData());
         $this->loadFixtures();
         
@@ -382,7 +383,7 @@ class TangleControllerTest extends EntangleTestCase
      * Test Case testing sending expired session 
      * @author HebaAamer
      */
-    public function testUserRequestsAction_ExpiredSession() {
+    public function testUserOffersAction_ExpiredSession() {
         $this->addFixture(new LoadMyOffersData());
         $this->loadFixtures();
         
@@ -400,7 +401,7 @@ class TangleControllerTest extends EntangleTestCase
      * Test Case testing sending wrong session 
      * @author HebaAamer
      */
-    public function testUserRequestsAction_WrongSession() {
+    public function testUserOffersAction_WrongSession() {
         $this->addFixture(new LoadMyOffersData());
         $this->loadFixtures();
         
@@ -418,7 +419,7 @@ class TangleControllerTest extends EntangleTestCase
      * Test Case testing user not in the tangle 
      * @author HebaAamer
      */
-    public function testUserRequestsAction_NotUserInTangle() {
+    public function testUserOffersAction_NotUserInTangle() {
         $this->addFixture(new LoadMyOffersData());
         $this->loadFixtures();
         
@@ -436,7 +437,7 @@ class TangleControllerTest extends EntangleTestCase
      * Test Case to check if the user left the tangle or not
      * @author HebaAamer
      */
-    public function testUserRequestsAction_LeftUser() {
+    public function testUserOffersAction_LeftUser() {
         $this->addFixture(new LoadMyOffersData());
         $this->loadFixtures();
         
@@ -454,7 +455,7 @@ class TangleControllerTest extends EntangleTestCase
      * Test Case to get the requests of the tangle owner
      * @author HebaAamer
      */
-    public function testUserRequestsAction_CaseTangleOwner() {
+    public function testUserOffersAction_CaseTangleOwner() {
         $this->addFixture(new LoadMyOffersData());
         $this->loadFixtures();
         
@@ -481,7 +482,7 @@ class TangleControllerTest extends EntangleTestCase
      * Test Case to get the offers of the tangle member
      * @author HebaAamer
      */
-    public function testUserRequestsAction_CaseTangleMember() {
+    public function testUserOffersAction_CaseTangleMember() {
         $this->addFixture(new LoadMyOffersData());
         $this->loadFixtures();
         

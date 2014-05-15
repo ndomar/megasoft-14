@@ -94,7 +94,7 @@ class TangleController extends Controller {
         $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
         $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $user->getId()));
 
-        if ($userTangle == null) {
+        if ($userTangle == null || $userTangle->getLeavingDate() != null) {
             return new Response('Unauthorized', 401);
         }
 
