@@ -172,5 +172,29 @@ class LoadMyOffersData extends AbstractFixture implements OrderedFixtureInterfac
         $this->createTangle($manager);
     }
     
+    /**
+     * This function is used to make testing userTangles
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
+    private function makeUserTangles(ObjectManager $manager){
+        $this->createUserTangle($manager, 'userAhmad', true, 0, false);
+        $this->createUserTangle($manager, 'userMohamed', false, 80, false);
+        $this->createUserTangle($manager, 'userAly', false, -80, false);
+        $this->createUserTangle($manager, 'userAdel', false, 0, true);
+    }
     
+    /**
+     * This function is used to make testing requests
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
+    private function makeRequests(ObjectManager $manager){
+        $this->createRequest($manager, 'userAly', 'i want to buy a car', 1, 1, true);
+        $this->createRequest($manager, 'userAly', 'i want to travel to London', 2, 0, false);
+        $this->createRequest($manager, 'userAly', 'i want to go to the doctor', 3, 2, false);
+        $this->createRequest($manager, 'userAly', 'i want to buy a book', 4, 0, false);
+        $this->createRequest($manager, 'userAly', 'i want to have a reminder software', 5, 2, true);
+        $this->createRequest($manager, 'userAly', 'i want to have a ride tomorrow', 6, 1, false);
+    }
 }
