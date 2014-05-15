@@ -28,7 +28,7 @@ class TangleController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($tangleId == null || $sessionId == null) {
-            return new Response('Bad Request', 400);
+            return new Response('Please login again', 400);
         }
 
         $doctrine = $this->getDoctrine();
@@ -36,7 +36,7 @@ class TangleController extends Controller {
 
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($session == null || $session->getExpired()) {
-            return new Response('Bad Request', 400);
+            return new Response('Please login again', 400);
         }
 
         $user = $session->getUser();
@@ -44,7 +44,7 @@ class TangleController extends Controller {
         $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $user->getId()));
 
         if ($userTangle == null) {
-            return new Response('Unauthorized', 401);
+            return new Response('You do not belong to this tangle', 401);
         }
 
         return null;
@@ -269,7 +269,7 @@ class TangleController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($sessionId == null) {
-            return new Response("Bad Request", 400);
+            return new Response("Please login again", 400);
         }
 
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
@@ -277,17 +277,17 @@ class TangleController extends Controller {
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
 
         if ($session == null || $session->getExpired()) {
-            return new Response("Unauthorized", 401);
+            return new Response("Please login again", 401);
         }
 
         if (!$this->validateTangleId($tangleId)) {
             return new Response("Tangle Not Found", 404);
         }
-
+d
         $userTangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserTangle');
 
         if (($userTangle = $userTangleRepo->findOneBy(array('userId' => $session->getUserId(), 'tangleId' => $tangleId))) == null) {
-            return new Response("You are not a tangle member to invite other members", 401);
+            return new Response("You are Unauthorized to perform this action", 401);
         }
 
         $jsonString = $request->getContent();
@@ -376,22 +376,26 @@ class TangleController extends Controller {
         $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
 
-        if ($sessionId == null || $tangleIcon == null || $tangleName == null) {
-            return new Response("Bad Request", 400);
+        if ($sessionId == null) {
+            return new Response("Please login again", 400);
+        }
+
+        if ($tangleIcon == null || $tangleName == null) {
+            return new Response("Please include all fields", 400);
         }
 
         if ($session == null) {
-            return new Response("Unauthorized", 401);
+            return new Response("Please login again", 401);
         }
 
         if (!($this->checkAvailability($tangleName))) {
-            return new Response("Tangle Already Taken", 200);
+            return new Response("This name is unavailable, please choose a different name", 200);
         }
         $imageData = base64_decode($tangleIcon);
         $f = finfo_open();
         $mimeType = finfo_buffer($f, $imageData, FILEINFO_MIME_TYPE);
         if ($mimeType == false || $mimeType != 'image/png') {
-            return new Response("Bad image", 400);
+            return new Response("Please choose a different image", 400);
         }
         $icon = imagecreatefromstring($imageData);
         $iconName = $this->generateRandomString(50) . '.png';
@@ -454,7 +458,7 @@ class TangleController extends Controller {
      */
     public function validateIsOwner($sessionId, $tangleId) {
         if ($sessionId == null) {
-            return new Response("Bad Request", 400);
+            return new Response("Please login again", 400);
         }
 
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
@@ -462,14 +466,14 @@ class TangleController extends Controller {
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
 
         if ($session == null || $session->getExpired()) {
-            return new Response("Unauthorized", 401);
+            return new Response("Please login again", 401);
         }
 
         $userTangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserTangle');
 
         if (($userTangle = $userTangleRepo->findOneBy(array('userId' => $session->getUserId(), 'tangleId' => $tangleId))) == null || !$userTangle->getTangleOwner()) {
 
-            return new Response("Unauthorized", 401);
+            return new Response("Please choose a tangle", 401);
         }
 
         return null;
@@ -504,13 +508,13 @@ class TangleController extends Controller {
         if (($userTangle = $userTangleRepo
                 ->findOneBy(array('userId' => $userId,
             'tangleId' => $tangleId, 'tangleOwner' => true))) != null) {
-            return new Response("Forbidden", 403);
+            return new Response("You are unauthorized to perforn this action", 403);
         }
         $userTangle = $userTangleRepo
                 ->findOneBy(array('userId' => $userId,
             'tangleId' => $tangleId));
         if ($userTangle->getLeavingDate() != null) {
-            return new Response("Unauthorized", 401);
+            return new Response("You are unauthorized to perform this action", 401);
         }
 
         return null;
@@ -766,7 +770,7 @@ class TangleController extends Controller {
         }
 
         if ($pendingInvitation->getApproved()) {
-            return new Response("Bad Request", 400);
+            return new Response("User has already been approved", 400);
         }
 
         $validation = $this->validateIsOwner($sessionId, $pendingInvitation->getTangleId());
@@ -789,7 +793,7 @@ class TangleController extends Controller {
         } else {
             $pendingInvitation->setApproved(true);
             $this->getDoctrine()->getManager()->flush();
-            return new Response("Already in the tangle", 200);
+            return new Response("You are already a member of this tangle", 200);
         }
     }
 
@@ -811,7 +815,7 @@ class TangleController extends Controller {
         }
 
         if ($pendingInvitation->getApproved()) {
-            return new Response("Bad Request", 400);
+            return new Response("Invitation has already been rejected", 400);
         }
 
         $validation = $this->validateIsOwner($sessionId, $pendingInvitation->getTangleId());
@@ -890,7 +894,7 @@ class TangleController extends Controller {
         $doctrine = $this->getDoctrine();
 
         if ($sessionId == null) {
-            return new Response("Bad Request", 400);
+            return new Response("Please login again ", 400);
         }
 
         $sesionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
@@ -898,7 +902,7 @@ class TangleController extends Controller {
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
 
         if ($session == null || $session->getExpired()) {
-            return new Response("Unauthorized", 401);
+            return new Response("Please login again", 401);
         }
 
 
@@ -962,10 +966,10 @@ class TangleController extends Controller {
         $tangleRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Tangle");
         $tangle = $tangleRepo->findOneBy(array('id' => $tangleId,));
         if ($tangle == null) {
-            return new Response("Tangle doesn't exist", 404);
+            return new Response("Tangle does not exist", 404);
         }
         $verified = $this->validateIsOwner($sessionId, $tangleId);
-        if ($verified != null) {
+        if ($verified != null) { 
             return $verified;
         }
         $tangleUsers = $tangle->getUsers();
@@ -981,7 +985,7 @@ class TangleController extends Controller {
         }
         $this->getDoctrine()->getManager()->flush();
 
-        return new Response("Tangle reset", 200);
+        return new Response("Tangle reseted successfully", 200);
     }
 
     /**

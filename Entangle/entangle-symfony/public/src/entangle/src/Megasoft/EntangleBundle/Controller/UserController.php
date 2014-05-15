@@ -57,16 +57,16 @@ class UserController extends Controller {
         $deviceType = $json_array['deviceType'];
 
         if (!$name) {
-            return new JsonResponse("missing name", 400);
+            return new JsonResponse("Please enter username", 400);
         }
         if (!$password) {
-            return new JsonResponse("missing password", 400);
+            return new JsonResponse("Please enter password", 400);
         }
         if(!$deviceType){
-            return new JsonResponse("missing device type", 400);
+            return new JsonResponse("Please enter device type", 400);
         }
         if (strstr("\"", $name) || strstr("'", $name)) {
-            return new JsonResponse("the name has special characters", 400);
+            return new JsonResponse("Username should not contain special characters", 400);
         }
         $sessionId = $this->generateSessionId(30);
 
@@ -152,7 +152,7 @@ class UserController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($sessionId == null) {
-            return new Response('Unauthorized', 401);
+            return new Response('Please login again', 401);
         }
 
         $doctrine = $this->getDoctrine();
@@ -168,7 +168,7 @@ class UserController extends Controller {
         $loggedInUser = $session->getUser();
 
         if ($session == null || $session->getExpired() || $loggedInUser != $user) {
-            return new Response('Unauthorized', 401);
+            return new Response('Please login again', 401);
         }
 
         return $this->viewProfile($user);
@@ -186,7 +186,7 @@ class UserController extends Controller {
       $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($sessionId == null) {
-            return new Response('Unauthorized', 401);
+            return new Response('Please login again', 401);
         }
 
         $doctrine = $this->getDoctrine();
@@ -197,7 +197,7 @@ class UserController extends Controller {
         $loggedInUser = $session->getUser();
 
         if ($session == null || $session->getExpired()) {
-            return new Response('Unauthorized', 401);
+            return new Response('Please login again', 401);
         }
 
         if ($user == null) {
@@ -257,7 +257,7 @@ class UserController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($sessionId == null) {
-            return new Response('Unauthorized', 401);
+            return new Response('Please login again', 401);
         }
 
         $doctrine = $this->getDoctrine();
@@ -267,7 +267,7 @@ class UserController extends Controller {
         $session = $sessionTable->findOneBy(array('sessionId' => $sessionId,));
 
         if ($session == null || $session->getExpired()) {
-            return new Response('Unauthorized', 401);
+            return new Response('Please login again', 401);
         }
 
         $loggedInUser = $session->getUser();
@@ -335,10 +335,10 @@ class UserController extends Controller {
         $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if (!$session) {
-            return new JsonResponse("the sessionId does not exist", 404);
+            return new JsonResponse("Please login again" 404);
         }
         if ($session->getExpired()) {
-            return new JsonResponse("the sessionId is already expired", 400);
+            return new JsonResponse("Please login again", 400);
         }
         $user = $session->getUser();
 
