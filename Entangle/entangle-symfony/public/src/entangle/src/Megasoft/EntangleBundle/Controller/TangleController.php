@@ -1052,8 +1052,8 @@ class TangleController extends Controller {
     private function deleteTransactions($offerId) {
         $transactionRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Transaction");
         $transaction = $transactionRepo->findOneBy(array('offerId' => $offerId,));
-        if($transaction != null) {
-        $transaction->setDeleted(1);
+        if ($transaction != null) {
+            $transaction->setDeleted(1);
         }
         $this->getDoctrine()->getManager()->flush();
     }

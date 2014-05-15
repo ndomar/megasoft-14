@@ -20,7 +20,7 @@ class TangleControllerTest extends EntangleTestCase
      * Test Case testing sending a wrong session to AllUsersAction
      * @author OmarElAzazy
      */
-   /* public function testAllUsersAction_WrongSession(){
+    public function testAllUsersAction_WrongSession(){
         $this->addFixture(new LoadTangleData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadSessionData());
@@ -41,7 +41,7 @@ class TangleControllerTest extends EntangleTestCase
      * Test Case testing sending correct request to AllUsersAction
      * @author OmarElAzazy
      */
-    /*public function testAllUsersAction_GetListWithSampleUser(){
+    public function testAllUsersAction_GetListWithSampleUser(){
         $this->addFixture(new LoadTangleData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadSessionData());
@@ -71,8 +71,13 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals('sampleUser', $users[0]['username']);
         $this->assertEquals(0, $users[0]['balance']);
         $this->assertEquals('http://entangle.io/images/profilePictures/', $users[0]['iconUrl']);
-    }*/
-    
+    }
+    /**
+     * Test case for having no session id to resetTangle action
+     * @param none
+     * @return none
+     * @author Salma Khaled
+     */
      public function testResetTangleAction_NoSessionId() {
         $this->addFixture(new LoadResetTangleData());
         $this->loadFixtures();
@@ -82,7 +87,12 @@ class TangleControllerTest extends EntangleTestCase
 
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), 'check for having no session id');
     }
-
+    /**
+     * Test case for having bad session id to resetTangle action
+     * @param none
+     * @return none
+     * @author Salma Khaled
+     */
     public function testResetAction_BadSessionId() {
         $this->addFixture(new LoadResetTangleData());
         $this->loadFixtures();
@@ -92,7 +102,12 @@ class TangleControllerTest extends EntangleTestCase
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), 'Check for having bad session id');
     }
-
+    /**
+     * Test case for having expired session id to resetTangle action
+     * @param none
+     * @return none
+     * @author Salma Khaled
+     */
     public function testResetTangleAction_ExpiredSessionId() {
         $this->addFixture(new LoadResetTangleData());
         $this->loadFixtures();
@@ -102,7 +117,12 @@ class TangleControllerTest extends EntangleTestCase
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), 'Check for expired session id');
     }
-
+    /**
+     * Test case for invalid tangle id to resetTangle action
+     * @param none
+     * @return none
+     * @author Salma Khaled
+     */
     public function testResetTangleAction_NoSuchTangle() {
         $this->addFixture(new LoadResetTangleData());
         $this->loadFixtures();
@@ -112,7 +132,12 @@ class TangleControllerTest extends EntangleTestCase
 
         $this->assertEquals(404, $client->getResponse()->getStatusCode(), 'Check for tangle doesn\'t exist');
     }
-
+    /**
+     * Test case for the user not being the owner to resetTangle action
+     * @param none
+     * @return none
+     * @author Salma Khaled
+     */
     public function testResetTangleAction_UserNotOwner() {
         $this->addFixture(new LoadResetTangleData());
         $this->loadFixtures();
@@ -122,7 +147,12 @@ class TangleControllerTest extends EntangleTestCase
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), 'Check for user not owner');
     }
-
+    /**
+     * Test case for the user not being in the tangle to resetTangle action
+     * @param none
+     * @return none
+     * @author Salma Khaled
+     */
     public function testResetTangleAction_UserNotInTheTangle() {
         $this->addFixture(new LoadResetTangleData());
         $this->loadFixtures();
@@ -132,7 +162,12 @@ class TangleControllerTest extends EntangleTestCase
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), 'Check for user not in the tangle');
     }
-
+    /**
+     * Test case to make sure requests are deleted to resetTangle action
+     * @param none
+     * @return none
+     * @author Salma Khaled
+     */
     public function testResetTangleAction_RequestsDeleted() {
         $this->addFixture(new LoadResetTangleData());
         $this->loadFixtures();
@@ -145,34 +180,39 @@ class TangleControllerTest extends EntangleTestCase
         $requests = $tangle->getRequests();
         foreach ($requests as $request) {
             $deleted = $request->getDeleted();
-            $this->assertEquals(1, $deleted, 
-                    'Check all requests are deleted');
+            $this->assertEquals(1, $deleted, 'Check all requests are deleted');
         }
     }
-
+    /**
+     * Test case to make sure offers are deleted to resetTangle action
+     * @param none
+     * @return none
+     * @author Salma Khaled
+     */
     public function testResetTangleAction_OffersDeleted() {
         $this->addFixture(new LoadResetTangleData());
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('PUT', '/tangle/1/reset', 
-                array(), 
-                array(), 
-                array('HTTP_X_SESSION_ID' => 'userAhmad'));
+        $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'userAhmad'));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $tangleRepo = $this->doctrine->getRepository("MegasoftEntangleBundle:Tangle");
         $tangle = $tangleRepo->findOneBy(array('id' => 1));
         $requests = $tangle->getRequests();
         foreach ($requests as $request) {
-        $offers = $request->getOffers();
-        foreach ($offers as $offer) {
-            $deleted = $offer->getDeleted();
-            $this->assertEquals(1, $deleted, 'Check all offers are deleted');
-        }
+            $offers = $request->getOffers();
+            foreach ($offers as $offer) {
+                $deleted = $offer->getDeleted();
+                $this->assertEquals(1, $deleted, 'Check all offers are deleted');
+            }
         }
     }
-    
-
+    /**
+     * Test case to make sure claims are deleted to resetTangle action to resetTangle action
+     * @param none
+     * @return none
+     * @author Salma Khaled
+     */
     public function testResetTangleAction_ClaimsDeleted() {
         $this->addFixture(new LoadResetTangleData());
         $this->loadFixtures();
@@ -185,10 +225,15 @@ class TangleControllerTest extends EntangleTestCase
         $claims = $tangle->getClaims();
         foreach ($claims as $claim) {
             $deleted = $claim->getDeleted();
-            $this->assertEquals(1, $deleted, 
-                    'Check all claims are deleted');
+            $this->assertEquals(1, $deleted, 'Check all claims are deleted');
         }
     }
+    /**
+     * Test case to make sure credit is set to zero to resetTangle action
+     * @param none
+     * @return none
+     * @author Salma Khaled
+     */
     public function testResetTangleAction_CreditIsZero() {
         $this->addFixture(new LoadResetTangleData());
         $this->loadFixtures();
@@ -201,9 +246,66 @@ class TangleControllerTest extends EntangleTestCase
         $userTangles = $tangle->getUserTangles();
         foreach ($userTangles as $userTangle) {
             $credit = $userTangle->getCredit();
-            $this->assertEquals(0, $credit, 
-                    'Check all credits are deleted');
+            $this->assertEquals(0, $credit, 'Check all credits are set to zero');
         }
     }
-//check on transactions , check on messages
+    /**
+     * Test case to make sure transactions are deleted to resetTangle action
+     * @param none
+     * @return none
+     * @author Salma Khaled
+     */
+    public function testResetTangleAction_TransactionsDeleted() {
+        $this->addFixture(new LoadResetTangleData());
+        $this->loadFixtures();
+
+        $client = static::createClient();
+        $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'userAhmad'));
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $tangleRepo = $this->doctrine->getRepository("MegasoftEntangleBundle:Tangle");
+        $tangle = $tangleRepo->findOneBy(array('id' => 1));
+        $requests = $tangle->getRequests();
+        foreach ($requests as $request) {
+            $offers = $request->getOffers();
+            foreach ($offers as $offer) {
+                $offerId = $offer->getId();
+                $transactionRepo = $this->doctrine->getRepository("MegasoftEntangleBundle:Transaction");
+                $transaction = $transactionRepo->findOneBy(array('offerId' => $offerId));
+                if ($transaction != null) {
+                    $deleted = $transaction->getDeleted();
+                }
+                $this->assertEquals(1, $deleted, 'Check all transactions are deleted');
+            }
+        }
+    }
+    /**
+     * Test case to make sure messages are deleted to resetTangle action
+     * @param none
+     * @return none
+     * @author Salma Khaled
+     */
+    public function testResetTangleAction_MessagesDeleted() {
+        $this->addFixture(new LoadResetTangleData());
+        $this->loadFixtures();
+
+        $client = static::createClient();
+        $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'userAhmad'));
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $tangleRepo = $this->doctrine->getRepository("MegasoftEntangleBundle:Tangle");
+        $tangle = $tangleRepo->findOneBy(array('id' => 1));
+        $requests = $tangle->getRequests();
+        foreach ($requests as $request) {
+            $offers = $request->getOffers();
+            foreach ($offers as $offer) {
+                $offerId = $offer->getId();
+                $messagesRepo = $this->doctrine->getRepository("MegasoftEntangleBundle:Message");
+                $messages = $messagesRepo->findBy(array('offerId' => $offerId));
+                foreach ($messages as $message) {
+                    $deleted = $message->getDeleted();
+                    $this->assertEquals(1, $deleted, 'Check all messages are deleted');
+                }
+            }
+        }
+    }
+
 }
