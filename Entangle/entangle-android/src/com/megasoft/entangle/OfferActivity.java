@@ -31,6 +31,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.megasoft.config.Config;
+import com.megasoft.requests.DeleteRequest;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.ImageRequest;
 import com.megasoft.requests.PostRequest;
@@ -209,7 +210,24 @@ public class OfferActivity extends FragmentActivity {
 	 * @author Almgohar
 	 */
 	private void deleteOffer() {
-		
+		DeleteRequest deleteRequest = new DeleteRequest(Config.API_BASE_URL
+				+ OFFER) {
+			protected void onPostExecute(String res) {
+				String message = "Sorry, there are problems in the delete process. Please, try again later";
+
+				if (!this.hasError() && res != null) {
+					message = "Deleted!";
+				}
+				Toast.makeText(getBaseContext(), message,
+						Toast.LENGTH_LONG).show();
+
+			}
+		};
+
+		deleteRequest.addHeader(Config.API_SESSION_ID, sessionId);
+		deleteRequest.execute();
+
+				
 	}
 
 	/**
