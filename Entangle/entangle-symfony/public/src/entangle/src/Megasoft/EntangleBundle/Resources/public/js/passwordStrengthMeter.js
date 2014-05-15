@@ -1,8 +1,3 @@
-// Password strength meter
-// This jQuery plugin is written by firas kassem [2007.04.05]
-// Firas Kassem  phiras.wordpress.com || phiras at gmail {dot} com
-// for more information : http://phiras.wordpress.com/2007/04/08/password-strength-meter-a-jquery-plugin/
-
 var shortPass = 'Too short'
 var badPass = 'Bad'
 var goodPass = 'Good'
@@ -30,7 +25,7 @@ function passwordStrength(password,username)
     //password has 3 numbers
     if (password.match(/(.*[0-9].*[0-9].*[0-9])/))  score += 5 
     
-    //password has 2 sybols
+    //password has 2 symbols
     if (password.match(/(.*[!,@,#,$,%,^,&,*,?,_,~].*[!,@,#,$,%,^,&,*,?,_,~])/)) score += 5 
     
     //password has Upper and Lower chars
@@ -45,7 +40,7 @@ function passwordStrength(password,username)
     //password has char and symbol
     if (password.match(/([!,@,#,$,%,^,&,*,?,_,~])/) && password.match(/([a-zA-Z])/))  score += 15 
     
-    //password is just a nubers or chars
+    //password is just a numbers or chars
     if (password.match(/^\w+$/) || password.match(/^\d+$/) )  score -= 10 
     
     //verifing 0 < score < 100

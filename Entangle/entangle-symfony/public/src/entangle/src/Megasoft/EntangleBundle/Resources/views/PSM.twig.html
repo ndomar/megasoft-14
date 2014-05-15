@@ -1,0 +1,77 @@
+﻿{% extends "::base.html.twig" %}
+
+{% block title %}MegasoftEntangleBundle:Site:index{% endblock %}
+
+{% block body %}
+<!-- connecting to javascripts -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script language="javascript" src="jquery_passwordStrengthMeter.js"></script>
+<script language="javascript" src="passwordStrengthMeter.js"></script>
+<script language="javascript">
+	jQuery(document).ready(function() {
+		$('#username').keyup(function(){$('#result').html(passwordStrength($('#password').val(),$('#username').val()))})
+		$('#password').keyup(function(){$('#result').html(passwordStrength($('#password').val(),$('#username').val()))})
+	})
+	function showMore()
+	{
+		$('#more').slideDown()
+	}
+</script>
+
+<style type="text/css">
+<!--
+.style1 {
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+-->
+</style>
+</head>
+
+<body>
+<!-- creating containers for username & password-->
+
+<div class="style1" id='container'>
+<div class="style1" id='main'>
+	<label for="username">username : <input name="username" id="username" type="text"/></label>
+	<label for="password">password : <input name="password" id="password" type="password"/></label>
+    <span style="color:green" id='result'></span> 
+</div>
+<div id='more' style="display:none;background-color:#EEEEEE;padding:10px;margin:10px;width:600px">
+
+<!-- the functions to calculate the score which will decide the password strength -->
+
+<ul type="disc">
+  <li dir="ltr">If the password matches the username then <strong>BadPassword</strong></li>
+  <li dir="ltr">If the password is less than 4 characters then <strong>TooShortPassword</strong></li>
+  <li dir="ltr"><strong>Score += password length * 4</strong></li>
+  <li dir="ltr"><strong>Score -= repeated characters in the password</strong> ( 1 char repetition )  </li>
+  <li dir="ltr"><strong>Score -= repeated characters in the password</strong> ( 2 char repetition )  </li>
+  <li dir="ltr"><strong>Score -= repeated characters in the password</strong> ( 3 char repetition )  <span dir="rtl"> </span></li>
+  <li dir="ltr"><strong>Score -= repeated characters in the password</strong> ( 4 char repetition )  <span dir="rtl"> </span></li>
+  <li dir="ltr">If the password has 3 numbers then <strong>score += 5</strong></li>
+  <li dir="ltr">If the password has 2 special characters then <strong>score       += 5</strong></li>
+  <li dir="ltr">If the password has upper and lower character then <strong>score       += 10</strong></li>
+  <li dir="ltr">If the password has numbers and characters then <strong>score       += 15</strong></li>
+  <li dir="ltr">If the password has numbers and special characters then <strong>score += 15</strong><span dir="rtl"> </span></li>
+  <li dir="ltr">If the password has special characters and characters       then <strong>score += 15</strong><span dir="rtl"> </span></li>
+  <li dir="ltr">If the password is only characters then <strong>score -= 10</strong></li>
+  <li dir="ltr">If the password is only numbers then <strong>score -= 10</strong></li>
+</ul>
+<ul type="disc">
+  <li dir="ltr">If score &gt; 100 then <strong>score = 100</strong></li>
+</ul>
+
+<ul type="disc">
+  <li dir="ltr">If  0  &lt; score &lt; 34 then <strong>BadPassword</strong></li>
+  <li dir="ltr">If  34 &lt; score       &lt; 68  then <strong>GoodPassword</strong></li>
+  <li dir="ltr">If 68 &lt; score &lt; 100 then <strong>StrongPassword</strong></li>
+</ul>
+</div>
+</div>
+</body>
+</html>
+
+
+{% endblock %}
