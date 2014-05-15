@@ -478,7 +478,6 @@ class TangleController extends Controller {
     /**
      * A function that is responsible of verifing the request from
      * a user leaving a tangle
-     *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param integer $tangleId
      * @return \Symfony\Component\HttpFoundation\Response|null
@@ -489,11 +488,8 @@ class TangleController extends Controller {
         if ($verification != null) {
             return $verification;
         }
-
         $sessionId = $request->headers->get("X-SESSION-ID");
-
         $doctrine = $this->getDoctrine();
-
         $sessionRepo = $doctrine->getRepository("MegasoftEntangleBundle:Session");
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         $userId = $session->getUserId();
@@ -517,7 +513,6 @@ class TangleController extends Controller {
     /**
      * A function that is reponsible for deleting the requests
      * of a user that left the tangle
-     *
      * @param integer $tangleId
      * @param integer $userId
      * @author HebaAamer
@@ -529,7 +524,7 @@ class TangleController extends Controller {
         
         if ($requests != null) {
             foreach ($requests as $request) {
-                if ($request != null && $request->getStatus() != $request->CLOSE) {
+                if ($request != null) {
                     $request->setDeleted(true);
                     $offers = $request->getOffers();
                     //set the offer status
@@ -537,6 +532,7 @@ class TangleController extends Controller {
                         foreach ($offers as $offer) {
                             if($offer != null) {
                                 $offer->setDeleted(true);
+                                $this->removeMessages($offer);
                             }
                         }
                     }
@@ -548,7 +544,6 @@ class TangleController extends Controller {
     /**
      * A function that is responsible for deleting the offers
      * of a user that left the tangle
-     *
      * @param integer $tangleId
      * @param integer $userId
      * @author HebaAamer
@@ -567,8 +562,9 @@ class TangleController extends Controller {
                     $request = $requestRepo->findOneBy(array(
                         'id' => $requestId, 'tangleId' => $tangleId, ));
 
-                    if ($request != null && $offer->getTransaction() != null) {
+                    if ($request != null) {
                         $offer->setDeleted(true);
+                        $this->removeMessages($offer);
                     }
                 }
             }
@@ -578,8 +574,7 @@ class TangleController extends Controller {
     /**
      * A function that is responsible for removing a user from
      * a tangle and updating the deletedBalance of the tangle
-     * and setting the leavingDate of that user.
-     *
+     * and setting the leavingDate of that user
      * @param integer $tangleId
      * @param integer $userId
      * @author HebaAamer
@@ -607,8 +602,8 @@ class TangleController extends Controller {
     }
 
     /**
-     * This function is used to remove all the claims related to specific
-     *
+     * This function is used to remove all the claims related to specific user 
+     * in certain tangle
      * @param integer $tangleId
      * @param integer $userId
      * @author HebaAamer
@@ -625,10 +620,25 @@ class TangleController extends Controller {
             }
         }
     }
+    
+    /**
+     * This function is used to remove all the Messages related to specific offer
+     * @param Offer $offer
+     * @author HebaAamer
+     */
+    private function removeMessages($offer) {
+        $messages = $offer->getMessages();
+        if($messages != null) {
+            foreach ($messages as $message) {
+                if($message != null) {
+                    $message->setDeleted(true);
+                }
+            }
+        }
+    }
 
     /**
      * An endpoint to be used when a user leaves a tangle
-     *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param integer $tangleId
      * @return \Symfony\Component\HttpFoundation\Response
@@ -651,6 +661,7 @@ class TangleController extends Controller {
         $this->removeRequests($tangleId, $userId);
         $this->removeClaims($tangleId, $userId);
         $this->removeUser($tangleId, $userId);
+        
         $this->getDoctrine()->getManager()->flush();
         
         return new Response("You have left successfully", 204);
