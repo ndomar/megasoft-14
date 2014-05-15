@@ -23,7 +23,12 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $user->setPassword('samplePassword');
         
         $manager->persist($user);
-        $manager->flush();
+
+        $user1 = new User();
+        $user1->setName('sampleUser1');
+        $user1->setPassword('samplePassword1');
+
+        $manager->persist($user1);
 
         $user2 = new User();
         $user2->setName('sampleUser2');
@@ -41,7 +46,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         
         $this->addReference('sampleUser', $user);
         $this->addReference('sampleUser2', $user2);
-        $this->addReference('sampleUser3', $user2);
+        $this->addReference('sampleUser3', $user3);
+
     }
 
     /**
