@@ -14,6 +14,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Megasoft\EntangleBundle\Entity\Transaction;
 use DateTime;
 
+/**
+ * Class LoadTransactionData
+ * @package Megasoft\EntangleBundle\DataFixtures\ORM
+ * @author Almgohar
+ */
 class LoadTransactionData extends AbstractFixture implements OrderedFixtureInterface {
 
     /**
