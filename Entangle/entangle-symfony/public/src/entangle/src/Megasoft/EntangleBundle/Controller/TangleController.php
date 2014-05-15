@@ -28,6 +28,7 @@ class TangleController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($tangleId == null || $sessionId == null) {
+            printf(1);
             return new Response('Bad Request', 400);
         }
 
@@ -36,6 +37,7 @@ class TangleController extends Controller {
         
         $tangle = $tangleRepo->findOneBy(array('id' => $tangleId));
         if($tangle == null){
+            printf(2);
             return new Response('Tangle not found', 404);
         }
         
@@ -43,14 +45,20 @@ class TangleController extends Controller {
 
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($session == null || $session->getExpired()) {
+            printf(3);
             return new Response('Bad Request', 400);
         }
 
-        $user = $session->getUser();
+        printf('session id : ');
+        printf($session->getId());
+        $userId = $session->getUserId();
+        printf(' user id : ');
+        printf($user->getId());
         $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
-        $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $user->getId()));
+        $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $userId));
 
         if ($userTangle == null) {
+            printf(4);
             return new Response('Unauthorized', 401);
         }
 
