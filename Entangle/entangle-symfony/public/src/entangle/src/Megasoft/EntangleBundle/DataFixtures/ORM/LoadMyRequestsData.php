@@ -14,7 +14,6 @@ use Megasoft\EntangleBundle\Entity\Tangle;
 
 /*
  * Fixtures for view my requests end-point
- * @author HebaAamer
  */
 class LoadMyRequestsData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -123,13 +122,14 @@ class LoadMyRequestsData extends AbstractFixture implements OrderedFixtureInterf
      * @param integer $requestStatus
      * @author HebaAamer
      */
-    private function createRequest(ObjectManager $manager, $userReference, $description, $requestNumber, $requestStatus) {
+    private function createRequest(ObjectManager $manager, $userReference, $description, $requestNumber, $requestStatus, $deleted) {
         $request = new Request();
         $request->setUser($this->getReference("$userReference"));
         $request->setTangle($this->getReference('tangle'));
         $request->setDescription("$description");
         $request->setStatus($requestStatus);
         $request->setDate(new DateTime('now'));
+        $request->setDeleted($deleted);
         
         $manager->persist($request);
         $this->addReference('request' . "$requestNumber", $request);
@@ -180,5 +180,19 @@ class LoadMyRequestsData extends AbstractFixture implements OrderedFixtureInterf
         $this->createUserTangle($manager, 'userMohamed', false, 80, false);
         $this->createUserTangle($manager, 'userAly', false, -80, false);
         $this->createUserTangle($manager, 'userAdel', false, 0, true);
+    }
+    
+    /**
+     * This function is used to make testing requests
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
+    private function makeRequests(ObjectManager $manager){
+        $this->createRequest($manager, 'userAly', 'i want to buy a car', 1, 1, true);
+        $this->createRequest($manager, 'userAly', 'i want to travel to London', 2, 0, false);
+        $this->createRequest($manager, 'userAly', 'i want to go to the doctor', 3, 2, false);
+        $this->createRequest($manager, 'userAly', 'i want to buy a book', 4, 0, false);
+        $this->createRequest($manager, 'userAly', 'i want to have a reminder software', 5, 2, true);
+        $this->createRequest($manager, 'userAly', 'i want to have a ride tomorrow', 6, 1, false);
     }
 }
