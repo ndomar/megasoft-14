@@ -1069,9 +1069,19 @@ class TangleController extends Controller {
      * @author OmarElAzazy
      */
     public function removeMemberAction(Request $request, $tangleId, $userId){
+        $verification = $this->removeMemberVerification($request,
+            $tangleId, $userId, $tangleOwner, $member, $memberTangle, $doctrine);
 
+        if($verification != null){
+            return $verification;
+        }
 
+        $this->removeUser($tangleId, $member->getId());
+        $this->removeOffers($tangleId, $member->getId());
+        $this->removeRequests($tangleId, $member->getId());
+        $this->removeClaims($tangleId, $member->getId());
 
+        return new Response('User removed', 204);
     }
 
     /*
@@ -1086,7 +1096,13 @@ class TangleController extends Controller {
      * @return Response | null
      * @author OmarElAzazy
      */
-    public function removeMemberVerification($request, $tangleId, $userId, &$tangleOwner, &$member, &$memberTangle, &$doctrine){
+    public function removeMemberVerification($request,
+                                             $tangleId,
+                                             $userId,
+                                             &$tangleOwner,
+                                             &$member,
+                                             &$memberTangle,
+                                             &$doctrine){
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($tangleId == null || $sessionId == null || $userId == null) {
