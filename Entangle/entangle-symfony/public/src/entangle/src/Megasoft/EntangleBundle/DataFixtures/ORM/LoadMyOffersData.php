@@ -57,5 +57,41 @@ class LoadMyOffersData extends AbstractFixture implements OrderedFixtureInterfac
         $this->addReference('user' . "$name", $user);
     }
     
+    /**
+     * This function is used to create a session
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param String $userReference
+     * @param String $sessionId
+     * @param boolean $expired
+     * @param String $regId
+     * @author HebaAamer
+     */
+    private function createSession(ObjectManager $manager, $userReference, $sessionId, $expired, $regId) {
+        $session = new Session();
+        $session->setUser($this->getReference("$userReference"));
+        $session->setSessionId("$sessionId");
+        $session->setExpired($expired);
+        $session->setCreated(new DateTime('now'));
+        $session->setDeviceType('Samsung S4');
+        $session->setRegId("$regId");
+        
+        $manager->persist($session);
+        $this->addReference('session_' . "$userReference", $session);
+    }
+    
+    /**
+     * This function is used to create a tangle
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
+    private function createTangle(ObjectManager $manager) {
+        $tangle = new Tangle();
+        $tangle->setName('Tangle');
+        $tangle->setDescription('Sample tangle');
+        
+        $manager->persist($tangle);
+        $this->addReference('tangle', $tangle);
+    }
+    
     
 }
