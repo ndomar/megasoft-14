@@ -102,7 +102,7 @@ public class TangleFragment extends Fragment {
          tangleName = getArguments().getString("tangleName");
         
         sendFilteredRequest(rootResource + "/tangle/" + tangleId
- 				+ "/request");
+ 				+ "/request?limit=1000");
  		setSearchListener();
  		
         return view;
@@ -122,7 +122,7 @@ public class TangleFragment extends Fragment {
 				InputMethodManager inputManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE); 
 				inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 				sendFilteredRequest(rootResource + "/tangle/" + tangleId
-		 				+ "/request?query="+query);
+		 				+ "/request?limit=1000&query="+query);
 				return true;
 			}
 			
@@ -130,7 +130,7 @@ public class TangleFragment extends Fragment {
 			public boolean onQueryTextChange(String newText) {
 				if(newText.equals("")){
 					sendFilteredRequest(rootResource + "/tangle/" + tangleId
-			 				+ "/request");
+			 				+ "/request?limit=1000");
 				}
 				return true;
 			}

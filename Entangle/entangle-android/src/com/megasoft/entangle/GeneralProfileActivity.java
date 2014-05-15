@@ -1,7 +1,5 @@
 package com.megasoft.entangle;
 
-
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,17 +13,19 @@ import com.megasoft.requests.PostRequest;
 import com.megasoft.entangle.megafragments.*;
 
 /**
- * Views a user's general profile given his user Id 
+ * Views a user's general profile given his user Id
+ * 
  * @author Almgohar
  */
 public class GeneralProfileActivity extends FragmentActivity {
 	private static final String LOGOUT = "/user/logout";
 	private int userId;
-	private int tangleId;	
+	private int tangleId;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	//	setContentView(R.layout.activity_profile);
+		setContentView(R.layout.super_profile);
 		ProfileFragment profile = new ProfileFragment();
 		Bundle bundle = new Bundle();
 		tangleId = getIntent().getIntExtra("tangleId", -1);
@@ -36,7 +36,7 @@ public class GeneralProfileActivity extends FragmentActivity {
 		profile.setArguments(bundle);
 		FragmentTransaction transaction = getSupportFragmentManager()
 				.beginTransaction();
-	//	transaction.add(R.id.profile_layout, profile);
+		transaction.add(R.id.profile_layout, profile);
 		transaction.commit();
 	}
 
@@ -55,9 +55,16 @@ public class GeneralProfileActivity extends FragmentActivity {
 		case R.id.logoutButton:
 			logout();
 			return true;
+		case R.id.editProfileButton:
+			goToEditProfile();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private void goToEditProfile() {
+		startActivity(new Intent(this, EditProfileActivity.class));
 	}
 
 	/*
@@ -107,7 +114,8 @@ public class GeneralProfileActivity extends FragmentActivity {
 
 		prefsEditor.commit();
 
-		Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
+		Intent intent = new Intent(getApplicationContext(),
+				SplashActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		this.finish();

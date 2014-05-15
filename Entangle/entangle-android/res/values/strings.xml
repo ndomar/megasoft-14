@@ -47,11 +47,17 @@
     <string name="due">Due</string>
     <string name="create">Create</string>
     <string name="createRequest">Request</string>
+    <string name="toEntangle">to Entangle\.\.\.</string>
+    <string name="welcome">Welcome \ </string>
+    <string name="hurryUp">Hurry up \ </string>
+    <string name="andCreate">and create a\ </string>
+    <string name="here">Create tangle now! </string>
     <string name="tangleNameHint">Specify a Tangle name</string>
     <string name="iconButton">Choose an Icon</string>
     <string name="tangleIcon">Tangle Icon</string>
     <string name="createTangle">CREATE</string>
     <string name="checkTangleName">Check</string>
+    <string name="aTangle">Tangle</string>
     <string name="date">Date</string>
     <string name="ChooseDate">Pick deadline</string>
     <string name="deadLine">Expected deadline</string>
@@ -166,5 +172,6 @@
     <string name="error">Error</string>
     <string name="notaccepted">Offer is not accepted</string>
     <string name="alreadymarked">Offer is already marked as done</string>
+    <string name="editProfile">Edit Profile</string>
 
 </resources>
