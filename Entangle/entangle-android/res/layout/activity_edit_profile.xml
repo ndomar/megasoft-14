@@ -1,0 +1,159 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/paddingSmall"
+    tools:context=".RequestsActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/cancelEdit"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0px"
+            android:layout_height="@dimen/buttonHeight"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_action_remove"
+            android:text="@string/cancel"
+            android:onClick="cancelRedirect"
+            android:textAlignment="center"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/textLarge" />
+
+        <View style="@style/dividerVertical" />
+
+        <Button
+            android:id="@+id/saveAll"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0px"
+            android:layout_height="@dimen/buttonHeight"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ic_action_forward_green"
+            android:onClick="saveAll"
+            android:text="@string/save"
+            android:textAlignment="center"
+            android:textColor="@color/green"
+            android:textSize="@dimen/textLarge" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/blue" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/orange" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/cyan" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/megenta" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/lightGreen" />
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/set_notification"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="@string/email_notification_on" />
+
+    <TextView
+        android:id="@+id/Description"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="@string/my_description" />
+
+    <EditText
+        android:id="@+id/CurrentDescription"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginTop="@dimen/marginSmall"
+        android:ems="10"
+        android:height="@dimen/textFieldHeight"
+        android:hint="@string/current_description"
+        android:inputType="textMultiLine" />
+
+    <TextView
+        android:id="@+id/AddEmail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="@string/add_your_email" />
+
+    <LinearLayout
+        android:id="@+id/user_emails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+    <!--
+    <Button
+        android:id="@+id/myDatePickerButton"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/cyan"
+        android:text="@string/ChooseDate"
+        android:textSize="15sp" />
+    -->
+    <!--
+    <TextView
+        android:id="@+id/showMyDate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp" />
+    -->
+
+    <Button
+        android:id="@+id/DatePickerButton"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="@dimen/marginSmall"
+        android:layout_marginTop="@dimen/marginSmall"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_action_go_to_today"
+        android:onClick="selectDOB"
+        android:spinnerMode="dialog"
+        android:text="@string/DOB"
+        android:textColor="@color/darkGray" />
+
+</LinearLayout>
