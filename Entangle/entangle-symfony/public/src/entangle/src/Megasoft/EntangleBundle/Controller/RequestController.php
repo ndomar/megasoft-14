@@ -345,7 +345,7 @@ class RequestController extends Controller
             $response->setContent("price must be a positive value!");
             return $response;
         }
-        if ($icon == null){
+        if ($icon == null && $icon != 0){
             $response->setStatusCode(400);
             $response->setContent("some data are missing");
             return $response;
