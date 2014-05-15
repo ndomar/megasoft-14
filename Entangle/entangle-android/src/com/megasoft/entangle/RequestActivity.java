@@ -113,7 +113,10 @@ public class RequestActivity extends FragmentActivity {
 		requestLayout = (LinearLayout) this.findViewById(R.id.request_entry_layout);
 		offersLayout = (LinearLayout) this.findViewById(R.id.offer_entries_layout);
 		
-		
+	}
+	
+	public void onResume(){
+		super.onResume();
 		this.fillRequestDetails();
 	}
 
