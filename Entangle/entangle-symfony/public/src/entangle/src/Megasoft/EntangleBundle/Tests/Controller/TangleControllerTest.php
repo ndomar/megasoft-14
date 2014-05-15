@@ -141,7 +141,7 @@ class TangleControllerTest extends EntangleTestCase
                 array(),
                 array('HTTP_X_SESSION_ID', 'session'));
         $response = $client->getResponse();
-        $this->assertEquals(400, $response->getStatusCode(), 'Sending expired session');
+        $this->assertEquals(400, $response->getStatusCode(), 'Sending wrong session');
     }
     
     /**

@@ -15,6 +15,7 @@ use Megasoft\EntangleBundle\Entity\Claim;
 use Megasoft\EntangleBundle\Entity\Session;
 use Megasoft\EntangleBundle\Entity\Message;
 use Megasoft\EntangleBundle\Entity\Transaction;
+use DateTime;
 
 
 /*
@@ -151,6 +152,7 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $request->setTangle($this->getReference('tangle'));
         $request->setDescription("$description");
         $request->setStatus($requestStatus);
+        $request->setDate(new DateTime('now'));
         
         $manager->persist($request);
         $this->addReference('request' . "$requestNumber", $request);
@@ -173,6 +175,7 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $offer->setDescription($description);
         $offer->setRequestedPrice(25);
         $offer->setStatus($offerStatus);
+        $offer->setDate(new DateTime('now'));
         
         $manager->persist($offer);
         $this->addReference('offer' . "$offerNumber", $offer);
@@ -205,9 +208,11 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
     private function createClaim(ObjectManager $manager, $offerReference, $userReference, $claimNumber) {
         $claim = new Claim();
         $claim->setClaimer($this->getReference("$userReference"));
-        $claim->setTangle('tangle');
+        $claim->setTangle($this->getReference('tangle'));
         $claim->setOffer($this->getReference("$offerReference"));
         $claim->setCreated(new DateTime('now'));
+        $claim->setMessage('i am claiming');
+        $claim->setStatus(0);
         
         $manager->persist($claim);
         $this->addReference('claim' . "$claimNumber", $claim);
