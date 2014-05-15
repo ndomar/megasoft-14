@@ -16,9 +16,11 @@ class EntangleTestCase extends WebTestCase
 {
     /* @var \Doctrine\ORM\EntityManager $em */
     public $em =  null;
-    
+
     /* @var \Doctrine\Common\DataFixtures\Loader $loader */
     public $loader = null;
+
+    public $doctrine = null;
     
     /*
      * A method called at the beginning of every test
@@ -29,9 +31,9 @@ class EntangleTestCase extends WebTestCase
         $kernel = static::createKernel();
         $kernel->boot();
 
-        $this->em = $kernel->getContainer()
-            ->get('doctrine')
-            ->getManager();
+        $this->doctrine = $kernel->getContainer()
+            ->get('doctrine');
+        $this->em = $this->doctrine->getManager();
         $connection = $kernel->getContainer()
             ->get('doctrine')->getConnection();
         $connection->exec('SET foreign_key_checks = 0');
