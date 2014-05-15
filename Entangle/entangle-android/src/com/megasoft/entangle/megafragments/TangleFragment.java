@@ -28,6 +28,9 @@ import com.megasoft.requests.GetRequest;
 public class TangleFragment extends Fragment {
 
 	private HomeActivity activity;
+	
+	private String queryParameters;
+	
 	private View view;
 	
 	/**
@@ -101,12 +104,17 @@ public class TangleFragment extends Fragment {
          tangleId = getArguments().getInt("tangleId");
          tangleName = getArguments().getString("tangleName");
         
-        sendFilteredRequest(rootResource + "/tangle/" + tangleId
- 				+ "/request?limit=1000");
  		setSearchListener();
  		
         return view;
     }
+	
+	public void onResume(){
+		super.onResume();
+		queryParameters = queryParameters == null ? "?limit=1000" : queryParameters;
+		sendFilteredRequest(rootResource + "/tangle/" + tangleId
+ 				+ "/request" + queryParameters);
+	}
 	
 	/**
 	 * Sets the listeners for the search button in the action bar.
@@ -121,16 +129,18 @@ public class TangleFragment extends Fragment {
 			public boolean onQueryTextSubmit(String query) {
 				InputMethodManager inputManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE); 
 				inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+				queryParameters = "?limit=1000&query="+query;
 				sendFilteredRequest(rootResource + "/tangle/" + tangleId
-		 				+ "/request?limit=1000&query="+query);
+		 				+ "/request" + queryParameters);
 				return true;
 			}
 			
 			@Override
 			public boolean onQueryTextChange(String newText) {
 				if(newText.equals("")){
+					queryParameters = "?limit=1000";
 					sendFilteredRequest(rootResource + "/tangle/" + tangleId
-			 				+ "/request?limit=1000");
+			 				+ "/request" + queryParameters);
 				}
 				return true;
 			}
