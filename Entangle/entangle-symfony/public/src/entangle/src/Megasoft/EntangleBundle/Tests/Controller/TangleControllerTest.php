@@ -207,4 +207,31 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals(0, $json['count']);
         $this->assertNull($json['requests']);
     }
+    
+    /**
+     * Test Case to get the requests of the tangle member
+     * @author HebaAamer
+     */
+    public function testUserRequestsAction_CaseTangleMember() {
+        $this->addFixture(new LoadMyRequestsData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('GET',
+                'tangle/1/user/requests',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userAly'));
+        $response = $client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode(), 'Case Tangle Member');
+        $content = $response->getContent();
+        $this->assertJson($content, 'Output JSON is wrong formated');
+        
+        $json = json_decode($content);
+        $this->assertArrayHasKey('count',$json, 'count not found in response');
+        $this->assertArrayHasKey('requests', 'requests not found in response');
+        
+        //$this->assertEquals(0, $json['count']);
+        //$this->assertNull($json['requests']);
+    }
 }
