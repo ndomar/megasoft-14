@@ -74,7 +74,7 @@ class TangleControllerTest extends EntangleTestCase
     }
     
      /**
-     * Test Case testing not sending a tangle id in the request
+     * Test Case sending wrong tangle id in the request
      * @author HebaAamer 
      */
     public function testUserRequestsAction_WrongTangleId() {
@@ -179,5 +179,32 @@ class TangleControllerTest extends EntangleTestCase
                 array('HTTP_X_SESSION_ID' => 'userAdel'));
         $response = $client->getResponse();
         $this->assertEquals(401, $response->getStatusCode(), 'Case left user');
+    }
+    
+    /**
+     * Test Case to get the requests of the tangle owner
+     * @author HebaAamer
+     */
+    public function testUserRequestsAction_CaseTangleOwner() {
+        $this->addFixture(new LoadMyRequestsData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('GET',
+                'tangle/1/user/requests',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userAhmad'));
+        $response = $client->getResponse();
+        $this->assertEquals(401, $response->getStatusCode(), 'Case Tangle Owner');
+        $content = $response->getContent();
+        $this->assertJson($content, 'Output JSON is wrong formated');
+        
+        $json = json_decode($content);
+        $this->assertArrayHasKey('count',$json, 'count not found in response');
+        $this->assertArrayHasKey('requests', 'requests not found in response');
+        
+        $this->assertEquals(0, $json['count']);
+        $this->assertNull($json['requests']);
     }
 }

@@ -79,17 +79,21 @@ class TangleController extends Controller {
 
         $doctrine = $this->getDoctrine();
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
-
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($session == null || $session->getExpired()) {
             return new Response('Bad Request', 400);
         }
-
+        
+        $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
+        $tangle = $tangleRepo->findOneBy(array('id' => $tangleId));
+        if($tangle == null) {
+            return new Response('Tangle not found', 404);
+        }
+        
         $user = $session->getUser();
         $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
         $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $user->getId()));
-
-        if ($userTangle == null) {
+        if ($userTangle == null || $userTangle->getLeavingDate() != null) {
             return new Response('Unauthorized', 401);
         }
 
