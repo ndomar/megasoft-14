@@ -1,13 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mansour
- * Date: 5/14/14
- * Time: 9:14 PM
- */
+
 
 namespace Megasoft\EntangleBundle\DataFixtures\ORM;
-
 
 use DateTime;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -19,6 +13,7 @@ use Megasoft\EntangleBundle\Entity\Session;
 use Megasoft\EntangleBundle\Entity\Tangle;
 use Megasoft\EntangleBundle\Entity\User;
 use Megasoft\EntangleBundle\Entity\UserTangle;
+
 
 class LoadChangeOfferPriceData extends AbstractFixture implements OrderedFixtureInterface
 {

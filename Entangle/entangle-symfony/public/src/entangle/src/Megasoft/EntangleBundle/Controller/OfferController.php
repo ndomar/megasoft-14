@@ -195,7 +195,7 @@ class OfferController extends Controller {
         $json = $request->getContent();
         $json_array = json_decode($json, true);
         if (!isset($json_array['newPrice'])){
-            return new Response("Price Was Not Provided", 400);
+            return new Response("Bad Request", 400);
         }
         $newOfferPrice = $json_array['newPrice'];
         if ($newOfferPrice == null && $newOfferPrice != 0) {
@@ -205,7 +205,7 @@ class OfferController extends Controller {
             return new Response("Non-Numeric New Price", 400);
         }
         if (($requestOffer->getRequestedPrice()) == $newOfferPrice) {
-            return new Response("Same price", 409);
+            return new Response("Same price, enter a new one", 409);
         }
         $requestOffer->setRequestedPrice($newOfferPrice);
         $notificationCenter = $this->get('notification_center.service');
@@ -215,7 +215,7 @@ class OfferController extends Controller {
         $this->getDoctrine()->getManager()->persist($requestOffer);
         $this->getDoctrine()->getManager()->flush();
 
-        return new Response('Price changed', 200);
+        return new Response('The price of your offer has changed', 200);
     }
 
     /**

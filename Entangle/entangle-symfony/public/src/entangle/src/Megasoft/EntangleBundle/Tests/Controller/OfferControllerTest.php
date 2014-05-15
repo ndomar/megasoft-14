@@ -20,7 +20,7 @@ class OfferControllerTest extends EntangleTestCase
         $client = static::createClient();
         $client->request('POST', '/offers/1/changePrice', array(), array(),
             array('HTTP_X_SESSION_ID' => 'wrongSession'), $jsonBody);
-        $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Wrong Session");
+        $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Wrong User Session");
     }
 
     /**
@@ -35,7 +35,7 @@ class OfferControllerTest extends EntangleTestCase
         $jsonBody = json_encode($body);
         $client = static::createClient();
         $client->request('POST', '/offers/1/changePrice', array(), array(), array(), $jsonBody);
-        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Empty Session");
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Empty Session Header");
     }
 
     /**
@@ -51,7 +51,7 @@ class OfferControllerTest extends EntangleTestCase
         $client = static::createClient();
         $client->request('POST', '/offers/1/changePrice', array(), array(),
             array('HTTP_X_SESSION_ID' => NULL), $jsonBody);
-        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Null Session");
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Null Header Session");
     }
 
     /**
@@ -83,14 +83,15 @@ class OfferControllerTest extends EntangleTestCase
         $client = static::createClient();
         $client->request('POST', '/offers/1000/changePrice', array(), array(),
             array('HTTP_X_SESSION_ID' => 'sampleSession'), $jsonBody);
-        $this->assertEquals(404, $client->getResponse()->getStatusCode(), "Offer Not Found");
+        $this->assertEquals(404, $client->getResponse()->getStatusCode(), "Offer Does Not Exist");
     }
 
     /**
      * Checks same price entry.
      * @author Mansour
      */
-    public function testChangeOfferPriceAction_SamePrice(){
+    public function testChangeOfferPriceAction_SamePrice()
+    {
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
         $body = array('newPrice' => '500');
@@ -98,14 +99,15 @@ class OfferControllerTest extends EntangleTestCase
         $client = static::createClient();
         $client->request('POST', '/offers/1/changePrice', array(), array(),
             array('HTTP_X_SESSION_ID' => 'sampleSession'), $jsonBody);
-        $this->assertEquals(409, $client->getResponse()->getStatusCode(), "Same Price");
+        $this->assertEquals(409, $client->getResponse()->getStatusCode(), "Same Price Passed, No Change");
     }
 
     /**
      * Checks user permission to change the price.
      * @author Mansour
      */
-    public function testChangeOfferPriceAction_InvalidUser(){
+    public function testChangeOfferPriceAction_InvalidUser()
+    {
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
         $body = array('newPrice' => '10');
@@ -113,14 +115,15 @@ class OfferControllerTest extends EntangleTestCase
         $client = static::createClient();
         $client->request('POST', '/offers/1/changePrice', array(), array(),
             array('HTTP_X_SESSION_ID' => 'sampleSession3'), $jsonBody);
-        $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Invalid User");
+        $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Invalid User, Unauthorized");
     }
 
     /**
      * Checks if the offer is accepted.
      * @author Mansour
      */
-    public function testChangeOfferPriceAction_AcceptedOffer(){
+    public function testChangeOfferPriceAction_AcceptedOffer()
+    {
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
         $body = array('newPrice' => '10');
@@ -128,14 +131,15 @@ class OfferControllerTest extends EntangleTestCase
         $client = static::createClient();
         $client->request('POST', '/offers/3/changePrice', array(), array(),
             array('HTTP_X_SESSION_ID' => 'sampleSession'), $jsonBody);
-        $this->assertEquals(403, $client->getResponse()->getStatusCode(), "Accepted Offer");
+        $this->assertEquals(403, $client->getResponse()->getStatusCode(), "Already Accepted Offer, Changing Price Is Not Permitted");
     }
 
     /**
      * Checks if the offer is done.
      * @author Mansour
      */
-    public function testChangeOfferPriceAction_DoneOffer(){
+    public function testChangeOfferPriceAction_DoneOffer()
+    {
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
         $body = array('newPrice' => '10');
@@ -143,14 +147,15 @@ class OfferControllerTest extends EntangleTestCase
         $client = static::createClient();
         $client->request('POST', '/offers/2/changePrice', array(), array(),
             array('HTTP_X_SESSION_ID' => 'sampleSession'), $jsonBody);
-        $this->assertEquals(403, $client->getResponse()->getStatusCode(), "Offer Was Done");
+        $this->assertEquals(403, $client->getResponse()->getStatusCode(), "Offer Was Done, , Changing Price Is Not Permitted");
     }
 
     /**
      * Checks if the offer is failed.
      * @author Mansour
      */
-    public function testChangeOfferPriceAction_FailedOffer(){
+    public function testChangeOfferPriceAction_FailedOffer()
+    {
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
         $body = array('newPrice' => '10');
@@ -158,14 +163,15 @@ class OfferControllerTest extends EntangleTestCase
         $client = static::createClient();
         $client->request('POST', '/offers/4/changePrice', array(), array(),
             array('HTTP_X_SESSION_ID' => 'sampleSession'), $jsonBody);
-        $this->assertEquals(403, $client->getResponse()->getStatusCode(), "Failed Offer");
+        $this->assertEquals(403, $client->getResponse()->getStatusCode(), "Failed Offer, Changing Price Is Not Permitted");
     }
 
     /**
      * Checks if the offer is rejected.
      * @author Mansour
      */
-    public function testChangeOfferPriceAction_RejectedOffer(){
+    public function testChangeOfferPriceAction_RejectedOffer()
+    {
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
         $body = array('newPrice' => '10');
@@ -173,14 +179,15 @@ class OfferControllerTest extends EntangleTestCase
         $client = static::createClient();
         $client->request('POST', '/offers/5/changePrice', array(), array(),
             array('HTTP_X_SESSION_ID' => 'sampleSession'), $jsonBody);
-        $this->assertEquals(403, $client->getResponse()->getStatusCode(), "Rejected Offer");
+        $this->assertEquals(403, $client->getResponse()->getStatusCode(), "Rejected Offer, Changing Price Is Not Permitted");
     }
 
     /**
      * Checks if the price is empty.
      * @author Mansour
      */
-    public function testChangeOfferPriceAction_EmptyPrice(){
+    public function testChangeOfferPriceAction_EmptyPrice()
+    {
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
         $body = array();
@@ -188,14 +195,15 @@ class OfferControllerTest extends EntangleTestCase
         $client = static::createClient();
         $client->request('POST', '/offers/1/changePrice', array(), array(),
             array('HTTP_X_SESSION_ID' => 'sampleSession'), $jsonBody);
-        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Empty Price");
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Empty Price Passed In The Request");
     }
 
     /**
      * Checks if the price is null.
      * @author Mansour
      */
-    public function testChangeOfferPriceAction_NullPrice(){
+    public function testChangeOfferPriceAction_NullPrice()
+    {
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
         $body = array('newPrice' => NULL);
@@ -203,14 +211,15 @@ class OfferControllerTest extends EntangleTestCase
         $client = static::createClient();
         $client->request('POST', '/offers/1/changePrice', array(), array(),
             array('HTTP_X_SESSION_ID' => 'sampleSession'), $jsonBody);
-        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Null Price");
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Null Price Passed In The Request");
     }
 
     /**
      * Checks if the price is not numeric.
      * @author Mansour
      */
-    public function testChangeOfferPriceAction_NonNumericPrice(){
+    public function testChangeOfferPriceAction_NonNumericPrice()
+    {
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
         $body = array('newPrice' => 'abcd');
@@ -218,14 +227,15 @@ class OfferControllerTest extends EntangleTestCase
         $client = static::createClient();
         $client->request('POST', '/offers/1/changePrice', array(), array(),
             array('HTTP_X_SESSION_ID' => 'sampleSession'), $jsonBody);
-        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Non-Numeric Price");
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Non-Numeric Price Passed In The Request");
     }
 
     /**
      * Checks if the price change is working.
      * @author Mansour
      */
-    public function testChangeOfferPriceAction_changePrice(){
+    public function testChangeOfferPriceAction_changePrice()
+    {
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
         $body = array('newPrice' => '300');
