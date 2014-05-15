@@ -223,17 +223,25 @@ class TangleControllerTest extends EntangleTestCase
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
+        $claimRepo = $doctrine->Repository('MegasoftEntangleBundle:Claim');
+        $messageRepo = $doctrine->Repository('MegasoftEntangleBundle:Message');
         
         $userTangle = $userTangleRepo->findOneBy(array('tangleId' => 1, 'userId' => 3));
         $tangle = $tangleRepo->findOneBy(array('id' => 1));
+        
+        $this->assertNotNull($userTangle->getLeavingDate(), 'Error in setting the leaving date');
+        $this->assertEquals(-80, $tangle->getDeletedBalance(), 'Error in updating the tangle balance');
+        
         $deletedRequests = $requestRepo->findBy(array('tangleId' => 1,
             'userId' => 3, 'deleted' => true, ));
         $requests = $requestRepo->findBy(array('tangleId' => 1,
             'userId' => 3, ));
         $this->assertEquals(count($requests), count($deletedRequests), 'Error in deleting all the requests');
         
-        $this->assertNotNull($userTangle->getLeavingDate(), 'Error in setting the leaving date');
-        $this->assertEquals(-80, $tangle->getDeletedBalance(), 'Error in updating the tangle balance');
+        $claims = $claimRepo->findBy(array('tangleId' => 1, 'claimer' => 3, ));
+        $deletedClaims = $claimRepo->findBy(array('tangleId' => 1, 'claimer' => 3, 'deleted' => true));
+        $this->assertEquals(count($claims), count($deletedClaims), 'Error in deleting all the claims');
+        
         
     }
 
