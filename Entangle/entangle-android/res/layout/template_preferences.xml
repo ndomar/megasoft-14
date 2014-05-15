@@ -1,0 +1,133 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/paddingSmall"
+    tools:context=".RequestsActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/cancelChanges"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0px"
+            android:layout_height="@dimen/buttonHeight"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_action_remove"
+            android:text="@string/cancel"
+            android:textAlignment="center"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/textLarge"
+            android:onClick="cancelChanges" />
+
+        <View style="@style/dividerVertical" />
+
+        <Button
+            android:id="@+id/changesDone"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0px"
+            android:layout_height="@dimen/buttonHeight"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ic_action_accept_green"
+            android:text="@string/done"
+            android:textAlignment="center"
+            android:textColor="@color/green"
+            android:textSize="@dimen/textLarge"
+            android:onClick="changesDone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/blue" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/orange" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/cyan" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/megenta" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/lightGreen" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/marginMedium"
+        android:layout_marginTop="@dimen/marginLarge"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/emailNotifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email_notifications"
+            android:textSize="@dimen/textLarge" />
+
+        <ToggleButton
+            android:id="@+id/emailNotificationsToggle"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/marginMedium"
+            android:background="@color/darkWhite"
+            android:onClick="toggleEmailNotifications" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/marginMedium"
+        android:layout_marginTop="@dimen/marginLarge"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/pushNotifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/push_notifications"
+            android:textSize="@dimen/textLarge" />
+
+        <ToggleButton
+            android:id="@+id/pushNotificationsToggle"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/marginMedium"
+            android:background="@color/darkWhite"
+             />
+    </RelativeLayout>
+
+</LinearLayout>
