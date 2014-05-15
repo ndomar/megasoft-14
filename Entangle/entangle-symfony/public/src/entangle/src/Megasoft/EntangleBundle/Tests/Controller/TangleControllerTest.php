@@ -342,4 +342,24 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals(0, count($json['requests']), "Wrong number of results in request array");
     }
 
+    /**
+     * Test Case sending wrong tangle id in the request
+     * @author HebaAamer 
+     */
+    public function testUserRequestsAction_WrongTangleId() {
+        $this->addFixture(new LoadMyOffersData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('GET',
+                'tangle/3/user/offers',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userAly'));
+        $response = $client->getResponse();
+        $this->assertEquals(404, $response->getStatusCode(), 'Wrong tangle id');
+    }
+    
+    
+    
 }
