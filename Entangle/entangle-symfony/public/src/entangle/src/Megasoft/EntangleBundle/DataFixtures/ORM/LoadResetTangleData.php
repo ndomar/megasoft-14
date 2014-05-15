@@ -226,4 +226,9 @@ class LoadResetTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createClaim($manager, 'offer3', 'userMohamed', 2);
         $this->createClaim($manager, 'offer5', 'userAly', 3);         
     }
+
+    public function getOrder() {
+        return 1;
+    }
+
 }

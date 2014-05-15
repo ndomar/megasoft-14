@@ -96,7 +96,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'sessionUserExpired'));
+        $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'userMohamed'));
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), 'Check for expired session id');
     }
@@ -116,7 +116,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'sessionUserNotOwner'));
+        $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'userAly'));
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), 'Check for user not owner');
     }
@@ -126,7 +126,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'sessionUserNotInTheTangle'));
+        $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'userMazen'));
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), 'Check for user not in the tangle');
     }
@@ -136,7 +136,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'ownerSession'));
+        $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'userAhmed'));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $tangleRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Tangle");
         $tangle = $tangleRepo->findOneBy(array('id' => 1));
@@ -152,7 +152,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'ownerSession'));
+        $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'userAhmed'));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $tangleRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Tangle");
         $tangle = $tangleRepo->findOneBy(array('id' => 1));
@@ -169,7 +169,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'ownerSession'));
+        $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'userAhmed'));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $tangleRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Tangle");
         $tangle = $tangleRepo->findOneBy(array('id' => 1));
