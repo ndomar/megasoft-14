@@ -243,5 +243,9 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertArrayHasKey('status', $json['requests'][0], 'request status not found');
         $this->assertArrayHasKey('icon', $json['requests'][0], 'request icon not found');
 
+        $this->assertEquals(2, $json['requests'][0]['id']);
+        $this->assertEquals(3, $json['requests'][1]['id']);
+        $this->assertEquals(4, $json['requests'][2]['id']);
+        $this->assertEquals(6, $json['requests'][3]['id']);
     }
 }
