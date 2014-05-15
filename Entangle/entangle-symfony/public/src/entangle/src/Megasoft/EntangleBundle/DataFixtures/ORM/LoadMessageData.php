@@ -53,4 +53,4 @@ class LoadMessageData extends AbstractFixture implements OrderedFixtureInterface
     {
         return 8;
     }
-} 
+}

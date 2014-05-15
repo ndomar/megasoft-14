@@ -89,3 +89,4 @@ class LoadOfferData extends AbstractFixture implements OrderedFixtureInterface {
         return 6;
     }
 }
+
