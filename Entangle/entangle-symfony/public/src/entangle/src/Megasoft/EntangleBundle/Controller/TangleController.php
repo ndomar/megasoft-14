@@ -828,7 +828,7 @@ class TangleController extends Controller {
     /**
      * An endpoint for accepting tangle invitations sent to user
      * @param int invitationID
-     * @return twig view 
+     * @return twig view
      * @author MahmoudGamal
      */
     public function acceptInvitationAction($invitationCode) {
@@ -871,7 +871,7 @@ class TangleController extends Controller {
         $this->getDoctrine()->getManager()->persist($tangleUser);
         $this->getDoctrine()->getManager()->flush();
         return $this->render('MegasoftEntangleBundle:AcceptTangleInvitation:success.html.twig',array(
-            'userName' => $userName , 'tangleName'=>$tangleName));
+            'userName' => $userName , 'tangleName'=>$tangleName,));
     }
 
     /**
