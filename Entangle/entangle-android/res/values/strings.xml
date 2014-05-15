@@ -32,7 +32,7 @@
     <string name="enterClaim">I am claiming about \.\.\.</string>
     <string name="Requests">Create Request</string>
     <string name="name">Request\'s name</string>
-    <string name="claimReport">Claim Report: </string>
+    <string name="claimReport">Claim Report </string>
     <string name="claimDate">Claim created on: </string>
     <string name="claimer">Claimer name: </string>
     <string name="tangleOwnerEmail">Tangle owner Email: </string>

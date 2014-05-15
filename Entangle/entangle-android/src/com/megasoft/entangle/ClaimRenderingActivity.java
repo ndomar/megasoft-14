@@ -71,8 +71,8 @@ public class ClaimRenderingActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_claim_render);
 		this.setData();
-		getActionBar().hide();
-		this.finish();
+	//	getActionBar().hide();
+	//	this.finish();
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class ClaimRenderingActivity extends Activity {
 	 */
 	public void setData() {
 
-		final Intent intent = new Intent(this, OfferActivity.class);
+		//final Intent intent = new Intent(this, OfferActivity.class);
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		String sessionID = settings.getString(Config.SESSION_ID, "");
 
@@ -115,7 +115,7 @@ public class ClaimRenderingActivity extends Activity {
 						Toast.makeText(getBaseContext(),
 								"Loading Claim Report", Toast.LENGTH_SHORT)
 								.show();
-						startActivity(intent);
+					//	startActivity(intent);
 					} else {
 						Toast.makeText(getBaseContext(),
 								"Something went wrong", Toast.LENGTH_SHORT)
