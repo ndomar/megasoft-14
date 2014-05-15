@@ -465,5 +465,27 @@ class TangleControllerTest extends EntangleTestCase
                 array(),
                 array('HTTP_X_SESSION_ID' => 'userAly'));
         $response = $client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode(), 'Case Tangle Member');
+        $content = $response->getContent();
+        $this->assertJson($content, 'Output JSON is wrong formated');
+        
+        $json = json_decode($content, true);
+        $this->assertArrayHasKey('count', $json, 'count not found in response');
+        $this->assertArrayHasKey('offers', $json, 'offers not found in response');
+        
+        $this->assertEquals(4, $json['count'], 'count is wrong');
+        $this->assertEquals(4, count($json['offers']), 'number of offers sent in the response is wrong');
+        
+        $this->assertArrayHasKey('id', $json['offers'][0], 'offer id not found');
+        $this->assertArrayHasKey('username', $json['offers'][0], 'offerer username not found');
+        $this->assertArrayHasKey('userId', $json['offers'][0], 'offerer userId not found');
+        $this->assertArrayHasKey('description', $json['offers'][0], 'offer description not found');
+        $this->assertArrayHasKey('price', $json['offers'][0], 'offer price not found');
+        $this->assertArrayHasKey('status', $json['offers'][0], 'offer status not found');
+        
+        $this->assertEquals(2, $json['offers'][0]['id']);
+        $this->assertEquals(3, $json['offers'][1]['id']);
+        $this->assertEquals(4, $json['offers'][2]['id']);
+        $this->assertEquals(6, $json['offers'][3]['id']);
     }
 }
