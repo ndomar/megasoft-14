@@ -150,7 +150,7 @@ class OfferController extends Controller {
     }
 
     /**
-     * Changes the price of an offer
+     * Changes the price of an offer.
      * @param Request $request
      * @param type $offerId
      * @return \Symfony\Component\HttpFoundation\Response

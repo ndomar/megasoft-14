@@ -7,6 +7,10 @@ use Megasoft\EntangleBundle\Tests\EntangleTestCase;
 
 class OfferControllerTest extends EntangleTestCase
 {
+    /**
+     * Checks wrong session entry.
+     * @author Mansour
+     */
     public function testChangeOfferPriceAction_WrongSession()
     {
         $this->addFixture(new LoadChangeOfferPriceData());
@@ -19,6 +23,10 @@ class OfferControllerTest extends EntangleTestCase
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Wrong Session");
     }
 
+    /**
+     * Checks empty session entry.
+     * @author Mansour
+     */
     public function testChangeOfferPriceAction_EmptySession()
     {
         $this->addFixture(new LoadChangeOfferPriceData());
@@ -30,6 +38,10 @@ class OfferControllerTest extends EntangleTestCase
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Empty Session");
     }
 
+    /**
+     * Checks null session entry.
+     * @author Mansour
+     */
     public function testChangeOfferPriceAction_NullSession()
     {
         $this->addFixture(new LoadChangeOfferPriceData());
@@ -42,6 +54,10 @@ class OfferControllerTest extends EntangleTestCase
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Null Session");
     }
 
+    /**
+     * Check expired session entry.
+     * @author Mansour
+     */
     public function testChangeOfferPriceAction_ExpiredSession()
     {
         $this->addFixture(new LoadChangeOfferPriceData());
@@ -54,6 +70,10 @@ class OfferControllerTest extends EntangleTestCase
         $this->assertEquals(440, $client->getResponse()->getStatusCode(), "Expired Session");
     }
 
+    /**
+     * Checks if the offer exists.
+     * @author Mansour
+     */
     public function testChangeOfferPriceAction_InvalidOffer()
     {
         $this->addFixture(new LoadChangeOfferPriceData());
@@ -66,6 +86,10 @@ class OfferControllerTest extends EntangleTestCase
         $this->assertEquals(404, $client->getResponse()->getStatusCode(), "Offer Not Found");
     }
 
+    /**
+     * Checks same price entry.
+     * @author Mansour
+     */
     public function testChangeOfferPriceAction_SamePrice(){
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
@@ -77,6 +101,10 @@ class OfferControllerTest extends EntangleTestCase
         $this->assertEquals(409, $client->getResponse()->getStatusCode(), "Same Price");
     }
 
+    /**
+     * Checks user permission to change the price.
+     * @author Mansour
+     */
     public function testChangeOfferPriceAction_InvalidUser(){
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
@@ -88,6 +116,10 @@ class OfferControllerTest extends EntangleTestCase
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Invalid User");
     }
 
+    /**
+     * Checks if the offer is accepted.
+     * @author Mansour
+     */
     public function testChangeOfferPriceAction_AcceptedOffer(){
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
@@ -99,6 +131,10 @@ class OfferControllerTest extends EntangleTestCase
         $this->assertEquals(403, $client->getResponse()->getStatusCode(), "Accepted Offer");
     }
 
+    /**
+     * Checks if the offer is done.
+     * @author Mansour
+     */
     public function testChangeOfferPriceAction_DoneOffer(){
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
@@ -110,6 +146,10 @@ class OfferControllerTest extends EntangleTestCase
         $this->assertEquals(403, $client->getResponse()->getStatusCode(), "Offer Was Done");
     }
 
+    /**
+     * Checks if the offer is failed.
+     * @author Mansour
+     */
     public function testChangeOfferPriceAction_FailedOffer(){
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
@@ -121,6 +161,10 @@ class OfferControllerTest extends EntangleTestCase
         $this->assertEquals(403, $client->getResponse()->getStatusCode(), "Failed Offer");
     }
 
+    /**
+     * Checks if the offer is rejected.
+     * @author Mansour
+     */
     public function testChangeOfferPriceAction_RejectedOffer(){
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
@@ -132,6 +176,10 @@ class OfferControllerTest extends EntangleTestCase
         $this->assertEquals(403, $client->getResponse()->getStatusCode(), "Rejected Offer");
     }
 
+    /**
+     * Checks if the price is empty.
+     * @author Mansour
+     */
     public function testChangeOfferPriceAction_EmptyPrice(){
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
@@ -143,6 +191,10 @@ class OfferControllerTest extends EntangleTestCase
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Empty Price");
     }
 
+    /**
+     * Checks if the price is null.
+     * @author Mansour
+     */
     public function testChangeOfferPriceAction_NullPrice(){
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
@@ -154,6 +206,10 @@ class OfferControllerTest extends EntangleTestCase
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Null Price");
     }
 
+    /**
+     * Checks if the price is not numeric.
+     * @author Mansour
+     */
     public function testChangeOfferPriceAction_NonNumericPrice(){
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
@@ -165,6 +221,10 @@ class OfferControllerTest extends EntangleTestCase
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Non-Numeric Price");
     }
 
+    /**
+     * Checks if the price change is working.
+     * @author Mansour
+     */
     public function testChangeOfferPriceAction_changePrice(){
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
