@@ -89,4 +89,22 @@ class TangleControllerTest extends EntangleTestCase
         $response = $client->getResponse();
         $this->assertEquals(404, $response->getStatusCode(), 'Wrong tangle id');
     }
+    
+    /**
+     * Test Case testing not sending a session id in the 
+     * @author HebaAamer
+     */
+    public function testLeaveTangleAction_NullSessionId() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('GET',
+                'tangle/1/user/requests',
+                array(),
+                array(),
+                array());
+        $response = $client->getResponse();
+        $this->assertEquals(400, $response->getStatusCode(), 'Not sending session id');
+    }
 }
