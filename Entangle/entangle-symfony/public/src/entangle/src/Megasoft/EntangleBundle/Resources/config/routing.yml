@@ -111,9 +111,6 @@ get_offer:
     pattern: /offer/{offerId}
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
 
-index:
-    pattern: /
-    defaults: { _controller: MegasoftEntangleBundle:Site:index }
 
 viewRequest:
     pattern: tangle/{tangleId}/request/{requestId}
@@ -139,9 +136,6 @@ create_tangle:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:createTangle }
     methods: [POST]
 
-index:
-    pattern: /
-    defaults: { _controller: MegasoftEntangleBundle:Site:index }
     
 fetch_pending_invitations:
     pattern: /tangle/{tangleId}/pending-invitations
@@ -190,8 +184,8 @@ leave_tangle:
     methods: [DELETE]
 
 megasoft_entangle_register:
-    pattern:  /register
-    defaults: { _controller: MegasoftEntangleBundle:Register:register }
+    pattern:  /
+    defaults: { _controller: MegasoftEntangleBundle:Site:register }
 
 create_Offer:
     pattern: /tangle/{tangleId}/request/{requestId}/offer
@@ -389,9 +383,6 @@ get_offer:
     defaults: { _controller: MegasoftEntangleBundle:Offer:offer }
 
 
-index:
-    pattern: /
-    defaults: { _controller: MegasoftEntangleBundle:Site:index }
 
 get_transactions:
     pattern: /tangle/{tangleId}/user/{userId}/transactions
@@ -424,9 +415,6 @@ create_tangle:
     defaults: { _controller: MegasoftEntangleBundle:Tangle:createTangle }
     methods: [POST]
 
-index:
-    pattern: /
-    defaults: { _controller: MegasoftEntangleBundle:Site:index }
 
 
 fetch_pending_invitations:
@@ -478,14 +466,12 @@ leave_tangle:
     methods: [DELETE]
 
 megasoft_entangle_register:
-    pattern:  /register
-    defaults: { _controller: MegasoftEntangleBundle:Register:register }
     pattern:  /
     defaults: { _controller: MegasoftEntangleBundle:Site:register }
-    
+
 
 register_app:
-    pattern: /register
+    pattern: /
     defaults: { _controller: MegasoftEntangleBundle:User:register}
     methods: [POST]
     
@@ -583,3 +569,10 @@ reset_tangle:
     pattern: /tangle/{tangleId}/reset
     defaults: {_controller: MegasoftEntangleBundle:Tangle:resetTangle }
     methods: [PUT]
+
+
+megasoft_entangle_register_:
+    pattern:  /
+    defaults: { _controller: MegasoftEntangleBundle:Site:register }
+    methods: [POST]
+
