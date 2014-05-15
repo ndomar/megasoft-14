@@ -1,7 +1,5 @@
 package com.megasoft.entangle;
 
-
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,17 +8,20 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 
 /**
- * Views a user's general profile given his user Id 
+ * Views a user's general profile given his user Id
+ * 
  * @author Almgohar
  */
 public class GeneralProfileActivity extends FragmentActivity {
 	private static final String LOGOUT = "/user/logout";
 	private int userId;
-	private int tangleId;	
+	private int tangleId;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -106,7 +107,12 @@ public class GeneralProfileActivity extends FragmentActivity {
 
 		prefsEditor.commit();
 
-		Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
+		SharedPreferences prefs = getSharedPreferences(Config.GCM_DATA,
+				MODE_PRIVATE);
+		prefs.edit().remove(Config.PROPERTY_REG_ID).commit();
+
+		Intent intent = new Intent(getApplicationContext(),
+				SplashActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		this.finish();

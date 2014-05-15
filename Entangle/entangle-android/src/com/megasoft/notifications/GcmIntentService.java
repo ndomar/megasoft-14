@@ -11,7 +11,6 @@ import android.util.Log;
 
 import com.megasoft.config.Config;
 import com.megasoft.entangle.HomeActivity;
-import com.megasoft.entangle.MainActivity;
 import com.megasoft.entangle.OfferActivity;
 import com.megasoft.entangle.R;
 import com.megasoft.entangle.RequestActivity;
@@ -86,7 +85,7 @@ public class GcmIntentService extends IntentService {
 			dest = fetchRequestData(bundle);
 			break;
 		case 8:
-			dest = null;
+			dest = fetchClaimData(bundle);
 			break;
 		}
 
@@ -159,6 +158,21 @@ public class GcmIntentService extends IntentService {
 			tangleId = Integer.parseInt(bundle.getString("tangleId"));
 		dest.putExtra("tangleId", tangleId);
 		dest.putExtra("tab", "stream");
+		return dest;
+	}
+
+	public Intent fetchClaimData(Bundle bundle) {
+		// rem to change this
+		Intent dest = new Intent(this, HomeActivity.class);
+		int offerId = -1, claimId = -1;
+
+		if (bundle.getString("offerId") != null)
+			offerId = Integer.parseInt(bundle.getString("offerId"));
+		if (bundle.getString("claimId") != null)
+			offerId = Integer.parseInt(bundle.getString("claimId"));
+
+		dest.putExtra("offerId", offerId);
+		dest.putExtra("claimId", claimId);
 		return dest;
 	}
 }

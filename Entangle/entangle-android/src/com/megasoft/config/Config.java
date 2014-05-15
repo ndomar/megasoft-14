@@ -20,4 +20,5 @@ public class Config {
 	public static final String MEMBER_AVATAR_URL = "memberAvatarURL";
 	public static final String GCM_REGISTRATION = "GCM_REGISTRATION";
 	public static final String PROPERTY_REG_ID = "registration_id";
+	public static final String GCM_DATA = "GCM_DATA";
 }
