@@ -118,11 +118,22 @@ class TangleController extends Controller {
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
 
         $queryValue = $request->query->get('query', null);
+        $limit = $request->query->get('limit', null);
+        if($limit == null){
+            return new Response('Bad Request',400);
+        }
+
+        $lastDate = $request->query->get('lastDate', null);
 
         $query = $requestRepo->createQueryBuilder('request')
             ->where('request.tangleId = :tangleId')
             ->setParameter('tangleId', $tangleId)
             ->andWhere('request.deleted = 0 AND request.status = 0');
+        if($lastDate != null){
+            $query = $query->andWhere('request.date > :date')->setParameter('date',$lastDate);
+        }
+
+        $query->setMaxResults($limit);
         if($queryValue != null){
             $query = $query->innerJoin('MegasoftEntangleBundle:User', 'user' , 'WITH' , 'request.userId = user.id')
                             ->leftJoin('request.tags','tag')
@@ -147,55 +158,13 @@ class TangleController extends Controller {
                 'userId' => $tangleRequest->getUserId(),
                 'description' => $tangleRequest->getDescription(),
                 'offersCount' => sizeof($tangleRequest->getOffers()),
-                'price' => $tangleRequest->getRequestedPrice()
+                'price' => $tangleRequest->getRequestedPrice(),
+                'date' => $tangleRequest->getDate()->format('Y-m-d H:i:s')
             );
         }
 
         $response = new JsonResponse();
         $response->setData(array('count' => sizeof($requestsJsonArray), 'requests' => $requestsJsonArray));
-
-        return $response;
-    }
-
-    /**
-     * An endpoint to return the list of tags in a specific tangle
-     * @param Request $request
-     * @param integer $tangleId
-     * @return Response | \Symfony\Component\HttpFoundation\JsonResponse
-     * @author OmarElAzazy
-     */
-
-    public function allTagsAction(Request $request, $tangleId) {
-        $verification = $this->verifyUser($request, $tangleId);
-
-        if ($verification != null) {
-            return $verification;
-        }
-
-        $doctrine = $this->getDoctrine();
-        $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
-        $criteria = array('tangleId' => $tangleId, 'deleted' => false);
-        $requests = $requestRepo->findBy($criteria);
-
-        $tags = array();
-        foreach ($requests as $tangleRequest) {
-            $tags = array_merge($tags, $tangleRequest->getTags()->toArray());
-        }
-
-        $tags = array_unique($tags);
-
-        $tagsJsonArray = array();
-
-
-        foreach ($tags as $tag) {
-            $tagsJsonArray[] = array(
-                'id' => $tag->getId(),
-                'name' => $tag->getName()
-            );
-        }
-
-        $response = new JsonResponse();
-        $response->setData(array('count' => sizeof($tagsJsonArray), 'tags' => $tagsJsonArray));
 
         return $response;
     }
@@ -215,7 +184,7 @@ class TangleController extends Controller {
         }
     }
 
-    /**
+    /**allUsersAction
      * Validates that the email is a valid email
      * @param string $email
      * @return boolean true if the email is valid , false otherwise
@@ -260,8 +229,6 @@ class TangleController extends Controller {
      * @param string $message
      * @author MohamedBassem
      */
-
-
     public function inviteUser($email,$tangleId,$inviterId,$message){
         $randomString = $this->generateRandomString(30);
 
@@ -299,8 +266,6 @@ class TangleController extends Controller {
                            <p>Cheers,<br>Entangle Team</p>
                     </body>
                 </html>";
-
-
         
         $notificationCenter = $this->get('notification_center.service');
         $notificationCenter->sendMailToEmail($email, $title, $body);

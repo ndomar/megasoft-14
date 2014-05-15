@@ -24,7 +24,7 @@ public class GeneralProfileActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_profile);
+		setContentView(R.layout.super_profile);
 		ProfileFragment profile = new ProfileFragment();
 		Bundle bundle = new Bundle();
 		tangleId = getIntent().getIntExtra("tangleId", -1);

@@ -54,7 +54,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 			args.putInt(Config.TANGLE_ID, tangleId);
 			break;
 		case 2:
-			fragment = new ProfileFragment();
+			fragment = new ProfileSuperFragment();
 			args.putInt("userId", userId);
 			break;
 
