@@ -273,6 +273,11 @@ class UserController extends Controller {
 
         $loggedInUser = $session->getUser();
         $user = $userTable->findOneBy(array('id' => $userId,));
+
+        if($user == null) {
+            return new Response('User not found', 404);
+        }
+
         $userTangle = $userTangleTable->findOneBy(array('userId' => $userId, 'tangleId' => $tangleId,));
 
         if (!$this->validateTangle($tangleId)) {
@@ -294,7 +299,8 @@ class UserController extends Controller {
         for ($i = 0; $i < count($offers); $i++) {
             $offer = $offers[$i];
 
-            if (($offer->getRequest()->getTangleId() == $tangleId) && ($offer->getTransaction() != null)) {
+            if (($offer->getRequest()->getTangleId() == $tangleId) && ($offer->getTransaction() != null)
+                && !($offer->getTransaction()->getDeleted())) {
                 $requesterName = $offer->getRequest()->getUser()->getName();
                 $photo = $offer->getRequest()->getUser()->getPhoto();
                 $offererName = $offer->getUser()->getName();
