@@ -19,6 +19,7 @@
     <!-- Text -->
     <dimen name="textSmall">7sp</dimen>
     <dimen name="textMedium">13sp</dimen>
+    <dimen name="textMediumLarge">19sp</dimen>
     <dimen name="textLarge">25sp</dimen>
 
     <!-- Buttons -->
