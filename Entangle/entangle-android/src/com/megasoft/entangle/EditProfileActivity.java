@@ -101,7 +101,8 @@ public class EditProfileActivity extends FragmentActivity implements
 							String email = currentEmails.getString(i);
 							Log.i("Message",email);
 							addEmailField();
-							emails.get(emails.size()-1).getEditText().setText(email);
+						EditText x =emails.get(emails.size()-1).getEditText();
+						x.setText(email);
 							//emails.get(emails.size()-1).getEditText().setEnabled(false);
 						}
 						addEmailField();
