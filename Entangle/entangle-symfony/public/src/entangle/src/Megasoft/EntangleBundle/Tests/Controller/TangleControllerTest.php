@@ -65,7 +65,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals(2, sizeof($json));
         $this->assertEquals(true, isset($json['count']));
         $this->assertEquals(true, isset($json['users']));
-        $this->assertEquals(1, $json['count']);
+        $this->assertEquals(2, $json['count']);
 
         $users = $json['users'];
         $this->assertEquals(1, $users[0]['id']);
