@@ -138,6 +138,29 @@ class LoadMyOffersData extends AbstractFixture implements OrderedFixtureInterfac
     }
     
     /**
+     * This function is used to create an offer
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param String $userReference
+     * @param String $description
+     * @param integer $offerNumber
+     * @param String $requestReference
+     * @param integer $offerStatus
+     * @author HebaAamer
+     */
+    private function createOffer(ObjectManager $manager, $userReference, $description, $offerNumber, $requestReference, $offerStatus) {
+        $offer = new Offer();
+        $offer->setUser($this->getReference("$userReference"));
+        $offer->setRequest($this->getReference("$requestReference"));
+        $offer->setDescription($description);
+        $offer->setRequestedPrice(25);
+        $offer->setStatus($offerStatus);
+        $offer->setDate(new DateTime('now'));
+        
+        $manager->persist($offer);
+        $this->addReference('offer' . "$offerNumber", $offer);
+    }
+    
+    /**
      * This function is used to make testing users and their userEmails
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      * @author HebaAamer
