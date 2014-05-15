@@ -5,8 +5,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/paddingSmall"
-    tools:context=".RequestsActivity" >
+    android:paddingBottom="@dimen/paddingSmall" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,11 +20,11 @@
             android:layout_height="@dimen/buttonHeight"
             android:layout_weight="1"
             android:drawableLeft="@drawable/ic_action_remove"
+            android:onClick="cancelChanges"
             android:text="@string/cancel"
             android:textAlignment="center"
             android:textColor="@color/gray"
-            android:textSize="@dimen/textLarge"
-            android:onClick="cancelChanges" />
+            android:textSize="@dimen/textLarge" />
 
         <View style="@style/dividerVertical" />
 
@@ -37,11 +36,11 @@
             android:layout_weight="1"
             android:clickable="true"
             android:drawableLeft="@drawable/ic_action_accept_green"
+            android:onClick="changesDone"
             android:text="@string/done"
             android:textAlignment="center"
             android:textColor="@color/green"
-            android:textSize="@dimen/textLarge"
-            android:onClick="changesDone" />
+            android:textSize="@dimen/textLarge" />
     </LinearLayout>
 
     <LinearLayout
@@ -101,8 +100,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/marginMedium"
-            android:background="@color/darkWhite"
-            android:onClick="toggleEmailNotifications" />
+            android:onClick="toggleEmailNotifications"
+            android:textColor="@color/red" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -126,8 +125,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/marginMedium"
-            android:background="@color/darkWhite"
-             />
+            android:onClick="togglePushNotifications"
+            android:textColor="@color/red" />
     </RelativeLayout>
 
 </LinearLayout>
