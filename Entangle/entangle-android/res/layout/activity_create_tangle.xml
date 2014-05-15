@@ -104,7 +104,7 @@
             android:ems="10"
             android:gravity="center"
             android:prompt="@string/tangleIcon"
-            android:spinnerMode="dialog" />
+            android:spinnerMode="dropdown" />
     </LinearLayout>
 
     <EditText
