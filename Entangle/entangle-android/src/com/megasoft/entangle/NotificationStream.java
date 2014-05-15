@@ -96,6 +96,15 @@ public class NotificationStream extends FragmentActivity {
 		LinearLayout notificationsArea = ((LinearLayout) findViewById(R.id.notification_stream));
 		notificationsArea.removeAllViews();
 		notificationsArea.setVisibility(View.VISIBLE);
+        
+        if(notifications.length() == 0) {
+			Toast toast = Toast
+            .makeText(
+                      getApplicationContext(),
+                      "You have no notifications",
+                      Toast.LENGTH_SHORT);
+			toast.show();
+		}
 		
 		for(int i = 0; i < notifications.length();i++) {
 			try {

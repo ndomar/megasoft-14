@@ -55,6 +55,13 @@
     	android:layout_marginTop="10dp"
     	android:background="@color/lightGray" />
         
+        <Button 
+            android:id="@+id/notificationsStream"
+            android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/notifications"
+	        android:onClick="goToNotifications" />
+                
         <LinearLayout 
             android:id="@+id/tangleList"
 	        android:layout_width="match_parent"

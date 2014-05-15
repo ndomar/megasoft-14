@@ -230,5 +230,9 @@ public class HomeActivity extends FragmentActivity {
 	public void redirectToCreateTangle(View v) {
 		startActivity(new Intent(this, CreateTangleActivity.class));
 	}
+	
+	public void goToNotifications(View view) {
+		startActivity(new Intent(this , NotificationStream.class));
+	}
 
 }

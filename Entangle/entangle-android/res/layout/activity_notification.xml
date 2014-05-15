@@ -8,9 +8,10 @@
         android:id="@+id/header"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_marginLeft="20dp"
         android:gravity="center"
+        android:typeface="serif"
         android:text="@string/notifications"
+        android:layout_gravity="center"
         android:textColor="@color/green"
         android:textSize="25sp" />
     

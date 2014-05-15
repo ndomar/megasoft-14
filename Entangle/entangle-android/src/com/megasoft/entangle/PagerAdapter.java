@@ -90,6 +90,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 		case 3:
 			return "Tangle Managment";
 
+		case 4:
+			return "Notifications";
+
 		default:
 			return "Tab " + position;
 		}
