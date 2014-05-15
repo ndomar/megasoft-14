@@ -6,6 +6,7 @@ use Megasoft\EntangleBundle\DataFixtures\ORM\LoadSessionData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadTangleData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserTangleData;
+use Megasoft\EntangleBundle\DataFixtures\ORM\LoadLeaveTangleData;
 use Megasoft\EntangleBundle\Tests\EntangleTestCase;
 
 /*
