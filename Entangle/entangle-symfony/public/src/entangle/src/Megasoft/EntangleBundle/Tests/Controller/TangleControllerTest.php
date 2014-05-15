@@ -83,7 +83,7 @@ class TangleControllerTest extends EntangleTestCase
 
         $client = static::createClient();
         $client->request('GET',
-            '/tangle/1/request',
+            '/tangle/1/request?limit=2',
             array(),
             array(),
             array());
@@ -101,7 +101,7 @@ class TangleControllerTest extends EntangleTestCase
 
         $client = static::createClient();
         $client->request('GET',
-            '/tangle/1/request',
+            '/tangle/1/request?limit=2',
             array(),
             array(),
             array('HTTP_X_SESSION_ID'=>'wrongSessionId'));
@@ -119,7 +119,7 @@ class TangleControllerTest extends EntangleTestCase
 
         $client = static::createClient();
         $client->request('GET',
-            '/tangle/1/request',
+            '/tangle/1/request?limit=2',
             array(),
             array(),
             array('HTTP_X_SESSION_ID'=>'sampleSession3'));
@@ -137,12 +137,30 @@ class TangleControllerTest extends EntangleTestCase
 
         $client = static::createClient();
         $client->request('GET',
-            '/tangle/1/request',
+            '/tangle/1/request?limit=2',
             array(),
             array(),
             array('HTTP_X_SESSION_ID'=>'sampleSession2'));
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking Not Member in tangle");
+    }
+
+    /*
+     * Test Case testing filtering stream if the user is not in the tangle.
+     * @author MohamedBassem
+     */
+    public function testFilterStream_NoLimit(){
+        $this->addFixture(new LoadFilterStreamData());
+        $this->loadFixtures();
+
+        $client = static::createClient();
+        $client->request('GET',
+            '/tangle/1/request',
+            array(),
+            array(),
+            array('HTTP_X_SESSION_ID'=>'sampleSession1'));
+
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(),"Checking That the limit exists");
     }
 
     /*
@@ -156,7 +174,7 @@ class TangleControllerTest extends EntangleTestCase
 
         $client = static::createClient();
         $client->request('GET',
-            '/tangle/1/request',
+            '/tangle/1/request?limit=3',
             array(),
             array(),
             array('HTTP_X_SESSION_ID'=>'sampleSession1'));
@@ -176,6 +194,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertArrayHasKey('description',$json['requests'][0],"request description not found");
         $this->assertArrayHasKey('offersCount',$json['requests'][0],"request offercount not found");
         $this->assertArrayHasKey('price',$json['requests'][0],"request price not found");
+        $this->assertArrayHasKey('date',$json['requests'][0],"request date not found");
 
         $this->assertEquals(3,count($json['requests']));
 
@@ -191,7 +210,7 @@ class TangleControllerTest extends EntangleTestCase
 
         $client = static::createClient();
         $client->request('GET',
-            '/tangle/1/request?query=de',
+            '/tangle/1/request?limit=3&query=de',
             array(),
             array(),
             array('HTTP_X_SESSION_ID'=>'sampleSession1'));
@@ -211,9 +230,82 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertArrayHasKey('description',$json['requests'][0],"request description not found");
         $this->assertArrayHasKey('offersCount',$json['requests'][0],"request offercount not found");
         $this->assertArrayHasKey('price',$json['requests'][0],"request price not found");
+        $this->assertArrayHasKey('date',$json['requests'][0],"request date not found");
 
         $this->assertEquals(2,count($json['requests']),"Wrong number of results in request array");
     }
+
+    /*
+     * Test Case testing filtering stream with a limit
+     * @author MohamedBassem
+     */
+    public function testFilterStream_SelectWithLimit(){
+        $this->addFixture(new LoadFilterStreamData());
+        $this->loadFixtures();
+
+        $client = static::createClient();
+        $client->request('GET',
+            '/tangle/1/request?limit=1',
+            array(),
+            array(),
+            array('HTTP_X_SESSION_ID'=>'sampleSession1'));
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(),"Success status code");
+        $content = $client->getResponse()->getContent();
+        $this->assertJson($content,"Wrong Json Format");
+        $json = json_decode($content,true);
+        $this->assertArrayHasKey('count',$json,"count not found");
+        $this->assertArrayHasKey('requests',$json,"requests not found");
+
+        $this->assertEquals(1,$json['count'],"Wrong number of results in count");
+
+        $this->assertArrayHasKey('id',$json['requests'][0],"request id not found");
+        $this->assertArrayHasKey('username',$json['requests'][0],"requester username not found");
+        $this->assertArrayHasKey('userId',$json['requests'][0],"requester userId not found");
+        $this->assertArrayHasKey('description',$json['requests'][0],"request description not found");
+        $this->assertArrayHasKey('offersCount',$json['requests'][0],"request offercount not found");
+        $this->assertArrayHasKey('price',$json['requests'][0],"request price not found");
+        $this->assertArrayHasKey('date',$json['requests'][0],"request date not found");
+
+        $this->assertEquals(1,count($json['requests']),"Wrong number of results in request array");
+    }
+
+    /*
+     * Test Case testing filtering stream with a lower bound limit
+     * @author MohamedBassem
+     */
+    public function testFilterStream_SelectWithDate(){
+        $this->addFixture(new LoadFilterStreamData());
+        $this->loadFixtures();
+
+        $client = static::createClient();
+        $client->request('GET',
+            '/tangle/1/request?limit=3&lastDate=2014-01-1%2012:00:00',
+            array(),
+            array(),
+            array('HTTP_X_SESSION_ID'=>'sampleSession1'));
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(),"Success status code");
+        $content = $client->getResponse()->getContent();
+        $this->assertJson($content,"Wrong Json Format");
+        $json = json_decode($content,true);
+        $this->assertArrayHasKey('count',$json,"count not found");
+        $this->assertArrayHasKey('requests',$json,"requests not found");
+
+        $this->assertEquals(2,$json['count'],"Wrong number of results in count");
+
+        $this->assertArrayHasKey('id',$json['requests'][0],"request id not found");
+        $this->assertArrayHasKey('username',$json['requests'][0],"requester username not found");
+        $this->assertArrayHasKey('userId',$json['requests'][0],"requester userId not found");
+        $this->assertArrayHasKey('description',$json['requests'][0],"request description not found");
+        $this->assertArrayHasKey('offersCount',$json['requests'][0],"request offercount not found");
+        $this->assertArrayHasKey('price',$json['requests'][0],"request price not found");
+        $this->assertArrayHasKey('date',$json['requests'][0],"request date not found");
+
+        $this->assertEquals(2,count($json['requests']),"Wrong number of results in request array");
+    }
+
+
 
     /*
      * Test Case testing filtering stream if there is no match for the query.
@@ -225,7 +317,7 @@ class TangleControllerTest extends EntangleTestCase
 
         $client = static::createClient();
         $client->request('GET',
-            '/tangle/1/request?query=z',
+            '/tangle/1/request?limit=3&query=z',
             array(),
             array(),
             array('HTTP_X_SESSION_ID'=>'sampleSession1'));
