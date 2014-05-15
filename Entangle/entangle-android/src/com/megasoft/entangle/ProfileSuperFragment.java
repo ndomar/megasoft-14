@@ -47,7 +47,7 @@ public class ProfileSuperFragment extends Fragment {
      */
 	private SharedPreferences settings;
 	
-	
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.super_profile, container, false);
@@ -101,7 +101,7 @@ public class ProfileSuperFragment extends Fragment {
 
 	/**
 	 * Views the user transactions
-	 * @param transactions
+	 * @param JSonArray transactions
 	 * @author Almgohar
 	 */
 	private void viewTransactions(JSONArray transactions) {

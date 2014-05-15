@@ -30,7 +30,7 @@ public class ProfileFragment extends Fragment {
 	 * The TextView that holds the user's name
 	 */
 	private TextView name;
-	
+
 	/**
 	 * The TextView that holds the user's description
 	 */
@@ -40,35 +40,34 @@ public class ProfileFragment extends Fragment {
 	 * The ImageView that holds the user's profile picture
 	 */
 	private com.megasoft.entangle.views.RoundedImageView profilePictureView;
-	
-    
-    /**
-     * The preferences instance
-     */
+
+	/**
+	 * The preferences instance
+	 */
 	private SharedPreferences settings;
-	
+
 	/**
 	 * The id of the logged in user
 	 */
 	private int loggedInId;
-	
+
 	/**
 	 * The tangle Id from which we were redirected
 	 */
 	private int tangleId;
-	
+
 	/**
 	 * The user Id whose profile we want to view
 	 */
 	private int userId;
-	
+
 	/**
 	 * The session Id of the logged in user
 	 */
 	private String sessionId;
-	
+
 	/**
-	 * The boolean specifying whether the profile is general
+	 * The boolean specifying whether the profile is general or not
 	 */
 	private boolean isGeneral;
 	
