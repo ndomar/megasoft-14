@@ -28,7 +28,7 @@ class VerificationController extends Controller {
      * @return  response
      * @author MahmoudGamal
      */
-    public static function sendUserVerificationEmail($userName, $userEmail, $verificationHash) {
+    public function sendUserVerificationEmail($userName, $userEmail, $verificationHash) {
         $body = 'Welcome to Entangle!
             
         Your account has been created, you can 
@@ -50,8 +50,9 @@ class VerificationController extends Controller {
      * @param String $userEmail
      * @param String $verificationHash
      * @return \Symfony\Component\HttpFoundation\Response
+     * @author MahmoudGamal
      */
-    public static function sendEmailVerificationEmail($userName , $userEmail , $verificationHash){
+    public function sendEmailVerificationEmail($userName , $userEmail , $verificationHash){
         $body = 'Hello' .$userName .'
             
                 You have added this email as an additional email to your account.
@@ -68,6 +69,7 @@ class VerificationController extends Controller {
      * This method Verifies additional emails for user
      * @param String $verificationCode
      * @return twig view
+     * @author MahmoudGamal
      */
     public function verifyEmailAction($verificationCode) {
         $criteria = array('verificationCode' => $verificationCode);
@@ -87,6 +89,6 @@ class VerificationController extends Controller {
         $search->setExpired(true);
         $this->getDoctrine()->getManager()->flush();
         return $this->render('MegasoftEntangleBundle:Verified:verified.html.twig',array(
-        'username' => $username));
+        'username' => $username,));
     }
 }

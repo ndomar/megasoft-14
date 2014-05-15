@@ -8,7 +8,10 @@ use Megasoft\EntangleBundle\Tests\EntangleTestCase;
 
 class VerificationControllerTest extends EntangleTestCase
 {
-    
+    /**
+     * This function sends valid verification code to the endpoint
+     * @author MahmoudGamal
+     */
     public function testEmailVerification_verified(){
         $this->addFixture(new LoadVerificationData());
         $this->loadFixtures();
@@ -18,6 +21,11 @@ class VerificationControllerTest extends EntangleTestCase
         $htmlWebPage = $client->getResponse()->getContent();
         $this->assertContains('Congratulations, sampleUser you have been verified,Welcome to Entangle!',$htmlWebPage,'Verified!');
     }
+
+    /**
+     * This function sends an expired verification code to the endpoint
+     * @author MahmoudGamal
+     */
     public function testEmailVerification_expired(){
         $this->addFixture(new LoadVerificationData());
         $this->loadFixtures();
@@ -27,6 +35,11 @@ class VerificationControllerTest extends EntangleTestCase
         $htmlWebPage = $client->getResponse()->getContent();
         $this->assertContains('Woops, Something went wrong either this link has expired or user has been already verified.',$htmlWebPage,'Expired!');
     }
+
+    /**
+     * This function sends a verification code that doesn't exist to the endpoint
+     * @author MahmoudGamal
+     */
     public function testEmailVerification_notFound(){
         $this->addFixture(new LoadVerificationData());
         $this->loadFixtures();
