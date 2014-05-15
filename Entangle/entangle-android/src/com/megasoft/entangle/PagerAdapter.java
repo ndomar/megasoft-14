@@ -12,7 +12,7 @@ import com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationFrag
 import com.megasoft.entangle.megafragments.TangleFragment;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
-	
+
 	int tangleId;
 	int userId;
 	Context context;
@@ -20,9 +20,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 	private boolean isTangleOwner;
 	
 	final static String STREAM = "Stream";
-	
-	
-	public PagerAdapter(Context con, FragmentManager fm,int tangleId,int userId, String tangleName, boolean isTangleOwner) {
+
+	public PagerAdapter(Context con, FragmentManager fm, int tangleId,
+			int userId, String tangleName, boolean isTangleOwner) {
 		super(fm);
 		this.context = con;
 		this.tangleName = tangleName;
@@ -30,13 +30,12 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 		this.userId = userId;
 		this.isTangleOwner = isTangleOwner;
 	}
-	
-	
+
 	/**
 	 * Initialize the navigation drawer (sidebar menu)
 	 * 
-	 * @param 
-	 * @return 
+	 * @param
+	 * @return
 	 * @author Mohamed Farghal
 	 */
 	@Override
@@ -58,44 +57,54 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 			fragment = new ProfileSuperFragment();
 			args.putInt("userId", userId);
 			break;
-			
-		case 3:
-			fragment = new ManagePendingInvitationFragment();
-			break;
 
+		case 3:
+			if (isTangleOwner) {
+				fragment = new ManagePendingInvitationFragment();
+				break;
+
+			} else {
+				fragment = new MyRequestsFragment();
+				break;
+			}
 		default:
 			break;
 		}
 		fragment.setArguments(args);
-        return fragment;
+		return fragment;
 	}
-        
+
 	@Override
 	public int getCount() {
-		if(isTangleOwner){
+		if (isTangleOwner) {
 			return 4;
-		}else{
-			return 3;
+		} else {
+			return 4;
 		}
+
 	}
-	
+
 	@Override
 	public CharSequence getPageTitle(int position) {
 		switch (position) {
 		case 0:
 			return "Stream";
-			
+
 		case 1:
 			return "Members";
 		case 2:
 			return "You";
-			
+
 		case 3:
-			return "Tangle Managment";
+			if (isTangleOwner) {
+				return "Tangle Managment";
+			} else {
+				return "MyRequests";
+			}
 
 		default:
 			return "Tab " + position;
 		}
-    }
+	}
 
 }

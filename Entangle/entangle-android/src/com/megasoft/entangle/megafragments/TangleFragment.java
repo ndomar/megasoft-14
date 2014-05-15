@@ -25,6 +25,11 @@ import com.megasoft.entangle.R;
 import com.megasoft.entangle.StreamRequestFragment;
 import com.megasoft.requests.GetRequest;
 
+/**
+ * This is the fragment that holds the stream of the requests
+ * 
+ * @author Mohamed Farghal , HebaAamer
+ */
 public class TangleFragment extends Fragment {
 
 	private HomeActivity activity;
@@ -32,7 +37,7 @@ public class TangleFragment extends Fragment {
 	private String queryParameters;
 	
 	private View view;
-	
+
 	/**
 	 * The domain to which the requests are sent
 	 */
@@ -75,14 +80,13 @@ public class TangleFragment extends Fragment {
 	 * @param savedInstanceState
 	 *            , is the passed bundle from the previous activity
 	 */
-	
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 	}
-	
+
 	@Override
     public View onCreateView(LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -145,7 +149,6 @@ public class TangleFragment extends Fragment {
 				return true;
 			}
 		});
-		
 	}
 
 	/**
@@ -162,7 +165,8 @@ public class TangleFragment extends Fragment {
 				int count = response.getInt("count");
 				JSONArray requestArray = response.getJSONArray("requests");
 				if (count > 0 && requestArray != null) {
-					LinearLayout layout = (LinearLayout) activity.findViewById(R.id.streamLayout);
+					LinearLayout layout = (LinearLayout) activity
+							.findViewById(R.id.streamLayout);
 					layout.removeAllViews();
 					for (int i = 0; i < count && i < requestArray.length(); i++) {
 						JSONObject request = requestArray.getJSONObject(i);
@@ -199,17 +203,18 @@ public class TangleFragment extends Fragment {
 			String requesterButtonText = requesterName;
 			String requestButtonText = requestBody;
 			String requestPrice = "0";
-					
-			if(request.get("price") != null)
+
+			if (request.get("price") != null)
 				requestPrice = "" + request.getInt("price");
-			
+
 			transaction = getFragmentManager().beginTransaction();
 			StreamRequestFragment requestFragment = StreamRequestFragment
 					.createInstance(requestId, userId, requestButtonText,
-							requesterButtonText, requestPrice, requestOffersCount, this);
+							requesterButtonText, requestPrice,
+							requestOffersCount, getTangleId(), getTangleName());
 			transaction.add(R.id.streamLayout, requestFragment);
 			transaction.commit();
-		} catch (JSONException e) { 
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 	}
@@ -223,7 +228,6 @@ public class TangleFragment extends Fragment {
 		return tangleId;
 	}
 
-	
 	/**
 	 * This is a getter method used to get the hashMap that maps a tag to its id
 	 * 
@@ -243,8 +247,6 @@ public class TangleFragment extends Fragment {
 		return userToId;
 	}
 
-	
-
 	/**
 	 * This method is used to send a get request to get the stream filtered/not
 	 * 
@@ -252,11 +254,13 @@ public class TangleFragment extends Fragment {
 	 *            , is the URL to which the request is going to be sent
 	 */
 	public void sendFilteredRequest(final String url) {
-		sessionId = activity.getSharedPreferences(Config.SETTING, 0).getString(Config.SESSION_ID, "");
+		sessionId = activity.getSharedPreferences(Config.SETTING, 0).getString(
+				Config.SESSION_ID, "");
 		GetRequest getStream = new GetRequest(url) {
 			protected void onPostExecute(String res) {
 				if (!this.hasError() && res != null) {
-					LinearLayout layout = (LinearLayout) activity.findViewById(R.id.streamLayout);
+					LinearLayout layout = (LinearLayout) activity
+							.findViewById(R.id.streamLayout);
 					layout.removeAllViews();
 					setTheLayout(res);
 				} else {
@@ -269,14 +273,19 @@ public class TangleFragment extends Fragment {
 		getStream.addHeader("X-SESSION-ID", getSessionId());
 		getStream.execute();
 	}
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		
 		this.activity = (HomeActivity) activity;
 		super.onAttach(activity);
 	}
-	
+
+	/**
+	 * This is a getter method used to get the name of the tangle
+	 * 
+	 * @return session id
+	 */
 	public String getTangleName() {
 		return tangleName;
 	}
@@ -289,5 +298,5 @@ public class TangleFragment extends Fragment {
 	public String getSessionId() {
 		return sessionId;
 	}
-	
+
 }
