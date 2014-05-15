@@ -6,6 +6,16 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Megasoft\EntangleBundle\Entity\Tangle;
+use Megasoft\EntangleBundle\Entity\User;
+use Megasoft\EntangleBundle\Entity\UserEmail;
+use Megasoft\EntangleBundle\Entity\UserTangle;
+use Megasoft\EntangleBundle\Entity\Request;
+use Megasoft\EntangleBundle\Entity\Offer;
+use Megasoft\EntangleBundle\Entity\Claim;
+use Megasoft\EntangleBundle\Entity\Session;
+use Megasoft\EntangleBundle\Entity\Message;
+use Megasoft\EntangleBundle\Entity\Transaction;
+
 
 /*
  * Fixtures for Leaving Tangle End-point
