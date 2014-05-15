@@ -144,4 +144,22 @@ class TangleControllerTest extends EntangleTestCase
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode(), 'Sending wrong session');
     }
+    
+    /**
+     * Test Case testing user not in the tangle 
+     * @author HebaAamer
+     */
+    public function testUserRequestsAction_NotUserInTangle() {
+        $this->addFixture(new LoadMyRequestsData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('GET',
+                'tangle/1/user/requests',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userMazen'));
+        $response = $client->getResponse();
+        $this->assertEquals(401, $response->getStatusCode(), 'Case user not in the tangle');
+    }
 }
