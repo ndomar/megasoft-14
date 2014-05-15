@@ -113,4 +113,25 @@ class LoadMyRequestsData extends AbstractFixture implements OrderedFixtureInterf
         $manager->persist($userTangle);
         $this->addReference('userTangle_' . "$userReference", $userTangle);
     }
+    
+    /**
+     * This function is used to create a request
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param String $userReference
+     * @param String $description
+     * @param integer $requestNumber
+     * @param integer $requestStatus
+     * @author HebaAamer
+     */
+    private function createRequest(ObjectManager $manager, $userReference, $description, $requestNumber, $requestStatus) {
+        $request = new Request();
+        $request->setUser($this->getReference("$userReference"));
+        $request->setTangle($this->getReference('tangle'));
+        $request->setDescription("$description");
+        $request->setStatus($requestStatus);
+        $request->setDate(new DateTime('now'));
+        
+        $manager->persist($request);
+        $this->addReference('request' . "$requestNumber", $request);
+    }
 }
