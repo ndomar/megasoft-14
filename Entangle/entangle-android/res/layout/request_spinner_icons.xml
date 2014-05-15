@@ -3,12 +3,13 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="3dip" >
+    android:padding="@dimen/layoutPadding" >
 
     <ImageView
         android:id="@+id/requestIcon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/iconSmall"
+        android:layout_height="@dimen/iconSmall"
+        android:layout_gravity="center_horizontal"
         android:contentDescription="@string/requestIcon" />
 
 </RelativeLayout>

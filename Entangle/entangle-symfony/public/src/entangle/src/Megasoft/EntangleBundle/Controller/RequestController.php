@@ -347,7 +347,7 @@ class RequestController extends Controller
         }
         if ($icon == null && $icon != 0){
             $response->setStatusCode(400);
-            $response->setContent("some data are missing");
+            $response->setContent("Icon is missing");
             return $response;
         }
         return null;

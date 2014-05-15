@@ -47,5 +47,8 @@
      <!-- Images dimen -->
     <dimen name="iconSmall">30dp</dimen>
     <dimen name="avatarMedium">30dp</dimen>
+    
+	<!-- Layout Padding -->
+	<dimen name="layoutPadding">3dip</dimen>
 
 </resources>
