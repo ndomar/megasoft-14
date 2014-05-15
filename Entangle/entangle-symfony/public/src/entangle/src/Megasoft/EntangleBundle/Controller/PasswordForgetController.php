@@ -10,6 +10,7 @@ use Symfony\Component\Form\Tests\Extension\Core\Type\RepeatedTypeTest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+
 class PasswordForgetController extends Controller{
     /**
      * This Function generates a Random String to be used as the link to reset password
@@ -26,7 +27,7 @@ class PasswordForgetController extends Controller{
     }
 
 
-    private function securityCheck($email) {
+    private function emailVerification($email) {
         if ($email == null) {
             return -1;
         }
@@ -47,7 +48,7 @@ class PasswordForgetController extends Controller{
         $data = json_decode($request->getContent(),true);
         $email= $data['email'];
         $response= new Response();
-        $id=$this->securityCheck($email);
+        $id=$this->emailVerification($email);
 
         if($id == -1){
             $response->setStatusCode(400);
