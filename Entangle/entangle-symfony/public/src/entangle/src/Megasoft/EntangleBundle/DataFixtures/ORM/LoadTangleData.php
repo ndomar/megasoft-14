@@ -23,7 +23,6 @@ class LoadTangleData extends AbstractFixture implements OrderedFixtureInterface
         $tangle->setDescription('Just a sample tangle');
         
         $manager->persist($tangle);
-        $manager->flush();
 
         $tangle1 = new Tangle();
         $tangle1->setName('sampleTangle1');

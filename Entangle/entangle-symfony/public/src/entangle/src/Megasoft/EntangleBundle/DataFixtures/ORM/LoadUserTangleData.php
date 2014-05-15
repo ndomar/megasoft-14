@@ -25,7 +25,6 @@ class LoadUserTangleData extends AbstractFixture implements OrderedFixtureInterf
         $userTangle->setTangleOwner(true);
         
         $manager->persist($userTangle);
-        $manager->flush();
 
         $userTangle1 = new UserTangle();
         $userTangle1->setCredit(0);
@@ -34,7 +33,6 @@ class LoadUserTangleData extends AbstractFixture implements OrderedFixtureInterf
         $userTangle1->setTangleOwner(false);
 
         $manager->persist($userTangle1);
-        $manager->flush();
 
         $userTangle2 = new UserTangle();
         $userTangle2->setCredit(10);

@@ -37,7 +37,7 @@ class UserControllerTest extends EntangleTestCase {
             '/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession2'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession2',));
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking Wrong SessionId");
     }
@@ -55,7 +55,7 @@ class UserControllerTest extends EntangleTestCase {
             '/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession1'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession1',));
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking Expired SessionId");
     }
@@ -73,7 +73,7 @@ class UserControllerTest extends EntangleTestCase {
             '/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>''));
+            array('HTTP_X_SESSION_ID'=>'',));
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking empty sessionId");
     }
@@ -91,7 +91,7 @@ class UserControllerTest extends EntangleTestCase {
             '/user/2/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession',));
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), 'checking unauthorized user');
 
     }
@@ -109,7 +109,7 @@ class UserControllerTest extends EntangleTestCase {
             '/user/5/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession',));
         $this->assertEquals(404, $client->getResponse()->getStatusCode(), "checking required user not found");
     }
 
@@ -127,7 +127,7 @@ class UserControllerTest extends EntangleTestCase {
             '/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession',));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $json_string =  $client->getResponse()->getContent();
         $this->assertJson($json_string, 'Wrong json format');
@@ -154,7 +154,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession1'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession1',));
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking Expired SessionId");
     }
@@ -174,7 +174,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession4'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession4',));
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking wrong sessionId");
     }
@@ -195,7 +195,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>''));
+            array('HTTP_X_SESSION_ID'=>'',));
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking empty sessionId");
     }
@@ -215,7 +215,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession3'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession3',));
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), "checking unauthorized user");
     }
 
@@ -234,7 +234,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/3/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession',));
         $this->assertEquals(404, $client->getResponse()->getStatusCode(), "checking not found tangle");
     }
 
@@ -253,7 +253,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/2/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession',));
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), "checking wrong tangle");
     }
 
@@ -272,7 +272,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/2/user/3/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession',));
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), "checking logged in user not in tangle");
     }
 
@@ -291,7 +291,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/5/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession',));
         $this->assertEquals(404, $client->getResponse()->getStatusCode(), "checking required user not found");
     }
 
@@ -310,7 +310,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/2/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession',));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $json_string =  $client->getResponse()->getContent();
         $this->assertJson($json_string, 'Wrong json format');
@@ -337,7 +337,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/1/transactions',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession1'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession1',));
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking Expired SessionId");
     }
@@ -377,7 +377,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/1/transactions',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>''));
+            array('HTTP_X_SESSION_ID'=>'',));
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking empty sessionId");
     }
@@ -397,7 +397,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/1/transactions',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession3'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession3',));
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), "checking unauthorized user");
     }
 
@@ -416,7 +416,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/3/user/1/transactions',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession',));
         $this->assertEquals(404, $client->getResponse()->getStatusCode(), "checking not found tangle");
     }
 
@@ -435,7 +435,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/2/user/1/transactions',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession',));
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), "checking wrong tangle");
     }
 
@@ -454,7 +454,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/2/user/3/transactions',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession',));
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), "checking logged in user not in tangle");
     }
 
@@ -473,7 +473,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/5/transactions',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession',));
         $this->assertEquals(404, $client->getResponse()->getStatusCode(), "checking required user not found");
     }
 
@@ -495,7 +495,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/2/transactions',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession'));
+            array('HTTP_X_SESSION_ID'=>'sampleSession',));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $json_string =  $client->getResponse()->getContent();
         $this->assertJson($json_string, 'Wrong json format');
@@ -513,4 +513,4 @@ class UserControllerTest extends EntangleTestCase {
         $this->assertEquals(1,count($json['transactions']),'The deleted transaction is shown');
     }
 }
- 
+

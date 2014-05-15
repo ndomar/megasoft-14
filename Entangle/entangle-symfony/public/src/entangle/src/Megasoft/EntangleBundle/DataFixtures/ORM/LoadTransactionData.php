@@ -27,7 +27,6 @@ class LoadTransactionData extends AbstractFixture implements OrderedFixtureInter
         $transaction->setDate(new DateTime('now'));
 
         $manager->persist($transaction);
-        $manager->flush();
 
         $transaction1 = new Transaction();
         $transaction1->setOffer($this->getReference('sampleOffer1'));
@@ -48,4 +47,4 @@ class LoadTransactionData extends AbstractFixture implements OrderedFixtureInter
         return 7;
     }
 
-} 
+}

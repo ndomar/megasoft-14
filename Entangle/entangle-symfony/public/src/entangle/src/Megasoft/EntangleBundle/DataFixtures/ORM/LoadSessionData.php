@@ -28,7 +28,6 @@ class LoadSessionData extends AbstractFixture implements OrderedFixtureInterface
         $session->setRegId(1);
         
         $manager->persist($session);
-        $manager->flush();
 
         $session1 = new Session();
         $session1->setUser($this->getReference('sampleUser'));
@@ -39,7 +38,6 @@ class LoadSessionData extends AbstractFixture implements OrderedFixtureInterface
         $session1->setRegId(1);
 
         $manager->persist($session1);
-        $manager->flush();
 
         $session2 = new Session();
         $session2->setUser($this->getReference('sampleUser1'));
@@ -50,7 +48,6 @@ class LoadSessionData extends AbstractFixture implements OrderedFixtureInterface
         $session2->setRegId(1);
 
         $manager->persist($session2);
-        $manager->flush();
 
         $session3 = new Session();
         $session3->setUser($this->getReference('sampleUser2'));

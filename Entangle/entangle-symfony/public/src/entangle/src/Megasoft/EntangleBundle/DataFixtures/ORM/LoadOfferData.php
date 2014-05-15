@@ -33,7 +33,6 @@ class LoadOfferData extends AbstractFixture implements OrderedFixtureInterface {
         $offer->setExpectedDeadline(new DateTime('now'));
 
         $manager->persist($offer);
-        $manager->flush();
 
         $offer1 = new Offer();
         $offer1->setStatus(1);
@@ -58,4 +57,4 @@ class LoadOfferData extends AbstractFixture implements OrderedFixtureInterface {
         return 6;
     }
 
-} 
+}
