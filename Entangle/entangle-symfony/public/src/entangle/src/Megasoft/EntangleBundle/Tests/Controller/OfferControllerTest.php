@@ -2,7 +2,7 @@
 
 namespace Megasoft\EntangleBundle\Tests\Controller;
 
-use Megasoft\EntangleBundle\DataFixtures\ORM\LoadOfferData;
+use Megasoft\EntangleBundle\DataFixtures\ORM\LoadMarkAsDoneData;
 use Megasoft\EntangleBundle\Tests\EntangleTestCase;
 
 /**
@@ -16,7 +16,7 @@ class OfferControllerTest extends EntangleTestCase {
      * @author mohamedzayan
      */
     public function testMarkOfferAsDone_NullSession() {
-        $this->addFixture(new LoadOfferData());
+        $this->addFixture(new LoadMarkAsDoneData());
         $this->loadFixtures();
         $client = static::createClient();
         $client->request('POST', '/markAsDone/offer/1', array(), array(), array());
@@ -29,7 +29,7 @@ class OfferControllerTest extends EntangleTestCase {
      * @author mohamedzayan
      */
     public function testMarkOfferAsDone_WrongSession() {
-        $this->addFixture(new LoadOfferData());
+        $this->addFixture(new LoadMarkAsDoneData());
         $this->loadFixtures();
         $client = static::createClient();
         $client->request('POST', '/markAsDone/offer/1', array(), array(), array('HTTP_X_SESSION_ID' => 'wrongSession'));
@@ -42,7 +42,7 @@ class OfferControllerTest extends EntangleTestCase {
      * @author mohamedzayan
      */
     public function testMarkOfferAsDone_DeletedRequest() {
-        $this->addFixture(new LoadOfferData());
+        $this->addFixture(new LoadMarkAsDoneData());
         $this->loadFixtures();
         $client = static::createClient();
         $client->request('POST', '/markAsDone/offer/2', array(), array(), array('HTTP_X_SESSION_ID' => 'sampleSession'));
@@ -55,7 +55,7 @@ class OfferControllerTest extends EntangleTestCase {
      * @author mohamedzayan
      */
     public function testMarkOfferAsDone_ClosedRequest() {
-        $this->addFixture(new LoadOfferData());
+        $this->addFixture(new LoadMarkAsDoneData());
         $this->loadFixtures();
         $client = static::createClient();
         $client->request('POST', '/markAsDone/offer/3', array(), array(), array('HTTP_X_SESSION_ID' => 'sampleSession'));
@@ -68,7 +68,7 @@ class OfferControllerTest extends EntangleTestCase {
      * @author mohamedzayan
      */
     public function testMarkOfferAsDone_InvalidOffer() {
-        $this->addFixture(new LoadOfferData());
+        $this->addFixture(new LoadMarkAsDoneData());
         $this->loadFixtures();
         $client = static::createClient();
         $client->request('POST', '/markAsDone/offer/9999', array(), array(), array('HTTP_X_SESSION_ID' => 'sampleSession'));
@@ -81,7 +81,7 @@ class OfferControllerTest extends EntangleTestCase {
      * @author mohamedzayan
      */
     public function testMarkOfferAsDone_DeletedOffer() {
-        $this->addFixture(new LoadOfferData());
+        $this->addFixture(new LoadMarkASDoneData());
         $this->loadFixtures();
         $client = static::createClient();
         $client->request('POST', '/markAsDone/offer/8', array(), array(), array('HTTP_X_SESSION_ID' => 'sampleSession'));
@@ -94,7 +94,7 @@ class OfferControllerTest extends EntangleTestCase {
      * @author mohamedzayan
      */
     public function testMarkOfferAsDone_OfferAlreadyDone() {
-        $this->addFixture(new LoadOfferData());
+        $this->addFixture(new LoadMarkAsDoneData());
         $this->loadFixtures();
         $client = static::createClient();
         $client->request('POST', '/markAsDone/offer/4', array(), array(), array('HTTP_X_SESSION_ID' => 'sampleSession'));
@@ -107,7 +107,7 @@ class OfferControllerTest extends EntangleTestCase {
      * @author mohamedzayan
      */
     public function testMarkOfferAsDone_OfferPending() {
-        $this->addFixture(new LoadOfferData());
+        $this->addFixture(new LoadMarkAsDoneData());
         $this->loadFixtures();
         $client = static::createClient();
         $client->request('POST', '/markAsDone/offer/5', array(), array(), array('HTTP_X_SESSION_ID' => 'sampleSession'));
@@ -120,7 +120,7 @@ class OfferControllerTest extends EntangleTestCase {
      * @author mohamedzayan
      */
     public function testMarkOfferAsDone_OfferRejected() {
-        $this->addFixture(new LoadOfferData());
+        $this->addFixture(new LoadMarkAsDoneData());
         $this->loadFixtures();
         $client = static::createClient();
         $client->request('POST', '/markAsDone/offer/7', array(), array(), array('HTTP_X_SESSION_ID' => 'sampleSession'));
@@ -133,7 +133,7 @@ class OfferControllerTest extends EntangleTestCase {
      * @author mohamedzayan
      */
     public function testMarkOfferAsDone_OfferFailed() {
-        $this->addFixture(new LoadOfferData());
+        $this->addFixture(new LoadMarkAsDoneData());
         $this->loadFixtures();
         $client = static::createClient();
         $client->request('POST', '/markAsDone/offer/6', array(), array(), array('HTTP_X_SESSION_ID' => 'sampleSession'));
@@ -146,7 +146,7 @@ class OfferControllerTest extends EntangleTestCase {
      * @author mohamedzayan
      */
     public function testMarkOfferAsDone_InvalidRequester() {
-        $this->addFixture(new LoadOfferData());
+        $this->addFixture(new LoadMarkAsDoneData());
         $this->loadFixtures();
         $client = static::createClient();
         $client->request('POST', '/markAsDone/offer/6', array(), array(), array('HTTP_X_SESSION_ID' => 'sampleSession2'));
@@ -158,7 +158,7 @@ class OfferControllerTest extends EntangleTestCase {
      * @author mohamedzayan
      */
     public function testMarkOfferAsDone_OfferMarkedSuccessfully() {
-        $this->addFixture(new LoadOfferData());
+        $this->addFixture(new LoadMarkAsDoneData());
         $this->loadFixtures();
         $client = static::createClient();
         $client->request('POST', '/markAsDone/offer/1', array(), array(), array('HTTP_X_SESSION_ID' => 'sampleSession'));
