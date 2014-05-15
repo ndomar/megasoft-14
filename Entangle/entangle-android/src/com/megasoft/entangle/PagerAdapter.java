@@ -1,15 +1,15 @@
 package com.megasoft.entangle;
 
-import com.megasoft.config.Config;
-import com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationFragment;
-import com.megasoft.entangle.megafragments.TangleFragment;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
+import android.widget.SearchView;
+
+import com.megasoft.config.Config;
+import com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationFragment;
+import com.megasoft.entangle.megafragments.TangleFragment;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
 
@@ -18,6 +18,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 	Context context;
 	private String tangleName;
 	private boolean isTangleOwner;
+	
 	final static String STREAM = "Stream";
 
 	public PagerAdapter(Context con, FragmentManager fm, int tangleId,
@@ -53,7 +54,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 			args.putInt(Config.TANGLE_ID, tangleId);
 			break;
 		case 2:
-			fragment = new ProfileFragment();
+			fragment = new ProfileSuperFragment();
 			args.putInt("userId", userId);
 			break;
 

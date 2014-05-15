@@ -27,11 +27,11 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_action_person_white"
-             />
+            android:src="@drawable/ic_action_person_white" />
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profileImageLayout"
@@ -39,29 +39,74 @@
         android:gravity="center_horizontal"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/nameView"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textSize="@dimen/textLarge" />
+            android:gravity="center_horizontal" >
 
-        <!--
-             <TextView
-            android:id="@+id/email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="mohamed@farghal.com" />
-        -->
+            <TextView
+                android:id="@+id/nameView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/marginMedium"
+                android:layout_marginLeft="@dimen/marginSmall"
+                android:gravity="center_horizontal"
+                android:textSize="@dimen/textLarge" />
+
+            <ImageView
+                android:id="@+id/verified"
+                android:layout_width="@dimen/paddingMedium"
+                android:layout_height="@dimen/paddingMedium"
+                android:layout_alignBottom="@id/nameView"
+                android:layout_alignTop="@id/nameView"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_toRightOf="@id/nameView"
+                android:contentDescription="@string/icon"
+                android:src="@drawable/ic_action_done"
+                android:visibility="gone" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/descriptionView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/credit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/marginMedium" />
+            android:textColor="@color/cyan" />
     </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/transactions_scroll_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/profile"
+        android:layout_marginBottom="@dimen/marginLarge" >
+
+        <LinearLayout
+            android:id="@+id/transactions_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/darkWhite"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/paddingMedium"
+            android:visibility="invisible" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/marginSmall"
+                android:layout_marginTop="@dimen/marginMedium"
+                android:text="@string/transactions_title"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/textMedium" />
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -101,4 +146,3 @@
     </LinearLayout>
 
 </RelativeLayout>
-
