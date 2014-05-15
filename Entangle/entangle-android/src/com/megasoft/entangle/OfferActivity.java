@@ -193,7 +193,7 @@ public class OfferActivity extends FragmentActivity {
 			deleteOffer();
 			return true;
 		case R.id.claim_on_offer_button:
-			this.startClaimForm();
+			this.startClaimForm(item);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -205,14 +205,13 @@ public class OfferActivity extends FragmentActivity {
 	 * fetching them from the back end through the delivered json response and
 	 * sends these mails to the claim form session
 	 * 
-	 * @param View view hold the claim button
+	 * @param View view hold the claim menu item
 	 * @return None
 	 * @author Salma Amr
 	 */
-	public void startClaimForm() {
+	public void startClaimForm(MenuItem item) {
 		final Intent intent = new Intent(this, Claim.class);
-		this.requestId = (int) getIntent().getIntExtra("requestId", -1);
-		intent.putExtra("requestId", requestId);
+		intent.putExtra("requestId", this.requestId);
 		intent.putExtra("offerId", offerId);
 		startActivity(intent);
 		this.finish();
@@ -308,6 +307,7 @@ public class OfferActivity extends FragmentActivity {
 					.getInt("offerPrice")));
 			final int offererId = offerInformation.getInt("offererId");
 			final int requesterId = offerInformation.getInt("requesterId");
+			requestId = offerInformation.getInt("requestId");
 			int status = offerInformation.getInt("offerStatus");
 
 			if (status == 0) {

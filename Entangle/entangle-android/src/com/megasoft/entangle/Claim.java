@@ -16,7 +16,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+/**
+ * Creates the claim
+ * 
+ * @author Salma Amr
+ *
+ */
 public class Claim extends Activity {
 
 	/**
@@ -47,7 +52,7 @@ public class Claim extends Activity {
 		getActionBar().hide();
 	}
 
-	public void cancel() {
+	public void cancel(View view) {
 		this.finish();
 	}
 
@@ -86,7 +91,7 @@ public class Claim extends Activity {
 
 				protected void onPostExecute(String response) {
 					try {
-						if (this.getStatusCode() == 200) {
+						if (this.getStatusCode() == 201) {
 							JSONObject obj = new JSONObject(response);
 							int claimId = obj.getInt("X-CLAIM-ID");
 							intent.putExtra("claimId", claimId);
