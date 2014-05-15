@@ -134,4 +134,30 @@ class LoadMyRequestsData extends AbstractFixture implements OrderedFixtureInterf
         $manager->persist($request);
         $this->addReference('request' . "$requestNumber", $request);
     }
+    
+    /**
+     * This function is used to make testing users and their userEmails
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
+    private function makeUsers(ObjectManager $manager){
+        $this->createUser($manager, 'Ahmad', 'ahmad');
+        $this->createUser($manager, 'Mohamed', 'mohamed');
+        $this->createUser($manager, 'Aly', 'aly');
+        $this->createUser($manager, 'Mazen', 'mazen');
+        $this->createUser($manager, 'Adel', 'adel');
+    }
+    
+    /**
+     * This function is used to make testing sessions
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
+    private function makeSessions(ObjectManager $manager){
+        $this->createSession($manager, 'userAhmad', 'userAhmad', false, '1');
+        $this->createSession($manager, 'userMohamed', 'userMohamed', true, '2');
+        $this->createSession($manager, 'userAly', 'userAly', false, '3');
+        $this->createSession($manager, 'userMazen', 'userMazen', false, '4');
+        $this->createSession($manager, 'userAdel', 'userAdel', false, '5');
+    }
 }
