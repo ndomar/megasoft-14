@@ -159,11 +159,11 @@ class OfferController extends Controller {
     public function changeOfferPriceAction(Request $request, $offerId) {
 
         $sessionId = $request->headers->get('X-SESSION-ID');
+        if ($sessionId == null) {
+            return new Response("Null Session Header", 400);
+        }
         $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
-        if ($sessionId == null) {
-            return new Response("Bad Request", 400);
-        }
         if ($session == null) {
             return new Response("Unauthorized", 401);
         }
@@ -173,10 +173,10 @@ class OfferController extends Controller {
         }
         $offerRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Offer');
         $requestOffer = $offerRepo->findOneBy(array('id' => $offerId));
-        $oldPrice = $requestOffer->getRequestedPrice();
         if ($requestOffer == null) {
-            return new Response("Not found", 404);
+            return new Response("Offer Not found", 404);
         }
+        $oldPrice = $requestOffer->getRequestedPrice();
         if (($session->getUserId()) != ($requestOffer->getUserId())) {
             return new Response("Unauthorized", 401);
         }
@@ -194,22 +194,20 @@ class OfferController extends Controller {
         }
         $json = $request->getContent();
         $json_array = json_decode($json, true);
+        if (!isset($json_array['newPrice'])){
+            return new Response("Price Was Not Provided", 400);
+        }
         $newOfferPrice = $json_array['newPrice'];
-        if ($newOfferPrice == null) {
-            return new Response("Bad Request", 400);
+        if ($newOfferPrice == null && $newOfferPrice != 0) {
+            return new Response("Null New Price", 400);
+        }
+        if(!is_numeric($newOfferPrice)){
+            return new Response("Non-Numeric New Price", 400);
         }
         if (($requestOffer->getRequestedPrice()) == $newOfferPrice) {
-            return new Response("Same price, enter a new one", 409);
+            return new Response("Same price", 409);
         }
         $requestOffer->setRequestedPrice($newOfferPrice);
-
-        //notification
-
-// $notificationCenter = $this->get('notification_center.service');
-// $title = "offer changed";
-// $body = "{{from}} changed his offer";
-// $notificationCenter->offerChangeNotification($requestOffer->getId(), $oldPrice, $title, $body);
-
         $notificationCenter = $this->get('notification_center.service');
         $title = "offer changed";
         $body = "{{from}} changed his offer";
