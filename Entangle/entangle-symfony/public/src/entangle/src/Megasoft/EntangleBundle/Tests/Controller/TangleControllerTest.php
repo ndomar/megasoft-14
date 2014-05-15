@@ -216,6 +216,25 @@ class TangleControllerTest extends EntangleTestCase
                 array('HTTP_X_SESSION_ID' => 'userAly'));
         $response = $client->getResponse();
         $this->assertEquals(204, $response->getStatusCode(), 'Case sending a valid request');
+        
+        $doctrine = $this->doctrine;
+        
+        $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+        $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
+        
+        $userTangle = $userTangleRepo->findOneBy(array('tangleId' => 1, 'userId' => 3));
+        $tangle = $tangleRepo->findOneBy(array('id' => 1));
+        $deletedRequests = $requestRepo->findBy(array('tangleId' => 1,
+            'userId' => 3, 'deleted' => true, ));
+        $requests = $requestRepo->findBy(array('tangleId' => 1,
+            'userId' => 3, ));
+        $this->assertEquals(count($requests), count($deletedRequests), 'Error in deleting all the requests');
+        
+        $this->assertNotNull($userTangle->getLeavingDate(), 'Error in setting the leaving date');
+        $this->assertEquals(-80, $tangle->getDeletedBalance(), 'Error in updating the tangle balance');
+        
     }
 
     /*
