@@ -216,7 +216,6 @@ class OfferController extends Controller {
         $requestOffer->setRequestedPrice($newOfferPrice);
 
         //notification
-
 // $notificationCenter = $this->get('notification_center.service');
 // $title = "offer changed";
 // $body = "{{from}} changed his offer";
@@ -524,11 +523,14 @@ class OfferController extends Controller {
         $repo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $offerId = $offerid;
         $offer = $repo->find($offerId);
+        if ($offer == null) {
+            return new Response('Offer does not exist', 404);
+        }
+        if ($offer->getDeleted()) {
+            return new Response("Offer has been deleted", 404);
+        }
         $requestid = $offer->getRequestId();
         $testrequest = $requestTable->find($requestid);
-        if ($testrequest == null) {
-            return new Response('Request does not exist', 401);
-        }
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
         if ($session == null || $session->getExpired()) {
@@ -536,32 +538,26 @@ class OfferController extends Controller {
         }
         $userOfSession = $session->getUserId();
         if ($testrequest->getDeleted()) {
-            return new Response('This request does not exist anymore', 401);
+            return new Response('This request does not exist anymore', 404);
         }
         if ($testrequest->getStatus() == $testrequest->CLOSE) {
-            return new Response('Request is closed', 401);
-        }
-        if ($offer == null) {
-            return new Response('Offer does not exist', 401);
-        }
-        if ($testrequest->getId() != $offer->getRequest()->getId()) {
-            return new Response('Error', 401);
+            return new Response('Request is closed', 400);
         }
         $status = $offer->DONE;
         $request = $offer->getRequest();
         $requesterId = $request->getUserId();
         if ($requesterId != $userOfSession) {
-            return new Response("Error: You are unauthorized to mark this offer as done.", 409);
+            return new Response("Error: You are unauthorized to mark this offer as done.", 401);
         }
         $backendstatus = $offer->getStatus();
         if ($backendstatus == $offer->DONE) {
-            return new JsonResponse("Offer already marked as done", 401);
+            return new JsonResponse("Offer already marked as done", 400);
         } else if ($backendstatus == $offer->PENDING) {
-            return new JsonResponse("Offer is not accepted", 401);
+            return new JsonResponse("Offer is not accepted", 400);
         } else if ($backendstatus == $offer->FAILED) {
-            return new JsonResponse("This offer has failed", 401);
+            return new JsonResponse("This offer has failed", 400);
         } else if ($backendstatus == $offer->REJECTED) {
-            return new JsonResponse("This offer is rejected", 401);
+            return new JsonResponse("This offer is rejected", 400);
         } else {
             $offer->setStatus($status);
             $this->getDoctrine()->getManager()->persist($offer);
@@ -576,19 +572,18 @@ class OfferController extends Controller {
             $transaction->setFinalPrice($offer->getRequestedPrice());
             $this->getDoctrine()->getManager()->persist($transaction);
             $this->getDoctrine()->getManager()->flush();
-            $tangleId=$testrequest->getTangleId();
+            $tangleId = $testrequest->getTangleId();
             $userTangleTable = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
-                    $offerer = $userTangleTable->
-                findOneBy(array('userId' => $offer->getUserId(), 'tangleId' => $tangleId));
-            $offerer->setCredit($offerer->getCredit()+$transaction->getFinalPrice()); 
+            $offerer = $userTangleTable->
+                    findOneBy(array('userId' => $offer->getUserId(), 'tangleId' => $tangleId));
+            $offerer->setCredit($offerer->getCredit() + $transaction->getFinalPrice());
             $this->getDoctrine()->getManager()->persist($offerer);
             $this->getDoctrine()->getManager()->flush();
-            $requeststatus=$testrequest->CLOSE;
+            $requeststatus = $testrequest->CLOSE;
             $testrequest->setStatus($requeststatus);
             $this->getDoctrine()->getManager()->persist($testrequest);
             $this->getDoctrine()->getManager()->flush();
             return $response;
-  
         }
     }
 
