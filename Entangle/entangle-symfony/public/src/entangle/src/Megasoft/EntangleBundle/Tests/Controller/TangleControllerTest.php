@@ -242,7 +242,30 @@ class TangleControllerTest extends EntangleTestCase
         $deletedClaims = $claimRepo->findBy(array('tangleId' => 1, 'claimer' => 3, 'deleted' => true));
         $this->assertEquals(count($claims), count($deletedClaims), 'Error in deleting all the claims');
         
+        foreach($requests as $request) {
+            $requestOffers = $request->getOffers();
+            foreach($requestOffers as $requestOffer) {
+                $this->assertTrue($requestOffer->getDeleted(), 'Error in deleting an offer');
+                $offerMessages = $requestOffer->getMessages();
+                foreach ($offerMessages as $offerMessage) {
+                    $this->assertTrue($offerMessage->getDeleted(), 'Error in deleting a message');
+                }
+            }
+        }
         
+        $offers = $offerRepo->findBy(array('userId' => 3));
+        foreach ($offers as $offer) {
+                $offerRequest = $requestRepo->findOneBy(array(
+                    'id' => $offer->getRequestId(), 'tangleId' => 1, ));
+                if ($offerRequest != null) {
+                    $this->assertTrue($offer->getDeleted(), 'Error in deleting a user offer');
+                    $offerMessages = $offer->getMessages();
+                    foreach ($offerMessages as $offerMessage) {
+                        $this->assertTrue($offerMessage->getDeleted(), 'Error in deleting a message');
+                    }
+                }
+            }
+        }
     }
 
     /*
