@@ -65,7 +65,7 @@ public class Request extends Activity {
 						Toast.makeText(getBaseContext(), "Loading Claim Form", Toast.LENGTH_SHORT).show();
 						startActivity(intent);
 					} else {
-						Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getBaseContext(), this.getErrorMessage(), Toast.LENGTH_SHORT).show();
 					}
 
 				} catch (JSONException e) {

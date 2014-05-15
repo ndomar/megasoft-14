@@ -131,7 +131,7 @@ public class ProfileFragment extends Fragment {
 						}
 				} else {
 					Log.e("test", this.getErrorMessage());
-					Toast toast = Toast.makeText(activity.getApplicationContext(),"Some error happened.",Toast.LENGTH_SHORT);
+					Toast toast = Toast.makeText(activity.getApplicationContext(),this.getErrorMessage(),Toast.LENGTH_SHORT);
 					toast.show();
 					}
 				}

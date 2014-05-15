@@ -335,7 +335,7 @@ class UserController extends Controller {
         $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if (!$session) {
-            return new JsonResponse("Please login again" 404);
+            return new JsonResponse("Please login again",404);
         }
         if ($session->getExpired()) {
             return new JsonResponse("Please login again", 400);

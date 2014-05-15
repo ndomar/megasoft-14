@@ -177,10 +177,10 @@ public class MemberListFragment extends Fragment {
 
 				if (!this.hasError() && this.getStatusCode() == 200) {
 					if (!showData(response)) {
-						toasterShow("Something went wrong, please try again later");
+						toasterShow(this.getErrorMessage());
 					}
 				} else {
-					toasterShow("Something went wrong, please try again later");
+					toasterShow(this.getErrorMessage());
 				}
 			}
 		};

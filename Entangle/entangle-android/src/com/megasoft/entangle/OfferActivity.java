@@ -432,7 +432,7 @@ public class OfferActivity extends FragmentActivity {
 						}
 					} else {
 						Toast toast = Toast.makeText(getApplicationContext(),
-								getString(R.string.toastError),
+								this.getErrorMessage(),
 								Toast.LENGTH_SHORT);
 						toast.show();
 					}
@@ -467,6 +467,8 @@ public class OfferActivity extends FragmentActivity {
 						+ ACCEPT) {
 					protected void onPostExecute(String response) {
 						status = this.getStatusCode();
+						String responseMessage = this.getErrorMessage();
+						
 						String errorMessage = this.getErrorMessage();
 						if (status == 201) {
 							acceptOffer.setVisibility(View.INVISIBLE);
@@ -479,13 +481,13 @@ public class OfferActivity extends FragmentActivity {
 							if (status == 405) {
 								Toast toast = Toast
 										.makeText(
-												getApplicationContext(),errorMessage,
+												getApplicationContext(),this.getErrorMessage(),
 												Toast.LENGTH_SHORT);
 								toast.show();
 							} else {
 								Toast toast = Toast.makeText(
 										getApplicationContext(),
-										getString(R.string.toastError),
+										this.getErrorMessage(),
 										Toast.LENGTH_SHORT);
 								toast.show();
 							}
@@ -555,14 +557,14 @@ public class OfferActivity extends FragmentActivity {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 201) {
 					Toast success = Toast.makeText(getApplicationContext(),
-							R.string.mark, Toast.LENGTH_LONG);
+							this.getErrorMessage(), Toast.LENGTH_LONG);
 					success.show();
 					markOfferAsDone.setEnabled(false);
 					markOfferAsDone.setVisibility(View.INVISIBLE);
 					offerStatus.setText("Done");
 				} else {
 					Toast error = Toast.makeText(getApplicationContext(),
-							R.string.error, Toast.LENGTH_LONG);
+							this.getErrorMessage(), Toast.LENGTH_LONG);
 					error.show();
 				}
 			}

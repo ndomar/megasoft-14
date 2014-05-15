@@ -90,7 +90,7 @@ public class DeleteButtonFragment extends Fragment {
 				
 				DeleteRequest deleteRequest = new DeleteRequest(url){
 					protected void onPostExecute(String res) {
-						String message = "Sorry, there are problems in the delete process. Please, try again later";
+						String message = this.getErrorMessage();
 						
 						if (!this.hasError() && res != null) {
 							message = "Deleted!";

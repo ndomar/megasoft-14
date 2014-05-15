@@ -283,7 +283,7 @@ class TangleController extends Controller {
         if (!$this->validateTangleId($tangleId)) {
             return new Response("Tangle Not Found", 404);
         }
-d
+
         $userTangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserTangle');
 
         if (($userTangle = $userTangleRepo->findOneBy(array('userId' => $session->getUserId(), 'tangleId' => $tangleId))) == null) {

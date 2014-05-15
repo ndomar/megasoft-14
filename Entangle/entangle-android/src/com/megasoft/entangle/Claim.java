@@ -74,7 +74,7 @@ public class Claim extends Activity {
 		mssgBody = ((EditText) findViewById(R.id.mssgText)).getText()
 				.toString();
 		if (mssgBody.equals("")) {
-			Toast.makeText(this, "Msssg body missing", Toast.LENGTH_LONG)
+			Toast.makeText(this, "Message body missing", Toast.LENGTH_LONG)
 					.show();
 		} else {
 
@@ -102,7 +102,7 @@ public class Claim extends Activity {
 							intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
 							startActivity(intent);
 						} else {
-							Toast.makeText(getBaseContext(), "Something went wrong",
+							Toast.makeText(getBaseContext(), this.getErrorMessage(),
 									Toast.LENGTH_SHORT).show();
 						}
 

@@ -201,7 +201,7 @@ public class CreateRequestActivity extends Activity {
 							finish();
 						} else {
 							Toast.makeText(getApplicationContext(),
-									"Error, Can not create request",
+									this.getErrorMessage(),
 									Toast.LENGTH_SHORT).show();
 						}
 					}

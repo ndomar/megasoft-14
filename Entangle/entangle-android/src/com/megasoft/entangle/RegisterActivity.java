@@ -94,13 +94,13 @@ public class RegisterActivity extends Activity {
 							goToLogin(response);
 						} else if(this.getStatusCode() == 401){
 							Toast.makeText(getApplicationContext(),
-									"Not unique username",
+									this.getErrorMessage(),
 									Toast.LENGTH_SHORT).show();
 						}
 						
 						else if(this.getStatusCode() == 402){
 							Toast.makeText(getApplicationContext(),
-									"Not unique email",
+									this.getErrorMessage(),
 									Toast.LENGTH_SHORT).show();
 						}
 

@@ -189,7 +189,7 @@ public class CreateOfferActivity extends Activity {
 						} else {
 
 							Toast.makeText(getApplicationContext(),
-									"Error, Can not create offer",
+									this.getErrorMessage(),
 									Toast.LENGTH_SHORT).show();
 						}
 					}
