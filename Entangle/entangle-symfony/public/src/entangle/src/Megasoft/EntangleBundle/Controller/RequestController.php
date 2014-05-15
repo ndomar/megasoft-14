@@ -52,8 +52,11 @@ class RequestController extends Controller
     {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
+        if ($sessionId == null) {
+            return new Response('Please login again', 400);
+        }
         if ($requestId == null || $sessionId == null) {
-            return new Response('Bad Request', 400);
+            return new Response('Please login again', 400);
         }
 
         $doctrine = $this->getDoctrine();
@@ -61,20 +64,20 @@ class RequestController extends Controller
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($session == null || $session->getExpired()) {
-            return new Response('Bad Request', 400);
+            return new Response('Please login again', 400);
         }
 
         $jsonString = $request->getContent();
 
         if ($jsonString == null) {
-            return new Response('Bad Request', 400);
+            return new Response('Please choose an icon', 400);
         }
 
         $json = json_decode($jsonString, true);
         $iconData = $json['requestIcon'];
 
         if ($iconData == null) {
-            return new Response('Bad Request', 400);
+            return new Response('Please choose an icon', 400);
         }
 
         $requesterId = $session->getUserId();
@@ -82,7 +85,7 @@ class RequestController extends Controller
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
         $request = $requestRepo->findOneBy(array('id' => $requestId));
         if ($request == null || $request->getUserId() != $requesterId) {
-            return new Response('Unauthorized', 401);
+            return new Response('You are unauthorized to perform this action', 401);
         }
 
         try {
@@ -113,19 +116,19 @@ class RequestController extends Controller
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($sessionId == null) {
-            return new Response("Bad Request", 400);
+            return new Response("Please login again", 400);
         }
         if ($session == null) {
-            return new Response("Unauthorized", 401);
+            return new Response("Please login again", 401);
         }
         $sessionExpired = $session->getExpired();
         if ($sessionExpired) {
-            return new Response("Session expired", 440);
+            return new Response("Please login again", 440);
         }
         $requestRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Request');
         $tangleRequest = $requestRepo->findOneBy(array('id' => $requestId));
         if ($tangleRequest == null || $tangleRequest->getDeleted()) {
-            return new Response("Not Found", 404);
+            return new Response("Tangle not found", 404);
         }
 
         if ($tangleRequest->getStatus() == $tangleRequest->OPEN) {
@@ -133,7 +136,7 @@ class RequestController extends Controller
         }
 
         if (($session->getUserId()) != ($tangleRequest->getUserId())) {
-            return new Response("Unauthorized", 401);
+            return new Response("You are unauthorized to perform this action", 401);
         }
         if ($tangleRequest->getStatus() == $tangleRequest->CLOSE) {
             $tangleRequest->setStatus($tangleRequest->OPEN);
@@ -164,19 +167,19 @@ class RequestController extends Controller
         $sessionId = $request->headers->get('X-SESSION-ID');
         $response = new JsonResponse();
         if ($sessionId == null) {
-            $response->setData(array('Error' => 'No session Id.'));
+            $response->setContent('Please Login again');
             $response->setStatusCode(400);
             return $response;
         }
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($session == null) {
-            $response->setData(array('Error' => 'Incorrect Session Id.'));
+            $response->setContent('Please Login again');
             $response->setStatusCode(400);
             return $response;
         }
         if ($session->getExpired() == 1) {
-            $response->setData(array('Error' => 'Session Expired.'));
+            $response->setContent('Please Login again');
             $response->setStatusCode(400);
             return $response;
         }
@@ -184,7 +187,7 @@ class RequestController extends Controller
         $userTangle = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
         $viewer = $userTangle->findOneBy(array('tangleId' => $tangleId, 'userId' => $sessionUserId));
         if (count($viewer) <= 0) {
-            $response->setData(array('Error' => 'You do not belong to this tangle.'));
+            $response->setContent('You do not belong to this tangle');
             $response->setStatusCode(400);
             return $response;
         }
@@ -192,7 +195,7 @@ class RequestController extends Controller
         $requestDetails = $this->getRequestDetails($requestId, $sessionUserId, $tangleId);
 
         if (count($requestDetails) == 0) {
-            $response->setData(array('Error' => 'No such request.'));
+            $response->setContent('No such request');
             $response->setStatusCode(400);
             return $response;
         }
@@ -295,12 +298,12 @@ class RequestController extends Controller
         $response = new JsonResponse();
         if ($sessionId == null) {
             $response->setStatusCode(400);
-            $response->setContent("bad request");
+            $response->setContent("Please login again");
             return $response;
         }
         if ($session == null || $session->getExpired() == true) {
             $response->setStatusCode(401);
-            $response->setContent("Unauthorized");
+            $response->setContent("Please login again");
             return $response;
         }
 
@@ -310,7 +313,7 @@ class RequestController extends Controller
         }
         if ($tangle->getDeleted() == true) {
             $response->setStatusCode(401);
-            $response->setContent("tangle is deleted");
+            $response->setContent("This tangle has been deleted");
             return $response;
         }
         $tangleUsers = $tangle->getUsers();
@@ -325,12 +328,12 @@ class RequestController extends Controller
         }
         if (!$userIsMember) {
             $response->setStatusCode(401);
-            $response->setContent("User is not a member in the tangle");
+            $response->setContent("You do not belong to this tangle");
             return $response;
         }
         if ($description == null || $date == null) {
             $response->setStatusCode(400);
-            $response->setContent("some data are missing");
+            $response->setContent("Please enter all fields");
             return $response;
         }
         if ($deadLineFormated != null) {
@@ -342,7 +345,7 @@ class RequestController extends Controller
         }
         if ($requestedPrice < 0) {
             $response->setStatusCode(400);
-            $response->setContent("price must be a positive value!");
+            $response->setContent("Price must be a postive value");
             return $response;
         }
         return null;
@@ -365,7 +368,7 @@ class RequestController extends Controller
         $sessionId = $request->headers->get('X-SESSION-ID');
         if ($sessionId == null) {
             $response->setStatusCode(400);
-            $response->setContent("bad request");
+            $response->setContent("Please login again");
             return $response;
         }
 
@@ -375,7 +378,7 @@ class RequestController extends Controller
         $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
         if ($session == null || $session->getExpired() == true) {
             $response->setStatusCode(401);
-            $response->setContent("Unauthorized");
+            $response->setContent("Please login again");
             return $response;
         }
         $userId = $session->getUserId();
@@ -453,7 +456,7 @@ class RequestController extends Controller
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($requestId == null || $sessionId == null) {
-            return new Response('Bad Request', 400);
+            return new Response('Please login again', 400);
         }
 
         $doctrine = $this->getDoctrine();
@@ -461,7 +464,7 @@ class RequestController extends Controller
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($session == null || $session->getExpired()) {
-            return new Response('Bad Request', 400);
+            return new Response('Please login again', 400);
         }
 
         $requesterId = $session->getUserId();
@@ -469,7 +472,7 @@ class RequestController extends Controller
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
         $request = $requestRepo->findOneBy(array('id' => $requestId));
         if ($request == null || $request->getUserId() != $requesterId) {
-            return new Response('Unauthorized', 401);
+            return new Response('You are not authorized to delete this request', 401);
         }
 
         // notification

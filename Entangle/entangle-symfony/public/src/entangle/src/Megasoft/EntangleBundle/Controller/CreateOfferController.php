@@ -33,14 +33,14 @@ class CreateOfferController extends Controller
         $sessionId = $request->headers->get('X-SESSION-ID');
         if ($sessionId == null) {
             $response->setStatusCode(400);
-            $response->setContent("bad request");
+            $response->setContent("Please login again");
             return $response;
         }
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
         if ($session == null || $session->getExpired() == true) {
             $response->setStatusCode(401);
-            $response->setContent("Unauthorized");
+            $response->setContent("Please login again");
             return $response;
         }
         $userTable = $doctrine->getRepository('MegasoftEntangleBundle:User');
@@ -56,7 +56,7 @@ class CreateOfferController extends Controller
         $previousOffer = $offerTable->findOneBy(array('userId' => $userId, 'requestId' => $theRequestId));
         if ($previousOffer != null) {
             $response->setStatusCode(401);
-            $response->setContent("Unauthorized");
+            $response->setContent("You have already made an offer on this request");
             return $response;
         }
         $description = $json_array['description'];
@@ -113,26 +113,29 @@ class CreateOfferController extends Controller
     {
         $response = new JsonResponse();
         if ($sessionId == null) {
+            $response->setContent("Please login again");
             $response->setStatusCode(400);
             return $response;
         }
         if ($session == null || $session->getExpired() == true) {
+            $response->setContent("Please login again");
             $response->setStatusCode(401);
             return $response;
         }
         if ($tangleRequest == null) {
             $response->setStatusCode(400);
-            $response->setContent("no such request");
+            $response->setContent("No such request");
             return $response;
         }
 
         if ($tangle == null || $user == null) {
+            $response->setContent("Please choose a tangle, or user Id");
             $response->setStatusCode(401);
             return $response;
         }
         if ($tangle->getDeleted() == true) {
             $response->setStatusCode(401);
-            $response->setContent("tangle is deleted");
+            $response->setContent("Tangle has been deleted");
             return $response;
         }
         $tangleUsers = $tangle->getUsers();
@@ -147,7 +150,7 @@ class CreateOfferController extends Controller
         }
         if (!$userIsMember) {
             $response->setStatusCode(401);
-            $response->setContent("User is not a member in the tangle");
+            $response->setContent("User is not a member of this tangle");
             return $response;
         }
         $tangleRequests = $tangle->getRequests();
@@ -161,38 +164,38 @@ class CreateOfferController extends Controller
         }
         if (!$requestBelongToTangle) {
             $response->setStatusCode(401);
-            $response->setContent("Request doesn't belong to tangle");
+            $response->setContent("This request doesn't belong to this tangle");
             return $response;
         }
         if ($tangleRequest->getDeleted()) {
             $response->setStatusCode(400);
-            $response->setContent("request is deleted");
+            $response->setContent("This request has been deleted");
             return $response;
         }
         if ($tangleRequest->getStatus() == $tangleRequest->CLOSE || $tangleRequest->getStatus() == $tangleRequest->FROZEN) {
             $response->setStatusCode(400);
-            $response->setContent("can not create offer on this request");
+            $response->setContent("An offer has already been accepted for this request");
             return $response;
         }
         if ($tangleRequest->getUserId() == $userId) {
             $response->setStatusCode(400);
-            $response->setContent("can not create offer on your request");
+            $response->setContent("You can not create an offer on your own request");
             return $response;
         }
 
         if ($description == null || $date == null || $requestedPrice == null) {
             $response->setStatusCode(400);
-            $response->setContent("some data are missing");
+            $response->setContent("Please enter all fields");
             return $response;
         }
         if ($deadLineFormated->format("Y-m-d") < $dateFormated->format("Y-m-d")) {
             $response->setStatusCode(400);
-            $response->setContent("deadline has passed!");
+            $response->setContent("This deadline has passed, please enter a valid date");
             return $response;
         }
         if ($requestedPrice < 0) {
             $response->setStatusCode(400);
-            $response->setContent("price must be a positive value!");
+            $response->setContent("Please enter a postitive value");
             return $response;
         }
 
