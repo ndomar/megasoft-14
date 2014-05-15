@@ -23,7 +23,13 @@ class LoadMyRequestsData extends AbstractFixture implements OrderedFixtureInterf
      */
     public function load(ObjectManager $manager)
     {
-        
+        $this->makeUsers($manager);
+        $this->makeSessions($manager);
+        $this->makeTangles($manager);
+        $this->makeUserTangles($manager);
+        $this->makeRequests($manager);
+                        
+        $manager->flush();
     }
 
     /**
@@ -32,5 +38,21 @@ class LoadMyRequestsData extends AbstractFixture implements OrderedFixtureInterf
     public function getOrder()
     {
         return 1;
+    }
+    
+    /**
+     * This function is used to create a user
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param String $name
+     * @param String $password
+     * @author HebaAamer
+     */
+    private function createUser(ObjectManager $manager, $name, $password) {
+        $user = new User();
+        $user->setName($name);
+        $user->setPassword($password);
+        
+        $manager->persist($user);
+        $this->addReference('user' . "$name", $user);
     }
 }
