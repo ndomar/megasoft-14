@@ -87,6 +87,12 @@ public class HomeActivity extends FragmentActivity {
 	 * @author Mohamed Farghal
 	 */
 	public void switchFragment(int tangleId, int position) {
+		
+		if (TangleStreamActivity.tangleNames.size() > 0) {
+			menu.findItem(R.id.action_invite).setVisible(true);
+			menu.findItem(R.id.createRequest).setVisible(true);
+			menu.findItem(R.id.action_search).setVisible(true);
+		}
 		this.tangleId = tangleId;
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager
@@ -123,11 +129,10 @@ public class HomeActivity extends FragmentActivity {
 		drawerLayout = (LinearLayout) findViewById(R.id.left_drawer);
 
 		SharedPreferences pref = getSharedPreferences(Config.SETTING, 0);
-		((TextView) findViewById(R.id.sidebar_username)).setText(pref
-				.getString(Config.USERNAME, "User"));
-		ImageView image = (ImageView) findViewById(R.id.sidebar_avatar);
-		ImageRequest request = new ImageRequest(image);
-		// request.execute(pref.getString(Config.PROFILE_IMAGE, ""));
+		((TextView)findViewById(R.id.sidebar_username)).setText(pref.getString(Config.USERNAME, "User"));
+		ImageView image = (ImageView)findViewById(R.id.sidebar_avatar);
+
+		new ImageRequest(pref.getString(Config.PROFILE_IMAGE, ""), getApplicationContext(), image);
 
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager
@@ -142,6 +147,13 @@ public class HomeActivity extends FragmentActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		this.menu = menu;
+
+		if (TangleStreamActivity.tangleNames.size() > 0) {
+			menu.findItem(R.id.action_invite).setVisible(true);
+			menu.findItem(R.id.createRequest).setVisible(true);
+			menu.findItem(R.id.action_search).setVisible(true);
+		}
+
 		searchView = (SearchView) menu.findItem(R.id.action_search)
 				.getActionView();
 		return super.onCreateOptionsMenu(menu);
