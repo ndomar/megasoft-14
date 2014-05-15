@@ -140,7 +140,7 @@ class TangleControllerTest extends EntangleTestCase
         $client = static::createClient();
         $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'userAhmad'));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $tangleRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Tangle");
+        $tangleRepo = $this->doctrine->getRepository("MegasoftEntangleBundle:Tangle");
         $tangle = $tangleRepo->findOneBy(array('id' => 1));
         $requests = $tangle->getRequests();
         foreach ($requests as $request) {
@@ -163,12 +163,15 @@ class TangleControllerTest extends EntangleTestCase
         $tangleRepo = $this->doctrine->getRepository("MegasoftEntangleBundle:Tangle");
         $tangle = $tangleRepo->findOneBy(array('id' => 1));
         $requests = $tangle->getRequests();
-        $offers = $requests->getOffers();
+        foreach ($requests as $request) {
+        $offers = $request->getOffers();
         foreach ($offers as $offer) {
             $deleted = $offer->getDeleted();
             $this->assertEquals(1, $deleted, 'Check all offers are deleted');
         }
+        }
     }
+    
 
     public function testResetTangleAction_ClaimsDeleted() {
         $this->addFixture(new LoadResetTangleData());
@@ -177,14 +180,30 @@ class TangleControllerTest extends EntangleTestCase
         $client = static::createClient();
         $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'userAhmad'));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $tangleRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Tangle");
+        $tangleRepo = $this->doctrine->getRepository("MegasoftEntangleBundle:Tangle");
         $tangle = $tangleRepo->findOneBy(array('id' => 1));
         $claims = $tangle->getClaims();
         foreach ($claims as $claim) {
             $deleted = $claim->getDeleted();
-            $this->assertEquals(1, $deleted, 'Check all claims are deleted');
+            $this->assertEquals(1, $deleted, 
+                    'Check all claims are deleted');
         }
     }
-    
+    public function testResetTangleAction_CreditIsZero() {
+        $this->addFixture(new LoadResetTangleData());
+        $this->loadFixtures();
 
+        $client = static::createClient();
+        $client->request('PUT', '/tangle/1/reset', array(), array(), array('HTTP_X_SESSION_ID' => 'userAhmad'));
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $tangleRepo = $this->doctrine->getRepository("MegasoftEntangleBundle:Tangle");
+        $tangle = $tangleRepo->findOneBy(array('id' => 1));
+        $userTangles = $tangle->getUserTangles();
+        foreach ($userTangles as $userTangle) {
+            $credit = $userTangle->getCredit();
+            $this->assertEquals(0, $credit, 
+                    'Check all credits are deleted');
+        }
+    }
+//check on transactions , check on messages
 }
