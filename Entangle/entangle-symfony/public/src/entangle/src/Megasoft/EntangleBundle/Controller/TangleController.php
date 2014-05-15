@@ -52,7 +52,7 @@ class TangleController extends Controller {
                     'userId' => $offer->getUserId(), 'username' => $offer->getUser()->getName(),
                     'id' => $offer->getId(), 'description' => $offer->getDescription(),
                     'price' => $offer->getRequestedPrice(),
-                    'status' => $offer->getStatus(),);
+                    'status' => $offer->getStatus(), );
             }
         }
 
@@ -84,7 +84,7 @@ class TangleController extends Controller {
             return new Response('Bad Request', 400);
         }
 
-         $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
+        $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
         $tangle = $tangleRepo->findOneBy(array('id' => $tangleId));
         if($tangle == null) {
             return new Response('Tangle not found', 404);
