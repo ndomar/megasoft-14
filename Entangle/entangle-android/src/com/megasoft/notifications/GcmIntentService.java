@@ -123,8 +123,6 @@ public class GcmIntentService extends IntentService {
 			tangleName = bundle.getString("tangleName");
 		Intent dest = new Intent(getApplicationContext(), RequestActivity.class);
 		dest.putExtra("tangleId", tangleId);
-		dest.putExtra("tangleName", tangleName);
-		dest.putExtra("sessionId", sessionId);
 		dest.putExtra("requestId", requestId);
 		return dest;
 	}
@@ -137,11 +135,12 @@ public class GcmIntentService extends IntentService {
 	 */
 	public Intent fetchOfferData(Bundle bundle) {
 		Intent dest = new Intent(this, OfferActivity.class);
+
 		int offerId = -1;
 		if (bundle.getString("offerId") != null) {
 			offerId = Integer.parseInt(bundle.getString("offerId"));
 		}
-		dest.putExtra("offerId", offerId);
+		dest.putExtra("offerID", offerId);
 		return dest;
 	}
 

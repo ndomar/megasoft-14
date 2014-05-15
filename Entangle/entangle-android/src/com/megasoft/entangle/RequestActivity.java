@@ -105,8 +105,8 @@ public class RequestActivity extends FragmentActivity {
 		setContentView(R.layout.activity_request);
 		
 		Intent intent = getIntent();
-		this.requestId = intent.getIntExtra("requestId", -1);
-		this.tangleId = intent.getIntExtra("tangleId", -1);
+		this.requestId = intent.getExtras().getInt("requestId", -1);
+		this.tangleId = intent.getExtras().getInt("tangleId", -1);
 		 REQUEST = "/tangle/" + tangleId + "/request/" + requestId;
 		
 		requestLayout = (LinearLayout) this.findViewById(R.id.request_entry_layout);

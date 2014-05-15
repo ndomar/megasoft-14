@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +38,7 @@ import com.megasoft.requests.PostRequest;
 
 /**
  * Views an offer given the offer id
+ * 
  * @author Almgohar
  */
 public class OfferActivity extends FragmentActivity {
@@ -162,7 +164,7 @@ public class OfferActivity extends FragmentActivity {
 	 * The top menu
 	 */
 	private Menu itemMenu;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -171,7 +173,7 @@ public class OfferActivity extends FragmentActivity {
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		this.loggedInId = settings.getInt(Config.USER_ID, 1);
-		this.offerId = intent.getIntExtra("offerID", 1);
+		this.offerId = intent.getExtras().getInt("offerID");
 		viewOffer();
 	}
 
@@ -181,7 +183,7 @@ public class OfferActivity extends FragmentActivity {
 		itemMenu = menu;
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -198,31 +200,36 @@ public class OfferActivity extends FragmentActivity {
 
 	/**
 	 * This method allows the offerer/requester to claim on the offer (mock)
+	 * 
 	 * @author Almgohar
 	 */
 	private void claim() {
-		
+
 	}
 
 	/**
 	 * This method allows the offerer to delete his offer (mock)
+	 * 
 	 * @author Almgohar
 	 */
 	private void deleteOffer() {
-		
+
 	}
 
 	/**
 	 * This method allows the offerer to edit the offer price (mock)
+	 * 
 	 * @author Almgohar
 	 */
 	private void editPrice() {
-		
+
 	}
+
 	/**
 	 * Initializes all views to link to the XML views Sends a GET request and
 	 * get the JSon response Calls the ViewRequestInformation method Calls the
 	 * ViewOfferInformation method
+	 * 
 	 * @author Almgohar
 	 */
 	public void viewOffer() {
@@ -239,7 +246,7 @@ public class OfferActivity extends FragmentActivity {
 		acceptOffer = (Button) findViewById(R.id.accept_offer);
 		markOfferAsDone = (Button) findViewById(R.id.mark_as_done);
 		String link = Config.API_BASE_URL + "/offer/" + offerId;
-		
+
 		GetRequest request = new GetRequest(link) {
 			@Override
 			protected void onPostExecute(String response) {
@@ -265,7 +272,7 @@ public class OfferActivity extends FragmentActivity {
 				}
 			}
 		};
-		
+
 		request.addHeader("X-SESSION-ID", this.sessionId);
 		request.execute();
 	}
@@ -273,7 +280,9 @@ public class OfferActivity extends FragmentActivity {
 	/**
 	 * Retrieves the required offer information from the JSonObject Views the
 	 * offer information
-	 * @param JSonObject offerInformation
+	 * 
+	 * @param JSonObject
+	 *            offerInformation
 	 * @author Almgohar
 	 */
 	private void viewOfferInfo(JSONObject offerInformation) {
@@ -289,7 +298,7 @@ public class OfferActivity extends FragmentActivity {
 			final int offererId = offerInformation.getInt("offererId");
 			final int requesterId = offerInformation.getInt("requesterId");
 			int status = offerInformation.getInt("offerStatus");
-			
+
 			if (status == 0) {
 				offerStatus.setText("Pending");
 				offerStatus.setTextColor(getResources().getColor(R.color.red));
@@ -307,21 +316,23 @@ public class OfferActivity extends FragmentActivity {
 				validate();
 				itemMenu.findItem(R.id.claim_on_offer_button).setVisible(true);
 			}
-			
-			if(offererId == loggedInId) {
-				((ImageView)findViewById(R.id.edit_price)).setVisibility(View.VISIBLE);
-				((ImageView)findViewById(R.id.edit_price)).setOnClickListener(new View.OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						editPrice();
-					}
-				});
-				
+
+			if (offererId == loggedInId) {
+				((ImageView) findViewById(R.id.edit_price))
+						.setVisibility(View.VISIBLE);
+				((ImageView) findViewById(R.id.edit_price))
+						.setOnClickListener(new View.OnClickListener() {
+
+							@Override
+							public void onClick(View v) {
+								editPrice();
+							}
+						});
+
 				itemMenu.findItem(R.id.delete_offer_button).setVisible(true);
 				itemMenu.findItem(R.id.claim_on_offer_button).setVisible(true);
 			}
-			
+
 			offererName.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -372,6 +383,7 @@ public class OfferActivity extends FragmentActivity {
 
 	/**
 	 * Redirects to a user's profile given his id
+	 * 
 	 * @param int userId
 	 * @author Almgohar
 	 */
@@ -384,7 +396,9 @@ public class OfferActivity extends FragmentActivity {
 
 	/**
 	 * Views the user's profile picture
-	 * @param String imageURL
+	 * 
+	 * @param String
+	 *            imageURL
 	 * @author Almgohar
 	 */
 	public void viewProfilePicture(String imageURL) {
