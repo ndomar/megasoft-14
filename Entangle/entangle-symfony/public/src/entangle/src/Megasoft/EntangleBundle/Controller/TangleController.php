@@ -34,11 +34,6 @@ class TangleController extends Controller {
         $doctrine = $this->getDoctrine();
         $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
         
-        $tangle = $tangleRepo->findOneBy(array('id' => $tangleId));
-        if($tangle == null){
-            return new Response('Tangle not found', 404);
-        }
-        
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
 
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
@@ -46,6 +41,11 @@ class TangleController extends Controller {
             return new Response('Bad Request', 400);
         }
 
+        $tangle = $tangleRepo->findOneBy(array('id' => $tangleId));
+        if($tangle == null){
+            return new Response('Tangle not found', 404);
+        }
+        
         $userId = $session->getUserId();
         $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
         $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $userId));
