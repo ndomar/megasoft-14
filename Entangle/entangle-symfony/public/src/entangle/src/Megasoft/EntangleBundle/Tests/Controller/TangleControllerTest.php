@@ -71,4 +71,22 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals(0, $users[0]['balance']);
         $this->assertEquals('http://entangle.io/images/profilePictures/', $users[0]['iconUrl']);
     }
+    
+     /**
+     * Test Case testing not sending a tangle id in the request
+     * @author HebaAamer 
+     */
+    public function testUserRequestsAction__WrongTangleId() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('GET',
+                'tangle/3/user/requests',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userAly'));
+        $response = $client->getResponse();
+        $this->assertEquals(404, $response->getStatusCode(), 'Wrong tangle id');
+    }
 }
