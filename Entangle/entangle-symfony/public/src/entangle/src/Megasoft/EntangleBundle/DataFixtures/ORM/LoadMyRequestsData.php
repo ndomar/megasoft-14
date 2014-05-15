@@ -160,4 +160,25 @@ class LoadMyRequestsData extends AbstractFixture implements OrderedFixtureInterf
         $this->createSession($manager, 'userMazen', 'userMazen', false, '4');
         $this->createSession($manager, 'userAdel', 'userAdel', false, '5');
     }
+    
+    /**
+     * This function is used to make a testing tangle
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
+    private function makeTangles(ObjectManager $manager){
+        $this->createTangle($manager);
+    }
+    
+    /**
+     * This function is used to make testing userTangles
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
+    private function makeUserTangles(ObjectManager $manager){
+        $this->createUserTangle($manager, 'userAhmad', true, 0, false);
+        $this->createUserTangle($manager, 'userMohamed', false, 80, false);
+        $this->createUserTangle($manager, 'userAly', false, -80, false);
+        $this->createUserTangle($manager, 'userAdel', false, 0, true);
+    }
 }
