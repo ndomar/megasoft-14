@@ -119,8 +119,6 @@ class SiteController extends Controller
                 $user->setPassword($password);
                 $userEmail->setEmail($email);
                 $user->setUserBio($userBio);
-                $user->setVerified(false);
-
                 $entityManager = $this->getDoctrine()->getEntityManager();
                 $entityManager->persist($user);
                 $entityManager->persist($userEmail);

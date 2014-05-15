@@ -121,6 +121,11 @@ public class ProfileFragment extends Fragment {
 					name.setText(information.getString("name"));
 					description.setText(information.getString("description"));
 					viewProfilePicture(information.getString("photo"));
+					
+					if(activity instanceof ProfileActivity) {
+						activity.setTitle(information.getString("name"));
+					}
+					
 					} catch (JSONException e) {
 						e.printStackTrace();
 						}
@@ -141,8 +146,7 @@ public class ProfileFragment extends Fragment {
 	 * @author Almgohar
 	 */ 
 	public void viewProfilePicture(String imageURL) {
-            ImageRequest image = new ImageRequest(profilePictureView);
-            image.execute(imageURL);
+            new ImageRequest(imageURL,getActivity().getApplicationContext(),profilePictureView);
 	}
 	
 	/**
