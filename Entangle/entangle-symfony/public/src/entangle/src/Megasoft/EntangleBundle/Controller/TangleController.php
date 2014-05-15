@@ -68,11 +68,22 @@ class TangleController extends Controller {
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
 
         $queryValue = $request->query->get('query', null);
+        $limit = $request->query->get('limit', null);
+        if($limit == null){
+            return new Response('Bad Request',400);
+        }
+
+        $lastDate = $request->query->get('lastDate', null);
 
         $query = $requestRepo->createQueryBuilder('request')
             ->where('request.tangleId = :tangleId')
             ->setParameter('tangleId', $tangleId)
             ->andWhere('request.deleted = 0 AND request.status = 0');
+        if($lastDate != null){
+            $query = $query->andWhere('request.date > :date')->setParameter('date',$lastDate);
+        }
+
+        $query->setMaxResults($limit);
         if($queryValue != null){
             $query = $query->innerJoin('MegasoftEntangleBundle:User', 'user' , 'WITH' , 'request.userId = user.id')
                             ->leftJoin('request.tags','tag')
@@ -97,7 +108,8 @@ class TangleController extends Controller {
                 'userId' => $tangleRequest->getUserId(),
                 'description' => $tangleRequest->getDescription(),
                 'offersCount' => sizeof($tangleRequest->getOffers()),
-                'price' => $tangleRequest->getRequestedPrice()
+                'price' => $tangleRequest->getRequestedPrice(),
+                'date' => $tangleRequest->getDate()->format('Y-m-d H:i:s')
             );
         }
 
