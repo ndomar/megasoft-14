@@ -147,7 +147,7 @@ class LoadMyOffersData extends AbstractFixture implements OrderedFixtureInterfac
      * @param integer $offerStatus
      * @author HebaAamer
      */
-    private function createOffer(ObjectManager $manager, $userReference, $description, $offerNumber, $requestReference, $offerStatus) {
+    private function createOffer(ObjectManager $manager, $userReference, $description, $offerNumber, $requestReference, $offerStatus, $deleted) {
         $offer = new Offer();
         $offer->setUser($this->getReference("$userReference"));
         $offer->setRequest($this->getReference("$requestReference"));
@@ -155,6 +155,7 @@ class LoadMyOffersData extends AbstractFixture implements OrderedFixtureInterfac
         $offer->setRequestedPrice(25);
         $offer->setStatus($offerStatus);
         $offer->setDate(new DateTime('now'));
+        $offer->setDeleted($deleted);
         
         $manager->persist($offer);
         $this->addReference('offer' . "$offerNumber", $offer);
@@ -213,11 +214,25 @@ class LoadMyOffersData extends AbstractFixture implements OrderedFixtureInterfac
      * @author HebaAamer
      */
     private function makeRequests(ObjectManager $manager){
-        $this->createRequest($manager, 'userAly', 'i want to buy a car', 1, 1, true);
-        $this->createRequest($manager, 'userAly', 'i want to travel to London', 2, 0, false);
-        $this->createRequest($manager, 'userAly', 'i want to go to the doctor', 3, 2, false);
-        $this->createRequest($manager, 'userAly', 'i want to buy a book', 4, 0, false);
-        $this->createRequest($manager, 'userAly', 'i want to have a reminder software', 5, 2, true);
-        $this->createRequest($manager, 'userAly', 'i want to have a ride tomorrow', 6, 1, false);
+        $this->createRequest($manager, 'userMohamed', 'i want to buy a car', 1, 1, true);
+        $this->createRequest($manager, 'userMohamed', 'i want to travel to London', 2, 0, false);
+        $this->createRequest($manager, 'userMohamed', 'i want to go to the doctor', 3, 2, false);
+        $this->createRequest($manager, 'userMohamed', 'i want to buy a book', 4, 0, false);
+        $this->createRequest($manager, 'userMohamed', 'i want to have a reminder software', 5, 2, true);
+        $this->createRequest($manager, 'userMohamed', 'i want to have a ride tomorrow', 6, 1, false);
+    }
+    
+    /**
+     * This function is used to make testing offers
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
+    private function makeOffers(ObjectManager $manager){
+        $this->createOffer($manager, 'userAly', 'i can help', 1, 'request1', 1, true);
+        $this->createOffer($manager, 'userAly', 'i want to help', 2, 'request2', 0, false);
+        $this->createOffer($manager, 'userAly', 'i can do this for you', 3, 'request3', 2, false);
+        $this->createOffer($manager, 'userAly', 'i will help you', 4, 'request4', 3, false);
+        $this->createOffer($manager, 'userAly', 'i can help you', 5, 'request5', 2, true);
+        $this->createOffer($manager, 'userAly', 'this is easy', 6, 'request6', 1, false);
     }
 }
