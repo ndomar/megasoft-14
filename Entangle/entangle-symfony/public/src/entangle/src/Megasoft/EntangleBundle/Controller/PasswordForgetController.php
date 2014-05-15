@@ -53,20 +53,27 @@ class PasswordForgetController extends Controller{
             $response->setStatusCode(400);
             return $response;
         }else{
-            echo($id);
+
             $random=$this->randPassCodeGen();
             $link="http://entangle.io/reset/".$random;
             $doctrine = $this->getDoctrine();
             $user = $doctrine->getRepository('MegasoftEntangleBundle:User')->findOneBy(array("id" => $id));
             $userName = $user->getName();
             $em=$doctrine->getManager();
-            $passwordCode = new ForgetPasswordCode();
-            $passwordCode->setCreated(new \DateTime('now'));
-            $passwordCode->setUser($user);
-            $passwordCode->setExpired(0);
-            $passwordCode->setForgetPasswordCode($random);
-            $em->persist($passwordCode);
-            $em->flush();
+            $passwordCodeCheck=$doctrine->getRepository('MegasoftEntangleBundle:ForgetPasswordCode')->findOneBy(array("userId" => $id));
+            if($passwordCodeCheck==null){
+                $passwordCode = new ForgetPasswordCode();
+                $passwordCode->setCreated(new \DateTime('now'));
+                $passwordCode->setUser($user);
+                $passwordCode->setExpired(0);
+                $passwordCode->setForgetPasswordCode($random);
+                $em->persist($passwordCode);
+                $em->flush();
+            }else{
+                $passwordCodeCheck->setForgetPasswordCode($random);
+                $em->persist($passwordCodeCheck);
+                $em->flush();
+            }
             $message = "It seems like you've forgotten your password, you can reset it by using this ";
             $title = "Entangle Password Reset";
             $body = "<!DOCTYPE html>
