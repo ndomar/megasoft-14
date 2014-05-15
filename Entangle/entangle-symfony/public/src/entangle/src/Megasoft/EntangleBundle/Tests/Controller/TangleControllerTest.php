@@ -207,6 +207,7 @@ class TangleControllerTest extends EntangleTestCase
 
     }
 
+
     /*
      * Test Case testing filtering stream if the a query parameter is added.
      * @author MohamedBassem
