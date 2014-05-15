@@ -4,7 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -179,7 +178,7 @@ public class OfferActivity extends FragmentActivity {
 
 	/**
 	 * This method allows the offerer to delete his offer (mock)
-	 * @author Almgohar
+	 * @author ahmedosama
 	 */
 	private void deleteOffer() {
 		
@@ -191,7 +190,7 @@ public class OfferActivity extends FragmentActivity {
 				if (!this.hasError() && res != null) {
 					message = "Deleted!";
 				}
-				Toast.makeText(getActivity().getBaseContext(), message,
+				Toast.makeText(getBaseContext(), message,
 						Toast.LENGTH_LONG).show();
 
 			}
@@ -200,7 +199,6 @@ public class OfferActivity extends FragmentActivity {
 		deleteRequest.addHeader(Config.API_SESSION_ID, sessionId);
 		deleteRequest.execute();
 
-				
 	}
 
 	/**
