@@ -16,11 +16,10 @@ class EntangleTestCase extends WebTestCase
 {
     /* @var \Doctrine\ORM\EntityManager $em */
     public $em =  null;
-    
+
     /* @var \Doctrine\Common\DataFixtures\Loader $loader */
     public $loader = null;
 
-    /* @var \Doctrine\Common\DataFixtures\Loader $loader */
     public $doctrine = null;
     
     /*
