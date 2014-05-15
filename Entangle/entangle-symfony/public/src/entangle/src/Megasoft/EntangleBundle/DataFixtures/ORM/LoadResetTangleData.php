@@ -15,8 +15,11 @@ use Megasoft\EntangleBundle\Entity\Claim;
 use Megasoft\EntangleBundle\Entity\Session;
 use Megasoft\EntangleBundle\Entity\Message;
 use Megasoft\EntangleBundle\Entity\Transaction;
+use DateTime;
+
 class LoadResetTangleData extends AbstractFixture implements OrderedFixtureInterface {
-     public function load(ObjectManager $manager)
+    
+    public function load(ObjectManager $manager)
     {
         $this->makeUsers($manager);
         $this->makeSessions($manager);
@@ -31,7 +34,13 @@ class LoadResetTangleData extends AbstractFixture implements OrderedFixtureInter
         $manager->flush();
     }
 
-   
+    
+    public function getOrder()
+    {
+        return 1;
+    }
+    
+    
     private function createUser(ObjectManager $manager, $name, $password) {
         $user = new User();
         $user->setName($name);
@@ -41,7 +50,7 @@ class LoadResetTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->addReference('user' . "$name", $user);
     }
     
-   
+    
     private function createSession(ObjectManager $manager, $userReference, $sessionId, $expired, $regId) {
         $session = new Session();
         $session->setUser($this->getReference("$userReference"));
@@ -95,6 +104,7 @@ class LoadResetTangleData extends AbstractFixture implements OrderedFixtureInter
         $request->setTangle($this->getReference('tangle'));
         $request->setDescription("$description");
         $request->setStatus($requestStatus);
+        $request->setDate(new DateTime('now'));
         
         $manager->persist($request);
         $this->addReference('request' . "$requestNumber", $request);
@@ -108,12 +118,13 @@ class LoadResetTangleData extends AbstractFixture implements OrderedFixtureInter
         $offer->setDescription($description);
         $offer->setRequestedPrice(25);
         $offer->setStatus($offerStatus);
+        $offer->setDate(new DateTime('now'));
         
         $manager->persist($offer);
         $this->addReference('offer' . "$offerNumber", $offer);
     }
     
-   
+    
     private function createTransaction(ObjectManager $manager, $offerReference) {
         $transaction = new Transaction();
         $transaction->setOffer($this->getReference("$offerReference"));
@@ -128,9 +139,11 @@ class LoadResetTangleData extends AbstractFixture implements OrderedFixtureInter
     private function createClaim(ObjectManager $manager, $offerReference, $userReference, $claimNumber) {
         $claim = new Claim();
         $claim->setClaimer($this->getReference("$userReference"));
-        $claim->setTangle('tangle');
+        $claim->setTangle($this->getReference('tangle'));
         $claim->setOffer($this->getReference("$offerReference"));
         $claim->setCreated(new DateTime('now'));
+        $claim->setMessage('i am claiming');
+        $claim->setStatus(0);
         
         $manager->persist($claim);
         $this->addReference('claim' . "$claimNumber", $claim);
@@ -177,7 +190,7 @@ class LoadResetTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createTangle($manager);
     }
     
-   
+    
     private function makeUserTangles(ObjectManager $manager){
         $this->createUserTangle($manager, 'userAhmad', true, 0, false);
         $this->createUserTangle($manager, 'userMohamed', false, 80, false);
@@ -205,7 +218,7 @@ class LoadResetTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createOffer($manager, 'userMohamed', 'this is easy', 6, 'request6', 1);
     }
     
-   
+    
     private function makeMessages(ObjectManager $manager){
         $this->createMessage($manager, "hi1", 'userMohamed', 'offer1', 1);
         $this->createMessage($manager, "hi2", 'userAly', 'offer1', 2);
@@ -226,9 +239,4 @@ class LoadResetTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createClaim($manager, 'offer3', 'userMohamed', 2);
         $this->createClaim($manager, 'offer5', 'userAly', 3);         
     }
-
-    public function getOrder() {
-        return 1;
-    }
-
 }
