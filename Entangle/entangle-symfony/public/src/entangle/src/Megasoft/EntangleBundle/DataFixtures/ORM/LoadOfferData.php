@@ -1,10 +1,18 @@
 <?php
 /**
+<<<<<<< HEAD
+* Created by PhpStorm.
+* User: almgohar
+* Date: 5/14/14
+* Time: 11:37 PM
+*/
+=======
  * Created by PhpStorm.
  * User: almgohar
  * Date: 5/14/14
  * Time: 11:37 PM
  */
+>>>>>>> 1ef2cfd6b5989fe3b4cf1da09585ea07b17d29ae
 
 namespace Megasoft\EntangleBundle\DataFixtures\ORM;
 
@@ -19,8 +27,13 @@ use DateTime;
 class LoadOfferData extends AbstractFixture implements OrderedFixtureInterface {
 
     /**
+<<<<<<< HEAD
+* {@inheritDoc}
+*/
+=======
      * {@inheritDoc}
      */
+>>>>>>> 1ef2cfd6b5989fe3b4cf1da09585ea07b17d29ae
     public function load(ObjectManager $manager) {
         $offer = new Offer();
         $offer->setStatus(1);
@@ -57,4 +70,8 @@ class LoadOfferData extends AbstractFixture implements OrderedFixtureInterface {
         return 6;
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 1ef2cfd6b5989fe3b4cf1da09585ea07b17d29ae
