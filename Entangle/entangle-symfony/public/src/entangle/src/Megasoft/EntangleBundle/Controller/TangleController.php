@@ -1105,8 +1105,8 @@ class TangleController extends Controller {
                                              &$doctrine){
         $sessionId = $request->headers->get('X-SESSION-ID');
 
-        if ($tangleId == null || $sessionId == null || $userId == null) {
-            return new Response('Bad Request', 400);
+        if ($sessionId == null) {
+            return new Response('No session found', 400);
         }
 
         $doctrine = $this->getDoctrine();
@@ -1114,7 +1114,7 @@ class TangleController extends Controller {
 
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($session == null || $session->getExpired()) {
-            return new Response('Bad Request', 400);
+            return new Response('Bad session', 400);
         }
 
         $tangleOwner = $session->getUser();
@@ -1123,13 +1123,13 @@ class TangleController extends Controller {
         $ownerTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $tangleOwner->getId()));
 
         if ($ownerTangle == null || $ownerTangle->getLeavingDate() != null) {
-            return new Response('Unauthorized', 401);
+            return new Response('You are not tangle owner', 401);
         }
 
         $memberTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $userId));
 
         if($memberTangle == null || $memberTangle->getLeavingDate() != null){
-            return new Response('Bad Request', 400);
+            return new Response('User not in tangle', 400);
         }
 
         $member = $memberTangle->getUser();
