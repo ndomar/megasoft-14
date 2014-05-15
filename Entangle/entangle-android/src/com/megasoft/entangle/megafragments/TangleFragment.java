@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.megasoft.config.Config;
@@ -29,6 +30,14 @@ public class TangleFragment extends Fragment {
 
 	private HomeActivity activity;
 	private View view;
+	private TextView loadMoreTrigger; 
+	
+	private String lastDate;
+	
+	/**
+	 * Default number of requests to be loaded every time.
+	 */
+	private int defaultRequestLimit = 5;
 	
 	/**
 	 * The domain to which the requests are sent
@@ -88,6 +97,18 @@ public class TangleFragment extends Fragment {
          view = inflater.inflate(
         		 R.layout.activity_tangle, container, false);
          
+         loadMoreTrigger = (TextView) view.findViewById(R.id.load_more);
+         loadMoreTrigger.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				loadMoreTrigger.setText(getResources().getString(R.string.loading));
+				sendFilteredRequest(rootResource + "/tangle/" + tangleId
+		 				+ "/request", true, null);
+				
+			}
+		});
+         
 //         ImageView filterButton = (ImageView) view.findViewById(R.id.filterButton);
 //         filterButton.setOnClickListener(new View.OnClickListener() {
 //			
@@ -102,7 +123,7 @@ public class TangleFragment extends Fragment {
          tangleName = getArguments().getString("tangleName");
         
         sendFilteredRequest(rootResource + "/tangle/" + tangleId
- 				+ "/request");
+ 				+ "/request", false, null);
  		setSearchListener();
  		
         return view;
@@ -122,7 +143,7 @@ public class TangleFragment extends Fragment {
 				InputMethodManager inputManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE); 
 				inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 				sendFilteredRequest(rootResource + "/tangle/" + tangleId
-		 				+ "/request?query="+query);
+		 				+ "/request", false, query);
 				return true;
 			}
 			
@@ -130,7 +151,7 @@ public class TangleFragment extends Fragment {
 			public boolean onQueryTextChange(String newText) {
 				if(newText.equals("")){
 					sendFilteredRequest(rootResource + "/tangle/" + tangleId
-			 				+ "/request");
+			 				+ "/request", false, null);
 				}
 				return true;
 			}
@@ -181,14 +202,15 @@ public class TangleFragment extends Fragment {
 	 */
 	private void addRequest(JSONObject request) {
 		try {
-			int userId = request.getInt("userId");
-			String requesterName = request.getString("username");
-			int requestId = request.getInt("id");
-			String requestBody = request.getString("description");
-			String requestOffersCount = "" + request.getInt("offersCount");
-			String requesterButtonText = requesterName;
-			String requestButtonText = requestBody;
-			String requestPrice = "0";
+			int userId 					= request.getInt("userId");
+			String requesterName 		= request.getString("username");
+			int requestId 				= request.getInt("id");
+			String requestBody 			= request.getString("description");
+			String requestOffersCount 	= "" + request.getInt("offersCount");
+			String requesterButtonText 	= requesterName;
+			String requestButtonText 	= requestBody;
+			String requestPrice 		= "0";
+			this.lastDate 				= request.getString("date");
 					
 			if(request.get("price") != null)
 				requestPrice = "" + request.getInt("price");
@@ -238,22 +260,34 @@ public class TangleFragment extends Fragment {
 	/**
 	 * This method is used to send a get request to get the stream filtered/not
 	 * 
-	 * @param url
-	 *            , is the URL to which the request is going to be sent
+	 * @param url, isLoadMore
+	 *            is the URL to which the request is going to be sent
+	 *            isLoad more flag is set to true if more older requests to be fetced (requests after lastDate)
 	 */
-	public void sendFilteredRequest(final String url) {
+	public void sendFilteredRequest(String url, final boolean isLoadMore, String query) {
 		sessionId = activity.getSharedPreferences(Config.SETTING, 0).getString(Config.SESSION_ID, "");
-		GetRequest getStream = new GetRequest(url) {
+		url += "limit=" + defaultRequestLimit;
+		if (isLoadMore) {
+			url += "&lastDate=" + lastDate.replace(" ", "$20");
+		}
+		if (query != null) {
+			url += "&query=" + query;
+		}
+		final String finalUrl = url;
+		GetRequest getStream = new GetRequest(finalUrl) {
 			protected void onPostExecute(String res) {
 				if (!this.hasError() && res != null) {
 					LinearLayout layout = (LinearLayout) activity.findViewById(R.id.streamLayout);
-					layout.removeAllViews();
+					if (!isLoadMore) {
+						layout.removeAllViews();
+					}
 					setTheLayout(res);
 				} else {
 					Toast.makeText(activity.getBaseContext(),
 							"Sorry, There is a problem in loading the stream",
 							Toast.LENGTH_LONG).show();
 				}
+				loadMoreTrigger.setText(getResources().getString(R.string.load_more));
 			}
 		};
 		getStream.addHeader("X-SESSION-ID", getSessionId());

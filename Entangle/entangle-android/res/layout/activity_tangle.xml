@@ -59,6 +59,14 @@
             android:orientation="vertical"
             >
         </LinearLayout>
+        
+        <TextView 
+            android:id="@+id/load_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/load_more"/>
 
 
    <!-- <LinearLayout
