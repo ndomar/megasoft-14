@@ -44,9 +44,9 @@
             android:id="@+id/pending_invitation_reject"
             android:layout_width="@dimen/iconSmall"
             android:layout_height="@dimen/iconSmall"
-            android:layout_alignBottom="@+id/pending_invitation_approve"
+            android:layout_alignBottom="@id/pending_invitation_approve"
             android:layout_marginRight="@dimen/marginSmall"
-            android:layout_toLeftOf="@+id/pending_invitation_approve"
+            android:layout_toLeftOf="@id/pending_invitation_approve"
             android:background="@drawable/ic_action_remove_red" />
     </RelativeLayout>
 

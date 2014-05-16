@@ -41,7 +41,7 @@
                 android:id="@+id/pending_invitation_no_pending"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@+id/hr"
                 android:layout_marginTop="@dimen/marginMedium"
                 android:text="@string/pending_invitation_no_pending"
