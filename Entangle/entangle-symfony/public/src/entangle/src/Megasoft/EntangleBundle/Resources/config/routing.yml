@@ -471,7 +471,7 @@ megasoft_entangle_register:
 
 
 register_app:
-    pattern: /
+    pattern: /register
     defaults: { _controller: MegasoftEntangleBundle:User:register}
     methods: [POST]
     
