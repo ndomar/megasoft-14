@@ -3,16 +3,24 @@ package com.megasoft.entangle;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.megasoft.config.Config;
-import com.megasoft.requests.GetRequest;
+
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.megasoft.config.Config;
+import com.megasoft.requests.DeleteRequest;
+import com.megasoft.requests.GetRequest;
+import com.megasoft.utils.UI;
 
 public class ProfileActivity extends FragmentActivity {
 	
@@ -21,12 +29,12 @@ public class ProfileActivity extends FragmentActivity {
 	private SharedPreferences settings;
 	private String sessionId;
 	private ScrollView scrollView;
-
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
+		setActivity(this);
 		ProfileFragment profile = new ProfileFragment();
 		Bundle bundle = new Bundle();
 		this.tangleId = getIntent().getIntExtra("tangleId", -1);
@@ -107,5 +115,43 @@ public class ProfileActivity extends FragmentActivity {
 				scrollView.fullScroll(ScrollView.FOCUS_UP);
 			}
 		}, 500);
+	}
+	
+	private void sendRemoveUserRequest(){
+		DeleteRequest deleteRequest = new DeleteRequest(
+				Config.API_BASE_URL + "/tangle/" + getTangleId() + "/user/" + getUserId()){
+			protected void onPostExecute(String response){
+				if (!this.hasError()){
+					getActivity().finish();
+				} else{
+					UI.makeToast(getActivity(), 
+							"Something went wrong, Please try again.", 
+							Toast.LENGTH_SHORT);
+				}
+			}
+		};
+		deleteRequest.addHeader(Config.API_SESSION_ID, getSessionId());
+		deleteRequest.execute();
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+
+		getMenuInflater().inflate(R.menu.view_profile, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	     
+	 	 switch (item.getItemId()) {
+	 	 	case R.id.removeUserOption:
+	 	 		sendRemoveUserRequest();
+	 	 		return true;
+	 	    default:
+	 	        return super.onOptionsItemSelected(item);
+	 	 }
+
 	}
 }
