@@ -122,7 +122,13 @@ public class ProfileFragment extends Fragment {
 					JSONObject information;
 					information = new JSONObject(response);
 					name.setText(information.getString("name"));
-					description.setText(information.getString("description"));
+					
+						if (information.getString("description").equals("null")) {
+							description.setVisibility(View.GONE);
+						} else {
+							description.setText(information.getString("description"));
+						}
+					
 					viewProfilePicture(information.getString("photo"));
 					
 					if (information.getBoolean("verified")) {
