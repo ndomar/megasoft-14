@@ -1,19 +1,14 @@
 package com.megasoft.entangle;
 
-import com.megasoft.config.Config;
-import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
-import com.megasoft.requests.ImageRequest;
-import android.content.SharedPreferences;
-
 import android.app.ActionBar;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -21,9 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.megasoft.config.Config;
+import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
+import com.megasoft.requests.ImageRequest;
 
 
 public class HomeActivity extends FragmentActivity {
@@ -50,13 +48,15 @@ public class HomeActivity extends FragmentActivity {
 
 	private int tangleId;
 
+	private Menu menu;
+
+	private SearchView searchView;
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-		
-		
-		
 		initNavigationDrawer();
 		initializeDrawerToggle();
 	
@@ -70,18 +70,27 @@ public class HomeActivity extends FragmentActivity {
 	 * @author Mohamed Farghal
 	 */
 	public void switchFragment(int tangleId, int position) {
+		
+		if (TangleStreamActivity.tangleNames.size() > 0) {
+			menu.findItem(R.id.action_invite).setVisible(true);
+			menu.findItem(R.id.createRequest).setVisible(true);
+			menu.findItem(R.id.action_search).setVisible(true);
+		}
 		this.tangleId = tangleId;
-		FragmentManager fragmentManager = getSupportFragmentManager(); 
-		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager
+				.beginTransaction();
 		SampleFragment fragment = new SampleFragment();
 		Bundle args = new Bundle();
-		args.putInt("tangleId",tangleId);
-		args.putString("tangleName", TangleStreamActivity.tangleNames.get(position));
-		args.putBoolean("isTangleOwner", TangleStreamActivity.tangleOwners.get(position));
+		args.putInt("tangleId", tangleId);
+		args.putString("tangleName",
+				TangleStreamActivity.tangleNames.get(position));
+		args.putBoolean("isTangleOwner",
+				TangleStreamActivity.tangleOwners.get(position));
 		fragment.setArguments(args);
 		fragmentTransaction.replace(R.id.content_frame, fragment);
 		fragmentTransaction.commit();
-		
+
 		// Highlight the selected item, update the title, and close the drawer
 	    //drawerList.setItemChecked(position, true);
 	    setTitle(TangleStreamActivity.tangleNames.get(position));
@@ -105,10 +114,9 @@ public class HomeActivity extends FragmentActivity {
 		SharedPreferences pref = getSharedPreferences(Config.SETTING, 0);
 		((TextView)findViewById(R.id.sidebar_username)).setText(pref.getString(Config.USERNAME, "User"));
 		ImageView image = (ImageView)findViewById(R.id.sidebar_avatar);
-		ImageRequest request = new ImageRequest(image);
-		request.execute(pref.getString(Config.PROFILE_IMAGE, ""));
-		Log.e("test",pref.getString(Config.PROFILE_IMAGE, "") );
-		
+
+		new ImageRequest(pref.getString(Config.PROFILE_IMAGE, ""), getApplicationContext(), image);
+
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		TangleStreamActivity tangleTitlesFragment = new TangleStreamActivity();
@@ -120,10 +128,17 @@ public class HomeActivity extends FragmentActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		this.menu = menu;
+		if (TangleStreamActivity.tangleNames.size() > 0) {
+			menu.findItem(R.id.action_invite).setVisible(true);
+			menu.findItem(R.id.createRequest).setVisible(true);
+			menu.findItem(R.id.action_search).setVisible(true);
+		}
+		searchView = (SearchView) menu.findItem(R.id.action_search)
+				.getActionView();
+		return super.onCreateOptionsMenu(menu);
 	}
-	
-	
+
 	/**
 	 * Template method to show the profile of the user.
 	 * 
@@ -135,7 +150,7 @@ public class HomeActivity extends FragmentActivity {
 		
 		SharedPreferences settings = this.getSharedPreferences(Config.SETTING, 0);
 		int userId = settings.getInt(Config.USER_ID, -1);	
-		Intent intent = new Intent(this, ProfileActivity.class);
+		Intent intent = new Intent(this, GeneralProfileActivity.class);
 		intent.putExtra("tangleId", tangleId);
 		intent.putExtra("userId", userId);
 		startActivity(intent);
@@ -229,6 +244,14 @@ public class HomeActivity extends FragmentActivity {
 	 */
 	public void redirectToCreateTangle(View v) {
 		startActivity(new Intent(this, CreateTangleActivity.class));
+	}
+	
+	public SearchView getSearchView(){
+		return this.searchView;
+	}
+	
+	public Menu getMenu(){
+		return this.menu;
 	}
 
 }
