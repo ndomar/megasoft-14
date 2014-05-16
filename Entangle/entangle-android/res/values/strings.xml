@@ -100,6 +100,20 @@
     <string name="wrong_emails">Not Valid Emails</string>
     <string name="invite_write_the_invitation_message">Write the invitation message.</string>
     <string name="invite">Invite</string>
+    <string name="days">Day</string>
+    <string name="months">Month</string>
+    <string name="years">Year</string>
+    <string name="my_description">My Description</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm PAssword</string>
+    <string name="add_your_email">Add Your Email</string>
+    <string name="save">Save</string>
+    <string name="date_of_birth">Date Of Birth</string>
+    <string name="current_description">Enter your description</string>
+    <string name="email_notification_on">Turn on notification</string>
+    <string name="DOB">Date Of Birth</string>
+    <string name="title_activity_notification_test">NotificationTest</string>
     <string name="PREFERENCE_FILE_KEY">prefs</string>
     <string name="new_notification">new Notification</string>
     <string name="icon">icon</string>
@@ -109,7 +123,8 @@
     <string name="wrongCredentials">Invalid Username or Password</string>
     <string name="tangleDescriptionHint">Description (This tangle aims to....etc)</string>
     <string name="createTangleAgreement">By Creating This Tangle You Have Agreed To Entangle terms of use</string>
-    <string name="transaction_description"> &#160; completed an offer for &#160; </string>
+    <string name="requestIcon">Available Icons</string>
+    <string name="transaction_description"> &#160;completed an offer for&#160; </string>
     <string name="transactions_title">Activities: </string>
 
     <string-array name="sidebar_list">
@@ -159,13 +174,12 @@
     <string name="login">Login</string>
     <string name="cancel">Cancel</string>
     <string name="username">Username</string>
-    <string name="email">email: user@entangle.io</string>
-    <string name="login_username">username: username</string>
+    <string name="login_username">username: entangle user</string>
     <string name="password">password</string>
+    <string name="invitation_message_placeholder">Write an invitation message ..</string>
     <string name="confirmPassword">Confirm Password</string>
     <string name="toastError">An error has occurred.</string>
     <string name="sample_user_main">user@entangle.io</string>
-    <string name="invitation_message_placeholder">Write an invitation message ..</string>
     <string name="balanceInsufficient">"Not enough balance"</string>
     <string name="logoutActivity">Logout</string>
     <string name="logout">Logout</string>
@@ -191,9 +205,11 @@
     <string name="error">Error</string>
     <string name="notaccepted">Offer is not accepted</string>
     <string name="alreadymarked">Offer is already marked as done</string>
+    <string name="editProfile">Edit Profile</string>
     <string name="actionLeaveTangle">Leave Tangle</string>
     <string name="load_more">Load more</string>
     <string name="loading">Loading\.\.\.</string>
     <string name="no_more_requests">Ops, there is no more requests to fetch</string>
+    <string name="email">your.email@example.com</string>
 
 </resources>

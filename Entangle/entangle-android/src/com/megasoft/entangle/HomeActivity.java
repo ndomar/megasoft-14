@@ -28,6 +28,7 @@ import com.megasoft.config.Config;
 import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
 import com.megasoft.requests.DeleteRequest;
 import com.megasoft.requests.ImageRequest;
+import com.megasoft.entangle.megafragments.*;
 import com.megasoft.utils.UI;
 
 public class HomeActivity extends FragmentActivity {
@@ -73,6 +74,7 @@ public class HomeActivity extends FragmentActivity {
 		setContentView(R.layout.activity_home);
 		initNavigationDrawer();
 		initializeDrawerToggle();
+
 		SharedPreferences settings = this.getSharedPreferences(Config.SETTING,
 				0);
 		sessionId = settings.getString(Config.SESSION_ID, "");
@@ -172,9 +174,8 @@ public class HomeActivity extends FragmentActivity {
 
 		SharedPreferences settings = this.getSharedPreferences(Config.SETTING,
 				0);
-		userId = settings.getInt(Config.USER_ID, -1);
+		int userId = settings.getInt(Config.USER_ID, -1);
 		Intent intent = new Intent(this, GeneralProfileActivity.class);
-		intent.putExtra("tangleId", tangleId);
 		intent.putExtra("userId", userId);
 		startActivity(intent);
 	}
