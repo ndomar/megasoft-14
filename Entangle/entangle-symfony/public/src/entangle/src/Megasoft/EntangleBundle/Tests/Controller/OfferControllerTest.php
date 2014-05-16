@@ -216,7 +216,7 @@ class OfferControllerTest extends EntangleTestCase
     {
         $this->addFixture(new LoadChangeOfferPriceData());
         $this->loadFixtures();
-        $body = array('newPrice' => NULL);
+        $body = array('newPrice' => null);
         $jsonBody = json_encode($body);
         $client = static::createClient();
         $client->request('POST', '/offers/1/changePrice', array(), array(),

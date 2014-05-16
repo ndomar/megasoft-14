@@ -210,7 +210,7 @@ class OfferController extends Controller {
             return new Response("Bad Request", 400);
         }
         $newOfferPrice = $json_array['newPrice'];
-        if ($newOfferPrice == null && $newOfferPrice != 0) {
+        if (\is_null($newOfferPrice)) {
             return new Response("Null New Price", 400);
         }
         if(!is_numeric($newOfferPrice)){
