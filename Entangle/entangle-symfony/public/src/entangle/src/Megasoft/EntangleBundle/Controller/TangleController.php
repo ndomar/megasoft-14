@@ -114,9 +114,8 @@ class TangleController extends Controller {
                 'description' => $tangleRequest->getDescription(),
                 'offersCount' => sizeof($tangleRequest->getOffers()),
                 'price' => $tangleRequest->getRequestedPrice(),
-                'date' => $tangleRequest->getDate()->format('Y-m-d H:i:s'
-                'requesterAvatar' => $photo,)
-            );
+                'date' => $tangleRequest->getDate()->format('Y-m-d H:i:s'),
+                'requesterAvatar' => $photo,);
         }
 
         $response = new JsonResponse();
