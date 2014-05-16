@@ -596,7 +596,7 @@ class TangleControllerTest extends EntangleTestCase
                 array(),
                 array('HTTP_X_SESSION_ID' => 'userAly'));
         $response = $client->getResponse();
-        $this->assertEquals(404, $response->getStatusCode(), 'Wrong tangle id');
+        $this->assertEquals(401, $response->getStatusCode(), 'Wrong tangle id');
     }
     
       /**
