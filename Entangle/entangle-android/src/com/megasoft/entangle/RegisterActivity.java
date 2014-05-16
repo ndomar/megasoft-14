@@ -26,6 +26,7 @@ public class RegisterActivity extends Activity {
 	private EditText confirmPassword;
 	private TextView registerErrorMsg;
 	JSONObject json = new JSONObject();
+	private boolean isDestroyed;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,9 @@ public class RegisterActivity extends Activity {
 				PostRequest request = new PostRequest(
 						Config.API_BASE_URL_SERVER + "/register") {
 					protected void onPostExecute(String response) {
+						if(isDestroyed){
+							return;
+						}
 						if (this.getStatusCode() == 201) {
 							Toast.makeText(getApplicationContext(),
 									"Registered Successfully!",
@@ -201,5 +205,10 @@ public class RegisterActivity extends Activity {
 		} else {
 			return false;
 		}
+	}
+	
+	public void onPause(){
+		super.onPause();
+		isDestroyed = true;
 	}
 }
