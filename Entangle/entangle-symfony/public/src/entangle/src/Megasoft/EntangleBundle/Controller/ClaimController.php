@@ -147,18 +147,25 @@ class ClaimController extends Controller {
         return null;
     }
 
+    /**
+     * resolves a Claim
+     * @param Integer $claimId
+     * @param Request $request
+     * @return Response
+     * @author sak93
+     */
     public function resolveClaimAction($claimId, \Symfony\Component\HttpFoundation\Request $request) {
         $json = $request->getContent();
         $json_array = json_decode($json, true);
-        $sessionMessage= $this->verifySessionId($request);
+        $sessionMessage = $this->verifySessionId($request);
         $response = new JsonResponse();
-        if($sessionMessage == 'error'){
+        if ($sessionMessage == 'error') {
             $response->setContent('Please login again');
             $response->setStatusCode(401);
             return $response;
         }
         $doctrine = $this->getDoctrine();
-        
+
         $tangleId = $json_array['tangleId'];
         $isOwner = $this->verifiyTangleOwner($tangleId, $request);
         if ($isOwner == "error") {
@@ -247,22 +254,35 @@ class ClaimController extends Controller {
         return $response;
     }
 
+    /**
+     * peforms session Id checks
+     * @param Request $request
+     * @return String 
+     * @author sak93
+     */
     public function verifySessionId(\Symfony\Component\HttpFoundation\Request $request) {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $response = new JsonResponse();
         if ($sessionId == null) {
-            
+
             return 'error';
         }
         $doctrine = $this->getDoctrine();
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($session == null || $session->getExpired() == 1) {
-         
+
             return 'error';
         }
     }
 
+    /**
+     * verifies a member is a tangle owner
+     * @param Integer $tangleId
+     * @param Request $request
+     * @return String
+     * @author sak93
+     */
     public function verifiyTangleOwner($tangleId, \Symfony\Component\HttpFoundation\Request $request) {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $doctrine = $this->getDoctrine();
@@ -280,17 +300,24 @@ class ClaimController extends Controller {
         return;
     }
 
+    /**
+     * returns all claims in a tangle
+     * @param Integer $tangleId
+     * @param Request $request
+     * @return Response
+     * @author sak93
+     */
     public function getClaimsAction($tangleId, \Symfony\Component\HttpFoundation\Request $request) {
         $this->verifySessionId($request);
-        $sessionMessage= $this->verifySessionId($request);
+        $sessionMessage = $this->verifySessionId($request);
         $response = new JsonResponse();
-        if($sessionMessage=='error'){
+        if ($sessionMessage == 'error') {
             $response->setContent('Please login again');
             $response->setStatusCode(401);
             return $response;
         }
         $isOwner = $this->verifiyTangleOwner($tangleId, $request);
-       
+
         if ($isOwner == "error") {
             $response->setContent('You are not authorized to perform this action');
             $response->setStatusCode(401);
@@ -302,7 +329,7 @@ class ClaimController extends Controller {
         $allClaims = $claimRepo->findBy(array('tangleId' => $tangleId, 'status' => 0, 'deleted' => 0));
         $numOfClaims = count($allClaims);
         if ($numOfClaims == 0) {
-            $response->setData(array('claims'=>$claimArray));
+            $response->setData(array('claims' => $claimArray));
             $response->setStatusCode(201);
             return $response;
         }
@@ -315,9 +342,9 @@ class ClaimController extends Controller {
             $claimerId = $allClaims[$i]->getClaimerId();
             $userRepo = $doctrine->getRepository('MegasoftEntangleBundle:User');
             $claimer = $userRepo->findOneBy(array('id' => $claimerId));
-            $claimerName = $claimer->getName(); 
+            $claimerName = $claimer->getName();
             $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
-            $offer = $offerRepo->findOneBy(array('id' => $offerId)); 
+            $offer = $offerRepo->findOneBy(array('id' => $offerId));
             $requestId = $offer->getRequestId();
             $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
             $request = $requestRepo->findOneBy(array('id' => $requestId));
@@ -327,14 +354,14 @@ class ClaimController extends Controller {
             $offererId = $offer->getUserId();
             $offerer = $userRepo->findOneBy(array('id' => $offererId));
             $offererName = $offerer->getName();
-            $offerPrice= $offer->getRequestedPrice();
-            $details = array('claimerId'=>$claimerId, 'claimId' => $claimId, 'offerId' => $offerId, 
-                'offererId' => $offererId,'offererName'=>$offererName, 'requesterId' => $requesterId, 
-                'requesterName'=>$requesterName,'offerPrice'=>$offerPrice, 
-                'message' => $message, 'status' => $status, 'created' => $date,'claimerName'=>$claimerName);
+            $offerPrice = $offer->getRequestedPrice();
+            $details = array('claimerId' => $claimerId, 'claimId' => $claimId, 'offerId' => $offerId,
+                'offererId' => $offererId, 'offererName' => $offererName, 'requesterId' => $requesterId,
+                'requesterName' => $requesterName, 'offerPrice' => $offerPrice,
+                'message' => $message, 'status' => $status, 'created' => $date, 'claimerName' => $claimerName);
             array_push($claimArray, $details);
         }
-        $response->setData(array('claims'=>$claimArray));
+        $response->setData(array('claims' => $claimArray));
         $response->setStatusCode(200);
         return $response;
     }

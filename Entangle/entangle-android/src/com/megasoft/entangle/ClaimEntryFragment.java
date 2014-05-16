@@ -30,12 +30,12 @@ public class ClaimEntryFragment extends Fragment {
 		setAttributes();
 		return this.view;
 	}
-	/*
+	/**
 	 * sets claim fragment attributes
 	 * @param none
 	 * @return none
 	 * @author sak93
-	 **/
+	 */
 	private void setAttributes() {
 		Bundle args = getArguments();
 		((TextView)view.findViewById(R.id.claim_entry_id)).setText(args.getString("claim"));
