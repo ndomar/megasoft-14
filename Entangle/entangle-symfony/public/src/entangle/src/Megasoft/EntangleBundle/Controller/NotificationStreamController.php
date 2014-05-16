@@ -32,6 +32,7 @@ class NotificationStreamController extends Controller
     {
         $userRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
         $user = $userRepo->findOneById($userId);
+
         return $user->getName();
     }
 
@@ -56,7 +57,7 @@ class NotificationStreamController extends Controller
             $claimerName = $this->getName($claimerId);
             $description = $claimerName." has claimed you!";
             $array = array($description , $notification->getId() , $notification->getCreated()->format('m-d H:i') ,
-                $notification->getSeen() , "claim=".$notification->getClaimId());
+                $notification->getSeen() , "claim=".$notification->getClaimId() ,);
             array_push($this->arr , $array);
         }
     }
@@ -82,7 +83,7 @@ class NotificationStreamController extends Controller
             $offererName = $this->getName($offererId);
             $description = $offererName." has changed the price to ".$notification->getNewPrice();
             $array = array($description , $notification->getId() , $notification->getCreated()->format('m-d H:i') ,
-                $notification->getSeen() , "offer=".$notification->getOfferId());
+                $notification->getSeen() , "offer=".$notification->getOfferId() ,);
             array_push($this->arr , $array);
         }
     }
@@ -108,7 +109,7 @@ class NotificationStreamController extends Controller
             $offererName = $this->getName($offererId);
             $description = "You got a new offer from ".$offererName;
             $array = array($description , $notification->getId() , $notification->getCreated()->format('m-d H:i') ,
-                $notification->getSeen() , "offer=".$notification->getOfferId());
+                $notification->getSeen() , "offer=".$notification->getOfferId() ,);
             array_push($this->arr , $array);
         }
     }
@@ -134,7 +135,7 @@ class NotificationStreamController extends Controller
             $name = $this->getName($otherUserId);
             $description = $name." has re-opened his request!";
             $array = array($description , $notification->getId() , $notification->getCreated()->format('m-d H:i') ,
-                $notification->getSeen() , "request=".$notification->getRequestId());
+                $notification->getSeen() , "request=".$notification->getRequestId() ,);
             array_push($this->arr , $array);
         }
     }
@@ -160,7 +161,7 @@ class NotificationStreamController extends Controller
             $name = $this->getName($otherUserId);
             $description = $name." has chosen your offer!";
             $array = array($description , $notification->getId() , $notification->getCreated()->format('m-d H:i') ,
-                $notification->getSeen() , "offer=".$notification->getOfferId());
+                $notification->getSeen() , "offer=".$notification->getOfferId() ,);
             array_push($this->arr , $array);
         }
     }
@@ -186,7 +187,7 @@ class NotificationStreamController extends Controller
             $name = $this->getName($otherUserId);
             $description = $name." has deleted his request!";
             $array = array($description , $notification->getId() , $notification->getCreated()->format('m-d H:i') ,
-                $notification->getSeen() , "request=".$notification->getRequestId());
+                $notification->getSeen() , "request=".$notification->getRequestId() ,);
             array_push($this->arr , $array);
         }
     }
@@ -210,7 +211,7 @@ class NotificationStreamController extends Controller
             $notification = $notifications[$i];
             $description = "You have a new message!";
             $array = array($description , $notification->getId() , $notification->getCreated()->format('m-d H:i') ,
-                $notification->getSeen() , "message=".$notification->getMessageId());
+                $notification->getSeen() , "message=".$notification->getMessageId() ,);
             array_push($this->arr , $array);
         }
     }
@@ -234,7 +235,7 @@ class NotificationStreamController extends Controller
             $notification = $notifications[$i];
             $description = "You have a new transaction!";
             $array = array($description , $notification->getId() , $notification->getCreated()->format('m-d H:i') ,
-                $notification->getSeen() , "offer=".$notification->getTransaction()->getOfferId());
+                $notification->getSeen() , "offer=".$notification->getTransaction()->getOfferId() ,);
             array_push($this->arr , $array);
         }
     }
@@ -260,7 +261,7 @@ class NotificationStreamController extends Controller
             $name = $this->getName($otherUserId);
             $description = $name." has deleted his offer!";
             $array = array($description , $notification->getId() , $notification->getCreated()->format('m-d H:i') ,
-                $notification->getSeen() , "offer=".$notification->getOfferId());
+                $notification->getSeen() , "offer=".$notification->getOfferId() ,);
             array_push($this->arr , $array);
         }
     }
@@ -287,6 +288,7 @@ class NotificationStreamController extends Controller
 		$response = new JsonResponse();
 		$response->setdata($this->arr);
 		$response->setStatusCode(200);
+
 		return $response;
 	}
 
@@ -314,6 +316,7 @@ class NotificationStreamController extends Controller
         $notification->setSeen(true);
         $this->getDoctrine()->getManager()->persist($notification);
         $this->getDoctrine()->getManager()->flush();
+
         return new Response("Ok" , 200);
     }
 
@@ -331,6 +334,7 @@ class NotificationStreamController extends Controller
         $response = new JsonResponse();
         $response->setData(array('count' => $count));
         $response->setStatusCode(200);
+
         return $response;
     }
 
