@@ -80,7 +80,6 @@ public class EditProfileActivity extends FragmentActivity implements
 				+ RETRIEVEDATA) {
 			public void onPostExecute(String response) {
 				try {
-					Log.i("Message", "0");
 					retrieveDataResponse = new JSONObject(response);
 					try {
 						userId = retrieveDataResponse.getInt("userId");
@@ -140,7 +139,6 @@ public class EditProfileActivity extends FragmentActivity implements
 	 * @author menna
 	 */
 	private void initializeView() {
-		Log.i("Message", "1");
 		emailNotification = (CheckBox) findViewById(R.id.set_notification);
 		if (!notification) {
 			emailNotification.setText("Turn on notification");
@@ -284,14 +282,6 @@ public class EditProfileActivity extends FragmentActivity implements
 		if (emailsCount == 1) {
 			emailEntryFragment.getEditText().setText("");
 		} else {
-			// if (emails.indexOf(emailEntryFragment) == emails.size() - 1) {
-			// emails.get(emails.size() - 2).setTextChangeListener();
-			// }
-			// getSupportFragmentManager().beginTransaction()
-			// .remove(emailEntryFragment).commit();
-			Log.i("deletion",
-					"currently deleting the fragment number"
-							+ emails.indexOf(emailEntryFragment));
 			emails.remove(emailEntryFragment);
 			emailsCount--;
 		}
@@ -311,7 +301,6 @@ public class EditProfileActivity extends FragmentActivity implements
 				+ RETRIEVEDATA) {
 			public void onPostExecute(String response) {
 				try {
-					Log.i("Message", "0");
 					retrieveDataResponse = new JSONObject(response);
 					try {
 
@@ -321,7 +310,6 @@ public class EditProfileActivity extends FragmentActivity implements
 								.getJSONObject("date_of_birth");
 						date = oldBirthDate.getString("date");
 						splittedDate = date.split("-");
-						Log.i("Message", date);
 						day = splittedDate[2].split(" ");
 						newYear = Integer.parseInt(splittedDate[0]);
 						newMonth = Integer.parseInt(splittedDate[1]) - 1;
@@ -340,21 +328,14 @@ public class EditProfileActivity extends FragmentActivity implements
 
 							EditText x = emails.get(i).getEditText();
 							emails.get(i).getView().setVisibility(View.VISIBLE);
-							Log.i("message", "ana now abl mail raqam " + i);
 							if (x == null)
-								Log.i("lola", " el x ba2et null yasta");
+								Log.i("lola", "the edit text is null");
 							else {
 								x.setText(email);
 
 							}
-							Log.i("hamada", "ana now ba3d mail raqam " + i);
 							if (x != null)
 								x.setEnabled(false);
-							Log.i("hamada",
-									" el length bta3 el current emails = "
-											+ currentEmails.length());
-							Log.i("hamada", " el size bta3 el emails = "
-									+ emails.size());
 
 						}
 
