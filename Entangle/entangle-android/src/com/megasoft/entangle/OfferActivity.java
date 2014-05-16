@@ -383,7 +383,7 @@ public class OfferActivity extends FragmentActivity {
 							}
 						});
 
-				itemMenu.findItem(R.id.claim_on_offer_button).setVisible(true);
+				//itemMenu.findItem(R.id.claim_on_offer_button).setVisible(true);
 			}
 
 			offererName.setOnClickListener(new View.OnClickListener() {
