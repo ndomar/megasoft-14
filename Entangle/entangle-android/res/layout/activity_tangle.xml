@@ -36,5 +36,48 @@
 				/>
 	    </LinearLayout>
     </ScrollView>
+     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:weightSum="5" >
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/colorBox"
+                android:layout_weight="1"
+                android:background="@color/blue" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/colorBox"
+                android:layout_weight="1"
+                android:background="@color/orange" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/colorBox"
+                android:layout_weight="1"
+                android:background="@color/cyan" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/colorBox"
+                android:layout_weight="1"
+                android:background="@color/megenta" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/colorBox"
+                android:layout_weight="1"
+                android:background="@color/lightGreen" />
+        </LinearLayout>
+    </RelativeLayout>
 </com.actionbarpulltorefresh.library.PullToRefreshLayout>
 
