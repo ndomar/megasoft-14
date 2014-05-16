@@ -24,7 +24,7 @@ class UserController extends Controller
      * This Method edits all user information
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author menna
+     * @author menna, maisaraFarahat
      */
     public function editAction(Request $request)
     {
@@ -52,7 +52,6 @@ class UserController extends Controller
                 }
                 $doctrineManger = $this->getDoctrine()->getManager();
                 $email_array = $jsonArray['emails'];
-                // hena nebda2 el habal :D by maisara isA :D :P
 
                 if (!empty($email_array)) {
                     foreach ($email_array as $email) {
@@ -87,8 +86,6 @@ class UserController extends Controller
                 $doctrineManger->persist($user);
                 $doctrineManger->flush();
 
-                // now i will do the whole code for deleting the email from the current emails isA
-                // pray for me if you see this :D :P ;) maisara
 
                 $userid = $user->getId();
                 echo $userid;
@@ -99,7 +96,6 @@ class UserController extends Controller
 
                     foreach ($email_array as $newEmails) {
                         if ($email->getEmail() == $newEmails) {
-                            echo 'ana gowa el codition';
                             $found = 1;
                         }
                     }
@@ -110,7 +106,6 @@ class UserController extends Controller
                 }
 
                 $this->getDoctrine()->getManager()->flush();
-                echo 'ana ba3d el flush';
                 return new Response('OK', 200);
             }
         } else {

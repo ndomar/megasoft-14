@@ -15,6 +15,7 @@ use Megasoft\EntangleBundle\DataFixtures\ORM\LoadSessionData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadTangleData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadTransactionData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserData;
+use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserEditData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserTangleData;
 use Megasoft\EntangleBundle\Tests\EntangleTestCase;
 
@@ -511,6 +512,20 @@ class UserControllerTest extends EntangleTestCase {
         $this->assertArrayHasKey('requestId',$json['transactions'][0], 'The request id not found');
         $this->assertArrayHasKey('requesterId',$json['transactions'][0], 'The requester id not found');
         $this->assertEquals(1,count($json['transactions']),'The deleted transaction is shown');
+    }
+
+
+    public function testEditUserAction_UserNotFound() {
+        $this->addFixture(new LoadUserEditData());
+
+        $this->loadFixtures();
+        $client = static::createClient();
+        $client->request('GET',
+            '/user/edit',
+            array(),
+            array(),
+            array('HTTP_X_SESSION_ID'=>'sampleSession',));
+        $this->assertEquals(404, $client->getResponse()->getStatusCode(), "checking required user not found");
     }
 }
 
