@@ -86,4 +86,34 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $manager->persist($session);
         $this->addReference('session_' . "$userReference", $session);
     }
+    
+    /**
+     * This function is used to create a userEmail
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param String $userReference
+     * @author HebaAamer
+     */
+    private function createUserEmail(ObjectManager $manager, $userReference) {
+        $userEmail = new UserEmail();
+        $userEmail->setUser($this->getReference("$userReference"));
+        $userEmail->setEmail("$userReference" . '@entangle.io');
+        
+        $manager->persist($userEmail);
+    }
+    
+    /**
+     * This function is used to create a tangle
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
+    private function createTangle(ObjectManager $manager) {
+        $tangle = new Tangle();
+        $tangle->setName('Tangle');
+        $tangle->setDescription('Sample tangle');
+        
+        $manager->persist($tangle);
+        $this->addReference('tangle', $tangle);
+    }
+    
+    
 }
