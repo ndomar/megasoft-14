@@ -5,6 +5,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -352,6 +356,45 @@ public class RequestActivity extends FragmentActivity {
 		Toast.makeText(getActivity().getBaseContext(),
 				message,
 				Toast.LENGTH_LONG).show();
+	}
+	
+	/**
+	 * This method is called when showDialog(int) method is called and it is
+	 * responsible for creating a dialog to make sure that the user wants to
+	 * leave the tangle
+	 * 
+	 * @param dialogId
+	 *            , is an int that corresponds to the id of the dialog being
+	 *            created but it is not used in this situation
+	 * 
+	 * @author OmarElAzazy
+	 */
+	@Override
+	protected Dialog onCreateDialog(int dialogId) {
+		Builder dialogBuilder = new AlertDialog.Builder(this);
+		if (dialogId == 0) {
+			dialogBuilder.setTitle("Deleting the request");
+			dialogBuilder
+					.setMessage("Are you sure you want to delete this request ?");
+			dialogBuilder.setPositiveButton("Yes",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							
+							dialog.dismiss();
+						}
+					});
+			dialogBuilder.setNegativeButton("No",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
+		}
+		return dialogBuilder.create();
 	}
 
 }
