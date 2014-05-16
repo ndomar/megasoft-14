@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="16"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -129,7 +129,7 @@
         <!-- this is GCM manifest -->
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+            android:value="4323000" />
 
         <service
             android:name="com.megasoft.notifications.GCMRegisteration"
@@ -150,6 +150,10 @@
         <service android:name="com.megasoft.notifications.GcmIntentService" />
         <!-- end of GCM manifest -->
         <activity
+            android:name="com.megasoft.entangle.ForgetPasswordActivity"
+            android:label="@string/title_activity_forget_password" >
+		</activity>
+		<activity
             android:name="com.megasoft.entangle.MyOffersFragment"
             android:label="@string/title_activity_my_offers_fragment" >
         </activity>
