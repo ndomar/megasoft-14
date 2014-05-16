@@ -14,6 +14,11 @@ use Megasoft\EntangleBundle\Entity\Tangle;
 use Megasoft\EntangleBundle\Entity\User;
 use Megasoft\EntangleBundle\Entity\UserTangle;
 
+/**
+ * Adds the fixtures needed for the reopen closed request tests.
+ * Class LoadReopenRequestActionData
+ * @package Megasoft\EntangleBundle\DataFixtures\ORM
+ */
 class LoadReopenRequestActionData extends AbstractFixture implements OrderedFixtureInterface
 {
 

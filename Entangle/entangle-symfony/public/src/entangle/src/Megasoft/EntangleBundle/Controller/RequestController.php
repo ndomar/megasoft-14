@@ -100,9 +100,12 @@ class RequestController extends Controller
         return $response;
     }
 
-    /* Reopens a closed request.
-     * @param Request $request
-     * @param int $requestId
+
+    /**
+     * Reopens a closed request.
+     * @param Request2 $request
+     * @param $requestId
+     * @return Response
      * @author Mansour
      */
 

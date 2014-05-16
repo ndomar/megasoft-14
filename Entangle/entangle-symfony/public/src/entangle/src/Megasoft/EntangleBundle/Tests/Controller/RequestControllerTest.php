@@ -69,6 +69,10 @@ class RequestControllerTest extends EntangleTestCase{
         $this->assertEquals(440, $client->getResponse()->getStatusCode(), "Expired Session");
     }
 
+    /**
+     * Checks Invalid user "not the owner of the request" entry.
+     * @author Mansour
+     */
     public function testReopenRequestAction_InvalidUser()
     {
         $this->addFixture(new LoadReopenRequestActionData());
@@ -79,6 +83,10 @@ class RequestControllerTest extends EntangleTestCase{
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Unauthorized User");
     }
 
+    /**
+     * Checks wrong request entry "not in the database".
+     * @author Mansour
+     */
     public function testRestReopenRequestAction_InvalidRequest(){
         $this->addFixture(new LoadReopenRequestActionData());
         $this->loadFixtures();
@@ -88,6 +96,10 @@ class RequestControllerTest extends EntangleTestCase{
         $this->assertEquals(404, $client->getResponse()->getStatusCode(), "Invalid Request");
     }
 
+    /**
+     * Checks already opened request entry.
+     * @author Mansour
+     */
     public function testRestReopenRequestAction_OpenedRequest(){
         $this->addFixture(new LoadReopenRequestActionData());
         $this->loadFixtures();
@@ -97,6 +109,10 @@ class RequestControllerTest extends EntangleTestCase{
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Request is already opened");
     }
 
+    /**
+     * Checks already frozen request entry.
+     * @author Mansour
+     */
     public function testRestReopenRequestAction_FrozenRequest(){
         $this->addFixture(new LoadReopenRequestActionData());
         $this->loadFixtures();
@@ -106,6 +122,10 @@ class RequestControllerTest extends EntangleTestCase{
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Request is already frozen");
     }
 
+    /**
+     * Checks reopening a closed request.
+     * @author Mansour
+     */
     public function testRestReopenRequestAction_reopenRequest(){
         $this->addFixture(new LoadReopenRequestActionData());
         $this->loadFixtures();
