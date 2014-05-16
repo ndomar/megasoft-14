@@ -28,7 +28,6 @@ public class ClaimEntryFragment extends Fragment {
 			}
 		});
 		setAttributes();
-		
 		return this.view;
 	}
 
