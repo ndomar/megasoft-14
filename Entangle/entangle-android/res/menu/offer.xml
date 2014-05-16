@@ -1,16 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item
-        android:id="@+id/delete_offer_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="45dp"
-        android:text="@string/delete_button_text"
-        android:textSize="@dimen/textMedium"
-        android:visible="false"
-        android:title="@string/delete_button_text">
-    </item>
+    <item android:id="@+id/deleteOfferOption"
+     	android:icon="@drawable/ic_action_cancel_white"
+		android:title="@+string/action_delete_offer"
+		android:showAsAction="ifRoom" 
+		android:enabled="false"
+		android:visible="false"/>
     <item
         android:id="@+id/claim_on_offer_button"
         android:layout_width="wrap_content"
