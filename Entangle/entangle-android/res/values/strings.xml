@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
     <string name="pull_to_refresh_pull_label">Pull to refresh…</string>
     <string name="pull_to_refresh_release_label">Release to refresh…</string>
     <string name="pull_to_refresh_refreshing_label">Loading…</string>
@@ -51,12 +50,12 @@
     <string name="due">Due</string>
     <string name="create">Create</string>
     <string name="createRequest">Request</string>
-	<string name="toEntangle">to Entangle\.\.\.</string>
-	<string name="welcome">Welcome \ </string>
+    <string name="toEntangle">to Entangle\.\.\.</string>
+    <string name="welcome">Welcome \ </string>
     <string name="hurryUp">Hurry up \ </string>
     <string name="andCreate">and create a\ </string>
     <string name="here">Create tangle now! </string>
-	<string name="tangleNameHint">Specify a Tangle name</string>
+    <string name="tangleNameHint">Specify a Tangle name</string>
     <string name="iconButton">Choose an Icon</string>
     <string name="tangleIcon">Available Icons</string>
     <string name="createTangle">CREATE</string>
@@ -146,6 +145,7 @@
     <string name="cancel">Cancel</string>
     <string name="username">Username</string>
     <string name="email">email: user@entangle.io</string>
+    <string name="login_username">username: username</string>
     <string name="password">password</string>
     <string name="confirmPassword">Confirm Password</string>
     <string name="toastError">An error has occurred.</string>
