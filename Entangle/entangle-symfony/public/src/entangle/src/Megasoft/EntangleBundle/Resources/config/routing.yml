@@ -569,7 +569,6 @@ reset_tangle:
     defaults: {_controller: MegasoftEntangleBundle:Tangle:resetTangle }
     methods: [PUT]
 
-<<<<<<< HEAD
 claimRender:
     pattern: /claimReport/{claimId}/claim/{offerId}/offer
     defaults: { _controller: MegasoftEntangleBundle:Claim:claimRender }
@@ -579,11 +578,8 @@ createClaim:
     pattern: /claim/{requestId}/sendClaim/{offerId}/user
     defaults: { _controller: MegasoftEntangleBundle:Claim:createClaim }
     methods: [POST]
-=======
-
+    
 megasoft_entangle_register_:
     pattern:  /
     defaults: { _controller: MegasoftEntangleBundle:Site:register }
     methods: [POST]
-
->>>>>>> f4507213a7badeb86d6035222e5c0bbd16efdc88

@@ -98,7 +98,7 @@ class ClaimController extends Controller {
                 (array('claimDate' => $createdOn, 'claimer' => $claimerName, 'offerer' => $offererName,
             'offererEmail' => $offererEmail, 'requester' => $requesterName, 'requesterEmail' => $requesterEmail,
             'tangleOwner' => $tangleOwnerName, 'tangleOwnerEmail' => $tangleOwnerMail, 'tangle' => $tangleName,
-            'claimMessage' => $claimMessage));
+            'claimMessage' => $claimMessage,));
         $response->setStatusCode(200);
         $title = "Claim Report";
         $body = "<!DOCTYPE html>
