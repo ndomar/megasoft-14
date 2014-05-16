@@ -22,4 +22,5 @@ public class Config {
 	public static final String PROPERTY_REG_ID = "registration_id";
 	public static final String TANGLE = "tangle";
 	public static final String USER = "user";
+	public static final String GCM_DATA = "GCM_DATA";
 }
