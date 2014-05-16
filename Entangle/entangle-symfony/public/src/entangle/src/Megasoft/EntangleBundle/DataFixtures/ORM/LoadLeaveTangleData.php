@@ -257,5 +257,39 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createUserEmail($manager, 'userAdel');
     }
     
+    /**
+     * This function is used to make testing sessions
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
+    private function makeSessions(ObjectManager $manager){
+        $this->createSession($manager, 'userAhmad', 'userAhmad', false, '1');
+        $this->createSession($manager, 'userMohamed', 'userMohamed', true, '2');
+        $this->createSession($manager, 'userAly', 'userAly', false, '3');
+        $this->createSession($manager, 'userMazen', 'userMazen', false, '4');
+        $this->createSession($manager, 'userAdel', 'userAdel', false, '5');
+    }
+    
+    /**
+     * This function is used to make a testing tangle
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
+    private function makeTangles(ObjectManager $manager){
+        $this->createTangle($manager);
+    }
+    
+    /**
+     * This function is used to make testing userTangles
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
+    private function makeUserTangles(ObjectManager $manager){
+        $this->createUserTangle($manager, 'userAhmad', true, 0, false);
+        $this->createUserTangle($manager, 'userMohamed', false, 80, false);
+        $this->createUserTangle($manager, 'userAly', false, -80, false);
+        $this->createUserTangle($manager, 'userAdel', false, 0, true);
+    }
+    
     
 }
