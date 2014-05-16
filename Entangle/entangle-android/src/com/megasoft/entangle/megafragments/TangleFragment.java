@@ -200,8 +200,10 @@ public class TangleFragment extends Fragment {
 			String requestButtonText = requestBody;
 			String requestPrice = "0";
 					
-			if(request.get("price") != null)
+			if(!request.getString("price").equals("null"))
 				requestPrice = "" + request.getInt("price");
+			else
+				requestPrice = "--";
 			
 			transaction = getFragmentManager().beginTransaction();
 			StreamRequestFragment requestFragment = StreamRequestFragment
