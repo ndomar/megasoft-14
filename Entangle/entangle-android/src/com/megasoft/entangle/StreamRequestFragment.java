@@ -1,18 +1,14 @@
 package com.megasoft.entangle;
 
-import com.megasoft.entangle.megafragments.TangleFragment;
 import com.megasoft.entangle.views.RoundedImageView;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -20,7 +16,7 @@ import android.widget.TextView;
  * requests stream. It consists of two buttons, one represents the request and
  * the other represents the requester.
  * 
- * @author HebaAamer
+ * @author HebaAamer, MohamedFarghal
  * 
  */
 @SuppressLint("NewApi")
@@ -39,11 +35,11 @@ public class StreamRequestFragment extends Fragment {
 	 * The text of the request button
 	 */
 	private String requestString;
-	
+
 	/**
-	 * The view of the request 
+	 * The view of the request
 	 */
-	private View view;
+	protected View view;
 
 	/**
 	 * The text of the requester button
@@ -59,7 +55,7 @@ public class StreamRequestFragment extends Fragment {
 	 * The requester button
 	 */
 	private TextView requester;
-	
+
 	/**
 	 * The requester avatar
 	 */
@@ -74,10 +70,16 @@ public class StreamRequestFragment extends Fragment {
 	 * The offers count text
 	 */
 	private String offersCount;
-	
-	private TangleFragment parent;
 
-	private Activity activity;
+	/**
+	 * The id of the current tangle
+	 */
+	private int tangleId;
+
+	/**
+	 * The name of the current tangle
+	 */
+	private String tangleName;
 
 	/**
 	 * This method is used to create an instance of the StreamRequestFragment
@@ -94,16 +96,47 @@ public class StreamRequestFragment extends Fragment {
 	 * @return an instance of the StreamRequestFragment
 	 */
 	public static StreamRequestFragment createInstance(int requestId,
-			int requesterId, String requestString, String requesterString, String price, String offersCount, TangleFragment parent) {
+			int requesterId, String requestString, String requesterString,
+			String price, String offersCount, int tangleId, String tangleName) {
 		StreamRequestFragment fragment = new StreamRequestFragment();
-		fragment.setRequestId(requestId);
-		fragment.setParent(parent);
-		fragment.setRequesterId(requesterId);
-		fragment.setRequestButtonText(requestString);
-		fragment.setRequesterButtonText(requesterString);
-		fragment.setPrice(price);
-		fragment.setOffersCount(offersCount);
+		fragment.setFragmentAttributes(requestId, requesterId, requestString,
+				requesterString, price, offersCount, tangleId, tangleName);
 		return fragment;
+	}
+
+	/**
+	 * This method is used to set the attributes of a fragment with the passed
+	 * parameters
+	 * 
+	 * @param requestId
+	 *            , is the id of the request
+	 * @param requesterId
+	 *            , is the id of the requester
+	 * @param requestString
+	 *            , is the description of the request
+	 * @param requesterString
+	 *            , is the name of the requester
+	 * @param price
+	 *            , is the price of the request
+	 * @param offersCount
+	 *            , is the number of offers on that request
+	 * @param tangleId
+	 *            , is the id of the tangle
+	 * @param tangleName
+	 *            , is the name of the tangle
+	 * @author HebaAamer
+	 */
+	protected void setFragmentAttributes(int requestId, int requesterId,
+			String requestString, String requesterString, String price,
+			String offersCount, int tangleId, String tangleName) {
+		this.setRequestId(requestId);
+		this.setRequesterId(requesterId);
+		this.setRequestButtonText(requestString);
+		this.setRequesterButtonText(requesterString);
+		this.setPrice(price);
+		this.setOffersCount(offersCount);
+		this.setTangleId(tangleId);
+		this.setTangleName(tangleName);
 	}
 
 	/**
@@ -112,19 +145,29 @@ public class StreamRequestFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstancState) {
-		view = inflater.inflate(R.layout.fragment_stream_request,
-				container, false);
+		view = inflater.inflate(R.layout.fragment_stream_request, container,
+				false);
+		setAttributes();
+		return view;
+	}
+
+	/**
+	 * This method is used to set the fields of the fragment view
+	 * 
+	 * @author HebaAamer
+	 */
+	protected void setAttributes() {
 		request = (TextView) view.findViewById(R.id.requestDescription);
-		requesterAvatar = (RoundedImageView) view.findViewById(R.id.requesterAvatar);
+		requesterAvatar = (RoundedImageView) view
+				.findViewById(R.id.requesterAvatar);
 		requester = (TextView) view.findViewById(R.id.requesterName);
 		setRequestRedirection();
 		setRequesterRedirection();
 		TextView priceView = (TextView) view.findViewById(R.id.requestPrice);
 		priceView.setText(price);
-		TextView offersCountView = (TextView) view.findViewById(R.id.requestOffersCount);
+		TextView offersCountView = (TextView) view
+				.findViewById(R.id.requestOffersCount);
 		offersCountView.setText(offersCount);
-		
-		return view;
 	}
 
 	/**
@@ -132,7 +175,7 @@ public class StreamRequestFragment extends Fragment {
 	 * 
 	 * @return request id
 	 */
-	private int getRequestId() {
+	protected int getRequestId() {
 		return requestId;
 	}
 
@@ -141,7 +184,7 @@ public class StreamRequestFragment extends Fragment {
 	 * 
 	 * @return requester id
 	 */
-	private int getRequesterId() {
+	protected int getRequesterId() {
 		return requesterId;
 	}
 
@@ -151,7 +194,7 @@ public class StreamRequestFragment extends Fragment {
 	 * 
 	 * @return requestString
 	 */
-	private String getRequestString() {
+	protected String getRequestString() {
 		return requestString;
 	}
 
@@ -161,7 +204,7 @@ public class StreamRequestFragment extends Fragment {
 	 * 
 	 * @return requesterString
 	 */
-	private String getRequesterString() {
+	protected String getRequesterString() {
 		return requesterString;
 	}
 
@@ -171,7 +214,7 @@ public class StreamRequestFragment extends Fragment {
 	 * @param id
 	 *            , id of the requester
 	 */
-	private void setRequesterId(int id) {
+	protected void setRequesterId(int id) {
 		requesterId = id;
 	}
 
@@ -181,7 +224,7 @@ public class StreamRequestFragment extends Fragment {
 	 * @param id
 	 *            , id of the request
 	 */
-	private void setRequestId(int id) {
+	protected void setRequestId(int id) {
 		requestId = id;
 	}
 
@@ -191,7 +234,7 @@ public class StreamRequestFragment extends Fragment {
 	 * @param text
 	 *            , text to be written in the requester button
 	 */
-	private void setRequesterButtonText(String text) {
+	protected void setRequesterButtonText(String text) {
 		requesterString = text;
 	}
 
@@ -201,27 +244,27 @@ public class StreamRequestFragment extends Fragment {
 	 * @param text
 	 *            , text to be written in the request button
 	 */
-	private void setRequestButtonText(String text) {
+	protected void setRequestButtonText(String text) {
 		requestString = text;
 	}
-	
+
 	/**
 	 * This method is used to set the text of the price
 	 * 
 	 * @param text
 	 *            , text to be written in the request button
 	 */
-	private void setPrice(String text) {
+	protected void setPrice(String text) {
 		price = text;
 	}
-	
+
 	/**
 	 * This method is used to set the text of the offers count
 	 * 
 	 * @param text
 	 *            , text to be written in the request button
 	 */
-	private void setOffersCount(String text) {
+	protected void setOffersCount(String text) {
 		offersCount = text;
 	}
 
@@ -232,7 +275,7 @@ public class StreamRequestFragment extends Fragment {
 	 * @param requester
 	 *            , is the requester button
 	 */
-	private void setRequesterRedirection() {
+	protected void setRequesterRedirection() {
 		requester.setTextSize(16);
 		requester.setText(getRequesterString());
 		requester.setOnClickListener(new View.OnClickListener() {
@@ -240,12 +283,8 @@ public class StreamRequestFragment extends Fragment {
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity().getBaseContext(),
 						ProfileActivity.class);
-				intent.putExtra("tangleId",
-						parent.getTangleId());
-				intent.putExtra("tangleName",
-						parent.getTangleName());
-				intent.putExtra("sessionId",
-						parent.getSessionId());
+				intent.putExtra("tangleId", getTangleId());
+				intent.putExtra("tangleName", getTangleName());
 				intent.putExtra("userId", getRequesterId());
 				startActivity(intent);
 			}
@@ -255,12 +294,8 @@ public class StreamRequestFragment extends Fragment {
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity().getBaseContext(),
 						ProfileActivity.class);
-				intent.putExtra("tangleId",
-						parent.getTangleId());
-				intent.putExtra("tangleName",
-						parent.getTangleName()); 
-				intent.putExtra("sessionId",
-						parent.getSessionId());
+				intent.putExtra("tangleId", getTangleId());
+				intent.putExtra("tangleName", getTangleName());
 				intent.putExtra("userId", getRequesterId());
 				startActivity(intent);
 			}
@@ -274,29 +309,56 @@ public class StreamRequestFragment extends Fragment {
 	 * @param request
 	 *            , is the request button
 	 */
-	private void setRequestRedirection() {
+	protected void setRequestRedirection() {
 		request.setText(getRequestString());
 		view.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity().getBaseContext(),
 						RequestActivity.class);
-				intent.putExtra("tangleId",
-						parent.getTangleId());
-				intent.putExtra("tangleName",
-						parent.getTangleName());
-				intent.putExtra("sessionId",
-						parent.getSessionId());
+				intent.putExtra("tangleId", getTangleId());
+				intent.putExtra("tangleName", getTangleName());
 				intent.putExtra("requestId", getRequestId());
 				startActivity(intent);
 			}
 		});
 	}
-	
-	public void setParent(TangleFragment parent) {
-		this.parent = parent;
+
+	/**
+	 * getter method for tangle id
+	 * 
+	 * @return tangleId
+	 */
+	protected int getTangleId() {
+		return tangleId;
 	}
 
-	
-	
+	/**
+	 * getter method for tangle name
+	 * 
+	 * @return name
+	 */
+	protected String getTangleName() {
+		return tangleName;
+	}
+
+	/**
+	 * setter method for tangle id
+	 * 
+	 * @param tangleId
+	 *            , id of the tangle
+	 */
+	protected void setTangleId(int tangleId) {
+		this.tangleId = tangleId;
+	}
+
+	/**
+	 * setter method for the tangle name
+	 * 
+	 * @param tangleName
+	 *            , name of the tangle
+	 */
+	protected void setTangleName(String tangleName) {
+		this.tangleName = tangleName;
+	}
 }

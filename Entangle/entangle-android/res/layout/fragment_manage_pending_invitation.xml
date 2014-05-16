@@ -1,41 +1,104 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true" >
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical" >
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:fillViewport="true" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/boxMargin" >
+            
+            <Button 
+                android:id="@+id/reset_tangle"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/buttonHeight"
+                android:text="@string/reset"
+                android:textColor="@color/orange"
+                android:layout_alignParentTop="true"
+                />
+
+            <LinearLayout
+                android:id="@+id/pending_invitation_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/hr"
+                android:orientation="vertical"
+                android:padding="10dp" >
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/pending_invitation_no_pending"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/hr"
+                android:layout_marginTop="@dimen/marginMedium"
+                android:text="@string/pending_invitation_no_pending"
+                android:visibility="gone" />
+
+            <View
+                android:id="@+id/hr"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/reset_tangle"
+                android:layout_marginTop="@dimen/boxMargin"
+                android:background="@color/lightGray" />
+        </RelativeLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top"
         android:orientation="vertical" >
 
         <LinearLayout
-            android:id="@+id/pending_invitation_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp" >
+            android:layout_alignParentBottom="true"
+            android:weightSum="5" >
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/colorBox"
+                android:layout_weight="1"
+                android:background="@color/blue" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/colorBox"
+                android:layout_weight="1"
+                android:background="@color/orange" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/colorBox"
+                android:layout_weight="1"
+                android:background="@color/cyan" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/colorBox"
+                android:layout_weight="1"
+                android:background="@color/megenta" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/colorBox"
+                android:layout_weight="1"
+                android:background="@color/lightGreen" />
         </LinearLayout>
+    </RelativeLayout>
 
-        <TextView
-            android:id="@+id/pending_invitation_no_pending"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/pending_invitation_no_pending"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/manage_pending_invitation_refresh"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="refresh"
-            android:text="@string/refresh" />
-         <Button
-            android:id="@+id/reset_tangle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/reset" />
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>

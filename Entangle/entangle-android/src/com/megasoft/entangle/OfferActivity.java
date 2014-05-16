@@ -10,42 +10,39 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.megasoft.config.Config;
-import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.ImageRequest;
-import com.megasoft.requests.PostRequest;
 
 /**
  * Views an offer given the offer id
+ * 
  * @author Almgohar
  */
 public class OfferActivity extends FragmentActivity {
-
+	/**
+	 * The Id of the request
+	 */
+	int requestId;
 	/**
 	 * The TextView that holds the offer's description
 	 */
 	private TextView offerDescription;
-
 	/**
 	 * The TextView that holds the offer's expected deadline
 	 */
@@ -158,10 +155,19 @@ public class OfferActivity extends FragmentActivity {
 
 	private ScrollView scrollView;
 
+
+	private String newPriceText;
+
+	public static final int BUTTON_POSITIVE = 0xffffffff;
+
+
 	/**
 	 * The top menu
 	 */
 	private Menu itemMenu;
+
+
+	private boolean isDestroyed;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +177,7 @@ public class OfferActivity extends FragmentActivity {
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		this.loggedInId = settings.getInt(Config.USER_ID, 1);
-		this.offerId = intent.getIntExtra("offerID", 1);
+		this.offerId = intent.getExtras().getInt("offerID");
 		viewOffer();
 	}
 
@@ -181,15 +187,12 @@ public class OfferActivity extends FragmentActivity {
 		itemMenu = menu;
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.delete_offer_button:
 			deleteOffer();
-			return true;
-		case R.id.claim_on_offer_button:
-			claim();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -197,32 +200,45 @@ public class OfferActivity extends FragmentActivity {
 	}
 
 	/**
-	 * This method allows the offerer/requester to claim on the offer (mock)
-	 * @author Almgohar
+	 * This method gets the email of both the claimer and the tangle owner after
+	 * fetching them from the back end through the delivered json response and
+	 * sends these mails to the claim form session
+	 * 
+	 * @param View
+	 *            view hold the claim menu item
+	 * @return None
+	 * @author Salma Amr
 	 */
-	private void claim() {
-		
+	public void startClaimForm(MenuItem item) {
+		Intent intent = new Intent(this, Claim.class);
+		intent.putExtra("requestId", this.requestId);
+		intent.putExtra("offerId", this.offerId);
+		startActivity(intent);
 	}
 
 	/**
 	 * This method allows the offerer to delete his offer (mock)
+	 * 
 	 * @author Almgohar
 	 */
 	private void deleteOffer() {
-		
+
 	}
 
 	/**
 	 * This method allows the offerer to edit the offer price (mock)
+	 * 
 	 * @author Almgohar
 	 */
 	private void editPrice() {
-		
+
 	}
+
 	/**
 	 * Initializes all views to link to the XML views Sends a GET request and
 	 * get the JSon response Calls the ViewRequestInformation method Calls the
 	 * ViewOfferInformation method
+	 * 
 	 * @author Almgohar
 	 */
 	public void viewOffer() {
@@ -239,10 +255,13 @@ public class OfferActivity extends FragmentActivity {
 		acceptOffer = (Button) findViewById(R.id.accept_offer);
 		markOfferAsDone = (Button) findViewById(R.id.mark_as_done);
 		String link = Config.API_BASE_URL + "/offer/" + offerId;
-		
+
 		GetRequest request = new GetRequest(link) {
 			@Override
 			protected void onPostExecute(String response) {
+				if (isDestroyed) {
+					return;
+				}
 				if (this.getStatusCode() == 200) {
 					try {
 						JSONObject jSon = new JSONObject(response);
@@ -265,7 +284,7 @@ public class OfferActivity extends FragmentActivity {
 				}
 			}
 		};
-		
+
 		request.addHeader("X-SESSION-ID", this.sessionId);
 		request.execute();
 	}
@@ -273,7 +292,9 @@ public class OfferActivity extends FragmentActivity {
 	/**
 	 * Retrieves the required offer information from the JSonObject Views the
 	 * offer information
-	 * @param JSonObject offerInformation
+	 * 
+	 * @param JSonObject
+	 *            offerInformation
 	 * @author Almgohar
 	 */
 	private void viewOfferInfo(JSONObject offerInformation) {
@@ -288,8 +309,9 @@ public class OfferActivity extends FragmentActivity {
 					.getInt("offerPrice")));
 			final int offererId = offerInformation.getInt("offererId");
 			final int requesterId = offerInformation.getInt("requesterId");
+			this.requestId = offerInformation.getInt("requestId");
 			int status = offerInformation.getInt("offerStatus");
-			
+
 			if (status == 0) {
 				offerStatus.setText("Pending");
 				offerStatus.setTextColor(getResources().getColor(R.color.red));
@@ -307,21 +329,12 @@ public class OfferActivity extends FragmentActivity {
 				validate();
 				itemMenu.findItem(R.id.claim_on_offer_button).setVisible(true);
 			}
-			
 			if(offererId == loggedInId) {
-				((ImageView)findViewById(R.id.edit_price)).setVisibility(View.VISIBLE);
-				((ImageView)findViewById(R.id.edit_price)).setOnClickListener(new View.OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						editPrice();
-					}
-				});
-				
+				((ImageView)findViewById(R.id.changeOfferPrice)).setVisibility(View.VISIBLE);
 				itemMenu.findItem(R.id.delete_offer_button).setVisible(true);
 				itemMenu.findItem(R.id.claim_on_offer_button).setVisible(true);
 			}
-			
+
 			offererName.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -332,6 +345,7 @@ public class OfferActivity extends FragmentActivity {
 			e.printStackTrace();
 		}
 	}
+	
 
 	/**
 	 * Renders the comments in the layout
@@ -372,6 +386,7 @@ public class OfferActivity extends FragmentActivity {
 
 	/**
 	 * Redirects to a user's profile given his id
+	 * 
 	 * @param int userId
 	 * @author Almgohar
 	 */
@@ -384,12 +399,13 @@ public class OfferActivity extends FragmentActivity {
 
 	/**
 	 * Views the user's profile picture
-	 * @param String imageURL
+	 * 
+	 * @param String
+	 *            imageURL
 	 * @author Almgohar
 	 */
 	public void viewProfilePicture(String imageURL) {
-		ImageRequest image = new ImageRequest(offererAvatar);
-		image.execute(imageURL);
+		new ImageRequest(imageURL, getApplicationContext(), offererAvatar);
 	}
 
 	/**
@@ -407,7 +423,9 @@ public class OfferActivity extends FragmentActivity {
 
 			@Override
 			protected void onPostExecute(String response) {
-
+				if (isDestroyed) {
+					return;
+				}
 				try {
 
 					if (this.getStatusCode() == 200) {
@@ -466,6 +484,9 @@ public class OfferActivity extends FragmentActivity {
 				PostRequest request = new PostRequest(Config.API_BASE_URL
 						+ ACCEPT) {
 					protected void onPostExecute(String response) {
+						if (isDestroyed) {
+							return;
+						}
 						status = this.getStatusCode();
 						if (status == 201) {
 							acceptOffer.setVisibility(View.INVISIBLE);
@@ -505,7 +526,113 @@ public class OfferActivity extends FragmentActivity {
 	}
 
 	/**
-	 * This adds the mark as done button to the layout
+	 * The callback for the add comment button which adds the comment and
+	 * re-renders the layout
+	 * 
+	 * @param view
+	 * @author mohamedbassem
+	 */
+	
+	/**
+	 * Executed when the edit price button is pressed, showing a dialog with a field to enter the new price.
+	 * @param View view
+	 * @author Mansour
+	 */
+	public void changePrice(View view) {
+		final AlertDialog changePriceDialog = new AlertDialog.Builder(this)
+				.create();
+		changePriceDialog.setCancelable(false);
+		changePriceDialog.setMessage("Enter Your New Price!");
+		EditText newPrice = new EditText(this);
+		newPrice.setHint("Price");
+		newPrice.setId(R.id.offerNewPrice);
+		newPrice.setSingleLine(true);
+		newPrice.setInputType(InputType.TYPE_CLASS_NUMBER);
+		changePriceDialog.setView(newPrice);
+		changePriceDialog.setButton(BUTTON_POSITIVE, "OK",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						newPriceText = ((EditText) changePriceDialog
+								.findViewById(R.id.offerNewPrice)).getText()
+								.toString();
+						changePrice();
+						dialog.dismiss();
+					}
+				});
+		changePriceDialog.show();
+	}
+
+	/**
+	 * Validates the new price before sending it to the server.
+	 * @author Mansour
+	 */
+	public void changePrice() {
+		if (newPriceText.equals("")) {
+			Toast.makeText(getApplicationContext(), "Nothing Changed",
+					Toast.LENGTH_LONG).show();
+		} else {
+			if (sessionId == "") {
+				Toast.makeText(getApplicationContext(),
+						"Session Expired, Please Relogin", Toast.LENGTH_LONG)
+						.show();
+			} else {
+				if (offerId == -1) {
+					Toast.makeText(getApplicationContext(),
+							"Invalid Offer, Try Again Later", Toast.LENGTH_LONG)
+							.show();
+				} else {
+					sendPriceToServer();
+				}
+			}
+		}
+	}
+
+	/**
+	 * Sends the new price to the server.
+	 * @author Mansour
+	 */
+	public void sendPriceToServer() {
+		PostRequest imagePostRequest = new PostRequest(Config.API_BASE_URL
+				+ "/offers/" + offerId + "/changePrice") {
+			protected void onPostExecute(String response) {
+				if (this.getStatusCode() == 403) {
+					Toast.makeText(getApplicationContext(),
+							"Sorry, You Can't Change The Price Of This Offer",
+							Toast.LENGTH_LONG).show();
+				} else {
+					if (this.getStatusCode() == 409) {
+						Toast.makeText(getApplicationContext(),
+								"Same Price, Choose a New One",
+								Toast.LENGTH_LONG).show();
+					} else {
+						if (!(this.getStatusCode() == 200)) {
+							Toast.makeText(getApplicationContext(),
+									"Error, Try Again Later"+this.getErrorMessage(), Toast.LENGTH_LONG)
+									.show();
+						} else {
+							Toast.makeText(getApplicationContext(),
+									"Offer Price Changed", Toast.LENGTH_LONG)
+									.show();
+							TextView originalPrice = (TextView) findViewById(R.id.offer_price);
+							originalPrice.setText(newPriceText);
+						}
+					}
+				}
+			}
+		};
+		JSONObject priceJSON = new JSONObject();
+		try {
+			priceJSON.put("newPrice", Integer.parseInt(newPriceText));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		imagePostRequest.setBody(priceJSON);
+		imagePostRequest.addHeader(Config.API_SESSION_ID, sessionId);
+		imagePostRequest.execute();
+
+}
+	/** This adds the mark as done button to the layout
 	 * 
 	 * @param None
 	 * @return None
@@ -553,6 +680,9 @@ public class OfferActivity extends FragmentActivity {
 		PostRequest request = new PostRequest(Config.API_BASE_URL + markAsDone
 				+ Offer + Offerid) {
 			protected void onPostExecute(String response) {
+				if (isDestroyed) {
+					return;
+				}
 				if (this.getStatusCode() == 201) {
 					Toast success = Toast.makeText(getApplicationContext(),
 							R.string.mark, Toast.LENGTH_LONG);
@@ -587,6 +717,9 @@ public class OfferActivity extends FragmentActivity {
 
 			@Override
 			protected void onPostExecute(String response) {
+				if (isDestroyed) {
+					return;
+				}
 				if (this.getStatusCode() == 201) {
 					comment.setText("");
 					viewOffer();
@@ -612,6 +745,11 @@ public class OfferActivity extends FragmentActivity {
 		request.addHeader(Config.API_SESSION_ID, sessionId);
 		request.setBody(body);
 		request.execute();
+	}
+
+	public void onPause() {
+		super.onPause();
+		isDestroyed = true;
 	}
 
 }
