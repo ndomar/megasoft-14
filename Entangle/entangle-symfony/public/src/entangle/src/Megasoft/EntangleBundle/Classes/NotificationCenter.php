@@ -41,47 +41,85 @@ class NotificationCenter
     private $container;
 
     /**
+     * default new message notification body
+     * @var string
+     */
+    public $newMessageDefaultBody = '{{from}} sent you new message';
+
+    /**
      * Default new message notification title
      * @var string
      */
-    private $newMessageDefaultTitle = "new message notification";
+    public $newMessageDefaultTitle = "New Comment Notification";
 
     /**
      * default transaction notification title
      * @var string
      */
-    private $transactionNotificationDefaultTitle = "new transaction notification";
+    public $transactionNotificationDefaultTitle = "new transaction notification";
 
+
+    public $transactionNotificationDefaultBody = "{{from}} accepted your invitation";
     /**
      * default offer change notification title
      * @var string
      */
-    private $offerChangeNotificationDefaultTitle = "offer change notification";
+    public $offerChangeNotificationDefaultTitle = "Offer Changed";
+
+    /**
+     * default offer change notification body
+     * @var string
+     */
+    public $offerChangeNotificationDefaultBody = "{{from}} changed his offer";
 
     /**
      * default offer chosen notification title
      * @var string
      */
-    private $offerChosenNotificationDefaultTitle = "offer chosen notification";
+    public $offerChosenNotificationDefaultTitle = 'Offer Accepted';
+
+    /**
+     * default offer chosen notification body
+     * @var string
+     */
+    public $offerChosenNotificationDefaultBody = '{{from}} accepted your offer';
+
 
     /**
      * default new offer notification title
      * @var string
      */
-    private $newOfferNotificationTitle = "new offer Notification";
+    public $newOfferNotificationTitle = "New Offer";
+
+    /**
+     * default new offer notification body
+     * @var string
+     */
+    public $newOfferNotificationBody = "{{from}} made a new offer to your request";
 
     /**
      * default offer deleted notification title
      * @var string
      */
-    private $offerDeletedNotificationDefaultTitle = "offer deleted notification";
+    public $offerDeletedNotificationDefaultTitle = "Offer Deleted Notification";
+
+    /**
+     * default offer deleted notification body
+     * @var string
+     */
+    public $offerDeletedNotificationDefaultBody = "{{from}} deleted his offer";
 
     /**
      * default request deleted notification title
      * @var string
      */
-    private $requestDeletedNotificationDefaultTitle = "request deleted notification";
+    public $requestDeletedNotificationDefaultTitle = "Request Deleted Notification";
 
+    /**
+     *  default request deleted notification body
+     * @var string
+     */
+    public $requestDeletedNotificationDefaultBody = "{{from}} deleted his request";
     /**
      * default request reopen notification
      * @var string
@@ -89,10 +127,22 @@ class NotificationCenter
     private $reopenRequestNotificationDefaultTitle = "request reopened notification";
 
     /**
+     * default request reopen notification
+     * @var string
+     */
+    public $reopenRequestNotificationDfaultBody = "{{from}} reopened his request";
+
+    /**
      * default new claim notification title
      * @var string
      */
-    private $newClaimNotificationDefaultTitle = "new claim notification";
+    public $newClaimNotificationDefaultTitle = "New Claim Notification";
+
+    /**
+     * default new claim notification body
+     * @var string
+     */
+    public $newClaimNotificationDefaultBody = "{{from}} made new claim";
 
     /**
      * new message notification ID
@@ -195,6 +245,7 @@ class NotificationCenter
         curl_setopt($request, CURLOPT_POSTFIELDS, json_encode($body));
         curl_setopt($request, CURLOPT_POST, true);
         curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($request,CURLOPT_TIMEOUT,2000);
         $result = curl_exec($request);
         $result = json_decode($result, true);
         return $result;
@@ -230,12 +281,8 @@ class NotificationCenter
 
         $fromName = $from->getName();
         $toName = $to->getName();
-        if (!$title)
-            $title = $this->newMessageDefaultTitle;
-        if ($body)
-            $body = $this->formatMessage($body, $fromName, $toName);
-        else
-            $body = "new Message from " . $fromName;
+        $title = $this->newMessageDefaultTitle;
+        $body = $this->formatMessage($this->newMessageDefaultBody, $fromName, $toName);
 
         $data = array('notificationId' => $notification->getId(), 'title' => $title, 'body' => $body, 'type' => $this->newMessageNotificationId, "offerId" => $message->getOffer()->getId());
         return $this->notificationCenter($to->getId(), $data);
@@ -272,13 +319,8 @@ class NotificationCenter
         $requestDesc = $transaction->getOffer()->getRequest()->getDescription();
         $fromName = $from->getName();
         $toName = $to->getName();
-        if (!$title)
-            $title = $this->transactionNotificationDefaultTitle;
-        if ($body)
-            $body = $this->formatMessage($body, $fromName, $toName);
-        else
-            $body = $fromName . "accepted your offer";
-
+        $title = $this->transactionNotificationDefaultTitle;
+        $body = $this->formatMessage($this->transactionNotificationDefaultTitle, $fromName, $toName);
         $data = array('notificationId' => $notification->getId(), 'title' => $title, 'body' => $body, 'type' => $this->transactionNotificationId, 'by' => $fromName,
             'finalPrice' => $finalPrice, 'requestDesc' => $requestDesc, 'transactionId' => $transactionId);
         return $this->notificationCenter($to->getId(), $data);
@@ -318,12 +360,8 @@ class NotificationCenter
 
         $fromName = $from->getName();
         $toName = $to->getName();
-        if (!$title)
-            $title = $this->offerChangeNotificationDefaultTitle;
-        if ($body)
-            $body = $this->formatMessage($body, $fromName, $toName);
-        else
-            $body = $fromName . "changed his offer";
+        $title = $this->offerChangeNotificationDefaultTitle;
+        $body = $this->formatMessage($body, $fromName, $toName);
         $data = array('notificationId' => $notification->getId(), 'title' => $title, 'body' => $body, 'type' => $this->offerChangeNotificationId, 'offerId' => $offerId);
         return $this->notificationCenter($to->getId(), $data);
     }
@@ -357,12 +395,8 @@ class NotificationCenter
 
         $fromName = $from->getName();
         $toName = $to->getName();
-        if (!$title)
-            $title = $this->offerChosenNotificationDefaultTitle;
-        if ($body)
-            $body = $this->formatMessage($body, $fromName, $toName);
-        else
-            $body = $fromName . " chose your offer";
+        $title = $this->offerChosenNotificationDefaultTitle;
+        $body = $this->formatMessage($this->offerChosenNotificationDefaultBody, $fromName, $toName);
 
         $data = array('notificationId' => $notification->getId(), 'tangleName' => $request->getTangle()->getName(), 'tangleId' => $tangleId, 'title' => $title, 'body' => $body, 'type' => $this->offerChosenNotificationId,
             'requestId' => $request->getId());
@@ -396,12 +430,8 @@ class NotificationCenter
         $this->em->persist($notification);
         $this->em->flush();
 
-        if (!$title)
-            $title = $this->newOfferNotificationTitle;
-        if ($body)
-            $body = $this->formatMessage($body, $from->getName(), null);
-        else
-            $body = $from->getName() . "made a new offer";
+        $title = $this->newOfferNotificationTitle;
+        $body = $this->formatMessage($this->newOfferNotificationBody, $from->getName(), null);
 
         $data = array('notificationId' => $notification->getId(), "title" => $title, "body" => $body, "type" => $this->newOfferNotificationId, "offerId" => $offerid);
         return $this->notificationCenter($to->getId(), $data);
@@ -438,15 +468,11 @@ class NotificationCenter
 
         $fromName = $from->getName();
         $toName = $to->getName();
-        if (!$title)
-            $title = $this->offerDeletedNotificationDefaultTitle;
-        if ($body)
-            $body = $this->formatMessage($body, $fromName, $toName);
-        else
-            $body = $fromName . "deleted his offer";
+        $title = $this->offerDeletedNotificationDefaultTitle;
+        $body = $this->formatMessage($this->offerDeletedNotificationDefaultBody, $fromName, $toName);
 
         $data = array('notificationId' => $notification->getId(), 'title' => $title, 'body' => $body, 'type' => $this->offerDeletedNotificationId,
-            'offerId' => $offerId, 'requestId' => $request->getId());
+            'offerId' => $offerId, 'requestId' => $request->getId(), 'tangleId' => $offer->getRequest()->getTangle()->getId(), 'tangleName' => $offer->getRequest()->getTangle()->getName());
         return $this->notificationCenter($to->getId(), $data);
 
     }
@@ -470,7 +496,7 @@ class NotificationCenter
         $date = DateTime::createFromFormat('m / d / Y h:i:s a', $date);
 
         foreach ($offerArray as $offer) {
-            if($offer->getDeleted() == 1)
+            if ($offer->getDeleted() == 1)
                 continue;
 
             $to = $offer->getUser();
@@ -486,12 +512,8 @@ class NotificationCenter
 
             $fromName = $from->getName();
             $toName = $to->getName();
-            if (!$title)
-                $title = $this->requestDeletedNotificationDefaultTitle;
-            if ($body)
-                $body = $this->formatMessage($body, $fromName, $toName);
-            else
-                $body = $fromName . "deleted his request";
+            $title = $this->requestDeletedNotificationDefaultTitle;
+            $body = $this->formatMessage($this->requestDeletedNotificationDefaultBody, $fromName, $toName);
 
             $data = array('notificationId' => $notification->getId(), 'title' => $title, 'body' => $body, 'type' => $this->requestDeletedNotificationId,
                 'requestId' => $requestId, 'tangleId' => $request->getTangle()->getId());
@@ -515,16 +537,13 @@ class NotificationCenter
         $date = DateTime::createFromFormat('m / d / Y h:i:s a', $date);
 
         $fromName = $request->getUser()->getName();
-        if (!$title)
-            $title = $this->reopenRequestNotificationDefaultTitle;
-        if ($body)
-            $body = $this->formatMessage($body, $fromName, null);
-        else
-            $body = $fromName . "reopened his request";
+        $title = $this->reopenRequestNotificationDefaultTitle;
+        $body = $this->formatMessage($this->reopenRequestNotificationDfaultBody, $fromName, null);
 
         $tangleId = $request->getTangle()->getId();
 
-        $data = array("title" => $title, "body" => $body, "type" => $this->reopenRequestNotificationId, "requestId" => $requestId, "tangleId" => $tangleId,);
+        $data = array("title" => $title, "body" => $body, "type" => $this->reopenRequestNotificationId,
+            "requestId" => $requestId, "tangleId" => $tangleId, 'tangleName' => $request->getTangle()->getName(),);
 
         foreach ($offers as $offer) {
             $notification = new ReopenRequestNotification();
@@ -565,12 +584,8 @@ class NotificationCenter
         $notification->setCreated($date);
         $notification->setUser($claimed);
 
-        if (!$title)
-            $title = $this->newClaimNotificationDefaultTitle;
-        if ($body)
-            $body = $this->formatMessage($body, $claimer->getName(), null);
-        else
-            $body = $claimer->getName() . "claimed you ";
+        $title = $this->newClaimNotificationDefaultTitle;
+        $body = $this->formatMessage($this->newClaimNotificationDefaultBody, $claimer->getName(), null);
 
         $data = array('notificationId' => $notification->getId(), "title" => $title, "body" => $body, "type" => $this->newClaimNotificationId, "claimId" => $claimId);
         $this->notificationCenter($claim->getId(), $data);
