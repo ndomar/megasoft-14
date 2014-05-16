@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
     <string name="pull_to_refresh_pull_label">Pull to refresh…</string>
     <string name="pull_to_refresh_release_label">Release to refresh…</string>
     <string name="pull_to_refresh_refreshing_label">Loading…</string>
@@ -159,6 +158,7 @@
     <string name="cancel">Cancel</string>
     <string name="username">Username</string>
     <string name="email">email: user@entangle.io</string>
+    <string name="login_username">username: username</string>
     <string name="password">password</string>
     <string name="confirmPassword">Confirm Password</string>
     <string name="toastError">An error has occurred.</string>
