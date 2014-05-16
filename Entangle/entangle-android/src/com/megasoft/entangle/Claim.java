@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
+import com.megasoft.utils.UI;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -105,9 +106,7 @@ public class Claim extends Activity {
 									Toast.LENGTH_SHORT).show();
 							startActivity(intent);
 						} else {
-							Toast.makeText(getBaseContext(),
-									"Something went wrong", Toast.LENGTH_SHORT)
-									.show();
+							UI.makeToast(getBaseContext(), "Something went wrong", Toast.LENGTH_SHORT);
 						}
 
 					} catch (JSONException e) {

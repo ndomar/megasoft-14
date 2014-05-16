@@ -57,11 +57,11 @@ class ClaimController extends Controller {
         }
         $offererName = $offerer->getName();
         $userEmailRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserEmail');
-        $oEmail = $userEmailRepo->findOneBy(array('user' => $offerer));
-        if ($oEmail == null) {
+        $emailOfferer = $userEmailRepo->findOneBy(array('user' => $offerer));
+        if ($emailOfferer == null) {
             return new Response("Unauthorized", 401);
         }
-        $offererEmail = $oEmail->getEmail();
+        $offererEmail = $emailOfferer->getEmail();
         $request = $offer->getRequest();
         if ($request == null) {
             return new Response('no such request', 400);
@@ -104,29 +104,6 @@ class ClaimController extends Controller {
             'tangleOwner' => $tangleOwnerName, 'tangleOwnerEmail' => $tangleOwnerMail, 'tangle' => $tangleName,
             'claimMessage' => $claimMessage,));
         $response->setStatusCode(200);
-        $title = "Claim Report";
-        $body = "<!DOCTYPE html>
-                    <body>
-                           <h3>
-                                Entangle Claim Report
-                           </h3>
-                           <p>Created on: " . $createdOn . "</p>
-                           <p>Claimer name: " . $claimerName . "</p>
-                           <p>Offerer name: " . $offererName . "</p>
-                            <p>Offerer Email: " . $offererEmail . "</p>
-                            <p>Requester name: " . $requesterName . "</p>
-                            <p>Requester Email: " . $requesterEmail . "</p>
-                            <p>Tangle Owner name: " . $tangleOwnerName . "</p>
-                            <p>Tangle Owner Email: " . $tangleOwnerMail . "</p>
-                            <p>Tangle name: " . $tangleName . "</p>
-                            <p>Claim message: " . $claimMessage . "</p>
-                           <p>Cheers<br>Entangle Team</p>
-                    </body>
-                </html>";
-        $notificationCenter = $this->get('notification_center.service');
-        $notificationCenter->sendMail($offerer->getId(), $title, $body);
-        $notificationCenter->sendMail($requester->getId(), $title, $body);
-        $notificationCenter->sendMail($tangleOwnerId, $title, $body);
         
         return $response;
     }

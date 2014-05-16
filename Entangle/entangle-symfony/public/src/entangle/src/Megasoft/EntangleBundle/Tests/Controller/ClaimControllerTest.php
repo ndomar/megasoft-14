@@ -28,7 +28,8 @@ class ClaimControllerTest extends EntangleTestCase {
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('POST', 'claim/ssss/sendClaim/1/user', array(), array(), array('HTTP_X_SESSION_ID' => 'userAly'));
+        $client->request('POST', 'claim/ssss/sendClaim/1/user', array(), array(), 
+                array('HTTP_X_SESSION_ID' => 'userAly'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode(), 'null requestId');
     }
@@ -42,7 +43,8 @@ class ClaimControllerTest extends EntangleTestCase {
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('POST', 'claim/100/sendClaim/1/user', array(), array(), array('HTTP_X_SESSION_ID' => 'userAly'));
+        $client->request('POST', 'claim/100/sendClaim/1/user', array(), array(), 
+                array('HTTP_X_SESSION_ID' => 'userAly'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode(), 'wrong requestId');
     }
@@ -56,7 +58,8 @@ class ClaimControllerTest extends EntangleTestCase {
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('POST', 'claim/1/sendClaim/ssss/user', array(), array(), array('HTTP_X_SESSION_ID' => 'userMohamed'));
+        $client->request('POST', 'claim/1/sendClaim/ssss/user', array(), array(),
+                array('HTTP_X_SESSION_ID' => 'userMohamed'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode(), 'null offerId');
     }
@@ -70,7 +73,8 @@ class ClaimControllerTest extends EntangleTestCase {
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('POST', 'claim/1/sendClaim/100/user', array(), array(), array('HTTP_X_SESSION_ID' => 'userAly'));
+        $client->request('POST', 'claim/1/sendClaim/100/user', array(), array(),
+                array('HTTP_X_SESSION_ID' => 'userAly'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode(), 'wrong offerId');
     }
@@ -98,7 +102,8 @@ class ClaimControllerTest extends EntangleTestCase {
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('POST', 'claim/3/sendClaim/3/user', array(), array(), array('HTTP_X_SESSION_ID' => 'userMohamed'));
+        $client->request('POST', 'claim/3/sendClaim/3/user', array(), array(), 
+                array('HTTP_X_SESSION_ID' => 'userMohamed'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode(), 'expired session');
     }
@@ -112,7 +117,8 @@ class ClaimControllerTest extends EntangleTestCase {
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('POST', 'claim/3/sendClaim/3/user', array(), array(), array('HTTP_X_SESSION_ID' => 'wrong'));
+        $client->request('POST', 'claim/3/sendClaim/3/user', array(), array(),
+                array('HTTP_X_SESSION_ID' => 'wrong'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode(), 'wrong session');
     }
@@ -126,7 +132,8 @@ class ClaimControllerTest extends EntangleTestCase {
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('POST', 'claim/2/sendClaim/2/user', array(), array(), array('HTTP_X_SESSION_ID' => 'userAly'));
+        $client->request('POST', 'claim/2/sendClaim/2/user', array(), array(),
+                array('HTTP_X_SESSION_ID' => 'userAly'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode(), 'offer is not accepted');
     }
@@ -140,7 +147,8 @@ class ClaimControllerTest extends EntangleTestCase {
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('POST', 'claim/6/sendClaim/6/user', array(), array(), array('HTTP_X_SESSION_ID', 'userMohamed'));
+        $client->request('POST', 'claim/6/sendClaim/6/user', array(), array(), 
+                array('HTTP_X_SESSION_ID', 'userMohamed'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode(), 'offer is deleted');
     }
@@ -154,7 +162,8 @@ class ClaimControllerTest extends EntangleTestCase {
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('POST', 'claim/6/sendClaim/7/user', array(), array(), array('HTTP_X_SESSION_ID', 'userAhmad'));
+        $client->request('POST', 'claim/6/sendClaim/7/user', array(), array(), 
+                array('HTTP_X_SESSION_ID', 'userAhmad'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode(), 'user not in tangle');
     }
@@ -171,7 +180,8 @@ class ClaimControllerTest extends EntangleTestCase {
         $jsonBody = json_encode($body);
 
         $client = static::createClient();
-        $client->request('POST', 'claim/3/sendClaim/3/user', array(), array(), array('HTTP_X_SESSION_ID' => 'userAly'), $jsonBody);
+        $client->request('POST', 'claim/3/sendClaim/3/user', array(), array(),
+                array('HTTP_X_SESSION_ID' => 'userAly'), $jsonBody);
 
         $response = $client->getResponse();
         $this->assertEquals(201, $response->getStatusCode(), 'claim not created');
@@ -186,7 +196,8 @@ class ClaimControllerTest extends EntangleTestCase {
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('GET', 'claimReport/1/claim/ssss/offer', array(), array(), array('HTTP_X_SESSION_ID' => 'userAly'));
+        $client->request('GET', 'claimReport/1/claim/ssss/offer', array(), array(), 
+                array('HTTP_X_SESSION_ID' => 'userAly'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode(), 'null offerId');
     }
@@ -200,7 +211,8 @@ class ClaimControllerTest extends EntangleTestCase {
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('GET', 'claimReport/ssss/claim/3/offer', array(), array(), array('HTTP_X_SESSION_ID' => 'userAly'));
+        $client->request('GET', 'claimReport/ssss/claim/3/offer', array(), array(),
+                array('HTTP_X_SESSION_ID' => 'userAly'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode(), 'null claimId');
     }
@@ -228,7 +240,8 @@ class ClaimControllerTest extends EntangleTestCase {
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('GET', 'claimReport/1/claim/3/offer', array(), array(), array('HTTP_X_SESSION_ID', 'userMohamed'));
+        $client->request('GET', 'claimReport/1/claim/3/offer', array(), array(),
+                array('HTTP_X_SESSION_ID', 'userMohamed'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode(), 'expired session');
     }
@@ -242,7 +255,8 @@ class ClaimControllerTest extends EntangleTestCase {
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('GET', 'claimReport/1/claim/3/offer', array(), array(), array('HTTP_X_SESSION_ID', 'wrong session'));
+        $client->request('GET', 'claimReport/1/claim/3/offer', array(), array(),
+                array('HTTP_X_SESSION_ID', 'wrong session'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode(), 'wrong session');
     }
@@ -256,7 +270,8 @@ class ClaimControllerTest extends EntangleTestCase {
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('GET', 'claimReport/1/claim/4/offer', array(), array(), array('HTTP_X_SESSION_ID', 'userAly'));
+        $client->request('GET', 'claimReport/1/claim/4/offer', array(), array(),
+                array('HTTP_X_SESSION_ID', 'userAly'));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode(), 'wrong claim id');
     }
@@ -284,7 +299,8 @@ class ClaimControllerTest extends EntangleTestCase {
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('GET', 'claimReport/1/claim/3/offer', array(), array(), array('HTTP_X_SESSION_ID' => 'userAly'));
+        $client->request('GET', 'claimReport/1/claim/3/offer', array(), array(), 
+                array('HTTP_X_SESSION_ID' => 'userAly'));
 
         $response = $client->getResponse();
         $this->assertEquals(200, $response->getStatusCode(), 'something went wrong');
@@ -299,7 +315,8 @@ class ClaimControllerTest extends EntangleTestCase {
         $this->loadFixtures();
 
         $client = static::createClient();
-        $client->request('GET', 'claimReport/5/claim/7/offer', array(), array(), array('HTTP_X_SESSION_ID' => 'userFahmy'));
+        $client->request('GET', 'claimReport/5/claim/7/offer', array(), array(),
+                array('HTTP_X_SESSION_ID' => 'userFahmy'));
 
         $response = $client->getResponse();
         $this->assertEquals(401, $response->getStatusCode(), 'invalid email');

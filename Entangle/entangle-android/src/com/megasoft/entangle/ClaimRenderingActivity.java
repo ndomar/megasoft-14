@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
+import com.megasoft.utils.UI;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -110,9 +111,7 @@ public class ClaimRenderingActivity extends Activity {
 				try {
 					if (this.getStatusCode() == 200) {
 
-						Toast.makeText(getBaseContext(),
-								"Loading Claim Report", Toast.LENGTH_SHORT)
-								.show();
+						UI.makeToast(getBaseContext(), "Loading claim report", Toast.LENGTH_SHORT);
 						JSONObject object = new JSONObject(response);
 						claimDate = object.getString("claimDate");
 						String[] claimDateArray = claimDate.split(":");
@@ -146,9 +145,7 @@ public class ClaimRenderingActivity extends Activity {
 						TextView claimMssg = (TextView) findViewById(R.id.mssgText);
 						claimMssg.setText(claimMessage);
 					} else {
-						Toast.makeText(getBaseContext(),
-								"Something went wrong", Toast.LENGTH_SHORT)
-								.show();
+						UI.makeToast(getBaseContext(), "Something went wrong", Toast.LENGTH_SHORT);
 					}
 
 				} catch (JSONException e) {
