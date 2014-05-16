@@ -19,7 +19,7 @@ class SiteController extends Controller
 
     public function indexAction()
     {
-        return $this->render('MegasoftEntangleBundle:Register:register.html.twig');
+        return $this->render('MegasoftEntangleBundle:Site:index.html.twig');
     }
 
 
@@ -119,6 +119,25 @@ class SiteController extends Controller
                 $user->setPassword($password);
                 $userEmail->setEmail($email);
                 $user->setUserBio($userBio);
+                $image = $request->files->get('img');
+                if (($image instanceof UploadedFile) && ($image->getError() == '0')) {
+                    if ($image->getSize() < 4194304) { //if image size is less that 4MB
+                        $originalName = $image->getClientOriginalName();
+                        $nameArray = explode('.', $originalName);
+
+                        $fileType = $nameArray[sizeof($nameArray) - 1];
+                        $validFileTypes = array('jpg', 'jpeg', 'bmp',
+                            'png');
+
+                        if (in_array(strtolower($fileType), $validFileTypes)) {
+                            $kernel = $this->get('kernel');
+                            $filename = substr(md5(time()), 0, 10) . $this->generate(5);
+                            $filepath = $kernel->getRootDir() . '/../web/images/profilePictures/' . $filename . '.' . $fileType;
+                            move_uploaded_file($image, $filepath);
+                            $user->setPhoto($filename . '.' .$fileType);
+                        }
+                    }
+                }
                 $entityManager = $this->getDoctrine()->getEntityManager();
                 $entityManager->persist($user);
                 $entityManager->persist($userEmail);
