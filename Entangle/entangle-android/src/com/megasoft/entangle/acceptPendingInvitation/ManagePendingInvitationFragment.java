@@ -317,8 +317,8 @@ public class ManagePendingInvitationFragment extends Fragment {
 
 			offerFragmet.setArguments(args);
 
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.offer_entries_layout, offerFragmet).commit();
+			/*getSupportFragmentManager().beginTransaction()
+					.add(R.id.offer_entries_layout, offerFragmet).commit();*/
 		}
 
 		// if (myRequest == true) {
