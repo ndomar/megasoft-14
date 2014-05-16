@@ -11,6 +11,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,8 @@ public class TangleFragment extends Fragment {
 	 * The HashMap that contains the mapping of the tag to its id
 	 */
 	private HashMap<String, Integer> tagToId = new HashMap<String, Integer>();
+	
+	private boolean isDestroyed;
 
 	/**
 	 * This method is called when the activity starts , it sets the attributes
@@ -253,10 +256,16 @@ public class TangleFragment extends Fragment {
 	 */
 	public void sendFilteredRequest(final String url) {
 		sessionId = activity.getSharedPreferences(Config.SETTING, 0).getString(Config.SESSION_ID, "");
+		
 		GetRequest getStream = new GetRequest(url) {
+			
 			protected void onPostExecute(String res) {
+				if(isDestroyed){
+					return;
+				}
 				if (!this.hasError() && res != null) {
 					LinearLayout layout = (LinearLayout) activity.findViewById(R.id.streamLayout);
+					layout = (LinearLayout) activity.findViewById(R.id.streamLayout);
 					layout.removeAllViews();
 					setTheLayout(res);
 				} else {
@@ -290,4 +299,8 @@ public class TangleFragment extends Fragment {
 		return sessionId;
 	}
 	
+	public void onPause(){
+		super.onPause();
+		isDestroyed = true;
+	}
 }
