@@ -558,7 +558,6 @@ comment_on_offer:
     defaults: { _controller: MegasoftEntangleBundle:Offer:comment}
     methods: [POST]
 
-
 _mail:
   pattern: /notification/mail
   defaults: {_controller:MegasoftEntangleBundle:Notification:SendEmail}
