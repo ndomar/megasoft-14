@@ -63,6 +63,7 @@ public class CreateTangleActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_tangle);
+		getActionBar().hide();
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		Spinner iconSpinner = (Spinner) findViewById(R.id.iconSpinner);
@@ -160,6 +161,10 @@ public class CreateTangleActivity extends Activity {
 	public void goToHomePage() {
 		UI.makeToast(getApplicationContext(), "Your Tangle Has Been Created",
 				Toast.LENGTH_LONG);
+		this.finish();
+	}
+	
+	public void cancelRedirect(View view){
 		this.finish();
 	}
 

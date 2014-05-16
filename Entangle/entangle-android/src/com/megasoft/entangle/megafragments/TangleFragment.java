@@ -2,10 +2,10 @@ package com.megasoft.entangle.megafragments;
 
 import java.util.HashMap;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -20,6 +20,10 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import com.actionbarpulltorefresh.library.HeaderTransformer;
+import com.actionbarpulltorefresh.library.PullToRefreshLayout;
+import com.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import com.megasoft.config.Config;
 import com.megasoft.entangle.HomeActivity;
 import com.megasoft.entangle.R;
@@ -89,6 +93,10 @@ public class TangleFragment extends Fragment {
 	 *            , is the passed bundle from the previous activity
 	 */
 	
+	/*
+	 * The layout of the pull to refresh.
+	 */
+	private PullToRefreshLayout mPullToRefreshLayout;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +112,25 @@ public class TangleFragment extends Fragment {
          view = inflater.inflate(
         		 R.layout.activity_tangle, container, false);
 
+         mPullToRefreshLayout = (PullToRefreshLayout) view.findViewById(R.id.ptr_layout);
+
+         // Now setup the PullToRefreshLayout
+         
+         ActionBarPullToRefresh.from(this.activity)
+                 // Mark All Children as pullable
+                 .allChildrenArePullable()
+                 .listener(new OnRefreshListener() {
+					
+					@Override
+					public void onRefreshStarted(View view) {
+						sendFilteredRequest(rootResource + "/tangle/" + tangleId
+				 				+ "/request", false, null);
+					}
+				})
+                 .setup(mPullToRefreshLayout);
+         
+         tangleId = getArguments().getInt("tangleId");
+         tangleName = getArguments().getString("tangleName");
          loadMoreTrigger = (TextView) view.findViewById(R.id.load_more);
          loadMoreTrigger.setOnClickListener(new View.OnClickListener() {
 
@@ -275,7 +302,7 @@ public class TangleFragment extends Fragment {
 		url += "?limit=" + defaultRequestLimit;
 		if (isLoadMore) {
 			query = lastQuery;
-			url += "&lastDate=" + lastDate.replace(" ", "$20");
+			url += "&lastDate=" + lastDate.replace(" ", "%20");
 		}
 		if (query != null) {
 			url += "&query=" + query;
@@ -299,6 +326,7 @@ public class TangleFragment extends Fragment {
 							"Sorry, There is a problem in loading the stream",
 							Toast.LENGTH_LONG).show();
 				}
+				mPullToRefreshLayout.setRefreshComplete();
 				// last date indicates that the steram is not empty
 				if (lastDate != null) {
 					loadMoreTrigger.setText(getResources().getString(R.string.load_more));
