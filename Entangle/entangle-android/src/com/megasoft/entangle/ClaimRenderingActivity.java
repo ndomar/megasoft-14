@@ -71,6 +71,7 @@ public class ClaimRenderingActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getActionBar().hide();
 		this.setData();
 		setContentView(R.layout.activity_claim_render);
 	}
