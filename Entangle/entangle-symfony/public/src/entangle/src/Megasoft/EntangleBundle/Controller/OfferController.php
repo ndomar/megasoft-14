@@ -204,6 +204,9 @@ class OfferController extends Controller {
         if (($requestOffer->getStatus()) == ($requestOffer->REJECTED)) {
             return new Response("Offer is already rejected", 403);
         }
+        if($requestOffer->getDeleted()){
+            return new Response("Bad Request", 400);
+        }
         $json = $request->getContent();
         $json_array = json_decode($json, true);
         if (!isset($json_array['newPrice'])){
