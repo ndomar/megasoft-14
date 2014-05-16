@@ -6,6 +6,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -91,11 +93,13 @@ public class GcmIntentService extends IntentService {
 
 		if (type != -1) {
 			contentIntent = PendingIntent.getActivity(this, 0, dest, 0);
+			Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 			Notification notification = new Notification.Builder(
 					getApplicationContext()).setContentTitle(title)
 					.setContentText(body)
 					.setSmallIcon(R.drawable.entangle_logo)
 					.setContentIntent(contentIntent).setAutoCancel(true)
+					.setSound(alarmSound)
 					.build();
 			NotificationManager notManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 			notManager.notify(NotificationCounter++, notification);
