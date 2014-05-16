@@ -260,9 +260,13 @@ public class ManagePendingInvitationFragment extends Fragment {
 				.setPositiveButton("Yes", dialogClickListener)
 				.setNegativeButton("No", dialogClickListener).show();
 	}
-
+	/**
+	 * method that makes a get request to get claims
+	 * @param none
+	 * @return none
+	 * @author sak93
+	 */
 	public void getClaims() {
-
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		GetRequest request = new GetRequest(Config.API_BASE_URL_SERVER) {
 			protected void onPostExecute(String response) {
@@ -287,7 +291,12 @@ public class ManagePendingInvitationFragment extends Fragment {
 		request.execute();
 
 	}
-
+	/**
+	 * method to add claim details
+	 * @param JSONObject json
+	 * @return none
+	 * @author sak93
+	 */
 	public void addClaims(JSONObject json) throws JSONException {
 		JSONArray claims = (JSONArray) json.get("offers");
 		if (claims.length() == 0) {
