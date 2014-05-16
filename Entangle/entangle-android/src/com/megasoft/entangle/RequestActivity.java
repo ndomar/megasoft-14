@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +12,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.megasoft.config.Config;
@@ -102,14 +105,17 @@ public class RequestActivity extends FragmentActivity {
 		setContentView(R.layout.activity_request);
 		
 		Intent intent = getIntent();
-		this.requestId = intent.getIntExtra("requestId", -1);
-		this.tangleId = intent.getIntExtra("tangleId", -1);
+		this.requestId = intent.getExtras().getInt("requestId", -1);
+		this.tangleId = intent.getExtras().getInt("tangleId", -1);
 		 REQUEST = "/tangle/" + tangleId + "/request/" + requestId;
 		
 		requestLayout = (LinearLayout) this.findViewById(R.id.request_entry_layout);
 		offersLayout = (LinearLayout) this.findViewById(R.id.offer_entries_layout);
 		
-		
+	}
+	
+	public void onResume(){
+		super.onResume();
 		this.fillRequestDetails();
 	}
 
@@ -171,12 +177,14 @@ public class RequestActivity extends FragmentActivity {
 		RequestEntryFragment requestFragmet = new RequestEntryFragment();
 		Bundle args = new Bundle();
 		args.putString("description",json.getString("description"));
-		args.putString("requesterName",json.getString("requester"));
+		args.putString("requesterName",json.getString("requesterName"));
 		args.putString("date",json.getJSONObject("date").getString("date"));
 		args.putString("tags",getTags(json.getJSONArray("tags")));
 		args.putString("price",json.getString("price"));
-		args.putString("deadline",json.getJSONObject("deadline").getString("date"));
-		args.putString("status",json.getString("status"));
+		if(json.get("deadline") == null){
+			args.putString("deadline",json.getJSONObject("deadline").getString("date"));
+		}
+		args.putString("status",requestStatusCodes[Integer.parseInt(json.getString("status"))]);
 		requestFragmet.setArguments(args);
 		
 		getSupportFragmentManager().beginTransaction().add(R.id.request_entry_layout,requestFragmet).commit();
@@ -194,6 +202,11 @@ public class RequestActivity extends FragmentActivity {
 
 	public void addOffers(JSONObject json) throws JSONException {
 		JSONArray offers = (JSONArray) json.get("offers");
+		if(offers.length() == 0){
+			findViewById(R.id.view_request_offer_header).setVisibility(View.INVISIBLE);
+		}else{
+			findViewById(R.id.view_request_offer_header).setVisibility(View.VISIBLE);
+		}
 		
 		for (int i = 0; i < offers.length(); i++) {
 			JSONObject offer = offers.getJSONObject(i); 
@@ -204,7 +217,7 @@ public class RequestActivity extends FragmentActivity {
 			args.putString("date",offer.getJSONObject("date").getString("date"));
 			args.putString("description",offer.getString("description"));
 			args.putString("offerer",offer.getString("offererName"));
-			args.putString("status",offer.getString("status"));
+			args.putString("status",offerStatusCodes[Integer.parseInt(offer.getString("status"))]);
 			offerFragmet.setArguments(args);
 			
 			getSupportFragmentManager().beginTransaction().add(R.id.offer_entries_layout,offerFragmet).commit();
@@ -243,6 +256,23 @@ public class RequestActivity extends FragmentActivity {
 
 		getMenuInflater().inflate(R.menu.request_information, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	     
+	 	 switch (item.getItemId()) {
+	 	 	case R.id.createOffer:
+	 	 		Intent intent = new Intent(this, CreateOfferActivity.class);
+	 	        intent.putExtra("tangleId", this.tangleId);
+	 	        intent.putExtra("requestId", this.requestId);
+	 	        startActivity(intent);
+	 	        return true;
+	 	 		
+	 	    default:
+	 	        return super.onOptionsItemSelected(item);
+	 	 }
+
 	}
 
 }

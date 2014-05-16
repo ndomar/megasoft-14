@@ -14,11 +14,10 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -42,42 +41,38 @@ public class CreateOfferActivity extends Activity {
 	 */
 	EditText requestedPrice;
 	/**
-	 * the Post Button that will send the server the postrequest to Post the
+	 * the post Button that will send the server the postrequest to Post the
 	 * offer
 	 */
-	Button Post;
+	Button post;
+	/**
+	 * 
+	 * cancel button cancel request
+	 */
+	Button cancel;
 	/**
 	 * the json object to be sent in the postrequest
 	 */
 	JSONObject json = new JSONObject();
 	/**
-	 * the chosen deadLine year , in case user didn't choose a value it will be
-	 * set to current year
+	 * the chosen deadLine year
+	 * 
 	 */
 	int deadLineYear;
 	/**
-	 * the chosen deadLine month , in case user didn't choose a value it will be
-	 * set to current month
+	 * the chosen deadLine month
+	 * 
 	 */
 	int deadLineMonth;
 	/**
-	 * the chosen deadLine day , in case user didn't choose a value it will be
-	 * set to current day
+	 * the chosen deadLine day
+	 * 
 	 */
 	int deadLineDay;
-	/**
-	 * Textview to display the deadLine date , in case user didn't choose a
-	 * value it will display today's date
-	 */
-	TextView dateDisplay;
 	/**
 	 * Button clicked to pick deadLine date
 	 */
 	Button pickDate;
-	/**
-	 * CheckBox that the user should check after filling the fields
-	 */
-	CheckBox checkBox;
 	/**
 	 * the date dialog Id
 	 */
@@ -101,72 +96,93 @@ public class CreateOfferActivity extends Activity {
 	/**
 	 * String of the current date
 	 */
-	final String date = currentDay + "/" + (currentMonth + 1) + "/"
+	final String date = currentDay + "-" + (currentMonth + 1) + "-"
 			+ currentYear;
 
 	/**
 	 * this activity
 	 */
 	final Activity self = this;
+	/**
+	 * a flag to indicate whether the user chose a date or not
+	 */
+	boolean dateIsSet;
+	/**
+	 * a TextView to tell the user there is some error with the deadline
+	 */
+	TextView deadlineError;
 
 	/**
 	 * on creation of the activity it takes data from the fields and send it as
 	 * json object on clicking the Post Button
 	 * 
-	 * @param savedInstanceState
+	 * @param Bundle
+	 *            savedInstanceState
 	 * @return none
 	 * @author Salma Khaled
 	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getActionBar().hide();
 		Intent previousIntent = getIntent();
-		final int tangleID = previousIntent.getIntExtra("tangleID", 0);
-		final int requestID = previousIntent.getIntExtra("requestID", 0);
+		final int tangleId = previousIntent.getIntExtra("tangleId", 0);
+		final int requestId = previousIntent.getIntExtra("requestId", 0);
 		settings = getSharedPreferences(Config.SETTING, 0);
 		sessionId = settings.getString(Config.SESSION_ID, "");
 		setContentView(R.layout.activity_create_offer);
-		checkBox = (CheckBox) findViewById(R.id.checkBox);
 		description = (EditText) findViewById(R.id.description);
-		requestedPrice = (EditText) findViewById(R.id.requestedPrice);
-		description.setOnFocusChangeListener(focusListener);
-		requestedPrice.setOnFocusChangeListener(focusListener);
-		Post = (Button) findViewById(R.id.Post);
-		Post.setEnabled(false);
-		dateDisplay = (TextView) findViewById(R.id.showMyDate);
-		pickDate = (Button) findViewById(R.id.deadline);
+		requestedPrice = (EditText) findViewById(R.id.price);
+		post = (Button) findViewById(R.id.post);
+		cancel = (Button) findViewById(R.id.cancelRequest);
+		pickDate = (Button) findViewById(R.id.myDatePickerButton);
+		pickDate.setText("Due date");
 		deadLineYear = calendar.get(Calendar.YEAR);
 		deadLineMonth = calendar.get(Calendar.MONTH);
 		deadLineDay = calendar.get(Calendar.DAY_OF_MONTH);
+		dateIsSet = false;
+		deadlineError = (TextView) findViewById(R.id.deadlineError);
+		deadlineError.setVisibility(View.GONE);
 		final String currentDateTime = date + " " + calendar.get(Calendar.HOUR)
 				+ ":" + calendar.get(Calendar.MINUTE) + ":"
 				+ calendar.get(Calendar.SECOND);
-
-		Post.setOnClickListener(new View.OnClickListener() {
+		cancel.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View arg0) {
+				finish();
+			}
+		});
 
+		post.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View arg0) {
+				if (isEmpty(description) | isEmpty(requestedPrice)) {
+					return;
+				}
+
+				if (pickDate.getText().toString().equals("Due Date")) {
+					deadlineError.setText("This field is required");
+					deadlineError.setVisibility(View.VISIBLE);
+					return;
+				}
+				deadlineError.setVisibility(View.GONE);
 				try {
 					json.put("description", description.getText().toString());
 					json.put("requestedPrice", requestedPrice.getText()
 							.toString());
 					json.put("date", currentDateTime);
-					json.put("deadLine", dateDisplay.getText().toString());
+					json.put("deadLine", pickDate.getText().toString());
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 
 				PostRequest request = new PostRequest(Config.API_BASE_URL
-						+ "/tangle/" + tangleID + "/request/" + requestID
+						+ "/tangle/" + tangleId + "/request/" + requestId
 						+ "/offer") {
 					protected void onPostExecute(String response) {
 						if (this.getStatusCode() == 201) {
-							Intent intent = new Intent(self,
-									RequestActivity.class);
-							intent.putExtra("tangleId", tangleID);
-							intent.putExtra("requestId", requestID);
-							startActivity(intent);
-							// send notification
+							finish();
 						} else {
+
 							Toast.makeText(getApplicationContext(),
 									"Error, Can not create offer",
 									Toast.LENGTH_SHORT).show();
@@ -179,8 +195,10 @@ public class CreateOfferActivity extends Activity {
 
 			}
 		});
+
 		pickDate.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				dateIsSet = true;
 				showDialog(DATE_DIALOG_ID);
 			}
 		});
@@ -196,10 +214,14 @@ public class CreateOfferActivity extends Activity {
 	 */
 
 	private void updateDisplay() {
-		dateDisplay.setError(null);
-		this.dateDisplay.setText(new StringBuilder().append(deadLineDay)
-				.append("/").append(deadLineMonth + 1).append("/")
-				.append(deadLineYear).append(" "));
+		pickDate.setError(null);
+		if (!dateIsSet) {
+			this.pickDate.setText("Due Date");
+		} else {
+			this.pickDate.setText(new StringBuilder().append(deadLineDay)
+					.append("-").append(deadLineMonth + 1).append("-")
+					.append(deadLineYear).append(" "));
+		}
 	}
 
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -210,12 +232,11 @@ public class CreateOfferActivity extends Activity {
 			deadLineDay = dayOfMonth;
 			boolean valid = isValidDeadLine();
 			if (!valid) {
-				Toast.makeText(getApplicationContext(),
-						"The DeadLine can NOT be over already!!",
-						Toast.LENGTH_SHORT).show();
-				checkBox.setChecked(false);
+				deadlineError.setText("Ops! deadline has passed");
+				deadlineError.setVisibility(View.VISIBLE);
 				return;
 			}
+			deadlineError.setVisibility(View.GONE);
 			updateDisplay();
 		}
 	};
@@ -254,41 +275,6 @@ public class CreateOfferActivity extends Activity {
 		return true;
 	}
 
-	OnFocusChangeListener focusListener = new OnFocusChangeListener() {
-		public void onFocusChange(View view, boolean hasFocus) {
-			EditText editText = (EditText) view;
-			if (!hasFocus) {
-				if (isEmpty(editText)) {
-					Post.setEnabled(false);
-				}
-			} else {
-				checkBox.setChecked(false);
-			}
-		}
-	};
-
-	/**
-	 * this method is called on clicking on the checkbox it checks whether the
-	 * fields are empty or not and then accordingly either error messages will
-	 * be set or Post button will be enabled
-	 * 
-	 * @param View
-	 *            view which will be the checkbox
-	 * @return none
-	 * @author Salma Khaled
-	 */
-	public void itemClicked(View view) {
-		View focusedView = getCurrentFocus();
-		focusedView.clearFocus();
-		CheckBox checkBox = (CheckBox) view;
-		if (isEmpty(description) | isEmpty(requestedPrice)) {
-			checkBox.setChecked(false);
-		} else {
-			checkBox.setChecked(true);
-			Post.setEnabled(true);
-		}
-	}
-
 	/**
 	 * check if an editText is Empty
 	 * 
@@ -299,7 +285,7 @@ public class CreateOfferActivity extends Activity {
 	 */
 	private boolean isEmpty(EditText editText) {
 		if (editText.getText().toString().length() == 0) {
-			editText.setError("This Field is Required");
+			editText.setError("This field is required");
 			return true;
 		}
 		editText.setError(null);

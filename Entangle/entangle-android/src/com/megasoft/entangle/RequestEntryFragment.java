@@ -27,7 +27,12 @@ public class RequestEntryFragment extends Fragment {
 		((TextView)view.findViewById(R.id.request_entry_date)).setText("Created at" + args.getString("date"));
 		((TextView)view.findViewById(R.id.request_entry_tags)).setText(args.getString("tags"));
 		((TextView)view.findViewById(R.id.request_entry_price)).setText(args.getString("price"));
-		((TextView)view.findViewById(R.id.request_entry_deadline)).setText(args.getString("deadline"));
+		if(args.get("deadline") != null){
+			((TextView)view.findViewById(R.id.request_entry_deadline)).setText(args.getString("deadline"));
+		}else{
+			((TextView)view.findViewById(R.id.request_entry_deadline)).setText("");
+		}
+		
 		((TextView)view.findViewById(R.id.request_entry_status)).setText(args.getString("status"));
 	}
 }

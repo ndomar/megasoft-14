@@ -42,6 +42,13 @@ class Tangle
      * @ORM\Column(name="deletedBalance", type="integer")
      */
     private $deletedBalance = 0;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255)
+     */
+    private $description;
     
     /**
      *
@@ -335,5 +342,28 @@ class Tangle
     public function getDeletedBalance()
     {
         return $this->deletedBalance;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Tangle
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

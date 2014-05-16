@@ -1,0 +1,123 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/paddingSmall"
+    tools:context=".RequestsActivity" >
+
+
+    <LinearLayout
+       android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="horizontal" >
+        
+        <Button
+            android:id="@+id/cancelRequest"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0px"
+            android:layout_height="@dimen/buttonHeight"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_action_remove"
+            android:text="@string/cancel"
+            android:textAlignment="center"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/textLarge"
+            android:onClick="finish"
+            />
+		<View 
+            style="@style/dividerVertical"
+        />
+        <Button
+            android:id="@+id/post"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0px"
+            android:layout_height="@dimen/buttonHeight"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:textAlignment="center"
+            android:drawableLeft="@drawable/ic_action_email_green"
+            android:text="@string/send"
+            android:onClick="sendClaimForm"
+            android:textColor="@color/green"
+            android:textSize="@dimen/textLarge" />
+        
+    </LinearLayout>
+
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/blue" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/orange" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/cyan" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/megenta" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/lightGreen" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/mssgText"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/textAreaHeight"
+        android:layout_gravity="bottom"
+        android:ems="10"
+        android:textAppearance="?android:attr/textAppearanceMedium"       
+        android:hint="@string/enterClaim"
+        android:inputType="textMultiLine" />
+
+       <!--   android:layout_gravity="center_horizontal"-->
+  
+  <LinearLayout
+       android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+       
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/termsOfUse"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginTop="@dimen/marginMedium" />
+
+    <TextView
+        android:id="@+id/link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/link" 
+        android:layout_marginTop="@dimen/marginMedium"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+   		android:linksClickable="true"/>
+
+    </LinearLayout>
+
+</LinearLayout>

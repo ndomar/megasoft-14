@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import com.megasoft.config.Config;
 import com.megasoft.entangle.CreateTangleActivity;
 import com.megasoft.entangle.HomeActivity;
+import com.megasoft.entangle.IntroFragment;
 import com.megasoft.entangle.R;
 import com.megasoft.requests.GetRequest;
 
@@ -32,31 +35,33 @@ import com.megasoft.requests.GetRequest;
  *
  */
 public class TangleStreamActivity extends Fragment {
-	
+
 	private SharedPreferences settings;
 	private String sessionId;
 	/**
 	 * An arraylist to map the list items to their id
 	 */
 	private ArrayList<Integer> tangleIds;
-	
+
 	/**
 	 * An arraylist to map the list items to their name
 	 */
 	public static ArrayList<String> tangleNames;
-	
+
+	public static ArrayList<Boolean> tangleOwners;
+
 	private View view;
-	
+
 	private HomeActivity activity;
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-		
+
 		view = inflater.inflate(R.layout.activity_tangle_stream, container, false);
-		
+
 		((Button)view.findViewById(R.id.create_tangle_button)).setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				goToCreateTangle();
@@ -66,9 +71,13 @@ public class TangleStreamActivity extends Fragment {
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		tangleIds = new ArrayList<Integer>();
 		tangleNames = new ArrayList<String>();
-		fetchTangles();
-		
+		tangleOwners = new ArrayList<Boolean>();
 		return view;
+	}
+	
+	public void onResume(){
+		super.onResume();
+		fetchTangles();
 	}
 
 	/**
@@ -91,7 +100,7 @@ public class TangleStreamActivity extends Fragment {
 		getRequest.execute();
 
 	}
-	
+
 	/**
 	 * The method responsible for populating the list view from the response of the request
 	 * @param response
@@ -111,8 +120,20 @@ public class TangleStreamActivity extends Fragment {
 				arr[i] = tangle.getString("name"); 
 				tangleIds.add(tangle.getInt("id"));
 				tangleNames.add(tangle.getString("name"));
+				tangleOwners.add(tangle.getBoolean("isOwner"));
 			}
 
+			if (tangles.length() > 0) {
+				activity.switchFragment(tangleIds.get(0), 0);
+			}
+			else {
+				
+				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+				IntroFragment intro = new IntroFragment();
+				fragmentTransaction.replace(R.id.content_frame, intro);
+				fragmentTransaction.commit();
+			}
+			
 			listView.setAdapter(new ArrayAdapter<String>(activity.getApplicationContext(), R.layout.sidebar_list_item, R.id.textView1, arr));
 			listView.setOnItemClickListener(new ListView.OnItemClickListener() {
 				@Override
@@ -125,7 +146,7 @@ public class TangleStreamActivity extends Fragment {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * The onclick handlers for the each tangle item
 	 * @param position The position of the tangle in the list
@@ -134,7 +155,7 @@ public class TangleStreamActivity extends Fragment {
 	public void goToTangle(int position){
 		activity.switchFragment(tangleIds.get(position), position);
 	}
-	
+
 	/**
 	 * The onclick handler for the create tangle button
 	 * @param view
@@ -143,7 +164,7 @@ public class TangleStreamActivity extends Fragment {
 	public void goToCreateTangle(){
 		startActivity(new Intent(activity,CreateTangleActivity.class));
 	}
-	
+
 	/**
 	 * A method to show an error toast.
 	 * @author MohamedBassem
@@ -151,7 +172,7 @@ public class TangleStreamActivity extends Fragment {
 	public void showErrorMessage(){
 		Toast.makeText(activity, "Something went wrong", Toast.LENGTH_LONG).show();
 	}
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		this.activity = (HomeActivity) activity;

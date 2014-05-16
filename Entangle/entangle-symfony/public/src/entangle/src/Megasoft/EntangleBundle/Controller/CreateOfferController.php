@@ -2,30 +2,33 @@
 
 namespace Megasoft\EntangleBundle\Controller;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Megasoft\EntangleBundle\Entity\Offer;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * CreateOfferController responsible for creating offers
  *
  * @author Salma Khaled
  */
-class CreateOfferController extends Controller {
+class CreateOfferController extends Controller
+{
 
     /**
      * this method insert the data given from the sent json object to the offer table
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param String $tangleId
      * @param String $requestId
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      * @author Salma Khaled
      */
-    public function createOfferAction(Request $request, $tangleId, $requestId) {
+    public function createOfferAction(Request $request, $tangleId, $requestId)
+    {
         $doctrine = $this->getDoctrine();
         $json = $request->getContent();
-        $response = new JsonResponse();
+        $response = new Response();
         $json_array = json_decode($json, true);
         $sessionId = $request->headers->get('X-SESSION-ID');
         if ($sessionId == null) {
@@ -44,12 +47,18 @@ class CreateOfferController extends Controller {
         $userId = $session->getUserId();
         $user = $userTable->findOneBy(array('id' => $userId));
         $requestTable = $doctrine->getRepository('MegasoftEntangleBundle:Request');
-        $theRequestId = (int) $requestId;
+        $offerTable = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $theRequestId = (int)$requestId;
         $tangleRequest = $requestTable->findOneBy(array('id' => $theRequestId));
         $tangleTable = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
-        $theTangleId = (int) $tangleId;
+        $theTangleId = (int)$tangleId;
         $tangle = $tangleTable->findOneBy(array('id' => $theTangleId));
-
+        $previousOffer = $offerTable->findOneBy(array('userId' => $userId, 'requestId' => $theRequestId));
+        if ($previousOffer != null) {
+            $response->setStatusCode(401);
+            $response->setContent("Unauthorized");
+            return $response;
+        }
         $description = $json_array['description'];
         $date = $json_array['date'];
         $dateFormated = new \DateTime($date);
@@ -68,12 +77,15 @@ class CreateOfferController extends Controller {
         $newOffer->setUser($user);
         $newOffer->setRequest($tangleRequest);
         $newOffer->setStatus(0);
-        //send notification
+
+
         $doctrine->getManager()->persist($newOffer);
         $doctrine->getManager()->flush();
-
-        $response->setData(array('sessionId' => $sessionId));
         $response->setStatusCode(201);
+
+        $notificationCenter = $this->get('notification_center.service');
+        $notificationCenter->newOfferNotification($newOffer->getId());
+
         return $response;
     }
 
@@ -93,7 +105,8 @@ class CreateOfferController extends Controller {
      * @return \Symfony\Component\HttpFoundation\JsonResponse|null
      * @author Salma Khaled
      */
-    public function validate($theRequestId, $tangle, $sessionId, $session, $deadLineFormated, $dateFormated, $requestedPrice, $tangleRequest, $description, $user, $date) {
+    public function validate($theRequestId, $tangle, $sessionId, $session, $deadLineFormated, $dateFormated, $requestedPrice, $tangleRequest, $description, $user, $date)
+    {
         $response = new JsonResponse();
         if ($sessionId == null) {
             $response->setStatusCode(400);
