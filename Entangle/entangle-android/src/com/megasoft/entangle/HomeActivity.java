@@ -115,7 +115,7 @@ public class HomeActivity extends FragmentActivity {
 		((TextView)findViewById(R.id.sidebar_username)).setText(pref.getString(Config.USERNAME, "User"));
 		ImageView image = (ImageView)findViewById(R.id.sidebar_avatar);
 
-		new ImageRequest(pref.getString(Config.PROFILE_IMAGE, ""), getApplicationContext(), image);
+		new ImageRequest(pref.getString(Config.PROFILE_IMAGE, "null"), getApplicationContext(), image);
 
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
