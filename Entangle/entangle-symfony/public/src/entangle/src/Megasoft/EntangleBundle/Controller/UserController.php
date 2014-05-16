@@ -87,10 +87,15 @@ class UserController extends Controller {
         $this->getDoctrine()->getManager()->flush();
 
         $kernel = $this->get('kernel');
-        $filepath = 'http://entangle.io/images/profilePictures/';
+        $filepath = $_SERVER['HTTP_HOST'].'/images/profilePictures/';
+        if($user->getPhoto() == null) {
+            $profileImage = null;
+        } else { 
+            $profileImage = $filepath.$user->getPhoto();
+        }
 
         $response->setData(array('sessionId' => $sessionId, 'userId' => $user->getId()
-            , 'profileImage' => $filepath . $user->getPhoto(),
+            , 'profileImage' => $profileImage,
             'username' => $user->getName() , ));
         $response->setStatusCode(201);
 
@@ -237,12 +242,16 @@ class UserController extends Controller {
         $name = $user->getName();
         $description = $user->getUserBio();
         $credit = $userTangle->getCredit();
-        $photo = $user->getPhoto();
+        if($user->getPhoto() == null) {
+            $photo = null;
+        } else {
+            $photo = $_SERVER['HTTP_HOST'].'/images/profilePictures/'.$user->getPhoto();
+        }
         $birthdate = $user->getBirthDate();
         $verfied = $user->getVerified();
         $info = array('name' => $name, 'description' => $description,
-            'credit' => $credit, 'photo' => 'http://entangle.io/images/profilePictures/' . $photo, 'birthdate' => $birthdate,
-            'verified' => $verfied);
+            'credit' => $credit, 'photo' => $photo, 'birthdate' => $birthdate,
+            'verified' => $verfied,);
 
         return $info;
     }
