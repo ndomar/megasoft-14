@@ -11,8 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request as Request2;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Translation\Tests\String;
+use Megasoft\EntangleBundle\Entity\Session;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -101,20 +100,23 @@ class RequestController extends Controller
         return $response;
     }
 
-    /* Reopens a closed request
-     * @param Request $request
-     * @param int $requestId
+
+    /**
+     * Reopens a closed request.
+     * @param Request2 $request
+     * @param $requestId
+     * @return Response
      * @author Mansour
      */
 
     public function reOpenRequestAction(Request2 $request, $requestId)
     {
         $sessionId = $request->headers->get('X-SESSION-ID');
-        $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
-        $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($sessionId == null) {
-            return new Response("Bad Request", 400);
+            return new Response("Invalid session header", 400);
         }
+        $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($session == null) {
             return new Response("Unauthorized", 401);
         }
@@ -124,21 +126,20 @@ class RequestController extends Controller
         }
         $requestRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Request');
         $tangleRequest = $requestRepo->findOneBy(array('id' => $requestId));
-        if ($tangleRequest == null || $tangleRequest->getDeleted()) {
+        if ($tangleRequest == null) {
             return new Response("Not Found", 404);
         }
-
-        if ($tangleRequest->getStatus() == $tangleRequest->OPEN) {
-            return new Response("Request is already open", 400);
-        }
-
         if (($session->getUserId()) != ($tangleRequest->getUserId())) {
             return new Response("Unauthorized", 401);
         }
+        if ($tangleRequest->getStatus() == $tangleRequest->OPEN) {
+            return new Response("Request is already open", 400);
+        }
+        if ($tangleRequest->getStatus() == $tangleRequest->FROZEN) {
+            return new Response("Request is frozen", 400);
+        }
         if ($tangleRequest->getStatus() == $tangleRequest->CLOSE) {
             $tangleRequest->setStatus($tangleRequest->OPEN);
-
-
             $this->getDoctrine()->getManager()->persist($tangleRequest);
             $this->getDoctrine()->getManager()->flush();
 
