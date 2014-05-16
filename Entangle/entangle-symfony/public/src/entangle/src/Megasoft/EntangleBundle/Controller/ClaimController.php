@@ -2,10 +2,12 @@
 
 namespace Megasoft\EntangleBundle\Controller;
 
+use DateTime;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Megasoft\EntangleBundle\Entity\Claim;
+use Megasoft\EntangleBundle\Entity\Transaction;
 
 class ClaimController extends Controller {
 
@@ -224,11 +226,17 @@ class ClaimController extends Controller {
         $requesterTangle->setCredit($requesterTangle->getCredit() + $json_array['requesterCredit']);
         $offererTangle->setCredit($offererTangle->getCredit() + $json_array['offererCredit']);
         $claim->setStatus(1);
+        $transaction = new Transaction();
+        $transaction->setOffer($offer);
+        $transaction->setDeleted(0);
+        $transaction->setFinalPrice($json_array['offererCredit']);
+        $transaction->setDate(new DateTime('NOW'));
         $response->setContent("Claim resolved");
         $response->setStatusCode(200);
         $doctrine->getManager()->persist($requesterTangle);
         $doctrine->getManager()->persist($offererTangle);
         $doctrine->getManager()->persist($claim);
+        $doctrine->getManager()->persist($transaction);
         $doctrine->getManager()->flush();
         return $response;
     }
