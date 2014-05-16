@@ -80,7 +80,7 @@ class OfferController extends Controller
         $request = $offer->getRequest();
 
         if ($request->getDeleted()) {
-            return new Response("Request not found", 404);
+            return new Response("Offer not found", 404);
         }
 
         $tangleId = $request->getTangleId();
