@@ -22,7 +22,7 @@ class LoadSessionEditData extends AbstractFixture implements OrderedFixtureInter
     {
         $session = new Session();
         $session->setUser($this->getReference('sampleUser'));
-        $session->setSessionId('sampleSession');
+        $session->setSessionId('sampleSession2');
         $session->setExpired(false);
         $session->setCreated(new DateTime('now'));
         $session->setDeviceType('Microsoft Surface Pro');
