@@ -100,6 +100,7 @@ class ClaimController extends Controller {
             'tangleOwner' => $tangleOwnerName, 'tangleOwnerEmail' => $tangleOwnerMail, 'tangle' => $tangleName,
             'claimMessage' => $claimMessage,));
         $response->setStatusCode(200);
+        
         $title = "Claim Report";
         $body = "<!DOCTYPE html>
                     <body>
@@ -124,7 +125,7 @@ class ClaimController extends Controller {
         $notificationCenter->sendMail($offerer->getId(), $title, $body);
         $notificationCenter->sendMail($requester->getId(), $title, $body);
         $notificationCenter->sendMail($tangleOwnerId, $title, $body);
-
+        
         return $response;
     }
 
