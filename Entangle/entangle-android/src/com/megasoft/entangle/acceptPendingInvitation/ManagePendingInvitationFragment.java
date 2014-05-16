@@ -73,14 +73,6 @@ public class ManagePendingInvitationFragment extends Fragment {
 				
 			}
 		});
-		Button button = (Button) view.findViewById(R.id.manage_pending_invitation_refresh);
-		button.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				fetchData();
-			}
-		});
 		fetchData();
 		return view;
 	}

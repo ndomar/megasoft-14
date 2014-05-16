@@ -14,13 +14,13 @@ use Megasoft\EntangleBundle\Entity\InvitationMessage;
 use Megasoft\EntangleBundle\Entity\PendingInvitation;
 use Megasoft\EntangleBundle\Entity\UserTangle;
 
-class TangleController extends Controller
-{
 
+class TangleController extends Controller {
+  
     /**
      * An endpoint to get all the offers of certain user in specific tangle
-     * @param type $request
-     * @param type $tangleId
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param integer $tangleId
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @author HebaAamer
      */
@@ -61,6 +61,54 @@ class TangleController extends Controller
 
         return $response;
     }
+    
+    /**
+     * An endpoint to get all the requests of certain user in specific tangle
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param integer $tangleId
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @author HebaAamer
+     */
+    public function userRequestsAction(Request $request, $tangleId) {
+
+        $verification = $this->verifyUser($request, $tangleId);
+
+        if ($verification != null) {
+            return $verification;
+        }
+        $doctrine = $this->getDoctrine();
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+
+        $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+        
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        $userId = $session->getUserId();
+
+        $query = $requestRepo->createQueryBuilder('request')
+                ->where('request.tangleId = :tangleId')
+                ->setParameter('tangleId', $tangleId)
+                ->andWhere('request.deleted = :false')
+                ->setParameter('false', false)
+                ->andWhere('request.userId = :userId')
+                ->setParameter('userId', $userId);
+
+        $requests = $query->getQuery()->getResult();
+        $requestsJsonArray = array();
+        foreach ($requests as $request) {
+            $requestsJsonArray[] = array(
+                'userId' => $request->getUserId(), 'username' => $request->getUser()->getName(),
+                'id' => $request->getId(), 'description' => $request->getDescription(),
+                'offersCount' => sizeof($request->getOffers()), 'price' => $request->getRequestedPrice(),
+                'status' => $request->getStatus(), 'icon' => $request->getIcon(),
+            );
+        }
+
+        $response = new JsonResponse();
+        $response->setData(array('count' => sizeof($requestsJsonArray), 'requests' => $requestsJsonArray, ));
+
+        return $response;
+    }
 
     /**
      * Validates that the request has correct format,  session Id is active and of a user and that the user is in the tangle
@@ -79,7 +127,6 @@ class TangleController extends Controller
 
         $doctrine = $this->getDoctrine();
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
-
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($session == null || $session->getExpired()) {
             return new Response('Bad Request', 400);
@@ -88,7 +135,7 @@ class TangleController extends Controller
         $user = $session->getUser();
         $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
         $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $user->getId()));
-
+        
         if ($userTangle == null || $userTangle->getLeavingDate() != null) {
             return new Response('Unauthorized', 401);
         }
