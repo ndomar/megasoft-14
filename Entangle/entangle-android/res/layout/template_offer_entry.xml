@@ -24,7 +24,7 @@
         android:layout_alignTop="@+id/offererAvatar"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/boxMargin"
-        android:layout_marginTop="@dimen/8dpMargin"
+        android:layout_marginTop="@dimen/dp8Margin"
         android:layout_toRightOf="@+id/offererAvatar"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -37,12 +37,12 @@
         android:layout_alignTop="@+id/hr"
         android:layout_below="@+id/hr"
         android:layout_marginRight="@dimen/boxMargin"
-        android:layout_marginTop="@dimen/24dpMargin" />
+        android:layout_marginTop="@dimen/dp24Margin" />
 
     <View
         android:id="@+id/hr"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/1dpSeparator"
+        android:layout_height="@dimen/dp1Separator"
         android:layout_below="@+id/offererName"
         android:layout_marginTop="@dimen/boxMargin"
         android:background="@color/lightGray" />
