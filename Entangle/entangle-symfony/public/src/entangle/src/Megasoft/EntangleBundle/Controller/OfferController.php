@@ -142,7 +142,6 @@ class OfferController extends Controller
         $offererId = $user->getId();
         $requesterId = $offer->getRequest()->getUserId();
         $requestId = $offer->getRequestId();
-        printf($requestId);
         $userName = $user->getName();
         $offerDate = $offer->getDate()->format('d/m/Y');
         $userPhoto = $user->getPhoto();

@@ -1,3 +1,14 @@
+
+claimRender:
+    pattern: /claimReport/{claimId}/claim/{offerId}/offer
+    defaults: { _controller: MegasoftEntangleBundle:Claim:claimRender }
+    methods: [GET]
+    
+createClaim:
+    pattern: /claim/{requestId}/sendClaim/{offerId}/user
+    defaults: { _controller: MegasoftEntangleBundle:Claim:createClaim }
+    methods: [POST]
+
 megasoft_entangle_homepage:
     pattern:  /hello/{hello}
     defaults: { _controller: MegasoftEntangleBundle:Default:index }
@@ -64,16 +75,6 @@ withdraw_offer:
     methods: [DELETE]
     requirements:
         offerId: \d+
-
-getMails:
-    pattern: /tangleOwnerAndClaimerMail/{requestId}/claim
-    defaults: { _controller: MegasoftEntangleBundle:Claim:getMails }
-    methods: [GET]
-    
-createClaim:
-    pattern: /claim/{requestId}/sendClaim
-    defaults: { _controller: MegasoftEntangleBundle:Claim:createClaim }
-    methods: [POST]
         
 dummy:
     pattern: /dummy
@@ -558,6 +559,7 @@ comment_on_offer:
     defaults: { _controller: MegasoftEntangleBundle:Offer:comment}
     methods: [POST]
 
+
 _mail:
   pattern: /notification/mail
   defaults: {_controller:MegasoftEntangleBundle:Notification:SendEmail}
@@ -568,17 +570,9 @@ reset_tangle:
     defaults: {_controller: MegasoftEntangleBundle:Tangle:resetTangle }
     methods: [PUT]
 
-claimRender:
-    pattern: /claimReport/{claimId}/claim/{offerId}/offer
-    defaults: { _controller: MegasoftEntangleBundle:Claim:claimRender }
-    methods: [GET]
-    
-createClaim:
-    pattern: /claim/{requestId}/sendClaim/{offerId}/user
-    defaults: { _controller: MegasoftEntangleBundle:Claim:createClaim }
-    methods: [POST]
-    
+
 megasoft_entangle_register_:
     pattern:  /
     defaults: { _controller: MegasoftEntangleBundle:Site:register }
     methods: [POST]
+
