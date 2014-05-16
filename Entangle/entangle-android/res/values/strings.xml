@@ -36,14 +36,25 @@
     <string name="enterClaim">I am claiming about \.\.\.</string>
     <string name="Requests">Create Request</string>
     <string name="name">Request\'s name</string>
+    <string name="claimReport">Claim Report </string>
+    <string name="claimDate">Claim created on: </string>
+    <string name="claimer">Claimer name: </string>
+    <string name="tangleOwnerEmail">Tangle owner Email: </string>
+    <string name="tangleOwnerName">Tangle owner name: </string>
+    <string name="tangle">Tangle name: </string>
+    <string name="claim">Claim Message</string>
+    <string name="offerer">Offerer name: </string>
+    <string name="requester">Requester name: </string>
+    <string name="offererEmail">Offerer Email: </string>
+    <string name="requesterEmail">Requester Email: </string>
     <string name="description">What do you need ?</string>
     <string name="post">Create</string>
-    <string name="termsOfUse">\tPlease read the terms of use in this  \t</string>
+    <string name="termsOfUse">By Creating This Claim You Have Agreed on Entangle terms of use</string>
     <string name="Tags">Tags</string>
     <string name="tagHint">food, tech, living</string>
     <string name="priceHint">5</string>
+    <string name="resolve">Resolve</string>
     <string name="hello_world">Hello world!</string>
-    <string name="link"><a href="https://www.google.com/">link</a></string>
     <string name="requestDescription">I want someone to help me change the world\.\.\.</string>
     <string name="tags">Tags: food, society, games</string>
     <string name="priceDescription">Price\: 125</string>
@@ -56,8 +67,8 @@
     <string name="welcome">Welcome \ </string>
     <string name="hurryUp">Hurry up \ </string>
     <string name="andCreate">and create a\ </string>
-    <string name="here">Create tangle now! </string>
     <string name="tangleNameHint">Specify a Tangle name</string>
+    <string name="here">Create tangle now! </string>
     <string name="iconButton">Choose an Icon</string>
     <string name="tangleIcon">Available Icons</string>
     <string name="createTangle">CREATE</string>
