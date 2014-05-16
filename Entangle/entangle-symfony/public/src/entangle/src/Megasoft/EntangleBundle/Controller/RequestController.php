@@ -144,7 +144,9 @@ class RequestController extends Controller
 
             // notification
             $notificationCenter = $this->get('notification_center.service');
-            $notificationCenter->reopenRequestNotification($tangleRequest->getId());
+            $title = "request reopen";
+            $body = "{{from}} reopened his request";
+            $notificationCenter->reopenRequestNotification($tangleRequest->getId(), $title, $body);
 
             return new Response('Reopened', 200);
         }
@@ -235,7 +237,7 @@ class RequestController extends Controller
             if ($sessionUserId == $requester) {
                 $myRequest = 1;
             }
-            $requestDetails = array('requester' => $requester, 'requesterName' => $request->getUser()->getName(), 'description' => $description,
+            $requestDetails = array('requester' => $requester, 'requesterName'=>$request->getUser()->getName() ,'description' => $description,
                 'status' => $status, 'MyRequest' => $myRequest, 'date' => $date, 'deadline' => $deadline, 'icon' => $icon,
                 'price' => $price, 'tangle' => $tangle, 'tags' => $tags, 'offers' => $offers);
         }
@@ -472,7 +474,9 @@ class RequestController extends Controller
 
         // notification
         $notificationCenter = $this->get('notification_center.service');
-        $notificationCenter->requestDeletedNotification($request->getId());
+        $title = "request deleted";
+        $body = "{{from}} deleted his request";
+        $notificationCenter->requestDeletedNotification($request->getId(), $title, $body);
 
         $request->setDeleted(true);
         $request->setStatus($request->CLOSE);

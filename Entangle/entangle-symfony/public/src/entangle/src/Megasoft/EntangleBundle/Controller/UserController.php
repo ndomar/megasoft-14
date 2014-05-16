@@ -93,11 +93,16 @@ class UserController extends Controller {
         $this->getDoctrine()->getManager()->flush();
 
         $kernel = $this->get('kernel');
-        $filepath = 'http://entangle.io/images/profilePictures/';
+        $filepath = $_SERVER['HTTP_HOST'].'/images/profilePictures/';
+        if($user->getPhoto() == null) {
+            $profileImage = null;
+        } else { 
+            $profileImage = $filepath.$user->getPhoto();
+        }
 
         $response->setData(array('sessionId' => $sessionId, 'userId' => $user->getId()
-            , 'profileImage' => $filepath . $user->getPhoto(),
-            'username' => $user->getName(),));
+            , 'profileImage' => $profileImage,
+            'username' => $user->getName() , ));
         $response->setStatusCode(201);
 
         return $response;
@@ -234,7 +239,11 @@ class UserController extends Controller {
 
         $name = $user->getName();
         $description = $user->getUserBio();
-        $photo = $user->getPhoto();
+        if($user->getPhoto() == null) {
+            $photo = null;
+        } else {
+            $photo = $_SERVER['HTTP_HOST'].'/images/profilePictures/'.$user->getPhoto();
+        }
         $verified = $user->getVerified();
         $information = array('name' => $name, 'description' => $description,
             'photo' => $photo,
@@ -302,7 +311,12 @@ class UserController extends Controller {
             if (($offer->getRequest()->getTangleId() == $tangleId) && ($offer->getTransaction() != null)
                 && !($offer->getTransaction()->getDeleted())) {
                 $requesterName = $offer->getRequest()->getUser()->getName();
-                $photo = $offer->getRequest()->getUser()->getPhoto();
+
+            if(offer->getRequest()->getUser()->getPhoto() == null) {
+                $photo = null;
+            } else {
+                $photo = $_SERVER['HTTP_HOST'].'/images/profilePictures/'.$user->getPhoto();
+            }
                 $offererName = $offer->getUser()->getName();
                 $amount = $offer->getTransaction()->getFinalPrice();
                 $requestId = $offer->getRequest()->getId();

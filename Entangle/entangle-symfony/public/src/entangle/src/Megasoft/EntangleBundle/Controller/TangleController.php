@@ -901,12 +901,19 @@ class TangleController extends Controller {
 
         $usersJsonArray = array();
 
+
         foreach ($userTangles as $userTangle) {
+            if($userTangle->getUser()->getPhoto() == null) {
+                    $userPhoto = null;
+                } else {
+                    $userPhoto = $_SERVER['HTTP_HOST'].'/images/profilePictures/'.$userTangle->getUser()->getPhoto();
+                }
+
             $usersJsonArray[] = array(
                 'id' => $userTangle->getUserId(),
                 'username' => $userTangle->getUser()->getName(),
                 'balance' => $userTangle->getCredit(),
-                'iconUrl' => 'http://entangle.io/images/profilePictures/' . $userTangle->getUser()->getPhoto()
+                'iconUrl' => $userPhoto,
             );
         }
 

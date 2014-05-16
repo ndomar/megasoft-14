@@ -144,7 +144,12 @@ class OfferController extends Controller
         $requestId = $offer->getRequestId();
         $userName = $user->getName();
         $offerDate = $offer->getDate()->format('d/m/Y');
-        $userPhoto = $user->getPhoto();
+        if($user->getPhoto() == null) {
+            $userPhoto = null;
+        } else {
+            $userPhoto = $_SERVER['HTTP_HOST'].'/images/profilePictures/'.$user->getPhoto();
+
+        }
         $offerStatus = $offer->getStatus();
         $offerPrice = $offer->getRequestedPrice();
         $offerDescription = $offer->getDescription();
