@@ -26,6 +26,7 @@ public class ProfileActivity extends FragmentActivity {
 	
 	private int userId;
 	private int tangleId;
+
 	private SharedPreferences settings;
 	private String sessionId;
 	private ScrollView scrollView;
@@ -74,19 +75,17 @@ public class ProfileActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
 		setActivity(this);
-		ProfileFragment profile = new ProfileFragment();
+		ProfileSuperFragment profile = new ProfileSuperFragment();
 		Bundle bundle = new Bundle();
 		this.tangleId = getIntent().getIntExtra("tangleId", -1);
 		this.userId = getIntent().getIntExtra("userId", -1);
-		this.settings = getSharedPreferences(Config.SETTING, -1);
-		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		bundle.putInt("tangleId", tangleId);
 		bundle.putInt("userId", userId);
 		bundle.putBoolean("general", false);
 		profile.setArguments(bundle);
 		FragmentTransaction transaction = getSupportFragmentManager()
 				.beginTransaction();
-		transaction.add(R.id.profile_layout, profile);
+		transaction.add(R.id.profile, profile);
 		transaction.commit();
 		GetTransactions();
 		
