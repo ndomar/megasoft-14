@@ -152,6 +152,10 @@
         <activity
             android:name="com.megasoft.entangle.ForgetPasswordActivity"
             android:label="@string/title_activity_forget_password" >
+		</activity>
+		<activity
+            android:name="com.megasoft.entangle.MyOffersFragment"
+            android:label="@string/title_activity_my_offers_fragment" >
         </activity>
     </application>
 
