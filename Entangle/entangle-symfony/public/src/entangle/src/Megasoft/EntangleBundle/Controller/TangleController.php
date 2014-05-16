@@ -902,12 +902,18 @@ class TangleController extends Controller {
         $usersJsonArray = array();
 
         foreach ($userTangles as $userTangle) {
+            if ($userTangle->getUser()->getPhoto() == null) {
+                $photo = null;
+            } else {
+                $filepath = $_SERVER['HTTP_HOST'].'/images/profilePictures/';
+                $photo = $filepath.$userTangle->getUser()->getPhoto();
+            }
+
             $usersJsonArray[] = array(
                 'id' => $userTangle->getUserId(),
                 'username' => $userTangle->getUser()->getName(),
                 'balance' => $userTangle->getCredit(),
-                'iconUrl' => 'http://entangle.io/images/profilePictures/' . $userTangle->getUser()->getPhoto()
-            );
+                'iconUrl' => $photo,);
         }
 
         $response = new JsonResponse();
