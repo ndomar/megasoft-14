@@ -37,12 +37,14 @@ import com.megasoft.requests.PostRequest;
  * @author Almgohar
  */
 public class OfferActivity extends FragmentActivity {
-
+	/**
+	 * The Id of the request
+	 */
+	int requestId;
 	/**
 	 * The TextView that holds the offer's description
 	 */
 	private TextView offerDescription;
-
 	/**
 	 * The TextView that holds the offer's expected deadline
 	 */
@@ -228,21 +230,26 @@ public class OfferActivity extends FragmentActivity {
 		case R.id.deleteOfferOption:
 			this.showDialog(0);
 			return true;
-		case R.id.claim_on_offer_button:
-			claim();
-			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
 
 	/**
-	 * This method allows the offerer/requester to claim on the offer (mock)
+	 * This method gets the email of both the claimer and the tangle owner after
+	 * fetching them from the back end through the delivered json response and
+	 * sends these mails to the claim form session
 	 * 
-	 * @author Almgohar
+	 * @param View
+	 *            view hold the claim menu item
+	 * @return None
+	 * @author Salma Amr
 	 */
-	private void claim() {
-
+	public void startClaimForm(MenuItem item) {
+		Intent intent = new Intent(this, Claim.class);
+		intent.putExtra("requestId", this.requestId);
+		intent.putExtra("offerId", this.offerId);
+		startActivity(intent);
 	}
 
 	/**
@@ -288,7 +295,7 @@ public class OfferActivity extends FragmentActivity {
 		GetRequest request = new GetRequest(link) {
 			@Override
 			protected void onPostExecute(String response) {
-				if(isDestroyed){
+				if (isDestroyed) {
 					return;
 				}
 				if (this.getStatusCode() == 200) {
@@ -343,6 +350,7 @@ public class OfferActivity extends FragmentActivity {
 					.getInt("offerPrice")));
 			final int offererId = offerInformation.getInt("offererId");
 			final int requesterId = offerInformation.getInt("requesterId");
+			this.requestId = offerInformation.getInt("requestId");
 			int status = offerInformation.getInt("offerStatus");
 
 			if (status == 0) {
@@ -447,7 +455,7 @@ public class OfferActivity extends FragmentActivity {
 	 * @author Almgohar
 	 */
 	public void viewProfilePicture(String imageURL) {
-		new ImageRequest(imageURL,getApplicationContext(),offererAvatar);
+		new ImageRequest(imageURL, getApplicationContext(), offererAvatar);
 	}
 
 	/**
@@ -465,7 +473,7 @@ public class OfferActivity extends FragmentActivity {
 
 			@Override
 			protected void onPostExecute(String response) {
-				if(isDestroyed){
+				if (isDestroyed) {
 					return;
 				}
 				try {
@@ -526,7 +534,7 @@ public class OfferActivity extends FragmentActivity {
 				PostRequest request = new PostRequest(Config.API_BASE_URL
 						+ ACCEPT) {
 					protected void onPostExecute(String response) {
-						if(isDestroyed){
+						if (isDestroyed) {
 							return;
 						}
 						status = this.getStatusCode();
@@ -616,7 +624,7 @@ public class OfferActivity extends FragmentActivity {
 		PostRequest request = new PostRequest(Config.API_BASE_URL + markAsDone
 				+ Offer + Offerid) {
 			protected void onPostExecute(String response) {
-				if(isDestroyed){
+				if (isDestroyed) {
 					return;
 				}
 				if (this.getStatusCode() == 201) {
@@ -653,7 +661,7 @@ public class OfferActivity extends FragmentActivity {
 
 			@Override
 			protected void onPostExecute(String response) {
-				if(isDestroyed){
+				if (isDestroyed) {
 					return;
 				}
 				if (this.getStatusCode() == 201) {
@@ -682,8 +690,8 @@ public class OfferActivity extends FragmentActivity {
 		request.setBody(body);
 		request.execute();
 	}
-	
-	public void onPause(){
+
+	public void onPause() {
 		super.onPause();
 		isDestroyed = true;
 	}

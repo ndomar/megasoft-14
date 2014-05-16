@@ -163,6 +163,7 @@ class OfferController extends Controller
             'offerPrice' => $offerPrice,
             'offererId' => $offererId,
             'offerDate' => $offerDate,
+            'requestId' => $requestId,
             'requestStatus' => $requestStatus,
         );
 

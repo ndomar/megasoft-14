@@ -3,50 +3,58 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <ImageView
-        android:id="@+id/invitation_avatar"
-        android:layout_width="@dimen/avatarMedium"
-        android:layout_height="@dimen/avatarMedium"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/marginMedium"
-        android:layout_marginTop="@dimen/marginMedium"
-        android:src="@drawable/ic_action_person" />
-
-    <TextView
-        android:id="@+id/pending_invitation_text"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/invite"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/invitation_avatar"
-        android:layout_marginLeft="@dimen/marginSmall"
-        android:layout_marginTop="@dimen/marginAvatar"
-        android:layout_toRightOf="@+id/invitation_avatar"
-        android:textSize="@dimen/textMedium" />
+        android:layout_gravity="top"
+        android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/pending_invitation_approve"
-        android:layout_width="@dimen/iconSmall"
-        android:layout_height="@dimen/iconSmall"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/marginSmall"
-        android:layout_alignBottom="@+id/invitation_avatar"
-        android:background="@drawable/ic_action_accept_green" />
+        <ImageView
+            android:id="@+id/invitation_avatar"
+            android:layout_width="@dimen/avatarMedium"
+            android:layout_height="@dimen/avatarMedium"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/marginMedium"
+            android:layout_marginTop="@dimen/marginMedium"
+            android:src="@drawable/ic_action_person" />
 
-    <Button
-        android:id="@+id/pending_invitation_reject"
-        android:layout_width="@dimen/iconSmall"
-        android:layout_height="@dimen/iconSmall"
-        android:layout_alignBottom="@+id/pending_invitation_approve"
-        android:layout_marginRight="@dimen/marginSmall"
-        android:layout_toLeftOf="@+id/pending_invitation_approve"
-        android:background="@drawable/ic_action_remove_red" />
-    
+        <TextView
+            android:id="@+id/pending_invitation_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/invitation_avatar"
+            android:layout_marginLeft="@dimen/marginSmall"
+            android:layout_marginTop="@dimen/marginAvatar"
+            android:layout_toLeftOf="@+id/pending_invitation_reject"
+            android:layout_toRightOf="@+id/invitation_avatar"
+            android:textSize="@dimen/textMedium" />
+
+        <Button
+            android:id="@+id/pending_invitation_approve"
+            android:layout_width="@dimen/iconSmall"
+            android:layout_height="@dimen/iconSmall"
+            android:layout_alignBottom="@+id/invitation_avatar"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/marginSmall"
+            android:background="@drawable/ic_action_accept_green" />
+
+        <Button
+            android:id="@+id/pending_invitation_reject"
+            android:layout_width="@dimen/iconSmall"
+            android:layout_height="@dimen/iconSmall"
+            android:layout_alignBottom="@id/pending_invitation_approve"
+            android:layout_marginRight="@dimen/marginSmall"
+            android:layout_toLeftOf="@id/pending_invitation_approve"
+            android:background="@drawable/ic_action_remove_red" />
+    </RelativeLayout>
+
     <View
-        android:layout_width="fill_parent"
-        android:layout_below="@+id/invitation_avatar"
-        android:layout_marginTop="@dimen/marginMedium"
         style="@style/Divider"
-        android:background="@color/lightGray"
-    />
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/invite"
+        android:layout_marginTop="@dimen/marginMedium"
+        android:background="@color/lightGray" />
 
 </RelativeLayout>
