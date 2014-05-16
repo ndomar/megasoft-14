@@ -291,7 +291,10 @@ public class TangleFragment extends Fragment {
 							"Sorry, There is a problem in loading the stream",
 							Toast.LENGTH_LONG).show();
 				}
-				loadMoreTrigger.setText(getResources().getString(R.string.load_more));
+				// last date indicates that the steram is not empty
+				if (lastDate != null) {
+					loadMoreTrigger.setText(getResources().getString(R.string.load_more));
+				}
 			}
 		};
 		getStream.addHeader("X-SESSION-ID", getSessionId());
