@@ -144,5 +144,104 @@ class ClaimController extends Controller {
         
         return null;
     }
-
+    public function resolveClaimAction($claimId, \Symfony\Component\HttpFoundation\Request $request){
+        $json = $request->getContent();
+        $json_array = json_decode($json, true);
+        $this->verifySessionId($request); 
+        $doctrine = $this->getDoctrine();
+        $response = new JsonResponse();
+        $tangleId = $json_array['tangleId'];
+        if($tangleId==null){
+            $response->setConent("Please choose a tangle");
+            $response->setStatusCode(400);
+            return $response;
+        }
+        $claimRepo = $doctrine->getRepository('MegasoftEntangleBundle:Claim');
+        $claim = $claimRepo->findOneBy(array('id'=>$claimId));
+        if($claim==null){
+           $response->setConent("No such claim");
+           $response->setStatusCode(400);
+           return $response;
+        }
+        if($claim->getStatus()==1){
+           $response->setContent("Claim already resolved");
+           $response->setStatusCode(400);
+           return $response;
+        }
+        $tangleId=$claim->getTangleId();
+        $offerId = $claim->getOfferId(); 
+        $claimerId = $claim->getClaimerId(); 
+        $deleted = $claim->getDeleted(); 
+        if($tangleId ==null || $offerId ==null || $claimerId ==null){
+            $response->setConent("Claim is missing data");
+            $response->setStatusCode(400);
+            return $response;
+        }
+        if($deleted==1){
+            $response->setConent("Claim has been deleted");
+            $response->setStatusCode(400);
+            return $response;
+        }
+        $userRepo = $doctrine->getRepository('MegasoftEntangleBundle:User');
+        $claimer = $userRepo->findOneBy(array('id' => $claimerId));
+        $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $offer = $offerRepo->findOneBy(array('id' => $offerId));
+        if($claimer == null  || $offer ==null){
+            $response->setConent("Claimer or offer does not exist");
+            $response->setStatusCode(400);
+            return $response; 
+        }
+        $offererId = $offer->getUserId(); 
+        if($offererId==null){
+            $response->setConent("Offerer does not exist");
+            $response->setStatusCode(400);
+            return $response;   
+        }
+        $requestId = $offer->getRequestId(); 
+        if($requestId == null){
+            $response->setConent("Request not specified");
+            $response->setStatusCode(400);
+            return $response;
+        }
+        $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+        $request = $requestRepo->findOneBy(array('id' => $requestId));
+        if($request == null){
+           $response->setConent("Request does not exist");
+           $response->setStatusCode(400);
+           return $response; 
+        }
+        $requesterId= $request->getUserId(); 
+        $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $requesterTangle = $userTangleRepo->findOneBy(array('userId' => $requesterId));
+        $offererTangle = $userTangleRepo->findOneBy(array('userId' => $offererId));
+        $requesterTangle->setCredit($requesterTangle->getCredit() + $json_array['requesterCredit']);
+        $offererTangle->setCredit($offererTangle->getCredit() + $json_array['offererCredit']); 
+        $claim->setStatus(1);
+        $response->setContent("Claim resolved");
+        $response->setStatusCode(200); 
+        $doctrine->getManager()->persist($requesterTangle);
+        $doctrine->getManager()->persist($offererTangle);
+        $doctrine->getManager()->persist($claim);
+        $doctrine->getManager()->flush();
+        return $response; 
+    }
+    
+    public function verifySessionId(\Symfony\Component\HttpFoundation\Request $request){
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        $response = new JsonResponse();
+        if ($sessionId == null) {
+            $response->setContent("Please login again");
+            $response->setStatusCode(400);
+            return $response;
+        }
+        $doctrine = $this->getDoctrine();
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        if ($session == null || $session->getExpired() == 1 ) {
+            $response->setContent("Please login again");
+            $response->setStatusCode(400);
+            return $response;
+        
+        }
+    }
 }
