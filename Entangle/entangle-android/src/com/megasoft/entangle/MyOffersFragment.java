@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.megasoft.config.Config;
 import com.megasoft.entangle.R;
 import com.megasoft.requests.GetRequest;
+import com.megasoft.utils.UI;
 
 public class MyOffersFragment extends Fragment {
 
@@ -148,9 +149,9 @@ public class MyOffersFragment extends Fragment {
 					removeLayoutViews();
 					setTheLayout(res);
 				} else {
-					Toast.makeText(activity.getBaseContext(),
+					UI.makeToast(activity.getBaseContext(),
 							"Sorry, There is a problem in loading your offers",
-							Toast.LENGTH_LONG).show();
+							Toast.LENGTH_LONG);
 				}
 			}
 		};
@@ -180,9 +181,9 @@ public class MyOffersFragment extends Fragment {
 						}
 					}
 				} else {
-					Toast.makeText(activity.getBaseContext(),
+					UI.makeToast(activity.getBaseContext(),
 							"Sorry, You have no offers in this tangle",
-							Toast.LENGTH_LONG).show();
+							Toast.LENGTH_LONG);
 				}
 			}
 		} catch (JSONException e) {

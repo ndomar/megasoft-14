@@ -11,8 +11,8 @@
 
     <com.megasoft.entangle.views.RoundedImageView
         android:id="@+id/offererAvatar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/marginLarge"
+        android:layout_height="@dimen/marginLarge"
         android:layout_alignParentLeft="true"
         android:src="@drawable/ic_action_person" />
 
@@ -24,7 +24,7 @@
         android:layout_alignTop="@+id/offererAvatar"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/boxMargin"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/8dpMargin"
         android:layout_toRightOf="@+id/offererAvatar"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -37,12 +37,12 @@
         android:layout_alignTop="@+id/hr"
         android:layout_below="@+id/hr"
         android:layout_marginRight="@dimen/boxMargin"
-        android:layout_marginTop="24dp" />
+        android:layout_marginTop="@dimen/24dpMargin" />
 
     <View
         android:id="@+id/hr"
         android:layout_width="fill_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/1dpSeparator"
         android:layout_below="@+id/offererName"
         android:layout_marginTop="@dimen/boxMargin"
         android:background="@color/lightGray" />

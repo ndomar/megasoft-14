@@ -48,4 +48,9 @@
     <dimen name="iconSmall">30dp</dimen>
     <dimen name="avatarMedium">30dp</dimen>
 
+    <dimen name="smallSeparator">2dp</dimen>
+    <dimen name="1dpSeparator">1dp</dimen>
+	<dimen name="8dpMargin">8dp</dimen>
+	<dimen name="24dpMargin">24dp</dimen>
+    
 </resources>
