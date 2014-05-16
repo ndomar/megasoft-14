@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
+import com.megasoft.utils.UI;
 
 import android.app.Activity;
 import android.content.Context;
@@ -102,12 +103,12 @@ public class CreateTangleActivity extends Activity {
 		EditText tangleName = (EditText) findViewById(R.id.tangleName);
 		EditText tangleDescription = (EditText) findViewById(R.id.tangleDescription);
 		if (tangleName.getText().toString().equals("")) {
-			Toast.makeText(getApplicationContext(), "Tangle Name Is Empty",
-					Toast.LENGTH_SHORT).show();
+			UI.makeToast(getApplicationContext(), "Tangle Name Is Empty",
+					Toast.LENGTH_SHORT);
 		} else {
 			if (tangleDescription.getText().toString().equals("")) {
-				Toast.makeText(getApplicationContext(), "Descritpion Is Empty",
-						Toast.LENGTH_SHORT).show();
+				UI.makeToast(getApplicationContext(), "Descritpion Is Empty",
+						Toast.LENGTH_SHORT);
 			} else {
 				sendTangleToServer();
 			}
@@ -127,8 +128,8 @@ public class CreateTangleActivity extends Activity {
 					tangleName.setError("Tangle Is Already Taken");
 				} else {
 					if (this.getStatusCode() != 201) {
-						Toast.makeText(getApplicationContext(),
-								"Try Again Later", Toast.LENGTH_LONG).show();
+						UI.makeToast(getApplicationContext(),
+								"Try Again Later", Toast.LENGTH_LONG);
 					} else {
 						goToHomePage();
 					}
@@ -157,8 +158,8 @@ public class CreateTangleActivity extends Activity {
 	 * @author Mansour
 	 */
 	public void goToHomePage() {
-		Toast.makeText(getApplicationContext(), "Your Tangle Has Been Created",
-				Toast.LENGTH_LONG).show();
+		UI.makeToast(getApplicationContext(), "Your Tangle Has Been Created",
+				Toast.LENGTH_LONG);
 		this.finish();
 	}
 

@@ -87,7 +87,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
         $body = array('tangleName' => 'CreateTangleTestTangle', 'tangleIcon' => '1',
-            'tangleDescription' => 'Test Description');
+            'tangleDescription' => 'Test Description',);
         $jsonBody = json_encode($body);
         $client = static::createClient();
         $client->request('POST', '/tangle', array(), array(), array('HTTP_X_SESSION_ID' => 'wrongCreateTangleTestSession'), $jsonBody);
@@ -102,11 +102,11 @@ class TangleControllerTest extends EntangleTestCase
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
         $body = array('tangleName' => 'CreateTangleTestTangle', 'tangleIcon' => '1',
-            'tangleDescription' => 'Test Description');
+            'tangleDescription' => 'Test Description',);
         $jsonBody = json_encode($body);
         $client = static::createClient();
         $client->request('POST', '/tangle', array(), array(), array(), $jsonBody);
-        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Empty Session");
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Checking empty session");
     }
 
     /**
@@ -117,12 +117,12 @@ class TangleControllerTest extends EntangleTestCase
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
         $body = array('tangleName' => 'CreateTangleTestTangle',
-            'tangleDescription' => 'Test Description');
+            'tangleDescription' => 'Test Description',);
         $jsonBody = json_encode($body);
         $client = static::createClient();
         $client->request('POST', '/tangle', array(), array(),
                 array('HTTP_X_SESSION_ID' => 'CreateTangleTestSession'), $jsonBody);
-        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Empty Icon");
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Checking empty tangle icon");
     }
 
     /**
@@ -133,12 +133,12 @@ class TangleControllerTest extends EntangleTestCase
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
         $body = array('tangleIcon' => '1',
-            'tangleDescription' => 'Test Description');
+            'tangleDescription' => 'Test Description',);
         $jsonBody = json_encode($body);
         $client = static::createClient();
         $client->request('POST', '/tangle', array(), array(),
                 array('HTTP_X_SESSION_ID' => 'CreateTangleTestSession'), $jsonBody);
-        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Empty Name");
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Checking empty tangle name");
     }
 
     /**
@@ -149,12 +149,12 @@ class TangleControllerTest extends EntangleTestCase
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
         $body = array('tangleName' => 'testTangle',
-            'tangleIcon' => '1');
+            'tangleIcon' => '1',);
         $jsonBody = json_encode($body);
         $client = static::createClient();
         $client->request('POST', '/tangle', array(), array(),
                 array('HTTP_X_SESSION_ID' => 'CreateTangleTestSession'), $jsonBody);
-        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Empty Description");
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Checking empty tangle description");
     }
 
     /**
@@ -165,7 +165,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
         $body = array('tangleName' => 'testTangle', 'tangleIcon' => '1',
-            'tangleDescription' => 'Test Description');
+            'tangleDescription' => 'Test Description',);
         $jsonBody = json_encode($body);
         $client = static::createClient();
         $client->request('POST', '/tangle', array(), array(),
@@ -181,7 +181,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
         $body = array('tangleName' => 'CreateTangleTestTangle', 'tangleIcon' => '1',
-            'tangleDescription' => 'Test Description');
+            'tangleDescription' => 'Test Description',);
         $jsonBody = json_encode($body);
         $client = static::createClient();
         $client->request('POST', '/tangle', array(), array(), array('HTTP_X_SESSION_ID' => 'CreateTangleTestSession'), $jsonBody);
@@ -196,7 +196,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
         $body = array('tangleName' => Null, 'tangleIcon' => '1',
-            'tangleDescription' => 'Test Description');
+            'tangleDescription' => 'Test Description',);
         $jsonBody = json_encode($body);
         $client = static::createClient();
         $client->request('POST', '/tangle', array(), array(), array('HTTP_X_SESSION_ID' => 'CreateTangleTestSession'), $jsonBody);
@@ -211,7 +211,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
         $body = array('tangleName' => 'CreateTangleTestTangle', 'tangleIcon' => Null,
-            'tangleDescription' => 'Test Description');
+            'tangleDescription' => 'Test Description',);
         $jsonBody = json_encode($body);
         $client = static::createClient();
         $client->request('POST', '/tangle', array(), array(), array('HTTP_X_SESSION_ID' => 'CreateTangleTestSession'), $jsonBody);
@@ -226,7 +226,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
         $body = array('tangleName' => 'CreateTangleTestTangle', 'tangleIcon' => '1',
-            'tangleDescription' => Null);
+            'tangleDescription' => Null,);
         $jsonBody = json_encode($body);
         $client = static::createClient();
         $client->request('POST', '/tangle', array(), array(), array('HTTP_X_SESSION_ID' => 'CreateTangleTestSession'), $jsonBody);
@@ -241,7 +241,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->addFixture(new LoadCreateTangleData());
         $this->loadFixtures();
         $body = array('tangleName' => 'CreateTangleTestTangle', 'tangleIcon' => '1',
-            'tangleDescription' => 'Test Description');
+            'tangleDescription' => 'Test Description',);
         $jsonBody = json_encode($body);
         $client = static::createClient();
         $client->request('POST', '/tangle', array(), array(), array('HTTP_X_SESSION_ID' => Null), $jsonBody);

@@ -29,24 +29,27 @@ class LoadCreateTangleData extends AbstractFixture implements OrderedFixtureInte
         $user->setName('createTangleTestUser');
         $user->setPassword('createTangleTestUserPassword');
         $manager->persist($user);
-        $manager->flush();
-        $this->addReference('createTangleTestUser', $user);
+
+
         $session = new Session();
-        $session->setUser($this->getReference('createTangleTestUser'));
+        $session->setUser($user);
         $session->setSessionId('CreateTangleTestSession');
         $session->setExpired(false);
         $session->setCreated(new DateTime('now'));
         $session->setDeviceType('Nexus7');
         $session->setRegId(1);
         $manager->persist($session);
-        $manager->flush();
+
         $tangle = new Tangle();
         $tangle->setName('testTangle');
         $tangle->setIcon('1');
         $tangle->setDescription('testDescription');
         $manager->persist($tangle);
-        $manager->flush();
+
         $this->addReference('createTangleSession', $session);
+        $this->addReference('createTangleTestUser', $user);
+        $this->addReference('testTangle', $tangle);
+        $manager->flush();
     }
 
     public function getOrder()
