@@ -183,6 +183,9 @@
     <string name="balanceInsufficient">"Not enough balance"</string>
     <string name="logoutActivity">Logout</string>
     <string name="logout">Logout</string>
+    <string name="title_activity_general_profile">General Profile</string>
+    <string name="title_activity_splash">Splash</string>
+    <string name="notifications">Notifications</string>
     <string name="deleteRequestButton">Delete</string>
     <string name="reOpenRequestButton">Reopen</string>
     <string name="closedRequests">CLOSED REQUESTS</string>

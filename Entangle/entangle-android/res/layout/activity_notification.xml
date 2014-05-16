@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:typeface="serif"
+        android:text="@string/notifications"
+        android:layout_gravity="center"
+        android:textColor="@color/green"
+        android:textSize="25sp" />
+    
+   <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="5" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/blue" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/orange" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/cyan" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/megenta" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/colorBorder"
+            android:layout_weight="1"
+            android:background="@color/lightGreen" />
+    </LinearLayout>
+    
+       <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    
+    <LinearLayout
+                android:id="@+id/notification_stream"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:visibility="invisible"
+                android:orientation="vertical" >
+    </LinearLayout>
+    
+    </ScrollView>
+
+</LinearLayout>

@@ -71,7 +71,6 @@ public class DeleteButtonFragment extends Fragment {
 		Button deleteButton = (Button) view.findViewById(R.id.deleteButton);
 		deleteButton.setOnClickListener(new OnClickListener() {
 			
-			@Override
 			public void onClick(View arg0) {
 				
 				final AlertDialog ad = new AlertDialog.Builder(getActivity()).create();

@@ -2,7 +2,7 @@ package com.megasoft.config;
 
 public class Config {
 
-	public static final String API_BASE_URL = "http://entangle.io/app_dev.php";
+	public static final String API_BASE_URL = "http://192.168.1.5:9001";
 	public static final String API_BASE_URL_SERVER = API_BASE_URL;
 
 	public static final String API_SESSION_ID = "X-SESSION-ID";

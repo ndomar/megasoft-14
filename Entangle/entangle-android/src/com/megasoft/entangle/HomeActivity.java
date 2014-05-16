@@ -1,5 +1,15 @@
 package com.megasoft.entangle;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.megasoft.config.Config;
+import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
+import com.megasoft.requests.GetRequest;
+import com.megasoft.requests.ImageRequest;
+
+import android.content.SharedPreferences;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -8,6 +18,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
@@ -18,6 +29,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
@@ -74,7 +86,14 @@ public class HomeActivity extends FragmentActivity {
 		setContentView(R.layout.activity_home);
 		initNavigationDrawer();
 		initializeDrawerToggle();
+		getNotificationCount();
+	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		getNotificationCount();
 		SharedPreferences settings = this.getSharedPreferences(Config.SETTING,
 				0);
 		sessionId = settings.getString(Config.SESSION_ID, "");
@@ -215,7 +234,6 @@ public class HomeActivity extends FragmentActivity {
 		};
 
 		drawer.post(new Runnable() {
-			@Override
 			public void run() {
 				mDrawerToggle.syncState();
 			}
@@ -274,6 +292,60 @@ public class HomeActivity extends FragmentActivity {
 		startActivity(new Intent(this, CreateTangleActivity.class));
 	}
 
+	/**
+	 * Redirects to the notification Stream
+	 * 
+	 * @param view
+	 * @author Mohamed Ayman
+	 */
+	public void goToNotifications(View view) {
+		Intent intent = new Intent(this , NotificationStream.class);
+		intent.putExtra("tangleId", this.tangleId);
+		startActivity(new Intent(this, NotificationStream.class));
+	}
+
+	/**
+	 * Get the count of the new notifications
+	 * 
+	 * @author Mohamed Ayman
+	 */
+	public void getNotificationCount() {
+		int userId = getSharedPreferences(Config.SETTING, 0).getInt(
+				Config.USER_ID, 1);
+		String link = Config.API_BASE_URL + "/user/" + userId
+				+ "/notificationcount";
+		GetRequest request = new GetRequest(link) {
+			@Override
+			protected void onPostExecute(String response) {
+				if (this.getStatusCode() == 200) {
+					try {
+						JSONObject json = new JSONObject(response);
+						int count = json.getInt("count");
+						Button notificationsButton = (Button) findViewById(R.id.notificationsButton);
+						if (count != 0) {
+							notificationsButton.setText("Notifications("
+									+ count + ")");
+							notificationsButton.setTextColor(Color.WHITE);
+						} else {
+							notificationsButton.setText("Notifications");
+							notificationsButton.setTextColor(Color.LTGRAY);
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				} else {
+					Toast toast = Toast
+							.makeText(getApplicationContext(),
+									this.getStatusCode() + " Error",
+									Toast.LENGTH_SHORT);
+					toast.show();
+				}
+			}
+		};
+		request.addHeader("X-SESSION-ID", Config.SESSION_ID);
+		request.execute();
+	}
+
 	public SearchView getSearchView() {
 		return this.searchView;
 	}
@@ -313,7 +385,6 @@ public class HomeActivity extends FragmentActivity {
 			dialogBuilder.setPositiveButton("Yes",
 					new DialogInterface.OnClickListener() {
 
-						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							sendLeaveRequest();
 							dialog.dismiss();
@@ -322,7 +393,6 @@ public class HomeActivity extends FragmentActivity {
 			dialogBuilder.setNegativeButton("No",
 					new DialogInterface.OnClickListener() {
 
-						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							dialog.dismiss();
 						}

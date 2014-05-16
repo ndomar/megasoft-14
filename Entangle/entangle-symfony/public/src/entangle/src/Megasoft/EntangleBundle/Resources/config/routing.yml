@@ -725,6 +725,20 @@ _mail:
   defaults: {_controller:MegasoftEntangleBundle:Notification:SendEmail}
   methods: [GET]
 
+get_notification:
+    pattern: /user/{userId}/notifications
+    defaults: { _controller: MegasoftEntangleBundle:NotificationStream:getNotification}
+    methods: [GET]
+
+set_seen:
+    pattern: /notification/{notificationId}/set-seen
+    defaults: { _controller: MegasoftEntangleBundle:NotificationStream:setSeen}
+    methods: [PUT]
+
+get_count:
+    pattern: /user/{userId}/notificationcount
+    defaults: { _controller: MegasoftEntangleBundle:NotificationStream:notificationCount}
+
 get_my_offers:
     pattern: /tangle/{tangleId}/user/offers
     defaults: {_controller:MegasoftEntangleBundle:Tangle:userOffers}
