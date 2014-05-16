@@ -18,7 +18,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 	Context context;
 	private String tangleName;
 	private boolean isTangleOwner;
-	
+
 	final static String STREAM = "Stream";
 
 	public PagerAdapter(Context con, FragmentManager fm, int tangleId,
@@ -62,9 +62,16 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 			if (isTangleOwner) {
 				fragment = new ManagePendingInvitationFragment();
 				break;
-
 			} else {
 				fragment = new MyRequestsFragment();
+				break;
+			}
+		case 4:
+			if (isTangleOwner) {
+				break;
+
+			} else {
+				fragment = new MyOffersFragment();
 				break;
 			}
 		default:
@@ -79,7 +86,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 		if (isTangleOwner) {
 			return 4;
 		} else {
-			return 4;
+			return 5;
 		}
 
 	}
@@ -99,12 +106,15 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 			if (isTangleOwner) {
 				return "Tangle Managment";
 			} else {
-				return "MyRequests";
+				return "My Requests";
+			}
+		case 4:
+			if (!isTangleOwner) {
+				return "My Offers";
 			}
 
 		default:
 			return "Tab " + position;
 		}
 	}
-
 }
