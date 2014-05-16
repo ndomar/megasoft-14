@@ -126,7 +126,7 @@ public class OfferActivity extends FragmentActivity {
 	/**
 	 * String for get offer details endpoint
 	 */
-	final String OFFER = "/offer/" + offerId;
+	private String OFFER;
 	/**
 	 * String for post offer endpoint
 	 */
@@ -210,6 +210,7 @@ public class OfferActivity extends FragmentActivity {
 	 * @author Almgohar
 	 */
 	private void deleteOffer() {
+		OFFER= "/offer/" + offerId;
 		DeleteRequest deleteRequest = new DeleteRequest(Config.API_BASE_URL
 				+ OFFER) {
 			protected void onPostExecute(String res) {
