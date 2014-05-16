@@ -325,7 +325,11 @@ public class OfferActivity extends FragmentActivity {
 				}
 			}
 
-			if (requesterId == loggedInId) {
+			if (requesterId == loggedInId && status == 2) {
+				validate();
+				itemMenu.findItem(R.id.claim_on_offer_button).setVisible(true);
+			}
+			if (offererId == loggedInId && status == 2) {
 				validate();
 				itemMenu.findItem(R.id.claim_on_offer_button).setVisible(true);
 			}
@@ -343,7 +347,6 @@ public class OfferActivity extends FragmentActivity {
 						});
 
 				itemMenu.findItem(R.id.delete_offer_button).setVisible(true);
-				itemMenu.findItem(R.id.claim_on_offer_button).setVisible(true);
 			}
 
 			offererName.setOnClickListener(new View.OnClickListener() {
