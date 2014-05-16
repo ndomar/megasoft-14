@@ -26,7 +26,7 @@
             android:textAlignment="center"
             android:textColor="@color/gray"
             android:textSize="@dimen/textLarge"
-            android:onClick="finish"
+            android:onClick="cancel"
             />
 		<View 
             style="@style/dividerVertical"

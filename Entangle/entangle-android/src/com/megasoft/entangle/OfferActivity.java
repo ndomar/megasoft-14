@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,15 +42,14 @@ import com.megasoft.requests.PostRequest;
  * @author Almgohar
  */
 public class OfferActivity extends FragmentActivity {
-
+	/**
+	 * The Id of the request
+	 */
+	int requestId;
 	/**
 	 * The TextView that holds the offer's description
 	 */
 	private TextView offerDescription;
-	/**
-	 * The request ID of this offer
-	 */
-	private int requestId;
 	/**
 	 * The TextView that holds the offer's expected deadline
 	 */
@@ -186,20 +186,19 @@ public class OfferActivity extends FragmentActivity {
 		return true;
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.delete_offer_button:
-			deleteOffer();
-			return true;
-		case R.id.claim_on_offer_button:
-			this.startClaimForm(item);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		switch (item.getItemId()) {
+//		case R.id.delete_offer_button:
+//			deleteOffer();
+//			return true;
+//		case R.id.claim_on_offer_button:
+//			this.startClaimForm(item);
+//			return true;
+//		default:
+//			return super.onOptionsItemSelected(item);
+//		}
+//	}
 	/**
 	 * This method gets the email of both the claimer and the tangle owner after
 	 * fetching them from the back end through the delivered json response and
@@ -209,12 +208,11 @@ public class OfferActivity extends FragmentActivity {
 	 * @return None
 	 * @author Salma Amr
 	 */
-	public void startClaimForm(MenuItem item) {
-		final Intent intent = new Intent(this, Claim.class);
+	public void startClaimForm(View view) {
+		Intent intent = new Intent(this, Claim.class);
 		intent.putExtra("requestId", this.requestId);
-		intent.putExtra("offerId", offerId);
+		intent.putExtra("offerId", this.offerId);
 		startActivity(intent);
-		this.finish();
 	}
 
 	/**
@@ -307,7 +305,9 @@ public class OfferActivity extends FragmentActivity {
 					.getInt("offerPrice")));
 			final int offererId = offerInformation.getInt("offererId");
 			final int requesterId = offerInformation.getInt("requesterId");
-			requestId = offerInformation.getInt("requestId");
+			this.requestId = offerInformation.getInt("requestId");
+			String rrid = Integer.toString(this.requestId);
+			Log.d("rrid", rrid);
 			int status = offerInformation.getInt("offerStatus");
 
 			if (status == 0) {

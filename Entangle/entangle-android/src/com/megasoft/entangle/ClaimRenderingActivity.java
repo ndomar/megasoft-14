@@ -101,17 +101,17 @@ public class ClaimRenderingActivity extends Activity {
 					if (this.getStatusCode() == 200) {
 						JSONObject object = new JSONObject(response);
 
-						claimDate += object.getString("X-CLAIM-DATE");
-						claimerName += object.getString("X-CLAIMER");
-						offererName += object.getString("X-OFFERER");
-						offererEmail += object.getString("X-OFFERER-EMAIL");
-						requesterName += object.getString("X-REQUESTER");
-						requesterEmail += object.getString("X-REQUESTER-EMAIL");
-						tangleOwnerName += object.getString("X-TANGLE-OWNER");
-						tangleOwnerEmail += object
-								.getString("X-TANGLE-OWNER-EMAIL");
-						tangleName += object.getString("X-TANGLE");
-						claimMessage += object.getString("X-CLAIM-MESSAGE");
+						claimDate = object.getString("claimDate");
+						claimerName = object.getString("claimer");
+						offererName = object.getString("offerer");
+						offererEmail = object.getString("offererEmail");
+						requesterName = object.getString("requester");
+						requesterEmail = object.getString("requesterEmail");
+						tangleOwnerName = object.getString("tangleOwner");
+						tangleOwnerEmail = object
+								.getString("tangleOwnerEmail");
+						tangleName = object.getString("tangle");
+						claimMessage = object.getString("claimMessage");
 						Toast.makeText(getBaseContext(),
 								"Loading Claim Report", Toast.LENGTH_SHORT)
 								.show();
@@ -130,15 +130,15 @@ public class ClaimRenderingActivity extends Activity {
 		requestClaimReport.addHeader("X-SESSION-ID", sessionID);
 		requestClaimReport.execute();
 		TextView date = (TextView) findViewById(R.id.date);
-		date.setText(this.claimDate);
+		date.setText(claimDate);
 		TextView claimer = (TextView) findViewById(R.id.claimerName);
-		claimer.setText(this.claimerName);
+		claimer.setText(claimerName);
 		TextView offerer = (TextView) findViewById(R.id.offererName);
-		offerer.setText(this.offererName);
+		offerer.setText(offererName);
 		TextView offererEmail = (TextView) findViewById(R.id.offererEmailText);
 		offererEmail.setText(this.offererEmail);
 		TextView requester = (TextView) findViewById(R.id.requesterName);
-		requester.setText(this.requesterName);
+		requester.setText(requesterName);
 		TextView requesterEmail = (TextView) findViewById(R.id.requesterEmailText);
 		requesterEmail.setText(this.requesterEmail);
 		TextView tangleOwnerName = (TextView) findViewById(R.id.tangleOwnerName);

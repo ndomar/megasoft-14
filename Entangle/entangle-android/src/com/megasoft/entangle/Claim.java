@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -77,7 +78,7 @@ public class Claim extends Activity {
 
 			JSONObject object = new JSONObject();
 			try {
-				object.put("X-MSSGBODY", mssgBody);
+				object.put("claimMessage", mssgBody);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -85,6 +86,11 @@ public class Claim extends Activity {
 
 			int requestId = (int) getIntent().getIntExtra("requestId", -1);
 			int offerId = (int) getIntent().getIntExtra("offerId", -1);
+			String rId = Integer.toString(requestId);
+			String oId = Integer.toString(offerId);
+			Log.d("rid", rId);
+			Log.d("oid", oId);
+			
 			PostRequest postSubject = new PostRequest(
 					Config.API_BASE_URL_SERVER + "/claim/" + requestId
 							+ "/sendClaim/" + offerId + "/user") {
@@ -93,7 +99,7 @@ public class Claim extends Activity {
 					try {
 						if (this.getStatusCode() == 201) {
 							JSONObject obj = new JSONObject(response);
-							int claimId = obj.getInt("X-CLAIM-ID");
+							int claimId = obj.getInt("claimId");
 							intent.putExtra("claimId", claimId);
 							Toast.makeText(getBaseContext(), "Claim Sent!",
 									Toast.LENGTH_SHORT).show();
