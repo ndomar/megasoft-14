@@ -103,10 +103,12 @@
     <Button
         android:id="@+id/BRequestToLocation"
         style="?android:attr/buttonBarButtonStyle"
+        android:textSize="@dimen/textMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/cyan"
         android:layout_alignBottom="@+id/request_entry_description"
         android:layout_alignRight="@+id/request_entry_description"
-        android:text="View on Map" />
+        android:text="View on map" />
 
 </RelativeLayout>
