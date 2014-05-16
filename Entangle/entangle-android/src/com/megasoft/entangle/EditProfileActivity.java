@@ -117,6 +117,11 @@ public class EditProfileActivity extends FragmentActivity implements
 
 	}
 
+	/**
+	 * This method adds an email field to type the mail into
+	 * 
+	 * @author maisaraFarahat
+	 */
 	public void addEmailField() {
 		EmailEntryFragment newEmail = new EmailEntryFragment();
 		newEmail.setActivity(this);
@@ -155,6 +160,7 @@ public class EditProfileActivity extends FragmentActivity implements
 		}
 	};
 
+	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case DATE_DIALOG_ID:
@@ -188,7 +194,6 @@ public class EditProfileActivity extends FragmentActivity implements
 			toast.show();
 		} else {
 			try {
-				Log.i("Message", "2");
 				if (emailNotification.isChecked()) {
 					putReJsonObject.put("notification_state", true);
 				} else {
@@ -278,6 +283,13 @@ public class EditProfileActivity extends FragmentActivity implements
 		return matcher.matches();
 	}
 
+	/**
+	 * This method removes the fragment when deleting an email
+	 * 
+	 * @param EmailEntryFragment
+	 * 
+	 * @author maisaraFarahat
+	 */
 	public void removeEmailField(EmailEntryFragment emailEntryFragment) {
 		if (emailsCount == 1) {
 			emailEntryFragment.getEditText().setText("");
@@ -288,11 +300,20 @@ public class EditProfileActivity extends FragmentActivity implements
 
 	}
 
+	/**
+	 * This methods cancels the edit action
+	 * 
+	 * @param View
+	 * 
+	 * 
+	 * @author maisaraFarahat
+	 */
 	public void cancelRedirect(View view) {
 
 		this.finish();
 	}
 
+	@Override
 	public void onResume() {
 		super.onResume();
 		this.settings = getSharedPreferences(Config.SETTING, 0);
