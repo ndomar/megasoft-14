@@ -13,9 +13,11 @@ use Megasoft\EntangleBundle\DataFixtures\ORM\AddUserData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadOfferData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadRequestData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadSessionData;
+use Megasoft\EntangleBundle\DataFixtures\ORM\LoadSessionEditData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadTangleData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadTransactionData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserData;
+use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserEditData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserTangleData;
 use Megasoft\EntangleBundle\Tests\EntangleTestCase;
 
@@ -23,13 +25,15 @@ use Megasoft\EntangleBundle\Tests\EntangleTestCase;
  * Test class for UserController
  * @author Almgohar
  */
-class UserControllerTest extends EntangleTestCase {
+class UserControllerTest extends EntangleTestCase
+{
 
     /**
      * Tests sending a wrong session id to the GeneralProfileAction
      * @author Almgohar
      */
-    public function testGeneralProfileAction_WrongSession() {
+    public function testGeneralProfileAction_WrongSession()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->loadFixtures();
@@ -38,16 +42,17 @@ class UserControllerTest extends EntangleTestCase {
             '/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession2',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession2',));
 
-        $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking Wrong SessionId");
+        $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Checking Wrong SessionId");
     }
 
     /**
      * Tests sending an expired session id to the GeneralProfileAction
      * @author Almgohar
      */
-    public function testGeneralProfileAction_ExpiredSession() {
+    public function testGeneralProfileAction_ExpiredSession()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->loadFixtures();
@@ -56,16 +61,17 @@ class UserControllerTest extends EntangleTestCase {
             '/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession1',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession1',));
 
-        $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking Expired SessionId");
+        $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Checking Expired SessionId");
     }
 
     /**
      * Tests sending no session id to the GeneralProfileAction
      * @author Almgohar
      */
-    public function testGeneralProfileAction_NoSession() {
+    public function testGeneralProfileAction_NoSession()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->loadFixtures();
@@ -74,16 +80,17 @@ class UserControllerTest extends EntangleTestCase {
             '/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'',));
+            array('HTTP_X_SESSION_ID' => '',));
 
-        $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking empty sessionId");
+        $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Checking empty sessionId");
     }
 
     /**
      * Tests sending a different user id from the logged in one to the GeneralProfileAction
      * @author Almgohar
      */
-    public function testGeneralProfileAction_WrongUser() {
+    public function testGeneralProfileAction_WrongUser()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->loadFixtures();
@@ -92,7 +99,7 @@ class UserControllerTest extends EntangleTestCase {
             '/user/2/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession',));
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), 'checking unauthorized user');
 
     }
@@ -101,7 +108,8 @@ class UserControllerTest extends EntangleTestCase {
      * Tests sending a wrong user id to the GeneralProfileAction
      * @author Almgohar
      */
-    public function testGeneralProfileAction_UserNotFound() {
+    public function testGeneralProfileAction_UserNotFound()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->loadFixtures();
@@ -110,7 +118,7 @@ class UserControllerTest extends EntangleTestCase {
             '/user/5/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession',));
         $this->assertEquals(404, $client->getResponse()->getStatusCode(), "checking required user not found");
     }
 
@@ -119,7 +127,8 @@ class UserControllerTest extends EntangleTestCase {
      * Tests sending a correct request to the GeneralProfileAction
      * @author Almgohar
      */
-    public function testGeneralProfileAction_GetGeneralProfile() {
+    public function testGeneralProfileAction_GetGeneralProfile()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->loadFixtures();
@@ -128,23 +137,24 @@ class UserControllerTest extends EntangleTestCase {
             '/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession',));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $json_string =  $client->getResponse()->getContent();
+        $json_string = $client->getResponse()->getContent();
         $this->assertJson($json_string, 'Wrong json format');
-        $json = json_decode($json_string,true);
-        $this->assertArrayHasKey('name',$json,true, 'The user name is not found');
-        $this->assertArrayHasKey('description',$json,true, 'The user description is not fount');
-        $this->assertArrayHasKey('photo',$json,true, 'The user photo is not fount');
-        $this->assertArrayHasKey('verified',$json,true, 'The user verification is not fount');
-        $this->assertEquals('sampleUser',$json['name']);
+        $json = json_decode($json_string, true);
+        $this->assertArrayHasKey('name', $json, true, 'The user name is not found');
+        $this->assertArrayHasKey('description', $json, true, 'The user description is not fount');
+        $this->assertArrayHasKey('photo', $json, true, 'The user photo is not fount');
+        $this->assertArrayHasKey('verified', $json, true, 'The user verification is not fount');
+        $this->assertEquals('sampleUser', $json['name']);
     }
 
     /**
      * Tests sending an expired session id to the ProfileAction
      * @author Almgohar
      */
-    public function testProfileAction_ExpiredSession() {
+    public function testProfileAction_ExpiredSession()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -155,16 +165,17 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession1',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession1',));
 
-        $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking Expired SessionId");
+        $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Checking Expired SessionId");
     }
 
     /**
      * Tests sending a wrong session id to the ProfileAction
      * @author Almgohar
      */
-    public function testProfileAction_WrongSession() {
+    public function testProfileAction_WrongSession()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -175,16 +186,17 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession4',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession4',));
 
-        $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking wrong sessionId");
+        $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Checking wrong sessionId");
     }
 
     /**
      * Tests sending an empty session id to the ProfileAction
      * @author Almgohar
      */
-    public function testProfileAction_EmptySession() {
+    public function testProfileAction_EmptySession()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -196,16 +208,17 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'',));
+            array('HTTP_X_SESSION_ID' => '',));
 
-        $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking empty sessionId");
+        $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Checking empty sessionId");
     }
 
     /**
      * Tests sending a session id of a user not in the tangle of the required user to the ProfileAction
      * @author Almgohar
      */
-    public function testProfileAction_WrongUser() {
+    public function testProfileAction_WrongUser()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -216,7 +229,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession3',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession3',));
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), "checking unauthorized user");
     }
 
@@ -224,7 +237,8 @@ class UserControllerTest extends EntangleTestCase {
      * Tests sending a not found tangle id to the ProfileAction
      * @author Almgohar
      */
-    public function testProfileAction_NotFoundTangle() {
+    public function testProfileAction_NotFoundTangle()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -235,7 +249,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/3/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession',));
         $this->assertEquals(404, $client->getResponse()->getStatusCode(), "checking not found tangle");
     }
 
@@ -243,7 +257,8 @@ class UserControllerTest extends EntangleTestCase {
      * Tests sending a wrong tangle id (required user not in it) to the ProfileAction
      * @author Almgohar
      */
-    public function testProfileAction_WrongTangle() {
+    public function testProfileAction_WrongTangle()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -254,7 +269,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/2/user/1/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession',));
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), "checking wrong tangle");
     }
 
@@ -262,7 +277,8 @@ class UserControllerTest extends EntangleTestCase {
      * Tests sending a wrong tangle id (user not in it) to the ProfileAction
      * @author Almgohar
      */
-    public function testProfileAction_UserNotInTangle() {
+    public function testProfileAction_UserNotInTangle()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -273,7 +289,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/2/user/3/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession',));
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), "checking logged in user not in tangle");
     }
 
@@ -281,7 +297,8 @@ class UserControllerTest extends EntangleTestCase {
      * Tests sending a session id of a user not in the tangle of the required user to the ProfileAction
      * @author Almgohar
      */
-    public function testProfileAction_UserNotFound() {
+    public function testProfileAction_UserNotFound()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -292,7 +309,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/5/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession',));
         $this->assertEquals(404, $client->getResponse()->getStatusCode(), "checking required user not found");
     }
 
@@ -300,7 +317,8 @@ class UserControllerTest extends EntangleTestCase {
      * Tests sending a correct request to the ProfileAction
      * @author Almgohar
      */
-    public function testProfileAction_GetProfile() {
+    public function testProfileAction_GetProfile()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -311,23 +329,24 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/2/profile',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession',));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $json_string =  $client->getResponse()->getContent();
+        $json_string = $client->getResponse()->getContent();
         $this->assertJson($json_string, 'Wrong json format');
-        $json = json_decode($json_string,true);
-        $this->assertArrayHasKey('name',$json,true, 'The user name is not found');
-        $this->assertArrayHasKey('description',$json,true, 'The user description is not fount');
-        $this->assertArrayHasKey('photo',$json,true, 'The user photo is not fount');
-        $this->assertArrayHasKey('verified',$json,true, 'The user verification is not fount');
-        $this->assertEquals('sampleUser1',$json['name']);
+        $json = json_decode($json_string, true);
+        $this->assertArrayHasKey('name', $json, true, 'The user name is not found');
+        $this->assertArrayHasKey('description', $json, true, 'The user description is not fount');
+        $this->assertArrayHasKey('photo', $json, true, 'The user photo is not fount');
+        $this->assertArrayHasKey('verified', $json, true, 'The user verification is not fount');
+        $this->assertEquals('sampleUser1', $json['name']);
     }
 
     /**
      * Tests sending an expired session id to the TransactionsAction
      * @author Almgohar
      */
-    public function testTransactionsAction_ExpiredSession() {
+    public function testTransactionsAction_ExpiredSession()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -338,16 +357,17 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/1/transactions',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession1',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession1',));
 
-        $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking Expired SessionId");
+        $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Checking Expired SessionId");
     }
 
     /**
      * Tests sending a wrong session id to the TransactionsAction
      * @author Almgohar
      */
-    public function testTransactionsAction_WrongSession() {
+    public function testTransactionsAction_WrongSession()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -358,16 +378,17 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/1/transactions',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession4'));
+            array('HTTP_X_SESSION_ID' => 'sampleSession4'));
 
-        $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking wrong sessionId");
+        $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Checking wrong sessionId");
     }
 
     /**
      * Tests sending an empty session id to the TransactionsAction
      * @author Almgohar
      */
-    public function testTransactionsAction_EmptySession() {
+    public function testTransactionsAction_EmptySession()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -378,16 +399,17 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/1/transactions',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'',));
+            array('HTTP_X_SESSION_ID' => '',));
 
-        $this->assertEquals(401, $client->getResponse()->getStatusCode(),"Checking empty sessionId");
+        $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Checking empty sessionId");
     }
 
     /**
      * Tests sending a session id of a user not in the tangle of the required user to the TransactionsAction
      * @author Almgohar
      */
-    public function testTransactionsAction_WrongUser() {
+    public function testTransactionsAction_WrongUser()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -398,7 +420,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/1/transactions',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession3',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession3',));
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), "checking unauthorized user");
     }
 
@@ -406,7 +428,8 @@ class UserControllerTest extends EntangleTestCase {
      * Tests sending a not found tangle id to the TransactionsAction
      * @author Almgohar
      */
-    public function testTransactionsAction_NotFoundTangle() {
+    public function testTransactionsAction_NotFoundTangle()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -417,7 +440,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/3/user/1/transactions',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession',));
         $this->assertEquals(404, $client->getResponse()->getStatusCode(), "checking not found tangle");
     }
 
@@ -425,7 +448,8 @@ class UserControllerTest extends EntangleTestCase {
      * Tests sending a wrong tangle id (required user not in it) to the TransactionsAction
      * @author Almgohar
      */
-    public function testTransactionsAction_WrongTangle() {
+    public function testTransactionsAction_WrongTangle()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -436,7 +460,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/2/user/1/transactions',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession',));
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), "checking wrong tangle");
     }
 
@@ -444,7 +468,8 @@ class UserControllerTest extends EntangleTestCase {
      * Tests sending a wrong tangle id (user not in it) to the TransactionsAction
      * @author Almgohar
      */
-    public function testTransactionsAction_UserNotInTangle() {
+    public function testTransactionsAction_UserNotInTangle()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -455,7 +480,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/2/user/3/transactions',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession',));
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), "checking logged in user not in tangle");
     }
 
@@ -463,7 +488,8 @@ class UserControllerTest extends EntangleTestCase {
      * Tests sending a not found user id to the TransactionsAction
      * @author Almgohar
      */
-    public function testTransactionsAction_UserNotFound() {
+    public function testTransactionsAction_UserNotFound()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -474,7 +500,7 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/5/transactions',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession',));
         $this->assertEquals(404, $client->getResponse()->getStatusCode(), "checking required user not found");
     }
 
@@ -482,7 +508,8 @@ class UserControllerTest extends EntangleTestCase {
      * Tests sending a correct request to the TransactionsAction
      * @author Almgohar
      */
-    public function testTransactionsAction_getTransactions() {
+    public function testTransactionsAction_getTransactions()
+    {
         $this->addFixture(new LoadSessionData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadTangleData());
@@ -496,24 +523,28 @@ class UserControllerTest extends EntangleTestCase {
             'tangle/1/user/2/transactions',
             array(),
             array(),
-            array('HTTP_X_SESSION_ID'=>'sampleSession',));
+            array('HTTP_X_SESSION_ID' => 'sampleSession',));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $json_string =  $client->getResponse()->getContent();
+        $json_string = $client->getResponse()->getContent();
         $this->assertJson($json_string, 'Wrong json format');
-        $json = json_decode($json_string,true);
-        $this->assertArrayHasKey('transactions',$json,true, 'Transactions not found');
-        $this->assertArrayHasKey('credit',$json,true, 'The user credit not fount');
-        $this->assertNotEquals(0,count($json['transactions']),'No transactions found');
-        $this->assertArrayHasKey('offerId',$json['transactions'][0], 'The offer id not found');
-        $this->assertArrayHasKey('requesterName',$json['transactions'][0], 'The requester name not found');
-        $this->assertArrayHasKey('offererName',$json['transactions'][0], 'The offerer name not found');
-        $this->assertArrayHasKey('amount',$json['transactions'][0], 'The transaction amount not found');
-        $this->assertArrayHasKey('photo',$json['transactions'][0], 'The requester photo not found');
-        $this->assertArrayHasKey('requestId',$json['transactions'][0], 'The request id not found');
-        $this->assertArrayHasKey('requesterId',$json['transactions'][0], 'The requester id not found');
-        $this->assertEquals(1,count($json['transactions']),'The deleted transaction is shown');
+        $json = json_decode($json_string, true);
+        $this->assertArrayHasKey('transactions', $json, true, 'Transactions not found');
+        $this->assertArrayHasKey('credit', $json, true, 'The user credit not fount');
+        $this->assertNotEquals(0, count($json['transactions']), 'No transactions found');
+        $this->assertArrayHasKey('offerId', $json['transactions'][0], 'The offer id not found');
+        $this->assertArrayHasKey('requesterName', $json['transactions'][0], 'The requester name not found');
+        $this->assertArrayHasKey('offererName', $json['transactions'][0], 'The offerer name not found');
+        $this->assertArrayHasKey('amount', $json['transactions'][0], 'The transaction amount not found');
+        $this->assertArrayHasKey('photo', $json['transactions'][0], 'The requester photo not found');
+        $this->assertArrayHasKey('requestId', $json['transactions'][0], 'The request id not found');
+        $this->assertArrayHasKey('requesterId', $json['transactions'][0], 'The requester id not found');
+        $this->assertEquals(1, count($json['transactions']), 'The deleted transaction is shown');
     }
 
+    /**
+     * tests the sucees secario for the registeration process rfrom the application
+     * author:Eslam
+     */
     public function testRegisterAction_successScenario() {
         $this->addFixture(new AddUserData());
         $this->loadFixtures();
@@ -534,6 +565,10 @@ class UserControllerTest extends EntangleTestCase {
 
     }
 
+    /**
+     * Tests that the username field is not empty
+     * author:Eslam
+     */
     public function testRegisterAction_emptyUsername() {
         $this->addFixture(new AddUserData());
         $this->loadFixtures();
@@ -546,6 +581,10 @@ class UserControllerTest extends EntangleTestCase {
 
     }
 
+    /**
+     * Tests that the email field is not empty
+     * author:Eslam
+     */
     public function testRegisterAction_emptyEmail() {
         $this->addFixture(new AddUserData());
         $this->loadFixtures();
@@ -557,7 +596,10 @@ class UserControllerTest extends EntangleTestCase {
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), 'Email field is empty');
 
     }
-
+/**
+* Tests that the email field is not empty
+* author:Eslam
+*/
     public function testRegisterAction_emptyPassword() {
         $this->addFixture(new AddUserData());
         $this->loadFixtures();
@@ -569,6 +611,24 @@ class UserControllerTest extends EntangleTestCase {
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), 'Password field is empty');
 
     }
+
+
+
+    public function testEditUserAction_UserNotFound()
+    {
+        $this->addFixture(new LoadUserEditData());
+        $this->addFixture(new LoadSessionEditData());
+
+        $this->loadFixtures();
+        $client = static::createClient();
+        $client->request('GET',
+            '/user/edit',
+            array(),
+            array(),
+            array('HTTP_X_SESSION_ID' => 'sampleSession',));
+        $this->assertEquals(404, $client->getResponse()->getStatusCode(), "checking required user not found");
+    }
+
 
 }
 

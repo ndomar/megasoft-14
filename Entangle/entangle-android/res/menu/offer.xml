@@ -11,12 +11,14 @@
         android:visible="false"
         android:title="@string/delete_button_text">
     </item>
+    
     <item
         android:id="@+id/claim_on_offer_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="45dp"
+        android:onClick="startClaimForm"
         android:text="@string/claim_button"
         android:textSize="@dimen/textMedium"
         android:visible="false"
