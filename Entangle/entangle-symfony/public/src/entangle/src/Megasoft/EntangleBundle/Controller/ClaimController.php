@@ -150,9 +150,15 @@ class ClaimController extends Controller {
     public function resolveClaimAction($claimId, \Symfony\Component\HttpFoundation\Request $request) {
         $json = $request->getContent();
         $json_array = json_decode($json, true);
-        $this->verifySessionId($request);
-        $doctrine = $this->getDoctrine();
+        $sessionMessage= $this->verifySessionId($request);
         $response = new JsonResponse();
+        if($sessionMessage == 'error'){
+            $response->setContent('Please login again');
+            $response->setStatusCode(401);
+            return $response;
+        }
+        $doctrine = $this->getDoctrine();
+        
         $tangleId = $json_array['tangleId'];
         $isOwner = $this->verifiyTangleOwner($tangleId, $request);
         if ($isOwner == "error") {
@@ -245,17 +251,15 @@ class ClaimController extends Controller {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $response = new JsonResponse();
         if ($sessionId == null) {
-            $response->setContent("Please login again");
-            $response->setStatusCode(400);
-            return $response;
+            
+            return 'error';
         }
         $doctrine = $this->getDoctrine();
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($session == null || $session->getExpired() == 1) {
-            $response->setContent("Please login again");
-            $response->setStatusCode(400);
-            return $response;
+         
+            return 'error';
         }
     }
 
@@ -268,7 +272,6 @@ class ClaimController extends Controller {
         $userTangle = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
         $user = $userTangle->findOneBy(array('tangleId' => $tangleId, 'userId' => $sessionUserId));
         if ($user == null) {
-
             return "error";
         }
         if ($user->getTangleOwner() == 0) {
@@ -279,11 +282,18 @@ class ClaimController extends Controller {
 
     public function getClaimsAction($tangleId, \Symfony\Component\HttpFoundation\Request $request) {
         $this->verifySessionId($request);
-        $isOwner = $this->verifiyTangleOwner($tangleId, $request);
+        $sessionMessage= $this->verifySessionId($request);
         $response = new JsonResponse();
+        if($sessionMessage=='error'){
+            $response->setContent('Please login again');
+            $response->setStatusCode(401);
+            return $response;
+        }
+        $isOwner = $this->verifiyTangleOwner($tangleId, $request);
+       
         if ($isOwner == "error") {
             $response->setContent('You are not authorized to perform this action');
-            $response->setStatusCode(400);
+            $response->setStatusCode(401);
             return $response;
         }
         $doctrine = $this->getDoctrine();
@@ -292,7 +302,7 @@ class ClaimController extends Controller {
         $allClaims = $claimRepo->findBy(array('tangleId' => $tangleId, 'status' => 0, 'deleted' => 0));
         $numOfClaims = count($allClaims);
         if ($numOfClaims == 0) {
-            $response->setContent('No claims found');
+            $response->setData(array('claims'=>$claimArray));
             $response->setStatusCode(201);
             return $response;
         }
@@ -324,7 +334,7 @@ class ClaimController extends Controller {
                 'message' => $message, 'status' => $status, 'created' => $date,'claimerName'=>$claimerName);
             array_push($claimArray, $details);
         }
-        $response->setData($claimArray);
+        $response->setData(array('claims'=>$claimArray));
         $response->setStatusCode(200);
         return $response;
     }
