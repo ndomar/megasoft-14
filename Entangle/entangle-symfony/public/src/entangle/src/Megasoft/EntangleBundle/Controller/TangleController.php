@@ -101,7 +101,12 @@ class TangleController extends Controller {
         $requestsJsonArray = array();
 
         foreach ($requests as $tangleRequest) {
-
+            if ($tangleRequest->getUser()->getPhoto() == null) {
+                $photo = null;
+            } else {
+                $filepath = 'http://'.$_SERVER['HTTP_HOST'].'/images/profilePictures/';
+                $photo = $filepath.$tangleRequest->getUser()->getPhoto();
+        }
             $requestsJsonArray[] = array(
                 'id' => $tangleRequest->getId(),
                 'username' => $tangleRequest->getUser()->getName(),
@@ -109,7 +114,8 @@ class TangleController extends Controller {
                 'description' => $tangleRequest->getDescription(),
                 'offersCount' => sizeof($tangleRequest->getOffers()),
                 'price' => $tangleRequest->getRequestedPrice(),
-                'date' => $tangleRequest->getDate()->format('Y-m-d H:i:s')
+                'date' => $tangleRequest->getDate()->format('Y-m-d H:i:s'
+                'requesterAvatar' => $photo,)
             );
         }
 
@@ -905,7 +911,7 @@ class TangleController extends Controller {
             if ($userTangle->getUser()->getPhoto() == null) {
                 $photo = null;
             } else {
-                $filepath = $_SERVER['HTTP_HOST'].'/images/profilePictures/';
+                $filepath = 'http://'.$_SERVER['HTTP_HOST'].'/images/profilePictures/';
                 $photo = $filepath.$userTangle->getUser()->getPhoto();
             }
 

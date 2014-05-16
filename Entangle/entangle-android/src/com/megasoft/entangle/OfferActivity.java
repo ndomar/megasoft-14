@@ -365,6 +365,7 @@ public class OfferActivity extends FragmentActivity {
 				entry.setComment(comment.getString("comment"));
 				entry.setCommenter(comment.getString("commenter"));
 				entry.setCommentDate(comment.getString("commentDate"));
+				entry.setCommenterAvatarURL(comment.getString("commenterAvatar"));
 				getSupportFragmentManager().beginTransaction()
 						.add(R.id.offer_comments_area, entry).commit();
 			} catch (JSONException e) {

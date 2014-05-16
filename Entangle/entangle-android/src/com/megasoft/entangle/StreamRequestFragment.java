@@ -2,6 +2,7 @@ package com.megasoft.entangle;
 
 import com.megasoft.entangle.megafragments.TangleFragment;
 import com.megasoft.entangle.views.RoundedImageView;
+import com.megasoft.requests.ImageRequest;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -66,6 +67,11 @@ public class StreamRequestFragment extends Fragment {
 	private RoundedImageView requesterAvatar;
 
 	/**
+	 * The avatar url
+	 */
+	private String avatarURL;
+	
+	/**
 	 * The price text
 	 */
 	private String price;
@@ -94,7 +100,8 @@ public class StreamRequestFragment extends Fragment {
 	 * @return an instance of the StreamRequestFragment
 	 */
 	public static StreamRequestFragment createInstance(int requestId,
-			int requesterId, String requestString, String requesterString, String price, String offersCount, TangleFragment parent) {
+			int requesterId, String requestString, String requesterString, String price, 
+			String offersCount, String avatarURL, TangleFragment parent) {
 		StreamRequestFragment fragment = new StreamRequestFragment();
 		fragment.setRequestId(requestId);
 		fragment.setParent(parent);
@@ -103,6 +110,7 @@ public class StreamRequestFragment extends Fragment {
 		fragment.setRequesterButtonText(requesterString);
 		fragment.setPrice(price);
 		fragment.setOffersCount(offersCount);
+		fragment.setAvatarURL(avatarURL);
 		return fragment;
 	}
 
@@ -116,6 +124,7 @@ public class StreamRequestFragment extends Fragment {
 				container, false);
 		request = (TextView) view.findViewById(R.id.requestDescription);
 		requesterAvatar = (RoundedImageView) view.findViewById(R.id.requesterAvatar);
+		new ImageRequest(avatarURL,getActivity().getApplicationContext(),requesterAvatar);
 		requester = (TextView) view.findViewById(R.id.requesterName);
 		setRequestRedirection();
 		setRequesterRedirection();
@@ -166,6 +175,14 @@ public class StreamRequestFragment extends Fragment {
 	}
 
 	/**
+	 * This is a getter method that is used to return the URL of the avatar
+	 * @return String avatarURL
+	 */
+	public String getAvatarURL() {
+		return avatarURL;
+	}
+
+	/**
 	 * This method is used to set the id of the requester
 	 * 
 	 * @param id
@@ -193,6 +210,14 @@ public class StreamRequestFragment extends Fragment {
 	 */
 	private void setRequesterButtonText(String text) {
 		requesterString = text;
+	}
+
+	/**
+	 * This method is used to set the text of the avatar URL
+	 * @param String avatarURL
+	 */
+	public void setAvatarURL(String avatarURL) {
+		this.avatarURL = avatarURL;
 	}
 
 	/**

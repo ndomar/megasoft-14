@@ -217,6 +217,7 @@ public class RequestActivity extends FragmentActivity {
 			args.putString("date",offer.getJSONObject("date").getString("date"));
 			args.putString("description",offer.getString("description"));
 			args.putString("offerer",offer.getString("offererName"));
+			args.putString("offererAvatar", offer.getString("offererAvatar"));
 			args.putString("status",offerStatusCodes[Integer.parseInt(offer.getString("status"))]);
 			offerFragmet.setArguments(args);
 			

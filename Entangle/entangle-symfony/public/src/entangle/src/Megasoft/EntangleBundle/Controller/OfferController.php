@@ -119,12 +119,18 @@ class OfferController extends Controller
                 continue;
             }
 
+            if ($message->getSender()->getPhoto() == null) {
+                $photo = null;
+            } else {
+                $filepath = 'http://'.$_SERVER['HTTP_HOST'].'/images/profilePictures/';
+                $photo = $filepath.$message->getSender()->getPhoto();
+            }
+
             $commenter = $message->getSender()->getName();
             $commentDate = $message->getDate()->format('d/m/Y');
             $comment = $message->getBody();
-            $comments[] = array('commenter' => $commenter,
-                'comment' => $comment,
-                'commentDate' => $commentDate,);
+            $comments[] = array('commenterAvatar' => $photo, 'commenter' => $commenter,
+                'comment' => $comment, 'commentDate' => $commentDate,);
         }
 
         return $comments;
@@ -148,7 +154,7 @@ class OfferController extends Controller
         if ($user->getPhoto() == null) {
             $photo = null;
         } else {
-            $filepath = $_SERVER['HTTP_HOST'].'/images/profilePictures/';
+            $filepath = 'http://'.$_SERVER['HTTP_HOST'].'/images/profilePictures/';
             $photo = $filepath.$user->getPhoto();
         }
 

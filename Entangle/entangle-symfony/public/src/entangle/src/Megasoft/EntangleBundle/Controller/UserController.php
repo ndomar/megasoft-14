@@ -97,7 +97,7 @@ class UserController extends Controller {
         if ($user->getPhoto() == null) {
             $photo = null;
         } else {
-            $filepath = $_SERVER['HTTP_HOST'].'/images/profilePictures/';
+            $filepath = 'http://'.$_SERVER['HTTP_HOST'].'/images/profilePictures/';
             $photo = $filepath.$user->getPhoto();
         }
 
@@ -244,7 +244,7 @@ class UserController extends Controller {
         if ($user->getPhoto() == null) {
             $photo = null;
         } else {
-            $filepath = $_SERVER['HTTP_HOST'].'/images/profilePictures/';
+            $filepath = 'http://'.$_SERVER['HTTP_HOST'].'/images/profilePictures/';
             $photo = $filepath.$user->getPhoto();
         }
 
@@ -319,7 +319,7 @@ class UserController extends Controller {
                 if ($offer->getRequest()->getUser()->getPhoto() == null) {
                     $photo = null;
                 } else {
-                    $filepath = $_SERVER['HTTP_HOST'].'/images/profilePictures/';
+                    $filepath = 'http://'.$_SERVER['HTTP_HOST'].'/images/profilePictures/';
                     $photo = $filepath.$offer->getRequest()->getUser()->getPhoto();
                 }
 
