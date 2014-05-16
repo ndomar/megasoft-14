@@ -210,8 +210,11 @@ class NotificationStreamController extends Controller
         {
             $notification = $notifications[$i];
             $description = "You have a new message!";
+            $message = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Message')
+                ->findOneById($notification->getMessageId());
+            $offerId = $message->getOfferId();
             $array = array($description , $notification->getId() , $notification->getCreated()->format('m-d H:i') ,
-                $notification->getSeen() , "message=".$notification->getMessageId() ,);
+                $notification->getSeen() , "offer=".$offerId ,);
             array_push($this->arr , $array);
         }
     }
