@@ -179,8 +179,6 @@ class UserController extends Controller
 
     /* Validates the username and password from request and returns sessionID
      * @param  Integer $len length for the generated sessionID
-     * @return String $generatedSessionID the session id that will be config.php – This file contains constant v used
-     * 
      * @author maisaraFarahat
      */
 
@@ -566,7 +564,7 @@ class UserController extends Controller
         }
     }
 
-    /*
+    /**
      * An endpoint for the user to register from the mobile application
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse $response
@@ -578,53 +576,51 @@ class UserController extends Controller
     {
         $response = new JsonResponse();
         $badRequest = "Bad Request";
+        $json = $request->getContent();
+        $json_array = json_decode($json, true);
+        $username = $json_array['username'];
+        $email = $json_array['email'];
+        $password = $json_array['password'];
+        $confirmPassword = $json_array['confirmPassword'];
 
-        if (!$request) {
+        if (!$username || !$email || !$password || !$confirmPassword || (!preg_match('/^[a-zA-Z0-9]+$/', $username))) {
             return new JsonResponse($badRequest, 400);
         }
 
-        $json = $request->getContent();
-
-        if (!$json) {
-            $response->setStatusCode(400, $badRequest);
-            return $response;
+        if(!$this->validateUniqueUsername($username)) {
+            return new JsonResponse("Not unique username", 401);
         }
 
-        if ($request->getMethod() == 'POST') {
-            $json_array = json_decode($json, true);
-            $username = $json_array['username'];
-            $email = $json_array['email'];
-            $password = $json_array['password'];
-            $confirmPassword = $json_array['confirmPassword'];
 
-            if (!$username || !$email || !$password || !$confirmPassword || (!preg_match('/^[a-zA-Z0-9]+$/', $username))) {
-                return new JsonResponse($badRequest, 400);
-            }
-
-            if (!$this->validateUniqueUsername($username)) {
-                return new JsonResponse("Not unique username", 401);
-            }
-
-            if (!$this->validateUniqueEmail($email)) {
-                return new JsonResponse("Not unique Email", 402);
-            }
-
-
-            $user = new User;
-            $userEmail = new UserEmail();
-            $user->addEmail($userEmail);
-            $user->setName($username);
-            $user->setPassword($password);
-            $userEmail->setEmail($email);
-            $entityManager = $this->getDoctrine()->getEntityManager();
-            $entityManager->persist($user);
-            $entityManager->persist($userEmail);
-            $entityManager->flush();
-            $response->setData(array('username' => $username, 'email' => $email, 'password' => $password,));
-            $response->setStatusCode(201);
-
-            return $response;
+        if(!$this->validateUniqueEmail($email)) {
+            return new JsonResponse("Not unique Email", 402);
         }
+
+
+        if (!$this->validateUniqueUsername($username)) {
+            return new JsonResponse("Not unique username", 401);
+        }
+
+        if (!$this->validateUniqueEmail($email)) {
+            return new JsonResponse("Not unique Email", 402);
+        }
+
+
+        $user = new User;
+        $userEmail = new UserEmail();
+        $user->addEmail($userEmail);
+        $user->setName($username);
+        $user->setPassword($password);
+        $userEmail->setEmail($email);
+        $entityManager = $this->getDoctrine()->getEntityManager();
+        $entityManager->persist($user);
+        $entityManager->persist($userEmail);
+        $entityManager->flush();
+        $response->setData(array('username' => $username, 'email' => $email, 'password' => $password,));
+        $response->setStatusCode(201);
+
+        return $response;
+
     }
 
 }
