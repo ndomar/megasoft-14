@@ -9,6 +9,10 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Megasoft\EntangleBundle\Entity\UserEmail;
 
+/*
+ * Fixtures for UserEmail table
+ * @author KareemWahby
+ */
 class LoadUserEmailData extends AbstractFixture implements OrderedFixtureInterface {
 
     /**
