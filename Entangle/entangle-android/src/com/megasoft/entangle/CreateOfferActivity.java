@@ -180,11 +180,6 @@ public class CreateOfferActivity extends Activity {
 						+ "/offer") {
 					protected void onPostExecute(String response) {
 						if (this.getStatusCode() == 201) {
-							Intent intent = new Intent(self,
-									RequestActivity.class);
-							intent.putExtra("tangleId", tangleId);
-							intent.putExtra("requestId", requestId);
-							startActivity(intent);
 							finish();
 						} else {
 

@@ -2,15 +2,19 @@ package com.megasoft.requests;
 
 import java.io.IOException;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 public abstract class HttpRequest extends AsyncTask<String, String, String> {
 	
@@ -90,12 +94,23 @@ public abstract class HttpRequest extends AsyncTask<String, String, String> {
 		if(hasBody){
 			this.request.addHeader("content-type", "application/json");
 		}
-		ResponseHandler<String> handler = new BasicResponseHandler();
 		HttpResponse x = null;
+		HttpEntity entity = null;
     	try{
     		x = httpClient.execute(this.request);
-    		this.statusCode = x.getStatusLine().getStatusCode();    		
-    		return handler.handleResponse(x);
+    		entity = x.getEntity();
+    		this.statusCode = x.getStatusLine().getStatusCode();
+    		if(statusCode/100 == 2){
+    			return entity == null ? "" : EntityUtils.toString(entity);
+    		}else if(statusCode/100 == 4){
+    			hasError = true;
+    			errorMessage = entity == null ? "" : EntityUtils.toString(entity);
+    			return null;
+    		} else {
+    			hasError = true;
+    			errorMessage = "Server Error";
+    			return null;
+    		}
     	}catch(ClientProtocolException  e ){
     		hasError = true;
     		errorMessage = e.getMessage();

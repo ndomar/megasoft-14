@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.megasoft.config.Config;
@@ -29,7 +30,7 @@ public class ProfileFragment extends Fragment {
 	 * The TextView that holds the user's name
 	 */
 	private TextView name;
-	
+
 	/**
 	 * The TextView that holds the user's description
 	 */
@@ -39,33 +40,35 @@ public class ProfileFragment extends Fragment {
 	 * The ImageView that holds the user's profile picture
 	 */
 	private com.megasoft.entangle.views.RoundedImageView profilePictureView;
-	
-    
-    /**
-     * The preferences instance
-     */
+
+	/**
+	 * The preferences instance
+	 */
 	private SharedPreferences settings;
-	
+
 	/**
 	 * The id of the logged in user
 	 */
 	private int loggedInId;
-	
+
 	/**
 	 * The tangle Id from which we were redirected
 	 */
 	private int tangleId;
-	
+
 	/**
 	 * The user Id whose profile we want to view
 	 */
 	private int userId;
-	
+
 	/**
 	 * The session Id of the logged in user
 	 */
 	private String sessionId;
-	
+
+	/**
+	 * The boolean specifying whether the profile is general or not
+	 */
 	private boolean isGeneral;
 	
 	private View view;
@@ -105,39 +108,54 @@ public class ProfileFragment extends Fragment {
 	 */
 	public void viewInformation() {
 		String link;
-		if(isGeneral) {
+		if (isGeneral) {
 			link = Config.API_BASE_URL_SERVER + "/user/" + userId + "/profile";
 
 		} else {
-			link = Config.API_BASE_URL_SERVER + "/tangle/" + tangleId + "/user/" + userId + "/profile";
+			link = Config.API_BASE_URL_SERVER + "/tangle/" + tangleId
+					+ "/user/" + userId + "/profile";
 
 		}
 		GetRequest request = new GetRequest(link) {
 			protected void onPostExecute(String response) {
-				if (this.getStatusCode() == 200	) {
-				try {
-					JSONObject information;
-					information = new JSONObject(response);
-					name.setText(information.getString("name"));
-					description.setText(information.getString("description"));
-					viewProfilePicture(information.getString("photo"));
-					
-					if(activity instanceof ProfileActivity) {
-						activity.setTitle(information.getString("name"));
-					}
-					
+				if (this.getStatusCode() == 200) {
+					try {
+						JSONObject information;
+						information = new JSONObject(response);
+						name.setText(information.getString("name"));
+
+						if (information.getString("description").equals("null")) {
+							description.setVisibility(View.GONE);
+						} else {
+							description.setText(information
+									.getString("description"));
+							}
+
+						viewProfilePicture(information.getString("photo"));
+
+						if (information.getBoolean("verified")) {
+							((ImageView) view.findViewById(R.id.verified))
+									.setVisibility(View.VISIBLE);
+						}
+
+						if (activity instanceof ProfileActivity) {
+							activity.setTitle(information.getString("name"));
+						}
+
 					} catch (JSONException e) {
 						e.printStackTrace();
-						}
+					}
 				} else {
 					Log.e("test", this.getErrorMessage());
-					Toast toast = Toast.makeText(activity.getApplicationContext(),"Some error happened.",Toast.LENGTH_SHORT);
+					Toast toast = Toast.makeText(
+							activity.getApplicationContext(),
+							"Some error happened.", Toast.LENGTH_SHORT);
 					toast.show();
-					}
 				}
-			};
-			request.addHeader("X-SESSION-ID", this.sessionId);
-			request.execute();
+			}
+		};
+		request.addHeader("X-SESSION-ID", this.sessionId);
+		request.execute();
 	}
 	
 	/**
@@ -146,8 +164,7 @@ public class ProfileFragment extends Fragment {
 	 * @author Almgohar
 	 */ 
 	public void viewProfilePicture(String imageURL) {
-            ImageRequest image = new ImageRequest(profilePictureView);
-            image.execute(imageURL);
+            new ImageRequest(imageURL,getActivity().getApplicationContext(),profilePictureView);
 	}
 	
 	/**

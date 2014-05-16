@@ -9,6 +9,7 @@ use Megasoft\EntangleBundle\Entity\UserTangle;
 
 /*
  * Fixtures for Session table
+ * @author OmarElAzazy
  */
 class LoadUserTangleData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -24,9 +25,28 @@ class LoadUserTangleData extends AbstractFixture implements OrderedFixtureInterf
         $userTangle->setTangleOwner(true);
         
         $manager->persist($userTangle);
+
+        $userTangle1 = new UserTangle();
+        $userTangle1->setCredit(0);
+        $userTangle1->setTangle($this->getReference('sampleTangle'));
+        $userTangle1->setUser($this->getReference('sampleUser1'));
+        $userTangle1->setTangleOwner(false);
+
+        $manager->persist($userTangle1);
+
+        $userTangle2 = new UserTangle();
+        $userTangle2->setCredit(10);
+        $userTangle2->setTangle($this->getReference('sampleTangle1'));
+        $userTangle2->setUser($this->getReference('sampleUser2'));
+        $userTangle2->setTangleOwner(true);
+
+        $manager->persist($userTangle2);
         $manager->flush();
-       
+
         $this->addReference('sampleUserTangle', $userTangle);
+        $this->addReference('sampleUserTangle1', $userTangle1);
+        $this->addReference('sampleUserTangle2', $userTangle2);
+
     }
 
     /**
