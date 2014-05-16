@@ -150,7 +150,7 @@ megasoft_entangle_about:
     defaults: { _controller: MegasoftEntangleBundle:About:about }
 
 change_offer_price:
-    pattern: /offers/{offerid}/changePrice
+    pattern: /offers/{offerId}/changePrice
     defaults: { _controller: MegasoftEntangleBundle:Offer:changeOfferPrice }
     methods: [POST]
 
@@ -332,11 +332,6 @@ megasoft_entangle_about:
     pattern:  /about
     defaults: { _controller: MegasoftEntangleBundle:About:about }
 
-change_offer_price:
-    pattern: /offers/{offerid}/changePrice
-    defaults: { _controller: MegasoftEntangleBundle:Offer:changeOfferPrice }
-    methods: [POST]
-    
 verification:
     pattern: /verify/{verificationCode}
     defaults: { _controller:MegasoftEntangleBundle:Verification:verifyUser}
@@ -598,6 +593,11 @@ get_general_profile:
     defaults: { _controller: MegasoftEntangleBundle:User:generalProfile }
     methods: [GET]
 
+ 
+get_tangles:
+    pattern: /tangle
+    defaults: { _controller: MegasoftEntangleBundle:Tangle:getTangles }
+
 get_my_requests:
     pattern:  /tangle/{tangleId}/user/requests
     defaults: { _controller: MegasoftEntangleBundle:Tangle:userRequests}
@@ -611,11 +611,6 @@ megasoft_entangle_about:
     pattern:  /about
     defaults: { _controller: MegasoftEntangleBundle:About:about }
 
-change_offer_price:
-    pattern: /offers/{offerid}/changePrice
-    defaults: { _controller: MegasoftEntangleBundle:Offer:changeOfferPrice }
-    methods: [POST]
-    
 verification:
     pattern: /verify/{verificationCode}
     defaults: { _controller:MegasoftEntangleBundle:Verification:verifyUser}
@@ -658,11 +653,8 @@ megasoft_entangle_about:
     pattern:  /about
     defaults: { _controller: MegasoftEntangleBundle:About:about }
 
-change_offer_price:
-    pattern: /offers/{offerid}/changePrice
-    defaults: { _controller: MegasoftEntangleBundle:Offer:changeOfferPrice }
-    methods: [POST]
-    
+
+
 verification:
     pattern: /verify/{verificationCode}
     defaults: { _controller:MegasoftEntangleBundle:Verification:verifyUser}

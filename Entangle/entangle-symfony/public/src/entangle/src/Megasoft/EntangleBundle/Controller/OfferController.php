@@ -168,21 +168,21 @@ class OfferController extends Controller
     }
 
     /**
-     * Changes the price of an offer
-     * @param \Megasoft\EntangleBundle\Entity\Request $request
-     * @param type $offerid
+     * Changes the price of an offer.
+     * @param Request $request
+     * @param type $offerId
      * @return \Symfony\Component\HttpFoundation\Response
      * @author Mansour
      */
-    public function changeOfferPriceAction(Request $request, $offerid)
-    {
+
+    public function changeOfferPriceAction(Request $request, $offerId) {
 
         $sessionId = $request->headers->get('X-SESSION-ID');
-        $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
-        $session = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($sessionId == null) {
-            return new Response("Bad meh Request", 400);
+            return new Response("Null Session Header", 400);
         }
+        $sessionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($session == null) {
             return new Response("Unauthorized", 401);
         }
@@ -191,11 +191,11 @@ class OfferController extends Controller
             return new Response("Session expired", 440);
         }
         $offerRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Offer');
-        $requestOffer = $offerRepo->findOneBy(array('id' => $offerid));
-        $oldPrice = $requestOffer->getRequestedPrice();
+        $requestOffer = $offerRepo->findOneBy(array('id' => $offerId));
         if ($requestOffer == null) {
-            return new Response("Not found", 404);
+            return new Response("Offer Not found", 404);
         }
+        $oldPrice = $requestOffer->getRequestedPrice();
         if (($session->getUserId()) != ($requestOffer->getUserId())) {
             return new Response("Unauthorized", 401);
         }
@@ -211,30 +211,31 @@ class OfferController extends Controller
         if (($requestOffer->getStatus()) == ($requestOffer->REJECTED)) {
             return new Response("Offer is already rejected", 403);
         }
-        $json = $request->getContent();
-        $json_array = json_decode($json, true);
-        $newOfferPrice = $json_array['newPrice'];
-        if ($newOfferPrice == null) {
+        if($requestOffer->getDeleted()){
             return new Response("Bad Request", 400);
         }
+        $json = $request->getContent();
+        $json_array = json_decode($json, true);
+        if (!isset($json_array['newPrice'])){
+            return new Response("Bad Request", 400);
+        }
+        $newOfferPrice = $json_array['newPrice'];
+        if (\is_null($newOfferPrice)) {
+            return new Response("Null New Price", 400);
+        }
+        if(!is_numeric($newOfferPrice)){
+            return new Response("Non-Numeric New Price", 400);
+        }
         if (($requestOffer->getRequestedPrice()) == $newOfferPrice) {
-            return new Response("Same price, enter a new one", 400);
+            return new Response("Same price, enter a new one", 409);
         }
         $requestOffer->setRequestedPrice($newOfferPrice);
-
-        //notification
-// $notificationCenter = $this->get('notification_center.service');
-// $title = "offer changed";
-// $body = "{{from}} changed his offer";
-// $notificationCenter->offerChangeNotification($requestOffer->getId(), $oldPrice, $title, $body);
-
         $notificationCenter = $this->get('notification_center.service');
         $notificationCenter->offerChangeNotification($requestOffer->getId(), $oldPrice);
-
-
         $this->getDoctrine()->getManager()->persist($requestOffer);
         $this->getDoctrine()->getManager()->flush();
-        return new Response('Price changed', 200);
+
+        return new Response('The price of your offer has changed', 200);
     }
 
     /**
