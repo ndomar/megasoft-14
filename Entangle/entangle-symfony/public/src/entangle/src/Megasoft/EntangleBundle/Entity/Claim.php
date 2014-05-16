@@ -94,9 +94,14 @@ class Claim
      * @ORM\Column(name="deleted", type="boolean" , columnDefinition="tinyint(1) DEFAULT 0")
      */
     private $deleted = false;
-    
-    
-    
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="datetime")
+     */
+    private $created;
+     
 
     /**
      * Get id
@@ -313,5 +318,28 @@ class Claim
     public function getClaimer()
     {
         return $this->claimer;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return Claim
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime 
+     */
+    public function getCreated()
+    {
+        return $this->created;
     }
 }

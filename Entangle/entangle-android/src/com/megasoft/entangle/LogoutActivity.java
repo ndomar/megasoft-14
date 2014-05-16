@@ -81,6 +81,7 @@ public class LogoutActivity extends Activity {
 				"sessionIDPrefs", MODE_WORLD_READABLE);
 		SharedPreferences.Editor prefsEditor = sessionIDPrefs.edit();
 		prefsEditor.putString(Config.SESSION_ID, null);
+		prefsEditor.remove(Config.PROPERTY_REG_ID);
 		prefsEditor.commit();
 
 		Intent homeActivity = new Intent(this, MainActivity.class);
