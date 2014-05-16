@@ -332,7 +332,7 @@ public class RequestActivity extends FragmentActivity {
 	     
 	 	 switch (item.getItemId()) {
 		 	case R.id.deleteRequestOption:
-		 		sendDeleteRequest();
+		 		this.showDialog(0);
 	 	 		return true;
  	 		
 	 	 	case R.id.createOffer:
@@ -381,7 +381,7 @@ public class RequestActivity extends FragmentActivity {
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							
+							sendDeleteRequest();
 							dialog.dismiss();
 						}
 					});
