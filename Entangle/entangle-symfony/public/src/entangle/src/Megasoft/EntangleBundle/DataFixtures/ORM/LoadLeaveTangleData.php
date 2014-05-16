@@ -115,5 +115,46 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->addReference('tangle', $tangle);
     }
     
+    /**
+     * This function is used to create a userTangle
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param String $userReference
+     * @param boolean $isOwner
+     * @param integer $credit
+     * @param boolean $left
+     * @author HebaAamer
+     */
+    private function createUserTangle(ObjectManager $manager, $userReference, $isOwner, $credit, $left) {
+        $userTangle = new UserTangle();
+        $userTangle->setUser($this->getReference("$userReference"));
+        $userTangle->setTangle($this->getReference('tangle'));
+        $userTangle->setTangleOwner($isOwner);
+        $userTangle->setCredit($credit);
+        if($left){
+            $userTangle->setLeavingDate(new DateTime('now'));
+        }
+        $manager->persist($userTangle);
+        $this->addReference('userTangle_' . "$userReference", $userTangle);
+    }
     
+    /**
+     * This function is used to create a request
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param String $userReference
+     * @param String $description
+     * @param integer $requestNumber
+     * @param integer $requestStatus
+     * @author HebaAamer
+     */
+    private function createRequest(ObjectManager $manager, $userReference, $description, $requestNumber, $requestStatus) {
+        $request = new Request();
+        $request->setUser($this->getReference("$userReference"));
+        $request->setTangle($this->getReference('tangle'));
+        $request->setDescription("$description");
+        $request->setStatus($requestStatus);
+        $request->setDate(new DateTime('now'));
+        
+        $manager->persist($request);
+        $this->addReference('request' . "$requestNumber", $request);
+    }
 }
