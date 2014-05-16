@@ -40,4 +40,50 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
                 
         $manager->flush();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 1;
+    }
+    
+    /**
+     * This function is used to create a user
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param String $name
+     * @param String $password
+     * @author HebaAamer
+     */
+    private function createUser(ObjectManager $manager, $name, $password) {
+        $user = new User();
+        $user->setName($name);
+        $user->setPassword($password);
+        
+        $manager->persist($user);
+        $this->addReference('user' . "$name", $user);
+    }
+    
+    /**
+     * This function is used to create a session
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param String $userReference
+     * @param String $sessionId
+     * @param boolean $expired
+     * @param String $regId
+     * @author HebaAamer
+     */
+    private function createSession(ObjectManager $manager, $userReference, $sessionId, $expired, $regId) {
+        $session = new Session();
+        $session->setUser($this->getReference("$userReference"));
+        $session->setSessionId("$sessionId");
+        $session->setExpired($expired);
+        $session->setCreated(new DateTime('now'));
+        $session->setDeviceType('Samsung S4');
+        $session->setRegId("$regId");
+        
+        $manager->persist($session);
+        $this->addReference('session_' . "$userReference", $session);
+    }
 }
