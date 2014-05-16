@@ -245,6 +245,7 @@ class NotificationCenter
         curl_setopt($request, CURLOPT_POSTFIELDS, json_encode($body));
         curl_setopt($request, CURLOPT_POST, true);
         curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($request,CURLOPT_TIMEOUT,2000);
         $result = curl_exec($request);
         $result = json_decode($result, true);
         return $result;
