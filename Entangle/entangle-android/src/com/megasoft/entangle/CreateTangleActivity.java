@@ -269,7 +269,6 @@ public class CreateTangleActivity extends Activity {
 	 * @author Mansour
 	 */
 	public void goToHomeHelper() {
-		startActivity(new Intent(this, MainActivity.class));
 		this.finish();
 	}
 
@@ -280,7 +279,6 @@ public class CreateTangleActivity extends Activity {
 	 * @author Mansour
 	 */
 	public void cancelRedirect(View view) {
-		startActivity(new Intent(this, MainActivity.class));
 		this.finish();
 	}
 }

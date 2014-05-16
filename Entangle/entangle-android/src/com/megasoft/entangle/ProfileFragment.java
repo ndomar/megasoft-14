@@ -1,10 +1,8 @@
 package com.megasoft.entangle;
 
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -15,12 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v4.app.FragmentTransaction;
-
 import com.megasoft.config.Config;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.ImageRequest;
@@ -32,97 +27,66 @@ import com.megasoft.requests.ImageRequest;
 public class ProfileFragment extends Fragment {
 	
 	/**
-	 * The Button that redirects to the EditProfileActivity
-	 */
-	//private Button edit;
-	
-	/**
-	 * The button that allows the user to leave the current tangle
-	 */
-	//private Button leave;
-	/**
 	 * The TextView that holds the user's name
 	 */
 	private TextView name;
-	
+
 	/**
 	 * The TextView that holds the user's description
 	 */
 	private TextView description;
-	
-	/**
-	 * The TextView that holds the user's credit/balance
-	 */
-	//private TextView balance;
-	
-	/**
-	 * The TextView that holds the user's birth date
-	 */
-	//private TextView birthDate;
-	
-	/**
-	 * The ImageView that indicates whether the user is verified
-	 */
-	//private ImageView verifiedView;
-	
+
 	/**
 	 * The ImageView that holds the user's profile picture
 	 */
-	private ImageView profilePictureView;
-	
-    
-    /**
-     * The preferences instance
-     */
+	private com.megasoft.entangle.views.RoundedImageView profilePictureView;
+
+	/**
+	 * The preferences instance
+	 */
 	private SharedPreferences settings;
-	
+
 	/**
 	 * The id of the logged in user
 	 */
 	private int loggedInId;
-	
+
 	/**
 	 * The tangle Id from which we were redirected
 	 */
 	private int tangleId;
-	
+
 	/**
 	 * The user Id whose profile we want to view
 	 */
 	private int userId;
-	
+
 	/**
 	 * The session Id of the logged in user
 	 */
-	
 	private String sessionId;
 
+	/**
+	 * The boolean specifying whether the profile is general or not
+	 */
+	private boolean isGeneral;
+	
 	private View view;
 
 	private FragmentActivity activity;
 	
-	/**
-	 * The FragmentTransaction that handles adding the fragments to the activity
-	 */
-	private android.support.v4.app.FragmentTransaction fragmentTransaction;
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-		this.view = inflater.inflate(R.layout.fragment_profile, container,false);
-		
+		this.view = inflater.inflate(R.layout.fragment_profile, container,false);	
 		this.settings = activity.getSharedPreferences(Config.SETTING, 0);
-		
-		
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		this.loggedInId = settings.getInt(Config.USER_ID, -1);
-		
-		this.tangleId = getArguments().getInt("tangleId", -1);
-		this.userId = getArguments().getInt("userId", -1);		
-		
+		this.tangleId = getArguments().getInt("tangleId", 2);
+		this.userId = getArguments().getInt("userId", -1);	
+		this.isGeneral = getArguments().getBoolean("general");
 		viewProfile();		
 		return view;
-
 	}
 
 	/**
@@ -131,15 +95,9 @@ public class ProfileFragment extends Fragment {
 	 * @author Almgohar
 	 */
 	public void viewProfile() {
-		//edit = (Button) view.findViewById(R.id.EditProfile);
-		//leave = (Button) view.findViewById(R.id.LeaveTangle);
 		name = (TextView) view.findViewById(R.id.nameView);
-		//balance = (TextView) view.findViewById(R.id.balanceView);
-		//birthDate = (TextView) view.findViewById(R.id.birthdateView);
 		description = (TextView) view.findViewById(R.id.descriptionView);
-		//verifiedView = (ImageView) view.findViewById(R.id.verifiedView);
-		profilePictureView = (ImageView)view.findViewById(R.id.profileImage);
-		
+		profilePictureView = (com.megasoft.entangle.views.RoundedImageView) view.findViewById(R.id.profileImage);		
 		viewInformation();
 	}
 	
@@ -149,51 +107,37 @@ public class ProfileFragment extends Fragment {
 	 * @author Almgohar
 	 */
 	public void viewInformation() {
-		String link = Config.API_BASE_URL_SERVER + "/tangle/" 
-	+ tangleId + "/user/" + userId + "/profile";
-		
+		String link;
+		if(isGeneral) {
+			link = Config.API_BASE_URL_SERVER + "/user/" + userId + "/profile";
+
+		} else {
+			link = Config.API_BASE_URL_SERVER + "/tangle/" + tangleId + "/user/" + userId + "/profile";
+
+		}
 		GetRequest request = new GetRequest(link) {
 			protected void onPostExecute(String response) {
 				if (this.getStatusCode() == 200	) {
 				try {
-					JSONObject jSon;
-					jSon = new JSONObject(response);
-					JSONArray transactions = jSon.getJSONArray("transactions");
-					JSONObject information =  jSon.getJSONObject("information");
-					viewTransactions(transactions);
+					JSONObject information;
+					information = new JSONObject(response);
 					name.setText(information.getString("name"));
-					description.setText("Description: " + information.getString("description"));
-					//balance.setText("Credit: " + information.getString("credit") + " points");
-					//birthDate.setText("Birthdate: " + information.getJSONObject("birthdate").getString("date"));
+					description.setText(information.getString("description"));
 					viewProfilePicture(information.getString("photo"));
-					boolean verified = information.getBoolean("verified");
-					if (verified) {
-							//verifiedView.setVisibility(View.VISIBLE);
-							} 
-					if(loggedInId == userId) {
-						//edit.setVisibility(View.VISIBLE);
-						//leave.setVisibility(View.VISIBLE);
-						
-//						edit.setOnClickListener(new View.OnClickListener() {
-//							@Override
-//				            public void onClick(View v) {
-//				            	goToEditProfile();
-//				            	}
-//				            });
-//						leave.setOnClickListener(new View.OnClickListener() {
-//							@Override
-//							public void onClick(View v) {
-//								 leaveTangle();
-//
-//							}
-//						});
-						}
+					
+					if (information.getBoolean("verified")) {
+						((ImageView)view.findViewById(R.id.verified)).setVisibility(View.VISIBLE);
+					}
+					
+					if (activity instanceof ProfileActivity) {
+						activity.setTitle(information.getString("name"));
+					}
+					
 					} catch (JSONException e) {
 						e.printStackTrace();
 						}
 				} else {
 					Log.e("test", this.getErrorMessage());
-				
 					Toast toast = Toast.makeText(activity.getApplicationContext(),"Some error happened.",Toast.LENGTH_SHORT);
 					toast.show();
 					}
@@ -204,56 +148,12 @@ public class ProfileFragment extends Fragment {
 	}
 	
 	/**
-	 * Gets the user's transactions from a JSONArray and views them
-	 * @param JSONArray transactions
-	 * @author Almgohar
-	 */
-	public void viewTransactions(JSONArray transactions) {
-		for(int i = 0; i < transactions.length(); i++) {
-			try {
-				JSONObject transaction = transactions.getJSONObject(i);
-				if(transaction != null) {
-					addTransaction(transaction);
-				}
-				
-				} catch (JSONException e) {
-					e.printStackTrace();
-					}
-			}
-		}
-	
-	/**
-	 * Adds the transaction to the layout
-	 * @param JSONObject transaction
-	 * @author Almgohar
-	 */
-	private void addTransaction(JSONObject transaction) {
-//		try {
-//			String request = transaction.getString("requestDescription");
-//			String requester = transaction.getString("requesterName");
-//			int requesterId = transaction.getInt("requesterId");
-//			int requestId = transaction.getInt("requestId");
-//			int amount = transaction.getInt("amount");
-//					
-//			fragmentTransaction = getFragmentManager().beginTransaction();
-//			TransactionsFragment transactionFragment = TransactionsFragment
-//					.createInstance(requester, request, amount, requestId, requesterId, tangleId);
-//			fragmentTransaction.add(R.id.transactions_layout, transactionFragment);
-//			fragmentTransaction.commit();
-//		} catch (JSONException e) {
-//			e.printStackTrace();
-//		}
-			
-	}
-	
-	/**
 	 * Views the user's profile picture
 	 * @param String imageURL
 	 * @author Almgohar
 	 */ 
 	public void viewProfilePicture(String imageURL) {
-            ImageRequest image = new ImageRequest(profilePictureView);
-            image.execute(imageURL);
+            new ImageRequest(imageURL,getActivity().getApplicationContext(),profilePictureView);
 	}
 	
 	/**
@@ -274,24 +174,9 @@ public class ProfileFragment extends Fragment {
 		
 	}
 	
-	/**
-	 * Redirects to OfferActivity
-	 * @author Almgohar
-	 */
-	public void goToOffer(int offerId) {
-		Intent offer = new Intent(activity,OfferActivity.class);
-		offer.putExtra("offer id", offerId);
-		startActivity(offer);
-	}
-	
 	@Override
-	public void onAttach(Activity activity) {
-		
+	public void onAttach(Activity activity) {	
 	    this.activity = (FragmentActivity) activity;
-	    super.onAttach(this.activity);
-		
+	    super.onAttach(this.activity);	
 	}
-	
-
-
 }

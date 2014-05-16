@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/transaction"
+    android:layout_height="wrap_content" >
+
+    <com.megasoft.entangle.views.RoundedImageView
+        android:id="@+id/requester_avatar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/marginMedium"
+        android:layout_marginTop="@dimen/marginMedium"
+        android:layout_marginRight="@dimen/marginSmall"
+        android:layout_toRightOf="@id/horizental"
+        android:src="@drawable/ic_action_person" />
+
+    <TextView
+        android:id="@+id/offerer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/requester_avatar"
+        android:layout_marginTop="@dimen/marginMedium"
+        android:layout_toRightOf="@id/requester_avatar"
+        android:textSize="@dimen/textMedium" />
+
+    <TextView
+        android:id="@+id/transaction_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/offerer"
+        android:layout_toRightOf="@id/offerer"
+        android:text="@string/transaction_description"
+        android:textSize="@dimen/textMedium" />
+
+    <TextView
+        android:id="@+id/requester"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/offerer"
+        android:layout_marginTop="@dimen/marginSmall"
+        android:layout_toRightOf="@id/transaction_description"
+        android:textSize="@dimen/textMedium" />
+
+    <TextView
+        android:id="@+id/transaction_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/requester"
+        android:layout_marginRight="@dimen/marginMedium"
+        android:layout_marginLeft="@dimen/marginSmall"
+        android:layout_alignParentRight="true" />
+
+</RelativeLayout>
