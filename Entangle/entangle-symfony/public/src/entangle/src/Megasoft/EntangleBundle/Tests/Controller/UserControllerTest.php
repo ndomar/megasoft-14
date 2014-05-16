@@ -569,6 +569,6 @@ class UserControllerTest extends EntangleTestCase {
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), 'Password field is empty');
 
     }
-    
+
 }
 
