@@ -67,23 +67,12 @@ public class ClaimRenderingActivity extends Activity {
 	 * String holds the shared preferences
 	 */
 	private SharedPreferences settings;
-	/**
-	 * The top menu
-	 */
-	private Menu itemMenu;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setData();
 		setContentView(R.layout.activity_claim_render);
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.unfreeze, menu);
-		itemMenu = menu;
-		return true;
 	}
 	
 	/**
