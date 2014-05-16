@@ -291,5 +291,33 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->createUserTangle($manager, 'userAdel', false, 0, true);
     }
     
+    /**
+     * This function is used to make testing requests
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
+    private function makeRequests(ObjectManager $manager){
+        $this->createRequest($manager, 'userMohamed', 'i want to buy a car', 1, 1);
+        $this->createRequest($manager, 'userMohamed', 'i want to travel to London', 2, 0);
+        $this->createRequest($manager, 'userMohamed', 'i want to go to the doctor', 3, 2);
+        $this->createRequest($manager, 'userAly', 'i want to buy a book', 4, 0);
+        $this->createRequest($manager, 'userAly', 'i want to have a reminder software', 5, 2);
+        $this->createRequest($manager, 'userAly', 'i want to have a ride tomorrow', 6, 1);
+    }
+    
+    /**
+     * This function is used to make testing offers
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
+    private function makeOffers(ObjectManager $manager){
+        $this->createOffer($manager, 'userAly', 'i can help', 1, 'request1', 1);
+        $this->createOffer($manager, 'userAly', 'i want to help', 2, 'request2', 0);
+        $this->createOffer($manager, 'userAly', 'i can do this for you', 3, 'request3', 2);
+        $this->createOffer($manager, 'userMohamed', 'i will help you', 4, 'request4', 3);
+        $this->createOffer($manager, 'userMohamed', 'i can help you', 5, 'request5', 2);
+        $this->createOffer($manager, 'userMohamed', 'this is easy', 6, 'request6', 1);
+    }
+    
     
 }
