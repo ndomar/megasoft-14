@@ -153,10 +153,14 @@
         <service android:name="com.megasoft.notifications.GcmIntentService" />
         <!-- end of GCM manifest -->
         <activity
+            android:name="com.megasoft.entangle.MyRequestsFragment"
+            android:label="@string/title_activity_my_requests" >
+        </activity>
+        <activity
             android:name="com.megasoft.entangle.ForgetPasswordActivity"
             android:label="@string/title_activity_forget_password" >
-		</activity>
-		<activity
+        </activity>
+        <activity
             android:name="com.megasoft.entangle.MyOffersFragment"
             android:label="@string/title_activity_my_offers_fragment" >
         </activity>
