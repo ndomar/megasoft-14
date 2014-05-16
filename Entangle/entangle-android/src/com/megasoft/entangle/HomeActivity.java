@@ -1,16 +1,22 @@
 package com.megasoft.entangle;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.megasoft.config.Config;
 import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
+import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.ImageRequest;
-import android.content.SharedPreferences;
 
+import android.content.SharedPreferences;
 import android.app.ActionBar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
@@ -19,6 +25,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -56,10 +63,9 @@ public class HomeActivity extends FragmentActivity {
 		setContentView(R.layout.activity_home);
 		
 		
-		
 		initNavigationDrawer();
 		initializeDrawerToggle();
-	
+		getNotificationCount();
 	}
 	
 	/**
@@ -231,8 +237,55 @@ public class HomeActivity extends FragmentActivity {
 		startActivity(new Intent(this, CreateTangleActivity.class));
 	}
 	
+	/**
+	 * Redirects to the notification Stream
+	 * @param view
+	 * @author Mohamed Ayman
+	 */
 	public void goToNotifications(View view) {
 		startActivity(new Intent(this , NotificationStream.class));
+		getNotificationCount();
+	}
+	
+	/**
+	 * Get the count of the new notifications
+	 * 
+	 * @author Mohamed Ayman
+	 */
+	public void getNotificationCount() {
+		int userId = getSharedPreferences(Config.SETTING, 0).getInt(Config.USER_ID, 1);
+		String link = Config.API_BASE_URL + "/user/" + userId + "/notificationcount";
+		GetRequest request = new GetRequest(link) {
+			@Override
+			protected void onPostExecute(String response) {
+				if (this.getStatusCode() == 200) {
+					try {
+						JSONObject json = new JSONObject(response);
+						int count = json.getInt("count");
+						Button notificationsButton = (Button) findViewById(R.id.notificationsButton);
+						if(count != 0) {
+							notificationsButton.setText("Notifications(" + count + ")");
+							notificationsButton.setTextColor(Color.WHITE);
+						} else {
+							notificationsButton.setText("Notifications");
+							notificationsButton.setTextColor(Color.LTGRAY);
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				} else {
+					Toast toast = Toast
+							.makeText(
+									getApplicationContext(),
+									this.getStatusCode() + "Error "
+											+ this.getStatusCode(),
+									Toast.LENGTH_SHORT);
+					toast.show();
+				}
+			}
+		};
+		request.addHeader("X-SESSION-ID", Config.SESSION_ID);
+		request.execute();
 	}
 
 }

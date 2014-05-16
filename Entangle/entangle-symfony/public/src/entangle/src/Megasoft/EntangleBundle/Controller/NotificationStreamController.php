@@ -317,4 +317,21 @@ class NotificationStreamController extends Controller
         return new Response("Ok" , 200);
     }
 
+    /**
+     * @param $userId
+     * @return JsonResponse
+     * Get the number of new notifications
+     * @author Mohamed Ayman
+     */
+    public function notificationCountAction($userId)
+    {
+        $notificationRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Notification');
+        $notification = $notificationRepo->findBy(array('userId' => $userId , 'seen' => false));
+        $count = count($notification);
+        $response = new JsonResponse();
+        $response->setData(array('count' => $count));
+        $response->setStatusCode(200);
+        return $response;
+    }
+
 }

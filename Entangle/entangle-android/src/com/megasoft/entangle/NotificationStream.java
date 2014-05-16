@@ -41,7 +41,7 @@ public class NotificationStream extends FragmentActivity {
 		setContentView(R.layout.activity_notification);
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
-		this.loggedInId = settings.getInt(Config.USER_ID, 1);
+		this.loggedInId = settings.getInt(Config.USER_ID, 0);
 		generate();
 	}
 	
@@ -67,7 +67,6 @@ public class NotificationStream extends FragmentActivity {
 					try {
 						JSONArray json = new JSONArray(response);
 						viewNotifications(json);
-						//viewNotificationsTest();
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}

@@ -278,3 +278,7 @@ set_seen:
     defaults: { _controller: MegasoftEntangleBundle:NotificationStream:setSeen}
     methods: [PUT]
 
+get_count:
+    pattern: /user/{userId}/notificationcount
+    defaults: { _controller: MegasoftEntangleBundle:NotificationStream:notificationCount}
+    methods: [GET]

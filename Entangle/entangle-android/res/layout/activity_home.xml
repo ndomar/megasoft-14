@@ -56,10 +56,10 @@
     	android:background="@color/lightGray" />
         
         <Button 
-            android:id="@+id/notificationsStream"
+            android:id="@+id/notificationsButton"
             android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:text="@string/notifications"
+	        android:background="@color/darkGray"
 	        android:onClick="goToNotifications" />
                 
         <LinearLayout 
