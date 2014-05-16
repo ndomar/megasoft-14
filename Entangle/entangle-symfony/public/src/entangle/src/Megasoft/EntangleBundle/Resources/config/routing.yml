@@ -1,3 +1,14 @@
+
+claimRender:
+    pattern: /claimReport/{claimId}/claim/{offerId}/offer
+    defaults: { _controller: MegasoftEntangleBundle:Claim:claimRender }
+    methods: [GET]
+    
+createClaim:
+    pattern: /claim/{requestId}/sendClaim/{offerId}/user
+    defaults: { _controller: MegasoftEntangleBundle:Claim:createClaim }
+    methods: [POST]
+
 megasoft_entangle_homepage:
     pattern:  /hello/{hello}
     defaults: { _controller: MegasoftEntangleBundle:Default:index }
@@ -61,7 +72,7 @@ withdraw_offer:
     methods: [DELETE]
     requirements:
         offerId: \d+
-
+        
 getMails:
     pattern: /tangleOwnerAndClaimerMail/{requestId}/claim
     defaults: { _controller: MegasoftEntangleBundle:Claim:getMails }

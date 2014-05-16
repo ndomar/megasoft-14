@@ -20,6 +20,7 @@ import com.megasoft.config.Config;
 import com.megasoft.entangle.R;
 import com.megasoft.entangle.StreamRequestFragment;
 import com.megasoft.requests.GetRequest;
+import com.megasoft.utils.UI;
 
 public class MyRequestsFragment extends Fragment {
 
@@ -118,10 +119,10 @@ public class MyRequestsFragment extends Fragment {
 						}
 					}
 				} else {
-					Toast.makeText(
+					UI.makeToast(
 							activity.getBaseContext(),
 							"Sorry, There is no requests with the specified options",
-							Toast.LENGTH_LONG).show();
+							Toast.LENGTH_LONG);
 				}
 			}
 		} catch (JSONException e) {
@@ -247,9 +248,9 @@ public class MyRequestsFragment extends Fragment {
 					cleanTheLayouts();
 					setTheLayout(res);
 				} else {
-					Toast.makeText(activity.getBaseContext(),
+					UI.makeToast(activity.getBaseContext(),
 							"Sorry, There is a problem in loading the stream",
-							Toast.LENGTH_LONG).show();
+							Toast.LENGTH_LONG);
 				}
 			}
 		};

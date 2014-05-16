@@ -122,6 +122,9 @@
             android:label="@string/title_activity_change_offer_price" >
         </activity>
         <activity
+            android:name="com.megasoft.entangle.ClaimRenderingActivity">
+        </activity>
+        <activity
             android:name="com.megasoft.entangle.viewtanglelsit.TangleStreamActivity"
             android:label="@string/title_activity_tangle_stream" >
         </activity>
