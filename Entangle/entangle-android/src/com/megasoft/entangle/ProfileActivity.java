@@ -29,6 +29,45 @@ public class ProfileActivity extends FragmentActivity {
 	private SharedPreferences settings;
 	private String sessionId;
 	private ScrollView scrollView;
+	Activity activity = null;
+	MenuItem deleteItem = null;
+	boolean isTangleOwner = false;
+	
+	public MenuItem getDeleteItem() {
+		return deleteItem;
+	}
+
+	public void setDeleteItem(MenuItem deleteItem) {
+		this.deleteItem = deleteItem;
+	}
+
+	public boolean isTangleOwner() {
+		return isTangleOwner;
+	}
+
+	public void setTangleOwner(boolean isTangleOwner) {
+		this.isTangleOwner = isTangleOwner;
+	}
+	
+	public Activity getActivity() {
+		return activity;
+	}
+
+	public void setActivity(Activity activity) {
+		this.activity = activity;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public int getTangleId() {
+		return tangleId;
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
