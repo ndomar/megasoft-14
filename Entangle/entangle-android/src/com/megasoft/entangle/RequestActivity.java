@@ -185,6 +185,8 @@ public class RequestActivity extends FragmentActivity {
 			args.putString("deadline",json.getJSONObject("deadline").getString("date"));
 		}
 		args.putString("status",requestStatusCodes[Integer.parseInt(json.getString("status"))]);
+//		args.putDouble("longitude", json.getDouble("longitude"));
+//		args.putDouble("latidue", json.getDouble("latidue"));
 		requestFragmet.setArguments(args);
 		
 		getSupportFragmentManager().beginTransaction().add(R.id.request_entry_layout,requestFragmet).commit();
