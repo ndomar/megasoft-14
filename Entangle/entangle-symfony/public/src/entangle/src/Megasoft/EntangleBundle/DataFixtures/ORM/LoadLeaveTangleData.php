@@ -157,4 +157,45 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $manager->persist($request);
         $this->addReference('request' . "$requestNumber", $request);
     }
+    
+    /**
+     * This function is used to create an offer
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param String $userReference
+     * @param String $description
+     * @param integer $offerNumber
+     * @param String $requestReference
+     * @param integer $offerStatus
+     * @author HebaAamer
+     */
+    private function createOffer(ObjectManager $manager, $userReference, $description, $offerNumber, $requestReference, $offerStatus) {
+        $offer = new Offer();
+        $offer->setUser($this->getReference("$userReference"));
+        $offer->setRequest($this->getReference("$requestReference"));
+        $offer->setDescription($description);
+        $offer->setRequestedPrice(25);
+        $offer->setStatus($offerStatus);
+        $offer->setDate(new DateTime('now'));
+        
+        $manager->persist($offer);
+        $this->addReference('offer' . "$offerNumber", $offer);
+    }
+    
+    /**
+     * This function is used to create a transaction
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param String $offerReference
+     * @author HebaAamer
+     */
+    private function createTransaction(ObjectManager $manager, $offerReference) {
+        $transaction = new Transaction();
+        $transaction->setOffer($this->getReference("$offerReference"));
+        $transaction->setDate(new DateTime('now'));
+        $transaction->setFinalPrice(30);
+        
+        $manager->persist($transaction);
+        $this->addReference("$offerReference" . 'Transaction', $transaction);
+    }
+    
+    
 }
