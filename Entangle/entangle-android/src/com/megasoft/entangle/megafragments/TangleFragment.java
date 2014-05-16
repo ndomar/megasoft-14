@@ -164,7 +164,7 @@ public class TangleFragment extends Fragment {
 	 * @param res
 	 *            , is the response string of the stream request
 	 */
-	private void setTheLayout(String res) {
+	private void setTheLayout(String res, boolean isLoadMore) {
 		try {
 			JSONObject response = new JSONObject(res);
 			if (response != null) {
@@ -172,7 +172,9 @@ public class TangleFragment extends Fragment {
 				JSONArray requestArray = response.getJSONArray("requests");
 				if (count > 0 && requestArray != null) {
 					LinearLayout layout = (LinearLayout) activity.findViewById(R.id.streamLayout);
-					layout.removeAllViews();
+					if (!isLoadMore) {
+						layout.removeAllViews();
+					}
 					for (int i = 0; i < count && i < requestArray.length(); i++) {
 						JSONObject request = requestArray.getJSONObject(i);
 						if (request != null) {
@@ -182,7 +184,7 @@ public class TangleFragment extends Fragment {
 				} else {
 					Toast.makeText(
 							activity.getBaseContext(),
-							"Sorry, There is no requests with the specified options",
+							getResources().getString(R.string.no_more_requests),
 							Toast.LENGTH_LONG).show();
 				}
 			}
@@ -267,7 +269,7 @@ public class TangleFragment extends Fragment {
 			this.lastQuery = query;
 		}
 		sessionId = activity.getSharedPreferences(Config.SETTING, 0).getString(Config.SESSION_ID, "");
-		url += "limit=" + defaultRequestLimit;
+		url += "?limit=" + defaultRequestLimit;
 		if (isLoadMore) {
 			query = lastQuery;
 			url += "&lastDate=" + lastDate.replace(" ", "$20");
@@ -283,7 +285,7 @@ public class TangleFragment extends Fragment {
 					if (!isLoadMore) {
 						layout.removeAllViews();
 					}
-					setTheLayout(res);
+					setTheLayout(res, isLoadMore);
 				} else {
 					Toast.makeText(activity.getBaseContext(),
 							"Sorry, There is a problem in loading the stream",
