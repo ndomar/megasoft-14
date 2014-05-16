@@ -132,6 +132,7 @@ public class MemberListFragment extends Fragment {
 		searchBar = (EditText) view.findViewById(R.id.search_field);
 		noMembers = new TextView(getActivity().getBaseContext());
 		noMembers.setText(getString(R.string.member_not_found));
+		noMembers.setVisibility(View.GONE);
 		getMemberListView().addView(noMembers);
 		noMembers.setVisibility(View.GONE);
 		fetchMembers();
@@ -165,18 +166,12 @@ public class MemberListFragment extends Fragment {
 	 */
 	private void fetchMembers() {
 
-		final AlertDialog ad = new AlertDialog.Builder(getActivity()).create();
-		ad.setCancelable(false);
-		ad.setMessage("Loading ...");
-		ad.show();
-
 		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
 				+ "/tangle/" + getTangleId() + "/user") {
 			public void onPostExecute(String response) {
 				if(isDestroyed){
 					return;
 				}
-				ad.dismiss();
 				Log.e("test", this.getStatusCode() + ""); // ///////////////////////////////
 
 				if (!this.hasError() && this.getStatusCode() == 200) {
