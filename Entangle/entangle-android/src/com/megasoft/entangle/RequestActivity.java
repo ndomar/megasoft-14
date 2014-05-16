@@ -4,8 +4,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.integer;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,8 +18,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.megasoft.config.Config;
+import com.megasoft.requests.DeleteRequest;
 import com.megasoft.requests.GetRequest;
 
 public class RequestActivity extends FragmentActivity {
@@ -79,7 +84,7 @@ public class RequestActivity extends FragmentActivity {
 	/**
 	 * this is for checking if I have my own request open
 	 */
-	boolean myRequest = false;
+	boolean isMyRequest = false;
 	/**
 	 * this is an array to match the request status code to it's worded
 	 * equivalent
@@ -90,7 +95,43 @@ public class RequestActivity extends FragmentActivity {
 	 */
 	String[] offerStatusCodes = { "PENDING", "DONE", "ACCEPTED", "FAILED",
 			"REJECTED" };
+	
+	MenuItem deleteItem = null;
 
+	Activity activity = null;
+
+	public Activity getActivity() {
+		return activity;
+	}
+
+	public void setActivity(Activity activity) {
+		this.activity = activity;
+	}
+
+	public MenuItem getDeleteItem() {
+		return deleteItem;
+	}
+
+	public void setDeleteItem(MenuItem deleteItem) {
+		this.deleteItem = deleteItem;
+	}
+
+	public void setIsMyRequest(boolean myRequest){
+		this.isMyRequest = myRequest;
+	}
+	
+	public boolean getIsMyRequest(){
+		return this.isMyRequest;
+	}
+	
+	public int getRequestId(){
+		return this.requestId;
+	}
+	
+	public String getSessionId(){
+		return this.sessionId;
+	}
+	
 	/**
 	 * this calls fillRequestDetails() to generate the request preview
 	 * 
@@ -103,10 +144,10 @@ public class RequestActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_request);
-		
+		setActivity(this);
 		Intent intent = getIntent();
-		this.requestId = intent.getIntExtra("requestId", -1);
-		this.tangleId = intent.getIntExtra("tangleId", -1);
+		this.requestId = intent.getExtras().getInt("requestId", -1);
+		this.tangleId = intent.getExtras().getInt("tangleId", -1);
 		 REQUEST = "/tangle/" + tangleId + "/request/" + requestId;
 		
 		requestLayout = (LinearLayout) this.findViewById(R.id.request_entry_layout);
@@ -173,7 +214,6 @@ public class RequestActivity extends FragmentActivity {
 	 * @author sak93
 	 */
 	public void addRequestFields(JSONObject json) throws JSONException {
-		
 		RequestEntryFragment requestFragmet = new RequestEntryFragment();
 		Bundle args = new Bundle();
 		args.putString("description",json.getString("description"));
@@ -187,7 +227,14 @@ public class RequestActivity extends FragmentActivity {
 		args.putString("status",requestStatusCodes[Integer.parseInt(json.getString("status"))]);
 		requestFragmet.setArguments(args);
 		
+		setIsMyRequest(Integer.parseInt(json.getString("MyRequest")) == 1);
+		if(getIsMyRequest() && getDeleteItem() != null){
+			getDeleteItem().setEnabled(true);
+			getDeleteItem().setVisible(true);
+		}
+		
 		getSupportFragmentManager().beginTransaction().add(R.id.request_entry_layout,requestFragmet).commit();
+		
 	}
 
 	/**
@@ -222,12 +269,6 @@ public class RequestActivity extends FragmentActivity {
 			
 			getSupportFragmentManager().beginTransaction().add(R.id.offer_entries_layout,offerFragmet).commit();
 		}
-		
-//		if (myRequest == true) {
-//			Button deleteRequest = new Button(this);
-//			deleteRequest.setText("Delete");
-//			layout.addView(deleteRequest);
-//		}
 	}
 
 	/**
@@ -249,12 +290,40 @@ public class RequestActivity extends FragmentActivity {
 		return tags;
 
 	}
+	
+	/*
+	 * Sends a delete request to the server to delete the viewed request
+	 * @author OmarElAzazy
+	 */
+	public void sendDeleteRequest(){
+		DeleteRequest deleteRequest = new DeleteRequest(Config.API_BASE_URL + 
+														"/request/" + 
+														getRequestId()){
+			protected void onPostExecute(String response){
+				if (!this.hasError()){
+					getActivity().finish();
+				} else{
+					toasterShow("Something went wrong, Please try again.");
+				}
+			}
+		};
+		
+		deleteRequest.addHeader(Config.API_SESSION_ID, getSessionId());
+		deleteRequest.execute();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-
+		
 		getMenuInflater().inflate(R.menu.request_information, menu);
+		
+		setDeleteItem(menu.findItem(R.id.deleteRequestOption));
+		if(getIsMyRequest()){
+			getDeleteItem().setEnabled(true);
+			getDeleteItem().setVisible(true);
+		}
+		
 		return true;
 	}
 	
@@ -262,17 +331,70 @@ public class RequestActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	     
 	 	 switch (item.getItemId()) {
+		 	case R.id.deleteRequestOption:
+		 		this.showDialog(0);
+	 	 		return true;
+ 	 		
 	 	 	case R.id.createOffer:
 	 	 		Intent intent = new Intent(this, CreateOfferActivity.class);
 	 	        intent.putExtra("tangleId", this.tangleId);
 	 	        intent.putExtra("requestId", this.requestId);
 	 	        startActivity(intent);
 	 	        return true;
-	 	 		
+	 	 	
 	 	    default:
 	 	        return super.onOptionsItemSelected(item);
 	 	 }
 
+	}
+	
+	/*
+	 * Shows a message in a toaster
+	 * @author Omar ElAzazy
+	 */
+	public void toasterShow(String message){
+		Toast.makeText(getActivity().getBaseContext(),
+				message,
+				Toast.LENGTH_LONG).show();
+	}
+	
+	/**
+	 * This method is called when showDialog(int) method is called and it is
+	 * responsible for creating a dialog to make sure that the user wants to
+	 * leave the tangle
+	 * 
+	 * @param dialogId
+	 *            , is an int that corresponds to the id of the dialog being
+	 *            created but it is not used in this situation
+	 * 
+	 * @author OmarElAzazy
+	 */
+	@Override
+	protected Dialog onCreateDialog(int dialogId) {
+		Builder dialogBuilder = new AlertDialog.Builder(this);
+		if (dialogId == 0) {
+			dialogBuilder.setTitle("Deleting the request");
+			dialogBuilder
+					.setMessage("Are you sure you want to delete this request ?");
+			dialogBuilder.setPositiveButton("Yes",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							sendDeleteRequest();
+							dialog.dismiss();
+						}
+					});
+			dialogBuilder.setNegativeButton("No",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
+		}
+		return dialogBuilder.create();
 	}
 
 }

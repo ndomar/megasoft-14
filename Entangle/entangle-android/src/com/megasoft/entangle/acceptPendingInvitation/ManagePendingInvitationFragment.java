@@ -13,6 +13,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,8 @@ public class ManagePendingInvitationFragment extends Fragment {
 	int pendingInvitationCount;
 
 	private View view;
+
+	private boolean isDestroyed;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,6 +96,9 @@ public class ManagePendingInvitationFragment extends Fragment {
 		}
 		GetRequest request = new GetRequest(Config.API_BASE_URL + "/tangle/"+tangleId+"/pending-invitations"){
 			public void onPostExecute(String response) {
+				if(isDestroyed){
+					return;
+				}
 				if(this.getStatusCode() == 200){
 					showData(response);
 				}else{
@@ -204,6 +210,9 @@ public class ManagePendingInvitationFragment extends Fragment {
 							Config.API_BASE_URL_SERVER + "/tangle/" + tangleId
 									+ "/reset") {
 						protected void onPostExecute(String response) {
+							if(isDestroyed){
+								return;
+							}
 							if (this.getStatusCode() == 200) {
 								Toast.makeText(getActivity(),
 										"Tangle is reset !", Toast.LENGTH_SHORT)
@@ -232,5 +241,11 @@ public class ManagePendingInvitationFragment extends Fragment {
 		builder.setMessage("Are you sure?")
 				.setPositiveButton("Yes", dialogClickListener)
 				.setNegativeButton("No", dialogClickListener).show();
+	}
+	
+	
+	public void onPause(){
+		super.onPause();
+		isDestroyed = true;
 	}
 }
