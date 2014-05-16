@@ -165,6 +165,8 @@ public class OfferActivity extends FragmentActivity {
 	 */
 	private Menu itemMenu;
 
+	private boolean isDestroyed;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -250,6 +252,9 @@ public class OfferActivity extends FragmentActivity {
 		GetRequest request = new GetRequest(link) {
 			@Override
 			protected void onPostExecute(String response) {
+				if(isDestroyed){
+					return;
+				}
 				if (this.getStatusCode() == 200) {
 					try {
 						JSONObject jSon = new JSONObject(response);
@@ -420,7 +425,9 @@ public class OfferActivity extends FragmentActivity {
 
 			@Override
 			protected void onPostExecute(String response) {
-
+				if(isDestroyed){
+					return;
+				}
 				try {
 
 					if (this.getStatusCode() == 200) {
@@ -479,6 +486,9 @@ public class OfferActivity extends FragmentActivity {
 				PostRequest request = new PostRequest(Config.API_BASE_URL
 						+ ACCEPT) {
 					protected void onPostExecute(String response) {
+						if(isDestroyed){
+							return;
+						}
 						status = this.getStatusCode();
 						if (status == 201) {
 							acceptOffer.setVisibility(View.INVISIBLE);
@@ -566,6 +576,9 @@ public class OfferActivity extends FragmentActivity {
 		PostRequest request = new PostRequest(Config.API_BASE_URL + markAsDone
 				+ Offer + Offerid) {
 			protected void onPostExecute(String response) {
+				if(isDestroyed){
+					return;
+				}
 				if (this.getStatusCode() == 201) {
 					Toast success = Toast.makeText(getApplicationContext(),
 							R.string.mark, Toast.LENGTH_LONG);
@@ -600,6 +613,9 @@ public class OfferActivity extends FragmentActivity {
 
 			@Override
 			protected void onPostExecute(String response) {
+				if(isDestroyed){
+					return;
+				}
 				if (this.getStatusCode() == 201) {
 					comment.setText("");
 					viewOffer();
@@ -625,6 +641,11 @@ public class OfferActivity extends FragmentActivity {
 		request.addHeader(Config.API_SESSION_ID, sessionId);
 		request.setBody(body);
 		request.execute();
+	}
+	
+	public void onPause(){
+		super.onPause();
+		isDestroyed = true;
 	}
 
 }

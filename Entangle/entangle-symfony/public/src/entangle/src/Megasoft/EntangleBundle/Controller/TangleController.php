@@ -13,7 +13,6 @@ use Megasoft\EntangleBundle\Entity\InvitationCode;
 use Megasoft\EntangleBundle\Entity\InvitationMessage;
 use Megasoft\EntangleBundle\Entity\PendingInvitation;
 use Megasoft\EntangleBundle\Entity\UserTangle;
-use Megasoft\EntangleBundle\Entity\Session;
 
 class TangleController extends Controller {
 
@@ -940,6 +939,7 @@ class TangleController extends Controller {
                 $userTangleRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:UserTangle");
                 $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'userId' => $userId,));
                 $userTangle->setCredit(0);
+
                 $this->deleteRequests($tangleId, $userId);
                 $this->deleteClaims($tangleId, $userId);
             }
@@ -958,18 +958,13 @@ class TangleController extends Controller {
      */
     private function deleteRequests($tangleId, $userId) {
         $requestRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Request");
-        $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
-        $user = $userRepo->find($userId);
         $requests = $requestRepo->findBy(array('tangleId' => $tangleId, 'userId' => $userId,));
         if ($requests != null) {
             foreach ($requests as $request) {
                 $request->setDeleted(1);
-                if ($user != null) {
-                    $user->removeRequest($request);
-                }
                 $this->getDoctrine()->getManager()->flush();
                 $requestId = $request->getId();
-                $this->deleteOffers($requestId, $userId);
+                $this->deleteOffers($requestId);
             }
         }
     }
@@ -977,21 +972,18 @@ class TangleController extends Controller {
     /**
      * delete offers on specific request
      * @param integer $requestId
-     * @param integer $userId
      * @return none
      * @author Salma Khaled
      */
-    private function deleteOffers($requestId, $userId) {
+    private function deleteOffers($requestId) {
         $offerRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Offer");
-        $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
-        $user = $userRepo->find($userId);
-        $offers = $offerRepo->findBy(array('requestId' => $requestId, 'userId' => $userId,));
+        $offers = $offerRepo->findBy(array('requestId' => $requestId,));
         if ($offers != null) {
             foreach ($offers as $offer) {
                 $offer->setDeleted(1);
-                if ($user != null) {
-                    $user->removeOffer($offer);
-                }
+                $offerId = $offer->getId();
+                $this->deleteTransactions($offerId);
+                $this->deleteMessages($offerId);
                 $this->getDoctrine()->getManager()->flush();
             }
         }
@@ -1006,17 +998,42 @@ class TangleController extends Controller {
      */
     private function deleteClaims($tangleId, $userId) {
         $claimRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Claim");
-        $userRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:User");
-        $user = $userRepo->find($userId);
         $claims = $claimRepo->findBy(array('tangleId' => $tangleId, 'claimerId' => $userId,));
         if ($claims != null) {
             foreach ($claims as $claim) {
                 $claim->setDeleted(1);
-                if ($user != null) {
-                    $user->removeClaim($claim);
-                }
                 $this->getDoctrine()->getManager()->flush();
             }
+        }
+    }
+
+    /**
+     * remove transactions for specific offer
+     * @param integer $offerId
+     * @return none
+     * @author Salma Khaled
+     */
+    private function deleteTransactions($offerId) {
+        $transactionRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Transaction");
+        $transaction = $transactionRepo->findOneBy(array('offerId' => $offerId,));
+        if ($transaction != null) {
+            $transaction->setDeleted(1);
+        }
+        $this->getDoctrine()->getManager()->flush();
+    }
+
+    /**
+     * remove messages on specific offer
+     * @param integer $offerId
+     * @return none
+     * @author Salma Khaled
+     */
+    private function deleteMessages($offerId) {
+        $messagesRepo = $this->getDoctrine()->getRepository("MegasoftEntangleBundle:Message");
+        $messages = $messagesRepo->findBy(array('offerId' => $offerId,));
+        foreach ($messages as $message) {
+            $message->setDeleted(1);
+            $this->getDoctrine()->getManager()->flush();
         }
     }
 
