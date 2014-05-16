@@ -44,12 +44,12 @@
     <string name="requesterEmail">Requester Email: </string>
     <string name="description">What do you need ?</string>
     <string name="post">Create</string>
-    <string name="termsOfUse">\tBy Creating this claim you have agreed on Entangle \t</string>
+    <string name="termsOfUse">By Creating This Claim You Have Agreed on Entangle terms of use</string>
     <string name="Tags">Tags</string>
     <string name="tagHint">food, tech, living</string>
     <string name="priceHint">5</string>
+    <string name="resolve">Resolve</string>
     <string name="hello_world">Hello world!</string>
-    <string name="link"><a href="https://www.google.com/">terms of use</a></string>
     <string name="requestDescription">I want someone to help me change the world\.\.\.</string>
     <string name="tags">Tags: food, society, games</string>
     <string name="priceDescription">Price\: 125</string>

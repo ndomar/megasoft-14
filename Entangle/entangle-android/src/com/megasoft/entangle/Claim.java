@@ -48,8 +48,6 @@ public class Claim extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_claimform);
-		TextView link = (TextView) findViewById(R.id.link);
-		link.setMovementMethod(LinkMovementMethod.getInstance());
 		getActionBar().hide();
 	}
 
@@ -86,11 +84,6 @@ public class Claim extends Activity {
 
 			int requestId = (int) getIntent().getIntExtra("requestId", -1);
 			int offerId = (int) getIntent().getIntExtra("offerId", -1);
-			String rId = Integer.toString(requestId);
-			String oId = Integer.toString(offerId);
-			Log.d("rid", rId);
-			Log.d("oid", oId);
-			
 			PostRequest postSubject = new PostRequest(
 					Config.API_BASE_URL_SERVER + "/claim/" + requestId
 							+ "/sendClaim/" + offerId + "/user") {

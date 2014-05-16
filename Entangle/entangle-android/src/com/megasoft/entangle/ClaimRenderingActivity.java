@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 /**
@@ -65,6 +67,10 @@ public class ClaimRenderingActivity extends Activity {
 	 * String holds the shared preferences
 	 */
 	private SharedPreferences settings;
+	/**
+	 * The top menu
+	 */
+	private Menu itemMenu;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +78,22 @@ public class ClaimRenderingActivity extends Activity {
 		this.setData();
 		setContentView(R.layout.activity_claim_render);
 	}
-
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.unfreeze, menu);
+		itemMenu = menu;
+		return true;
+	}
+	
+	/**
+	 * This method resolves the claim
+	 * @param item
+	 */
+	public void resolve(MenuItem item) {
+		
+	}
+	
 	/**
 	 * This method sets the data of the claim report into its right positions
 	 * after executing the request which gets the data
@@ -96,8 +117,11 @@ public class ClaimRenderingActivity extends Activity {
 			protected void onPostExecute(String response) {
 				try {
 					if (this.getStatusCode() == 200) {
-						JSONObject object = new JSONObject(response);
 
+						Toast.makeText(getBaseContext(),
+								"Loading Claim Report", Toast.LENGTH_SHORT)
+								.show();
+						JSONObject object = new JSONObject(response);
 						claimDate = object.getString("claimDate");
 						String[] claimDateArray = claimDate.split(":");
 						claimerName = object.getString("claimer");
@@ -130,9 +154,6 @@ public class ClaimRenderingActivity extends Activity {
 						tangle.setText(tangleName);
 						TextView claimMssg = (TextView) findViewById(R.id.mssgText);
 						claimMssg.setText(claimMessage);
-						Toast.makeText(getBaseContext(),
-								"Loading Claim Report", Toast.LENGTH_SHORT)
-								.show();
 					} else {
 						Toast.makeText(getBaseContext(),
 								"Something went wrong", Toast.LENGTH_SHORT)
@@ -146,27 +167,5 @@ public class ClaimRenderingActivity extends Activity {
 		};
 		requestClaimReport.addHeader("X-SESSION-ID", sessionID);
 		requestClaimReport.execute();
-//		TextView date = (TextView) findViewById(R.id.date);
-//		date.setText(claimDate);
-//		TextView claimer = (TextView) findViewById(R.id.claimerName);
-//		claimer.setText(claimerName);
-//		TextView offerer = (TextView) findViewById(R.id.offererName);
-//		offerer.setText(offererName);
-//		TextView offererEmail = (TextView) findViewById(R.id.offererEmailText);
-//		offererEmail.setText(this.offererEmail);
-//		TextView requester = (TextView) findViewById(R.id.requesterName);
-//		requester.setText(requesterName);
-//		TextView requesterEmail = (TextView) findViewById(R.id.requesterEmailText);
-//		requesterEmail.setText(this.requesterEmail);
-//		TextView tangleOwnerName = (TextView) findViewById(R.id.tangleOwnerName);
-//		tangleOwnerName.setText(this.tangleOwnerName);
-//		TextView tangleOwnerEmail = (TextView) findViewById(R.id.tangleOwnerEmailText);
-//		tangleOwnerEmail.setText(this.tangleOwnerEmail);
-//		TextView tangle = (TextView) findViewById(R.id.tangleNameText);
-//		tangle.setText(this.tangleName);
-//		TextView claimMssg = (TextView) findViewById(R.id.mssgText);
-//		claimMssg.setText(this.claimMessage);
-
 	}
-
 }

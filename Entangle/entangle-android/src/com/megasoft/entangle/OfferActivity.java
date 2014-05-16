@@ -187,19 +187,16 @@ public class OfferActivity extends FragmentActivity {
 	}
 
 
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//		case R.id.delete_offer_button:
-//			deleteOffer();
-//			return true;
-//		case R.id.claim_on_offer_button:
-//			this.startClaimForm(item);
-//			return true;
-//		default:
-//			return super.onOptionsItemSelected(item);
-//		}
-//	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.delete_offer_button:
+			deleteOffer();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 	/**
 	 * This method gets the email of both the claimer and the tangle owner after
 	 * fetching them from the back end through the delivered json response and
@@ -209,7 +206,7 @@ public class OfferActivity extends FragmentActivity {
 	 * @return None
 	 * @author Salma Amr
 	 */
-	public void startClaimForm(View view) {
+	public void startClaimForm(MenuItem item) {
 		Intent intent = new Intent(this, ClaimRenderingActivity.class);
 		intent.putExtra("claimId", 18);
 		intent.putExtra("offerId", this.offerId);
@@ -307,10 +304,6 @@ public class OfferActivity extends FragmentActivity {
 			final int offererId = offerInformation.getInt("offererId");
 			final int requesterId = offerInformation.getInt("requesterId");
 			this.requestId = offerInformation.getInt("requestId");
-			
-			String rrid = Integer.toString(this.requestId);
-			Log.d("rrid", rrid);
-			
 			int status = offerInformation.getInt("offerStatus");
 
 			if (status == 0) {
