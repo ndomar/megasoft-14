@@ -82,12 +82,6 @@ class TangleController extends Controller {
         if ($session == null || $session->getExpired()) {
             return new Response('Bad Request', 400);
         }
-
-        $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
-        $tangle = $tangleRepo->findOneBy(array('id' => $tangleId));
-        if($tangle == null) {
-            return new Response('Tangle not found', 404);
-        }
         
         $user = $session->getUser();
         $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
@@ -131,7 +125,6 @@ class TangleController extends Controller {
             ->andWhere('request.deleted = 0 AND request.status = 0');
         if($lastDate != null){
             $query = $query->andWhere('request.date > :date')->setParameter('date',$lastDate);
-<<<<<<< HEAD
         }
 
         $query->setMaxResults($limit);
@@ -147,23 +140,7 @@ class TangleController extends Controller {
                             )->setParameter('query' , '%'.$queryValue.'%')
                              ->setParameter('query2' , $queryValue.'%');
         }
-=======
-        }
 
-        $query->setMaxResults($limit);
-        if($queryValue != null){
-            $query = $query->innerJoin('MegasoftEntangleBundle:User', 'user' , 'WITH' , 'request.userId = user.id')
-                            ->leftJoin('request.tags','tag')
-                            ->andWhere(
-                                    $query->expr()->orx(
-                                        $query->expr()->like('user.name', ':query2'),
-                                        $query->expr()->like('request.description', ':query'),
-                                        $query->expr()->like('tag.name', ':query')
-                                    )
-                            )->setParameter('query' , '%'.$queryValue.'%')
-                             ->setParameter('query2' , $queryValue.'%');
-        }
->>>>>>> 1d7563f3e040fc739613ab2bea4f59e8256a26a3
         $requests = $query->getQuery()->getResult();
 
         $requestsJsonArray = array();
@@ -247,11 +224,8 @@ class TangleController extends Controller {
      * @param string $message
      * @author MohamedBassem
      */
-<<<<<<< HEAD
+
     public function inviteUser($email, $tangleId, $inviterId, $message) {
-=======
-    public function inviteUser($email,$tangleId,$inviterId,$message){
->>>>>>> 1d7563f3e040fc739613ab2bea4f59e8256a26a3
         $randomString = $this->generateRandomString(30);
 
         $tangleRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Tangle');
@@ -288,10 +262,7 @@ class TangleController extends Controller {
                            <p>Cheers,<br>Entangle Team</p>
                     </body>
                 </html>";
-<<<<<<< HEAD
-=======
-        
->>>>>>> 1d7563f3e040fc739613ab2bea4f59e8256a26a3
+
         $notificationCenter = $this->get('notification_center.service');
         $notificationCenter->sendMailToEmail($email, $title, $body);
     }

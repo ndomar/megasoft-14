@@ -132,7 +132,7 @@ class TangleControllerTest extends EntangleTestCase
         $client = static::createClient();
         $client->request('PUT', '/tangle/-1/reset');
 
-        $this->assertEquals(404, $client->getResponse()->getStatusCode(), 'Check for tangle doesn\'t exist');
+        $this->assertEquals(401, $client->getResponse()->getStatusCode(), 'Check for tangle does not exist');
     }
     /**
      * Test case for the user not being the owner to resetTangle action
