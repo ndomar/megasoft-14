@@ -30,6 +30,11 @@ import com.megasoft.entangle.R;
 import com.megasoft.entangle.StreamRequestFragment;
 import com.megasoft.requests.GetRequest;
 
+/**
+ * This is the fragment that holds the stream of the requests
+ * 
+ * @author Mohamed Farghal , HebaAamer
+ */
 public class TangleFragment extends Fragment {
 
 	private HomeActivity activity;
@@ -101,9 +106,9 @@ public class TangleFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 	}
-	
+
 	@Override
     public View onCreateView(LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -183,7 +188,6 @@ public class TangleFragment extends Fragment {
 				return true;
 			}
 		});
-		
 	}
 	
 	/**
@@ -200,6 +204,7 @@ public class TangleFragment extends Fragment {
 				int count = response.getInt("count");
 				JSONArray requestArray = response.getJSONArray("requests");
 				if (count > 0 && requestArray != null) {
+
 					LinearLayout layout = (LinearLayout) activity.findViewById(R.id.streamLayout);
 					if (!isLoadMore) {
 						layout.removeAllViews();
@@ -249,10 +254,11 @@ public class TangleFragment extends Fragment {
 			transaction = getFragmentManager().beginTransaction();
 			StreamRequestFragment requestFragment = StreamRequestFragment
 					.createInstance(requestId, userId, requestButtonText,
-							requesterButtonText, requestPrice, requestOffersCount, this);
+							requesterButtonText, requestPrice,
+							requestOffersCount, getTangleId(), getTangleName());
 			transaction.add(R.id.streamLayout, requestFragment);
 			transaction.commit();
-		} catch (JSONException e) { 
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 	}
@@ -266,7 +272,6 @@ public class TangleFragment extends Fragment {
 		return tangleId;
 	}
 
-	
 	/**
 	 * This is a getter method used to get the hashMap that maps a tag to its id
 	 * 
@@ -336,14 +341,19 @@ public class TangleFragment extends Fragment {
 		getStream.addHeader("X-SESSION-ID", getSessionId());
 		getStream.execute();
 	}
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		
 		this.activity = (HomeActivity) activity;
 		super.onAttach(activity);
 	}
-	
+
+	/**
+	 * This is a getter method used to get the name of the tangle
+	 * 
+	 * @return session id
+	 */
 	public String getTangleName() {
 		return tangleName;
 	}
@@ -356,9 +366,11 @@ public class TangleFragment extends Fragment {
 	public String getSessionId() {
 		return sessionId;
 	}
+
 	
 	public void onPause(){
 		super.onPause();
 		isDestroyed = true;
 	}
+
 }
