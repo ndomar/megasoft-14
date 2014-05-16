@@ -54,11 +54,13 @@ public class EditProfileActivity extends FragmentActivity implements
 	Intent viewEditedProfile;
 	private Pattern pattern;
 	private Matcher matcher;
-
+	private int userId;
 	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	private static final String EDITPROFILE = "/user/edit";
+
 	private static final String RETRIEVEDATA = "/user/retrieveData";
+
 	JSONObject putReJsonObject = new JSONObject();
 	Boolean notification = true;
 	protected int newYear;
@@ -71,6 +73,7 @@ public class EditProfileActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_profile);
+		initializeView();
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
@@ -80,7 +83,7 @@ public class EditProfileActivity extends FragmentActivity implements
 					Log.i("Message", "0");
 					retrieveDataResponse = new JSONObject(response);
 					try {
-
+						userId = retrieveDataResponse.getInt("userId");
 						oldDescription = retrieveDataResponse
 								.getString("description");
 						oldBirthDate = retrieveDataResponse
@@ -97,15 +100,10 @@ public class EditProfileActivity extends FragmentActivity implements
 								.getBoolean("notification_state");
 						currentEmails = retrieveDataResponse
 								.getJSONArray("emails");
-						for(int i=0;i<currentEmails.length();i++){
-							String email = currentEmails.getString(i);
-							Log.i("Message",email);
+
+						for (int i = 0; i < currentEmails.length(); i++)
 							addEmailField();
-						EditText x =emails.get(emails.size()-1).getEditText();
-						x.setText(email);
-							//emails.get(emails.size()-1).getEditText().setEnabled(false);
-						}
-						addEmailField();
+
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
@@ -115,10 +113,8 @@ public class EditProfileActivity extends FragmentActivity implements
 				}
 			}
 		};
-
 		getRequest.addHeader(Config.API_SESSION_ID, sessionId);
 		getRequest.execute();
-		initializeView();
 
 	}
 
@@ -127,8 +123,10 @@ public class EditProfileActivity extends FragmentActivity implements
 		newEmail.setActivity(this);
 		emails.add(newEmail);
 		emailsCount++;
+
 		getSupportFragmentManager().beginTransaction()
 				.add(R.id.user_emails, newEmail).commit();
+
 	}
 
 	@SuppressWarnings("deprecation")
@@ -148,7 +146,6 @@ public class EditProfileActivity extends FragmentActivity implements
 			emailNotification.setText("Turn on notification");
 		}
 		currentDescription = (EditText) findViewById(R.id.CurrentDescription);
-		//this.addEmailField();
 	}
 
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -236,13 +233,10 @@ public class EditProfileActivity extends FragmentActivity implements
 			PutRequest putRequest = new PutRequest(Config.API_BASE_URL_SERVER
 					+ EDITPROFILE) {
 				protected void onPostExecute(String result) {
-					Log.i("Message",
-							this.getErrorMessage() + this.getStatusCode()
-									+ this.getStatus());
+
 					if (this.getStatusCode() == 200) {
-						getActivity();
-						finish();
-						startActivity(viewEditedProfile);
+						goToGeneralProfileActivity();
+
 					} else {
 						Context context = getApplicationContext();
 						CharSequence text = "An Internal Error please try again";
@@ -263,8 +257,13 @@ public class EditProfileActivity extends FragmentActivity implements
 	 * 
 	 * @author menna
 	 */
-	private void getActivity() {
-		viewEditedProfile = new Intent(this, ProfileActivity.class);
+	private void goToGeneralProfileActivity() {
+		Intent generalProfileIntent = new Intent(this,
+				GeneralProfileActivity.class);
+		generalProfileIntent.putExtra("userId", userId);
+		startActivity(generalProfileIntent);
+
+		this.finish();
 	}
 
 	/**
@@ -285,11 +284,14 @@ public class EditProfileActivity extends FragmentActivity implements
 		if (emailsCount == 1) {
 			emailEntryFragment.getEditText().setText("");
 		} else {
-			if (emails.indexOf(emailEntryFragment) == emails.size() - 1) {
-				emails.get(emails.size() - 2).setTextChangeListener();
-			}
-			getSupportFragmentManager().beginTransaction()
-					.remove(emailEntryFragment).commit();
+			// if (emails.indexOf(emailEntryFragment) == emails.size() - 1) {
+			// emails.get(emails.size() - 2).setTextChangeListener();
+			// }
+			// getSupportFragmentManager().beginTransaction()
+			// .remove(emailEntryFragment).commit();
+			Log.i("deletion",
+					"currently deleting the fragment number"
+							+ emails.indexOf(emailEntryFragment));
 			emails.remove(emailEntryFragment);
 			emailsCount--;
 		}
@@ -297,7 +299,77 @@ public class EditProfileActivity extends FragmentActivity implements
 	}
 
 	public void cancelRedirect(View view) {
+
 		this.finish();
 	}
 
+	public void onResume() {
+		super.onResume();
+		this.settings = getSharedPreferences(Config.SETTING, 0);
+		this.sessionId = settings.getString(Config.SESSION_ID, "");
+		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
+				+ RETRIEVEDATA) {
+			public void onPostExecute(String response) {
+				try {
+					Log.i("Message", "0");
+					retrieveDataResponse = new JSONObject(response);
+					try {
+
+						oldDescription = retrieveDataResponse
+								.getString("description");
+						oldBirthDate = retrieveDataResponse
+								.getJSONObject("date_of_birth");
+						date = oldBirthDate.getString("date");
+						splittedDate = date.split("-");
+						Log.i("Message", date);
+						day = splittedDate[2].split(" ");
+						newYear = Integer.parseInt(splittedDate[0]);
+						newMonth = Integer.parseInt(splittedDate[1]) - 1;
+						newDay = Integer.parseInt(day[0]);
+						currentDescription.setText(oldDescription);
+						notification = retrieveDataResponse
+								.getBoolean("notification_state");
+						currentEmails = retrieveDataResponse
+								.getJSONArray("emails");
+
+						findViewById(R.id.user_emails).setVisibility(
+								View.VISIBLE);
+						for (int i = 0; i < currentEmails.length(); i++) {
+							String email = currentEmails.getString(i);
+							Log.i("Message", email);
+
+							EditText x = emails.get(i).getEditText();
+							emails.get(i).getView().setVisibility(View.VISIBLE);
+							Log.i("message", "ana now abl mail raqam " + i);
+							if (x == null)
+								Log.i("lola", " el x ba2et null yasta");
+							else {
+								x.setText(email);
+
+							}
+							Log.i("hamada", "ana now ba3d mail raqam " + i);
+							if (x != null)
+								x.setEnabled(false);
+							Log.i("hamada",
+									" el length bta3 el current emails = "
+											+ currentEmails.length());
+							Log.i("hamada", " el size bta3 el emails = "
+									+ emails.size());
+
+						}
+
+						addEmailField();
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		getRequest.addHeader(Config.API_SESSION_ID, sessionId);
+		getRequest.execute();
+
+	}
 }

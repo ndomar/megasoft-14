@@ -17,7 +17,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
 
-class UserController extends Controller {
+class UserController extends Controller
+{
 
     /**
      * This Method edits all user information
@@ -25,13 +26,13 @@ class UserController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response
      * @author menna
      */
-    public function editAction(Request $request) {
+    public function editAction(Request $request)
+    {
         $requestContent = $request->getContent();
         $jsonArray = json_decode($requestContent, true);
         $sessionId = $request->headers->get('X-SESSION-ID');
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Session');
         $currentSession = $sesionRepo->findOneBy(array('sessionId' => $sessionId));
-        echo($sessionId);
         if (!$currentSession) {
             return new Response("Invalid Session Id", 400);
         }
@@ -40,38 +41,76 @@ class UserController extends Controller {
 
             if ($user != null) {
                 $newDescription = $jsonArray['description'];
-                echo($user->getUserBio());
                 if ($user->getUserBio() != $newDescription) {
                     $user->setUserBio($newDescription);
                 }
                 $oldDate = $user->getBirthDate();
                 $newDateOfBirth = $jsonArray['new_date_of_birth'];
                 $birthDate = new DateTime2($newDateOfBirth);
-                echo 'ana ba3d el new DateTime';
                 if ($birthDate != $oldDate) {
-                    echo 'ana gowa el if condition';
                     $user->setBirthDate($birthDate);
                 }
-                echo 'ana abl el manager';
                 $doctrineManger = $this->getDoctrine()->getManager();
                 $email_array = $jsonArray['emails'];
+                // hena nebda2 el habal :D by maisara isA :D :P
+
                 if (!empty($email_array)) {
                     foreach ($email_array as $email) {
-                        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                            $newMail = new UserEmail();
-                            $newMail->setEmail($email);
-                            $newMail->setUser($user);
-                            if ($user->getId()) {
-                                $newMail->setUserId($user->getId());
-                                $user->addEmail($newMail);
-                                $doctrineManger->persist($newMail);
-                            }
+                        $repo = $this->getDoctrine()->getManager()->getRepository('MegasoftEntangleBundle:UserEmail');
+                        $emailExistsNotDeleted = $repo->findOneBy(array('email' => $email, 'deleted' => 0,));
+                        if ($emailExistsNotDeleted)
+                            continue;
+                        else {
+                            $emailExistsDeleted = $repo->findOneBy(array('email' => $email, 'deleted' => 1,));
+                            if ($emailExistsDeleted) {
+                                if ($emailExistsDeleted->getUserId() == $user->getId())
+                                    $emailExistsDeleted->setDeleted(0);
+                                else {
+                                    $emailExistsDeleted->setDeleted(0);
+                                    $emailExistsDeleted->setUserId($user->getId());
+                                }
+                            } else
+                                if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                                    $newMail = new UserEmail();
+                                    $newMail->setEmail($email);
+                                    $newMail->setUser($user);
+                                    if ($user->getId()) {
+                                        $newMail->setUserId($user->getId());
+                                        $user->addEmail($newMail);
+                                        $doctrineManger->persist($newMail);
+                                    }
+                                }
                         }
                     }
                 }
                 $user->setAcceptMailNotifications($jsonArray['notification_state']);
                 $doctrineManger->persist($user);
                 $doctrineManger->flush();
+
+                // now i will do the whole code for deleting the email from the current emails isA
+                // pray for me if you see this :D :P ;) maisara
+
+                $userid = $user->getId();
+                echo $userid;
+                $repo = $this->getDoctrine()->getManager()->getRepository('MegasoftEntangleBundle:UserEmail');
+                $currentUserEmails = $repo->findBy(array('userId' => $userid));
+                foreach ($currentUserEmails as $email) {
+                    $found = 0;
+
+                    foreach ($email_array as $newEmails) {
+                        if ($email->getEmail() == $newEmails) {
+                            echo 'ana gowa el codition';
+                            $found = 1;
+                        }
+                    }
+                    if ($found == 0) {
+                        $email->setDeleted(1);
+                        $this->getDoctrine()->getManager()->persist($email);
+                    }
+                }
+
+                $this->getDoctrine()->getManager()->flush();
+                echo 'ana ba3d el flush';
                 return new Response('OK', 200);
             }
         } else {
@@ -80,12 +119,13 @@ class UserController extends Controller {
     }
 
     /**
-     * This Method Deletes Secondary Emails of the user 
+     * This Method Deletes Secondary Emails of the user
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author menna 
+     * @author menna
      */
-    public function deleteSecondaryEmailAction(Request $request) {
+    public function deleteSecondaryEmailAction(Request $request)
+    {
         $requestContent = $request->getContent();
         $jsonArray = json_decode($requestContent, true);
         $sessionId = $request->headers->get('X-SESSION-ID');
@@ -109,12 +149,13 @@ class UserController extends Controller {
     }
 
     /**
-     * This method getsall the user info to be displayed in the frontend 
+     * This method getsall the user info to be displayed in the frontend
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @author menna
      */
-    public function retrieveDataAction(Request $request) {
+    public function retrieveDataAction(Request $request)
+    {
         $userEmailArray = array();
         $requestContent = $request->getContent();
         $jsonArray = json_decode($requestContent, true);
@@ -129,25 +170,27 @@ class UserController extends Controller {
         }
         $user = $currentSession->getUser();
         $emails_array = $user->getEmails();
-
+        $userId = $user->getId();
         foreach ($emails_array as $user_email) {
-            array_push($userEmailArray, $user_email->getEmail());
+            if ($user_email->getDeleted() == 0)
+                array_push($userEmailArray, $user_email->getEmail());
         }
         $response = new JsonResponse();
         $response->setData(array('description' => $user->getUserBio(), 'date_of_birth' => $user->getBirthDate()
-            , 'notification_state' => $user->getAcceptMailNotifications(), 'emails' => $userEmailArray));
+        , 'notification_state' => $user->getAcceptMailNotifications(), 'emails' => $userEmailArray, 'userId' => $userId,));
         $response->setStatusCode(200);
         return $response;
     }
 
     /* Validates the username and password from request and returns sessionID
      * @param  Integer $len length for the generated sessionID
-     * @return String $generatedSessionID the session id that will beconfig.php – This file contains constant v used
+     * @return String $generatedSessionID the session id that will be config.php – This file contains constant v used
      * 
      * @author maisaraFarahat
      */
 
-    private function generateSessionId($len) {
+    private function generateSessionId($len)
+    {
         $generatedSessionID = '';
         $seed = "abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         for ($i = 0; $i < $len; $i++) {
@@ -160,10 +203,11 @@ class UserController extends Controller {
      * Validates the username and password from request and returns sessionID
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse $response
-     * 
+     *
      * @author maisaraFarahat
      */
-    public function loginAction(\Symfony\Component\HttpFoundation\Request $request) {
+    public function loginAction(\Symfony\Component\HttpFoundation\Request $request)
+    {
         $response = new JsonResponse();
         $badReq = "bad request";
         if (!$request) {
@@ -219,7 +263,7 @@ class UserController extends Controller {
         $filepath = 'http://entangle.io/images/profilePictures/';
 
         $response->setData(array('sessionId' => $sessionId, 'userId' => $user->getId()
-            , 'profileImage' => $filepath . $user->getPhoto(),
+        , 'profileImage' => $filepath . $user->getPhoto(),
             'username' => $user->getName(),));
         $response->setStatusCode(201);
 
@@ -233,11 +277,12 @@ class UserController extends Controller {
      * @return boolean true if the user is a memeber of this tangle, false otherwise
      * @author Almgohar
      */
-    private function validateUser($userId, $tangleId) {
+    private function validateUser($userId, $tangleId)
+    {
         $userTangleTable = $this->getDoctrine()->
-                getRepository('MegasoftEntangleBundle:UserTangle');
+            getRepository('MegasoftEntangleBundle:UserTangle');
         $userTangle = $userTangleTable->
-                findOneBy(array('userId' => $userId, 'tangleId' => $tangleId,));
+            findOneBy(array('userId' => $userId, 'tangleId' => $tangleId,));
 
         if ($userTangle == null) {
             return false;
@@ -252,9 +297,10 @@ class UserController extends Controller {
      * @return boolean true if the tangle exists, false otherwise
      * @author Almgohar
      */
-    private function validateTangle($tangleId) {
+    private function validateTangle($tangleId)
+    {
         $tangleTable = $this->getDoctrine()->
-                getRepository('MegasoftEntangleBundle:Tangle');
+            getRepository('MegasoftEntangleBundle:Tangle');
         $tangle = $tangleTable->findOneBy(array('id' => $tangleId,));
 
         if ($tangle == null) {
@@ -271,7 +317,8 @@ class UserController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
      * @author Almgohar
      */
-    public function generalProfileAction(\Symfony\Component\HttpFoundation\Request $request, $userId) {
+    public function generalProfileAction(\Symfony\Component\HttpFoundation\Request $request, $userId)
+    {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($sessionId == null) {
@@ -305,7 +352,8 @@ class UserController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
      * @author Almgohar
      */
-    public function profileAction(\Symfony\Component\HttpFoundation\Request $request, $userId, $tangleId) {
+    public function profileAction(\Symfony\Component\HttpFoundation\Request $request, $userId, $tangleId)
+    {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($sessionId == null) {
@@ -350,7 +398,8 @@ class UserController extends Controller {
      * @return \Symfony\Component\HttpFoundation\Response | JsonResponse $response
      * @author Almgohar
      */
-    private function viewProfile($user) {
+    private function viewProfile($user)
+    {
         if ($user == null) {
             return new Response('Bad Request', 400);
         }
@@ -377,7 +426,8 @@ class UserController extends Controller {
      * @return array of arrays $transactions
      * @author Almgohar
      */
-    public function transactionsAction(\Symfony\Component\HttpFoundation\Request $request, $userId, $tangleId) {
+    public function transactionsAction(\Symfony\Component\HttpFoundation\Request $request, $userId, $tangleId)
+    {
         $sessionId = $request->headers->get('X-SESSION-ID');
 
         if ($sessionId == null) {
@@ -397,7 +447,7 @@ class UserController extends Controller {
         $loggedInUser = $session->getUser();
         $user = $userTable->findOneBy(array('id' => $userId,));
 
-        if($user == null) {
+        if ($user == null) {
             return new Response('User not found', 404);
         }
 
@@ -423,7 +473,8 @@ class UserController extends Controller {
             $offer = $offers[$i];
 
             if (($offer->getRequest()->getTangleId() == $tangleId) && ($offer->getTransaction() != null)
-                && !($offer->getTransaction()->getDeleted())) {
+                && !($offer->getTransaction()->getDeleted())
+            ) {
                 $requesterName = $offer->getRequest()->getUser()->getName();
                 $photo = $offer->getRequest()->getUser()->getPhoto();
                 $offererName = $offer->getUser()->getName();
@@ -448,10 +499,11 @@ class UserController extends Controller {
      * checks if a session id exists and removes it from the user sessions
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse $response
-     * 
+     *
      * @author maisaraFarahat
      */
-    public function logoutAction(\Symfony\Component\HttpFoundation\Request $request) {
+    public function logoutAction(\Symfony\Component\HttpFoundation\Request $request)
+    {
         $response = new JsonResponse();
         $badReq = "bad request";
         if (!$request) {
@@ -491,7 +543,8 @@ class UserController extends Controller {
      * @author: Eslam
      */
 
-    private function validateUniqueUsername($username) {
+    private function validateUniqueUsername($username)
+    {
         $userRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
         if ($userRepo->findOneBy(array('name' => $username,)) == null && $username != null && $username != "") {
             return true;
@@ -508,7 +561,8 @@ class UserController extends Controller {
      * @author: Eslam
      */
 
-    private function validateUniqueEmail($email) {
+    private function validateUniqueEmail($email)
+    {
         $emailRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:UserEmail');
         if ($emailRepo->findOneBy(array('email' => $email,))) {
             return false;
@@ -525,7 +579,8 @@ class UserController extends Controller {
      * @author Eslam Maged
      */
 
-    public function registerAction(\Symfony\Component\HttpFoundation\Request $request) {
+    public function registerAction(\Symfony\Component\HttpFoundation\Request $request)
+    {
         $response = new JsonResponse();
         $badRequest = "Bad Request";
 

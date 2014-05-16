@@ -1,17 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="45dp"
-        android:text="@string/logout"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="25dp"
-        android:title="@string/logout">
-    </item>
-    <item
         android:id="@+id/editProfileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,6 +10,17 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="25dp"
         android:title="@string/editProfile">
+    </item>
+    <item
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="45dp"
+        android:text="@string/logout"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="25dp"
+        android:title="@string/logout">
     </item>
 
 </menu>

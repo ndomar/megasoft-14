@@ -155,7 +155,7 @@
     <string name="login">Login</string>
     <string name="cancel">Cancel</string>
     <string name="username">Username</string>
-    <string name="email">email: user@entangle.io</string>
+    <string name="email">username: entangle user</string>
     <string name="password">password</string>
     <string name="invitation_message_placeholder">Write an invitation message ..</string>
     <string name="confirmPassword">Confirm Password</string>

@@ -21,8 +21,8 @@
             android:layout_height="@dimen/buttonHeight"
             android:layout_weight="1"
             android:drawableLeft="@drawable/ic_action_remove"
-            android:text="@string/cancel"
             android:onClick="cancelRedirect"
+            android:text="@string/cancel"
             android:textAlignment="center"
             android:textColor="@color/gray"
             android:textSize="@dimen/textLarge" />
@@ -119,27 +119,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:visibility="gone" >
     </LinearLayout>
-
-    <!--
-    <Button
-        android:id="@+id/myDatePickerButton"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="15dp"
-        android:background="@color/cyan"
-        android:text="@string/ChooseDate"
-        android:textSize="15sp" />
-    -->
-    <!--
-    <TextView
-        android:id="@+id/showMyDate"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp" />
-    -->
 
     <Button
         android:id="@+id/DatePickerButton"

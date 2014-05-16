@@ -170,7 +170,7 @@ public class LoginActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		register();
+//		register();
 		Intent homeActivity = new Intent(this, HomeActivity.class);
 		startActivity(homeActivity);
 
@@ -197,15 +197,15 @@ public class LoginActivity extends Activity {
 	 * @return None
 	 * @author Shaban
 	 */
-	public void register() {
-		if (checkPlayServices()) {
-			Intent gcmRegIntentService = new Intent(getApplicationContext(),
-					GCMRegisteration.class);
-			startService(gcmRegIntentService);
-		} else {
-			Log.i(TAG, "no play services api found");
-		}
-	}
+//	public void register() {
+//		if (checkPlayServices()) {
+//			Intent gcmRegIntentService = new Intent(getApplicationContext(),
+//					GCMRegisteration.class);
+//			startService(gcmRegIntentService);
+//		} else {
+//			Log.i(TAG, "no play services api found");
+//		}
+//	}
 
 	/**
 	 * Check the device to make sure it has the Google Play Services APK. If it
@@ -214,19 +214,19 @@ public class LoginActivity extends Activity {
 	 * 
 	 * @author Google
 	 */
-	private boolean checkPlayServices() {
-		int resultCode = GooglePlayServicesUtil
-				.isGooglePlayServicesAvailable(this);
-		if (resultCode != ConnectionResult.SUCCESS) {
-			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-				GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-						PLAY_SERVICES_RESOLUTION_REQUEST).show();
-			} else {
-				Log.i("ERROR", "This device is not supported.");
-				finish();
-			}
-			return false;
-		}
-		return true;
-	}
+	// private boolean checkPlayServices() {
+	// int resultCode = GooglePlayServicesUtil
+	// .isGooglePlayServicesAvailable(this);
+	// if (resultCode != ConnectionResult.SUCCESS) {
+	// if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+	// GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+	// PLAY_SERVICES_RESOLUTION_REQUEST).show();
+	// } else {
+	// Log.i("ERROR", "This device is not supported.");
+	// finish();
+	// }
+	// return false;
+	// }
+	// return true;
+	// }
 }
