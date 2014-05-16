@@ -13,7 +13,6 @@ use Megasoft\EntangleBundle\Entity\InvitationCode;
 use Megasoft\EntangleBundle\Entity\InvitationMessage;
 use Megasoft\EntangleBundle\Entity\PendingInvitation;
 use Megasoft\EntangleBundle\Entity\UserTangle;
-use Megasoft\EntangleBundle\Entity\Transaction;
 
 class TangleController extends Controller {
 
