@@ -5,7 +5,7 @@ namespace Megasoft\EntangleBundle\Tests\Controller;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadFilterStreamData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadSessionData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadTangleData;
-use Megasoft\EntangleBundle\DataFixtures\ORM\LoadResetTangleData;
+use Megasoft\EntangleBundle\DataFixtures\ORM\LoadLeaveTangleData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserTangleData;
 use Megasoft\EntangleBundle\Tests\EntangleTestCase;
@@ -80,7 +80,7 @@ class TangleControllerTest extends EntangleTestCase
      * @author Salma Khaled
      */
      public function testResetTangleAction_NoSessionId() {
-        $this->addFixture(new LoadResetTangleData());
+        $this->addFixture(new LoadLeaveTangleData());
         $this->loadFixtures();
 
         $client = static::createClient();
@@ -95,7 +95,7 @@ class TangleControllerTest extends EntangleTestCase
      * @author Salma Khaled
      */
     public function testResetAction_BadSessionId() {
-        $this->addFixture(new LoadResetTangleData());
+        $this->addFixture(new LoadLeaveTangleData());
         $this->loadFixtures();
 
         $client = static::createClient();
@@ -110,7 +110,7 @@ class TangleControllerTest extends EntangleTestCase
      * @author Salma Khaled
      */
     public function testResetTangleAction_ExpiredSessionId() {
-        $this->addFixture(new LoadResetTangleData());
+        $this->addFixture(new LoadLeaveTangleData());
         $this->loadFixtures();
 
         $client = static::createClient();
@@ -125,7 +125,7 @@ class TangleControllerTest extends EntangleTestCase
      * @author Salma Khaled
      */
     public function testResetTangleAction_NoSuchTangle() {
-        $this->addFixture(new LoadResetTangleData());
+        $this->addFixture(new LoadLeaveTangleData());
         $this->loadFixtures();
 
         $client = static::createClient();
@@ -140,7 +140,7 @@ class TangleControllerTest extends EntangleTestCase
      * @author Salma Khaled
      */
     public function testResetTangleAction_UserNotOwner() {
-        $this->addFixture(new LoadResetTangleData());
+        $this->addFixture(new LoadLeaveTangleData());
         $this->loadFixtures();
 
         $client = static::createClient();
@@ -155,7 +155,7 @@ class TangleControllerTest extends EntangleTestCase
      * @author Salma Khaled
      */
     public function testResetTangleAction_UserNotInTheTangle() {
-        $this->addFixture(new LoadResetTangleData());
+        $this->addFixture(new LoadLeaveTangleData());
         $this->loadFixtures();
 
         $client = static::createClient();
@@ -170,7 +170,7 @@ class TangleControllerTest extends EntangleTestCase
      * @author Salma Khaled
      */
     public function testResetTangleAction_RequestsDeleted() {
-        $this->addFixture(new LoadResetTangleData());
+        $this->addFixture(new LoadLeaveTangleData());
         $this->loadFixtures();
 
         $client = static::createClient();
@@ -191,7 +191,7 @@ class TangleControllerTest extends EntangleTestCase
      * @author Salma Khaled
      */
     public function testResetTangleAction_OffersDeleted() {
-        $this->addFixture(new LoadResetTangleData());
+        $this->addFixture(new LoadLeaveTangleData());
         $this->loadFixtures();
 
         $client = static::createClient();
@@ -215,7 +215,7 @@ class TangleControllerTest extends EntangleTestCase
      * @author Salma Khaled
      */
     public function testResetTangleAction_ClaimsDeleted() {
-        $this->addFixture(new LoadResetTangleData());
+        $this->addFixture(new LoadLeaveTangleData());
         $this->loadFixtures();
 
         $client = static::createClient();
@@ -236,7 +236,7 @@ class TangleControllerTest extends EntangleTestCase
      * @author Salma Khaled
      */
     public function testResetTangleAction_CreditIsZero() {
-        $this->addFixture(new LoadResetTangleData());
+        $this->addFixture(new LoadLeaveTangleData());
         $this->loadFixtures();
 
         $client = static::createClient();
@@ -257,7 +257,7 @@ class TangleControllerTest extends EntangleTestCase
      * @author Salma Khaled
      */
     public function testResetTangleAction_TransactionsDeleted() {
-        $this->addFixture(new LoadResetTangleData());
+        $this->addFixture(new LoadLeaveTangleData());
         $this->loadFixtures();
 
         $client = static::createClient();
@@ -286,7 +286,7 @@ class TangleControllerTest extends EntangleTestCase
      * @author Salma Khaled
      */
     public function testResetTangleAction_MessagesDeleted() {
-        $this->addFixture(new LoadResetTangleData());
+        $this->addFixture(new LoadLeaveTangleData());
         $this->loadFixtures();
 
         $client = static::createClient();
