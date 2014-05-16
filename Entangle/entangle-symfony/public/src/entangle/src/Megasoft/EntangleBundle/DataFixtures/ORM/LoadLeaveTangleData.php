@@ -218,5 +218,44 @@ class LoadLeaveTangleData extends AbstractFixture implements OrderedFixtureInter
         $this->addReference('claim' . "$claimNumber", $claim);
     }
     
+    /**
+     * This function is used to create a message
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param String $messageBody
+     * @param String $userReference
+     * @param String $offerReference
+     * @param integer $messageNumber
+     * @author HebaAamer
+     */
+    private function createMessage(ObjectManager $manager, $messageBody, $userReference, $offerReference, $messageNumber){
+        $message = new Message();
+        $message->setOffer($this->getReference("$offerReference"));
+        $message->setSender($this->getReference("$userReference"));
+        $message->setDate(new DateTime('now'));
+        $message->setBody($messageBody);
+        
+        $manager->persist($message);
+        $this->addReference('message' . "$messageNumber", $message);
+    }
+    
+    /**
+     * This function is used to make testing users and their userEmails
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @author HebaAamer
+     */
+    private function makeUsers(ObjectManager $manager){
+        $this->createUser($manager, 'Ahmad', 'ahmad');
+        $this->createUser($manager, 'Mohamed', 'mohamed');
+        $this->createUser($manager, 'Aly', 'aly');
+        $this->createUser($manager, 'Mazen', 'mazen');
+        $this->createUser($manager, 'Adel', 'adel');
+        
+        $this->createUserEmail($manager, 'userAhmad');
+        $this->createUserEmail($manager, 'userMohamed');
+        $this->createUserEmail($manager, 'userAly');
+        $this->createUserEmail($manager, 'userMazen');
+        $this->createUserEmail($manager, 'userAdel');
+    }
+    
     
 }
