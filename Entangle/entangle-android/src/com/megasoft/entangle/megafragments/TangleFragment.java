@@ -161,8 +161,9 @@ public class TangleFragment extends Fragment {
 	 * This method is used to set the layout of the stream dynamically according
 	 * to response of the request
 	 * 
-	 * @param res
-	 *            , is the response string of the stream request
+	 * @param res, isLoadMore
+	 *            res: the response string of the stream request
+	 *			  isLoadMore: flag to indicate weather a normal refresh is done or load more.
 	 */
 	private void setTheLayout(String res, boolean isLoadMore) {
 		try {
@@ -260,9 +261,10 @@ public class TangleFragment extends Fragment {
 	/**
 	 * This method is used to send a get request to get the stream filtered/not
 	 * 
-	 * @param url, isLoadMore
+	 * @param url, isLoadMore, query
 	 *            is the URL to which the request is going to be sent
 	 *            isLoad more flag is set to true if more older requests to be fetced (requests after lastDate)
+	 *			  query to filter the stream
 	 */
 	public void sendFilteredRequest(String url, final boolean isLoadMore, String query) {
 		if (query != null) {
