@@ -18,10 +18,11 @@ import android.widget.TextView;
 
 /**
  * This is a fragment class where each fragment is a notification
+ * 
  * @author Mohamed Ayman
  */
 public class NotificationStreamFragment extends Fragment {
-	
+
 	private View view;
 	private int notificationId;
 	private String notificationDescription;
@@ -30,25 +31,30 @@ public class NotificationStreamFragment extends Fragment {
 	private String linkTo;
 	private String linkToId;
 	private FragmentActivity activity;
-	
+	private int tangleId;
+
 	/**
 	 * Setting the attributes of the fragment
+	 * 
 	 * @param notificationId
 	 * @param seen
 	 * @param notificationDescription
 	 * @param date
 	 * @param link
 	 */
-	public void setData(int notificationId , boolean seen , String notificationDescription , String date , String link) {
+	public void setData(int notificationId, boolean seen,
+			String notificationDescription, String date, String link , int tangleId) {
 		this.notificationId = notificationId;
 		this.notificationDescription = notificationDescription;
 		this.seen = seen;
 		this.notificationDate = date;
 		this.linkTo = link;
+		this.tangleId = tangleId;
 	}
-	
+
 	/**
 	 * It manages the view of the fragment
+	 * 
 	 * @author Mohamed Ayman
 	 */
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,72 +64,90 @@ public class NotificationStreamFragment extends Fragment {
 		String[] link = linkTo.split("=");
 		linkTo = link[0];
 		linkToId = link[1];
-		TextView notificationDescriptionView = (TextView) view.findViewById(R.id.notificationDescription);
+		TextView notificationDescriptionView = (TextView) view
+				.findViewById(R.id.notificationDescription);
 		notificationDescriptionView.setTextSize(20);
-		TextView notificationDateView = (TextView) view.findViewById(R.id.notificationDate);
+		TextView notificationDateView = (TextView) view
+				.findViewById(R.id.notificationDate);
 		notificationDateView.setText(notificationDate);
-		if(!this.seen) {
+		if (!this.seen) {
 			notificationDescriptionView.setTypeface(null, Typeface.BOLD);
 		} else {
 			notificationDescriptionView.setTextColor(Color.GRAY);
 		}
 		notificationDescriptionView.setText(this.notificationDescription);
-		
-		notificationDescriptionView.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				setSeen();
-				
-				if(linkTo.equals("offer")) {
-					goToOffer();
-				}
-				if(linkTo.equals("request")) {
-					goToRequest();
-				}
-			}
-		});
-		
+
+		notificationDescriptionView
+				.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						setSeen();
+
+						if (linkTo.equals("offer")) {
+							goToOffer();
+						} else if (linkTo.equals("request")) {
+							goToRequest();
+						} else {
+							goToHome();
+						}
+					}
+				});
+
 		return view;
 	}
-	
+
 	public int getNotificationId() {
 		return this.notificationId;
 	}
-	
+
 	/**
 	 * This method is used to set the notification status as seen
+	 * 
 	 * @author Mohamed Ayman
 	 */
 	public void setSeen() {
-		
-		PutRequest putRequest = new PutRequest(Config.API_BASE_URL + "/notification/" + notificationId + "/set-seen");
+
+		PutRequest putRequest = new PutRequest(Config.API_BASE_URL
+				+ "/notification/" + notificationId + "/set-seen");
 		putRequest.addHeader("X-SESSION-ID", Config.SESSION_ID);
 		putRequest.execute();
 	}
-	
+
 	/**
 	 * Go to the offer activity
 	 */
 	public void goToOffer() {
-		Intent intent = new Intent(activity , OfferActivity.class);
-		intent.putExtra("offer id", linkToId);
+		Intent intent = new Intent(getActivity().getBaseContext(),
+				OfferActivity.class);
+		intent.putExtra("offerID", Integer.parseInt(linkToId));
 		startActivity(intent);
 	}
-	
+
 	/**
 	 * Go to the request activity
 	 */
 	public void goToRequest() {
-		Intent intent = new Intent(activity , RequestActivity.class);
-		intent.putExtra("request id", linkToId);
+		Intent intent = new Intent(getActivity().getBaseContext(),
+				RequestActivity.class);
+		intent.putExtra("requestId", Integer.parseInt(linkToId));
+		intent.putExtra("tangleId", this.tangleId);
 		startActivity(intent);
 	}
-	
+
+	/**
+	 * Go to the home activity
+	 */
+	public void goToHome() {
+		Intent intent = new Intent(getActivity().getBaseContext(),
+				HomeActivity.class);
+		startActivity(intent);
+	}
+
 	@Override
 	public void onAttach(Activity activity) {
-	    this.activity = (FragmentActivity) activity;
-	    super.onAttach(this.activity);
+		this.activity = (FragmentActivity) activity;
+		super.onAttach(this.activity);
 	}
 }

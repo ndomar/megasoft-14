@@ -19,22 +19,27 @@ import android.widget.Toast;
  *
  */
 public class NotificationStream extends FragmentActivity {
-	
+
 	/**
 	 * The session Id
 	 */
 	private String sessionId;
-	
+
 	/**
 	 * The user Id
 	 */
 	private int loggedInId;
-	
+
 	/**
 	 * The preferences instance
 	 */
 	private SharedPreferences settings;
 	
+	/**
+	 * TangleId
+	 */
+	private int tangleId;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,9 +47,10 @@ public class NotificationStream extends FragmentActivity {
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		this.loggedInId = settings.getInt(Config.USER_ID, 0);
+		this.tangleId = getIntent().getIntExtra("tangleId", 0);
 		generate();
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
@@ -56,13 +62,13 @@ public class NotificationStream extends FragmentActivity {
 	 * @author Mohamed Ayman
 	 */
 	public void generate() {
-		
+
 		String link = Config.API_BASE_URL + "/user/" + loggedInId + "/notifications";
-		
+
 		GetRequest request = new GetRequest(link) {
 			@Override
 			protected void onPostExecute(String response) {
-				
+
 				if (this.getStatusCode() == 200) {
 					try {
 						JSONArray json = new JSONArray(response);
@@ -91,7 +97,7 @@ public class NotificationStream extends FragmentActivity {
 	 * @author Mohamed Ayman
 	 */
 	public void viewNotifications(JSONArray notifications) {
-		
+
 		LinearLayout notificationsArea = ((LinearLayout) findViewById(R.id.notification_stream));
 		notificationsArea.removeAllViews();
 		notificationsArea.setVisibility(View.VISIBLE);
@@ -104,7 +110,7 @@ public class NotificationStream extends FragmentActivity {
                       Toast.LENGTH_SHORT);
 			toast.show();
 		}
-		
+
 		for(int i = 0; i < notifications.length();i++) {
 			try {
 				JSONArray notification = (JSONArray) notifications.getJSONArray(i);
@@ -114,15 +120,15 @@ public class NotificationStream extends FragmentActivity {
 				boolean seen = notification.getBoolean(3);
 				String notificationDate = notification.getString(2);
 				String linkTo = notification.getString(4);
-				fragment.setData(notificationId , seen , notificationDescription , notificationDate , linkTo);
+				fragment.setData(notificationId , seen , notificationDescription , notificationDate , linkTo , tangleId);
 				getSupportFragmentManager().beginTransaction().add(R.id.notification_stream, fragment).commit();
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
-		
+
 		final ScrollView scrollView = (ScrollView) findViewById(R.id.scroll);
 		scrollView.postDelayed(new Runnable() {
 
