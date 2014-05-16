@@ -1,25 +1,19 @@
 package com.megasoft.entangle;
 
-import com.megasoft.config.Config;
-import com.megasoft.requests.GetRequest;
-import com.megasoft.requests.PostRequest;
-
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import org.json.JSONArray;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,11 +21,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.megasoft.config.Config;
+import com.megasoft.requests.DeleteRequest;
 import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.ImageRequest;
 import com.megasoft.requests.PostRequest;
@@ -166,11 +161,59 @@ public class OfferActivity extends FragmentActivity {
 	private Menu itemMenu;
 
 	private boolean isDestroyed;
+	
+	private boolean isMyOffer = false;
+	
+	MenuItem deleteItem = null;
+	
+	Activity activity = null;
+	
+
+	public Activity getActivity() {
+		return activity;
+	}
+
+	public void setActivity(Activity activity) {
+		this.activity = activity;
+	}
+
+	public MenuItem getDeleteItem() {
+		return deleteItem;
+	}
+
+	public void setDeleteItem(MenuItem deleteItem) {
+		this.deleteItem = deleteItem;
+	}
+
+	public boolean isMyOffer() {
+		return isMyOffer;
+	}
+
+	public void setMyOffer(boolean isMyOffer) {
+		this.isMyOffer = isMyOffer;
+	}
+	
+	public int getOfferId() {
+		return offerId;
+	}
+
+	public void setOfferId(int offerId) {
+		this.offerId = offerId;
+	}
+	
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_offer);
+		setActivity(this);
 		Intent intent = getIntent();
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
@@ -178,19 +221,12 @@ public class OfferActivity extends FragmentActivity {
 		this.offerId = intent.getExtras().getInt("offerID");
 		viewOffer();
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.offer, menu);
-		itemMenu = menu;
-		return true;
-	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.delete_offer_button:
-			deleteOffer();
+		case R.id.deleteOfferOption:
+			this.showDialog(0);
 			return true;
 		case R.id.claim_on_offer_button:
 			claim();
@@ -263,6 +299,11 @@ public class OfferActivity extends FragmentActivity {
 								.getJSONObject("offerInformation");
 						viewOfferInfo(offerInformation);
 						viewComments(jSon.getJSONArray("comments"));
+						setMyOffer(jSon.getBoolean("isMyOffer"));
+						if(isMyOffer() && getDeleteItem() != null){
+							getDeleteItem().setEnabled(true);
+							getDeleteItem().setVisible(true);
+						}
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
@@ -318,8 +359,8 @@ public class OfferActivity extends FragmentActivity {
 			}
 
 			if (requesterId == loggedInId) {
-				validate();
-				itemMenu.findItem(R.id.claim_on_offer_button).setVisible(true);
+		//		validate();
+				//itemMenu.findItem(R.id.claim_on_offer_button).setVisible(true);
 			}
 
 			if (offererId == loggedInId) {
@@ -334,7 +375,6 @@ public class OfferActivity extends FragmentActivity {
 							}
 						});
 
-				itemMenu.findItem(R.id.delete_offer_button).setVisible(true);
 				itemMenu.findItem(R.id.claim_on_offer_button).setVisible(true);
 			}
 
@@ -647,5 +687,89 @@ public class OfferActivity extends FragmentActivity {
 		super.onPause();
 		isDestroyed = true;
 	}
+	
+	/*
+	 * Sends a delete request to the server to delete the viewed offer
+	 * @author OmarElAzazy
+	 */
+	public void sendDeleteRequest(){
+		DeleteRequest deleteRequest = new DeleteRequest(Config.API_BASE_URL + 
+														"/offer/" + 
+														getOfferId()){
+			protected void onPostExecute(String response){
+				if (!this.hasError()){
+					getActivity().finish();
+				} else{
+					toasterShow("Something went wrong, Please try again.");
+				}
+			}
+		};
 
+		deleteRequest.addHeader(Config.API_SESSION_ID, getSessionId());
+		deleteRequest.execute();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+
+		getMenuInflater().inflate(R.menu.offer, menu);
+
+		setDeleteItem(menu.findItem(R.id.deleteOfferOption));
+		if(isMyOffer()){
+			getDeleteItem().setEnabled(true);
+			getDeleteItem().setVisible(true);
+		}
+
+		return true;
+	}
+	
+	/**
+	 * This method is called when showDialog(int) method is called and it is
+	 * responsible for creating a dialog to make sure that the user wants to
+	 * remove offer
+	 * 
+	 * @param dialogId
+	 *            , is an int that corresponds to the id of the dialog being
+	 *            created but it is not used in this situation
+	 * 
+	 * @author OmarElAzazy
+	 */
+	@Override
+	protected Dialog onCreateDialog(int dialogId) {
+		Builder dialogBuilder = new AlertDialog.Builder(this);
+		if (dialogId == 0) {
+			dialogBuilder.setTitle("Deleting the offer");
+			dialogBuilder
+					.setMessage("Are you sure you want to delete this offer ?");
+			dialogBuilder.setPositiveButton("Yes",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							sendDeleteRequest();
+							dialog.dismiss();
+						}
+					});
+			dialogBuilder.setNegativeButton("No",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
+		}
+		return dialogBuilder.create();
+	}
+	
+	/*
+	 * Shows a message in a toaster
+	 * @author Omar ElAzazy
+	 */
+	public void toasterShow(String message){
+		Toast.makeText(getBaseContext(),
+				message,
+				Toast.LENGTH_LONG).show();
+	}
 }

@@ -88,14 +88,17 @@ class OfferController extends Controller
         if (!$this->validateUser($request, $sessionId)) {
             return new Response('Unauthorized', 401);
         }
-
+        $isMyOffer = false;
+        if($offer->getUserId() == $session->getUserId()){
+            $isMyOffer = true;
+        }
         $messageTable = $doctrine->getRepository('MegasoftEntangleBundle:Message');
         $comments = $this->getComments($messageTable, $offerId);
         $offerInformation = $this->getOfferInformation($offer);
         $response = new JsonResponse(null, 200);
         $response->setData(array('tangleId' => $tangleId,
             'offerInformation' => $offerInformation,
-            'comments' => $comments,));
+            'comments' => $comments,'isMyOffer' => $isMyOffer,));
 
         return $response;
     }
