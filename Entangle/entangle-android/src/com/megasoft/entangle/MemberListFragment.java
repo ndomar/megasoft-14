@@ -132,6 +132,7 @@ public class MemberListFragment extends Fragment {
 		searchBar = (EditText) view.findViewById(R.id.search_field);
 		noMembers = new TextView(getActivity().getBaseContext());
 		noMembers.setText(getString(R.string.member_not_found));
+		noMembers.setVisibility(View.GONE);
 		getMemberListView().addView(noMembers);
 		noMembers.setVisibility(View.GONE);
 		fetchMembers();

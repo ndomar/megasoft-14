@@ -241,8 +241,10 @@ public class TangleFragment extends Fragment {
 			String requestPrice 		= "0";
 			this.lastDate 				= request.getString("date");
 					
-			if(request.get("price") != null)
+			if(!request.getString("price").equals("null"))
 				requestPrice = "" + request.getInt("price");
+			else
+				requestPrice = "--";
 			
 			transaction = getFragmentManager().beginTransaction();
 			StreamRequestFragment requestFragment = StreamRequestFragment
