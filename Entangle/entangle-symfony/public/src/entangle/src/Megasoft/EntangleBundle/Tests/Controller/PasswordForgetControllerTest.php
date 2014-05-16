@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: karee_000
- * Date: 5/15/14
- * Time: 4:07 PM
- */
+
 
 namespace Megasoft\EntangleBundle\Tests\Controller;
 
@@ -19,6 +14,10 @@ use Megasoft\EntangleBundle\Tests\EntangleTestCase;
  */
 class PasswordForgetControllerTest extends EntangleTestCase {
 
+    /**
+     * test using the forget password activity with a wrong emil
+     * @author KareemWahby
+     */
     public function testForgetPasswordAction_WrongEmail(){
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadUserEmailData());
@@ -35,6 +34,10 @@ class PasswordForgetControllerTest extends EntangleTestCase {
         $this->assertEquals(400, $client->getResponse()->getStatusCode());
     }
 
+    /**
+     * test using the forget password activity with a valid emil
+     * @author KareemWahby
+     */
     public function testForgetPasswordAction_NewPasswordForgetRecord(){
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadUserEmailData());
@@ -54,8 +57,12 @@ class PasswordForgetControllerTest extends EntangleTestCase {
         $forgetPassCode=$forgetRepo->findOneBy(array("userId"=>$userID));
         $this->assertNotEquals(null,$forgetPassCode);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
     }
+
+    /**
+     * test using the forget password activity with a valid emil but with an already existing record
+     * @author KareemWahby
+     */
     public function testForgetPasswordAction_UpdatePasswordForgetRecord(){
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadUserEmailData());
@@ -74,7 +81,10 @@ class PasswordForgetControllerTest extends EntangleTestCase {
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
-
+    /**
+     * test using the forget password link with a wrong password reset code
+     * @author KareemWahby
+     */
     public function testResetPasswordAction_404(){
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadUserEmailData());
@@ -92,6 +102,10 @@ class PasswordForgetControllerTest extends EntangleTestCase {
 
     }
 
+    /**
+     * test using the forget password link with a valid password reset code
+     * @author KareemWahby
+     */
     public function testResetPasswordAction_Succsess(){
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadUserEmailData());
@@ -110,6 +124,10 @@ class PasswordForgetControllerTest extends EntangleTestCase {
 
     }
 
+    /**
+     * test using the forget password link with an expired password reset code
+     * @author KareemWahby
+     */
     public function testResetPasswordAction_expired(){
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadUserEmailData());
@@ -128,7 +146,12 @@ class PasswordForgetControllerTest extends EntangleTestCase {
     }
 
     //TODO figure out how the form encodes the data
-//    public function testChangePasswordAction_matchingPasswords(){
+
+     /**
+      * test the website form with matching passwords
+      * @author KareenWahby
+      */
+//   public function testChangePasswordAction_matchingPasswords(){
 //        $this->addFixture(new LoadUserData());
 //        $this->addFixture(new LoadUserEmailData());
 //        $this->addFixture(new LoadForgetPasswordCodeData());
@@ -142,6 +165,11 @@ class PasswordForgetControllerTest extends EntangleTestCase {
 //        $user=$userRepo->findOneBy(array("name"=>"sampleUser"));
 //        $this->assertEquals("test",$user->getPassword());
 //    }
+
+      /**
+       * test the website form with mismatching passwords
+       * @author KareenWahby
+       */
 //    public function testChangePasswordAction_misMatchingPasswords(){
 //        $this->addFixture(new LoadUserData());
 //        $this->addFixture(new LoadUserEmailData());
@@ -152,6 +180,11 @@ class PasswordForgetControllerTest extends EntangleTestCase {
 //        $client->request('POST','/reset',array(), array(), array(),$formData);
 //        $this->assertEquals(200, $client->getResponse()->getStatusCode());
 //    }
+
+    /**
+     * test the website form with empty fields 
+     * @author KareenWahby
+     */
 //    public function testChangePasswordAction_missingFields(){
 //        $this->addFixture(new LoadUserData());
 //        $this->addFixture(new LoadUserEmailData());
