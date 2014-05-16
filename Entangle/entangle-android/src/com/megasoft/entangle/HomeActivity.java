@@ -1,6 +1,10 @@
 package com.megasoft.entangle;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -18,11 +22,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.megasoft.config.Config;
 import com.megasoft.entangle.viewtanglelsit.TangleStreamActivity;
+import com.megasoft.requests.DeleteRequest;
 import com.megasoft.requests.ImageRequest;
 import com.megasoft.entangle.megafragments.*;
+import com.megasoft.utils.UI;
 
 public class HomeActivity extends FragmentActivity {
 
@@ -51,6 +58,16 @@ public class HomeActivity extends FragmentActivity {
 
 	private SearchView searchView;
 
+	/**
+	 * The id of the logged in user
+	 */
+	private int userId;
+
+	/**
+	 * The session id of the user
+	 */
+	private String sessionId;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -58,6 +75,9 @@ public class HomeActivity extends FragmentActivity {
 		initNavigationDrawer();
 		initializeDrawerToggle();
 
+		SharedPreferences settings = this.getSharedPreferences(Config.SETTING,
+				0);
+		sessionId = settings.getString(Config.SESSION_ID, "");
 	}
 
 	/**
@@ -131,11 +151,13 @@ public class HomeActivity extends FragmentActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		this.menu = menu;
+
 		if (TangleStreamActivity.tangleNames.size() > 0) {
 			menu.findItem(R.id.action_invite).setVisible(true);
 			menu.findItem(R.id.createRequest).setVisible(true);
 			menu.findItem(R.id.action_search).setVisible(true);
 		}
+
 		searchView = (SearchView) menu.findItem(R.id.action_search)
 				.getActionView();
 		return super.onCreateOptionsMenu(menu);
@@ -233,6 +255,8 @@ public class HomeActivity extends FragmentActivity {
 			invitationIntent.putExtra("tangleId", this.tangleId);
 			startActivity(invitationIntent);
 
+		case R.id.action_leave_tangle:
+			leaveTangle();
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -258,4 +282,89 @@ public class HomeActivity extends FragmentActivity {
 		return this.menu;
 	}
 
+	/**
+	 * This method is invoked when the leave tangle item in action bar menu is
+	 * clicked
+	 * 
+	 * @author HebaAamer
+	 */
+	public void leaveTangle() {
+		this.showDialog(0);
+	}
+
+	/**
+	 * This method is called when showDialog(int) method is called and it is
+	 * responsible for creating a dialog to make sure that the user wants to
+	 * leave the tangle
+	 * 
+	 * @param dialogId
+	 *            , is an int that corresponds to the id of the dialog being
+	 *            created but it is not used in this situation
+	 * 
+	 * @author HebaAamer
+	 */
+	@Override
+	protected Dialog onCreateDialog(int dialogId) {
+		Builder dialogBuilder = new AlertDialog.Builder(this);
+		if (dialogId == 0) {
+			dialogBuilder.setTitle("Leaving the tangle");
+			dialogBuilder
+					.setMessage("Are you sure you want to leave this tangle ?");
+			dialogBuilder.setPositiveButton("Yes",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							sendLeaveRequest();
+							dialog.dismiss();
+						}
+					});
+			dialogBuilder.setNegativeButton("No",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
+		}
+		return dialogBuilder.create();
+	}
+
+	/**
+	 * This method is used to send the request of leaving the tangle and handles
+	 * different responses, if the user left the tangle it will be redirected to
+	 * the list of tangles activity
+	 * 
+	 * @author HebaAamer
+	 */
+	private void sendLeaveRequest() {
+		DeleteRequest leaveRequest = new DeleteRequest(Config.API_BASE_URL
+				+ "/" + Config.TANGLE + "/" + tangleId + "/" + Config.USER) {
+			public void onPostExecute(String response) {
+				if (getStatusCode() == 204) {
+					UI.makeToast(getBaseContext(),
+							"You left the tangle successfully",
+							Toast.LENGTH_LONG);
+					Intent intent = new Intent(getBaseContext(),
+							HomeActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+					startActivity(intent);
+					finish();
+				} else if (getStatusCode() == 403) {
+					UI.makeToast(getBaseContext(),
+							"Sorry, you are not allowed to leave the tangle",
+							Toast.LENGTH_LONG);
+				} else {
+					UI.makeToast(
+							getBaseContext(),
+							"Sorry, problem happened while leaving the tangle. Try again later",
+							Toast.LENGTH_LONG);
+				}
+			}
+
+		};
+		leaveRequest.addHeader(Config.API_SESSION_ID, sessionId);
+		leaveRequest.execute();
+	}
 }

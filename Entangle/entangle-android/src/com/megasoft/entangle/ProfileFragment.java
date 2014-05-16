@@ -76,6 +76,8 @@ public class ProfileFragment extends Fragment {
 
 	private FragmentActivity activity;
 
+	private boolean isDestroyed;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -123,6 +125,10 @@ public class ProfileFragment extends Fragment {
 		}
 		GetRequest request = new GetRequest(link) {
 			protected void onPostExecute(String response) {
+				if (isDestroyed) {
+					return;
+				}
+
 				if (this.getStatusCode() == 200) {
 					try {
 						JSONObject information;
@@ -130,6 +136,14 @@ public class ProfileFragment extends Fragment {
 						name.setText(information.getString("name"));
 						description.setText(information
 								.getString("description"));
+
+						if (information.getString("description").equals("null")) {
+							description.setVisibility(View.GONE);
+						} else {
+							description.setText(information
+									.getString("description"));
+						}
+
 						viewProfilePicture(information.getString("photo"));
 
 						if (information.getBoolean("verified")) {
@@ -145,6 +159,7 @@ public class ProfileFragment extends Fragment {
 						e.printStackTrace();
 					}
 				} else {
+					Log.e("test", this.getErrorMessage());
 					Toast toast = Toast.makeText(
 							activity.getApplicationContext(),
 							"Some error happened.", Toast.LENGTH_SHORT);
@@ -192,5 +207,10 @@ public class ProfileFragment extends Fragment {
 	public void onAttach(Activity activity) {
 		this.activity = (FragmentActivity) activity;
 		super.onAttach(this.activity);
+	}
+
+	public void onPause() {
+		super.onPause();
+		isDestroyed = true;
 	}
 }

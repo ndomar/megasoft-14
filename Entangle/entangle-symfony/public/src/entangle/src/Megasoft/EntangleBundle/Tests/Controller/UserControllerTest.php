@@ -556,6 +556,6 @@ class UserControllerTest extends EntangleTestCase
         $this->assertEquals(404, $client->getResponse()->getStatusCode(), "checking required user not found");
     }
 
-   
+
 }
 

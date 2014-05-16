@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 import com.megasoft.entangle.megafragments.*;
@@ -113,6 +114,10 @@ public class GeneralProfileActivity extends FragmentActivity {
 		prefsEditor.putString(Config.SESSION_ID, null);
 
 		prefsEditor.commit();
+
+		SharedPreferences prefs = getSharedPreferences(Config.GCM_DATA,
+				MODE_PRIVATE);
+		prefs.edit().remove(Config.PROPERTY_REG_ID).commit();
 
 		Intent intent = new Intent(getApplicationContext(),
 				SplashActivity.class);
