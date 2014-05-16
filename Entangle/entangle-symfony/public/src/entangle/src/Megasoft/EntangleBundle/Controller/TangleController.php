@@ -78,9 +78,10 @@ class TangleController extends Controller {
         $query = $requestRepo->createQueryBuilder('request')
             ->where('request.tangleId = :tangleId')
             ->setParameter('tangleId', $tangleId)
-            ->andWhere('request.deleted = 0 AND request.status = 0');
+            ->andWhere('request.deleted = 0 AND request.status = 0')
+            ->orderBy('request.date', 'DESC');
         if($lastDate != null){
-            $query = $query->andWhere('request.date > :date')->setParameter('date',$lastDate);
+            $query = $query->andWhere('request.date < :date')->setParameter('date',$lastDate);
         }
 
         $query->setMaxResults($limit);
