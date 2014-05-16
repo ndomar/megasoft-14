@@ -9,6 +9,7 @@
 namespace Megasoft\EntangleBundle\Tests\Controller;
 
 
+use Megasoft\EntangleBundle\DataFixtures\ORM\AddUserData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadOfferData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadRequestData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadSessionData;
@@ -512,5 +513,62 @@ class UserControllerTest extends EntangleTestCase {
         $this->assertArrayHasKey('requesterId',$json['transactions'][0], 'The requester id not found');
         $this->assertEquals(1,count($json['transactions']),'The deleted transaction is shown');
     }
+
+    public function testRegisterAction_successScenario() {
+        $this->addFixture(new AddUserData());
+        $this->loadFixtures();
+        $client = static::createClient();
+        $client->request('post','/register', array(), array(),array());
+        $this->assertEquals(201, $client->getRequest()->getStatusCode());
+        $json_string =  $client->getResponse()->getContent();
+        $this->assertJson($json_string, 'Wrong json format');
+        $json = json_decode($json_string,true);
+        $this->assertArrayHasKey('username',$json,true, 'username not found');
+        $this->assertArrayHasKey('email',$json,true, 'Email not found');
+        $this->assertArrayHasKey('password',$json,true, 'Password not found');
+        $this->assertArrayHasKey('confirmPassword',$json,true, 'Confirm Password not found');
+        $em = $this->em;
+        $userRepo = $em->getRepository('MegasoftEntangleBundle:User');
+        $emailRepo = $em ->getRepository('MegasoftEntangleBundle:UserEmail');
+
+
+    }
+
+    public function testRegisterAction_emptyUsername() {
+        $this->addFixture(new AddUserData());
+        $this->loadFixtures();
+        $usernameJson = array('username' => '');
+        $usernameJsonBody = json_encode($usernameJson);
+        $client = static::createClient();
+
+        $client->request('post','/register', array(), array(),$usernameJsonBody);
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), 'Username field is empty');
+
+    }
+
+    public function testRegisterAction_emptyEmail() {
+        $this->addFixture(new AddUserData());
+        $this->loadFixtures();
+        $usernameJson = array('email' => '');
+        $usernameJsonBody = json_encode($usernameJson);
+        $client = static::createClient();
+
+        $client->request('post','/register', array(), array(),$usernameJsonBody);
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), 'Email field is empty');
+
+    }
+
+    public function testRegisterAction_emptyPassword() {
+        $this->addFixture(new AddUserData());
+        $this->loadFixtures();
+        $usernameJson = array('password' => '');
+        $usernameJsonBody = json_encode($usernameJson);
+        $client = static::createClient();
+
+        $client->request('post','/register', array(), array(),$usernameJsonBody);
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), 'Password field is empty');
+
+    }
+    
 }
 

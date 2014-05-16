@@ -23,15 +23,17 @@ class AddUserData extends AbstractFixture implements OrderedFixtureInterface {
         $user->setName("Zanaty");
         $userEmail->setEmail("zanaty@gmail.com");
         $user->setPassword('1234567890');
-
+        $this->addReference('Zanaty', $user);
+        $this->addReference('ZanatyMail', $userEmail);
         $manager->persist($user);
         $manager->flush();
+
 
 
     }
 
     public function getOrder()
     {
-        return 5;
+        return 1;
     }
 }
