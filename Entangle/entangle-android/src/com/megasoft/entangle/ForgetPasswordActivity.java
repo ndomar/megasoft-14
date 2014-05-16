@@ -11,6 +11,11 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * The fragment that sends the email of the user to reset the password
+ * @author KareemWahby
+ *
+ */
 public class ForgetPasswordActivity extends Activity {
 	/**
 	 * email of the user
