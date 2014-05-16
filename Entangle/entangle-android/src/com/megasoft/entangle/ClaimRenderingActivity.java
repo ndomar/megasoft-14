@@ -99,6 +99,7 @@ public class ClaimRenderingActivity extends Activity {
 						JSONObject object = new JSONObject(response);
 
 						claimDate = object.getString("claimDate");
+						String[] claimDateArray = claimDate.split(":");
 						claimerName = object.getString("claimer");
 						offererName = object.getString("offerer");
 						offererEmail = object.getString("offererEmail");
@@ -109,6 +110,26 @@ public class ClaimRenderingActivity extends Activity {
 								.getString("tangleOwnerEmail");
 						tangleName = object.getString("tangle");
 						claimMessage = object.getString("claimMessage");
+						TextView date = (TextView) findViewById(R.id.date);
+						date.setText(claimDateArray[1]);
+						TextView claimer = (TextView) findViewById(R.id.claimerName);
+						claimer.setText(claimerName);
+						TextView offerer = (TextView) findViewById(R.id.offererName);
+						offerer.setText(offererName);
+						TextView offererEmailView = (TextView) findViewById(R.id.offererEmailText);
+						offererEmailView.setText(offererEmail);
+						TextView requester = (TextView) findViewById(R.id.requesterName);
+						requester.setText(requesterName);
+						TextView requesterEmailView = (TextView) findViewById(R.id.requesterEmailText);
+						requesterEmailView.setText(requesterEmail);
+						TextView tangleOwnerNameView = (TextView) findViewById(R.id.tangleOwnerName);
+						tangleOwnerNameView.setText(tangleOwnerName);
+						TextView tangleOwnerEmailView = (TextView) findViewById(R.id.tangleOwnerEmailText);
+						tangleOwnerEmailView.setText(tangleOwnerEmail);
+						TextView tangle = (TextView) findViewById(R.id.tangleNameText);
+						tangle.setText(tangleName);
+						TextView claimMssg = (TextView) findViewById(R.id.mssgText);
+						claimMssg.setText(claimMessage);
 						Toast.makeText(getBaseContext(),
 								"Loading Claim Report", Toast.LENGTH_SHORT)
 								.show();
@@ -125,26 +146,26 @@ public class ClaimRenderingActivity extends Activity {
 		};
 		requestClaimReport.addHeader("X-SESSION-ID", sessionID);
 		requestClaimReport.execute();
-		TextView date = (TextView) findViewById(R.id.date);
-		date.setText(claimDate);
-		TextView claimer = (TextView) findViewById(R.id.claimerName);
-		claimer.setText(claimerName);
-		TextView offerer = (TextView) findViewById(R.id.offererName);
-		offerer.setText(offererName);
-		TextView offererEmail = (TextView) findViewById(R.id.offererEmailText);
-		offererEmail.setText(this.offererEmail);
-		TextView requester = (TextView) findViewById(R.id.requesterName);
-		requester.setText(requesterName);
-		TextView requesterEmail = (TextView) findViewById(R.id.requesterEmailText);
-		requesterEmail.setText(this.requesterEmail);
-		TextView tangleOwnerName = (TextView) findViewById(R.id.tangleOwnerName);
-		tangleOwnerName.setText(this.tangleOwnerName);
-		TextView tangleOwnerEmail = (TextView) findViewById(R.id.tangleOwnerEmailText);
-		tangleOwnerEmail.setText(this.tangleOwnerEmail);
-		TextView tangle = (TextView) findViewById(R.id.tangleNameText);
-		tangle.setText(this.tangleName);
-		TextView claimMssg = (TextView) findViewById(R.id.mssgText);
-		claimMssg.setText(this.claimMessage);
+//		TextView date = (TextView) findViewById(R.id.date);
+//		date.setText(claimDate);
+//		TextView claimer = (TextView) findViewById(R.id.claimerName);
+//		claimer.setText(claimerName);
+//		TextView offerer = (TextView) findViewById(R.id.offererName);
+//		offerer.setText(offererName);
+//		TextView offererEmail = (TextView) findViewById(R.id.offererEmailText);
+//		offererEmail.setText(this.offererEmail);
+//		TextView requester = (TextView) findViewById(R.id.requesterName);
+//		requester.setText(requesterName);
+//		TextView requesterEmail = (TextView) findViewById(R.id.requesterEmailText);
+//		requesterEmail.setText(this.requesterEmail);
+//		TextView tangleOwnerName = (TextView) findViewById(R.id.tangleOwnerName);
+//		tangleOwnerName.setText(this.tangleOwnerName);
+//		TextView tangleOwnerEmail = (TextView) findViewById(R.id.tangleOwnerEmailText);
+//		tangleOwnerEmail.setText(this.tangleOwnerEmail);
+//		TextView tangle = (TextView) findViewById(R.id.tangleNameText);
+//		tangle.setText(this.tangleName);
+//		TextView claimMssg = (TextView) findViewById(R.id.mssgText);
+//		claimMssg.setText(this.claimMessage);
 
 	}
 

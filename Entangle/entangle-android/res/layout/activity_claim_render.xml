@@ -60,17 +60,8 @@
         android:layout_marginTop="@dimen/marginMedium"
         android:layout_marginLeft="@dimen/marginMedium"
         android:text="@string/claimDate"
+        android:fontFamily="courier"
         android:textSize="@dimen/textMedium" />
-
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
-        android:layout_marginLeft="@dimen/marginMedium"
-        android:layout_marginTop="@dimen/marginMedium"
-        android:layout_toRightOf="@+id/claimDate"
-        android:ems="5"/>
 
     <TextView
         android:id="@+id/claimer"
@@ -84,16 +75,6 @@
         android:textSize="@dimen/textMedium" />
     
     <TextView
-        android:id="@+id/claimerName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/date"
-        android:layout_marginLeft="@dimen/marginMedium"
-        android:layout_marginTop="@dimen/marginMedium"
-        android:layout_toRightOf="@+id/claimer"
-        android:ems="10"/>
-    
-    <TextView
         android:id="@+id/offerer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -103,16 +84,6 @@
         android:layout_marginLeft="@dimen/marginMedium"
         android:text="@string/offerer"
         android:textSize="@dimen/textMedium" />
-    
-    <TextView
-        android:id="@+id/offererName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/claimerName"
-        android:layout_marginLeft="@dimen/marginMedium"
-        android:layout_marginTop="@dimen/marginMedium"
-        android:layout_toRightOf="@+id/offerer"
-        android:ems="10"/>
     
     <TextView
         android:id="@+id/offererEmail"
@@ -125,16 +96,6 @@
         android:text="@string/offererEmail"
         android:textSize="@dimen/textMedium" />
     
-    <TextView
-        android:id="@+id/offererEmailText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/offerer"
-        android:layout_marginLeft="@dimen/marginMedium"
-        android:layout_marginTop="@dimen/marginMedium"
-        android:layout_toRightOf="@+id/offererEmail"
-        android:ems="10"/>
-    
      <TextView
         android:id="@+id/requester"
         android:layout_width="wrap_content"
@@ -145,16 +106,6 @@
         android:layout_marginLeft="@dimen/marginMedium"
         android:text="@string/requester"
         android:textSize="@dimen/textMedium" />
-    
-    <TextView
-        android:id="@+id/requesterName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/offererEmailText"
-        android:layout_marginLeft="@dimen/marginMedium"
-        android:layout_marginTop="@dimen/marginMedium"
-        android:layout_toRightOf="@+id/requester"
-        android:ems="10"/>
     
      <TextView
         android:id="@+id/requesterEmail"
@@ -167,16 +118,6 @@
         android:text="@string/requesterEmail"
         android:textSize="@dimen/textMedium" />
     
-    <TextView
-        android:id="@+id/requesterEmailText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/requesterName"
-        android:layout_marginLeft="@dimen/marginMedium"
-        android:layout_marginTop="@dimen/marginMedium"
-        android:layout_toRightOf="@+id/requesterEmail"
-        android:ems="10"/>
-    
      <TextView
         android:id="@+id/tangleOwner"
         android:layout_width="wrap_content"
@@ -187,16 +128,6 @@
         android:layout_marginLeft="@dimen/marginMedium"
         android:text="@string/tangleOwnerName"
         android:textSize="@dimen/textMedium" />
-    
-    <TextView
-        android:id="@+id/tangleOwnerName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/requesterEmailText"
-        android:layout_marginLeft="@dimen/marginMedium"
-        android:layout_marginTop="@dimen/marginMedium"
-        android:layout_toRightOf="@+id/tangleOwner"
-        android:ems="10"/>
     
      <TextView
         android:id="@+id/tangleOwnerEmail"
@@ -210,16 +141,6 @@
         android:textSize="@dimen/textMedium" />
     
     <TextView
-        android:id="@+id/tangleOwnerEmailText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tangleOwnerName"
-        android:layout_marginLeft="@dimen/marginMedium"
-        android:layout_marginTop="@dimen/marginMedium"
-        android:layout_toRightOf="@+id/tangleOwnerEmail"
-        android:ems="10"/>
-    
-    <TextView
         android:id="@+id/tangleName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -229,16 +150,6 @@
         android:layout_marginLeft="@dimen/marginMedium"
         android:text="@string/tangle"
         android:textSize="@dimen/textMedium" />
-    
-    <TextView
-        android:id="@+id/tangleNameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tangleOwnerEmailText"
-        android:layout_marginLeft="@dimen/marginMedium"
-        android:layout_marginTop="@dimen/marginMedium"
-        android:layout_toRightOf="@+id/tangleName"
-        android:ems="10"/>
     
      <TextView
         android:id="@+id/claimMssg"
@@ -262,5 +173,82 @@
          android:layout_below="@+id/claimMssg"
          android:ems="10"
          android:textAppearance="?android:attr/textAppearanceMedium" />
+
+     <TextView
+         android:id="@+id/tangleNameText"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBottom="@+id/tangleName"
+         android:layout_toRightOf="@+id/offererEmail"
+         android:ems="10" />
+
+     <TextView
+         android:id="@+id/requesterEmailText"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBottom="@+id/requesterEmail"
+         android:layout_alignLeft="@+id/requesterName"
+         android:ems="10" />
+
+     <TextView
+         android:id="@+id/claimerName"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBaseline="@+id/claimer"
+         android:layout_alignBottom="@+id/claimer"
+         android:layout_toRightOf="@+id/claimer"
+         android:ems="10" />
+
+     <TextView
+         android:id="@+id/offererName"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBaseline="@+id/offerer"
+         android:layout_alignBottom="@+id/offerer"
+         android:layout_alignLeft="@+id/tangleNameText"
+         android:ems="10" />
+
+     <TextView
+         android:id="@+id/offererEmailText"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBaseline="@+id/offererEmail"
+         android:layout_alignBottom="@+id/offererEmail"
+         android:layout_toRightOf="@+id/offererEmail"
+         android:ems="10" />
+
+     <TextView
+         android:id="@+id/requesterName"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBaseline="@+id/requester"
+         android:layout_alignBottom="@+id/requester"
+         android:layout_toRightOf="@+id/requester"
+         android:ems="10" />
+
+     <TextView
+         android:id="@+id/tangleOwnerEmailText"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBottom="@+id/tangleOwnerEmail"
+         android:layout_toRightOf="@+id/tangleOwnerEmail"
+         android:ems="10" />
+
+     <TextView
+         android:id="@+id/tangleOwnerName"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignLeft="@+id/tangleOwnerEmailText"
+         android:layout_alignTop="@+id/tangleOwner"
+         android:ems="10" />
+
+     <TextView
+         android:id="@+id/date"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBottom="@+id/claimDate"
+         android:layout_toRightOf="@+id/claimDate"
+         android:fontFamily="courier"
+         android:ems="10" />
 
 </RelativeLayout>
