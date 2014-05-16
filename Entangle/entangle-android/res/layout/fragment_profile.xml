@@ -39,12 +39,32 @@
         android:gravity="center_horizontal"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/nameView"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textSize="@dimen/textLarge" />
+            android:gravity="center_horizontal" >
+
+            <TextView
+                android:id="@+id/nameView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/marginMedium"
+                android:layout_marginLeft="@dimen/marginSmall"
+                android:gravity="center_horizontal"
+                android:textSize="@dimen/textLarge" />
+
+            <ImageView
+                android:id="@+id/verified"
+                android:layout_width="@dimen/paddingMedium"
+                android:layout_height="@dimen/paddingMedium"
+                android:layout_alignBottom="@id/nameView"
+                android:layout_alignTop="@id/nameView"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_toRightOf="@id/nameView"
+                android:contentDescription="@string/icon"
+                android:src="@drawable/ic_action_done"
+                android:visibility="gone" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/descriptionView"
@@ -56,8 +76,8 @@
             android:id="@+id/credit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/cyan"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/cyan" />
     </LinearLayout>
 
     <ScrollView

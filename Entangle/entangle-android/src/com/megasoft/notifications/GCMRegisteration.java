@@ -86,7 +86,7 @@ public class GCMRegisteration extends IntentService {
 	 */
 	private String getRegistrationId(Context context) {
 		SharedPreferences prefs = getSharedPreferences(
-				MainActivity.class.getSimpleName(), MODE_PRIVATE);
+				Config.GCM_DATA, MODE_PRIVATE);
 		String registrationId = prefs.getString(Config.PROPERTY_REG_ID, "");
 		if (registrationId.equals("")) {
 			Log.i(TAG, "reg id not found");
@@ -177,7 +177,6 @@ public class GCMRegisteration extends IntentService {
 	 */
 	protected String getSessionId() {
 		SharedPreferences prefs = getSharedPreferences(Config.SETTING, 0);
-		Log.i(TAG, prefs.getString(Config.SESSION_ID, ""));
 		return prefs.getString(Config.SESSION_ID, "");
 	}
 
@@ -190,7 +189,7 @@ public class GCMRegisteration extends IntentService {
 	 */
 	protected void storeRegistrationId(String regid) {
 		SharedPreferences prefs = getSharedPreferences(
-				GCMRegisteration.class.getSimpleName(), MODE_PRIVATE);
+				Config.GCM_DATA, MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putString(Config.PROPERTY_REG_ID, regid);
 		editor.commit();

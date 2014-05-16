@@ -6,13 +6,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.AlertDialog;
+import android.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +41,7 @@ public class MemberListFragment extends Fragment {
 	private EditText searchBar;
 	private ArrayList<MemberEntryFragment> memberFragments = new ArrayList<MemberEntryFragment>();
 	private TextView noMembers;
+	private boolean isDestroyed;
 
 	public ViewGroup getContainer() {
 		return container;
@@ -131,6 +131,7 @@ public class MemberListFragment extends Fragment {
 		searchBar = (EditText) view.findViewById(R.id.search_field);
 		noMembers = new TextView(getActivity().getBaseContext());
 		noMembers.setText(getString(R.string.member_not_found));
+		noMembers.setVisibility(View.GONE);
 		getMemberListView().addView(noMembers);
 		noMembers.setVisibility(View.GONE);
 		fetchMembers();
@@ -163,18 +164,12 @@ public class MemberListFragment extends Fragment {
 	 * @author Omar ElAzazy
 	 */
 	private void fetchMembers() {
-
-		final AlertDialog ad = new AlertDialog.Builder(getActivity()).create();
-		ad.setCancelable(false);
-		ad.setMessage("Loading ...");
-		ad.show();
-
 		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
 				+ "/tangle/" + getTangleId() + "/user") {
 			public void onPostExecute(String response) {
-				ad.dismiss();
-				Log.e("test", this.getStatusCode() + ""); // ///////////////////////////////
-
+				if(isDestroyed){
+					return;
+				}
 				if (!this.hasError() && this.getStatusCode() == 200) {
 					if (!showData(response)) {
 						toasterShow("Something went wrong, please try again later");
@@ -291,5 +286,10 @@ public class MemberListFragment extends Fragment {
 		} else {
 			noMembers.setVisibility(View.GONE);
 		}
+	}
+	
+	public void onPause(){
+		super.onPause();
+		isDestroyed = true;
 	}
 }
