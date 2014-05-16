@@ -145,54 +145,51 @@ class PasswordForgetControllerTest extends EntangleTestCase {
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
-    //TODO figure out how the form encodes the data
 
      /**
       * test the website form with matching passwords
       * @author KareenWahby
       */
-//   public function testChangePasswordAction_matchingPasswords(){
-//        $this->addFixture(new LoadUserData());
-//        $this->addFixture(new LoadUserEmailData());
-//        $this->addFixture(new LoadForgetPasswordCodeData());
-//        $this->loadFixtures();
-//        $client = static::createClient();
-//        $formData=array("newPass"=>"test","newPassR"=>"test1","Username"=>"sampleUser");
-//       $client->request('POST','/reset',array(), array(), array());
-//        $client->request("POST","/reset",$formData);
-//        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-//        $userRepo=$this->doctrine->getRepository('MegasoftEntangleBundle:User');
-//        $user=$userRepo->findOneBy(array("name"=>"sampleUser"));
-//        $this->assertEquals("test",$user->getPassword());
-//    }
+   public function testChangePasswordAction_matchingPasswords(){
+        $this->addFixture(new LoadUserData());
+        $this->addFixture(new LoadUserEmailData());
+        $this->addFixture(new LoadForgetPasswordCodeData());
+        $this->loadFixtures();
+        $client = static::createClient();
+       $formData=array("newPass"=>"test","newPassR"=>"test1","Username"=>"sampleUser");
+        $client->request('POST','/reset',array(), array(), array());
+        $client->request("POST","/reset",$formData);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+    }
 
       /**
        * test the website form with mismatching passwords
        * @author KareenWahby
        */
-//    public function testChangePasswordAction_misMatchingPasswords(){
-//        $this->addFixture(new LoadUserData());
-//        $this->addFixture(new LoadUserEmailData());
-//        $this->addFixture(new LoadForgetPasswordCodeData());
-//        $this->loadFixtures();
-//        $client = static::createClient();
-//        $formData=array("newPass"=>"test","newPassR"=>"test1","Username"=>"sampleUser");
-//        $client->request('POST','/reset',array(), array(), array(),$formData);
-//        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-//    }
+    public function testChangePasswordAction_misMatchingPasswords(){
+        $this->addFixture(new LoadUserData());
+        $this->addFixture(new LoadUserEmailData());
+        $this->addFixture(new LoadForgetPasswordCodeData());
+        $this->loadFixtures();
+        $client = static::createClient();
+        $formData=array("newPass"=>"test","newPassR"=>"test1","Username"=>"sampleUser");
+        $client->request('POST','/reset',array(), array(), array(),$formData);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
 
     /**
-     * test the website form with empty fields 
+     * test the website form with empty fields
      * @author KareenWahby
      */
-//    public function testChangePasswordAction_missingFields(){
-//        $this->addFixture(new LoadUserData());
-//        $this->addFixture(new LoadUserEmailData());
-//        $this->addFixture(new LoadForgetPasswordCodeData());
-//        $this->loadFixtures();
-//        $client = static::createClient();
-//        $formData=array("newPass"=>"test","newPassR"=>"test1","Username"=>"sampleUser");
-//        $client->request('POST','/reset',array(), array(), array(),$formData);
-//        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-//    }
+    public function testChangePasswordAction_missingFields(){
+        $this->addFixture(new LoadUserData());
+        $this->addFixture(new LoadUserEmailData());
+        $this->addFixture(new LoadForgetPasswordCodeData());
+        $this->loadFixtures();
+        $client = static::createClient();
+        $formData=array("newPass"=>"test","newPassR"=>"test1","Username"=>"sampleUser");
+        $client->request('POST','/reset',array(), array(), array(),$formData);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
 }
