@@ -101,10 +101,10 @@ public abstract class HttpRequest extends AsyncTask<String, String, String> {
     		entity = x.getEntity();
     		this.statusCode = x.getStatusLine().getStatusCode();
     		if(statusCode/100 == 2){
-    			return EntityUtils.toString(entity);
+    			return entity == null ? "" : EntityUtils.toString(entity);
     		}else if(statusCode/100 == 4){
     			hasError = true;
-    			errorMessage = EntityUtils.toString(entity);
+    			errorMessage = entity == null ? "" : EntityUtils.toString(entity);
     			return null;
     		} else {
     			hasError = true;

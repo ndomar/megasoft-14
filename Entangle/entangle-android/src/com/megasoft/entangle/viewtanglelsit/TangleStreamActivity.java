@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,9 +72,12 @@ public class TangleStreamActivity extends Fragment {
 		tangleIds = new ArrayList<Integer>();
 		tangleNames = new ArrayList<String>();
 		tangleOwners = new ArrayList<Boolean>();
-		fetchTangles();
-
 		return view;
+	}
+	
+	public void onResume(){
+		super.onResume();
+		fetchTangles();
 	}
 
 	/**
@@ -104,7 +108,7 @@ public class TangleStreamActivity extends Fragment {
 	 */
 	private void showData(String response) {
 		ListView listView = (ListView) view.findViewById(R.id.view_tangle_tangle_titles);
-		listView.removeViews(0, listView.getCount());
+		listView.removeAllViewsInLayout();
 		tangleIds.clear();
 		tangleNames.clear();
 		try {
