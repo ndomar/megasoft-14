@@ -80,9 +80,10 @@ class TangleController extends Controller
         $query = $requestRepo->createQueryBuilder('request')
             ->where('request.tangleId = :tangleId')
             ->setParameter('tangleId', $tangleId)
-            ->andWhere('request.deleted = 0 AND request.status = 0');
+            ->andWhere('request.deleted = 0 AND request.status = 0')
+            ->orderBy('request.date', 'DESC');
         if($lastDate != null){
-            $query = $query->andWhere('request.date > :date')->setParameter('date',$lastDate);
+            $query = $query->andWhere('request.date < :date')->setParameter('date',$lastDate);
         }
 
         $query->setMaxResults($limit);
@@ -813,24 +814,22 @@ class TangleController extends Controller
     /**
      * An endpoint for accepting tangle invitations sent to user
      * @param int invitationID
-     * @return Response
+     * @return twig view
      * @author MahmoudGamal
      */
     public function acceptInvitationAction($invitationCode)
     {
-
-
         $criteria1 = array('code' => $invitationCode);
         $invitation = $this->getDoctrine()
             ->getRepository('MegasoftEntangleBundle:InvitationCode')
             ->findOneBy($criteria1);
 
         if (!$invitation) {
-            return new Response("Invitation not found", 404);
+            return $this->render('MegasoftEntangleBundle:AcceptTangleInvitation:invitationNotFound.html.twig');
         }
         $expired = $invitation->getExpired();
         if ($expired) {
-            return new Response("Invitation expired", 400);
+            return $this->render('MegasoftEntangleBundle:AcceptTangleInvitation:expired.html.twig');
         }
         $tangleId = $invitation->getTangleId();
         $userId = $invitation->getUserId();
@@ -838,31 +837,27 @@ class TangleController extends Controller
             ->getRepository('MegasoftEntangleBundle:Tangle')
             ->find($tangleId);
         if (!$tangle) {
-            return new Response("Tangle not found", 404);
+            return $this->render('MegasoftEntangleBundle:AcceptTangleInvitation:tangleNotFound.html.twig');
         }
         $user = $this->getDoctrine()
             ->getRepository('MegasoftEntangleBundle:User')
             ->find($userId);
         if (!$user) {
-            return new Response("User not found", 404);
-        }
-        $criteria2 = array('userId' => $userId, 'tangleId' => $tangleId);
 
-        $search = current($this->getDoctrine()
-            ->getRepository('MegasoftEntangleBundle:UserTangle')
-            ->findBy($criteria2));
-        if ($search) {
-            return new Response("User already exists in tangle", 400);
-        }
+            return $this->render('MegasoftEntangleBundle:AcceptTangleInvitation:userNotFound.html.twig');
+        };
         $tangleUser = new UserTangle();
         $tangleUser->setTangleOwner(FALSE);
         $tangleUser->setUser($user);
         $tangleUser->setTangle($tangle);
         $tangleUser->setCredit(0);
         $invitation->setExpired(true);
+        $tangleName = $tangle->getName();
+        $userName = $user->getName();
         $this->getDoctrine()->getManager()->persist($tangleUser);
         $this->getDoctrine()->getManager()->flush();
-        return new Response("Thank you! You can now view this tangle in your mobile app.", 201);
+        return $this->render('MegasoftEntangleBundle:AcceptTangleInvitation:success.html.twig',array(
+            'userName' => $userName , 'tangleName'=>$tangleName,));
     }
 
     /**
