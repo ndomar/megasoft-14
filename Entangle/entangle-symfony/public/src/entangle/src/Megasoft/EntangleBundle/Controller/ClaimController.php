@@ -7,6 +7,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Megasoft\EntangleBundle\Entity\Claim;
 
+/**
+ * This is the controller which manages the claim.
+ * @author Salma Amr
+ */
 class ClaimController extends Controller {
 
     /**
@@ -100,7 +104,6 @@ class ClaimController extends Controller {
             'tangleOwner' => $tangleOwnerName, 'tangleOwnerEmail' => $tangleOwnerMail, 'tangle' => $tangleName,
             'claimMessage' => $claimMessage,));
         $response->setStatusCode(200);
-        
         $title = "Claim Report";
         $body = "<!DOCTYPE html>
                     <body>
@@ -120,7 +123,6 @@ class ClaimController extends Controller {
                            <p>Cheers<br>Entangle Team</p>
                     </body>
                 </html>";
-
         $notificationCenter = $this->get('notification_center.service');
         $notificationCenter->sendMail($offerer->getId(), $title, $body);
         $notificationCenter->sendMail($requester->getId(), $title, $body);

@@ -15,6 +15,10 @@ use Megasoft\EntangleBundle\Entity\Claim;
 use Megasoft\EntangleBundle\Entity\Session;
 use DateTime;
 
+/**
+ * This class loads the claim data into the test database.
+ * @author SalmaAmr
+ */
 class LoadClaimData extends AbstractFixture implements OrderedFixtureInterface {
 
     /**

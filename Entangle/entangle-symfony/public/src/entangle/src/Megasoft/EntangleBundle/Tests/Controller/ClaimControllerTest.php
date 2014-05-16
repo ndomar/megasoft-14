@@ -13,6 +13,10 @@ use Megasoft\EntangleBundle\DataFixtures\ORM\LoadClaimData;
  * and open the template in the editor.
  */
 
+/**
+ * This class tests the claim controller.
+ * @author Salma Amr
+ */
 class ClaimControllerTest extends EntangleTestCase {
 
     /**

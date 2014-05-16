@@ -17,11 +17,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 /**
  * Creates the claim
  * 
  * @author Salma Amr
- *
+ * 
  */
 public class Claim extends Activity {
 
@@ -36,7 +37,7 @@ public class Claim extends Activity {
 
 	/**
 	 * This sets the email of the tangle owner and the requester into a non
-	 * editable edit text, also it sets the view of the claim form
+	 * editable edit text, also it sets the view of the claim form.
 	 * 
 	 * @param Bundle
 	 *            savedInstanceState android bundle
@@ -51,13 +52,19 @@ public class Claim extends Activity {
 		getActionBar().hide();
 	}
 
+	/**
+	 * This method finishes the activity on clicking the cancel button.
+	 * 
+	 * @param view
+	 * @author Salma Amr
+	 */
 	public void cancel(View view) {
 		this.finish();
 	}
 
 	/**
 	 * This method creates the claim form after making sure of entering the body
-	 * and the subject of the claim, it creates a claim id
+	 * and the subject of the claim, it creates a claim id.
 	 * 
 	 * @param View
 	 *            view the claim button clicked

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/postBackground"
-    android:orientation="vertical" > 
+    android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,27 +41,26 @@
             android:layout_weight="1"
             android:background="@color/lightGreen" />
     </LinearLayout>
-    
-    
+
     <TextView
-            android:id="@+id/title"
-            android:layout_marginTop="@dimen/marginMedium"
-            android:layout_marginLeft="@dimen/marginMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/claimReport"
-            android:textSize="@dimen/textMediumLarge" />
-    
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/marginMedium"
+        android:layout_marginTop="@dimen/marginMedium"
+        android:text="@string/claimReport"
+        android:textSize="@dimen/textMediumLarge" />
+
     <TextView
         android:id="@+id/claimDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/title"
         android:layout_below="@+id/title"
-        android:layout_marginTop="@dimen/marginMedium"
         android:layout_marginLeft="@dimen/marginMedium"
-        android:text="@string/claimDate"
+        android:layout_marginTop="@dimen/marginMedium"
         android:fontFamily="courier"
+        android:text="@string/claimDate"
         android:textSize="@dimen/textMedium" />
 
     <TextView
@@ -70,205 +69,206 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/title"
         android:layout_below="@+id/date"
-        android:layout_marginTop="@dimen/marginMedium"
         android:layout_marginLeft="@dimen/marginMedium"
+        android:layout_marginTop="@dimen/marginMedium"
         android:fontFamily="courier"
         android:text="@string/claimer"
         android:textSize="@dimen/textMedium" />
-    
+
     <TextView
         android:id="@+id/offerer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/title"
         android:layout_below="@+id/claimer"
-        android:layout_marginTop="@dimen/marginMedium"
         android:layout_marginLeft="@dimen/marginMedium"
+        android:layout_marginTop="@dimen/marginMedium"
         android:fontFamily="courier"
         android:text="@string/offerer"
         android:textSize="@dimen/textMedium" />
-    
+
     <TextView
         android:id="@+id/offererEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/title"
         android:layout_below="@+id/offerer"
-        android:layout_marginTop="@dimen/marginMedium"
         android:layout_marginLeft="@dimen/marginMedium"
+        android:layout_marginTop="@dimen/marginMedium"
         android:fontFamily="courier"
         android:text="@string/offererEmail"
         android:textSize="@dimen/textMedium" />
-    
-     <TextView
+
+    <TextView
         android:id="@+id/requester"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/title"
         android:layout_below="@+id/offererEmail"
-        android:layout_marginTop="@dimen/marginMedium"
         android:layout_marginLeft="@dimen/marginMedium"
-        android:text="@string/requester"
+        android:layout_marginTop="@dimen/marginMedium"
         android:fontFamily="courier"
+        android:text="@string/requester"
         android:textSize="@dimen/textMedium" />
-    
-     <TextView
+
+    <TextView
         android:id="@+id/requesterEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/title"
         android:layout_below="@+id/requester"
-        android:layout_marginTop="@dimen/marginMedium"
         android:layout_marginLeft="@dimen/marginMedium"
-        android:text="@string/requesterEmail"
+        android:layout_marginTop="@dimen/marginMedium"
         android:fontFamily="courier"
+        android:text="@string/requesterEmail"
         android:textSize="@dimen/textMedium" />
-    
-     <TextView
+
+    <TextView
         android:id="@+id/tangleOwner"
         android:layout_width="wrap_content"
-        android:fontFamily="courier"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/title"
         android:layout_below="@+id/requesterEmail"
-        android:layout_marginTop="@dimen/marginMedium"
         android:layout_marginLeft="@dimen/marginMedium"
+        android:layout_marginTop="@dimen/marginMedium"
+        android:fontFamily="courier"
         android:text="@string/tangleOwnerName"
         android:textSize="@dimen/textMedium" />
-    
-     <TextView
+
+    <TextView
         android:id="@+id/tangleOwnerEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/title"
         android:layout_below="@+id/tangleOwner"
-        android:layout_marginTop="@dimen/marginMedium"
         android:layout_marginLeft="@dimen/marginMedium"
-        android:text="@string/tangleOwnerEmail"
+        android:layout_marginTop="@dimen/marginMedium"
         android:fontFamily="courier"
+        android:text="@string/tangleOwnerEmail"
         android:textSize="@dimen/textMedium" />
-    
+
     <TextView
         android:id="@+id/tangleName"
         android:layout_width="wrap_content"
-        android:fontFamily="courier"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/title"
         android:layout_below="@+id/tangleOwnerEmail"
-        android:layout_marginTop="@dimen/marginMedium"
         android:layout_marginLeft="@dimen/marginMedium"
+        android:layout_marginTop="@dimen/marginMedium"
+        android:fontFamily="courier"
         android:text="@string/tangle"
         android:textSize="@dimen/textMedium" />
-    
-     <TextView
+
+    <TextView
         android:id="@+id/claimMssg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/title"
         android:layout_below="@+id/tangleName"
-        android:layout_marginTop="@dimen/marginMedium"
         android:layout_marginLeft="@dimen/marginMedium"
+        android:layout_marginTop="@dimen/marginMedium"
         android:fontFamily="courier"
         android:text="@string/claim"
         android:textSize="@dimen/textMedium" />
 
-     <TextView
-         android:id="@+id/mssgText"
-         android:layout_width="match_parent"
-         android:layout_height="@dimen/textAreaHeight"
-         android:layout_alignLeft="@+id/claimMssg"
-         android:layout_below="@+id/claimMssg"
-         android:layout_marginRight="@dimen/marginMedium"
-         android:layout_marginTop="@dimen/marginMedium"
-         android:ems="10"
-         android:fontFamily="courier"
-         android:textAppearance="?android:attr/textAppearanceMedium" />
+    <TextView
+        android:id="@+id/mssgText"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/textAreaHeight"
+        android:layout_alignLeft="@+id/claimMssg"
+        android:layout_below="@+id/claimMssg"
+        android:layout_marginRight="@dimen/marginMedium"
+        android:layout_marginTop="@dimen/marginMedium"
+        android:ems="10"
+        android:fontFamily="courier"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-     <TextView
-         android:id="@+id/claimerName"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignBaseline="@+id/claimer"
-         android:layout_alignBottom="@+id/claimer"
-         android:layout_toRightOf="@+id/claimer"
-         android:fontFamily="courier"
-         android:ems="10" />
+    <TextView
+        android:id="@+id/claimerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/claimer"
+        android:layout_alignBottom="@+id/claimer"
+        android:layout_toRightOf="@+id/claimer"
+        android:ems="10"
+        android:fontFamily="courier" />
 
-     <TextView
-         android:id="@+id/date"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignBottom="@+id/claimDate"
-         android:layout_toRightOf="@+id/claimDate"
-         android:fontFamily="courier"
-         android:ems="10" />
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/claimDate"
+        android:layout_toRightOf="@+id/claimDate"
+        android:ems="10"
+        android:fontFamily="courier" />
 
-     <TextView
-         android:id="@+id/offererName"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignBaseline="@+id/offerer"
-         android:layout_alignBottom="@+id/offerer"
-         android:layout_alignLeft="@+id/claimerName"
-         android:ems="10"
-         android:fontFamily="courier" />
+    <TextView
+        android:id="@+id/offererName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/offerer"
+        android:layout_alignBottom="@+id/offerer"
+        android:layout_alignLeft="@+id/claimerName"
+        android:ems="10"
+        android:fontFamily="courier" />
 
-     <TextView
-         android:id="@+id/requesterName"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignBaseline="@+id/requester"
-         android:layout_alignBottom="@+id/requester"
-         android:layout_toRightOf="@+id/requester"
-         android:ems="10"
-         android:fontFamily="courier" />
+    <TextView
+        android:id="@+id/requesterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/requester"
+        android:layout_alignBottom="@+id/requester"
+        android:layout_toRightOf="@+id/requester"
+        android:ems="10"
+        android:fontFamily="courier" />
 
-     <TextView
-         android:id="@+id/tangleOwnerName"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignBaseline="@+id/tangleOwner"
-         android:layout_alignBottom="@+id/tangleOwner"
-         android:layout_toRightOf="@+id/tangleOwner"
-         android:ems="10"
-         android:fontFamily="courier" />
+    <TextView
+        android:id="@+id/tangleOwnerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tangleOwner"
+        android:layout_alignBottom="@+id/tangleOwner"
+        android:layout_toRightOf="@+id/tangleOwner"
+        android:ems="10"
+        android:fontFamily="courier" />
 
-     <TextView
-         android:id="@+id/requesterEmailText"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignBaseline="@+id/requesterEmail"
-         android:layout_alignBottom="@+id/requesterEmail"
-         android:layout_toRightOf="@+id/requesterEmail"
-         android:ems="10"
-         android:fontFamily="courier" />
+    <TextView
+        android:id="@+id/requesterEmailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/requesterEmail"
+        android:layout_alignBottom="@+id/requesterEmail"
+        android:layout_toRightOf="@+id/requesterEmail"
+        android:ems="10"
+        android:fontFamily="courier" />
 
-     <TextView
-         android:id="@+id/tangleNameText"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignBottom="@+id/tangleName"
-         android:layout_toRightOf="@+id/tangleName"
-         android:fontFamily="courier"
-         android:ems="10" />
+    <TextView
+        android:id="@+id/tangleNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tangleName"
+        android:layout_toRightOf="@+id/tangleName"
+        android:ems="10"
+        android:fontFamily="courier" />
 
-     <TextView
-         android:id="@+id/offererEmailText"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignBaseline="@+id/offererEmail"
-         android:layout_alignBottom="@+id/offererEmail"
-         android:layout_toRightOf="@+id/offererEmail"
-         android:ems="10"
-         android:fontFamily="courier" />
+    <TextView
+        android:id="@+id/offererEmailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/offererEmail"
+        android:layout_alignBottom="@+id/offererEmail"
+        android:layout_toRightOf="@+id/offererEmail"
+        android:ems="10"
+        android:fontFamily="courier" />
 
-     <TextView
-         android:id="@+id/tangleOwnerEmailText"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignBaseline="@+id/tangleOwnerEmail"
-         android:layout_alignBottom="@+id/tangleOwnerEmail"
-         android:layout_toRightOf="@+id/tangleOwnerEmail"
-         android:ems="9"
-         android:fontFamily="courier" />
+    <TextView
+        android:id="@+id/tangleOwnerEmailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tangleOwnerEmail"
+        android:layout_alignBottom="@+id/tangleOwnerEmail"
+        android:layout_toRightOf="@+id/tangleOwnerEmail"
+        android:ems="9"
+        android:fontFamily="courier" />
+
 </RelativeLayout>

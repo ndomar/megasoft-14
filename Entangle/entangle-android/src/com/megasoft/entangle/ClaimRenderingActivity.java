@@ -15,11 +15,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
+
 /**
  * Initializes a claim report for the offerer, requester, tangle owner
  * 
  * @author Salma Amr
- *
+ * 
  */
 public class ClaimRenderingActivity extends Activity {
 
@@ -75,15 +76,16 @@ public class ClaimRenderingActivity extends Activity {
 		this.setData();
 		setContentView(R.layout.activity_claim_render);
 	}
-	
+
 	/**
 	 * This method resolves the claim
+	 * 
 	 * @param item
 	 */
 	public void resolve(MenuItem item) {
-		
+
 	}
-	
+
 	/**
 	 * This method sets the data of the claim report into its right positions
 	 * after executing the request which gets the data
@@ -120,8 +122,7 @@ public class ClaimRenderingActivity extends Activity {
 						requesterName = object.getString("requester");
 						requesterEmail = object.getString("requesterEmail");
 						tangleOwnerName = object.getString("tangleOwner");
-						tangleOwnerEmail = object
-								.getString("tangleOwnerEmail");
+						tangleOwnerEmail = object.getString("tangleOwnerEmail");
 						tangleName = object.getString("tangle");
 						claimMessage = object.getString("claimMessage");
 						TextView date = (TextView) findViewById(R.id.date);
