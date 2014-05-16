@@ -302,7 +302,7 @@ public class TangleFragment extends Fragment {
 		url += "?limit=" + defaultRequestLimit;
 		if (isLoadMore) {
 			query = lastQuery;
-			url += "&lastDate=" + lastDate.replace(" ", "$20");
+			url += "&lastDate=" + lastDate.replace(" ", "%20");
 		}
 		if (query != null) {
 			url += "&query=" + query;
