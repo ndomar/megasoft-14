@@ -74,6 +74,8 @@ public class ProfileFragment extends Fragment {
 	private View view;
 
 	private FragmentActivity activity;
+
+	private boolean isDestroyed;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,43 +110,57 @@ public class ProfileFragment extends Fragment {
 	 */
 	public void viewInformation() {
 		String link;
-		if(isGeneral) {
+		if (isGeneral) {
 			link = Config.API_BASE_URL_SERVER + "/user/" + userId + "/profile";
 
 		} else {
-			link = Config.API_BASE_URL_SERVER + "/tangle/" + tangleId + "/user/" + userId + "/profile";
+			link = Config.API_BASE_URL_SERVER + "/tangle/" + tangleId
+					+ "/user/" + userId + "/profile";
 
 		}
 		GetRequest request = new GetRequest(link) {
 			protected void onPostExecute(String response) {
-				if (this.getStatusCode() == 200	) {
-				try {
-					JSONObject information;
-					information = new JSONObject(response);
-					name.setText(information.getString("name"));
-					description.setText(information.getString("description"));
-					viewProfilePicture(information.getString("photo"));
-					
-					if (information.getBoolean("verified")) {
-						((ImageView)view.findViewById(R.id.verified)).setVisibility(View.VISIBLE);
-					}
-					
-					if (activity instanceof ProfileActivity) {
-						activity.setTitle(information.getString("name"));
-					}
-					
+				if(isDestroyed){
+					return;
+				}
+
+				if (this.getStatusCode() == 200) {
+					try {
+						JSONObject information;
+						information = new JSONObject(response);
+						name.setText(information.getString("name"));
+
+						if (information.getString("description").equals("null")) {
+							description.setVisibility(View.GONE);
+						} else {
+							description.setText(information
+									.getString("description"));
+							}
+
+						viewProfilePicture(information.getString("photo"));
+
+						if (information.getBoolean("verified")) {
+							((ImageView) view.findViewById(R.id.verified))
+									.setVisibility(View.VISIBLE);
+						}
+
+						if (activity instanceof ProfileActivity) {
+							activity.setTitle(information.getString("name"));
+						}
 					} catch (JSONException e) {
 						e.printStackTrace();
-						}
+					}
 				} else {
 					Log.e("test", this.getErrorMessage());
-					Toast toast = Toast.makeText(activity.getApplicationContext(),"Some error happened.",Toast.LENGTH_SHORT);
+					Toast toast = Toast.makeText(
+							activity.getApplicationContext(),
+							"Some error happened.", Toast.LENGTH_SHORT);
 					toast.show();
-					}
 				}
-			};
-			request.addHeader("X-SESSION-ID", this.sessionId);
-			request.execute();
+			}
+		};
+		request.addHeader("X-SESSION-ID", this.sessionId);
+		request.execute();
 	}
 	
 	/**
@@ -171,5 +187,10 @@ public class ProfileFragment extends Fragment {
 	public void onAttach(Activity activity) {	
 	    this.activity = (FragmentActivity) activity;
 	    super.onAttach(this.activity);	
+	}
+	
+	public void onPause(){
+		super.onPause();
+		isDestroyed = true;
 	}
 }

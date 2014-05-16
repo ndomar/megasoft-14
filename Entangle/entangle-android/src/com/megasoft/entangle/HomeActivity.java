@@ -87,7 +87,7 @@ public class HomeActivity extends FragmentActivity {
 	 * @author Mohamed Farghal
 	 */
 	public void switchFragment(int tangleId, int position) {
-		
+
 		if (TangleStreamActivity.tangleNames.size() > 0) {
 			menu.findItem(R.id.action_invite).setVisible(true);
 			menu.findItem(R.id.createRequest).setVisible(true);
@@ -129,10 +129,12 @@ public class HomeActivity extends FragmentActivity {
 		drawerLayout = (LinearLayout) findViewById(R.id.left_drawer);
 
 		SharedPreferences pref = getSharedPreferences(Config.SETTING, 0);
-		((TextView)findViewById(R.id.sidebar_username)).setText(pref.getString(Config.USERNAME, "User"));
-		ImageView image = (ImageView)findViewById(R.id.sidebar_avatar);
+		((TextView) findViewById(R.id.sidebar_username)).setText(pref
+				.getString(Config.USERNAME, "User"));
+		ImageView image = (ImageView) findViewById(R.id.sidebar_avatar);
 
-		new ImageRequest(pref.getString(Config.PROFILE_IMAGE, ""), getApplicationContext(), image);
+		new ImageRequest(pref.getString(Config.PROFILE_IMAGE, ""),
+				getApplicationContext(), image);
 
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager
@@ -303,26 +305,28 @@ public class HomeActivity extends FragmentActivity {
 	@Override
 	protected Dialog onCreateDialog(int dialogId) {
 		Builder dialogBuilder = new AlertDialog.Builder(this);
-		dialogBuilder.setTitle("Leaving the tangle");
-		dialogBuilder
-				.setMessage("Are you sure you want to leave this tangle ?");
-		dialogBuilder.setPositiveButton("Yes",
-				new DialogInterface.OnClickListener() {
+		if (dialogId == 0) {
+			dialogBuilder.setTitle("Leaving the tangle");
+			dialogBuilder
+					.setMessage("Are you sure you want to leave this tangle ?");
+			dialogBuilder.setPositiveButton("Yes",
+					new DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						sendLeaveRequest();
-						dialog.dismiss();
-					}
-				});
-		dialogBuilder.setNegativeButton("NO",
-				new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							sendLeaveRequest();
+							dialog.dismiss();
+						}
+					});
+			dialogBuilder.setNegativeButton("No",
+					new DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
+		}
 		return dialogBuilder.create();
 	}
 
