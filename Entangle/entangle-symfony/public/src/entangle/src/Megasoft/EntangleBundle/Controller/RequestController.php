@@ -237,7 +237,7 @@ class RequestController extends Controller
             }
             $requestDetails = array('requester' => $requester, 'requesterName' => $request->getUser()->getName(), 'description' => $description,
                 'status' => $status, 'MyRequest' => $myRequest, 'date' => $date, 'deadline' => $deadline, 'icon' => $icon,
-                'price' => $price, 'tangle' => $tangle, 'tags' => $tags, 'offers' => $offers);
+                'price' => $price, 'tangle' => $tangle, 'tags' => $tags, 'offers' => $offers,'longitude'=>$request->getLongitude(),'latidue'=>$request->getLatitude());
         }
         return $requestDetails;
     }
@@ -398,6 +398,10 @@ class RequestController extends Controller
         if ($valid != null) {
             return $valid;
         }
+        $longitude = $json_array['longitude'];
+        $latidue = $json_array['latidue'];
+
+
         $newRequest = new Request();
         $newRequest->setTangle($tangle);
         $newRequest->setDescription($description);
@@ -406,6 +410,9 @@ class RequestController extends Controller
         $newRequest->setDeadLine($deadLineFormated);
         $newRequest->setUser($user);
         $newRequest->setRequestedPrice($requestedPrice);
+        $newRequest->setLongitude($longitude);
+        $newRequest->setLatitude($latidue);
+
         $this->addTags($newRequest, $tags);
         $doctrine->getManager()->persist($newRequest);
         $doctrine->getManager()->flush();

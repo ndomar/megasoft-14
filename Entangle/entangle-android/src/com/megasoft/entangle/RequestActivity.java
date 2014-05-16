@@ -225,8 +225,8 @@ public class RequestActivity extends FragmentActivity {
 			args.putString("deadline",json.getJSONObject("deadline").getString("date"));
 		}
 		args.putString("status",requestStatusCodes[Integer.parseInt(json.getString("status"))]);
-//		args.putDouble("longitude", json.getDouble("longitude"));
-//		args.putDouble("latidue", json.getDouble("latidue"));
+		args.putString("longitude", json.getString("longitude"));
+		args.putString("latidue", json.getString("latidue"));
 		requestFragmet.setArguments(args);
 		
 		setIsMyRequest(Integer.parseInt(json.getString("MyRequest")) == 1);

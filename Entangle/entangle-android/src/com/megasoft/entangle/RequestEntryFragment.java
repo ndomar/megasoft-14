@@ -2,14 +2,13 @@ package com.megasoft.entangle;
 
 import com.google.android.gms.maps.GoogleMap;
 
-import android.content.Context;
 import android.content.Intent;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -63,6 +62,10 @@ public class RequestEntryFragment extends Fragment implements OnClickListener {
 				.getString("status"));
 		((Button) view.findViewById(R.id.BRequestToLocation))
 				.setOnClickListener(this);
+		longitude = Double.parseDouble(args.getString("longitude"));
+		latidue = Double.parseDouble(args.getString("latidue"));
+		Log.e("Location", longitude + "");
+		Log.e("Location", latidue + "");
 	}
 
 	@Override
@@ -70,13 +73,14 @@ public class RequestEntryFragment extends Fragment implements OnClickListener {
 		// TODO Auto-generated method stub
 		switch (arg0.getId()) {
 		case R.id.BRequestToLocation:
-				Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-						Uri.parse("http://maps.google.com/maps?q="
-								+ Double.toString(latidue) + ","
-								+ Double.toString(longitude)));
-				startActivity(intent);
 
-				break;
-			}
+			Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+					Uri.parse("http://maps.google.com/maps?q="
+							+ Double.toString(latidue) + ","
+							+ Double.toString(longitude)));
+			startActivity(intent);
+
+			break;
 		}
 	}
+}
