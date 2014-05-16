@@ -22,7 +22,6 @@
     <string name="title_activity_create_tangle">Create Tangle</string>
     <string name="title_activity_general_profile">Your Profile</string>
     <string name="title_activity_splash">Entangle</string>
-    
     <string name="add">Add</string>
     <string name="app_name">Entangle</string>
     <string name="claim_button">Claim </string>
@@ -64,12 +63,12 @@
     <string name="hurryUp">Hurry up \ </string>
     <string name="andCreate">and create a\ </string>
     <string name="tangleNameHint">Specify a Tangle name</string>
+    <string name="here">Create tangle now! </string>
     <string name="iconButton">Choose an Icon</string>
     <string name="tangleIcon">Tangle Icon</string>
     <string name="createTangle">CREATE</string>
-    <string name="here">HERE</string>
     <string name="checkTangleName">Check</string>
-    <string name="aTangle">Tangle !!!</string>
+    <string name="aTangle">Tangle</string>
     <string name="date">Date</string>
     <string name="ChooseDate">Pick deadline</string>
     <string name="deadLine">Expected deadline</string>

@@ -175,7 +175,7 @@ public class OfferActivity extends FragmentActivity {
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		this.loggedInId = settings.getInt(Config.USER_ID, 1);
-		this.offerId = intent.getIntExtra("offerID", 1);
+		this.offerId = intent.getExtras().getInt("offerID");
 		viewOffer();
 	}
 
@@ -185,6 +185,7 @@ public class OfferActivity extends FragmentActivity {
 		itemMenu = menu;
 		return true;
 	}
+
 
 //	@Override
 //	public boolean onOptionsItemSelected(MenuItem item) {
@@ -213,7 +214,7 @@ public class OfferActivity extends FragmentActivity {
 		intent.putExtra("requestId", this.requestId);
 		intent.putExtra("offerId", this.offerId);
 		startActivity(intent);
-	}
+}
 
 	/**
 	 * This method allows the offerer to delete his offer (mock)
@@ -413,8 +414,7 @@ public class OfferActivity extends FragmentActivity {
 	 * @author Almgohar
 	 */
 	public void viewProfilePicture(String imageURL) {
-		ImageRequest image = new ImageRequest(offererAvatar);
-		image.execute(imageURL);
+		new ImageRequest(imageURL,getApplicationContext(),offererAvatar);
 	}
 
 	/**
