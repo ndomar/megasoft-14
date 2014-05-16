@@ -19,6 +19,7 @@
     <color name="sideBarBackground">#222222</color>
 
     <color name="active">#FAAB00</color>
+    <color name="introGreen">#70b863</color>
     <color name="pagerBackground">#FFFFFF</color>
     <color name="darkGray">#222222</color>
     <color name="lightText">#FFFFFF</color>

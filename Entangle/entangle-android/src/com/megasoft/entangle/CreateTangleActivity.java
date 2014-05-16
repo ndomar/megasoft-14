@@ -38,15 +38,13 @@ public class CreateTangleActivity extends Activity {
 	/**
 	 * An array of the ids of the request icons available in the app.
 	 */
-	private static Integer[] imageIconDatabase = { R.drawable.aatrox,
-			R.drawable.ahri, R.drawable.akali, R.drawable.amumu,
-			R.drawable.zac, R.drawable.ziggs };
+	private static Integer[] imageIconDatabase = { R.drawable.food_icon,
+			R.drawable.company_icon, R.drawable.home_icon, R.drawable.group_icon};
 
 	/**
 	 * An array of the names of the request icons available in the app.
 	 */
-	private String[] imageNameDatabase = { "aatrox", "ahri", "akali", "amumu",
-			"zac", "ziggs" };
+	private String[] imageNameDatabase = { "food", "company", "home", "group"};
 
 	/**
 	 * A number indicating the currently selected icon by the user in the

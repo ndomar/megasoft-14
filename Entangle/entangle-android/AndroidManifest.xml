@@ -122,6 +122,9 @@
             android:label="@string/title_activity_change_offer_price" >
         </activity>
         <activity
+            android:name="com.megasoft.entangle.ClaimRenderingActivity">
+        </activity>
+        <activity
             android:name="com.megasoft.entangle.viewtanglelsit.TangleStreamActivity"
             android:label="@string/title_activity_tangle_stream" >
         </activity>
@@ -149,6 +152,10 @@
 
         <service android:name="com.megasoft.notifications.GcmIntentService" />
         <!-- end of GCM manifest -->
+        <activity
+            android:name="com.megasoft.entangle.MyRequestsFragment"
+            android:label="@string/title_activity_my_requests" >
+        </activity>
         <activity
             android:name="com.megasoft.entangle.ForgetPasswordActivity"
             android:label="@string/title_activity_forget_password" >
