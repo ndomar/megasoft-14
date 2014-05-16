@@ -26,6 +26,8 @@
     <string name="title_activity_create_tangle">Create Tangle</string>
     <string name="title_activity_general_profile">Your Profile</string>
     <string name="title_activity_splash">Entangle</string>
+    <string name="title_activity_my_offers_fragment">MyOffers</string>
+
     <string name="add">Add</string>
     <string name="app_name">Entangle</string>
     <string name="claim_button">Claim </string>
@@ -154,6 +156,12 @@
     <string name="balanceInsufficient">"Not enough balance"</string>
     <string name="logoutActivity">Logout</string>
     <string name="logout">Logout</string>
+
+    <string name="pendingOffers">PENDING OFFERS</string>
+    <string name="doneOffers">DONE OFFERS</string>
+    <string name="acceptedOffers">ACCEPTED OFFERS</string>
+    <string name="failedOffers">FAILED OFFERS</string>
+    <string name="rejectedOffers">REJECTED OFFERS</string>
     <string name="reset">reset tangle!</string>
     <string name="search_string">Member Name</string>
     <string name="member_not_found">"Member not found."</string>
