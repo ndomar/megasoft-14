@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ToggleButton;
 
 /*
- * This activity is responsible for the preferences
+ * This activity is responsible for the preferences .
  */
 public class PreferencesActivity extends Activity {
 
@@ -27,6 +27,9 @@ public class PreferencesActivity extends Activity {
 	/*
 	 * This method gets fired once the push notifications toggle button is
 	 * clicked, it sets the text, color and value of the button .
+	 * @param View
+	 * @author revcoder93
+	 * @return none
 	 */
 	public void togglePushNotifications(View v) {
 		ToggleButton pushNotifications = (ToggleButton) findViewById(R.id.pushNotificationsToggle);
@@ -46,6 +49,9 @@ public class PreferencesActivity extends Activity {
 	/*
 	 * This method gets fired once the application sounds toggle button is
 	 * clicked, it turns it on or off .
+	 * @param View
+	 * @author revcoder93
+	 * @return none
 	 */
 
 	public void toggleSounds(View v) {
@@ -64,6 +70,9 @@ public class PreferencesActivity extends Activity {
 	/*
 	 * This method is fired when the cancel button is clicked, it cancels any
 	 * changes that were done by the user .
+	 * @param View
+	 * @author revcoder93
+	 * @return none
 	 */
 	public void cancelChanges(View v) {
 		finish();
@@ -72,6 +81,9 @@ public class PreferencesActivity extends Activity {
 	/*
 	 * This method is fired when the done button is clicked, it saves any
 	 * changes that were done by the user .
+	 * @param View
+	 * @author revcoder93
+	 * @return none
 	 */
 	public void changesDone(View v) {
 		sharedPreferencesEditor.commit();
