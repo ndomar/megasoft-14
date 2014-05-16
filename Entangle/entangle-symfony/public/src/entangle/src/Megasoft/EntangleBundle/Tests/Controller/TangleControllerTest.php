@@ -2,6 +2,8 @@
 
 namespace Megasoft\EntangleBundle\Tests\Controller;
 
+
+use Megasoft\EntangleBundle\DataFixtures\ORM\LoadCreateTangleData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadFilterStreamData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadSessionData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadTangleData;
@@ -15,6 +17,7 @@ use Megasoft\EntangleBundle\Tests\EntangleTestCase;
  * Test Class for Tangle Controller
  * @author OmarElAzazy
  */
+
 class TangleControllerTest extends EntangleTestCase
 {
 
@@ -22,7 +25,8 @@ class TangleControllerTest extends EntangleTestCase
      * Test Case testing sending a wrong session to AllUsersAction
      * @author OmarElAzazy
      */
-    public function testAllUsersAction_WrongSession(){
+
+    public function testAllUsersAction_WrongSession() {
         $this->addFixture(new LoadTangleData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadSessionData());
@@ -30,6 +34,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->loadFixtures();
 
         $client = static::createClient();
+
         $client->request('GET',
             '/tangle/1/user',
             array(),
@@ -43,7 +48,8 @@ class TangleControllerTest extends EntangleTestCase
      * Test Case testing sending correct request to AllUsersAction
      * @author OmarElAzazy
      */
-    public function testAllUsersAction_GetListWithSampleUser(){
+
+    public function testAllUsersAction_GetListWithSampleUser() {
         $this->addFixture(new LoadTangleData());
         $this->addFixture(new LoadUserData());
         $this->addFixture(new LoadSessionData());
@@ -308,6 +314,175 @@ class TangleControllerTest extends EntangleTestCase
                 }
             }
         }
+    }
+
+    /**
+     * Testing if the the session exists or not.
+     * @author Mansour
+     */
+    public function testCreateTangleAction_WrongSession() {
+        $this->addFixture(new LoadCreateTangleData());
+        $this->loadFixtures();
+        $body = array('tangleName' => 'CreateTangleTestTangle', 'tangleIcon' => '1',
+            'tangleDescription' => 'Test Description',);
+        $jsonBody = json_encode($body);
+        $client = static::createClient();
+        $client->request('POST', '/tangle', array(), array(), array('HTTP_X_SESSION_ID' => 'wrongCreateTangleTestSession'), $jsonBody);
+        $this->assertEquals(401, $client->getResponse()->getStatusCode(), "Wrong Session");
+    }
+
+    /**
+     * Checks whether the session id is passed in the header.
+     * @author Mansour
+     */
+    public function testCreateTangleAction_EmptySession() {
+        $this->addFixture(new LoadCreateTangleData());
+        $this->loadFixtures();
+        $body = array('tangleName' => 'CreateTangleTestTangle', 'tangleIcon' => '1',
+            'tangleDescription' => 'Test Description',);
+        $jsonBody = json_encode($body);
+        $client = static::createClient();
+        $client->request('POST', '/tangle', array(), array(), array(), $jsonBody);
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Checking empty session");
+    }
+
+    /**
+     * Checks the tangle icon exists in the request.
+     * @author Mansour
+     */
+    public function testCreateTangleAction_EmptyIcon() {
+        $this->addFixture(new LoadCreateTangleData());
+        $this->loadFixtures();
+        $body = array('tangleName' => 'CreateTangleTestTangle',
+            'tangleDescription' => 'Test Description',);
+        $jsonBody = json_encode($body);
+        $client = static::createClient();
+        $client->request('POST', '/tangle', array(), array(),
+                array('HTTP_X_SESSION_ID' => 'CreateTangleTestSession'), $jsonBody);
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Checking empty tangle icon");
+    }
+
+    /**
+     * Checks if the tangle name exists in the request.
+     * @author Mansour
+     */
+    public function testCreateTangleAction_EmptyName() {
+        $this->addFixture(new LoadCreateTangleData());
+        $this->loadFixtures();
+        $body = array('tangleIcon' => '1',
+            'tangleDescription' => 'Test Description',);
+        $jsonBody = json_encode($body);
+        $client = static::createClient();
+        $client->request('POST', '/tangle', array(), array(),
+                array('HTTP_X_SESSION_ID' => 'CreateTangleTestSession'), $jsonBody);
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Checking empty tangle name");
+    }
+
+    /**
+     * Check if the tangle description exists in the request.
+     * @author Mansour
+     */
+    public function testCreateTangleAction_EmptyDescription() {
+        $this->addFixture(new LoadCreateTangleData());
+        $this->loadFixtures();
+        $body = array('tangleName' => 'testTangle',
+            'tangleIcon' => '1',);
+        $jsonBody = json_encode($body);
+        $client = static::createClient();
+        $client->request('POST', '/tangle', array(), array(),
+                array('HTTP_X_SESSION_ID' => 'CreateTangleTestSession'), $jsonBody);
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Checking empty tangle description");
+    }
+
+    /**
+     * Check if the tangle name already exists in the database.
+     * @author Mansour
+     */
+    public function testCreateTangleAction_ExistingName() {
+        $this->addFixture(new LoadCreateTangleData());
+        $this->loadFixtures();
+        $body = array('tangleName' => 'testTangle', 'tangleIcon' => '1',
+            'tangleDescription' => 'Test Description',);
+        $jsonBody = json_encode($body);
+        $client = static::createClient();
+        $client->request('POST', '/tangle', array(), array(),
+            array('HTTP_X_SESSION_ID' => 'CreateTangleTestSession'), $jsonBody);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Tangle already exists");
+    }
+
+    /**
+     * Checks whether the tangle can be created or not.
+     * @author Mansour
+     */
+    public function testCreateTangleAction_TangleCreation() {
+        $this->addFixture(new LoadCreateTangleData());
+        $this->loadFixtures();
+        $body = array('tangleName' => 'CreateTangleTestTangle', 'tangleIcon' => '1',
+            'tangleDescription' => 'Test Description',);
+        $jsonBody = json_encode($body);
+        $client = static::createClient();
+        $client->request('POST', '/tangle', array(), array(), array('HTTP_X_SESSION_ID' => 'CreateTangleTestSession'), $jsonBody);
+        $this->assertEquals(201, $client->getResponse()->getStatusCode(), "Error Creating Tangle");
+    }
+
+    /**
+     * Checks whether the name is null.
+     * @author Mansour
+     */
+    public function testCreateTangleAction_NullName() {
+        $this->addFixture(new LoadCreateTangleData());
+        $this->loadFixtures();
+        $body = array('tangleName' => Null, 'tangleIcon' => '1',
+            'tangleDescription' => 'Test Description',);
+        $jsonBody = json_encode($body);
+        $client = static::createClient();
+        $client->request('POST', '/tangle', array(), array(), array('HTTP_X_SESSION_ID' => 'CreateTangleTestSession'), $jsonBody);
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Null Tangle Name");
+    }
+
+    /**
+     * Checks whether the icon is null.
+     * @author Mansour
+     */
+    public function testCreateTangleAction_NullIcon() {
+        $this->addFixture(new LoadCreateTangleData());
+        $this->loadFixtures();
+        $body = array('tangleName' => 'CreateTangleTestTangle', 'tangleIcon' => Null,
+            'tangleDescription' => 'Test Description',);
+        $jsonBody = json_encode($body);
+        $client = static::createClient();
+        $client->request('POST', '/tangle', array(), array(), array('HTTP_X_SESSION_ID' => 'CreateTangleTestSession'), $jsonBody);
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Null Tangle Icon");
+    }
+
+    /**
+     * Checks whether the description is null.
+     * @author Mansour
+     */
+    public function testCreateTangleAction_NullDescription() {
+        $this->addFixture(new LoadCreateTangleData());
+        $this->loadFixtures();
+        $body = array('tangleName' => 'CreateTangleTestTangle', 'tangleIcon' => '1',
+            'tangleDescription' => Null,);
+        $jsonBody = json_encode($body);
+        $client = static::createClient();
+        $client->request('POST', '/tangle', array(), array(), array('HTTP_X_SESSION_ID' => 'CreateTangleTestSession'), $jsonBody);
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Null Tangle Description");
+    }
+
+    /**
+     * Checks whether the session is null.
+     * @author Mansour
+     */
+    public function testCreateTangleAction_NullSession() {
+        $this->addFixture(new LoadCreateTangleData());
+        $this->loadFixtures();
+        $body = array('tangleName' => 'CreateTangleTestTangle', 'tangleIcon' => '1',
+            'tangleDescription' => 'Test Description',);
+        $jsonBody = json_encode($body);
+        $client = static::createClient();
+        $client->request('POST', '/tangle', array(), array(), array('HTTP_X_SESSION_ID' => Null), $jsonBody);
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), "Null Session");
     }
 
     /*
