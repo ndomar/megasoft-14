@@ -4,6 +4,7 @@ public class Config {
 
 	public static final String API_BASE_URL = "http://192.168.1.5:9001";
 	public static final String API_BASE_URL_SERVER = API_BASE_URL;
+
 	public static final String API_SESSION_ID = "X-SESSION-ID";
 	public static final String SETTING = "SETTINGS";
 	public static final String SESSION_ID = "sessionId";
@@ -20,5 +21,7 @@ public class Config {
 	public static final String MEMBER_AVATAR_URL = "memberAvatarURL";
 	public static final String GCM_REGISTRATION = "GCM_REGISTRATION";
 	public static final String PROPERTY_REG_ID = "registration_id";
+	public static final String TANGLE = "tangle";
+	public static final String USER = "user";
 	public static final String GCM_DATA = "GCM_DATA";
 }

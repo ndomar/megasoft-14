@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
+import com.megasoft.entangle.megafragments.*;
 
 /**
  * Views a user's general profile given his user Id
@@ -55,9 +56,16 @@ public class GeneralProfileActivity extends FragmentActivity {
 		case R.id.logoutButton:
 			logout();
 			return true;
+		case R.id.editProfileButton:
+			goToEditProfile();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private void goToEditProfile() {
+		startActivity(new Intent(this, EditProfileActivity.class));
 	}
 
 	/*

@@ -132,7 +132,6 @@ public class NotificationStream extends FragmentActivity {
 		final ScrollView scrollView = (ScrollView) findViewById(R.id.scroll);
 		scrollView.postDelayed(new Runnable() {
 
-			@Override
 			public void run() {
 				scrollView.fullScroll(ScrollView.FOCUS_UP);
 			}

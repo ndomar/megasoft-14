@@ -1,6 +1,5 @@
 package com.megasoft.entangle;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
@@ -21,11 +20,13 @@ import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.ImageRequest;
 
 /**
- * Views a user's profile given his user Id and the tangle Id that redirected to the profile
+ * Views a user's profile given his user Id and the tangle Id that redirected to
+ * the profile
+ * 
  * @author Almgohar
  */
 public class ProfileFragment extends Fragment {
-	
+
 	/**
 	 * The TextView that holds the user's name
 	 */
@@ -70,94 +71,121 @@ public class ProfileFragment extends Fragment {
 	 * The boolean specifying whether the profile is general or not
 	 */
 	private boolean isGeneral;
-	
+
 	private View view;
 
 	private FragmentActivity activity;
-	
+
+	private boolean isDestroyed;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-		this.view = inflater.inflate(R.layout.fragment_profile, container,false);	
+			Bundle savedInstanceState) {
+		this.view = inflater.inflate(R.layout.fragment_profile, container,
+				false);
 		this.settings = activity.getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
 		this.loggedInId = settings.getInt(Config.USER_ID, -1);
 		this.tangleId = getArguments().getInt("tangleId", 2);
-		this.userId = getArguments().getInt("userId", -1);	
+		this.userId = getArguments().getInt("userId", -1);
 		this.isGeneral = getArguments().getBoolean("general");
-		viewProfile();		
+		viewProfile();
 		return view;
 	}
 
 	/**
-	 * Initialize all views to link them to the XML views
-	 * calls the ViewInformation() method
+	 * Initialize all views to link them to the XML views calls the
+	 * ViewInformation() method
+	 * 
 	 * @author Almgohar
 	 */
 	public void viewProfile() {
 		name = (TextView) view.findViewById(R.id.nameView);
 		description = (TextView) view.findViewById(R.id.descriptionView);
-		profilePictureView = (com.megasoft.entangle.views.RoundedImageView) view.findViewById(R.id.profileImage);		
+		profilePictureView = (com.megasoft.entangle.views.RoundedImageView) view
+				.findViewById(R.id.profileImage);
 		viewInformation();
 	}
-	
+
 	/**
-	 * Creates a JSon request asking for the required information
-	 * Retrieves the required information from the JSon response
+	 * Creates a JSon request asking for the required information Retrieves the
+	 * required information from the JSon response
+	 * 
 	 * @author Almgohar
 	 */
 	public void viewInformation() {
 		String link;
-		if(isGeneral) {
+		if (isGeneral) {
 			link = Config.API_BASE_URL_SERVER + "/user/" + userId + "/profile";
 
 		} else {
-			link = Config.API_BASE_URL_SERVER + "/tangle/" + tangleId + "/user/" + userId + "/profile";
+			link = Config.API_BASE_URL_SERVER + "/tangle/" + tangleId
+					+ "/user/" + userId + "/profile";
 
 		}
 		GetRequest request = new GetRequest(link) {
 			protected void onPostExecute(String response) {
-				if (this.getStatusCode() == 200	) {
-				try {
-					JSONObject information;
-					information = new JSONObject(response);
-					name.setText(information.getString("name"));
-					description.setText(information.getString("description"));
-					viewProfilePicture(information.getString("photo"));
-					
-					if (information.getBoolean("verified")) {
-						((ImageView)view.findViewById(R.id.verified)).setVisibility(View.VISIBLE);
-					}
-					
-					if (activity instanceof ProfileActivity) {
-						activity.setTitle(information.getString("name"));
-					}
-					
+				if (isDestroyed) {
+					return;
+				}
+
+				if (this.getStatusCode() == 200) {
+					try {
+						JSONObject information;
+						information = new JSONObject(response);
+						name.setText(information.getString("name"));
+						description.setText(information
+								.getString("description"));
+
+						if (information.getString("description").equals("null")) {
+							description.setVisibility(View.GONE);
+						} else {
+							description.setText(information
+									.getString("description"));
+						}
+
+						viewProfilePicture(information.getString("photo"));
+
+						if (information.getBoolean("verified")) {
+							((ImageView) view.findViewById(R.id.verified))
+									.setVisibility(View.VISIBLE);
+						}
+
+						if (activity instanceof ProfileActivity) {
+							activity.setTitle(information.getString("name"));
+						}
+
 					} catch (JSONException e) {
 						e.printStackTrace();
-						}
+					}
 				} else {
 					Log.e("test", this.getErrorMessage());
-					Toast toast = Toast.makeText(activity.getApplicationContext(),"Some error happened.",Toast.LENGTH_SHORT);
+					Toast toast = Toast.makeText(
+							activity.getApplicationContext(),
+							"Some error happened.", Toast.LENGTH_SHORT);
 					toast.show();
-					}
 				}
-			};
-			request.addHeader("X-SESSION-ID", this.sessionId);
-			request.execute();
+			}
+		};
+		request.addHeader("X-SESSION-ID", this.sessionId);
+		request.execute();
 	}
-	
+
 	/**
 	 * Views the user's profile picture
-	 * @param String imageURL
+	 * 
+	 * @param String
+	 *            imageURL
 	 * @author Almgohar
-	 */ 
+	 */
 	public void viewProfilePicture(String imageURL) {
-            new ImageRequest(imageURL,getActivity().getApplicationContext(),profilePictureView);
+		new ImageRequest(imageURL, getActivity().getApplicationContext(),
+				profilePictureView);
 	}
-	
+
 	/**
-	 * Redirects to the EditProfileActivity 
+	 * Redirects to the EditProfileActivity
+	 * 
 	 * @author Almgohar
 	 */
 	public void goToEditProfile() {
@@ -165,18 +193,24 @@ public class ProfileFragment extends Fragment {
 		editProfile.putExtra("user id", loggedInId);
 		startActivity(editProfile);
 	}
-	
+
 	/**
 	 * Let the user leave the current tangle
+	 * 
 	 * @author Almgohar
 	 */
 	public void leaveTangle() {
-		
+
 	}
-	
+
 	@Override
-	public void onAttach(Activity activity) {	
-	    this.activity = (FragmentActivity) activity;
-	    super.onAttach(this.activity);	
+	public void onAttach(Activity activity) {
+		this.activity = (FragmentActivity) activity;
+		super.onAttach(this.activity);
+	}
+
+	public void onPause() {
+		super.onPause();
+		isDestroyed = true;
 	}
 }

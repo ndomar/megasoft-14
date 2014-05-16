@@ -42,6 +42,7 @@ public class MemberListFragment extends Fragment {
 	private EditText searchBar;
 	private ArrayList<MemberEntryFragment> memberFragments = new ArrayList<MemberEntryFragment>();
 	private TextView noMembers;
+	private boolean isDestroyed;
 
 	public ViewGroup getContainer() {
 		return container;
@@ -131,6 +132,7 @@ public class MemberListFragment extends Fragment {
 		searchBar = (EditText) view.findViewById(R.id.search_field);
 		noMembers = new TextView(getActivity().getBaseContext());
 		noMembers.setText(getString(R.string.member_not_found));
+		noMembers.setVisibility(View.GONE);
 		getMemberListView().addView(noMembers);
 		noMembers.setVisibility(View.GONE);
 		fetchMembers();
@@ -164,15 +166,12 @@ public class MemberListFragment extends Fragment {
 	 */
 	private void fetchMembers() {
 
-		final AlertDialog ad = new AlertDialog.Builder(getActivity()).create();
-		ad.setCancelable(false);
-		ad.setMessage("Loading ...");
-		ad.show();
-
 		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
 				+ "/tangle/" + getTangleId() + "/user") {
 			public void onPostExecute(String response) {
-				ad.dismiss();
+				if(isDestroyed){
+					return;
+				}
 				Log.e("test", this.getStatusCode() + ""); // ///////////////////////////////
 
 				if (!this.hasError() && this.getStatusCode() == 200) {
@@ -291,5 +290,10 @@ public class MemberListFragment extends Fragment {
 		} else {
 			noMembers.setVisibility(View.GONE);
 		}
+	}
+	
+	public void onPause(){
+		super.onPause();
+		isDestroyed = true;
 	}
 }

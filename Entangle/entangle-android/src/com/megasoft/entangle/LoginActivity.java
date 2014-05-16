@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -121,7 +122,7 @@ public class LoginActivity extends Activity {
 				if (this.getStatusCode() == 201) {
 					goToHome(response);
 				} else {
-
+					Toast.makeText(getApplicationContext(), this.getErrorMessage(), Toast.LENGTH_LONG).show();
 					TextView showError = (TextView) findViewById(R.id.invalidUserNameOrPassword);
 					showError.setVisibility(View.VISIBLE);
 				}
@@ -228,5 +229,5 @@ public class LoginActivity extends Activity {
 			return false;
 		}
 		return true;
-	}
+ }
 }
