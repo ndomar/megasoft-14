@@ -80,6 +80,199 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals(0, $users[0]['balance']);
         $this->assertEquals('http://entangle.io/images/profilePictures/', $users[0]['iconUrl']);
     }
+    
+    /**
+     * Test Case testing not sending a tangle id in the request
+     * @author HebaAamer 
+     */
+    public function testLeaveTangleAction_WrongTangleId() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('DELETE',
+                'tangle/3/user',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userAly'));
+        $response = $client->getResponse();
+        $this->assertEquals(401, $response->getStatusCode(), 'Wrong tangle id');
+    }
+    
+    /**
+     * Test Case testing not sending a session id in the 
+     * @author HebaAamer
+     */
+    public function testLeaveTangleAction_NullSessionId() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('DELETE',
+                'tangle/1/user',
+                array(),
+                array(),
+                array());
+        $response = $client->getResponse();
+        $this->assertEquals(400, $response->getStatusCode(), 'Not sending session id');
+    }
+    
+    /**
+     * Test Case testing sending expired session 
+     * @author HebaAamer
+     */
+    public function testLeaveTangleAction_ExpiredSession() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('DELETE',
+                'tangle/1/user',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userMohamed'));
+        $response = $client->getResponse();
+        $this->assertEquals(400, $response->getStatusCode(), 'Sending expired session');
+    }
+    
+    /**
+     * Test Case testing sending wrong session 
+     * @author HebaAamer
+     */
+    public function testLeaveTangleAction_WrongSession() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('DELETE',
+                'tangle/1/user',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'mohamed'));
+        $response = $client->getResponse();
+        $this->assertEquals(400, $response->getStatusCode(), 'Sending wrong session');
+    }
+    
+    /**
+     * Test Case testing user not in the tangle 
+     * @author HebaAamer
+     */
+    public function testLeaveTangleAction_NotUserInTangle() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('DELETE',
+                'tangle/1/user',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userMazen'));
+        $response = $client->getResponse();
+        $this->assertEquals(401, $response->getStatusCode(), 'Case user not in the tangle');
+    }
+    
+    /**
+     * Test Case to check the condition of being a tangle owner
+     * @author HebaAamer
+     */
+    public function testLeaveTangleAction_IsTangleOwner() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('DELETE',
+                'tangle/1/user',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userAhmad'));
+        $response = $client->getResponse();
+        $this->assertEquals(403, $response->getStatusCode(), 'Case user is the tangle owner');
+    }
+    
+    /**
+     * Test Case to check if the user left the tangle or not
+     * @author HebaAamer
+     */
+    public function testLeaveTangleAction_LeftUser() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('DELETE',
+                'tangle/1/user',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userAdel'));
+        $response = $client->getResponse();
+        $this->assertEquals(401, $response->getStatusCode(), 'Case left user');
+    }
+    
+    /**
+     * Test Case to check the success scenario
+     * @author HebaAamer
+     */
+    public function testLeaveTangleAction_LeaveTangle() {
+        $this->addFixture(new LoadLeaveTangleData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('DELETE',
+                'tangle/1/user',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userAly'));
+        $response = $client->getResponse();
+        $this->assertEquals(204, $response->getStatusCode(), 'Case sending a valid request');
+        
+        $doctrine = $this->doctrine;
+        
+        $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+        $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+        $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
+        $claimRepo = $doctrine->getRepository('MegasoftEntangleBundle:Claim');
+        
+        $userTangle = $userTangleRepo->findOneBy(array('tangleId' => 1, 'userId' => 3));
+        $tangle = $tangleRepo->findOneBy(array('id' => 1));
+        
+        $this->assertNotNull($userTangle->getLeavingDate(), 'Error in setting the leaving date');
+        $this->assertEquals(-80, $tangle->getDeletedBalance(), 'Error in updating the tangle balance');
+        
+        $deletedRequests = $requestRepo->findBy(array('tangleId' => 1,
+            'userId' => 3, 'deleted' => true, ));
+        $requests = $requestRepo->findBy(array('tangleId' => 1,
+            'userId' => 3, ));
+        $this->assertEquals(count($requests), count($deletedRequests), 'Error in deleting all the requests');
+        
+        $claims = $claimRepo->findBy(array('tangleId' => 1, 'claimer' => 3, ));
+        $deletedClaims = $claimRepo->findBy(array('tangleId' => 1, 'claimer' => 3, 'deleted' => true));
+        $this->assertEquals(count($claims), count($deletedClaims), 'Error in deleting all the claims');
+        
+        foreach($requests as $request) {
+            $requestOffers = $request->getOffers();
+            foreach($requestOffers as $requestOffer) {
+                $this->assertTrue($requestOffer->getDeleted(), 'Error in deleting an offer');
+                $offerMessages = $requestOffer->getMessages();
+                foreach ($offerMessages as $offerMessage) {
+                    $this->assertTrue($offerMessage->getDeleted(), 'Error in deleting a message');
+                }
+            }
+        }
+        
+        $offers = $offerRepo->findBy(array('userId' => 3));
+        foreach ($offers as $offer) {
+            $offerRequest = $requestRepo->findOneBy(array(
+               'id' => $offer->getRequestId(), 'tangleId' => 1, ));
+            if ($offerRequest != null) {
+                $this->assertTrue($offer->getDeleted(), 'Error in deleting a user offer');
+                $offerMessages = $offer->getMessages();
+                foreach ($offerMessages as $offerMessage) {
+                    $this->assertTrue($offerMessage->getDeleted(), 'Error in deleting a message');
+                }
+            }
+        }
+    }
+    
     /**
      * Test case for having no session id to resetTangle action
      * @param none
@@ -930,3 +1123,4 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals(6, $json['offers'][3]['id']);
     }
 }
+

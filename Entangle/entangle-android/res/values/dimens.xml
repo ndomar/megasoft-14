@@ -49,8 +49,8 @@
     <dimen name="avatarMedium">30dp</dimen>
 
     <dimen name="smallSeparator">2dp</dimen>
-    <dimen name="1dpSeparator">1dp</dimen>
-	<dimen name="8dpMargin">8dp</dimen>
-	<dimen name="24dpMargin">24dp</dimen>
+    <dimen name="dp1Separator">1dp</dimen>
+	<dimen name="dp8Margin">8dp</dimen>
+	<dimen name="dp24Margin">24dp</dimen>
     
 </resources>
