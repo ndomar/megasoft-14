@@ -18,8 +18,8 @@ class ClaimController extends Controller {
      * @author Salma Amr
      */
     public function getMailsAction(\Symfony\Component\HttpFoundation\Request $request, $requestId) {
-        $validation = $this->validate($request, $requestId);  
-        if($validation != null){
+        $validation = $this->validate($request, $requestId);
+        if ($validation != null) {
             return $validation;
         }
         $doctrine = $this->getDoctrine();
@@ -32,7 +32,7 @@ class ClaimController extends Controller {
         $tangleId = $claimerRequest->getTangleId();
         $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
         $userTangle = $userTangleRepo->findOneBy(array('tangleId' => $tangleId, 'tangleOwner' => 1));
-        if($userTangle == null) {
+        if ($userTangle == null) {
             return new Response('Bad Request', 400);
         }
         $tangleOwnerId = $userTangle->getUserId();
@@ -58,9 +58,9 @@ class ClaimController extends Controller {
      * @author Salma Amr
      */
     public function createClaimAction(\Symfony\Component\HttpFoundation\Request $request, $requestId) {
-        
-        $validation = $this->validate($request, $requestId);  
-        if($validation != null){
+
+        $validation = $this->validate($request, $requestId);
+        if ($validation != null) {
             return $validation;
         }
         $doctrine = $this->getDoctrine();
@@ -96,9 +96,9 @@ class ClaimController extends Controller {
         $response->setStatusCode(201);
         return $response;
     }
-    
-    public function validate($request , $requestId) {
-        
+
+    public function validate($request, $requestId) {
+
         if ($requestId == null) {
             return new Response('No such request', 400);
         }
@@ -114,7 +114,7 @@ class ClaimController extends Controller {
         if ($sessionId == null) {
             return new Response('No such session', 400);
         }
-        if($session->getExpired()) {
+        if ($session->getExpired()) {
             return new Response('No such session', 400);
         }
         $userId = $session->getUserId();
@@ -126,7 +126,7 @@ class ClaimController extends Controller {
         }
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $offer = $offerRepo->findOneBy(array('requestId' => $requestId, 'deleted' => false, 'status' => 2));
-        
+
         if ($offer == null) {
             return new Response('No such offer', 400);
         }
@@ -134,50 +134,57 @@ class ClaimController extends Controller {
             return new Response('Not authorized to claim', 400);
         }
         $tangleId = $claimerRequest->getTangleId();
-        
+
         $tangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:Tangle');
         $tangle = $tangleRepo->findOneBy(array('id' => $tangleId, 'deleted' => false));
 
         if ($tangleId == null || $tangle == null) {
             return new Response('No such tangle', 400);
         }
-        
+
         return null;
     }
-    public function resolveClaimAction($claimId, \Symfony\Component\HttpFoundation\Request $request){
+
+    public function resolveClaimAction($claimId, \Symfony\Component\HttpFoundation\Request $request) {
         $json = $request->getContent();
         $json_array = json_decode($json, true);
-        $this->verifySessionId($request); 
+        $this->verifySessionId($request);
         $doctrine = $this->getDoctrine();
         $response = new JsonResponse();
         $tangleId = $json_array['tangleId'];
-        if($tangleId==null){
+        $isOwner = $this->verifiyTangleOwner($tangleId, $request);
+        if ($isOwner == "error") {
+            $response->setContent('You are not authorized to perform this action');
+            $response->setStatusCode(400);
+            return $response;
+        }
+        if ($tangleId == null) {
             $response->setConent("Please choose a tangle");
             $response->setStatusCode(400);
             return $response;
         }
         $claimRepo = $doctrine->getRepository('MegasoftEntangleBundle:Claim');
-        $claim = $claimRepo->findOneBy(array('id'=>$claimId));
-        if($claim==null){
-           $response->setConent("No such claim");
-           $response->setStatusCode(400);
-           return $response;
+        $claim = $claimRepo->findOneBy(array('id' => $claimId));
+        if ($claim == null) {
+            $response->setConent("No such claim");
+            $response->setStatusCode(400);
+            return $response;
         }
-        if($claim->getStatus()==1){
-           $response->setContent("Claim already resolved");
-           $response->setStatusCode(400);
-           return $response;
+        if ($claim->getStatus() == 1) {
+            $response->setContent("Claim already resolved");
+            $response->setStatusCode(400);
+            return $response;
         }
-        $tangleId=$claim->getTangleId();
-        $offerId = $claim->getOfferId(); 
-        $claimerId = $claim->getClaimerId(); 
-        $deleted = $claim->getDeleted(); 
-        if($tangleId ==null || $offerId ==null || $claimerId ==null){
+        $tangleId = $claim->getTangleId();
+        $offerId = $claim->getOfferId();
+        $claimerId = $claim->getClaimerId();
+        $deleted = $claim->getDeleted();
+        if ($tangleId == null || $offerId == null || $claimerId == null) {
             $response->setConent("Claim is missing data");
             $response->setStatusCode(400);
             return $response;
         }
-        if($deleted==1){
+        if ($deleted == 1) {
             $response->setConent("Claim has been deleted");
             $response->setStatusCode(400);
             return $response;
@@ -186,47 +193,47 @@ class ClaimController extends Controller {
         $claimer = $userRepo->findOneBy(array('id' => $claimerId));
         $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $offer = $offerRepo->findOneBy(array('id' => $offerId));
-        if($claimer == null  || $offer ==null){
+        if ($claimer == null || $offer == null) {
             $response->setConent("Claimer or offer does not exist");
             $response->setStatusCode(400);
-            return $response; 
+            return $response;
         }
-        $offererId = $offer->getUserId(); 
-        if($offererId==null){
+        $offererId = $offer->getUserId();
+        if ($offererId == null) {
             $response->setConent("Offerer does not exist");
             $response->setStatusCode(400);
-            return $response;   
+            return $response;
         }
-        $requestId = $offer->getRequestId(); 
-        if($requestId == null){
+        $requestId = $offer->getRequestId();
+        if ($requestId == null) {
             $response->setConent("Request not specified");
             $response->setStatusCode(400);
             return $response;
         }
         $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
         $request = $requestRepo->findOneBy(array('id' => $requestId));
-        if($request == null){
-           $response->setConent("Request does not exist");
-           $response->setStatusCode(400);
-           return $response; 
+        if ($request == null) {
+            $response->setConent("Request does not exist");
+            $response->setStatusCode(400);
+            return $response;
         }
-        $requesterId= $request->getUserId(); 
+        $requesterId = $request->getUserId();
         $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
         $requesterTangle = $userTangleRepo->findOneBy(array('userId' => $requesterId));
         $offererTangle = $userTangleRepo->findOneBy(array('userId' => $offererId));
         $requesterTangle->setCredit($requesterTangle->getCredit() + $json_array['requesterCredit']);
-        $offererTangle->setCredit($offererTangle->getCredit() + $json_array['offererCredit']); 
+        $offererTangle->setCredit($offererTangle->getCredit() + $json_array['offererCredit']);
         $claim->setStatus(1);
         $response->setContent("Claim resolved");
-        $response->setStatusCode(200); 
+        $response->setStatusCode(200);
         $doctrine->getManager()->persist($requesterTangle);
         $doctrine->getManager()->persist($offererTangle);
         $doctrine->getManager()->persist($claim);
         $doctrine->getManager()->flush();
-        return $response; 
+        return $response;
     }
-    
-    public function verifySessionId(\Symfony\Component\HttpFoundation\Request $request){
+
+    public function verifySessionId(\Symfony\Component\HttpFoundation\Request $request) {
         $sessionId = $request->headers->get('X-SESSION-ID');
         $response = new JsonResponse();
         if ($sessionId == null) {
@@ -237,11 +244,80 @@ class ClaimController extends Controller {
         $doctrine = $this->getDoctrine();
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
-        if ($session == null || $session->getExpired() == 1 ) {
+        if ($session == null || $session->getExpired() == 1) {
             $response->setContent("Please login again");
             $response->setStatusCode(400);
             return $response;
-        
         }
     }
+
+    public function verifiyTangleOwner($tangleId, \Symfony\Component\HttpFoundation\Request $request) {
+        $sessionId = $request->headers->get('X-SESSION-ID');
+        $doctrine = $this->getDoctrine();
+        $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
+        $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
+        $sessionUserId = $session->getUserId();
+        $userTangle = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
+        $user = $userTangle->findOneBy(array('tangleId' => $tangleId, 'userId' => $sessionUserId));
+        if ($user == null) {
+
+            return "error";
+        }
+        if ($user->getTangleOwner() == 0) {
+            return "error";
+        }
+        return;
+    }
+
+    public function getClaimsAction($tangleId, \Symfony\Component\HttpFoundation\Request $request) {
+        $this->verifySessionId($request);
+        $isOwner = $this->verifiyTangleOwner($tangleId, $request);
+        $response = new JsonResponse();
+        if ($isOwner == "error") {
+            $response->setContent('You are not authorized to perform this action');
+            $response->setStatusCode(400);
+            return $response;
+        }
+        $doctrine = $this->getDoctrine();
+        $claimArray = array();
+        $claimRepo = $doctrine->getRepository('MegasoftEntangleBundle:Claim');
+        $allClaims = $claimRepo->findBy(array('tangleId' => $tangleId, 'status' => 0, 'deleted' => 0));
+        $numOfClaims = count($allClaims);
+        if ($numOfClaims == 0) {
+            $response->setContent('No claims found');
+            $response->setStatusCode(200);
+            return $response;
+        }
+        for ($i = 0; $i < $numOfClaims; $i++) {
+            $claimId = $allClaims[$i]->getId();
+            $status = $allClaims[$i]->getStatus();
+            $message = $allClaims[$i]->getMessage();
+            $date = $allClaims[$i]->getCreated();
+            $offerId = $allClaims[$i]->getOfferId();
+            $claimerId = $allClaims[$i]->getClaimerId();
+            $userRepo = $doctrine->getRepository('MegasoftEntangleBundle:User');
+            $claimer = $userRepo->findOneBy(array('id' => $claimerId));
+            $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
+            $offer = $offerRepo->findOneBy(array('id' => $offerId)); 
+            $requestId = $offer->getRequestId();
+            $requestRepo = $doctrine->getRepository('MegasoftEntangleBundle:Request');
+            $request = $requestRepo->findOneBy(array('id' => $requestId));
+            $requesterId = $request->getUserId();
+            $requester = $userRepo->findOneBy(array('id' => $requesterId));
+            $requesterName = $requester->getName();
+            $offererId = $offer->getUserId();
+            $offerer = $userRepo->findOneBy(array('id' => $offererId));
+            $offererName = $offerer->getName();
+            $offerPrice= $offer->getRequestedPrice();
+            $details = array('claimerId'=>$claimerId, 'claimId' => $claimId, 'offerId' => $offerId, 
+                'offererId' => $offererId,'offererName'=>$offererName, 'requesterId' => $requesterId, 
+                'requesterName'=>$requesterName,'offerPrice'=>$offerPrice, 
+                'message' => $message, 'status' => $status, 'created' => $date,);
+            array_push($claimArray, $details);
+        }
+        $response->setData($claimArray);
+        $response->setStatusCode(200);
+        return $response;
+    }
+
 }

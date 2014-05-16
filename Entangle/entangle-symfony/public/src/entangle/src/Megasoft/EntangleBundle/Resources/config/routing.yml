@@ -588,3 +588,8 @@ resolve_claim:
     pattern: /claim/{claimId}/resolve
     defaults: {_controller:MegasoftEntangleBundle:Claim:resolveClaim }
     methods: [POST]
+ 
+get_claims:
+    pattern: /tangle/{tangleId}/claim
+    defaults: {_controller:MegasoftEntangleBundle:Claim:getClaims }
+    methods: [GET]
