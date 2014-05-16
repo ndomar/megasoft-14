@@ -198,6 +198,7 @@ public class TangleFragment extends Fragment {
 			String requesterName = request.getString("username");
 			int requestId = request.getInt("id");
 			String requestBody = request.getString("description");
+			String requesterAvatarURL = request.getString("requesterAvatar");
 			String requestOffersCount = "" + request.getInt("offersCount");
 			String requesterButtonText = requesterName;
 			String requestButtonText = requestBody;
@@ -209,7 +210,8 @@ public class TangleFragment extends Fragment {
 			transaction = getFragmentManager().beginTransaction();
 			StreamRequestFragment requestFragment = StreamRequestFragment
 					.createInstance(requestId, userId, requestButtonText,
-							requesterButtonText, requestPrice, requestOffersCount, this);
+							requesterButtonText, requestPrice, requestOffersCount, 
+							requesterAvatarURL, this);
 			transaction.add(R.id.streamLayout, requestFragment);
 			transaction.commit();
 		} catch (JSONException e) { 

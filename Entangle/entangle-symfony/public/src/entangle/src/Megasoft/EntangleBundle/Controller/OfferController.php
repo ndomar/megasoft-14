@@ -119,12 +119,18 @@ class OfferController extends Controller
                 continue;
             }
 
+            if ($message->getSender()->getPhoto() == null) {
+                $photo = null;
+            } else {
+                $filepath = 'http://'.$_SERVER['HTTP_HOST'].'/images/profilePictures/';
+                $photo = $filepath.$message->getSender()->getPhoto();
+            }
+
             $commenter = $message->getSender()->getName();
             $commentDate = $message->getDate()->format('d/m/Y');
             $comment = $message->getBody();
-            $comments[] = array('commenter' => $commenter,
-                'comment' => $comment,
-                'commentDate' => $commentDate,);
+            $comments[] = array('commenterAvatar' => $photo, 'commenter' => $commenter,
+                'comment' => $comment, 'commentDate' => $commentDate,);
         }
 
         return $comments;
@@ -144,7 +150,14 @@ class OfferController extends Controller
         $requestId = $offer->getRequestId();
         $userName = $user->getName();
         $offerDate = $offer->getDate()->format('d/m/Y');
-        $userPhoto = $user->getPhoto();
+
+        if ($user->getPhoto() == null) {
+            $photo = null;
+        } else {
+            $filepath = 'http://'.$_SERVER['HTTP_HOST'].'/images/profilePictures/';
+            $photo = $filepath.$user->getPhoto();
+        }
+
         $offerStatus = $offer->getStatus();
         $offerPrice = $offer->getRequestedPrice();
         $offerDescription = $offer->getDescription();
@@ -152,7 +165,7 @@ class OfferController extends Controller
         $sesionRepo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:Request');
         $request = $sesionRepo->findOneBy(array('id' => $requestId));
         $requestStatus = $request->getStatus();
-        $offerInformation = array('offererAvatar' => $userPhoto, 'offererName' => $userName,
+        $offerInformation = array('offererAvatar' => $photo, 'offererName' => $userName,
             'offerDescription' => $offerDescription,
             'offerDeadline' => $offerDeadline,
             'offerStatus' => $offerStatus,

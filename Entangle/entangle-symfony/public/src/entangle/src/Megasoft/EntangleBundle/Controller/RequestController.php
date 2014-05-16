@@ -259,13 +259,22 @@ class RequestController extends Controller
             $request = $offer->getRequestId();
             if ($request == $requestId) {
                 $description = $offer->getDescription();
+
+                if ($offer->getUser()->getPhoto() == null) {
+                    $photo = null;
+                } else {
+                    $filepath = 'http://'.$_SERVER['HTTP_HOST'].'/images/profilePictures/';
+                    $photo = $filepath.$offer->getUser()->getPhoto();
+                }
+
                 $status = $offer->getStatus();
                 $date = $offer->getDate();
                 $deadline = $offer->getExpectedDeadline();
                 $price = $offer->getRequestedPrice();
                 $deleted = $offer->getDeleted();
-                $details = array('description' => $description, 'status' => $status,
-                    'date' => $date, 'deadline' => $deadline, 'price' => $price, 'offererName' => $offer->getUser()->getName(), 'id' => $offer->getId());
+                $details = array('offererAvatar' => $photo, 'description' => $description, 'status' => $status,
+                    'date' => $date, 'deadline' => $deadline, 'price' => $price, 
+                    'offererName' => $offer->getUser()->getName(), 'id' => $offer->getId(),);
                 if ($deleted == 0) {
                     array_push($offerArray, $details);
                 }
