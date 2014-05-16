@@ -10,6 +10,7 @@ use Megasoft\EntangleBundle\DataFixtures\ORM\LoadTangleData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadLeaveTangleData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserData;
 use Megasoft\EntangleBundle\DataFixtures\ORM\LoadUserTangleData;
+use Megasoft\EntangleBundle\DataFixtures\ORM\LoadMyOffersData;
 use Megasoft\EntangleBundle\Tests\EntangleTestCase;
 
 /*
@@ -71,7 +72,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals(2, sizeof($json));
         $this->assertEquals(true, isset($json['count']));
         $this->assertEquals(true, isset($json['users']));
-        $this->assertEquals(1, $json['count']);
+        $this->assertEquals(2, $json['count']);
 
         $users = $json['users'];
         $this->assertEquals(1, $users[0]['id']);
@@ -137,7 +138,7 @@ class TangleControllerTest extends EntangleTestCase
         $client = static::createClient();
         $client->request('PUT', '/tangle/-1/reset');
 
-        $this->assertEquals(404, $client->getResponse()->getStatusCode(), 'Check for tangle doesn\'t exist');
+        $this->assertEquals(401, $client->getResponse()->getStatusCode(), 'Check for tangle does not exist');
     }
     /**
      * Test case for the user not being the owner to resetTangle action
@@ -617,6 +618,7 @@ class TangleControllerTest extends EntangleTestCase
 
     }
 
+
     /*
      * Test Case testing filtering stream if the a query parameter is added.
      * @author MohamedBassem
@@ -754,4 +756,177 @@ class TangleControllerTest extends EntangleTestCase
 
     }
 
+    /**
+     * Test Case sending wrong tangle id in the request
+     * @author HebaAamer 
+     */
+    public function testUserOffersAction_WrongTangleId() {
+        $this->addFixture(new LoadMyOffersData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('GET',
+                'tangle/3/user/offers',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userAly'));
+        $response = $client->getResponse();
+        $this->assertEquals(401, $response->getStatusCode(), 'Wrong tangle id');
+    }
+    
+      /**
+     * Test Case testing not sending a session id in the 
+     * @author HebaAamer
+     */
+    public function testUserOffersAction_NullSessionId() {
+        $this->addFixture(new LoadMyOffersData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('GET',
+                'tangle/1/user/offers',
+                array(),
+                array(),
+                array());
+        $response = $client->getResponse();
+        $this->assertEquals(400, $response->getStatusCode(), 'Not sending session id');
+    }
+    
+    /**
+     * Test Case testing sending expired session 
+     * @author HebaAamer
+     */
+    public function testUserOffersAction_ExpiredSession() {
+        $this->addFixture(new LoadMyOffersData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('GET',
+                'tangle/1/user/offers',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userMohamed'));
+        $response = $client->getResponse();
+        $this->assertEquals(400, $response->getStatusCode(), 'Sending expired session');
+    }
+    
+    /**
+     * Test Case testing sending wrong session 
+     * @author HebaAamer
+     */
+    public function testUserOffersAction_WrongSession() {
+        $this->addFixture(new LoadMyOffersData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('GET',
+                'tangle/1/user/offers',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'mohamed'));
+        $response = $client->getResponse();
+        $this->assertEquals(400, $response->getStatusCode(), 'Sending wrong session');
+    }
+    
+    /**
+     * Test Case testing user not in the tangle 
+     * @author HebaAamer
+     */
+    public function testUserOffersAction_NotUserInTangle() {
+        $this->addFixture(new LoadMyOffersData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('GET',
+                'tangle/1/user/offers',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userMazen'));
+        $response = $client->getResponse();
+        $this->assertEquals(401, $response->getStatusCode(), 'Case user not in the tangle');
+    }
+    
+    /**
+     * Test Case to check if the user left the tangle or not
+     * @author HebaAamer
+     */
+    public function testUserOffersAction_LeftUser() {
+        $this->addFixture(new LoadMyOffersData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('GET',
+                'tangle/1/user/offers',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userAdel'));
+        $response = $client->getResponse();
+        $this->assertEquals(401, $response->getStatusCode(), 'Case left user');
+    }
+    
+      /**
+     * Test Case to get the requests of the tangle owner
+     * @author HebaAamer
+     */
+    public function testUserOffersAction_CaseTangleOwner() {
+        $this->addFixture(new LoadMyOffersData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('GET',
+                'tangle/1/user/offers',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userAhmad'));
+        $response = $client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode(), 'Case Tangle Owner');
+        $content = $response->getContent();
+        $this->assertJson($content, 'Output JSON is wrong formated');
+        
+        $json = json_decode($content, true);
+        $this->assertArrayHasKey('count', $json, "count not found in response");
+        $this->assertArrayHasKey('offers', $json, "offers not found in response");
+        
+        $this->assertEquals(0, $json['count'], 'count is not zero');
+        $this->assertEquals(0, count($json['offers']), 'there should be no offers');
+    }
+    
+    /**
+     * Test Case to get the offers of the tangle member
+     * @author HebaAamer
+     */
+    public function testUserOffersAction_CaseTangleMember() {
+        $this->addFixture(new LoadMyOffersData());
+        $this->loadFixtures();
+        
+        $client = static::createClient();
+        $client->request('GET',
+                'tangle/1/user/offers',
+                array(),
+                array(),
+                array('HTTP_X_SESSION_ID' => 'userAly'));
+        $response = $client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode(), 'Case Tangle Member');
+        $content = $response->getContent();
+        $this->assertJson($content, 'Output JSON is wrong formated');
+        
+        $json = json_decode($content, true);
+        $this->assertArrayHasKey('count', $json, 'count not found in response');
+        $this->assertArrayHasKey('offers', $json, 'offers not found in response');
+        
+        $this->assertEquals(4, $json['count'], 'count is wrong');
+        $this->assertEquals(4, count($json['offers']), 'number of offers sent in the response is wrong');
+        
+        $this->assertArrayHasKey('id', $json['offers'][0], 'offer id not found');
+        $this->assertArrayHasKey('username', $json['offers'][0], 'offerer username not found');
+        $this->assertArrayHasKey('userId', $json['offers'][0], 'offerer userId not found');
+        $this->assertArrayHasKey('description', $json['offers'][0], 'offer description not found');
+        $this->assertArrayHasKey('price', $json['offers'][0], 'offer price not found');
+        $this->assertArrayHasKey('status', $json['offers'][0], 'offer status not found');
+        
+        $this->assertEquals(2, $json['offers'][0]['id']);
+        $this->assertEquals(3, $json['offers'][1]['id']);
+        $this->assertEquals(4, $json['offers'][2]['id']);
+        $this->assertEquals(6, $json['offers'][3]['id']);
+    }
 }
