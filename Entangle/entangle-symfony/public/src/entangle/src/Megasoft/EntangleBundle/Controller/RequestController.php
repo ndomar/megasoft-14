@@ -144,9 +144,7 @@ class RequestController extends Controller
 
             // notification
             $notificationCenter = $this->get('notification_center.service');
-            $title = "request reopen";
-            $body = "{{from}} reopened his request";
-            $notificationCenter->reopenRequestNotification($tangleRequest->getId(), $title, $body);
+            $notificationCenter->reopenRequestNotification($tangleRequest->getId());
 
             return new Response('Reopened', 200);
         }
@@ -237,7 +235,7 @@ class RequestController extends Controller
             if ($sessionUserId == $requester) {
                 $myRequest = 1;
             }
-            $requestDetails = array('requester' => $requester, 'requesterName'=>$request->getUser()->getName() ,'description' => $description,
+            $requestDetails = array('requester' => $requester, 'requesterName' => $request->getUser()->getName(), 'description' => $description,
                 'status' => $status, 'MyRequest' => $myRequest, 'date' => $date, 'deadline' => $deadline, 'icon' => $icon,
                 'price' => $price, 'tangle' => $tangle, 'tags' => $tags, 'offers' => $offers);
         }
@@ -486,10 +484,10 @@ class RequestController extends Controller
         }
 
         $notificationCenter = $this->get('notification_center.service');
-        $title = "request deleted";
-        $body = "{{from}} deleted his request";
-        $notificationCenter->requestDeletedNotification($request->getId(), $title, $body);
-        
+        $notificationCenter->requestDeletedNotification($request->getId());
+
+        $request->setDeleted(true);
+        $this->getDoctrine()->getManager()->persist($request);
         $this->getDoctrine()->getManager()->flush();
 
         return new Response("Deleted", 204);
