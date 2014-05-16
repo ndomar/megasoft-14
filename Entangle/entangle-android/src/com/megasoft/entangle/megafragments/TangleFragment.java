@@ -78,6 +78,8 @@ public class TangleFragment extends Fragment {
 	 * Last query cached.
 	 */
 	private String lastQuery;
+	private boolean isDestroyed;
+
 
 	/**
 	 * This method is called when the activity starts , it sets the attributes
@@ -267,6 +269,7 @@ public class TangleFragment extends Fragment {
 			this.lastQuery = query;
 		}
 		sessionId = activity.getSharedPreferences(Config.SETTING, 0).getString(Config.SESSION_ID, "");
+
 		url += "?limit=" + defaultRequestLimit;
 		if (isLoadMore) {
 			query = lastQuery;
@@ -277,13 +280,18 @@ public class TangleFragment extends Fragment {
 		}
 		final String finalUrl = url;
 		GetRequest getStream = new GetRequest(finalUrl) {
+			
 			protected void onPostExecute(String res) {
+				if(isDestroyed){
+					return;
+				}
 				if (!this.hasError() && res != null) {
 					LinearLayout layout = (LinearLayout) activity.findViewById(R.id.streamLayout);
 					if (!isLoadMore) {
 						layout.removeAllViews();
 					}
 					setTheLayout(res, isLoadMore);
+
 				} else {
 					Toast.makeText(activity.getBaseContext(),
 							"Sorry, There is a problem in loading the stream",
@@ -319,4 +327,8 @@ public class TangleFragment extends Fragment {
 		return sessionId;
 	}
 	
+	public void onPause(){
+		super.onPause();
+		isDestroyed = true;
+	}
 }

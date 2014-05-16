@@ -108,7 +108,7 @@ public class TangleStreamActivity extends Fragment {
 	 */
 	private void showData(String response) {
 		ListView listView = (ListView) view.findViewById(R.id.view_tangle_tangle_titles);
-		listView.removeViews(0, listView.getCount());
+		listView.removeAllViewsInLayout();
 		tangleIds.clear();
 		tangleNames.clear();
 		try {
