@@ -12,6 +12,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +32,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 
@@ -128,7 +132,31 @@ public class CreateRequestActivity extends Activity {
 	 * a TextView to tell the user there is some error with the deadline
 	 */
 	TextView deadlineError;
-
+	/**
+	 * 
+	 */
+	String provider;
+	/**
+	 * 
+	 */
+	Location location;
+	/**
+	 * 
+	 */
+	double longitude;
+	/**
+	 * 
+	 */
+	double latidue;
+	/**
+	 * 
+	 */
+	GoogleMap map;
+	/**
+	 * 
+	 */
+	LocationManager locationmanager;
+	
 	/**
 	 * An array of the ids of the request icons available in the app.
 	 */
@@ -213,6 +241,24 @@ public class CreateRequestActivity extends Activity {
 					}
 					json.put("deadLine", deadLineData);
 					json.put("tags", jsonTagsArray);
+					
+					locationmanager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+					Criteria c = new Criteria();
+					provider = locationmanager.getBestProvider(c, false);
+					location = locationmanager.getLastKnownLocation(provider);
+					if (location != null) {
+						longitude = location.getLongitude();
+						latidue = location.getLatitude();
+					} else {
+						longitude = -1;
+						latidue = -1;
+					}
+					
+					 json.put("longitude", longitude);
+					 json.put("latidue", latidue);
+					 
+					 Log.e("Location", longitude+"");
+					 Log.e("location", latidue+"");
 					json.put("icon", usedIcon);
 				} catch (JSONException e) {
 					e.printStackTrace();

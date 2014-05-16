@@ -5,13 +5,20 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="16"
+        android:minSdkVersion="14"
         android:targetSdkVersion="19" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- this is also related to GCM -->
     <permission
@@ -22,6 +29,14 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="com.megasoft.entangle.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.location" android:required="true" />
+      <uses-feature android:name="android.hardware.location.gps" android:required="true" /> 
+    
     <!-- end of GCM permissions -->
     <application
         android:allowBackup="true"
@@ -30,7 +45,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.megasoft.entangle.HomeActivity"
-            android:label="@string/title_activity_home"
+  	          android:label="@string/title_activity_home"
             android:logo="@drawable/entangle_logo" >
         </activity>
         <activity
@@ -50,17 +65,15 @@
             android:label="@string/title_activity_general_profile" >
         </activity>
         <activity
-            android:name="com.megasoft.entangle.ProfileActivity"
-            android:label="@string/title_activity_profile" >
-        </activity>
-        <activity
             android:name="com.megasoft.entangle.SplashActivity"
             android:label="@string/title_activity_home" >
-            <intent-filter>
+            
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        
         </activity>
         <activity
             android:name="com.megasoft.entangle.CreateTangleActivity"
@@ -72,10 +85,21 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.megasoft.entangle.MainActivity" />
+            <meta-data
+                android:name="com.google.android.maps.v2.API_KEY"
+                android:value="AIzaSyBTuprotWtEBEZtkXU8EdS8sm3ATVOHC88" />
+        </activity>
+        <activity
+            android:name="com.megasoft.notifications.CreateNotificationActivity"
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.RegisterActivity"
             android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.TangleActivity"
+            android:label="@string/title_activity_view_stream" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.ActivitiesListActivity"
@@ -91,7 +115,7 @@
         </activity>
         <activity
             android:name="com.megasoft.entangle.CreateRequestActivity"
-            android:label="@string/title_activity_create_request" >
+            android:label="@string/title_activity_request" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.CreateOfferActivity"
@@ -100,6 +124,17 @@
         <activity
             android:name="com.megasoft.entangle.RequestActivity"
             android:label="@string/title_activity_request" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.acceptPendingInvitation.AcceptPendingInvitationActivity"
+            android:label="@string/title_activity_accept_pending_invitation" >
+        </activity>
+        <activity
+            android:name="com.megasoft.entangle.ProfileActivity"
+            android:label="@string/profileActivity" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.LogoutActivity"
@@ -132,7 +167,7 @@
         <!-- this is GCM manifest -->
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="4323000" />
+            android:value="@integer/google_play_services_version" />
 
         <service
             android:name="com.megasoft.notifications.GCMRegisteration"
@@ -143,10 +178,9 @@
             android:name="com.megasoft.notifications.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="com.megasoft" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </receiver>
 
