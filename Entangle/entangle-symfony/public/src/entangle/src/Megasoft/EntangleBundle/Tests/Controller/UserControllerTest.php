@@ -115,7 +115,7 @@ class UserControllerTest extends EntangleTestCase {
 
 
     /**
-     * Tests sending a different user id from the logged in one to the GeneralProfileAction
+     * Tests sending a correct request to the GeneralProfileAction
      * @author Almgohar
      */
     public function testGeneralProfileAction_GetGeneralProfile() {

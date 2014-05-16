@@ -37,7 +37,6 @@ class OfferController extends Controller
         $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
         $loggedInUser = $session->getUserId();
         $tangleId = $request->getTangleId();
-
         $userTangle = $userTangleTable->
             findOneBy(array('userId' => $loggedInUser, 'tangleId' => $tangleId));
 
@@ -55,46 +54,56 @@ class OfferController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\JsonResponse
      * @author Almgohar
      */
-    public function offerAction
-    (\Symfony\Component\HttpFoundation\Request $req, $offerId)
-    {
+
+    public function offerAction (\Symfony\Component\HttpFoundation\Request $req, $offerId) {
         $sessionId = $req->headers->get('X-SESSION-ID');
+
         if ($sessionId == null) {
             return new Response('Unauthorized', 401);
         }
+
         $doctrine = $this->getDoctrine();
         $sessionTable = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionTable->findOneBy(array('sessionId' => $sessionId));
+
         if ($session == null || $session->getExpired()) {
             return new Response('Unauthorized', 401);
         }
+
         $offerTable = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
         $offer = $offerTable->findOneBy(array('id' => $offerId));
+
         if ($offer == null || $offer->getDeleted()) {
             return new Response('Offer not found', 404);
         }
+
         $request = $offer->getRequest();
+
         if ($request->getDeleted()) {
             return new Response("Request not found", 404);
         }
+
         $tangleId = $request->getTangleId();
+
         if (!$this->validateUser($request, $sessionId)) {
             return new Response('Unauthorized', 401);
         }
+
         $messageTable = $doctrine->getRepository('MegasoftEntangleBundle:Message');
         $comments = $this->getComments($messageTable, $offerId);
         $offerInformation = $this->getOfferInformation($offer);
-
         $response = new JsonResponse(null, 200);
         $response->setData(array('tangleId' => $tangleId,
             'offerInformation' => $offerInformation,
             'comments' => $comments,));
+
         return $response;
     }
 
     /**
      * Gets the comments of a certain offer
-     * @param \Megasoft\EntangleBundle\Entity\Request $request $request
+     * @param \Megasoft\EntangleBundle\Entity\Message $messageTable
+     * @param int $offerId
      * @return array $comments
      * @author Almgohar
      */
@@ -102,11 +111,14 @@ class OfferController extends Controller
     {
         $comments = array();
         $messages = $messageTable->findBy(array('offerId' => $offerId));
+
         for ($i = 0; $i < count($messages); $i++) {
             $message = $messages[$i];
-            if ($message == null) {
+
+            if ($message == null || $message->getDeleted()) {
                 continue;
             }
+
             $commenter = $message->getSender()->getName();
             $commentDate = $message->getDate()->format('d/m/Y');
             $comment = $message->getBody();
@@ -119,7 +131,7 @@ class OfferController extends Controller
     }
 
     /**
-     *
+     *  Gets the information of the offer
      * @param \Megasoft\EntangleBundle\Entity\Offer $offer
      * @return array $offerInformation
      * @author Almgohar
