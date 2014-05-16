@@ -355,7 +355,7 @@ class TangleController extends Controller
             return new Response("Icon Was Not Provided", 400);
         }
         $tangleIcon = $json_array['tangleIcon'];
-        if($tangleIcon == null && $tangleIcon != 0){
+        if(\is_null($tangleIcon)){
             return new Response("Null Tangle Icon", 400);
         }
         if (!isset($json_array['tangleDescription'])){
