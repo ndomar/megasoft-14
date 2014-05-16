@@ -528,4 +528,12 @@ class Offer {
         return $this->offerDeletedNotifications;
     }
 
+    /**
+     * Get tangleId
+     * 
+     * @return integer
+     */
+    public function getTangleId() {
+        return $this->getRequest()->getTangleId();
+    }
 }

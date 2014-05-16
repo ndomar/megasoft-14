@@ -123,6 +123,22 @@ class Request
     private $deleted = false;
 
     /**
+     *
+     * @var string
+     *
+     * @ORM\Column(name="longitude", type="decimal")
+     */
+    private $longitude = -1;
+
+    /**
+     *
+     * @var string
+     *
+     * @ORM\Column(name="latitude", type="decimal")
+     */
+    private $latitude = -1;
+
+    /**
      * @var RequestDeletedNotification[]
      * 
      * @ORM\OneToMany(targetEntity="RequestDeletedNotification", mappedBy="request", cascade={"persist"})
@@ -523,4 +539,50 @@ class Request
         return $this->unfreezeRequests;
     }
 
+
+    /**
+     * Set longitude
+     *
+     * @param string $longitude
+     * @return Request
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    /**
+     * Get longitude
+     *
+     * @return string 
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * Set latitude
+     *
+     * @param string $latitude
+     * @return Request
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    /**
+     * Get latitude
+     *
+     * @return string 
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
 }

@@ -2,7 +2,7 @@
     android:id="@+id/memberEntryFragment"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/boxMargin"
+    android:layout_marginTop="@dimen/boxMargin"
     android:layout_marginRight="@dimen/boxMargin"
     android:layout_marginLeft="@dimen/boxMargin"
     android:background="@color/postBackground"

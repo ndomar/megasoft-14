@@ -459,7 +459,7 @@ class RequestController extends Controller
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($session == null || $session->getExpired()) {
-            return new Response('Bad Request', 400);
+            return new Response('Unauthorized', 401);
         }
 
         $requesterId = $session->getUserId();
@@ -470,12 +470,23 @@ class RequestController extends Controller
             return new Response('Unauthorized', 401);
         }
 
-        // notification
+        if($request->getStatus() != 0 || $request->getDeleted() == true){
+            return new Response('Bad Request', 400);
+        }
+
+        $request->setDeleted(true);
+        $this->getDoctrine()->getManager()->persist($request);
+        $offers = $request->getOffers();
+        
+        foreach($offers as $offer){
+            $offer->setDeleted(true);
+            $this->getDoctrine()->getManager()->persist($offer);
+        }
+
         $notificationCenter = $this->get('notification_center.service');
         $notificationCenter->requestDeletedNotification($request->getId());
 
         $request->setDeleted(true);
-        $request->setStatus($request->CLOSE);
         $this->getDoctrine()->getManager()->persist($request);
         $this->getDoctrine()->getManager()->flush();
 
