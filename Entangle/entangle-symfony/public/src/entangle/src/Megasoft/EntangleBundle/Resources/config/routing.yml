@@ -101,7 +101,7 @@ delete_request:
 
 index:
     pattern: /
-    defaults: { _controller: MegasoftEntangleBundle:Site:index }
+    defaults: { _controller: MegasoftEntangleBundle:Site:register }
 
 get_tangles:
     pattern: /tangle
@@ -601,7 +601,7 @@ megasoft_entangle_register:
     defaults: { _controller: MegasoftEntangleBundle:Site:register }
 
 register_app:
-    pattern: /
+    pattern: /register
     defaults: { _controller: MegasoftEntangleBundle:User:register}
     methods: [POST]
 
