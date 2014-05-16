@@ -54,7 +54,7 @@
     <string name="here">Create tangle now! </string>
 	<string name="tangleNameHint">Specify a Tangle name</string>
     <string name="iconButton">Choose an Icon</string>
-    <string name="tangleIcon">Tangle Icon</string>
+    <string name="tangleIcon">Available Icons</string>
     <string name="createTangle">CREATE</string>
     <string name="checkTangleName">Check</string>
     <string name="aTangle">Tangle</string>
