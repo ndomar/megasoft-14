@@ -293,7 +293,7 @@ class ClaimController extends Controller {
         $numOfClaims = count($allClaims);
         if ($numOfClaims == 0) {
             $response->setContent('No claims found');
-            $response->setStatusCode(200);
+            $response->setStatusCode(201);
             return $response;
         }
         for ($i = 0; $i < $numOfClaims; $i++) {
@@ -305,6 +305,7 @@ class ClaimController extends Controller {
             $claimerId = $allClaims[$i]->getClaimerId();
             $userRepo = $doctrine->getRepository('MegasoftEntangleBundle:User');
             $claimer = $userRepo->findOneBy(array('id' => $claimerId));
+            $claimerName = $claimer->getName(); 
             $offerRepo = $doctrine->getRepository('MegasoftEntangleBundle:Offer');
             $offer = $offerRepo->findOneBy(array('id' => $offerId)); 
             $requestId = $offer->getRequestId();
@@ -320,7 +321,7 @@ class ClaimController extends Controller {
             $details = array('claimerId'=>$claimerId, 'claimId' => $claimId, 'offerId' => $offerId, 
                 'offererId' => $offererId,'offererName'=>$offererName, 'requesterId' => $requesterId, 
                 'requesterName'=>$requesterName,'offerPrice'=>$offerPrice, 
-                'message' => $message, 'status' => $status, 'created' => $date,);
+                'message' => $message, 'status' => $status, 'created' => $date,'claimerName'=>$claimerName);
             array_push($claimArray, $details);
         }
         $response->setData($claimArray);
