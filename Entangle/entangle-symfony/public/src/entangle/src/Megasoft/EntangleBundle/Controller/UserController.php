@@ -10,6 +10,7 @@ use Megasoft\EntangleBundle\Entity\Tangle;
 use Megasoft\EntangleBundle\Entity\Offer;
 use Megasoft\EntangleBundle\Entity\User;
 use Megasoft\EntangleBundle\Entity\UserEmail;
+use Megasoft\EntangleBundle\Tests\Controller\TangleControllerTest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -104,6 +105,23 @@ class UserController extends Controller
                         $this->getDoctrine()->getManager()->persist($email);
                     }
                 }
+                $userIcon = $jsonArray['icon'];
+                $imageData = base64_decode($userIcon);
+                $f = finfo_open();
+                $mimeType = finfo_buffer($f, $imageData, FILEINFO_MIME_TYPE);
+                if ($mimeType == false || $mimeType != 'image/png') {
+                    return new Response("Bad image", 400);
+                }
+                $icon = imagecreatefromstring($imageData);
+                $iconName = $this->generateRandomString(50) . '.png';
+                $kernel = $this->get('kernel');
+                $path = $kernel->getRootDir() . '/../web/bundles/megasoftentangle/images/user/' . $iconName;
+                if ($icon != null) {
+                    imagepng($icon, $path, 9);
+                    imagedestroy($icon);
+                }
+                $user->setPhoto($iconName);
+                $this->getDoctrine()->getManager()->persist($user);
 
                 $this->getDoctrine()->getManager()->flush();
                 return new Response('OK', 200);
@@ -111,6 +129,17 @@ class UserController extends Controller
         } else {
             return new Response("Session Expired", 400);
         }
+
+    }
+
+    private function generateRandomString($len)
+    {
+        $ret = '';
+        $seed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
+        for ($i = 0; $i < $len; $i++) {
+            $ret .= $seed[rand(0, strlen($seed) - 1)];
+        }
+        return $ret;
     }
 
     /**

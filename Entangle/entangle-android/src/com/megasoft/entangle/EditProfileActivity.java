@@ -1,5 +1,6 @@
 package com.megasoft.entangle;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -16,8 +17,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -67,6 +73,8 @@ public class EditProfileActivity extends FragmentActivity implements
 	protected int newMonth;
 	protected int newDay;
 	private int emailsCount;
+	private static final int REQUEST_CODE = 1;
+	String encodedImage;
 
 	@SuppressLint("SimpleDateFormat")
 	@Override
@@ -229,6 +237,7 @@ public class EditProfileActivity extends FragmentActivity implements
 					return;
 				}
 				putReJsonObject.put("emails", emails);
+				putReJsonObject.put("icon", encodedImage);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -312,7 +321,8 @@ public class EditProfileActivity extends FragmentActivity implements
 
 		this.finish();
 	}
-
+	
+	
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -374,4 +384,36 @@ public class EditProfileActivity extends FragmentActivity implements
 		getRequest.execute();
 
 	}
+	
+	public void goToGallery(View view){
+		startActivityForResult(new Intent(Intent.ACTION_PICK,
+				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
+				REQUEST_CODE);
+	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE
+				&& null != data) {
+			Bitmap bitmap = getPhotoPath(data.getData());
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+			byte[] byteArray = baos.toByteArray();
+			encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+		}
+	}
+	
+	public Bitmap getPhotoPath(Uri uri) {
+		String[] projection = { android.provider.MediaStore.Images.Media.DATA };
+		Cursor cursor = getContentResolver().query(uri, projection, null, null,
+				null);
+		int columnIndex = cursor.getColumnIndexOrThrow(projection[0]);
+		cursor.moveToFirst();
+		String filePath = cursor.getString(columnIndex);
+		cursor.close();
+		Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+		return bitmap;
+	}
+	
+	
 }
