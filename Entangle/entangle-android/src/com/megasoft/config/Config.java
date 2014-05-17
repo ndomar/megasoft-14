@@ -18,4 +18,5 @@ public class Config {
 	public static final String MEMBER_NAME = "memberName";
 	public static final String MEMBER_BALANCE = "memberBalance";
 	public static final String MEMBER_AVATAR_URL = "memberAvatarURL";
+	public static final String PREFERENCES = "preferences";
 }
