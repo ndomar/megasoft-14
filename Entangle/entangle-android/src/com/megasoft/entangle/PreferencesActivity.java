@@ -2,6 +2,7 @@ package com.megasoft.entangle;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
@@ -12,10 +13,14 @@ import android.widget.ToggleButton;
  */
 public class PreferencesActivity extends Activity {
 
+	SharedPreferences.Editor sharedPreferencesEditor;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		 sharedPreferencesEditor = getSharedPreferences(
+				"preferences", Activity.MODE_PRIVATE).edit();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.template_preferences);
+		getActionBar().hide();
 
 	}
 
@@ -24,31 +29,36 @@ public class PreferencesActivity extends Activity {
 	 * clicked, it sets the text, color and value of the button .
 	 */
 	public void togglePushNotifications(View v) {
-		ToggleButton push = (ToggleButton) findViewById(R.id.pushNotificationsToggle);
-		if (push.getText().toString().equals("ON")) {
-			push.setTextColor(getResources().getColor(R.color.green));
-			push.setChecked(true);
+		ToggleButton pushNotifications = (ToggleButton) findViewById(R.id.pushNotificationsToggle);
+		if (pushNotifications.getText().toString().equals("ON")) {
+			pushNotifications.setTextColor(getResources().getColor(
+					R.color.green));
+			pushNotifications.setChecked(true);
 		} else {
-			push.setTextColor(getResources().getColor(R.color.red));
-			push.setChecked(false);
+			pushNotifications
+					.setTextColor(getResources().getColor(R.color.red));
+			pushNotifications.setChecked(false);
 		}
+		sharedPreferencesEditor.putBoolean("pushNotifications",
+				pushNotifications.isChecked());
 	}
 
 	/*
-	 * This method gets fired once the email notifications toggle button is
-	 * clicked, it sets the text, color and value of the button .
+	 * This method gets fired once the application sounds toggle button is
+	 * clicked, it turns it on or off .
 	 */
 
-	public void toggleEmailNotifications(View v) {
+	public void toggleSounds(View v) {
 
-		ToggleButton email = (ToggleButton) findViewById(R.id.emailNotificationsToggle);
-		if (email.getText().toString().equals("ON")) {
-			email.setTextColor(getResources().getColor(R.color.green));
-			email.setChecked(true);
+		ToggleButton sounds = (ToggleButton) findViewById(R.id.soundsToggle);
+		if (sounds.getText().toString().equals("ON")) {
+			sounds.setTextColor(getResources().getColor(R.color.green));
+			sounds.setChecked(true);
 		} else {
-			email.setTextColor(getResources().getColor(R.color.red));
-			email.setChecked(false);
+			sounds.setTextColor(getResources().getColor(R.color.red));
+			sounds.setChecked(false);
 		}
+		sharedPreferencesEditor.putBoolean("sounds", sounds.isChecked());
 	}
 
 	/*
@@ -56,7 +66,7 @@ public class PreferencesActivity extends Activity {
 	 * changes that were done by the user .
 	 */
 	public void cancelChanges(View v) {
-
+		finish();
 	}
 
 	/*
@@ -64,14 +74,8 @@ public class PreferencesActivity extends Activity {
 	 * changes that were done by the user .
 	 */
 	public void changesDone(View v) {
-
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.preferences, menu);
-		return true;
+		sharedPreferencesEditor.commit();
+		finish();
 	}
 
 }

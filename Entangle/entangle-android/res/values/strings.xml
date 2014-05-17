@@ -151,5 +151,6 @@
     <string name="email_notifications">E-mail Notifications</string>
     <string name="push_notifications">Push Notifications</string>
     <string name="title_activity_preferences">Preferences</string>
+    <string name="appSounds">Application Sounds</string>
 
 </resources>
