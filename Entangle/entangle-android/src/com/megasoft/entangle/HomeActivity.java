@@ -38,7 +38,7 @@ public class HomeActivity extends FragmentActivity {
 	/**
 	 * Navigation drawer layout object.
 	 */
-	private DrawerLayout drawer;
+	private DrawerLayout drawer; 
 
 	/**
 	 * Navigation drawer list view.
@@ -94,6 +94,7 @@ public class HomeActivity extends FragmentActivity {
 			menu.findItem(R.id.action_invite).setVisible(true);
 			menu.findItem(R.id.createRequest).setVisible(true);
 			menu.findItem(R.id.action_search).setVisible(true);
+			menu.findItem(R.id.action_leave_tangle).setVisible(true);
 		}
 		this.tangleId = tangleId;
 		FragmentManager fragmentManager = getSupportFragmentManager();
@@ -135,8 +136,7 @@ public class HomeActivity extends FragmentActivity {
 				.getString(Config.USERNAME, "User"));
 		ImageView image = (ImageView) findViewById(R.id.sidebar_avatar);
 
-		new ImageRequest(pref.getString(Config.PROFILE_IMAGE, ""),
-				getApplicationContext(), image);
+		new ImageRequest(pref.getString(Config.PROFILE_IMAGE, "null"), getApplicationContext(), image);
 
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager
@@ -156,6 +156,7 @@ public class HomeActivity extends FragmentActivity {
 			menu.findItem(R.id.action_invite).setVisible(true);
 			menu.findItem(R.id.createRequest).setVisible(true);
 			menu.findItem(R.id.action_search).setVisible(true);
+			menu.findItem(R.id.action_leave_tangle).setVisible(true);
 		}
 
 		searchView = (SearchView) menu.findItem(R.id.action_search)
@@ -254,9 +255,10 @@ public class HomeActivity extends FragmentActivity {
 			Intent invitationIntent = new Intent(this, InviteUserActivity.class);
 			invitationIntent.putExtra("tangleId", this.tangleId);
 			startActivity(invitationIntent);
-
+			return true;
 		case R.id.action_leave_tangle:
 			leaveTangle();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

@@ -165,12 +165,18 @@ public class TangleFragment extends Fragment {
 	 * @author MohamedBassem
 	 */
 	private void setSearchListener() {
+		if(isDestroyed){
+			return;
+		}
 		final SearchView searchView = activity.getSearchView();
 		
 		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
 			@Override
 			public boolean onQueryTextSubmit(String query) {
+				if(isDestroyed){
+					return false;
+				}
 				InputMethodManager inputManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE); 
 				inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 				sendFilteredRequest(rootResource + "/tangle/" + tangleId
@@ -181,6 +187,9 @@ public class TangleFragment extends Fragment {
 			
 			@Override
 			public boolean onQueryTextChange(String newText) {
+				if(isDestroyed){
+					return false;
+				}
 				if(newText.equals("")){
 					sendFilteredRequest(rootResource + "/tangle/" + tangleId
 			 				+ "/request", false, null);
@@ -236,10 +245,12 @@ public class TangleFragment extends Fragment {
 	 */
 	private void addRequest(JSONObject request) {
 		try {
+
 			int userId 					= request.getInt("userId");
 			String requesterName 		= request.getString("username");
 			int requestId 				= request.getInt("id");
 			String requestBody 			= request.getString("description");
+			String requesterAvatarURL = request.getString("requesterAvatar");
 			String requestOffersCount 	= "" + request.getInt("offersCount");
 			String requesterButtonText 	= requesterName;
 			String requestButtonText 	= requestBody;
@@ -255,7 +266,7 @@ public class TangleFragment extends Fragment {
 			StreamRequestFragment requestFragment = StreamRequestFragment
 					.createInstance(requestId, userId, requestButtonText,
 							requesterButtonText, requestPrice,
-							requestOffersCount, getTangleId(), getTangleName());
+							requestOffersCount, getTangleId(), getTangleName(),requesterAvatarURL);
 			transaction.add(R.id.streamLayout, requestFragment);
 			transaction.commit();
 		} catch (JSONException e) {

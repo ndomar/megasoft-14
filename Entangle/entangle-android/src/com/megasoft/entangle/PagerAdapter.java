@@ -56,23 +56,17 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 			fragment = new ProfileSuperFragment();
 			args.putInt("userId", userId);
 			break;
-
 		case 3:
-			if (isTangleOwner) {
+			fragment = new MyRequestsFragment();
+			break;
+		case 4:		
+			fragment = new MyOffersFragment();
+			break;
+		case 5:
+			if(isTangleOwner){
 				fragment = new ManagePendingInvitationFragment();
-				break;
-			} else {
-				fragment = new MyRequestsFragment();
-				break;
 			}
-		case 4:
-			if (isTangleOwner) {
-				break;
-
-			} else {
-				fragment = new MyOffersFragment();
-				break;
-			}
+			break;
 		default:
 			break;
 		}
@@ -83,7 +77,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 	@Override
 	public int getCount() {
 		if (isTangleOwner) {
-			return 4;
+			return 6;
 		} else {
 			return 5;
 		}
@@ -102,15 +96,11 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 			return "You";
 
 		case 3:
-			if (isTangleOwner) {
-				return "Tangle Managment";
-			} else {
-				return "My Requests";
-			}
+			return "My Requests";
 		case 4:
-			if (!isTangleOwner) {
-				return "My Offers";
-			}
+			return "My Offers";
+		case 5:
+			return "Tangle Management";
 
 		default:
 			return "Tab " + position;

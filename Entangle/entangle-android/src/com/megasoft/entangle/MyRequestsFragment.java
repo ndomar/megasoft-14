@@ -69,6 +69,8 @@ public class MyRequestsFragment extends Fragment {
 	 */
 	private LinearLayout closedRequests;
 
+	private boolean isDestroyed;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -118,11 +120,6 @@ public class MyRequestsFragment extends Fragment {
 							addRequest(request);
 						}
 					}
-				} else {
-					UI.makeToast(
-							activity.getBaseContext(),
-							"Sorry, There is no requests with the specified options",
-							Toast.LENGTH_LONG);
 				}
 			}
 		} catch (JSONException e) {
@@ -200,7 +197,8 @@ public class MyRequestsFragment extends Fragment {
 		StreamRequestFragment requestFragment = StreamRequestFragment
 				.createInstance(requestId, userId, requestButtonText,
 						requesterButtonText, requestPrice, requestOffersCount,
-						getTangleId(), getTangleName());
+						getTangleId(), getTangleName(),activity.getSharedPreferences(Config.SETTING, 0).getString(
+								Config.PROFILE_IMAGE, null));
 		addRequestFragment(status, requestFragment);
 		transaction.commit();
 	}
@@ -222,10 +220,10 @@ public class MyRequestsFragment extends Fragment {
 			transaction.add(R.id.openRequests, requestFragment);
 			break;
 		case 1:
-			transaction.add(R.id.frozenRequests, requestFragment);
+			transaction.add(R.id.closedRequests, requestFragment);
 			break;
 		case 2:
-			transaction.add(R.id.closedRequests, requestFragment);
+			transaction.add(R.id.frozenRequests, requestFragment);
 			break;
 		default:
 			break;
@@ -244,6 +242,9 @@ public class MyRequestsFragment extends Fragment {
 				Config.SESSION_ID, "");
 		GetRequest getStream = new GetRequest(url) {
 			protected void onPostExecute(String res) {
+				if(isDestroyed){
+					return;
+				}
 				if (!this.hasError() && res != null) {
 					cleanTheLayouts();
 					setTheLayout(res);
@@ -286,5 +287,10 @@ public class MyRequestsFragment extends Fragment {
 	 */
 	private int getTangleId() {
 		return tangleId;
+	}
+	
+	public void onPause(){
+		super.onPause();
+		isDestroyed = true;
 	}
 }

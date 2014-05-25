@@ -26,15 +26,15 @@ public class MemberEntryFragment extends Fragment {
 	private int memberBalance;
 	private TextView memberNameView;
 	private TextView memberBalanceView;
-	private ImageView memberAvatarView;
+	private com.megasoft.entangle.views.RoundedImageView memberAvatarView;
 	private String memberAvatarURL;
 	private View view;
 
-	public ImageView getMemberAvatarView() {
+	public com.megasoft.entangle.views.RoundedImageView getMemberAvatarView() {
 		return memberAvatarView;
 	}
 
-	public void setMemberAvatarView(ImageView memberAvatarView) {
+	public void setMemberAvatarView(com.megasoft.entangle.views.RoundedImageView memberAvatarView) {
 		this.memberAvatarView = memberAvatarView;
 	}
 
@@ -126,7 +126,8 @@ public class MemberEntryFragment extends Fragment {
 
 		setMemberNameView((TextView) view.findViewById(R.id.memberName));
 		setMemberBalanceView((TextView) view.findViewById(R.id.memberBalance));
-		setMemberAvatarView((ImageView) view.findViewById(R.id.memberAvatar));
+		setMemberAvatarView((com.megasoft.entangle.views.RoundedImageView) 
+				view.findViewById(R.id.memberAvatar));
 
 		getMemberNameView().setText(getMemberName());
 		getMemberBalanceView().setText(getMemberBalance() + "");

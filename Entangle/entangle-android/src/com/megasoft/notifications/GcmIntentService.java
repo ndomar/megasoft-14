@@ -92,7 +92,7 @@ public class GcmIntentService extends IntentService {
 		}
 
 		if (type != -1) {
-			contentIntent = PendingIntent.getActivity(this, 0, dest, 0);
+			contentIntent = PendingIntent.getActivity(this, 0, dest, PendingIntent.FLAG_UPDATE_CURRENT);
 			Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 			Notification notification = new Notification.Builder(
 					getApplicationContext()).setContentTitle(title)

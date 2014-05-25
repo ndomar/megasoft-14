@@ -86,6 +86,8 @@ public class MyOffersFragment extends Fragment {
 	 */
 	private LinearLayout rejectedOffers;
 
+	private boolean isDestroyed;
+
 	/**
 	 * This method is called when the activity starts , it sets the attributes
 	 * and redirections of all the views in this activity
@@ -145,6 +147,9 @@ public class MyOffersFragment extends Fragment {
 				Config.SESSION_ID, "");
 		GetRequest getStream = new GetRequest(url) {
 			protected void onPostExecute(String res) {
+				if(isDestroyed){
+					return;
+				}
 				if (!this.hasError() && res != null) {
 					removeLayoutViews();
 					setTheLayout(res);
@@ -180,10 +185,6 @@ public class MyOffersFragment extends Fragment {
 							addOffer(offer);
 						}
 					}
-				} else {
-					UI.makeToast(activity.getBaseContext(),
-							"Sorry, You have no offers in this tangle",
-							Toast.LENGTH_LONG);
 				}
 			}
 		} catch (JSONException e) {
@@ -247,6 +248,7 @@ public class MyOffersFragment extends Fragment {
 		args.putInt("userId", userId);
 		args.putInt("tangleId", tangleId);
 		args.putString("tangleName", tangleName);
+		args.putString("offererAvatar", activity.getSharedPreferences(Config.SETTING, 0).getString(Config.PROFILE_IMAGE, null));
 		offerFragment.setArguments(args);
 		putInPlace(status, offerFragment);
 		transaction.commit();
@@ -324,6 +326,11 @@ public class MyOffersFragment extends Fragment {
 		acceptedOffers.removeAllViews();
 		failedOffers.removeAllViews();
 		rejectedOffers.removeAllViews();
+	}
+	
+	public void onPause(){
+		super.onPause();
+		isDestroyed = true;
 	}
 
 }

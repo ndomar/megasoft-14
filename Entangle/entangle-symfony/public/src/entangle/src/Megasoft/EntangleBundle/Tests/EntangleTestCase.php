@@ -28,6 +28,7 @@ class EntangleTestCase extends WebTestCase
      * @author OmarElAzazy
      */
     public function setUp() {
+        ini_set('memory_limit', '-1');
         $kernel = static::createKernel();
         $kernel->boot();
 

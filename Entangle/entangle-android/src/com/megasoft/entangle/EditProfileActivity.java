@@ -73,6 +73,7 @@ public class EditProfileActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_profile);
+		getActionBar().hide();
 		initializeView();
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
@@ -89,7 +90,6 @@ public class EditProfileActivity extends FragmentActivity implements
 								.getJSONObject("date_of_birth");
 						date = oldBirthDate.getString("date");
 						splittedDate = date.split("-");
-						Log.i("Message", date);
 						day = splittedDate[2].split(" ");
 						newYear = Integer.parseInt(splittedDate[0]);
 						newMonth = Integer.parseInt(splittedDate[1]) - 1;
@@ -145,9 +145,7 @@ public class EditProfileActivity extends FragmentActivity implements
 	 */
 	private void initializeView() {
 		emailNotification = (CheckBox) findViewById(R.id.set_notification);
-		if (!notification) {
-			emailNotification.setText("Turn on notification");
-		}
+		emailNotification.setChecked(notification);
 		currentDescription = (EditText) findViewById(R.id.CurrentDescription);
 	}
 
@@ -374,4 +372,6 @@ public class EditProfileActivity extends FragmentActivity implements
 		getRequest.execute();
 
 	}
+	
+	
 }

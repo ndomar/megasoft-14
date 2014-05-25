@@ -131,11 +131,6 @@ get_tangles:
     requirements:
         tangleId:  \d+
 
-accept_tangle_invitation:
-    pattern: /tangle-invitation/{tangleId}/{userId}/accept
-    defaults: { _controller: MegasoftEntangleBundle:Tangle:addUser}
-    methods: [PUT]
-
 leave_tangle:
     pattern: /tangle/{tangleId}/user
     defaults: {_controller: MegasoftEntangleBundle:Tangle:leaveTangle }
@@ -303,12 +298,6 @@ acceptOffer:
 dummy:
     pattern: /dummy
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
-
-accept_tangle_invitation:
-    pattern: /tangle-invitation/{tangleId}/{userId}/accept
-    defaults: { _controller: MegasoftEntangleBundle:Tangle:addUser}
-    methods: [PUT]
-
 
 leave_tangle:
     pattern: /tangle/{tangleId}/user
@@ -583,13 +572,7 @@ dummy:
 accept_tangle_invitation:
     pattern: /invitation/{invitationCode}
     defaults: { _controller: MegasoftEntangleBundle:Tangle:acceptInvitation}
-    methods: [PUT]
     methods: [GET]
-
-accept_tangle_invitation:
-    pattern: /tangle-invitation/{tangleId}/{userId}/accept
-    defaults: { _controller: MegasoftEntangleBundle:Tangle:addUser}
-    methods: [PUT]
 
 leave_tangle:
     pattern: /tangle/{tangleId}/user

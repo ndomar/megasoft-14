@@ -31,7 +31,8 @@
         <activity
             android:name="com.megasoft.entangle.HomeActivity"
             android:label="@string/title_activity_home"
-            android:logo="@drawable/entangle_logo" >
+            android:logo="@drawable/entangle_logo"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.megasoft.entangle.MainActivity"

@@ -111,7 +111,7 @@
     <string name="save">Save</string>
     <string name="date_of_birth">Date Of Birth</string>
     <string name="current_description">Enter your description</string>
-    <string name="email_notification_on">Turn on notification</string>
+    <string name="email_notification_on">Receive notifications</string>
     <string name="DOB">Date Of Birth</string>
     <string name="title_activity_notification_test">NotificationTest</string>
     <string name="PREFERENCE_FILE_KEY">prefs</string>

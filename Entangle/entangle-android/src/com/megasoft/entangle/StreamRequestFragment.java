@@ -1,6 +1,7 @@
 package com.megasoft.entangle;
 
 import com.megasoft.entangle.views.RoundedImageView;
+import com.megasoft.requests.ImageRequest;
 
 import android.annotation.SuppressLint;
 import android.support.v4.app.Fragment;
@@ -62,6 +63,11 @@ public class StreamRequestFragment extends Fragment {
 	private RoundedImageView requesterAvatar;
 
 	/**
+	 * The avatar url
+	 */
+	private String avatarURL;
+	
+	/**
 	 * The price text
 	 */
 	private String price;
@@ -97,10 +103,10 @@ public class StreamRequestFragment extends Fragment {
 	 */
 	public static StreamRequestFragment createInstance(int requestId,
 			int requesterId, String requestString, String requesterString,
-			String price, String offersCount, int tangleId, String tangleName) {
+			String price, String offersCount, int tangleId, String tangleName,String avatarURL) {
 		StreamRequestFragment fragment = new StreamRequestFragment();
 		fragment.setFragmentAttributes(requestId, requesterId, requestString,
-				requesterString, price, offersCount, tangleId, tangleName);
+				requesterString, price, offersCount, tangleId, tangleName,avatarURL);
 		return fragment;
 	}
 
@@ -128,7 +134,7 @@ public class StreamRequestFragment extends Fragment {
 	 */
 	protected void setFragmentAttributes(int requestId, int requesterId,
 			String requestString, String requesterString, String price,
-			String offersCount, int tangleId, String tangleName) {
+			String offersCount, int tangleId, String tangleName,String avatarURL) {
 		this.setRequestId(requestId);
 		this.setRequesterId(requesterId);
 		this.setRequestButtonText(requestString);
@@ -137,6 +143,7 @@ public class StreamRequestFragment extends Fragment {
 		this.setOffersCount(offersCount);
 		this.setTangleId(tangleId);
 		this.setTangleName(tangleName);
+		this.setAvatarURL(avatarURL);
 	}
 
 	/**
@@ -158,8 +165,8 @@ public class StreamRequestFragment extends Fragment {
 	 */
 	protected void setAttributes() {
 		request = (TextView) view.findViewById(R.id.requestDescription);
-		requesterAvatar = (RoundedImageView) view
-				.findViewById(R.id.requesterAvatar);
+		requesterAvatar = (RoundedImageView) view.findViewById(R.id.requesterAvatar);
+		new ImageRequest(avatarURL,getActivity().getApplicationContext(),requesterAvatar);
 		requester = (TextView) view.findViewById(R.id.requesterName);
 		setRequestRedirection();
 		setRequesterRedirection();
@@ -209,6 +216,14 @@ public class StreamRequestFragment extends Fragment {
 	}
 
 	/**
+	 * This is a getter method that is used to return the URL of the avatar
+	 * @return String avatarURL
+	 */
+	public String getAvatarURL() {
+		return avatarURL;
+	}
+
+	/**
 	 * This method is used to set the id of the requester
 	 * 
 	 * @param id
@@ -236,6 +251,14 @@ public class StreamRequestFragment extends Fragment {
 	 */
 	protected void setRequesterButtonText(String text) {
 		requesterString = text;
+	}
+
+	/**
+	 * This method is used to set the text of the avatar URL
+	 * @param String avatarURL
+	 */
+	public void setAvatarURL(String avatarURL) {
+		this.avatarURL = avatarURL;
 	}
 
 	/**
