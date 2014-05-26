@@ -143,6 +143,7 @@ class PasswordForgetController extends Controller{
      * @return Response
      * @author KareemWahby
      */
+    /*
     public function changePasswordAction(Request $request){
         $userName=$request->get('Username');
         $message="";
@@ -170,7 +171,8 @@ class PasswordForgetController extends Controller{
             $message = "Passwords Do Not Match!!";
             return $this->render('MegasoftEntangleBundle:ForgetPassword:passwordChangeform.html.twig',array('error'=> $message,'status'=> $status,'userName'=> $userName));
         }
-    }
 
+    }
+     */
 
 } 
