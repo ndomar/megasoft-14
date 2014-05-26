@@ -77,7 +77,7 @@ public class EditProfileActivity extends FragmentActivity implements
 		initializeView();
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
-		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
+		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
 				+ RETRIEVEDATA) {
 			public void onPostExecute(String response) {
 				try {
@@ -231,7 +231,7 @@ public class EditProfileActivity extends FragmentActivity implements
 				e.printStackTrace();
 			}
 
-			PutRequest putRequest = new PutRequest(Config.API_BASE_URL_SERVER
+			PutRequest putRequest = new PutRequest(Config.API_BASE_URL
 					+ EDITPROFILE) {
 				protected void onPostExecute(String result) {
 
@@ -316,7 +316,7 @@ public class EditProfileActivity extends FragmentActivity implements
 		super.onResume();
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
-		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
+		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
 				+ RETRIEVEDATA) {
 			public void onPostExecute(String response) {
 				try {

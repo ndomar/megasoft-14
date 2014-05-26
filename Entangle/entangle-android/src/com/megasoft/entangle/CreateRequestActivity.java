@@ -219,7 +219,7 @@ public class CreateRequestActivity extends Activity {
 				}
 
 				PostRequest request = new PostRequest(
-						Config.API_BASE_URL_SERVER + "/tangle/" + tangleId
+						Config.API_BASE_URL + "/tangle/" + tangleId
 								+ "/request") {
 					protected void onPostExecute(String response) {
 						if (this.getStatusCode() == 201) {

@@ -47,7 +47,7 @@ public class GCMRegisteration extends IntentService {
 	 * URI for registration
 	 */
 
-	public static final String uri = Config.API_BASE_URL_SERVER
+	public static final String uri = Config.API_BASE_URL
 			+ "/notification/register";
 	
 	

@@ -115,7 +115,7 @@ public class LoginActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		PostRequest request = new PostRequest(Config.API_BASE_URL_SERVER
+		PostRequest request = new PostRequest(Config.API_BASE_URL
 				+ LOGIN) {
 			protected void onPostExecute(String response) {
 				password.setText("");

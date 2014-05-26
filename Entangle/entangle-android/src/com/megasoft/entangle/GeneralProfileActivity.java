@@ -82,7 +82,7 @@ public class GeneralProfileActivity extends FragmentActivity {
 		SharedPreferences myPrefs = this.getSharedPreferences(Config.SETTING,
 				MODE_WORLD_READABLE);
 		String sessionId = myPrefs.getString(Config.SESSION_ID, "");
-		PostRequest request = new PostRequest(Config.API_BASE_URL_SERVER
+		PostRequest request = new PostRequest(Config.API_BASE_URL
 				+ LOGOUT) {
 			protected void onPostExecute(String response) {
 

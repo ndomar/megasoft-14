@@ -177,7 +177,7 @@ public class RequestActivity extends FragmentActivity {
 
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
-		GetRequest request = new GetRequest(Config.API_BASE_URL_SERVER
+		GetRequest request = new GetRequest(Config.API_BASE_URL
 				+ REQUEST) {
 			protected void onPostExecute(String response) {
 				if(isDestroyed){

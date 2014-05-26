@@ -78,7 +78,7 @@ public class ProfileSuperFragment extends Fragment {
 	 * @author Almgohar
 	 */
 	private void GetTransactions() {
-		String link = Config.API_BASE_URL_SERVER + "/tangle/" + tangleId + "/user/" + userId + "/transactions";
+		String link = Config.API_BASE_URL + "/tangle/" + tangleId + "/user/" + userId + "/transactions";
 		GetRequest request = new GetRequest(link) {
 			@Override
 			protected void onPostExecute(String response) {

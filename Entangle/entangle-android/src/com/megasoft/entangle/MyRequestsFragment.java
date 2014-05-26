@@ -32,7 +32,7 @@ public class MyRequestsFragment extends Fragment {
 	/**
 	 * The domain to which the requests are sent
 	 */
-	private String rootResource = Config.API_BASE_URL_SERVER;
+	private String rootResource = Config.API_BASE_URL;
 
 	/**
 	 * The tangle id to which this stream belongs

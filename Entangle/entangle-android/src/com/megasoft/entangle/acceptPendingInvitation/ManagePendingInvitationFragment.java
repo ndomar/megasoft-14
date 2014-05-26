@@ -199,7 +199,7 @@ public class ManagePendingInvitationFragment extends Fragment {
 					JSONObject json = new JSONObject();
 
 					PutRequest request = new PutRequest(
-							Config.API_BASE_URL_SERVER + "/tangle/" + tangleId
+							Config.API_BASE_URL + "/tangle/" + tangleId
 									+ "/reset") {
 						protected void onPostExecute(String response) {
 							if(isDestroyed){

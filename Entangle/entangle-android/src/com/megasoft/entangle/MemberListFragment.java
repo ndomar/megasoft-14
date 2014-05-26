@@ -166,7 +166,7 @@ public class MemberListFragment extends Fragment {
 	 */
 	private void fetchMembers() {
 
-		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
+		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
 				+ "/tangle/" + getTangleId() + "/user") {
 			public void onPostExecute(String response) {
 				if(isDestroyed){

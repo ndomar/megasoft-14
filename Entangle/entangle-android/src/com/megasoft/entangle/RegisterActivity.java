@@ -86,7 +86,7 @@ public class RegisterActivity extends Activity {
 				}
 
 				PostRequest request = new PostRequest(
-						Config.API_BASE_URL_SERVER + "/register") {
+						Config.API_BASE_URL + "/register") {
 					protected void onPostExecute(String response) {
 						if(isDestroyed){
 							return;
