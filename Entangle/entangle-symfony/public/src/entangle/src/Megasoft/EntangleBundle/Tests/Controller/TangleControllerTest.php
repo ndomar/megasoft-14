@@ -79,7 +79,7 @@ class TangleControllerTest extends EntangleTestCase
         $this->assertEquals(1, $users[0]['id']);
         $this->assertEquals('sampleUser', $users[0]['username']);
         $this->assertEquals(0, $users[0]['balance']);
-        $this->assertEquals('http://entangle.io/images/profilePictures/', $users[0]['iconUrl']);
+        $this->assertEquals(null, $users[0]['iconUrl']);
     }
 
 
@@ -511,7 +511,7 @@ class TangleControllerTest extends EntangleTestCase
         $client = static::createClient();
         $client->request('PUT', '/tangle/-1/reset');
 
-        $this->assertEquals(401, $client->getResponse()->getStatusCode(), 'Check for tangle does not exist');
+        $this->assertEquals(404, $client->getResponse()->getStatusCode(), 'Check for tangle does not exist');
     }
     /**
      * Test case for the user not being the owner to resetTangle action
@@ -1075,7 +1075,7 @@ class TangleControllerTest extends EntangleTestCase
 
         $client = static::createClient();
         $client->request('GET',
-            '/tangle/1/request?limit=3&lastDate=2014-01-1%2012:00:00',
+            '/tangle/1/request?limit=3&lastDate=4000-01-1%2012:00:00',
             array(),
             array(),
             array('HTTP_X_SESSION_ID' => 'sampleSession1'));

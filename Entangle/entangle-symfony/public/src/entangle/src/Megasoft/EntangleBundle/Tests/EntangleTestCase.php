@@ -49,6 +49,14 @@ class EntangleTestCase extends WebTestCase
         $this->loader = new Loader();
         parent::setUp();
     }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+        $this->loader = null;
+        $this->doctrine = null;
+        $this->em->getConnection()->close();
+    }
     
     /*
      * Helper function that takes a table name and a connectio to the database
