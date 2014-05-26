@@ -138,15 +138,11 @@ public class MemberListFragment extends Fragment {
 		fetchMembers();
 		searchBar.addTextChangedListener(new TextWatcher() {
 			@Override
-			public void afterTextChanged(Editable arg0) {
-				// TODO Auto-generated method stub
-			}
+			public void afterTextChanged(Editable arg0) {}
 
 			@Override
 			public void beforeTextChanged(CharSequence arg0, int arg1,
-					int arg2, int arg3) {
-				// TODO Auto-generated method stub
-			}
+					int arg2, int arg3) {}
 
 			@Override
 			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
@@ -156,6 +152,12 @@ public class MemberListFragment extends Fragment {
 		});
 
 		return view;
+	}
+	
+	public void onResume(){
+		super.onResume();
+		searchBar.setText("");
+		noMembers.setVisibility(View.GONE);
 	}
 
 	/*
