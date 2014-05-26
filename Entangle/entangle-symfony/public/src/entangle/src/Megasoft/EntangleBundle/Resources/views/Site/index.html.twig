@@ -500,18 +500,24 @@
 
                                 <div class="row-fluid">
 
-                                    <div class=" btn btn-theme vcenter" style="position: relative;"><span
-                                                class="text-center"><i class="icon-upload"></i> Upload your Image</span><input
+                                    <div class=" btn btn-theme btn-large" style="position: relative;">
+                                        <span
+                                                class="text-center"><i class="icon-upload"></i> Upload your Image
+                                        </span>
+
+                                        <input
                                                 name="img" type="file" value="Submit"
-                                                style="z-index:2 ;position: relative; opacity:0"
+                                                style="z-index:2 ;position: relative; opacity:0;"
                                                 class="btn btn-theme pull-left">
                                     </div>
-
+                                    <div class="row">
+                                        <button type="submit" style="margin-top:10px"
+                                                class=" span6 offset3 btn btn-theme btn-large pull-left"><i class="icon-ok"> Register now</i>
+                                        </button>
+                                    </div>
 
                                 </div>
-                                <button type="submit" style="margin-top:10px"
-                                        class=" btn btn-theme btn-large pull-left"><i class="icon-ok"> Register now</i>
-                                </button>
+
                                 <p class="text-error" style="margin-top:10px; margin-left:20px">{{ status }}</p>
 
                                 <p style="margin-top:10px; margin-left:20px">{{ message }}</p>
