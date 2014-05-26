@@ -110,7 +110,7 @@ class SiteController extends Controller
                 $userEmail = new UserEmail();
                 $user->addEmail($userEmail);
                 $user->setName($name);
-                $user->setPassword($password);
+                $user->setPassword(md5($password));
                 $userEmail->setEmail($email);
                 $user->setUserBio($userBio);
                 $image = $request->files->get('img');

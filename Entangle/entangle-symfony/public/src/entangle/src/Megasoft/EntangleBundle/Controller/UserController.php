@@ -231,7 +231,7 @@ class UserController extends Controller
         $sessionId = $this->generateSessionId(30);
 
         $repo = $this->getDoctrine()->getRepository('MegasoftEntangleBundle:User');
-        $user = $repo->findOneBy(array('name' => $name, 'password' => $password));
+        $user = $repo->findOneBy(array('name' => $name, 'password' => md5($password)));
         if (!$user) {
             return new JsonResponse("Wrong credentials", 400);
         }
@@ -630,7 +630,7 @@ class UserController extends Controller
         $userEmail = new UserEmail();
         $user->addEmail($userEmail);
         $user->setName($username);
-        $user->setPassword($password);
+        $user->setPassword(md5($password));
         $userEmail->setEmail($email);
         $entityManager = $this->getDoctrine()->getEntityManager();
         $entityManager->persist($user);
