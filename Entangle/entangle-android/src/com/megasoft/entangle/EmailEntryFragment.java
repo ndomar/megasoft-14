@@ -71,7 +71,6 @@ public class EmailEntryFragment extends Fragment {
 		this.view = inflater.inflate(R.layout.fragment_invite_user_email_field,
 				container, false);
 		this.editText = (EditText) view.findViewById(R.id.add_email_edit_text);
-		Log.e("test", this.editText.toString());
 		this.removeButton = (Button) view
 				.findViewById(R.id.remove_email_edit_text);
 		setlisteners();

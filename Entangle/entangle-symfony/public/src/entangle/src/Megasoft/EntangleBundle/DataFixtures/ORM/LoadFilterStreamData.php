@@ -75,7 +75,7 @@ class LoadFilterStreamData extends AbstractFixture
 
         $request1 = new Request();
         $request1->setUser($user1)
-                ->setDate(new \DateTime("2014-01-1 12:00:00"))
+                ->setDate(new \DateTime("4000-01-1 12:00:00"))
                 ->setTangle($tangle)
                 ->setDescription("Description")
                 ->setStatus(0);

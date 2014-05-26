@@ -197,7 +197,12 @@ class TangleController extends Controller {
         $requestsJsonArray = array();
 
         foreach ($requests as $tangleRequest) {
-
+            if ($tangleRequest->getUser()->getPhoto() == null) {
+                $photo = null;
+            } else {
+                $filepath = 'http://'.$_SERVER['HTTP_HOST'].'/images/profilePictures/';
+                $photo = $filepath.$tangleRequest->getUser()->getPhoto();
+        }
             $requestsJsonArray[] = array(
                 'id' => $tangleRequest->getId(),
                 'username' => $tangleRequest->getUser()->getName(),
@@ -205,8 +210,8 @@ class TangleController extends Controller {
                 'description' => $tangleRequest->getDescription(),
                 'offersCount' => sizeof($tangleRequest->getOffers()),
                 'price' => $tangleRequest->getRequestedPrice(),
-                'date' => $tangleRequest->getDate()->format('Y-m-d H:i:s')
-            );
+                'date' => $tangleRequest->getDate()->format('Y-m-d H:i:s'),
+                'requesterAvatar' => $photo,);
         }
 
         $response = new JsonResponse();
@@ -315,7 +320,7 @@ class TangleController extends Controller {
                     <body>
                             Hello!<br>
                            <p>" . $message . "</p>
-                           <a href=\"http://localhost:9001/invitation/" . $randomString . "\">link</a>
+                           http://".$_SERVER['HTTP_HOST']."/invitation/" . $randomString . "
                            <p>Cheers,<br>Entangle Team</p>
                     </body>
                 </html>";
@@ -965,17 +970,23 @@ class TangleController extends Controller {
 
         $doctrine = $this->getDoctrine();
         $userTangleRepo = $doctrine->getRepository('MegasoftEntangleBundle:UserTangle');
-        $userTangles = $userTangleRepo->findBy(array('tangleId' => $tangleId));
+        $userTangles = $userTangleRepo->findBy(array('tangleId' => $tangleId,'leavingDate'=> null));
 
         $usersJsonArray = array();
 
         foreach ($userTangles as $userTangle) {
+            if ($userTangle->getUser()->getPhoto() == null) {
+                $photo = null;
+            } else {
+                $filepath = 'http://'.$_SERVER['HTTP_HOST'].'/images/profilePictures/';
+                $photo = $filepath.$userTangle->getUser()->getPhoto();
+            }
+
             $usersJsonArray[] = array(
                 'id' => $userTangle->getUserId(),
                 'username' => $userTangle->getUser()->getName(),
                 'balance' => $userTangle->getCredit(),
-                'iconUrl' => 'http://entangle.io/images/profilePictures/' . $userTangle->getUser()->getPhoto()
-            );
+                'iconUrl' => $photo,);
         }
 
         $response = new JsonResponse();

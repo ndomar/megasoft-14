@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.google.android.gms.internal.im;
+import com.megasoft.entangle.views.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -16,11 +17,11 @@ import com.squareup.picasso.Picasso;
  */
 public class ImageRequest{
 	public ImageRequest(String url,Context context,ImageView imageView){
-		if(url.equals("null")){
+		if(url == null || url.equals("null")){
 			int id = context.getResources().getIdentifier("ic_action_person.png", "drawable", context.getPackageName());
 			imageView.setImageResource(id);
 		}else{
-			Picasso.with(context).load(url).into(imageView);
+			Picasso.with(context).load(url).transform(new RoundedTransformation(50, 0)).into(imageView);
 		}
 	}
 }

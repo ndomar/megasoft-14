@@ -1,5 +1,8 @@
 package com.megasoft.entangle;
 
+import com.megasoft.entangle.views.RoundedImageView;
+import com.megasoft.requests.ImageRequest;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -40,7 +43,11 @@ public class OfferEntryFragment extends Fragment{
 		((TextView)view.findViewById(R.id.offer_entry_description)).setText(args.getString("description"));
 		((TextView)view.findViewById(R.id.offer_entry_offerer)).setText(args.getString("offerer"));
 		((TextView)view.findViewById(R.id.offer_entry_status)).setText(args.getString("status"));
-		
+		new ImageRequest(args.getString("offererAvatar"),getActivity().getApplicationContext(),
+				(RoundedImageView)view.findViewById(R.id.offer_entry_avatar));
+
+	
+
 		this.offerId = args.getInt("offerId");
 	}
 }

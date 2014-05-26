@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
-import com.megasoft.entangle.megafragments.*;
 
 public class InviteUserActivity extends FragmentActivity implements AddEmailInterface{
 	/**

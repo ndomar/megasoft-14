@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -62,23 +63,29 @@ public class EditProfileActivity extends FragmentActivity implements
 	private static final String RETRIEVEDATA = "/user/retrieveData";
 
 	JSONObject putReJsonObject = new JSONObject();
-	Boolean notification = true;
+	Boolean notification;
 	protected int newYear;
 	protected int newMonth;
 	protected int newDay;
 	private int emailsCount;
+	private boolean isDestroyed;
+	private Button dataPicker;
 
 	@SuppressLint("SimpleDateFormat")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_profile);
+		getActionBar().hide();
 		initializeView();
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
-		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
+		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
 				+ RETRIEVEDATA) {
 			public void onPostExecute(String response) {
+				if(isDestroyed){
+					return;
+				}
 				try {
 					retrieveDataResponse = new JSONObject(response);
 					try {
@@ -89,19 +96,17 @@ public class EditProfileActivity extends FragmentActivity implements
 								.getJSONObject("date_of_birth");
 						date = oldBirthDate.getString("date");
 						splittedDate = date.split("-");
-						Log.i("Message", date);
 						day = splittedDate[2].split(" ");
 						newYear = Integer.parseInt(splittedDate[0]);
 						newMonth = Integer.parseInt(splittedDate[1]) - 1;
 						newDay = Integer.parseInt(day[0]);
+						dataPicker.setText(newDay + "/" + (newMonth+1) + "/" + newYear);
 						currentDescription.setText(oldDescription);
 						notification = retrieveDataResponse
 								.getBoolean("notification_state");
+						emailNotification.setChecked(notification);
 						currentEmails = retrieveDataResponse
 								.getJSONArray("emails");
-
-						for (int i = 0; i < currentEmails.length(); i++)
-							addEmailField();
 
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -145,18 +150,17 @@ public class EditProfileActivity extends FragmentActivity implements
 	 */
 	private void initializeView() {
 		emailNotification = (CheckBox) findViewById(R.id.set_notification);
-		if (!notification) {
-			emailNotification.setText("Turn on notification");
-		}
 		currentDescription = (EditText) findViewById(R.id.CurrentDescription);
+		dataPicker = (Button) findViewById(R.id.DatePickerButton);
 	}
 
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 		public void onDateSet(DatePicker view, int year, int monthOfYear,
 				int dayOfMonth) {
 			newYear = year;
-			newMonth = monthOfYear;
+			newMonth = monthOfYear+1;
 			newDay = dayOfMonth;
+			dataPicker.setText(newDay + "/" + newMonth + "/" + newYear);
 		}
 	};
 
@@ -178,10 +182,7 @@ public class EditProfileActivity extends FragmentActivity implements
 	 *            view
 	 * @author menna
 	 */
-	@SuppressLint("SimpleDateFormat")
 	public void saveAll(View view) {
-		Log.i("Message", oldDescription);
-		Log.i("Message", currentDescription.getText().toString());
 		if ((oldDescription.equals(currentDescription.getText().toString()))
 				&& (day[0].equals(String.valueOf(newDay)))
 				&& (splittedDate[1].equals(String.valueOf(newMonth)))
@@ -209,20 +210,8 @@ public class EditProfileActivity extends FragmentActivity implements
 				boolean hasErrors = false;
 
 				view.setEnabled(false);
-				JSONArray emails = new JSONArray();
-				for (EmailEntryFragment email : this.emails) {
-					String val = email.getEmail();
-					if (val.equals("")) {
-						continue;
-					}
-					if (!val.equals("") && !emailValidator(val)) {
-						email.getEditText().setError("Invalid Email");
-						hasErrors = true;
-					} else {
-						email.getEditText().setError(null);
-						emails.put(val);
-					}
-				}
+				// TODO Edit here to support multiple emails
+				JSONArray emails = currentEmails;
 
 				if (hasErrors) {
 					view.setEnabled(true);
@@ -233,10 +222,12 @@ public class EditProfileActivity extends FragmentActivity implements
 				e.printStackTrace();
 			}
 
-			PutRequest putRequest = new PutRequest(Config.API_BASE_URL_SERVER
+			PutRequest putRequest = new PutRequest(Config.API_BASE_URL
 					+ EDITPROFILE) {
 				protected void onPostExecute(String result) {
-
+					if(isDestroyed){
+						return;
+					}
 					if (this.getStatusCode() == 200) {
 						goToGeneralProfileActivity();
 
@@ -261,11 +252,6 @@ public class EditProfileActivity extends FragmentActivity implements
 	 * @author menna
 	 */
 	private void goToGeneralProfileActivity() {
-		Intent generalProfileIntent = new Intent(this,
-				GeneralProfileActivity.class);
-		generalProfileIntent.putExtra("userId", userId);
-		startActivity(generalProfileIntent);
-
 		this.finish();
 	}
 
@@ -309,69 +295,12 @@ public class EditProfileActivity extends FragmentActivity implements
 	 * @author maisaraFarahat
 	 */
 	public void cancelRedirect(View view) {
-
 		this.finish();
 	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		this.settings = getSharedPreferences(Config.SETTING, 0);
-		this.sessionId = settings.getString(Config.SESSION_ID, "");
-		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
-				+ RETRIEVEDATA) {
-			public void onPostExecute(String response) {
-				try {
-					retrieveDataResponse = new JSONObject(response);
-					try {
-
-						oldDescription = retrieveDataResponse
-								.getString("description");
-						oldBirthDate = retrieveDataResponse
-								.getJSONObject("date_of_birth");
-						date = oldBirthDate.getString("date");
-						splittedDate = date.split("-");
-						day = splittedDate[2].split(" ");
-						newYear = Integer.parseInt(splittedDate[0]);
-						newMonth = Integer.parseInt(splittedDate[1]) - 1;
-						newDay = Integer.parseInt(day[0]);
-						currentDescription.setText(oldDescription);
-						notification = retrieveDataResponse
-								.getBoolean("notification_state");
-						currentEmails = retrieveDataResponse
-								.getJSONArray("emails");
-
-						findViewById(R.id.user_emails).setVisibility(
-								View.VISIBLE);
-						for (int i = 0; i < currentEmails.length(); i++) {
-							String email = currentEmails.getString(i);
-							Log.i("Message", email);
-
-							EditText x = emails.get(i).getEditText();
-							emails.get(i).getView().setVisibility(View.VISIBLE);
-							if (x == null)
-								Log.i("lola", "the edit text is null");
-							else {
-								x.setText(email);
-
-							}
-							if (x != null)
-								x.setEnabled(false);
-
-						}
-
-						addEmailField();
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		getRequest.addHeader(Config.API_SESSION_ID, sessionId);
-		getRequest.execute();
-
+	
+	public void onPause(){
+		super.onPause();
+		isDestroyed = true;
 	}
+	
 }

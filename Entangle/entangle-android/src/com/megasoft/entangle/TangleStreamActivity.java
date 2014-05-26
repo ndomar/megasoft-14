@@ -1,4 +1,4 @@
-package com.megasoft.entangle.viewtanglelsit;
+package com.megasoft.entangle;
 
 import java.util.ArrayList;
 
@@ -23,9 +23,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.megasoft.config.Config;
-import com.megasoft.entangle.CreateTangleActivity;
-import com.megasoft.entangle.HomeActivity;
-import com.megasoft.entangle.IntroFragment;
 import com.megasoft.entangle.R;
 import com.megasoft.requests.GetRequest;
 
@@ -85,7 +82,7 @@ public class TangleStreamActivity extends Fragment {
 	 * @author MohamedBassem
 	 */
 	private void fetchTangles() {
-		GetRequest getRequest = new GetRequest(Config.API_BASE_URL_SERVER
+		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
 				+ "/tangle") {
 			public void onPostExecute(String response) {
 				if(!this.hasError() && this.getStatusCode() == 200){

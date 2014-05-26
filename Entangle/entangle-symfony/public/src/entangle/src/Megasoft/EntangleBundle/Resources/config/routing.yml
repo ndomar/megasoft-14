@@ -87,11 +87,6 @@ dummy:
     pattern: /dummy
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
 
-create_Offer:
-    pattern: /tangle/{tangleId}/request/{requestId}/offer
-    defaults: { _controller: MegasoftEntangleBundle:CreateOffer:createOffer }
-    methods: [POST]
-
 delete_request:
     pattern: /request/{requestId}
     defaults: { _controller: MegasoftEntangleBundle:Request:Delete }
@@ -130,11 +125,6 @@ get_tangles:
     methods: [GET]
     requirements:
         tangleId:  \d+
-
-accept_tangle_invitation:
-    pattern: /tangle-invitation/{tangleId}/{userId}/accept
-    defaults: { _controller: MegasoftEntangleBundle:Tangle:addUser}
-    methods: [PUT]
 
 leave_tangle:
     pattern: /tangle/{tangleId}/user
@@ -304,12 +294,6 @@ dummy:
     pattern: /dummy
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
 
-accept_tangle_invitation:
-    pattern: /tangle-invitation/{tangleId}/{userId}/accept
-    defaults: { _controller: MegasoftEntangleBundle:Tangle:addUser}
-    methods: [PUT]
-
-
 leave_tangle:
     pattern: /tangle/{tangleId}/user
     defaults: {_controller: MegasoftEntangleBundle:Tangle:leaveTangle }
@@ -325,11 +309,6 @@ megasoft_entangle_register:
     defaults: { _controller: MegasoftEntangleBundle:Register:register }
     pattern:  /
     defaults: { _controller: MegasoftEntangleBundle:Site:register }
-
-create_Offer:
-    pattern: /tangle/{tangleId}/request/{requestId}/offer
-    defaults: { _controller: MegasoftEntangleBundle:CreateOffer:createOffer }
-    methods: [POST]
 
 get_profile:
     pattern: /tangle/{tangleId}/user/{userId}/profile
@@ -488,9 +467,8 @@ dummy:
 
 create_Offer:
     pattern: /tangle/{tangleId}/request/{requestId}/offer
-    defaults: { _controller: MegasoftEntangleBundle:CreateOffer:createOffer }
+    defaults: { _controller: MegasoftEntangleBundle:Offer:createOffer }
     methods: [POST]
-
 
 get_profile:
     pattern: tangle/{tangleId}/user/{userId}/profile
@@ -583,13 +561,7 @@ dummy:
 accept_tangle_invitation:
     pattern: /invitation/{invitationCode}
     defaults: { _controller: MegasoftEntangleBundle:Tangle:acceptInvitation}
-    methods: [PUT]
     methods: [GET]
-
-accept_tangle_invitation:
-    pattern: /tangle-invitation/{tangleId}/{userId}/accept
-    defaults: { _controller: MegasoftEntangleBundle:Tangle:addUser}
-    methods: [PUT]
 
 leave_tangle:
     pattern: /tangle/{tangleId}/user

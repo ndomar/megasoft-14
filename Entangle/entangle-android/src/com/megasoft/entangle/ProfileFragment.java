@@ -116,10 +116,10 @@ public class ProfileFragment extends Fragment {
 	public void viewInformation() {
 		String link;
 		if (isGeneral) {
-			link = Config.API_BASE_URL_SERVER + "/user/" + userId + "/profile";
+			link = Config.API_BASE_URL + "/user/" + userId + "/profile";
 
 		} else {
-			link = Config.API_BASE_URL_SERVER + "/tangle/" + tangleId
+			link = Config.API_BASE_URL + "/tangle/" + tangleId
 					+ "/user/" + userId + "/profile";
 
 		}
@@ -159,7 +159,6 @@ public class ProfileFragment extends Fragment {
 						e.printStackTrace();
 					}
 				} else {
-					Log.e("test", this.getErrorMessage());
 					Toast toast = Toast.makeText(
 							activity.getApplicationContext(),
 							"Some error happened.", Toast.LENGTH_SHORT);

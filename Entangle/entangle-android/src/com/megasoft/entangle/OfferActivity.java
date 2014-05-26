@@ -1,14 +1,5 @@
 package com.megasoft.entangle;
 
-import com.megasoft.config.Config;
-import com.megasoft.requests.GetRequest;
-import com.megasoft.requests.PostRequest;
-
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,13 +12,22 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.megasoft.config.Config;
+import com.megasoft.requests.GetRequest;
 import com.megasoft.requests.ImageRequest;
+import com.megasoft.requests.PostRequest;
 
 /**
  * Views an offer given the offer id
@@ -325,17 +325,14 @@ public class OfferActivity extends FragmentActivity {
 				}
 			}
 
-			if (requesterId == loggedInId && status == 2) {
+			if (requesterId == loggedInId) {
 				validate();
-				itemMenu.findItem(R.id.claim_on_offer_button).setVisible(true);
 			}
-			if (offererId == loggedInId && status == 2) {
-				validate();
+			if ( (offererId == loggedInId || requesterId == loggedInId ) && status == 2) {
 				itemMenu.findItem(R.id.claim_on_offer_button).setVisible(true);
 			}
 			if(offererId == loggedInId) {
 				((ImageView)findViewById(R.id.changeOfferPrice)).setVisibility(View.VISIBLE);
-				itemMenu.findItem(R.id.delete_offer_button).setVisible(true);
 			}
 
 			offererName.setOnClickListener(new View.OnClickListener() {
@@ -371,6 +368,7 @@ public class OfferActivity extends FragmentActivity {
 				entry.setComment(comment.getString("comment"));
 				entry.setCommenter(comment.getString("commenter"));
 				entry.setCommentDate(comment.getString("commentDate"));
+				entry.setCommenterAvatarURL(comment.getString("commenterAvatar"));
 				getSupportFragmentManager().beginTransaction()
 						.add(R.id.offer_comments_area, entry).commit();
 			} catch (JSONException e) {
@@ -437,19 +435,12 @@ public class OfferActivity extends FragmentActivity {
 								.get("offerInformation");
 						int requestStatus = (Integer) offerDetails
 								.get("requestStatus");
-						if (requestStatus != 0) {
-
-							return;
-						} else {
-							int offerStatus = (Integer) offerDetails
-									.get("offerStatus");
-							if (offerStatus == 0) {
-								addAcceptButton();
-
-							} else if (offerStatus == 2) {
-								addMarkAsDoneButton();
-							}
-
+						int offerStatus = (Integer) offerDetails
+								.get("offerStatus");
+						if (requestStatus == 0 && offerStatus == 0) {
+							addAcceptButton();
+						} else if(requestStatus == 2 && offerStatus == 2){
+							addMarkAsDoneButton();
 						}
 					} else {
 						Toast toast = Toast.makeText(getApplicationContext(),
@@ -693,6 +684,7 @@ public class OfferActivity extends FragmentActivity {
 					markOfferAsDone.setEnabled(false);
 					markOfferAsDone.setVisibility(View.INVISIBLE);
 					offerStatus.setText("Done");
+					
 				} else {
 					Toast error = Toast.makeText(getApplicationContext(),
 							R.string.error, Toast.LENGTH_LONG);

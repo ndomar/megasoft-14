@@ -1,11 +1,11 @@
-package com.megasoft.entangle.megafragments;
+package com.megasoft.entangle;
 
 import java.util.HashMap;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -25,9 +25,7 @@ import com.actionbarpulltorefresh.library.HeaderTransformer;
 import com.actionbarpulltorefresh.library.PullToRefreshLayout;
 import com.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import com.megasoft.config.Config;
-import com.megasoft.entangle.HomeActivity;
 import com.megasoft.entangle.R;
-import com.megasoft.entangle.StreamRequestFragment;
 import com.megasoft.requests.GetRequest;
 
 /**
@@ -51,7 +49,7 @@ public class TangleFragment extends Fragment {
 	/**
 	 * The domain to which the requests are sent
 	 */
-	private String rootResource = Config.API_BASE_URL_SERVER;
+	private String rootResource = Config.API_BASE_URL;
 
 	/**
 	 * The tangle id to which this stream belongs
@@ -165,29 +163,39 @@ public class TangleFragment extends Fragment {
 	 * @author MohamedBassem
 	 */
 	private void setSearchListener() {
+		if(isDestroyed){
+			return;
+		}
 		final SearchView searchView = activity.getSearchView();
-		
-		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+		if(searchView != null){
+			searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				InputMethodManager inputManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE); 
-				inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-				sendFilteredRequest(rootResource + "/tangle/" + tangleId
-		 				+ "/request", false, query);
-
-				return true;
-			}
-			
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				if(newText.equals("")){
+				@Override
+				public boolean onQueryTextSubmit(String query) {
+					if(isDestroyed){
+						return false;
+					}
+					InputMethodManager inputManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE); 
+					inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 					sendFilteredRequest(rootResource + "/tangle/" + tangleId
-			 				+ "/request", false, null);
+			 				+ "/request", false, query);
+
+					return true;
 				}
-				return true;
-			}
-		});
+				
+				@Override
+				public boolean onQueryTextChange(String newText) {
+					if(isDestroyed){
+						return false;
+					}
+					if(newText.equals("")){
+						sendFilteredRequest(rootResource + "/tangle/" + tangleId
+				 				+ "/request", false, null);
+					}
+					return true;
+				}
+			});
+		}
 	}
 	
 	/**
@@ -236,10 +244,12 @@ public class TangleFragment extends Fragment {
 	 */
 	private void addRequest(JSONObject request) {
 		try {
+
 			int userId 					= request.getInt("userId");
 			String requesterName 		= request.getString("username");
 			int requestId 				= request.getInt("id");
 			String requestBody 			= request.getString("description");
+			String requesterAvatarURL = request.getString("requesterAvatar");
 			String requestOffersCount 	= "" + request.getInt("offersCount");
 			String requesterButtonText 	= requesterName;
 			String requestButtonText 	= requestBody;
@@ -255,7 +265,7 @@ public class TangleFragment extends Fragment {
 			StreamRequestFragment requestFragment = StreamRequestFragment
 					.createInstance(requestId, userId, requestButtonText,
 							requesterButtonText, requestPrice,
-							requestOffersCount, getTangleId(), getTangleName());
+							requestOffersCount, getTangleId(), getTangleName(),requesterAvatarURL);
 			transaction.add(R.id.streamLayout, requestFragment);
 			transaction.commit();
 		} catch (JSONException e) {

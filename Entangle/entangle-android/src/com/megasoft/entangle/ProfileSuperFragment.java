@@ -46,6 +46,8 @@ public class ProfileSuperFragment extends Fragment {
      * The preferences instance
      */
 	private SharedPreferences settings;
+
+	private boolean isDestroyed;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,10 +78,13 @@ public class ProfileSuperFragment extends Fragment {
 	 * @author Almgohar
 	 */
 	private void GetTransactions() {
-		String link = Config.API_BASE_URL_SERVER + "/tangle/" + tangleId + "/user/" + userId + "/transactions";
+		String link = Config.API_BASE_URL + "/tangle/" + tangleId + "/user/" + userId + "/transactions";
 		GetRequest request = new GetRequest(link) {
 			@Override
 			protected void onPostExecute(String response) {
+				if(isDestroyed){
+					return;
+				}
 				if (this.getStatusCode() == 200) {
 					try {
 						JSONObject jSon = new JSONObject(response); 
@@ -135,5 +140,10 @@ public class ProfileSuperFragment extends Fragment {
 				scrollView.fullScroll(ScrollView.FOCUS_UP);
 			}
 		}, 500);
+	}
+	
+	public void onPause() {
+		super.onPause();
+		isDestroyed = true;
 	}
 }

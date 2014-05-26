@@ -103,7 +103,7 @@ public class ClaimRenderingActivity extends Activity {
 		int offerId = (int) getIntent().getIntExtra("offerId", -1);
 
 		GetRequest requestClaimReport = new GetRequest(
-				Config.API_BASE_URL_SERVER + "/claimReport/" + claimId
+				Config.API_BASE_URL + "/claimReport/" + claimId
 						+ "/claim/" + offerId + "/offer") {
 
 			@Override

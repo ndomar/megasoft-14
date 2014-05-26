@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.megasoft.config.Config;
 import com.megasoft.requests.DeleteRequest;
 import com.megasoft.requests.GetRequest;
-import com.megasoft.entangle.megafragments.*;
 
 public class RequestActivity extends FragmentActivity {
 	/**
@@ -100,6 +99,8 @@ public class RequestActivity extends FragmentActivity {
 	MenuItem deleteItem = null;
 
 	Activity activity = null;
+	private boolean isDestroyed;
+	private Menu menu;
 
 	public Activity getActivity() {
 		return activity;
@@ -175,11 +176,14 @@ public class RequestActivity extends FragmentActivity {
 
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
-		GetRequest request = new GetRequest(Config.API_BASE_URL_SERVER
+		GetRequest request = new GetRequest(Config.API_BASE_URL
 				+ REQUEST) {
 			protected void onPostExecute(String response) {
+				if(isDestroyed){
+					return;
+				}
 				try {
-
+					
 					if (this.getStatusCode() == 200) {
 						JSONObject json = new JSONObject(response);
 						requestLayout.removeAllViewsInLayout();
@@ -187,8 +191,6 @@ public class RequestActivity extends FragmentActivity {
 						addRequestFields(json);
 						addOffers(json);
 					} else {
-						Log.e("test", this.getErrorMessage());
-						Log.e("test", REQUEST);
 						// showErrorMessage();
 						// TODO
 						// TextView errorMessage = new TextView(self);
@@ -224,7 +226,12 @@ public class RequestActivity extends FragmentActivity {
 		args.putString("requesterName", json.getString("requesterName"));
 		args.putString("date", json.getJSONObject("date").getString("date"));
 		args.putString("tags", getTags(json.getJSONArray("tags")));
-		args.putString("price", json.getString("price"));
+		if(json.getString("price").equals("null")){
+			args.putString("price", "--");
+		}else{
+			args.putString("price", json.getString("price"));
+		}
+		
 		if (json.get("deadline") == null) {
 			args.putString("deadline", json.getJSONObject("deadline")
 					.getString("date"));
@@ -237,6 +244,12 @@ public class RequestActivity extends FragmentActivity {
 		if (getIsMyRequest() && getDeleteItem() != null) {
 			getDeleteItem().setEnabled(true);
 			getDeleteItem().setVisible(true);
+			this.menu.findItem(R.id.createOffer).setVisible(false);
+			this.menu.findItem(R.id.createOffer).setEnabled(false);
+		}
+		
+		if(activity.getSharedPreferences(Config.SETTING, 0).getString(Config.USERNAME, "").equals(json.getString("requesterName"))){
+			
 		}
 
 		getSupportFragmentManager().beginTransaction()
@@ -263,23 +276,35 @@ public class RequestActivity extends FragmentActivity {
 			findViewById(R.id.view_request_offer_header).setVisibility(
 					View.VISIBLE);
 		}
-
+		
+		boolean offeredBefore = false;
 		for (int i = 0; i < offers.length(); i++) {
 			JSONObject offer = offers.getJSONObject(i);
 			OfferEntryFragment offerFragmet = new OfferEntryFragment();
 			Bundle args = new Bundle();
+
 			args.putInt("offerId", Integer.parseInt(offer.getString("id")));
 			args.putString("requestedPrice", offer.getString("price"));
 			args.putString("date", offer.getJSONObject("date")
 					.getString("date"));
 			args.putString("description", offer.getString("description"));
 			args.putString("offerer", offer.getString("offererName"));
+			args.putString("offererAvatar", offer.getString("offererAvatar"));
 			args.putString("status", offerStatusCodes[Integer.parseInt(offer
 					.getString("status"))]);
 			offerFragmet.setArguments(args);
 
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.offer_entries_layout, offerFragmet).commit();
+			
+			if(offer.getString("offererName").equals(settings.getString(Config.USERNAME, ""))){
+				offeredBefore = true;
+			}
+		}
+		
+		if(offeredBefore){
+			this.menu.findItem(R.id.createOffer).setVisible(false);
+			this.menu.findItem(R.id.createOffer).setEnabled(false);
 		}
 	}
 
@@ -312,6 +337,9 @@ public class RequestActivity extends FragmentActivity {
 		DeleteRequest deleteRequest = new DeleteRequest(Config.API_BASE_URL
 				+ "/request/" + getRequestId()) {
 			protected void onPostExecute(String response) {
+				if(isDestroyed){
+					return;
+				}
 				if (!this.hasError()) {
 					getActivity().finish();
 				} else {
@@ -331,9 +359,12 @@ public class RequestActivity extends FragmentActivity {
 		getMenuInflater().inflate(R.menu.request_information, menu);
 
 		setDeleteItem(menu.findItem(R.id.deleteRequestOption));
+		this.menu = menu;
 		if (getIsMyRequest()) {
 			getDeleteItem().setEnabled(true);
 			getDeleteItem().setVisible(true);
+			this.menu.findItem(R.id.createOffer).setVisible(false);
+			this.menu.findItem(R.id.createOffer).setEnabled(false);
 		}
 
 		return true;
@@ -407,6 +438,11 @@ public class RequestActivity extends FragmentActivity {
 					});
 		}
 		return dialogBuilder.create();
+	}
+	
+	public void onPause() {
+		super.onPause();
+		isDestroyed = true;
 	}
 
 }

@@ -44,7 +44,7 @@ public class ForgetPasswordActivity extends Activity {
 			e.printStackTrace();
 		}
 		
-		PostRequest request = new PostRequest(Config.API_BASE_URL_SERVER
+		PostRequest request = new PostRequest(Config.API_BASE_URL
 				+ FORGET) {
 			@Override
 			protected void onPostExecute(String response) {

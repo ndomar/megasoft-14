@@ -1,6 +1,7 @@
 package com.megasoft.entangle;
 
 import com.megasoft.entangle.views.RoundedImageView;
+import com.megasoft.requests.ImageRequest;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -83,6 +84,7 @@ public class EntryOfferFragment extends Fragment {
 		tangleId = args.getInt("tangleId");
 		tangleName = args.getString("tangleName");
 		offererId = args.getInt("userId");
+		new ImageRequest(args.getString("offererAvatar"), getActivity(), offererAvatar);
 	}
 
 	/**

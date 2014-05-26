@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:layout_alignParentTop="true"
-    android:layout_marginBottom="@dimen/marginMedium"
     android:background="@color/darkWhite"
     android:fillViewport="true" >
 
@@ -11,6 +10,7 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/marginLarge"
         android:background="@color/darkWhite" >
 
         <LinearLayout
@@ -148,5 +148,42 @@
                 android:layout_height="@dimen/paddingSmall" />
         </LinearLayout>
     </ScrollView>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:weightSum="5" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/boxMargin"
+            android:layout_weight="1"
+            android:background="@color/blue" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/boxMargin"
+            android:layout_weight="1"
+            android:background="@color/orange" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/boxMargin"
+            android:layout_weight="1"
+            android:background="@color/cyan" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/boxMargin"
+            android:layout_weight="1"
+            android:background="@color/megenta" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/boxMargin"
+            android:layout_weight="1"
+            android:background="@color/lightGreen" />
+    </LinearLayout>
 
 </RelativeLayout>

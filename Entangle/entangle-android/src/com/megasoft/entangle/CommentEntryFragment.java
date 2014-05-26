@@ -1,5 +1,8 @@
 package com.megasoft.entangle;
 
+import com.megasoft.entangle.views.RoundedImageView;
+import com.megasoft.requests.ImageRequest;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -29,6 +32,17 @@ public class CommentEntryFragment extends Fragment {
 	 * The comment date
 	 */
 	private String commentDate;
+	
+	/** 
+	 * The commenter avatar
+	 */
+	private com.megasoft.entangle.views.RoundedImageView commenterAvatar;
+
+	/**
+	 * The avatar link
+	 */
+	private String commenterAvatarURL;
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,9 +51,11 @@ public class CommentEntryFragment extends Fragment {
 		((TextView)view.findViewById(R.id.comment_content)).setText(comment);
 		((TextView)view.findViewById(R.id.comment_date)).setText(commentDate);
 		((TextView)view.findViewById(R.id.commenter)).setText(commenter);
+		commenterAvatar = (RoundedImageView) view.findViewById(R.id.commenterAvatar);
+		//new ImageRequest(commenterAvatarURL,getActivity().getApplicationContext(),commenterAvatar);
 		return view;
 	}
-	
+
 	/**
 	 * Sets the commenter
 	 * @param commenter
@@ -48,6 +64,14 @@ public class CommentEntryFragment extends Fragment {
 		this.commenter = commenter;
 	}
 	
+	/**
+	 * Sets the avatar url
+	 * @param commenterAvatarURL
+	 */
+	public void setCommenterAvatarURL(String commenterAvatarURL) {
+		this.commenterAvatarURL = commenterAvatarURL;
+	}
+
 	/**
 	 * Sets the comment
 	 * @param comment

@@ -17,12 +17,6 @@ use Megasoft\EntangleBundle\Entity\UserEmail;
 class SiteController extends Controller
 {
 
-    public function indexAction()
-    {
-        return $this->render('MegasoftEntangleBundle:Site:index.html.twig');
-    }
-
-
     /**
      * generates a random string
      * @param string $len
