@@ -1,13 +1,3 @@
 megasoft_entangle:
     resource: "@MegasoftEntangleBundle/Resources/config/routing.yml"
     prefix:   /
-
-profile:
-    pattern: tangle/{tangleId}/user/{userId}/profile
-    defaults: { _controller: MegasoftEntangleBundle:User:profile }
-    methods: [GET]
-    
-createClaim:
-    pattern: /claim/{requestId}/sendClaim/{offerId}/user
-    defaults: { _controller: MegasoftEntangleBundle:Claim:createClaim }
-    methods: [POST]
