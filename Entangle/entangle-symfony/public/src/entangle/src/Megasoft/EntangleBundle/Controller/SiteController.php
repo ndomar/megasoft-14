@@ -149,7 +149,7 @@ class SiteController extends Controller
             } else if (!($this->EmailIsUnique($email))) {
                 $status = "Failed!";
                 $message = "Email is not unique!";
-                return $this->render('MegasoftEntangleBundle:Site:index$confirmPassword.html.twig', array('status' => $status, 'message' => $message));
+                return $this->render('MegasoftEntangleBundle:Site:index.html.twig', array('status' => $status, 'message' => $message));
 
             } else if (!($this->checkMatchingPasswords($password, $cpassword))) {
                 $status = "Failed!";

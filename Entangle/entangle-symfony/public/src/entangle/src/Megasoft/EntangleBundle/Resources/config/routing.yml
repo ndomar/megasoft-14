@@ -131,10 +131,6 @@ leave_tangle:
     defaults: {_controller: MegasoftEntangleBundle:Tangle:leaveTangle }
     methods: [DELETE]
 
-megasoft_entangle_register:
-    pattern:  /
-    defaults: { _controller: MegasoftEntangleBundle:Site:register }
-
 megasoft_entangle_about:
     pattern:  /about
     defaults: { _controller: MegasoftEntangleBundle:About:about }
@@ -298,17 +294,6 @@ leave_tangle:
     pattern: /tangle/{tangleId}/user
     defaults: {_controller: MegasoftEntangleBundle:Tangle:leaveTangle }
     methods: [DELETE]
-
-megasoft_entangle_register:
-    pattern:  /
-    defaults: { _controller: MegasoftEntangleBundle:Site:register }
-
-
-megasoft_entangle_register:
-    pattern:  /register
-    defaults: { _controller: MegasoftEntangleBundle:Register:register }
-    pattern:  /
-    defaults: { _controller: MegasoftEntangleBundle:Site:register }
 
 get_profile:
     pattern: /tangle/{tangleId}/user/{userId}/profile
@@ -568,10 +553,6 @@ leave_tangle:
     defaults: {_controller: MegasoftEntangleBundle:Tangle:leaveTangle }
     methods: [DELETE]
 
-megasoft_entangle_register:
-    pattern:  /
-    defaults: { _controller: MegasoftEntangleBundle:Site:register }
-
 register_app:
     pattern: /register
     defaults: { _controller: MegasoftEntangleBundle:User:register}
@@ -716,8 +697,3 @@ change_pass:
      pattern: /reset
      defaults: {_controller: MegasoftEntangleBundle:PasswordForget:changePassword }
      methods: [POST]
-
-megasoft_entangle_register_:
-    pattern:  /
-    defaults: { _controller: MegasoftEntangleBundle:Site:register }
-    methods: [POST]
