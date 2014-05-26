@@ -26,6 +26,10 @@ public class GeneralProfileActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.super_profile);
+	}
+	
+	public void onResume(){
+		super.onResume();
 		ProfileFragment profile = new ProfileFragment();
 		Bundle bundle = new Bundle();
 		tangleId = getIntent().getIntExtra("tangleId", -1);
@@ -36,7 +40,7 @@ public class GeneralProfileActivity extends FragmentActivity {
 		profile.setArguments(bundle);
 		FragmentTransaction transaction = getSupportFragmentManager()
 				.beginTransaction();
-		transaction.add(R.id.profile_layout, profile);
+		transaction.replace(R.id.profile_layout, profile);
 		transaction.commit();
 	}
 

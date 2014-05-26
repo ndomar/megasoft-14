@@ -167,34 +167,35 @@ public class TangleFragment extends Fragment {
 			return;
 		}
 		final SearchView searchView = activity.getSearchView();
-		
-		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+		if(searchView != null){
+			searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				if(isDestroyed){
-					return false;
-				}
-				InputMethodManager inputManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE); 
-				inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-				sendFilteredRequest(rootResource + "/tangle/" + tangleId
-		 				+ "/request", false, query);
-
-				return true;
-			}
-			
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				if(isDestroyed){
-					return false;
-				}
-				if(newText.equals("")){
+				@Override
+				public boolean onQueryTextSubmit(String query) {
+					if(isDestroyed){
+						return false;
+					}
+					InputMethodManager inputManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE); 
+					inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 					sendFilteredRequest(rootResource + "/tangle/" + tangleId
-			 				+ "/request", false, null);
+			 				+ "/request", false, query);
+
+					return true;
 				}
-				return true;
-			}
-		});
+				
+				@Override
+				public boolean onQueryTextChange(String newText) {
+					if(isDestroyed){
+						return false;
+					}
+					if(newText.equals("")){
+						sendFilteredRequest(rootResource + "/tangle/" + tangleId
+				 				+ "/request", false, null);
+					}
+					return true;
+				}
+			});
+		}
 	}
 	
 	/**

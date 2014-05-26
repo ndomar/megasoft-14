@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -62,11 +63,13 @@ public class EditProfileActivity extends FragmentActivity implements
 	private static final String RETRIEVEDATA = "/user/retrieveData";
 
 	JSONObject putReJsonObject = new JSONObject();
-	Boolean notification = true;
+	Boolean notification;
 	protected int newYear;
 	protected int newMonth;
 	protected int newDay;
 	private int emailsCount;
+	private boolean isDestroyed;
+	private Button dataPicker;
 
 	@SuppressLint("SimpleDateFormat")
 	@Override
@@ -80,6 +83,9 @@ public class EditProfileActivity extends FragmentActivity implements
 		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
 				+ RETRIEVEDATA) {
 			public void onPostExecute(String response) {
+				if(isDestroyed){
+					return;
+				}
 				try {
 					retrieveDataResponse = new JSONObject(response);
 					try {
@@ -94,14 +100,13 @@ public class EditProfileActivity extends FragmentActivity implements
 						newYear = Integer.parseInt(splittedDate[0]);
 						newMonth = Integer.parseInt(splittedDate[1]) - 1;
 						newDay = Integer.parseInt(day[0]);
+						dataPicker.setText(newDay + "/" + (newMonth+1) + "/" + newYear);
 						currentDescription.setText(oldDescription);
 						notification = retrieveDataResponse
 								.getBoolean("notification_state");
+						emailNotification.setChecked(notification);
 						currentEmails = retrieveDataResponse
 								.getJSONArray("emails");
-
-						//for (int i = 0; i < currentEmails.length(); i++)
-						//	addEmailField();
 
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -145,16 +150,17 @@ public class EditProfileActivity extends FragmentActivity implements
 	 */
 	private void initializeView() {
 		emailNotification = (CheckBox) findViewById(R.id.set_notification);
-		emailNotification.setChecked(notification);
 		currentDescription = (EditText) findViewById(R.id.CurrentDescription);
+		dataPicker = (Button) findViewById(R.id.DatePickerButton);
 	}
 
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 		public void onDateSet(DatePicker view, int year, int monthOfYear,
 				int dayOfMonth) {
 			newYear = year;
-			newMonth = monthOfYear;
+			newMonth = monthOfYear+1;
 			newDay = dayOfMonth;
+			dataPicker.setText(newDay + "/" + newMonth + "/" + newYear);
 		}
 	};
 
@@ -176,7 +182,6 @@ public class EditProfileActivity extends FragmentActivity implements
 	 *            view
 	 * @author menna
 	 */
-	@SuppressLint("SimpleDateFormat")
 	public void saveAll(View view) {
 		Log.i("Message", oldDescription);
 		Log.i("Message", currentDescription.getText().toString());
@@ -207,20 +212,8 @@ public class EditProfileActivity extends FragmentActivity implements
 				boolean hasErrors = false;
 
 				view.setEnabled(false);
-				JSONArray emails = new JSONArray();
-				for (EmailEntryFragment email : this.emails) {
-					String val = email.getEmail();
-					if (val.equals("")) {
-						continue;
-					}
-					if (!val.equals("") && !emailValidator(val)) {
-						email.getEditText().setError("Invalid Email");
-						hasErrors = true;
-					} else {
-						email.getEditText().setError(null);
-						emails.put(val);
-					}
-				}
+				// TODO Edit here to support multiple emails
+				JSONArray emails = currentEmails;
 
 				if (hasErrors) {
 					view.setEnabled(true);
@@ -234,7 +227,9 @@ public class EditProfileActivity extends FragmentActivity implements
 			PutRequest putRequest = new PutRequest(Config.API_BASE_URL
 					+ EDITPROFILE) {
 				protected void onPostExecute(String result) {
-
+					if(isDestroyed){
+						return;
+					}
 					if (this.getStatusCode() == 200) {
 						goToGeneralProfileActivity();
 
@@ -259,11 +254,6 @@ public class EditProfileActivity extends FragmentActivity implements
 	 * @author menna
 	 */
 	private void goToGeneralProfileActivity() {
-		Intent generalProfileIntent = new Intent(this,
-				GeneralProfileActivity.class);
-		generalProfileIntent.putExtra("userId", userId);
-		startActivity(generalProfileIntent);
-
 		this.finish();
 	}
 
@@ -307,8 +297,12 @@ public class EditProfileActivity extends FragmentActivity implements
 	 * @author maisaraFarahat
 	 */
 	public void cancelRedirect(View view) {
-
 		this.finish();
-	}	
+	}
+	
+	public void onPause(){
+		super.onPause();
+		isDestroyed = true;
+	}
 	
 }
