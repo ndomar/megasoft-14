@@ -1,23 +1,48 @@
 package com.megasoft.entangle;
 
-import com.megasoft.config.Config;
-import com.megasoft.requests.PostRequest;
-
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-@SuppressLint("WorldReadableFiles")
-public class GeneralProfileActivity extends Activity {
+import com.megasoft.config.Config;
+import com.megasoft.requests.PostRequest;
 
+/**
+ * Views a user's general profile given his user Id
+ * 
+ * @author Almgohar
+ */
+public class GeneralProfileActivity extends FragmentActivity {
 	private static final String LOGOUT = "/user/logout";
+	private int userId;
+	private int tangleId;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.super_profile);
+	}
+	
+	public void onResume(){
+		super.onResume();
+		ProfileFragment profile = new ProfileFragment();
+		Bundle bundle = new Bundle();
+		tangleId = getIntent().getIntExtra("tangleId", -1);
+		userId = getIntent().getIntExtra("userId", -1);
+		bundle.putInt("tangleId", tangleId);
+		bundle.putInt("userId", userId);
+		bundle.putBoolean("general", true);
+		profile.setArguments(bundle);
+		FragmentTransaction transaction = getSupportFragmentManager()
+				.beginTransaction();
+		transaction.replace(R.id.profile_layout, profile);
+		transaction.commit();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -34,9 +59,16 @@ public class GeneralProfileActivity extends Activity {
 		case R.id.logoutButton:
 			logout();
 			return true;
+		case R.id.editProfileButton:
+			goToEditProfile();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private void goToEditProfile() {
+		startActivity(new Intent(this, EditProfileActivity.class));
 	}
 
 	/*
@@ -53,7 +85,7 @@ public class GeneralProfileActivity extends Activity {
 		SharedPreferences myPrefs = this.getSharedPreferences(Config.SETTING,
 				MODE_WORLD_READABLE);
 		String sessionId = myPrefs.getString(Config.SESSION_ID, "");
-		PostRequest request = new PostRequest(Config.API_BASE_URL_SERVER
+		PostRequest request = new PostRequest(Config.API_BASE_URL
 				+ LOGOUT) {
 			protected void onPostExecute(String response) {
 
@@ -86,12 +118,15 @@ public class GeneralProfileActivity extends Activity {
 
 		prefsEditor.commit();
 
-		Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+		SharedPreferences prefs = getSharedPreferences(Config.GCM_DATA,
+				MODE_PRIVATE);
+		prefs.edit().remove(Config.PROPERTY_REG_ID).commit();
+
+		Intent intent = new Intent(getApplicationContext(),
+				SplashActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		intent.putExtra("EXIT", true);
 		startActivity(intent);
 		this.finish();
 
 	}
-
 }

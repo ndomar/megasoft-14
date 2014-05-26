@@ -5,7 +5,7 @@
     android:orientation="horizontal" >
 
     <EditText
-        android:id="@+id/invite_user_edit_text"
+        android:id="@+id/add_email_edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/marginSmall"
@@ -14,7 +14,7 @@
         android:inputType="textEmailAddress" />
 
     <Button
-        android:id="@+id/invite_user_remove_edit_text"
+        android:id="@+id/remove_email_edit_text"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="@dimen/iconSmall"
         android:layout_height="@dimen/iconSmall"

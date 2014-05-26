@@ -9,15 +9,23 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -122,6 +130,22 @@ public class CreateRequestActivity extends Activity {
 	TextView deadlineError;
 
 	/**
+	 * An array of the ids of the request icons available in the app.
+	 */
+	private static Integer[] imageIconDatabase = { R.drawable.food_icon,
+		R.drawable.company_icon, R.drawable.home_icon, R.drawable.group_icon};
+
+	/**
+	 * An array of the names of the request icons available in the app.
+	 */
+	private String[] imageNameDatabase = { "food", "company", "home", "group"};
+
+	/**
+	 * A number indicating the currently selected icon by the user in the spinner.
+	 */
+	private int usedIcon;
+
+	/**
 	 * on creation of the activity it takes data from the fields and send it as
 	 * json object on clicking the Post Button
 	 * 
@@ -189,12 +213,13 @@ public class CreateRequestActivity extends Activity {
 					}
 					json.put("deadLine", deadLineData);
 					json.put("tags", jsonTagsArray);
+					json.put("icon", usedIcon);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 
 				PostRequest request = new PostRequest(
-						Config.API_BASE_URL_SERVER + "/tangle/" + tangleId
+						Config.API_BASE_URL + "/tangle/" + tangleId
 								+ "/request") {
 					protected void onPostExecute(String response) {
 						if (this.getStatusCode() == 201) {
@@ -220,6 +245,24 @@ public class CreateRequestActivity extends Activity {
 			}
 		});
 		updateDisplay();
+
+		Spinner iconSpinner = (Spinner) findViewById(R.id.requestIconSpinner);
+		iconSpinner.setAdapter(new RequestIconSpinnerAdapter(
+				CreateRequestActivity.this, R.layout.request_spinner_icons,
+				imageNameDatabase));
+		iconSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				usedIcon = arg0.getSelectedItemPosition();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		});
+		usedIcon = iconSpinner.getSelectedItemPosition();
 
 	}
 
@@ -314,6 +357,41 @@ public class CreateRequestActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		// getMenuInflater().inflate(R.menu.requests, menu);
 		return true;
+	}
+
+	/**
+	 * A private class that defines the adapter for the icons' spinner
+	 * @author Mansour
+	 */
+	private class RequestIconSpinnerAdapter extends ArrayAdapter<String> {
+
+		public RequestIconSpinnerAdapter(Context context,
+				int textViewResourceId, String[] objects) {
+			super(context, textViewResourceId, objects);
+		}
+
+		@Override
+		public View getDropDownView(int position, View convertView,
+				ViewGroup parent) {
+			return getCustomView(position, convertView, parent);
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			return getCustomView(position, convertView, parent);
+		}
+
+		public View getCustomView(int position, View convertView,
+				ViewGroup parent) {
+
+			LayoutInflater inflater = getLayoutInflater();
+			View row = inflater.inflate(R.layout.request_spinner_icons, parent, false);
+
+			ImageView icon = (ImageView) row.findViewById(R.id.requestIcon);
+			icon.setImageResource(imageIconDatabase[position]);
+
+			return row;
+		}
 	}
 
 }

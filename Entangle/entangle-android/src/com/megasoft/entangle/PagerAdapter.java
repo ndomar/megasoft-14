@@ -1,25 +1,25 @@
 package com.megasoft.entangle;
 
-import com.megasoft.config.Config;
-import com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationFragment;
-import com.megasoft.entangle.megafragments.TangleFragment;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
+
+import com.megasoft.config.Config;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
-	
+
 	int tangleId;
 	int userId;
 	Context context;
 	private String tangleName;
 	private boolean isTangleOwner;
+
 	final static String STREAM = "Stream";
-	public PagerAdapter(Context con, FragmentManager fm,int tangleId,int userId, String tangleName, boolean isTangleOwner) {
+
+	public PagerAdapter(Context con, FragmentManager fm, int tangleId,
+			int userId, String tangleName, boolean isTangleOwner) {
 		super(fm);
 		this.context = con;
 		this.tangleName = tangleName;
@@ -27,13 +27,12 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 		this.userId = userId;
 		this.isTangleOwner = isTangleOwner;
 	}
-	
-	
+
 	/**
 	 * Initialize the navigation drawer (sidebar menu)
 	 * 
-	 * @param 
-	 * @return 
+	 * @param
+	 * @return
 	 * @author Mohamed Farghal
 	 */
 	@Override
@@ -52,47 +51,57 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 			args.putInt(Config.TANGLE_ID, tangleId);
 			break;
 		case 2:
-			fragment = new ProfileFragment();
+			fragment = new ProfileSuperFragment();
 			args.putInt("userId", userId);
 			break;
-			
 		case 3:
-			fragment = new ManagePendingInvitationFragment();
+			fragment = new MyRequestsFragment();
 			break;
-
+		case 4:		
+			fragment = new MyOffersFragment();
+			break;
+		case 5:
+			if(isTangleOwner){
+				fragment = new ManagePendingInvitationFragment();
+			}
+			break;
 		default:
 			break;
 		}
 		fragment.setArguments(args);
-        return fragment;
+		return fragment;
 	}
-        
+
 	@Override
 	public int getCount() {
-		if(isTangleOwner){
-			return 4;
-		}else{
-			return 3;
+		if (isTangleOwner) {
+			return 6;
+		} else {
+			return 5;
 		}
+
 	}
-	
+
 	@Override
 	public CharSequence getPageTitle(int position) {
 		switch (position) {
 		case 0:
 			return "Stream";
-			
+
 		case 1:
 			return "Members";
 		case 2:
 			return "You";
-			
+
 		case 3:
-			return "Tangle Managment";
+			return "My Requests";
+		case 4:
+			return "My Offers";
+		case 5:
+			return "Tangle Management";
 
 		default:
 			return "Tab " + position;
 		}
-    }
-
+	}
 }

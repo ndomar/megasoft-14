@@ -44,7 +44,7 @@ public class LogoutActivity extends Activity {
 				MODE_WORLD_READABLE);
 		String sessionId = myPrefs.getString(Config.SESSION_ID, "");
 
-		PostRequest request = new PostRequest(Config.API_BASE_URL_SERVER
+		PostRequest request = new PostRequest(Config.API_BASE_URL
 				+ LOGOUT) {
 			protected void onPostExecute(String response) {
 
@@ -81,6 +81,7 @@ public class LogoutActivity extends Activity {
 				"sessionIDPrefs", MODE_WORLD_READABLE);
 		SharedPreferences.Editor prefsEditor = sessionIDPrefs.edit();
 		prefsEditor.putString(Config.SESSION_ID, null);
+		prefsEditor.remove(Config.PROPERTY_REG_ID);
 		prefsEditor.commit();
 
 		Intent homeActivity = new Intent(this, MainActivity.class);

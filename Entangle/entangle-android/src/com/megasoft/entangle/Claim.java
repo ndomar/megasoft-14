@@ -5,38 +5,40 @@ import org.json.JSONObject;
 
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
+import com.megasoft.utils.UI;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Creates the claim
+ * 
+ * @author Salma Amr
+ * 
+ */
 public class Claim extends Activity {
+
 	/**
-	 * String holding the mail of the claim sender
+	 * The preferences instance
 	 */
-	String claimerMail;
-	/**
-	 * String holding the mail of the claim receiver
-	 */
-	String tangleOwenerMail;
-	/**
-	 * String holding the subject of the claim
-	 */
-	String subject;
+	private SharedPreferences settings;
 	/**
 	 * String holding the message of the sent claim it self
 	 */
 	String mssgBody;
 
 	/**
-	 * this sets the email of the tangle owner and the requester into a non
-	 * editable edit text, also it sets the view of the claim form
+	 * This sets the email of the tangle owner and the requester into a non
+	 * editable edit text, also it sets the view of the claim form.
 	 * 
 	 * @param Bundle
 	 *            savedInstanceState android bundle
@@ -48,20 +50,22 @@ public class Claim extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_claimform);
-		TextView link = (TextView) findViewById(R.id.link);
-		link.setMovementMethod(LinkMovementMethod.getInstance());
 		getActionBar().hide();
-		claimerMail = this.getIntent().getStringExtra("sender");
-		tangleOwenerMail = this.getIntent().getStringExtra("receiver");
 	}
-	
-	public void cancel() { 
+
+	/**
+	 * This method finishes the activity on clicking the cancel button.
+	 * 
+	 * @param view
+	 * @author Salma Amr
+	 */
+	public void cancel(View view) {
 		this.finish();
 	}
 
 	/**
 	 * This method creates the claim form after making sure of entering the body
-	 * and the subject of the claim, it creates a claim id
+	 * and the subject of the claim, it creates a claim id.
 	 * 
 	 * @param View
 	 *            view the claim button clicked
@@ -70,7 +74,7 @@ public class Claim extends Activity {
 	 */
 	public void sendClaimForm(View view) {
 
-		final Intent intent = new Intent(this, Request.class);
+		final Intent intent = new Intent(this, OfferActivity.class);
 		mssgBody = ((EditText) findViewById(R.id.mssgText)).getText()
 				.toString();
 		if (mssgBody.equals("")) {
@@ -80,30 +84,29 @@ public class Claim extends Activity {
 
 			JSONObject object = new JSONObject();
 			try {
-				object.put("X-SENDER-MAIL", claimerMail);
-				object.put("X-RECEIVER-MAIL", tangleOwenerMail);
-				object.put("X-MSSGBODY", mssgBody);
+				object.put("claimMessage", mssgBody);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 			int requestId = (int) getIntent().getIntExtra("requestId", -1);
-			PostRequest postSubject = new PostRequest(Config.API_BASE_URL_SERVER
-					+ "/claim/" + requestId + "/sendClaim") {
+			int offerId = (int) getIntent().getIntExtra("offerId", -1);
+			PostRequest postSubject = new PostRequest(
+					Config.API_BASE_URL + "/claim/" + requestId
+							+ "/sendClaim/" + offerId + "/user") {
 
 				protected void onPostExecute(String response) {
 					try {
-						if (this.getStatusCode() == 200) {
+						if (this.getStatusCode() == 201) {
 							JSONObject obj = new JSONObject(response);
-							int claimId = obj.getInt("X-CLAIM-ID");
+							int claimId = obj.getInt("claimId");
 							intent.putExtra("claimId", claimId);
-							Toast.makeText(getBaseContext(), "Claim Sent", Toast.LENGTH_SHORT).show();
-							intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+							Toast.makeText(getBaseContext(), "Claim Sent!",
+									Toast.LENGTH_SHORT).show();
 							startActivity(intent);
 						} else {
-							Toast.makeText(getBaseContext(), "Something went wrong",
-									Toast.LENGTH_SHORT).show();
+							UI.makeToast(getBaseContext(), "Something went wrong", Toast.LENGTH_SHORT);
 						}
 
 					} catch (JSONException e) {
@@ -112,9 +115,8 @@ public class Claim extends Activity {
 					}
 				}
 			};
-
-			String sessionID = (String) getIntent().getCharSequenceExtra(
-					"sessionID");
+			this.settings = getSharedPreferences(Config.SETTING, 0);
+			String sessionID = settings.getString(Config.SESSION_ID, "");
 			postSubject.setBody(object);
 			postSubject.addHeader("X-SESSION-ID", sessionID);
 			postSubject.execute();

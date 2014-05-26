@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
 
-public class InviteUserActivity extends FragmentActivity {
+public class InviteUserActivity extends FragmentActivity implements AddEmailInterface{
 	/**
 	 * The tangle Id that we want to invite users to
 	 */

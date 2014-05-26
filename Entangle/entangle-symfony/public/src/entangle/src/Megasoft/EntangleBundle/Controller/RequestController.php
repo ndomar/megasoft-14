@@ -144,9 +144,7 @@ class RequestController extends Controller
 
             // notification
             $notificationCenter = $this->get('notification_center.service');
-            $title = "request reopen";
-            $body = "{{from}} reopened his request";
-            $notificationCenter->reopenRequestNotification($tangleRequest->getId(), $title, $body);
+            $notificationCenter->reopenRequestNotification($tangleRequest->getId());
 
             return new Response('Reopened', 200);
         }
@@ -237,7 +235,7 @@ class RequestController extends Controller
             if ($sessionUserId == $requester) {
                 $myRequest = 1;
             }
-            $requestDetails = array('requester' => $requester, 'requesterName'=>$request->getUser()->getName() ,'description' => $description,
+            $requestDetails = array('requester' => $requester, 'requesterName' => $request->getUser()->getName(), 'description' => $description,
                 'status' => $status, 'MyRequest' => $myRequest, 'date' => $date, 'deadline' => $deadline, 'icon' => $icon,
                 'price' => $price, 'tangle' => $tangle, 'tags' => $tags, 'offers' => $offers);
         }
@@ -261,13 +259,22 @@ class RequestController extends Controller
             $request = $offer->getRequestId();
             if ($request == $requestId) {
                 $description = $offer->getDescription();
+
+                if ($offer->getUser()->getPhoto() == null) {
+                    $photo = null;
+                } else {
+                    $filepath = 'http://'.$_SERVER['HTTP_HOST'].'/images/profilePictures/';
+                    $photo = $filepath.$offer->getUser()->getPhoto();
+                }
+
                 $status = $offer->getStatus();
                 $date = $offer->getDate();
                 $deadline = $offer->getExpectedDeadline();
                 $price = $offer->getRequestedPrice();
                 $deleted = $offer->getDeleted();
-                $details = array('description' => $description, 'status' => $status,
-                    'date' => $date, 'deadline' => $deadline, 'price' => $price, 'offererName' => $offer->getUser()->getName(), 'id' => $offer->getId());
+                $details = array('offererAvatar' => $photo, 'description' => $description, 'status' => $status,
+                    'date' => $date, 'deadline' => $deadline, 'price' => $price, 
+                    'offererName' => $offer->getUser()->getName(), 'id' => $offer->getId(),);
                 if ($deleted == 0) {
                     array_push($offerArray, $details);
                 }
@@ -290,7 +297,7 @@ class RequestController extends Controller
      * @return Response|JsonResponse|null
      * @author Salma Khaled
      */
-    public function validate($sessionId, $session, $deadLineFormated, $dateFormated, $requestedPrice, $tangle, $description, $user, $date)
+    public function validate($sessionId, $session, $deadLineFormated, $dateFormated, $requestedPrice, $tangle, $description, $user, $date, $icon)
     {
         $response = new JsonResponse();
         if ($sessionId == null) {
@@ -345,6 +352,11 @@ class RequestController extends Controller
             $response->setContent("price must be a positive value!");
             return $response;
         }
+        if ($icon == null && $icon != 0){
+            $response->setStatusCode(400);
+            $response->setContent("Icon is missing");
+            return $response;
+        }
         return null;
     }
 
@@ -382,6 +394,7 @@ class RequestController extends Controller
         $description = $json_array['description'];
         $tags = $json_array['tags'];
         $date = $json_array['date'];
+        $icon = $json_array['icon'];
         $dateFormated = new DateTime2($date);
         $deadLine = $json_array['deadLine'];
         if ($deadLine == "") {
@@ -396,7 +409,7 @@ class RequestController extends Controller
         $theTangleId = (int)$tangleId;
         $tangle = $tangleTable->findOneBy(array('id' => $theTangleId));
         $user = $userTable->findOneBy(array('id' => $userId));
-        $valid = $this->validate($sessionId, $session, $deadLineFormated, $dateFormated, $requestedPrice, $tangle, $description, $user, $date);
+        $valid = $this->validate($sessionId, $session, $deadLineFormated, $dateFormated, $requestedPrice, $tangle, $description, $user, $date, $icon);
         if ($valid != null) {
             return $valid;
         }
@@ -408,6 +421,7 @@ class RequestController extends Controller
         $newRequest->setDeadLine($deadLineFormated);
         $newRequest->setUser($user);
         $newRequest->setRequestedPrice($requestedPrice);
+        $newRequest->setIcon($icon);
         $this->addTags($newRequest, $tags);
         $doctrine->getManager()->persist($newRequest);
         $doctrine->getManager()->flush();
@@ -461,7 +475,7 @@ class RequestController extends Controller
         $sessionRepo = $doctrine->getRepository('MegasoftEntangleBundle:Session');
         $session = $sessionRepo->findOneBy(array('sessionId' => $sessionId));
         if ($session == null || $session->getExpired()) {
-            return new Response('Bad Request', 400);
+            return new Response('Unauthorized', 401);
         }
 
         $requesterId = $session->getUserId();
@@ -472,14 +486,23 @@ class RequestController extends Controller
             return new Response('Unauthorized', 401);
         }
 
-        // notification
-        $notificationCenter = $this->get('notification_center.service');
-        $title = "request deleted";
-        $body = "{{from}} deleted his request";
-        $notificationCenter->requestDeletedNotification($request->getId(), $title, $body);
+        if($request->getStatus() != 0 || $request->getDeleted() == true){
+            return new Response('Bad Request', 400);
+        }
 
         $request->setDeleted(true);
-        $request->setStatus($request->CLOSE);
+        $this->getDoctrine()->getManager()->persist($request);
+        $offers = $request->getOffers();
+        
+        foreach($offers as $offer){
+            $offer->setDeleted(true);
+            $this->getDoctrine()->getManager()->persist($offer);
+        }
+
+        $notificationCenter = $this->get('notification_center.service');
+        $notificationCenter->requestDeletedNotification($request->getId());
+
+        $request->setDeleted(true);
         $this->getDoctrine()->getManager()->persist($request);
         $this->getDoctrine()->getManager()->flush();
 

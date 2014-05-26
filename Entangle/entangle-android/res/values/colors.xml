@@ -13,12 +13,13 @@
     <color name="red">#CD2528</color>
     <color name="green">#65A958</color>
     <color name="lightGreen">#A7CB2C</color>
-
+	<color name="default_progress_bar_color">#FF33B5E5</color>
     <color name="gray">#666666</color>
 
     <color name="sideBarBackground">#222222</color>
 
     <color name="active">#FAAB00</color>
+    <color name="introGreen">#70b863</color>
     <color name="pagerBackground">#FFFFFF</color>
     <color name="darkGray">#222222</color>
     <color name="lightText">#FFFFFF</color>

@@ -26,7 +26,7 @@
             android:textAlignment="center"
             android:textColor="@color/gray"
             android:textSize="@dimen/textLarge"
-            android:onClick="finish"
+            android:onClick="cancel"
             />
 		<View 
             style="@style/dividerVertical"
@@ -103,21 +103,15 @@
        
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/termsOfUse"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_marginTop="@dimen/marginMedium" />
-
-    <TextView
-        android:id="@+id/link"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/link" 
+        android:layout_marginRight="75dp"
+        android:layout_marginLeft="@dimen/marginSmall"
         android:layout_marginTop="@dimen/marginMedium"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-   		android:linksClickable="true"/>
-
+        android:text="@string/termsOfUse"
+        android:textSize="@dimen/textMedium"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+    
     </LinearLayout>
 
 </LinearLayout>

@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -110,17 +111,18 @@ public class LoginActivity extends Activity {
 		try {
 			json.put("name", username.getText().toString());
 			json.put("password", password.getText().toString());
+			json.put("deviceType", android.os.Build.MODEL);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		PostRequest request = new PostRequest(Config.API_BASE_URL_SERVER
+		PostRequest request = new PostRequest(Config.API_BASE_URL
 				+ LOGIN) {
 			protected void onPostExecute(String response) {
 				password.setText("");
 				if (this.getStatusCode() == 201) {
 					goToHome(response);
 				} else {
-
+					Toast.makeText(getApplicationContext(), this.getErrorMessage(), Toast.LENGTH_LONG).show();
 					TextView showError = (TextView) findViewById(R.id.invalidUserNameOrPassword);
 					showError.setVisibility(View.VISIBLE);
 				}
@@ -169,8 +171,7 @@ public class LoginActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		//register();
-
+		register();
 		Intent homeActivity = new Intent(this, HomeActivity.class);
 		startActivity(homeActivity);
 
@@ -186,11 +187,6 @@ public class LoginActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -207,8 +203,6 @@ public class LoginActivity extends Activity {
 			Intent gcmRegIntentService = new Intent(getApplicationContext(),
 					GCMRegisteration.class);
 			startService(gcmRegIntentService);
-		} else {
-			Log.i(TAG, "no play services api found");
 		}
 	}
 
@@ -227,11 +221,10 @@ public class LoginActivity extends Activity {
 				GooglePlayServicesUtil.getErrorDialog(resultCode, this,
 						PLAY_SERVICES_RESOLUTION_REQUEST).show();
 			} else {
-				Log.i("ERROR", "This device is not supported.");
 				finish();
 			}
 			return false;
 		}
 		return true;
-	}
+ }
 }

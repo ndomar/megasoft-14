@@ -1,54 +1,27 @@
 package com.megasoft.requests;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+import android.R;
+import android.content.Context;
+import android.util.Log;
 import android.widget.ImageView;
 
+import com.google.android.gms.internal.im;
+import com.megasoft.entangle.views.RoundedTransformation;
+import com.squareup.picasso.Picasso;
+
 /**
- * This code references the second answer from 
- * http://stackoverflow.com/questions/15217436/image-view-image-from-imageurl-giving-exception
+ * The class responsible for viewing the image from the cache if it is there and
+ * download it if it's a cache miss.
+ * 
+ * @author MohamedBassem
  */
-public class ImageRequest extends AsyncTask<String, Void, Bitmap> {
-	    private final WeakReference<ImageView> imageViewReference;
-	    private String data;
-
-	    public ImageRequest(ImageView imageView) {
-	        // Use a WeakReference to ensure the ImageView can be garbage
-	        // collected
-	        imageViewReference = new WeakReference<ImageView>(imageView);
-	    }
-
-	    // Decode image in background.
-	    @Override
-	    protected Bitmap doInBackground(String... params) {
-	        data = params[0];
-	        try {
-	            return BitmapFactory.decodeStream((InputStream) new URL(data)
-	                    .getContent());
-	        } catch (MalformedURLException e) {
-	            e.printStackTrace();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	        return null;
-	    }
-
-	    // Once complete, see if ImageView is still around and set bitmap.
-	    @Override
-	    protected void onPostExecute(Bitmap bitmap) {
-	        if (imageViewReference != null && bitmap != null) {
-	            final ImageView imageView = imageViewReference.get();
-	            if (imageView != null) {
-	                imageView.setImageBitmap(bitmap);
-	            }
-	        }
-	    }
+public class ImageRequest{
+	public ImageRequest(String url,Context context,ImageView imageView){
+		if(url == null || url.equals("null")){
+			int id = context.getResources().getIdentifier("ic_action_person.png", "drawable", context.getPackageName());
+			imageView.setImageResource(id);
+		}else{
+			Picasso.with(context).load(url).transform(new RoundedTransformation(50, 0)).into(imageView);
+		}
 	}
-
+}
