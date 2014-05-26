@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import com.megasoft.entangle.megafragments.*;
 
 public class ProfileActivity extends FragmentActivity {
 

@@ -6,7 +6,6 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.megasoft.config.Config;
-import com.megasoft.entangle.megafragments.*;
 
 public class UploadRequestIconActivity extends Activity{
 	private int requestId;

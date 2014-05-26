@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.megasoft.config.Config;
 import com.megasoft.requests.DeleteRequest;
 import com.megasoft.requests.GetRequest;
-import com.megasoft.entangle.megafragments.*;
 
 public class RequestActivity extends FragmentActivity {
 	/**

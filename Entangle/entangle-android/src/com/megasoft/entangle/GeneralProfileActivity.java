@@ -11,7 +11,6 @@ import android.view.MenuItem;
 
 import com.megasoft.config.Config;
 import com.megasoft.requests.PostRequest;
-import com.megasoft.entangle.megafragments.*;
 
 /**
  * Views a user's general profile given his user Id

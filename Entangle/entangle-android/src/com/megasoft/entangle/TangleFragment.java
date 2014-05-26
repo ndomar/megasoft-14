@@ -1,11 +1,11 @@
-package com.megasoft.entangle.megafragments;
+package com.megasoft.entangle;
 
 import java.util.HashMap;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -25,9 +25,7 @@ import com.actionbarpulltorefresh.library.HeaderTransformer;
 import com.actionbarpulltorefresh.library.PullToRefreshLayout;
 import com.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import com.megasoft.config.Config;
-import com.megasoft.entangle.HomeActivity;
 import com.megasoft.entangle.R;
-import com.megasoft.entangle.StreamRequestFragment;
 import com.megasoft.requests.GetRequest;
 
 /**

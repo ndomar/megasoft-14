@@ -7,8 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.megasoft.config.Config;
-import com.megasoft.entangle.acceptPendingInvitation.ManagePendingInvitationFragment;
-import com.megasoft.entangle.megafragments.*;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
 

@@ -1,4 +1,4 @@
-package com.megasoft.entangle.acceptPendingInvitation;
+package com.megasoft.entangle;
 
 import org.json.JSONArray;
 import org.json.JSONException;
