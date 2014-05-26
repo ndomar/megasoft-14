@@ -684,7 +684,6 @@ public class OfferActivity extends FragmentActivity {
 					markOfferAsDone.setEnabled(false);
 					markOfferAsDone.setVisibility(View.INVISIBLE);
 					offerStatus.setText("Done");
-					Log.e("test","Here");
 					
 				} else {
 					Toast error = Toast.makeText(getApplicationContext(),

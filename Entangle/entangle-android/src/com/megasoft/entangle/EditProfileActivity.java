@@ -183,8 +183,6 @@ public class EditProfileActivity extends FragmentActivity implements
 	 * @author menna
 	 */
 	public void saveAll(View view) {
-		Log.i("Message", oldDescription);
-		Log.i("Message", currentDescription.getText().toString());
 		if ((oldDescription.equals(currentDescription.getText().toString()))
 				&& (day[0].equals(String.valueOf(newDay)))
 				&& (splittedDate[1].equals(String.valueOf(newMonth)))

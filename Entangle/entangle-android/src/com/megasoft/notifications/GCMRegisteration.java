@@ -88,12 +88,6 @@ public class GCMRegisteration extends IntentService {
 		SharedPreferences prefs = getSharedPreferences(
 				Config.GCM_DATA, MODE_PRIVATE);
 		String registrationId = prefs.getString(Config.PROPERTY_REG_ID, "");
-		if (registrationId.equals("")) {
-			Log.i(TAG, "reg id not found");
-		} else {
-			Log.i(TAG, "reg id found");
-		}
-		Log.i(TAG, registrationId);
 		return registrationId;
 	}
 
@@ -124,7 +118,6 @@ public class GCMRegisteration extends IntentService {
 			@Override
 			protected void onPostExecute(String regid) {
 				sendRegisterationId(regid);
-				Log.i(TAG, regid);
 				storeRegistrationId(regid);
 			}
 		}.execute(null, null, null);

@@ -120,7 +120,6 @@ public class GcmIntentService extends IntentService {
 		String tangleName = "";
 		if (bundle.getString("requestId") != null)
 			requestId = Integer.parseInt(bundle.getString("requestId"));
-		Log.i("GCM", "request:" + requestId);
 		if (bundle.getString("tangleId") != null)
 			tangleId = Integer.parseInt(bundle.getString("tangleId"));
 		if (bundle.getString("tangleName") != null)

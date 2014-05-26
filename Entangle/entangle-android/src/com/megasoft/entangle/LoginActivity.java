@@ -203,8 +203,6 @@ public class LoginActivity extends Activity {
 			Intent gcmRegIntentService = new Intent(getApplicationContext(),
 					GCMRegisteration.class);
 			startService(gcmRegIntentService);
-		} else {
-			Log.i(TAG, "no play services api found");
 		}
 	}
 
@@ -223,7 +221,6 @@ public class LoginActivity extends Activity {
 				GooglePlayServicesUtil.getErrorDialog(resultCode, this,
 						PLAY_SERVICES_RESOLUTION_REQUEST).show();
 			} else {
-				Log.i("ERROR", "This device is not supported.");
 				finish();
 			}
 			return false;

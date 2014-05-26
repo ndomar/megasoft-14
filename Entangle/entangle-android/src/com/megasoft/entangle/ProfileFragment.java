@@ -159,7 +159,6 @@ public class ProfileFragment extends Fragment {
 						e.printStackTrace();
 					}
 				} else {
-					Log.e("test", this.getErrorMessage());
 					Toast toast = Toast.makeText(
 							activity.getApplicationContext(),
 							"Some error happened.", Toast.LENGTH_SHORT);

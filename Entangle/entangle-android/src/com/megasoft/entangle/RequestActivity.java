@@ -191,8 +191,6 @@ public class RequestActivity extends FragmentActivity {
 						addRequestFields(json);
 						addOffers(json);
 					} else {
-						Log.e("test", this.getErrorMessage());
-						Log.e("test", REQUEST);
 						// showErrorMessage();
 						// TODO
 						// TextView errorMessage = new TextView(self);

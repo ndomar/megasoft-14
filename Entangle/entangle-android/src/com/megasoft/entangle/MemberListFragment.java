@@ -174,8 +174,6 @@ public class MemberListFragment extends Fragment {
 				if(isDestroyed){
 					return;
 				}
-				Log.e("test", this.getStatusCode() + ""); // ///////////////////////////////
-
 				if (!this.hasError() && this.getStatusCode() == 200) {
 					if (!showData(response)) {
 						toasterShow("Something went wrong, please try again later");
