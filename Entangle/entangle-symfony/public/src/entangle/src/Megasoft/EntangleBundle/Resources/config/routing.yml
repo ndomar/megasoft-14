@@ -87,11 +87,6 @@ dummy:
     pattern: /dummy
     defaults: { _controller: MegasoftEntangleBundle:Default:dummy }
 
-create_Offer:
-    pattern: /tangle/{tangleId}/request/{requestId}/offer
-    defaults: { _controller: MegasoftEntangleBundle:CreateOffer:createOffer }
-    methods: [POST]
-
 delete_request:
     pattern: /request/{requestId}
     defaults: { _controller: MegasoftEntangleBundle:Request:Delete }
@@ -315,11 +310,6 @@ megasoft_entangle_register:
     pattern:  /
     defaults: { _controller: MegasoftEntangleBundle:Site:register }
 
-create_Offer:
-    pattern: /tangle/{tangleId}/request/{requestId}/offer
-    defaults: { _controller: MegasoftEntangleBundle:CreateOffer:createOffer }
-    methods: [POST]
-
 get_profile:
     pattern: /tangle/{tangleId}/user/{userId}/profile
     defaults: { _controller: MegasoftEntangleBundle:User:profile }
@@ -477,9 +467,8 @@ dummy:
 
 create_Offer:
     pattern: /tangle/{tangleId}/request/{requestId}/offer
-    defaults: { _controller: MegasoftEntangleBundle:CreateOffer:createOffer }
+    defaults: { _controller: MegasoftEntangleBundle:Offer:createOffer }
     methods: [POST]
-
 
 get_profile:
     pattern: tangle/{tangleId}/user/{userId}/profile
