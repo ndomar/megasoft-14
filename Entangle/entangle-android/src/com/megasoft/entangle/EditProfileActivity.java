@@ -100,8 +100,8 @@ public class EditProfileActivity extends FragmentActivity implements
 						currentEmails = retrieveDataResponse
 								.getJSONArray("emails");
 
-						for (int i = 0; i < currentEmails.length(); i++)
-							addEmailField();
+						//for (int i = 0; i < currentEmails.length(); i++)
+						//	addEmailField();
 
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -309,69 +309,6 @@ public class EditProfileActivity extends FragmentActivity implements
 	public void cancelRedirect(View view) {
 
 		this.finish();
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		this.settings = getSharedPreferences(Config.SETTING, 0);
-		this.sessionId = settings.getString(Config.SESSION_ID, "");
-		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
-				+ RETRIEVEDATA) {
-			public void onPostExecute(String response) {
-				try {
-					retrieveDataResponse = new JSONObject(response);
-					try {
-
-						oldDescription = retrieveDataResponse
-								.getString("description");
-						oldBirthDate = retrieveDataResponse
-								.getJSONObject("date_of_birth");
-						date = oldBirthDate.getString("date");
-						splittedDate = date.split("-");
-						day = splittedDate[2].split(" ");
-						newYear = Integer.parseInt(splittedDate[0]);
-						newMonth = Integer.parseInt(splittedDate[1]) - 1;
-						newDay = Integer.parseInt(day[0]);
-						currentDescription.setText(oldDescription);
-						notification = retrieveDataResponse
-								.getBoolean("notification_state");
-						currentEmails = retrieveDataResponse
-								.getJSONArray("emails");
-
-						findViewById(R.id.user_emails).setVisibility(
-								View.VISIBLE);
-						for (int i = 0; i < currentEmails.length(); i++) {
-							String email = currentEmails.getString(i);
-							Log.i("Message", email);
-
-							EditText x = emails.get(i).getEditText();
-							emails.get(i).getView().setVisibility(View.VISIBLE);
-							if (x == null)
-								Log.i("lola", "the edit text is null");
-							else {
-								x.setText(email);
-
-							}
-							if (x != null)
-								x.setEnabled(false);
-
-						}
-
-						addEmailField();
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		getRequest.addHeader(Config.API_SESSION_ID, sessionId);
-		getRequest.execute();
-
-	}
-	
+	}	
 	
 }
