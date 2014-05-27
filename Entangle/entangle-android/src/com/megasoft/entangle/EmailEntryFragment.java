@@ -61,6 +61,7 @@ public class EmailEntryFragment extends Fragment {
 			editText.setError(null);
 			if (s.length() >= 1) {
 				editText.removeTextChangedListener(this);
+				activity.addEmailField();
 			}
 		}
 	};
