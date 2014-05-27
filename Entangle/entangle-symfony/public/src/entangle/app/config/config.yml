@@ -93,3 +93,9 @@ services:
    arguments:
         em: "@doctrine.orm.entity_manager"
         container: "@service_container"
+
+hip_mandrill:
+    api_key: "%mailer_password%"
+    default:
+        sender: no-replay@entangle.io
+        sender_name: Entangle
