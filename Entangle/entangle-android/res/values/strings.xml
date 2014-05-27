@@ -211,5 +211,6 @@
     <string name="loading">Loading\.\.\.</string>
     <string name="no_more_requests">Ops, there is no more requests to fetch</string>
     <string name="email">your.email@example.com</string>
+    <string name="editProfilePic">Edit your profile pic</string>
 
 </resources>

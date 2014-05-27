@@ -104,8 +104,29 @@ class UserController extends Controller
                         $this->getDoctrine()->getManager()->persist($email);
                     }
                 }
-
+                $userIcon = $jsonArray['icon'];
+                if($userIcon != null){
+                    $imageData = base64_decode($userIcon);
+                    $f = finfo_open();
+                    $mimeType = finfo_buffer($f, $imageData, FILEINFO_MIME_TYPE);
+                    if ($mimeType == false || $mimeType != 'image/png') {
+                        return new Response("Bad image", 400);
+                    }
+                    $icon = imagecreatefromstring($imageData);
+                    $iconName = substr(md5(time()), 0, 10) . $this->generate(5) . '.png';
+                    $kernel = $this->get('kernel');
+                    $path = $kernel->getRootDir() . '/../web/images/profilePictures/' . $iconName;
+                    if ($icon != null) {
+                        imagepng($icon, $path, 9);
+                        imagedestroy($icon);
+                    }
+                    $oldPhoto = $user->getPhoto();
+                    $oldPhotoPath = $kernel->getRootDir() . '/../web/images/profilePictures/' . $oldPhoto;
+                    $user->setPhoto($iconName);
+                }
+                $this->getDoctrine()->getManager()->persist($user);
                 $this->getDoctrine()->getManager()->flush();
+                unlink($oldPhotoPath);
                 return new Response('OK', 200);
             }
         } else {
@@ -641,6 +662,16 @@ class UserController extends Controller
 
         return $response;
 
+    }
+
+    private function generate($len)
+    {
+        $ret = '';
+        $seed = "abcdefghijklmnopqrstuvwxyz123456789";
+        for ($i = 0; $i < $len; $i++) {
+            $ret .= $seed[rand(0, strlen($seed) - 1)];
+        }
+        return $ret;
     }
 
 }
