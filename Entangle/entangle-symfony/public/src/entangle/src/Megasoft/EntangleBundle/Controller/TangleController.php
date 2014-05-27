@@ -880,11 +880,13 @@ class TangleController extends Controller {
             ->findOneBy($criteria1);
 
         if (!$invitation) {
-            return $this->render('MegasoftEntangleBundle:AcceptTangleInvitation:invitationNotFound.html.twig');
+            return $this->render('MegasoftEntangleBundle:AcceptTangleInvitation:error.html.twig',array(
+                'errorMessage' => "This Invitation Doesn't exist , Or it disappeared into a black hole!" ));
         }
         $expired = $invitation->getExpired();
         if ($expired) {
-            return $this->render('MegasoftEntangleBundle:AcceptTangleInvitation:expired.html.twig');
+            return $this->render('MegasoftEntangleBundle:AcceptTangleInvitation:error.html.twig',array(
+                'errorMessage' => "This Invitation link has expired,or you have been already added to this tangle." ));
         }
         $tangleId = $invitation->getTangleId();
         $userId = $invitation->getUserId();
@@ -892,15 +894,37 @@ class TangleController extends Controller {
                 ->getRepository('MegasoftEntangleBundle:Tangle')
                 ->find($tangleId);
         if (!$tangle) {
-            return $this->render('MegasoftEntangleBundle:AcceptTangleInvitation:tangleNotFound.html.twig');
+            return $this->render('MegasoftEntangleBundle:AcceptTangleInvitation:error.html.twig',array(
+                'errorMessage' => "Woops,This Tangle doesn't exist,or it disappeared into a black hole!" ));
+        }
+        if($userId == null){
+            $userEmail = $this->getDoctrine()
+                ->getRepository('MegasoftEntangleBundle:UserEmail')->findOneByEmail($invitation->getEmail());
+            if($userEmail == null || $userEmail->getDeleted()){
+                return $this->render('MegasoftEntangleBundle:AcceptTangleInvitation:error.html.twig',array(
+                    'errorMessage' => "Please register first before accepting the tangle invitation!" ));
+            }else{
+                $userId = $userEmail->getUserId();
+            }
         }
         $user = $this->getDoctrine()
                 ->getRepository('MegasoftEntangleBundle:User')
                 ->find($userId);
         if (!$user) {
-
-            return $this->render('MegasoftEntangleBundle:AcceptTangleInvitation:userNotFound.html.twig');
+            return $this->render('MegasoftEntangleBundle:AcceptTangleInvitation:error.html.twig',array(
+                'errorMessage' => "Woops,This user doesn't exist,or it disappeared into a black hole!" ));
         };
+
+        $userTangle = $this->getDoctrine()
+            ->getRepository('MegasoftEntangleBundle:UserTangle')
+            ->findOneBy(array('userId'=>$userId,'tangleId'=>$tangleId));
+        if($userTangle != null){
+            $invitation->setExpired(true);
+            $this->getDoctrine()->getManager()->flush();
+            return $this->render('MegasoftEntangleBundle:AcceptTangleInvitation:error.html.twig',array(
+                'errorMessage' => "This Invitation link has expired,or you have been already added to this tangle." ));
+        }
+
         $tangleUser = new UserTangle();
         $tangleUser->setTangleOwner(FALSE);
         $tangleUser->setUser($user);
