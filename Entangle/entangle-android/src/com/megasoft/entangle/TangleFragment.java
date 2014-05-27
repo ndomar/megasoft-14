@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,8 @@ public class TangleFragment extends Fragment {
 	private HomeActivity activity;
 	private View view;
 	private TextView loadMoreTrigger; 
+	private ProgressBar progress;
+	private int streamCount;
 	
 	private String lastDate;
 	
@@ -134,12 +137,14 @@ public class TangleFragment extends Fragment {
          
          tangleId = getArguments().getInt("tangleId");
          tangleName = getArguments().getString("tangleName");
+         progress = (ProgressBar) view.findViewById(R.id.stream_progressBar);
          loadMoreTrigger = (TextView) view.findViewById(R.id.load_more);
          loadMoreTrigger.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				loadMoreTrigger.setText(getResources().getString(R.string.loading));
+				loadMoreTrigger.setVisibility(View.GONE);
+				progress.setVisibility(View.VISIBLE);
 				sendFilteredRequest(rootResource + "/tangle/" + tangleId
 		 				+ "/request", true, null);	
 			}
@@ -220,14 +225,17 @@ public class TangleFragment extends Fragment {
 					for (int i = 0; i < count && i < requestArray.length(); i++) {
 						JSONObject request = requestArray.getJSONObject(i);
 						if (request != null) {
+							streamCount++;
 							addRequest(request);
 						}
 					}
 				} else {
-					Toast.makeText(
+					if (streamCount > 0) {
+						Toast.makeText(
 							activity.getBaseContext(),
 							getResources().getString(R.string.no_more_requests),
 							Toast.LENGTH_LONG).show();
+					}
 				}
 			}
 		} catch (JSONException e) {
@@ -342,10 +350,12 @@ public class TangleFragment extends Fragment {
 							Toast.LENGTH_LONG).show();
 				}
 				mPullToRefreshLayout.setRefreshComplete();
-				// last date indicates that the steram is not empty
-				if (lastDate != null) {
+				
+				if (streamCount > 3) {
 					loadMoreTrigger.setText(getResources().getString(R.string.load_more));
 				}
+				progress.setVisibility(View.INVISIBLE);
+				loadMoreTrigger.setVisibility(View.VISIBLE);
 			}
 		};
 		getStream.addHeader("X-SESSION-ID", getSessionId());
