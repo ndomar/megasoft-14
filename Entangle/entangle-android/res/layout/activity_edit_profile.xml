@@ -108,12 +108,12 @@
 
     <TextView
         android:id="@+id/AddEmail"
-        android:visibility="gone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
-        android:text="@string/add_your_email" />
+        android:text="@string/add_your_email"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/user_emails"
@@ -137,6 +137,19 @@
         android:onClick="selectDOB"
         android:spinnerMode="dialog"
         android:text="@string/DOB"
+        android:textColor="@color/darkGray" />
+
+    <Button
+        android:id="@+id/editProfilePic"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="@dimen/marginSmall"
+        android:layout_marginTop="@dimen/marginSmall"
+        android:clickable="true"
+        android:onClick="goToGallery"
+        android:text="@string/editProfilePic"
         android:textColor="@color/darkGray" />
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.megasoft.entangle;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -16,9 +17,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -70,6 +75,8 @@ public class EditProfileActivity extends FragmentActivity implements
 	private int emailsCount;
 	private boolean isDestroyed;
 	private Button dataPicker;
+	private static final int REQUEST_CODE = 1;
+	String encodedImage;
 
 	@SuppressLint("SimpleDateFormat")
 	@Override
@@ -83,7 +90,7 @@ public class EditProfileActivity extends FragmentActivity implements
 		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
 				+ RETRIEVEDATA) {
 			public void onPostExecute(String response) {
-				if(isDestroyed){
+				if (isDestroyed) {
 					return;
 				}
 				try {
@@ -100,7 +107,8 @@ public class EditProfileActivity extends FragmentActivity implements
 						newYear = Integer.parseInt(splittedDate[0]);
 						newMonth = Integer.parseInt(splittedDate[1]) - 1;
 						newDay = Integer.parseInt(day[0]);
-						dataPicker.setText(newDay + "/" + (newMonth+1) + "/" + newYear);
+						dataPicker.setText(newDay + "/" + (newMonth + 1) + "/"
+								+ newYear);
 						currentDescription.setText(oldDescription);
 						notification = retrieveDataResponse
 								.getBoolean("notification_state");
@@ -158,7 +166,7 @@ public class EditProfileActivity extends FragmentActivity implements
 		public void onDateSet(DatePicker view, int year, int monthOfYear,
 				int dayOfMonth) {
 			newYear = year;
-			newMonth = monthOfYear+1;
+			newMonth = monthOfYear + 1;
 			newDay = dayOfMonth;
 			dataPicker.setText(newDay + "/" + newMonth + "/" + newYear);
 		}
@@ -218,6 +226,7 @@ public class EditProfileActivity extends FragmentActivity implements
 					return;
 				}
 				putReJsonObject.put("emails", emails);
+				putReJsonObject.put("icon", encodedImage);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -225,7 +234,7 @@ public class EditProfileActivity extends FragmentActivity implements
 			PutRequest putRequest = new PutRequest(Config.API_BASE_URL
 					+ EDITPROFILE) {
 				protected void onPostExecute(String result) {
-					if(isDestroyed){
+					if (isDestroyed) {
 						return;
 					}
 					if (this.getStatusCode() == 200) {
@@ -297,10 +306,62 @@ public class EditProfileActivity extends FragmentActivity implements
 	public void cancelRedirect(View view) {
 		this.finish();
 	}
-	
-	public void onPause(){
+
+	public void onPause() {
 		super.onPause();
 		isDestroyed = true;
 	}
-	
+
+	public void goToGallery(View view) {
+		 startActivityForResult(new Intent(Intent.ACTION_PICK,
+		 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
+		 REQUEST_CODE);
+//		Intent pickIntent = new Intent();
+//		pickIntent.setType("image/*");
+//		pickIntent.setAction(Intent.ACTION_PICK);
+//
+//		Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//		startActivityForResult(takePhotoIntent, REQUEST_CODE);
+//		takePhotoIntent.setFlags(1);
+
+//		String pickTitle = "Select or take a new Picture"; // Or get from
+//															// strings.xml
+//		Intent chooserIntent = Intent.createChooser(pickIntent, pickTitle);
+//		chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS,
+//				new Intent[] { takePhotoIntent });
+//
+//		startActivityForResult(chooserIntent, REQUEST_CODE);
+	}
+
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE
+				&& null != data) {
+			Bitmap bitmap = getPhotoPath(data.getData());
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+			byte[] byteArray = baos.toByteArray();
+			encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+		}
+//		 else {
+//				Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+//				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//				bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+//				byte[] byteArray = baos.toByteArray();
+//				encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+//		}
+	}
+
+	public Bitmap getPhotoPath(Uri uri) {
+		String[] projection = { android.provider.MediaStore.Images.Media.DATA };
+		Cursor cursor = getContentResolver().query(uri, projection, null, null,
+				null);
+		int columnIndex = cursor.getColumnIndexOrThrow(projection[0]);
+		cursor.moveToFirst();
+		String filePath = cursor.getString(columnIndex);
+		cursor.close();
+		Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+		return bitmap;
+	}
+
 }
