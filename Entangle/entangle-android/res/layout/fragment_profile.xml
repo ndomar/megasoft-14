@@ -68,9 +68,12 @@
 
         <TextView
             android:id="@+id/descriptionView"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="@dimen/marginMedium"
+            android:layout_marginLeft="@dimen/marginMedium"
+            android:singleLine="false" />
 
         <TextView
             android:id="@+id/credit"

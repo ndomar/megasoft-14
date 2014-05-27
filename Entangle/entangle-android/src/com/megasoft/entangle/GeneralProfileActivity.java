@@ -79,26 +79,16 @@ public class GeneralProfileActivity extends FragmentActivity {
 	 * @author maisaraFarahat
 	 */
 
-	@SuppressWarnings("deprecation")
 	public void logout() {
 
 		SharedPreferences myPrefs = this.getSharedPreferences(Config.SETTING,
-				MODE_WORLD_READABLE);
+				0);
 		String sessionId = myPrefs.getString(Config.SESSION_ID, "");
 		PostRequest request = new PostRequest(Config.API_BASE_URL
-				+ LOGOUT) {
-			protected void onPostExecute(String response) {
-
-				if (this.getStatusCode() == 200) {
-					goToLogout();
-
-				}
-
-			}
-
-		};
+				+ LOGOUT);
 		request.addHeader(Config.API_SESSION_ID, sessionId);
 		request.execute();
+		goToLogout();
 
 	}
 
@@ -109,10 +99,9 @@ public class GeneralProfileActivity extends FragmentActivity {
 	 * @author maisaraFarahat
 	 */
 
-	@SuppressWarnings("deprecation")
 	private void goToLogout() {
 		SharedPreferences sessionIDPrefs = this.getSharedPreferences(
-				Config.SETTING, MODE_WORLD_READABLE);
+				Config.SETTING, 0);
 		SharedPreferences.Editor prefsEditor = sessionIDPrefs.edit();
 		prefsEditor.putString(Config.SESSION_ID, null);
 

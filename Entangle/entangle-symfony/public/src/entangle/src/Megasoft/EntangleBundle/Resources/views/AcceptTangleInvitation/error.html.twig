@@ -19,7 +19,6 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('bundles/megasoftentangle/img/enticon.ico') }}">
 </head>
-
 <body>
 <!-- navbar -->
 <div class="navbar-wrapper">
@@ -47,7 +46,7 @@
     <div class="container">
         <div class="row">
             <div class="span12 aligncenter flyUp">
-                <h2 class="pagetitle">Congratulations, {{ userName }} you have been successfully added to {{ tangleName }}.</strong></h2>
+                <h2 class="pagetitle">{{ errorMessage }}</strong></h2>
             </div>
         </div>
     </div>
@@ -97,4 +96,3 @@
 <!-- custom functions -->
 <script src="{{ asset('bundles/megasoftentangle/js/custom.js') }}"></script>
 </body>
-

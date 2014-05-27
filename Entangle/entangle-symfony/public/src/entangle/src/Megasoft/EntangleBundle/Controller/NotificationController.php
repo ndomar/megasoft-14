@@ -57,6 +57,12 @@ class NotificationController extends Controller
         if (!$session) {
             throw $this->createNotFoundException('no session found for session id = ' . $sessionid);
         }
+
+        $qb = $em->createQueryBuilder();
+        if($regid != null || $regid == ""){
+            $qb->update('MegasoftEntangleBundle:Session','s')->set('s.expired',1)->where('s.regId =:regId AND s.sessionId != :sessionId')->setParameter('regId', $regid)->setParameter('sessionId',$sessionid)->getQuery()->execute();
+            $em->flush();
+        }
         $session->setRegId($regid);
         $em->flush();
         $response = new JsonResponse();

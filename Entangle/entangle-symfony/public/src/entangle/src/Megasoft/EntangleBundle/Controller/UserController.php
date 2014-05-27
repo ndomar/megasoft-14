@@ -40,72 +40,13 @@ class UserController extends Controller
             $user = $currentSession->getUser();
 
             if ($user != null) {
-                $newDescription = $jsonArray['description'];
-                if ($user->getUserBio() != $newDescription) {
-                    $user->setUserBio($newDescription);
-                }
-                $oldDate = $user->getBirthDate();
-                $newDateOfBirth = $jsonArray['new_date_of_birth'];
-                $birthDate = new DateTime2($newDateOfBirth);
-                if ($birthDate != $oldDate) {
-                    $user->setBirthDate($birthDate);
-                }
-                $doctrineManger = $this->getDoctrine()->getManager();
-                $email_array = $jsonArray['emails'];
-
-                if (!empty($email_array)) {
-                    foreach ($email_array as $email) {
-                        $repo = $this->getDoctrine()->getManager()->getRepository('MegasoftEntangleBundle:UserEmail');
-                        $emailExistsNotDeleted = $repo->findOneBy(array('email' => $email, 'deleted' => 0,));
-                        if ($emailExistsNotDeleted)
-                            continue;
-                        else {
-                            $emailExistsDeleted = $repo->findOneBy(array('email' => $email, 'deleted' => 1,));
-                            if ($emailExistsDeleted) {
-                                if ($emailExistsDeleted->getUserId() == $user->getId())
-                                    $emailExistsDeleted->setDeleted(0);
-                                else {
-                                    $emailExistsDeleted->setDeleted(0);
-                                    $emailExistsDeleted->setUserId($user->getId());
-                                }
-                            } else
-                                if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                                    $newMail = new UserEmail();
-                                    $newMail->setEmail($email);
-                                    $newMail->setUser($user);
-                                    if ($user->getId()) {
-                                        $newMail->setUserId($user->getId());
-                                        $user->addEmail($newMail);
-                                        $doctrineManger->persist($newMail);
-                                    }
-                                }
-                        }
-                    }
-                }
+                $user->setUserBio($jsonArray['description']);
+                $birthDate = new DateTime2( $jsonArray['new_date_of_birth']);
+                $user->setBirthDate($birthDate);
                 $user->setAcceptMailNotifications($jsonArray['notification_state']);
+                $doctrineManger = $this->getDoctrine()->getManager();
                 $doctrineManger->persist($user);
                 $doctrineManger->flush();
-
-
-                $userid = $user->getId();
-                echo $userid;
-                $repo = $this->getDoctrine()->getManager()->getRepository('MegasoftEntangleBundle:UserEmail');
-                $currentUserEmails = $repo->findBy(array('userId' => $userid));
-                foreach ($currentUserEmails as $email) {
-                    $found = 0;
-
-                    foreach ($email_array as $newEmails) {
-                        if ($email->getEmail() == $newEmails) {
-                            $found = 1;
-                        }
-                    }
-                    if ($found == 0) {
-                        $email->setDeleted(1);
-                        $this->getDoctrine()->getManager()->persist($email);
-                    }
-                }
-
-                $this->getDoctrine()->getManager()->flush();
                 return new Response('OK', 200);
             }
         } else {
