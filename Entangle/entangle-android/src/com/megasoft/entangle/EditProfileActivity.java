@@ -70,6 +70,7 @@ public class EditProfileActivity extends FragmentActivity implements
 	private int emailsCount;
 	private boolean isDestroyed;
 	private Button dataPicker;
+	private Button saveAll;
 
 	@SuppressLint("SimpleDateFormat")
 	@Override
@@ -80,6 +81,7 @@ public class EditProfileActivity extends FragmentActivity implements
 		initializeView();
 		this.settings = getSharedPreferences(Config.SETTING, 0);
 		this.sessionId = settings.getString(Config.SESSION_ID, "");
+		
 		GetRequest getRequest = new GetRequest(Config.API_BASE_URL
 				+ RETRIEVEDATA) {
 			public void onPostExecute(String response) {
@@ -107,6 +109,7 @@ public class EditProfileActivity extends FragmentActivity implements
 						emailNotification.setChecked(notification);
 						currentEmails = retrieveDataResponse
 								.getJSONArray("emails");
+						saveAll.setEnabled(true);
 
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -152,6 +155,8 @@ public class EditProfileActivity extends FragmentActivity implements
 		emailNotification = (CheckBox) findViewById(R.id.set_notification);
 		currentDescription = (EditText) findViewById(R.id.CurrentDescription);
 		dataPicker = (Button) findViewById(R.id.DatePickerButton);
+		saveAll = (Button) findViewById(R.id.saveAll);
+		saveAll.setEnabled(false);
 	}
 
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
