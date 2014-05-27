@@ -19,6 +19,8 @@ use Megasoft\EntangleBundle\Entity\ReopenRequestNotification;
 use Megasoft\EntangleBundle\Entity\RequestDeletedNotification;
 use Megasoft\EntangleBundle\Entity\TransactionNotification;
 use Symfony\Component\DependencyInjection\Container;
+use Hip\MandrillBundle\Message;
+use Hip\MandrillBundle\Dispatcher;
 
 
 /**
@@ -634,13 +636,18 @@ class NotificationCenter
         if ($user->getAcceptMailNotifications() == true) {
             foreach ($useremail as $mail) {
 
-                $message = \Swift_Message::newInstance()
+                $dispatcher = $this->container->get('hip_mandrill.dispatcher');
+
+                $message = new Message();
+
+                $message
+                    ->setFromEmail('notifications-noreply@entangle.io')
+                    ->setFromName('Entangle')
+                    ->addTo($mail->getEmail())
                     ->setSubject($subject)
-                    ->addFrom('Notifications-noreply@entangle.io', 'Entangle')
-                    ->setTo($mail->getEmail())
-                    ->setBody($body)
-                    ->setContentType("text/html");
-                $this->container->get('mailer')->send($message);
+                    ->setHtml($body);
+
+                $result = $dispatcher->send($message);
             }
         }
     }
@@ -655,12 +662,17 @@ class NotificationCenter
     public function sendMailToEmail($email, $subject, $body)
     {
 
-        $message = \Swift_Message::newInstance()
+        $dispatcher = $this->container->get('hip_mandrill.dispatcher');
+
+        $message = new Message();
+
+        $message
+            ->setFromEmail('notifications-noreply@entangle.io')
+            ->setFromName('Entangle')
+            ->addTo($email)
             ->setSubject($subject)
-            ->addFrom('Notifications-noreply@entangle.io', 'Entangle')
-            ->setTo($email)
-            ->setBody($body)
-            ->setContentType("text/html");
-        $this->container->get('mailer')->send($message);
+            ->setHtml($body);
+
+        $result = $dispatcher->send($message);
     }
 }
